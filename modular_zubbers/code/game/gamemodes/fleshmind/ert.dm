@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * post_setup()
  *
@@ -39,4 +40,4 @@
 			"style" = /datum/pod_style/deathsquad,
 			"spawn" = living_mob,
 		))
-		to_chat(living_mob, span_redtext("The drop pod thrusters fire up, you're being deployed to the station!"))
+		to_chat(living_mob, span_redtext(LANG("datum.83ff5e6acf7a0679", null)))

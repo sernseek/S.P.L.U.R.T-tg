@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //copy pasta of the space piano, don't hurt me -Pete
 /obj/item/instrument
 	name = "generic instrument"
@@ -35,7 +36,7 @@
 	return TRUE
 
 /obj/item/instrument/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] begins to play 'Gloomy Sunday'! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.c83392d7dbd708c4", list(user, user.p_theyre()))))
 	return BRUTELOSS
 
 /obj/item/instrument/ui_interact(mob/user, datum/tgui/ui)
@@ -223,7 +224,7 @@
 		return
 	if(!ismob(loc))
 		CRASH("[src] was still registered to listen in on [source] but was not found to be on their mob.")
-	to_chat(loc, span_warning("You stop playing the harmonica to talk..."))
+	to_chat(loc, span_warning(LANG("obj.6b06975879217ce6", null)))
 	song.playing = FALSE
 
 /datum/action/item_action/instrument

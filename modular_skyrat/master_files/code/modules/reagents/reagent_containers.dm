@@ -1,12 +1,13 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/reagent_containers/click_alt(mob/living/user)
 	if(!has_variable_transfer_amount)
 		return NONE
 	if(length(possible_transfer_amounts) <= 2) // If there's only two choices, just swap between them.
 		change_transfer_amount(user, FORWARD)
 		return CLICK_ACTION_SUCCESS
-	var/transfer_amount = tgui_input_list(user, "Amount per transfer from this:", "[src]", possible_transfer_amounts, amount_per_transfer_from_this)
+	var/transfer_amount = tgui_input_list(user, LANG("obj.35e908e5bf85e844", null), "[src]", possible_transfer_amounts, amount_per_transfer_from_this)
 	if(isnull(transfer_amount))
 		return NONE
 	amount_per_transfer_from_this = transfer_amount
-	to_chat(user, span_notice("[src]'s transfer amount is now [amount_per_transfer_from_this] unit\s."))
+	to_chat(user, span_notice(LANG("obj.4e0dc8ecdf2a8661", list(src, amount_per_transfer_from_this))))
 	return CLICK_ACTION_SUCCESS

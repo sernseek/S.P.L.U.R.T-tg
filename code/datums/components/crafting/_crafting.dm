@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //list key declarations used in check_contents(), get_surroundings() and check_tools()
 #define CONTENTS_INSTANCES "instances"
 #define CONTENTS_MACHINERY "machinery"
@@ -124,8 +125,19 @@
 		// Store the instances of what we will use for recipe.check_requirements() for requirement_path
 		var/list/instances_list = list()
 		for(var/instance_path, item_instance in item_instances)
-			if(ispath(instance_path, requirement_path))
-				instances_list += item_instance
+			if(!ispath(instance_path, requirement_path))
+				continue
+			// ZH EDIT ADDITION START - 实例收集要和上面的数量统计用同一套过滤
+			// 数量那一层排除了 blacklist 与「配方自身产物」，这一层原来没排，于是
+			// check_requirements 拿到的 collected_requirements[...][1] 可能正是那把被 blacklist
+			// 的成品枪。M64 大修套件即此：身上带着已改造的 Nachtreiher 时，配方去检查它的余弹、
+			// 非零就拒绝，玩家看到的是「枪明明是空的却做不了」。
+			if(instance_path in recipe.blacklist)
+				continue
+			if(recipe_result && instance_path == recipe_result)
+				continue
+			// ZH EDIT ADDITION END
+			instances_list += item_instance
 
 		requirements_list[requirement_path] = instances_list
 
@@ -387,7 +399,7 @@
 		for(var/direction in GLOB.cardinals)
 			nearby_turf = get_step(dest_turf, direction)
 			if(locate(recipe.result) in nearby_turf)
-				to_chat(crafter, span_warning("\The [recipe.name] must not be built directly adjacent to another!"))
+				to_chat(crafter, span_warning(LANG("datum.ccfba6d76144f14e", list(recipe.name))))
 				return ", can't be adjacent to another!"
 
 	if(recipe.placement_checks & STACK_CHECK_ADJACENT)
@@ -593,14 +605,14 @@
 /datum/component/personal_crafting/proc/make_action(datum/crafting_recipe/recipe, mob/user)
 	var/atom/result = construct_item(user, recipe)
 	if(istext(result)) //We failed to make an item and got a fail message
-		to_chat(user, span_warning("Construction failed[result]"))
+		to_chat(user, span_warning(LANG("datum.1477fa8a6ec57b25", list(result))))
 		return FALSE
 	if(ismob(user) && isitem(result)) //In case the user is actually possessing a non mob like a machine
 		user.put_in_hands(result)
 	else if(ismovable(result) && !istype(result, /obj/effect/spawner))
 		var/atom/movable/movable = result
 		movable.forceMove(user.drop_location())
-	to_chat(user, span_notice("[recipe.name] crafted."))
+	to_chat(user, span_notice(LANG("datum.1221b3fc39ab93a3", list(recipe.name))))
 	user.investigate_log("crafted [recipe]", INVESTIGATE_CRAFTING)
 	return TRUE
 
@@ -631,7 +643,7 @@
 				while(make_action(crafting_recipe, user))
 					crafted_items++
 				if(crafted_items)
-					to_chat(user, span_notice("You made [crafted_items] item\s."))
+					to_chat(user, span_notice(LANG("datum.50616c774fd576a8", list(crafted_items))))
 			else
 				make_action(crafting_recipe, user)
 			busy = FALSE
@@ -672,7 +684,9 @@
 	data["category"] = recipe.category
 
 	// Name, Description
-	data["name"] = recipe.name
+	// ZH EDIT CHANGE - I18N: reverse recipe name (full match, single-word too) so the menu name matches the
+	// crafted item; craft acts on data["ref"] (REF(recipe)), not the name, so localizing display is safe. ORIGINAL: data["name"] = recipe.name
+	data["name"] = (GLOB.i18n_server_locale != DEFAULT_UI_LOCALE) ? lang_reverse_text(recipe.name) : recipe.name
 
 	if(ispath(recipe.result, /datum/reagent))
 		var/datum/reagent/reagent = recipe.result
@@ -746,11 +760,13 @@
 			if(reaction.required_container)
 				var/id = atoms.Find(reaction.required_container)
 				data["reqs"]["[id]"] = 1
-				data["steps"] += "Add all ingredients into \a [initial(reaction.required_container.name)]"
+				// ZH EDIT CHANGE START - I18N - 步骤行运行期拼接绕过所有翻译层；locale≠en 走 LANG（保留 en 侧 \a 冠词行为） - ORIGINAL: data["steps"] += "Add all ingredients into \a [initial(reaction.required_container.name)]"
+				data["steps"] += (GLOB.i18n_server_locale != DEFAULT_UI_LOCALE) ? LANG("datum.96159b3b25f7369f", list(initial(reaction.required_container.name))) : "Add all ingredients into \a [initial(reaction.required_container.name)]"
+				// ZH EDIT CHANGE END
 			else if(length(recipe.reqs) > 1 || length(reaction.required_catalysts))
-				data["steps"] += "Mix all ingredients together"
+				data["steps"] += LANG("datum.26d103004e4b0dcf", null) // ZH EDIT CHANGE - I18N - ORIGINAL: data["steps"] += "Mix all ingredients together"
 			if(reaction.required_temp > T20C)
-				data["steps"] += "Heat up to [reaction.required_temp]K"
+				data["steps"] += LANG("datum.c2dc24e5ff8d2280", list(reaction.required_temp)) // ZH EDIT CHANGE - I18N - ORIGINAL: data["steps"] += "Heat up to [reaction.required_temp]K"
 		else
 			stack_trace("Invalid reaction found in recipe code! ([recipe.reaction])")
 	else if(!isnull(recipe.reaction))

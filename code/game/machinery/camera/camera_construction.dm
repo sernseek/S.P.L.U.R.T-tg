@@ -1,12 +1,13 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/camera/welder_act(mob/living/user, obj/item/tool)
 	switch(camera_construction_state)
 		if(CAMERA_STATE_WRENCHED, CAMERA_STATE_WELDED)
 			if(!tool.tool_start_check(user, amount = 1))
 				return ITEM_INTERACT_BLOCKING
-			user.balloon_alert_to_viewers("[camera_construction_state == CAMERA_STATE_WELDED ? "un" : null]welding...")
-			audible_message(span_hear("You hear welding."))
+			user.balloon_alert_to_viewers(LANG("obj.a38258a9cc1e8f7e", list(camera_construction_state == CAMERA_STATE_WELDED ? "un" : null)))
+			audible_message(span_hear(LANG("obj.1aa82fa3545466eb", null)))
 			if(!tool.use_tool(src, user, 2 SECONDS, volume = 50))
-				user.balloon_alert_to_viewers("stopped [camera_construction_state == CAMERA_STATE_WELDED ? "un" : null]welding!")
+				user.balloon_alert_to_viewers(LANG("obj.b650eb95f7c494e5", list(camera_construction_state == CAMERA_STATE_WELDED ? "un" : null)))
 				return
 			camera_construction_state = ((camera_construction_state == CAMERA_STATE_WELDED) ? CAMERA_STATE_WRENCHED : CAMERA_STATE_WELDED)
 			set_anchored(camera_construction_state == CAMERA_STATE_WELDED)
@@ -17,11 +18,11 @@
 				return ITEM_INTERACT_BLOCKING
 			if(!tool.tool_start_check(user, amount=2))
 				return ITEM_INTERACT_BLOCKING
-			audible_message(span_hear("You hear welding."))
+			audible_message(span_hear(LANG("obj.1aa82fa3545466eb", null)))
 			if(!tool.use_tool(src, user, 100, volume=50))
 				return ITEM_INTERACT_BLOCKING
-			user.visible_message(span_warning("[user] unwelds [src], leaving it as just a frame bolted to the wall."),
-				span_warning("You unweld [src], leaving it as just a frame bolted to the wall"))
+			user.visible_message(span_warning(LANG("obj.c0710c185f98b4cf", list(user, src))),
+				span_warning(LANG("obj.01dcc232bade9544", list(src))))
 			deconstruct(TRUE)
 			return ITEM_INTERACT_SUCCESS
 	return ..()
@@ -30,12 +31,12 @@
 	switch(camera_construction_state)
 		if(CAMERA_STATE_WIRED)
 			tool.play_tool_sound(src)
-			var/input = tgui_input_text(user, "Which networks would you like to connect this camera to? Separate networks with a comma. No Spaces!\nFor example: SS13,Security,Secret", "Set Network", "SS13", max_length = MAX_NAME_LEN)
+			var/input = tgui_input_text(user, LANG("obj.458189f7e3505481", null), LANG("obj.3ecb8b4ee4f217c4", null), "SS13", max_length = MAX_NAME_LEN)
 			if(isnull(input))
 				return ITEM_INTERACT_BLOCKING
 			var/list/tempnetwork = splittext(input, ",")
 			if(!length(tempnetwork))
-				to_chat(user, span_warning("No network found, please hang up and try your call again!"))
+				to_chat(user, span_warning(LANG("obj.88594d2664a991d7", null)))
 				return ITEM_INTERACT_BLOCKING
 			for(var/i in tempnetwork)
 				tempnetwork -= i
@@ -46,7 +47,7 @@
 			return ITEM_INTERACT_SUCCESS
 		if(CAMERA_STATE_FINISHED)
 			toggle_panel_open()
-			to_chat(user, span_notice("You screw the camera's panel [panel_open ? "open" : "closed"]."))
+			to_chat(user, span_notice(LANG("obj.1b40f8a1444b8688", list(panel_open ? "open" : "closed"))))
 			tool.play_tool_sound(src)
 			update_appearance()
 			return ITEM_INTERACT_SUCCESS
@@ -57,7 +58,7 @@
 		if(CAMERA_STATE_WIRED)
 			new /obj/item/stack/cable_coil(drop_location(), 2)
 			tool.play_tool_sound(src)
-			to_chat(user, span_notice("You cut the wires from the circuits."))
+			to_chat(user, span_notice(LANG("obj.e89d2de058eff41f", null)))
 			camera_construction_state = CAMERA_STATE_WELDED
 			return ITEM_INTERACT_SUCCESS
 		if(CAMERA_STATE_FINISHED)
@@ -74,7 +75,7 @@
 	if(camera_construction_state != CAMERA_STATE_WRENCHED)
 		return NONE
 	tool.play_tool_sound(src)
-	to_chat(user, span_notice("You detach [src] from its place."))
+	to_chat(user, span_notice(LANG("obj.9f8f2e9c678e0360", list(src))))
 	deconstruct(TRUE)
 	return ITEM_INTERACT_SUCCESS
 
@@ -90,12 +91,12 @@
 		droppable_parts += proximity_monitor
 	if(!length(droppable_parts))
 		return ITEM_INTERACT_BLOCKING
-	var/obj/item/choice = tgui_input_list(user, "Select a part to remove", "Part Removal", sort_names(droppable_parts))
+	var/obj/item/choice = tgui_input_list(user, LANG("obj.9fd18d7996c897af", null), LANG("obj.d650b468d829eb66", null), sort_names(droppable_parts))
 	if(isnull(choice))
 		return ITEM_INTERACT_BLOCKING
 	if(!user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return ITEM_INTERACT_BLOCKING
-	to_chat(user, span_notice("You remove [choice] from [src]."))
+	to_chat(user, span_notice(LANG("obj.cbed32661d4c054a", list(choice, src))))
 	if(choice == xray_module)
 		drop_upgrade(xray_module)
 		removeXRay()
@@ -112,19 +113,19 @@
 	if(camera_construction_state != CAMERA_STATE_FINISHED || !panel_open)
 		return NONE
 	setViewRange((view_range == initial(view_range)) ? short_range : initial(view_range))
-	to_chat(user, span_notice("You [(view_range == initial(view_range)) ? "restore" : "mess up"] the camera's focus."))
+	to_chat(user, span_notice(LANG("obj.21009c2aea9b40c6", list((view_range == initial(view_range)) ? "restore" : "mess up"))))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/camera/proc/gas_analyzer_act(mob/living/user, obj/item/tool)
 	if(camera_construction_state == CAMERA_STATE_FINISHED && !panel_open)
 		return NONE
 	if(isXRay(TRUE))
-		to_chat(user, span_warning("[src] already has that upgrade!"))
+		to_chat(user, span_warning(LANG("obj.f118c8028de7771b", list(src))))
 		return ITEM_INTERACT_BLOCKING
 	if(!user.temporarilyRemoveItemFromInventory(tool, newloc = src))
 		return ITEM_INTERACT_BLOCKING
 	upgradeXRay(FALSE, TRUE)
-	to_chat(user, span_notice("You attach [tool] into [src]'s inner circuits."))
+	to_chat(user, span_notice(LANG("obj.8801045dfc83354f", list(tool, src))))
 	qdel(tool)
 	return ITEM_INTERACT_SUCCESS
 
@@ -132,24 +133,24 @@
 	if(camera_construction_state == CAMERA_STATE_FINISHED && !panel_open)
 		return NONE
 	if(isEmpProof(TRUE))
-		to_chat(user, span_warning("[src] already has that upgrade!"))
+		to_chat(user, span_warning(LANG("obj.f118c8028de7771b", list(src))))
 		return ITEM_INTERACT_BLOCKING
 	if(!tool.use_tool(src, user, 0, amount = 1))
 		return ITEM_INTERACT_BLOCKING
 	upgradeEmpProof(FALSE, TRUE)
-	to_chat(user, span_notice("You attach [tool] into [src]'s inner circuits."))
+	to_chat(user, span_notice(LANG("obj.8801045dfc83354f", list(tool, src))))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/camera/proc/prox_act(mob/living/user, obj/item/tool)
 	if(camera_construction_state == CAMERA_STATE_FINISHED && !panel_open)
 		return NONE
 	if(isMotion())
-		to_chat(user, span_warning("[src] already has that upgrade!"))
+		to_chat(user, span_warning(LANG("obj.f118c8028de7771b", list(src))))
 		return ITEM_INTERACT_BLOCKING
 	if(!user.temporarilyRemoveItemFromInventory(tool, newloc = src))
 		return ITEM_INTERACT_BLOCKING
 	upgradeMotion()
-	to_chat(user, span_notice("You attach [tool] into [src]'s inner circuits."))
+	to_chat(user, span_notice(LANG("obj.8801045dfc83354f", list(tool, src))))
 	qdel(tool)
 	return ITEM_INTERACT_SUCCESS
 
@@ -157,9 +158,9 @@
 	if(camera_construction_state != CAMERA_STATE_WELDED)
 		return NONE
 	if(!astype(tool, /obj/item/stack/cable_coil)?.use(2))
-		to_chat(user, span_warning("You need two lengths of cable to wire [src]!"))
+		to_chat(user, span_warning(LANG("obj.224c8e788122b16a", list(src))))
 		return ITEM_INTERACT_BLOCKING
-	to_chat(user, span_notice("You add wires to [src]."))
+	to_chat(user, span_notice(LANG("obj.b1f7e13ceef66539", list(src))))
 	camera_construction_state = CAMERA_STATE_WIRED
 	return ITEM_INTERACT_SUCCESS
 
@@ -188,7 +189,7 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/camera/proc/display_note(mob/living/user, title, text, is_computer)
-	to_chat(user, span_notice("You hold up \the [title] up to the camera..."))
+	to_chat(user, span_notice(LANG("obj.d633f0b5dd1944dc", list(title))))
 	user.log_talk(title, LOG_GAME, "Pressed to camera", TRUE)
 	user.changeNext_move(CLICK_CD_MELEE)
 
@@ -210,16 +211,16 @@
 
 			var/href_string = is_computer ? "show_tablet_note=1" : "show_paper_note=[REF(last_shown_paper)]"
 			if(user.name == "Unknown")
-				to_chat(ai, "[span_name("[user]")] holds <a href='byond://?_src_=usr;[href_string];'>\a [title]</a> up to one of your cameras...")
+				to_chat(ai, LANG("obj.1a6f01a2295a9a7b", list(span_name("[user]"), href_string, title)))
 			else
-				to_chat(ai, "[span_name("<a href='byond://?src=[REF(ai)];track=[html_encode(user.name)]'>[user]</a>")] holds <a href='byond://?_src_=usr;[href_string];'>\a [title]</a> up to one of your cameras...")
+				to_chat(ai, LANG("obj.1a6f01a2295a9a7b", list(span_name("<a href='byond://?src=[REF(ai)];track=[html_encode(user.name)]'>[user]</a>"), href_string, title)))
 
 		// If it's not an AI, eye if the client's eye is set to the camera. I wonder if this even works anymore with tgui camera apps and stuff?
 		else if(potential_viewer.client?.eye == src)
 			potential_viewer.log_talk(title, LOG_VICTIM, "Pressed to camera from [key_name(user)]", FALSE)
 			if(!is_computer)
 				log_paper("[key_name(user)] held [last_shown_paper] up to [src], and [key_name(potential_viewer)] may read it.")
-				to_chat(potential_viewer, "[span_name("[user]")] holds <a href='byond://?_src_=usr;show_paper_note=[REF(last_shown_paper)];'>\a [title]</a> up to your camera...")
+				to_chat(potential_viewer, LANG("obj.611c659680c906cd", list(span_name("[user]"), REF(last_shown_paper), title)))
 			else
 				potential_viewer << browse("<HTML><HEAD><TITLE>[title]</TITLE></HEAD><BODY><TT>[text]</TT></BODY></HTML>", "window=[title]")
 

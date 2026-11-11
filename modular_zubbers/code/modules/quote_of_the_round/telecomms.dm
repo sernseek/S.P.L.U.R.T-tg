@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/telecomms/hub/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
 	. = ..()
 
@@ -76,7 +77,7 @@
 	. = ..()
 	if(href_list["cancel_quote"] && check_rights(R_ADMIN))
 		if(!SSticker.quote_of_the_round_text)
-			to_chat(usr, span_warning("This quote of the day has already been changed."), confidential = TRUE)
+			to_chat(usr, span_warning(LANG("obj.6eb0a1a4b1139add", null)), confidential = TRUE)
 			return
 		log_admin("[key_name_admin(usr)] has rerolled the quote of the round, which was: \"[SSticker.quote_of_the_round_text]\" by CKEY [key_name(SSticker.quote_of_the_round_ckey)].")
 		SSticker.quote_of_the_round_text = null

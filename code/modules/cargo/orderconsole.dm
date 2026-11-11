@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/computer/cargo
 	name = "supply console"
 	desc = "Used to order supplies, approve requests, and control the shuttle."
@@ -62,8 +63,8 @@
 		return FALSE
 	if(user)
 		if (emag_card)
-			user.visible_message(span_warning("[user] swipes [emag_card] through [src]!"))
-		to_chat(user, span_notice("You adjust [src]'s routing and receiver spectrum, unlocking special supplies and contraband."))
+			user.visible_message(span_warning(LANG("obj.f9eb34497a25192c", list(user, emag_card, src))))
+		to_chat(user, span_notice(LANG("obj.7f25b3b66ba0238f", list(src))))
 
 	obj_flags |= EMAGGED
 	contraband = TRUE
@@ -272,17 +273,17 @@
 		account = id_card?.registered_account // We can still assign an account for request department purposes.
 		if(self_paid)
 			if(!istype(id_card))
-				say("No ID card detected.")
+				say(LANG("obj.9caa768c0177ac98", null))
 				return
 			if(IS_DEPARTMENTAL_CARD(id_card))
-				say("The [src] rejects [id_card].")
+				say(LANG("obj.eb8fcdad537a7f72", list(src, id_card)))
 				return
 			if(!istype(account))
-				say("Invalid bank account.")
+				say(LANG("obj.3ad4c19308c51a2e", null))
 				return
 			var/list/access = id_card.GetAccess()
 			if((pack.access_view && !(pack.access_view in access)) && !bypass)
-				say("[id_card] lacks the requisite access for this purchase.")
+				say(LANG("obj.4e11fbdecc1d6d30", list(id_card)))
 				return
 
 	// The list we are operating on right now
@@ -291,7 +292,7 @@
 	var/datum/bank_account/personal_department
 	if(requestonly && !self_paid && !(pack.order_flags & ORDER_GOODY))
 		working_list = SSshuttle.request_list
-		reason = tgui_input_text(user, "Reason", name, max_length = MAX_MESSAGE_LEN)
+		reason = tgui_input_text(user, LANG("obj.ba5380f4e7abe6d9", null), name, max_length = MAX_MESSAGE_LEN)
 		if(isnull(reason))
 			return
 
@@ -299,7 +300,7 @@
 		if(account?.account_job)
 			personal_department = SSeconomy.get_dep_account(account.account_job.paycheck_department)
 			if(!(personal_department.account_holder == "Cargo Budget"))
-				var/dept_choice = tgui_alert(user, "Which department are you requesting this for?", "Choose department to request from", list("Cargo Budget", "[personal_department.account_holder]"))
+				var/dept_choice = tgui_alert(user, LANG("obj.b7de779abff270c2", null), LANG("obj.a672d0c44ba60bac", null), list("Cargo Budget", "[personal_department.account_holder]"))
 				if(!dept_choice)
 					return
 				if(dept_choice == "Cargo Budget")
@@ -317,18 +318,18 @@
 				// We want to block cargo requests when a player is requesting a restricted pack that they don't have access to.
 				// BUT only when it's requested with non-cargo funds, as cargo had direct oversight over their own purchases with their own budget.
 				// HOWEVER, this shouldn't prevent someone from buying something using their own personal funds.
-				say("ERROR: User lacks the requisite access for this purchase request.")
+				say(LANG("obj.13fe6ebe8013de1d", null))
 				return
 
 	if((pack.order_flags & ORDER_GOODY) && !self_paid && !pack.allow_non_private_purchase) // BUBBER EDIT
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
-		say("ERROR: Small crates may only be purchased by private accounts.")
+		say(LANG("obj.90374cfbf570e042", null))
 		return
 
 	var/similar_count = SSshuttle.supply.get_order_count(pack)
 	if(similar_count == OVER_ORDER_LIMIT)
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
-		say("ERROR: No more then [CARGO_MAX_ORDER] of any pack may be ordered at once")
+		say(LANG("obj.6627f598fbb8c20c", list(CARGO_MAX_ORDER)))
 		return
 
 	if(!self_paid)
@@ -339,7 +340,7 @@
 		var/obj/item/coupon/applied_coupon
 		for(var/obj/item/coupon/coupon_check in loaded_coupons)
 			if(pack.type == coupon_check.discounted_pack)
-				say("Coupon found! [round(coupon_check.discount_pct_off * 100)]% off applied!")
+				say(LANG("obj.2ad020991350d90e", list(round(coupon_check.discount_pct_off * 100))))
 				coupon_check.moveToNullspace()
 				applied_coupon = coupon_check
 				break
@@ -357,7 +358,7 @@
 		working_list += order
 
 	if(self_paid)
-		say("Order processed. The price will be charged to [account.account_holder]'s bank account on delivery.")
+		say(LANG("obj.cf813d0cbcc0517b", list(account.account_holder)))
 	if(requestonly && message_cooldown < world.time)
 		aas_config_announce(/datum/aas_config_entry/cargo_orders_announcement, list("AMOUNT" = amount), src, list(RADIO_CHANNEL_SUPPLY), amount == 1 ? "Single Order" : "Multiple Orders")
 		message_cooldown = world.time + 30 SECONDS
@@ -372,10 +373,10 @@
 		if(order.id != id)
 			continue
 		if(order.department_destination)
-			say("Only the department that ordered this item may cancel it.")
+			say(LANG("obj.666c9c1125a5eb0d", null))
 			return FALSE
 		if(order.applied_coupon)
-			say("Coupon refunded.")
+			say(LANG("obj.93e2806e05b5208f", null))
 			order.applied_coupon.forceMove(get_turf(src))
 		SSshuttle.shopping_list -= order
 		qdel(order)
@@ -408,36 +409,36 @@
 
 			if(SSshuttle.supply.getDockedId() == docking_home)
 				SSshuttle.moveShuttle(cargo_shuttle, docking_away, TRUE)
-				say("The supply shuttle is departing.")
+				say(LANG("obj.c8889dde4d5b29e6", null))
 				ui.user.investigate_log("sent the supply shuttle away.", INVESTIGATE_CARGO)
 			else
 				//create the paper from the SSshuttle.shopping_list
 				if(length(SSshuttle.shopping_list))
 					var/obj/item/paper/requisition/requisition_paper = new(get_turf(src))
 					requisition_paper.name = "requisition form - [server_timestamp(ic_time = TRUE)] (PT: [round_timestamp()])"
-					var/requisition_text = "<h2>[station_name()] Supply Requisition</h2>"
+					var/requisition_text = "<h2>[station_name()] [lang_reverse_text("Supply Requisition")]</h2>" // ZH EDIT - I18N - 单据标签反查（en locale no-op）
 					requisition_text += "<hr/>"
-					requisition_text += "Time of Order: [UNDERLINED_HTML_TEXT("[server_timestamp(ic_time = TRUE)]", "Shift Time: [round_timestamp()]")]<br/><br/>"
+					requisition_text += "[lang_reverse_text("Time of Order")]: [UNDERLINED_HTML_TEXT("[server_timestamp(ic_time = TRUE)]", "Shift Time: [round_timestamp()]")]<br/><br/>" // ZH EDIT - I18N
 					for(var/datum/supply_order/order as anything in SSshuttle.shopping_list)
-						requisition_text += "<b>[order.pack.name]</b></br>"
-						requisition_text += "- Order ID: [order.id]</br>"
+						requisition_text += "<b>[lang_reverse_text(order.pack.name)]</b></br>" // ZH EDIT CHANGE - i18n: pack 名反查 - ORIGINAL: [order.pack.name]
+						requisition_text += "- [lang_reverse_text("Order ID")]: [order.id]</br>" // ZH EDIT - I18N
 						var/restrictions = SSid_access.get_access_desc(order.pack.access)
 						if(restrictions)
-							requisition_text += "- Access Restrictions: [restrictions]</br>"
-						requisition_text += "- Ordered by: [order.orderer] ([order.orderer_rank])</br>"
+							requisition_text += "- [lang_reverse_text("Access Restrictions")]: [restrictions]</br>" // ZH EDIT - I18N
+						requisition_text += "- [lang_reverse_text("Ordered by")]: [order.orderer] ([order.orderer_rank])</br>" // ZH EDIT - I18N
 						var/paying_account = order.paying_account
 						if(paying_account)
-							requisition_text += "- Paid Privately by: [order.paying_account.account_holder]<br/>"
+							requisition_text += "- [lang_reverse_text("Paid Privately by")]: [order.paying_account.account_holder]<br/>" // ZH EDIT - I18N
 						var/reason = order.reason
 						if(reason)
-							requisition_text += "- Reason Given: [reason]</br>"
+							requisition_text += "- [lang_reverse_text("Reason Given")]: [reason]</br>" // ZH EDIT - I18N
 						requisition_text += "</br></br>"
 					requisition_paper.add_raw_text(requisition_text, advanced_html = TRUE)
 					requisition_paper.color = "#9ef5ff"
 					requisition_paper.update_appearance()
 
 				ui.user.investigate_log("called the supply shuttle.", INVESTIGATE_CARGO)
-				say("The supply shuttle has been called and will arrive in [SSshuttle.supply.timeLeft(600)] minute\s.")
+				say(LANG("obj.8a1a83d6d1e41e94", list(SSshuttle.supply.timeLeft(600))))
 				SSshuttle.moveShuttle(cargo_shuttle, docking_home, TRUE)
 
 			. = TRUE
@@ -455,7 +456,7 @@
 				return
 			else
 				SSshuttle.shuttle_loan.loan_shuttle()
-				say("The supply shuttle has been loaned to CentCom.")
+				say(LANG("obj.a29fce78fecf59e8", null))
 				ui.user.investigate_log("accepted a shuttle loan event.", INVESTIGATE_CARGO)
 				ui.user.log_message("accepted a shuttle loan event.", LOG_GAME)
 				. = TRUE

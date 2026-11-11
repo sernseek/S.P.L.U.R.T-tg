@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Make sure that the code compiles with AI_VOX undefined
 #ifdef AI_VOX
 #define VOX_DELAY 300
@@ -12,7 +13,7 @@
 	/// Can the AI purchase the nuke as a malf
 	var/can_purchase_nuke = FALSE
 
-GAME_VERB_DESC(/mob/living/silicon/ai, announcement_help, "Announcement Help", "Display a list of vocal words to announce to the crew.", "AI Commands")
+GAME_VERB_DESC(/mob/living/silicon/ai, announcement_help, "公告帮助", "Display a list of vocal words to announce to the crew.", "AI Commands")
 	if(incapacitated)
 		return
 
@@ -64,10 +65,10 @@ GAME_VERB_DESC(/mob/living/silicon/ai, announcement_help, "Announcement Help", "
 /mob/living/silicon/ai/proc/announcement()
 	var/static/announcing_vox = 0 // Stores the time of the last announcement
 	if(announcing_vox > world.time)
-		to_chat(src, span_notice("Please wait [DisplayTimeText(announcing_vox - world.time)]."))
+		to_chat(src, span_notice(LANG("mob.fa4aec516cfc855c", list(DisplayTimeText(announcing_vox - world.time)))))
 		return
 
-	var/message = input(src, "WARNING: Misuse of this verb can result in you being job banned. More help is available in 'Announcement Help'", "Announcement", src.last_announcement) as text|null
+	var/message = input(src, LANG("mob.6ded948c828c2778", null), LANG("mob.4893e36f7545bce4", null), src.last_announcement) as text|null
 
 	if(!message || announcing_vox > world.time)
 		return
@@ -78,7 +79,7 @@ GAME_VERB_DESC(/mob/living/silicon/ai, announcement_help, "Announcement Help", "
 		return
 
 	if(control_disabled)
-		to_chat(src, span_warning("Wireless interface disabled, unable to interact with announcement PA."))
+		to_chat(src, span_warning(LANG("mob.24013b93d3625801", null)))
 		return
 
 	var/list/words = splittext(trim(message), " ")
@@ -122,7 +123,7 @@ GAME_VERB_DESC(/mob/living/silicon/ai, announcement_help, "Announcement Help", "
 					incorrect_words += word
 
 	if(incorrect_words.len)
-		to_chat(src, span_notice("These words are not available on the announcement system: [english_list(incorrect_words)]."))
+		to_chat(src, span_notice(LANG("mob.5d25ab4d5a21f99b", list(english_list(incorrect_words)))))
 		return
 
 	announcing_vox = world.time + VOX_DELAY
@@ -136,7 +137,7 @@ GAME_VERB_DESC(/mob/living/silicon/ai, announcement_help, "Announcement Help", "
 		var/turf/player_turf = get_turf(player_mob)
 		if(is_valid_z_level(ai_turf, player_turf))
 			players += player_mob
-	minor_announce(capitalize(message), "[name] announces", players = players, should_play_sound = CALLBACK(GLOBAL_PROC_REF(does_target_have_vox_off)))
+	minor_announce(capitalize(message), LANG("mob.e26edfe5c99a7125", list(name)), players = players, should_play_sound = CALLBACK(GLOBAL_PROC_REF(does_target_have_vox_off)))
 
 	for(var/word in words)
 		play_vox_word(word, ai_turf, null, vox_type)
@@ -191,24 +192,24 @@ GAME_VERB_DESC(/mob/living/silicon/ai, announcement_help, "Announcement Help", "
 /proc/does_target_have_vox_off(mob/target)
 	return !safe_read_pref(target.client, /datum/preference/numeric/volume/sound_ai_vox)
 
-GAME_VERB_DESC(/mob/living/silicon/ai, switch_vox, "Switch Vox Voice", "Switch your VOX announcement voice!", "AI Commands")
+GAME_VERB_DESC(/mob/living/silicon/ai, switch_vox, "切换沃克斯语音", "Switch your VOX announcement voice!", "AI Commands")
 	if(incapacitated)
 		return
-	var/selection = tgui_input_list(src, "Please select a new VOX voice:", "VOX VOICE", vox_voices)
+	var/selection = tgui_input_list(src, LANG("mob.9a2655f50b096f86", null), LANG("mob.e1b6c58dcb4a6bda", null), vox_voices)
 	if(selection == null)
 		return
 	vox_type = selection
 
-	to_chat(src, "Vox voice set to [vox_type]")
+	to_chat(src, LANG("mob.403e8ab99ab4a818", list(vox_type)))
 
 
-GAME_VERB_DESC(/mob/living/silicon/ai, display_word_string, "Display Word String", "Display the list of recently pressed vox lines.", "AI Commands")
+GAME_VERB_DESC(/mob/living/silicon/ai, display_word_string, "显示词串", "Display the list of recently pressed vox lines.", "AI Commands")
 	if(incapacitated)
 		return
 
 	to_chat(src, vox_word_string)
 
-GAME_VERB_DESC(/mob/living/silicon/ai, clear_word_string, "Clear Word String", "Clear recent vox words.", "AI Commands")
+GAME_VERB_DESC(/mob/living/silicon/ai, clear_word_string, "清除词串", "Clear recent vox words.", "AI Commands")
 	vox_word_string = ""
 
 #undef VOX_DELAY

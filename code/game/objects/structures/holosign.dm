@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 //holographic signs and barriers
 
@@ -135,11 +136,11 @@
 
 /obj/structure/holosign/barrier/proc/open(user)
 	if(!openable)
-		balloon_alert(user, "unable!")
+		balloon_alert(user, LANG("obj.147ad722c676de84", null))
 		return
 
 	if(!COOLDOWN_FINISHED(src, cooldown_open))
-		balloon_alert(user, "on cooldown!")
+		balloon_alert(user, LANG("obj.d4ae5d4dded19efe", null))
 		return
 
 	if(!opened)

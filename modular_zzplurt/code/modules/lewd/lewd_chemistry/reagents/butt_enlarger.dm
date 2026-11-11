@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 * BUTT ENLARGEMENT
 * Normal function increases the player's butt size
@@ -61,11 +62,11 @@
 		return
 
 	if(mob_butt.genital_size >= (butt_max_size - 2))
-		exposed_mob.visible_message(span_notice("[exposed_mob]'s [pick(words_for_bigger)] bottom [pick(public_action_text_list)]"))
-		to_chat(exposed_mob, span_purple("Your [pick(words_for_bigger)] bottom [pick(action_text_list)]size [mob_butt.genital_size]."))
+		exposed_mob.visible_message(span_notice(LANG("datum.b56c7da101d57f33", list(exposed_mob, pick(words_for_bigger), pick(public_action_text_list)))))
+		to_chat(exposed_mob, span_purple(LANG("datum.31d7e89d1d2b349a", list(pick(words_for_bigger), pick(action_text_list), mob_butt.genital_size))))
 	else
-		exposed_mob.visible_message(span_notice("[exposed_mob]'s bottom [pick(public_action_text_list)]"))
-		to_chat(exposed_mob, span_purple("Your bottom [pick(action_text_list)]size [mob_butt.genital_size]."))
+		exposed_mob.visible_message(span_notice(LANG("datum.dd957574a7427c9d", list(exposed_mob, pick(public_action_text_list)))))
+		to_chat(exposed_mob, span_purple(LANG("datum.5cabd57f31e852e7", list(pick(action_text_list), mob_butt.genital_size))))
 
 /datum/chemical_reaction/butt_enlarger
 	results = list(/datum/reagent/drug/aphrodisiac/butt_enlarger = 8)

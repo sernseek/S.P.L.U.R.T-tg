@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /turf/closed/mineral/black_mesa
 	turf_type = /turf/open/misc/ironsand/black_mesa
 	baseturfs = /turf/open/misc/ironsand/black_mesa
@@ -104,7 +105,7 @@
 		unlucky_mob.adjust_fire_loss(15)
 		var/datum/effect_system/basic/lightning_spread/lightning = new(unlucky_mob.loc, 5, TRUE)
 		lightning.start()
-		unlucky_mob.visible_message(span_danger("[unlucky_mob.name] is shocked by [src]!"), \
-		span_userdanger("You feel a powerful shock course through your body!"), \
-		span_hear("You hear a heavy electrical crack!"))
+		unlucky_mob.visible_message(span_danger(LANG("turf.7cd4e95e30404b86", list(unlucky_mob.name, src))), \
+		span_userdanger(LANG("turf.ee423401d663201e", null)), \
+		span_hear(LANG("turf.ce87fd7198aa2eae", null)))
 		playsound(unlucky_mob, SFX_SPARKS, 100, TRUE)

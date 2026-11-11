@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/holotool
 	name = "experimental holotool"
 	desc = "A highly experimental holographic tool projector. Less efficient than its physical counterparts."
@@ -49,10 +50,10 @@
 
 /obj/item/holotool/examine(mob/user)
 	. = ..()
-	. += span_notice("It is currently set to the [current_tool ? current_tool.name : "off"] mode.")
+	. += span_notice(LANG("obj.018c71d4ba63955a", list(current_tool ? current_tool.name : "off")))
 	if(tool_behaviour == TOOL_MULTITOOL)
-		. += span_notice("Its buffer [buffer?.resolve() ? "contains [buffer.resolve()]." : "is empty."]")
-	. += span_info("Attack self to select tool modes.")
+		. += span_notice(LANG("obj.d67508d88cfda863", list(buffer?.resolve() ? "contains [buffer.resolve()]." : "is empty.")))
+	. += span_info(LANG("obj.61fc0e2405dc5fe4", null))
 
 // Welding tool repair is currently hardcoded and not based on tool behavior
 /obj/item/holotool/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
@@ -71,11 +72,11 @@
 		return NONE
 
 	if (!affecting.brute_dam)
-		balloon_alert(user, "limb not damaged")
+		balloon_alert(user, LANG("obj.aca69bd8ad34eb10", null))
 		return ITEM_INTERACT_BLOCKING
 
-	user.visible_message(span_notice("[user] starts to fix some of the dents on [attacked_humanoid == user ? user.p_their() : "[attacked_humanoid]'s"] [affecting.name]."),
-		span_notice("You start fixing some of the dents on [attacked_humanoid == user ? "your" : "[attacked_humanoid]'s"] [affecting.name]."))
+	user.visible_message(span_notice(LANG("obj.102599de4328c6cc", list(user, attacked_humanoid == user ? user.p_their() : "[attacked_humanoid]'s", affecting.name))),
+		span_notice(LANG("obj.d9ca7e1b8b4542ea", list(attacked_humanoid == user ? "your" : "[attacked_humanoid]'s", affecting.name))))
 	var/use_delay = 1 SECONDS
 	if(user == attacked_humanoid)
 		use_delay = 5 SECONDS
@@ -101,7 +102,7 @@
 	if(istype(action, /datum/action/item_action/change_tool))
 		return ..()
 	else if(istype(action, /datum/action/item_action/change_ht_color))
-		var/chosen_color = tgui_color_picker(user, "Select Color", "[src]", "#48D1CC")
+		var/chosen_color = tgui_color_picker(user, LANG("obj.42c123ce667bc93c", null), "[src]", "#48D1CC")
 		if(!chosen_color || QDELETED(src) || user.incapacitated || !user.is_holding(src))
 			return
 		current_light_color = chosen_color
@@ -166,7 +167,7 @@
 /obj/item/holotool/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)
 		return FALSE
-	to_chat(user, span_danger("ZZT- ILLEGAL BLUEPRINT UNLOCKED- CONTACT !#$@^%$# NANOTRASEN SUPPORT-@*%$^%!"))
+	to_chat(user, span_danger(LANG("obj.5be9bf97cc7527a4", null)))
 	do_sparks(5, FALSE, src)
 	obj_flags |= EMAGGED
 	return TRUE

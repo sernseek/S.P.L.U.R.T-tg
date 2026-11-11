@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The component given to carrier inhabitants
 /datum/component/carrier_user
 	/// What is the name of our mob?
@@ -99,7 +100,7 @@
 		return FALSE
 
 	if(!can_communicate())
-		to_chat(parent, span_warning("You are unable to speak!"))
+		to_chat(parent, span_warning(LANG("datum.be0faa66616d01a0", null)))
 		return FALSE
 
 	if(!message_to_say)
@@ -120,7 +121,7 @@
 		return FALSE
 
 	if(!can_communicate(TRUE))
-		to_chat(parent, span_warning("You are unable to speak!"))
+		to_chat(parent, span_warning(LANG("datum.be0faa66616d01a0", null)))
 		return FALSE
 
 	if(!message_to_say)

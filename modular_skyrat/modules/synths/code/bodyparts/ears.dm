@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/ears/synth
 	name = "auditory sensors"
 	icon = 'modular_skyrat/master_files/icons/obj/surgery.dmi'
@@ -26,11 +27,11 @@
 		switch(severity)
 			if(EMP_HEAVY)
 				owner.sound_damage(SYNTH_ORGAN_HEAVY_EMP_DAMAGE, SYNTH_DEAF_STACKS * 2)
-				to_chat(owner, span_warning("Alert: Null feedback from auditory sensors detected, seek maintenance immediately. Error Code: AS-105"))
+				to_chat(owner, span_warning(LANG("obj.5d616e3705f5552b", null)))
 
 			if(EMP_LIGHT)
 				owner.sound_damage(SYNTH_ORGAN_LIGHT_EMP_DAMAGE, SYNTH_DEAF_STACKS * 2)
-				to_chat(owner, span_warning("Alert: Anomalous feedback from auditory sensors detected. Error Code: AS-50"))
+				to_chat(owner, span_warning(LANG("obj.2849d4531b7fdc28", null)))
 
 /datum/design/synth_ears
 	name = "Auditory Sensors"

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Station home gateway
 GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 /// List of possible gateway destinations.
@@ -102,18 +103,18 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	else
 		for(var/mob/living/L in AM.contents)
 			if(check_exile_implant(L))
-				target_gateway.say("Rejecting [AM]: Exile implant detected in contained lifeform.")
+				target_gateway.say(LANG("datum.6467585da9002fbb", list(AM)))
 				return FALSE
 	if(AM.has_buckled_mobs())
 		for(var/mob/living/L in AM.buckled_mobs)
 			if(check_exile_implant(L))
-				target_gateway.say("Rejecting [AM]: Exile implant detected in close proximity lifeform.")
+				target_gateway.say(LANG("datum.dd2abe3940a108d5", list(AM)))
 				return FALSE
 	return TRUE
 
 /datum/gateway_destination/gateway/home/proc/check_exile_implant(mob/living/L)
 	for(var/obj/item/implant/exile/E in L.implants)//Checking that there is an exile implant
-		to_chat(L, span_userdanger("The station gate has detected your exile implant and is blocking your entry."))
+		to_chat(L, span_userdanger(LANG("datum.4d74dcaec249862b", null)))
 		return TRUE
 	return FALSE
 
@@ -183,7 +184,7 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 /obj/machinery/gateway/attacked_by(obj/item/I, mob/living/user)
 	. = ..()
 	if(istype(I, /obj/item/key/gateway) && requires_key)
-		to_chat(user, "<span class='notice'>You insert [src] into the keyway, unlocking the gateway!</span>")
+		to_chat(user, LANG("obj.0aafdd3296c875e2", list(src)))
 		key_used = TRUE
 		qdel(I)
 		return
@@ -297,10 +298,10 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 		return
 	var/turf/tar_turf = target?.get_target_turf()
 	if(isnull(tar_turf))
-		to_chat(user, span_warning("There's no active destination for the gateway... or it's broken. Maybe try again later?"))
+		to_chat(user, span_warning(LANG("obj.5f65f3c499e970ed", null)))
 		return
 	if(is_secret_level(tar_turf.z) && !user.client?.holder)
-		to_chat(user, span_warning("The gateway destination is secret."))
+		to_chat(user, span_warning(LANG("obj.a65fabe9a327cec7", null)))
 		return
 	Transfer(user)
 
@@ -321,10 +322,10 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 
 /obj/machinery/gateway/multitool_act(mob/living/user, obj/item/I)
 	if(calibrated)
-		to_chat(user, span_alert("The gate is already calibrated, there is no work for you to do here."))
+		to_chat(user, span_alert(LANG("obj.0607a77118a4e0e0", null)))
 	else
 		playsound(src, 'sound/machines/gateway/gateway_calibrated.ogg', 80, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-		to_chat(user, "[span_boldnotice("Recalibration successful!")]: \black This gate's systems have been fine tuned. Travel to this gate will now be on target.")
+		to_chat(user, LANG("obj.4ea6dba2f2925742", list(span_boldnotice("Recalibration successful!"))))
 		calibrated = TRUE
 	return TRUE
 
@@ -337,7 +338,7 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	. = ..()
 	if(!target)
 		if(!GLOB.the_gateway)
-			to_chat(user,span_warning("Home gateway is not responding!"))
+			to_chat(user,span_warning(LANG("obj.2bf035d6fdc0dce1", null)))
 		if(GLOB.the_gateway.target)
 			GLOB.the_gateway.deactivate() //this will turn the home gateway off so that it's free for us to connect to
 		activate(GLOB.the_gateway.destination)
@@ -390,7 +391,7 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 			if(ishuman(usr))
 				var/mob/living/carbon/human/interacting_human = usr
 				if(!allowed(interacting_human))
-					to_chat(interacting_human, "<span class='notice'>Error, you do not have the required access to link up the gateway.</span>")
+					to_chat(interacting_human, LANG("obj.c6b68ee9ea3e76a7", null))
 					return FALSE
 			//SKYRAT EDIT END
 			var/datum/gateway_destination/D = locate(params["destination"]) in GLOB.gateway_destinations

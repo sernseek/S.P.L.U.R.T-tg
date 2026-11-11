@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/chemical_reaction/quaalude
 	results = list(/datum/reagent/drug/quaalude = 4)
 	required_reagents = list(/datum/reagent/consumable/lemonjuice = 2, /datum/reagent/hydrogen = 1, /datum/reagent/chlorine = 1)
@@ -35,7 +36,7 @@
 		affected_carbon.emote(pick("laugh", "drool"))
 
 	if(SPT_PROB(1, seconds_per_tick) && !HAS_TRAIT(affected_carbon, TRAIT_FLOORED))
-		affected_carbon.visible_message(span_danger("[affected_carbon]'s legs become too weak to carry their own weight!"))
+		affected_carbon.visible_message(span_danger(LANG("datum.924afe53d2d69fd0", list(affected_carbon))))
 		affected_carbon.Knockdown(90, TRUE)
 		affected_carbon.drop_all_held_items()
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/ash_ritual/summon_staff
 	name = "Summon Ash Staff"
 	desc = "Summon a staff that is imbued with the power of the tendril. Requires permission from the mother tendril."
@@ -124,7 +125,7 @@
 		if(select_mob.z != success_rune.z)
 			continue
 
-		to_chat(select_mob, span_userdanger("The planet stirs... another monster has arrived!"))
+		to_chat(select_mob, span_userdanger(LANG("datum.3f14073a30004066", null)))
 		playsound(get_turf(select_mob), 'sound/effects/magic/demon_attack1.ogg', 50, TRUE)
 		flash_color(select_mob, flash_color = "#FF0000", flash_time = 3 SECONDS)
 
@@ -317,7 +318,7 @@
 	var/list/yes_voters = SSpolling.poll_candidates("Do you wish to banish [find_banished.name]?", poll_time = 10 SECONDS, group = asked_voters)
 
 	if(length(yes_voters) < length(asked_voters))
-		find_banished.balloon_alert_to_viewers("banishment failed!")
+		find_banished.balloon_alert_to_viewers(LANG("datum.5681f8eef35d566f", null))
 		return
 
 	var/turf/teleport_turf = locate(rand(1,255), rand(1,255), success_rune.z)

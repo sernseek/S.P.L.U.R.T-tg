@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/accessory/pro_skub_pin
 	name = "\improper Pro-Skub Pin"
 	desc = "A pin to show off your pro-skub stance!"
@@ -12,7 +13,7 @@
 		return
 	if(locate(/obj/item/clothing/accessory/anti_skub_pin) in attach_to.attached_accessories || locate(/obj/item/clothing/accessory/clown_enjoyer_pin) in attach_to.attached_accessories || locate(/obj/item/clothing/accessory/mime_fan_pin) in attach_to.attached_accessories)
 		if(user)
-			attach_to.balloon_alert(user, "can't pick both sides!")
+			attach_to.balloon_alert(user, LANG("obj.5cd15459b011c1a0", null))
 		return FALSE
 	return TRUE
 
@@ -43,7 +44,7 @@
 		return
 	if(locate(/obj/item/clothing/accessory/pro_skub_pin) in attach_to.attached_accessories || locate(/obj/item/clothing/accessory/clown_enjoyer_pin) in attach_to.attached_accessories || locate(/obj/item/clothing/accessory/mime_fan_pin) in attach_to.attached_accessories)
 		if(user)
-			attach_to.balloon_alert(user, "can't pick both sides!")
+			attach_to.balloon_alert(user, LANG("obj.5cd15459b011c1a0", null))
 		return FALSE
 	return TRUE
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // .35 Sol mini revolver
 
 /obj/item/gun/ballistic/revolver/sol
@@ -20,18 +21,12 @@
 
 /obj/item/gun/ballistic/revolver/sol/examine(mob/user)
 	. = ..()
-	. += span_notice("You can <b>examine closer</b> to learn a little more about this weapon.")
+	. += span_notice(LANG("obj.b663717df67087e6", null))
 
 /obj/item/gun/ballistic/revolver/sol/examine_more(mob/user)
 	. = ..()
 
-	. += "The Eland is one of the few Trappiste weapons not made for military contract. \
-		Instead, the Eland started life as a police weapon, offered as a gun to finally \
-		outmatch all others in the cheap police weapons market. Unfortunately, this \
-		coincided with nearly every TerraGov police force realising they are actually \
-		comically overfunded. With military weapons bought for police forces taking \
-		over the market, the Eland instead found home in the civilian personal defense \
-		market. That is likely the reason you are looking at this one now."
+	. += LANG("obj.cc1184d3a1bd8343", null)
 
 	return .
 
@@ -66,20 +61,12 @@
 
 /obj/item/gun/ballistic/revolver/takbok/examine(mob/user)
 	. = ..()
-	. += span_notice("You can <b>examine closer</b> to learn a little more about this weapon.")
+	. += span_notice(LANG("obj.b663717df67087e6", null))
 
 /obj/item/gun/ballistic/revolver/takbok/examine_more(mob/user)
 	. = ..()
 
-	. += "The Takbok is a unique design for Trappiste for the sole reason that it \
-		was made at first to be a one-off. Founder of partner company Carwo Defense, \
-		Darmaan Khaali Carwo herself, requested a sporting revolver from Trappiste. \
-		What was delivered wasn't a target revolver, it was a target crusher. The \
-		weapon became popular as Carwo crushed many shooting competitions using \
-		the Takbok, with the design going on several production runs up until \
-		2523 when the popularity of the gun fell off. Due to the number of revolvers \
-		made, they are still easy enough to find if you look despite production \
-		having already ceased many years ago."
+	. += LANG("obj.fc5e4f170e2ae285", null)
 
 	return .
 

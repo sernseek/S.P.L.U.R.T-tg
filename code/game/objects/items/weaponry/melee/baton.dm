@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/melee/baton
 	name = "police baton"
 	desc = "A wooden truncheon for beating criminal scum."
@@ -85,19 +86,19 @@
 	var/list/readout = list()
 
 	if(affect_cyborg)
-		readout += "It can stun cyborgs for [round((stun_time_cyborg/10), 1)] seconds."
+		readout += LANG("obj.d47818f9bb6f8e37", list(round((stun_time_cyborg/10), 1)))
 
-	readout += "\n[active ? "It is currently [span_warning("[activated_word]")], and capable of stunning." : "It is [span_warning("not [activated_word]")], and not capable of stunning."]"
+	readout += LANG("obj.65aac1b5abce675a", list(active ? "It is currently [span_warning("[activated_word]")], and capable of stunning." : "It is [span_warning("not [activated_word]")], and not capable of stunning."))
 
 	if(stamina_damage <= 0) // The advanced baton actually does have 0 stamina damage so...yeah.
-		readout += "Either it is [span_warning("completely unable to perform a stunning strike")], or it [span_warning("attacks via some unusual method")]."
+		readout += LANG("obj.dec156bb817a1c7b", list(span_warning("completely unable to perform a stunning strike"), span_warning("attacks via some unusual method")))
 		return readout.Join("\n")
 
-	readout += "It takes [span_warning("[HITS_TO_CRIT(stamina_damage)] strike\s")] to stun an enemy."
+	readout += LANG("obj.2ec1c2d95a4b171c", list(span_warning("[HITS_TO_CRIT(stamina_damage)] strike\s")))
 
-	readout += "\nThe effects of each strike can be mitigated by utilizing [span_warning("[armour_type_against_stun]")] armor."
+	readout += LANG("obj.c99df77a0c4cdc98", list(span_warning("[armour_type_against_stun]")))
 
-	readout += "\nIt has a stun armor-piercing capability of [span_warning("[stun_armour_penetration]%")]."
+	readout += LANG("obj.9cfaa5784b958015", list(span_warning("[stun_armour_penetration]%")))
 	return readout.Join("\n")
 
 /obj/item/melee/baton/proc/add_deep_lore()
@@ -125,7 +126,7 @@
 		var/mob/living/carbon/human/human_user = user
 		if(human_user.check_chunky_fingers() && user.is_holding(src) && !HAS_MIND_TRAIT(user, TRAIT_CHUNKYFINGERS_IGNORE_BATON))
 			if(!harmbatonning)
-				balloon_alert(human_user, "fingers are too big!")
+				balloon_alert(human_user, LANG("obj.97cabc49707aa840", null))
 			return FALSE
 	if(!COOLDOWN_FINISHED(src, cooldown_check))
 		if(wait_desc && !harmbatonning)
@@ -133,7 +134,7 @@
 		return FALSE
 	if(HAS_TRAIT_FROM(target, TRAIT_IWASBATONED, REF(user)) ) //no doublebaton abuse anon!
 		if(!harmbatonning)
-			target.balloon_alert(user, "can't stun yet!")
+			target.balloon_alert(user, LANG("obj.18f749eba0da9afd", null))
 		return FALSE
 	return TRUE
 
@@ -164,8 +165,8 @@
 	// clumsy people redirect this attack - yes, this bypasses IWASBATONED and such
 	if(HAS_TRAIT(user, TRAIT_CLUMSY) && prob(50))
 		user.visible_message(
-			span_danger("[user] accidentally hits [user.p_them()]self over the head with [src]! What a doofus!"),
-			span_userdanger("You accidentally hit yourself over the head with [src]!"),
+			span_danger(LANG("obj.58f9879ba05e9822", list(user, user.p_them(), src))),
+			span_userdanger(LANG("obj.498c711fdc5259fa", list(src))),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
 
@@ -367,7 +368,7 @@
 	var/mob/living/carbon/human/human_user = user
 	var/obj/item/organ/brain/our_brain = human_user.get_organ_by_type(/obj/item/organ/brain)
 
-	user.visible_message(span_suicide("[user] stuffs [src] up [user.p_their()] nose and presses the 'extend' button! It looks like [user.p_theyre()] trying to clear [user.p_their()] mind."))
+	user.visible_message(span_suicide(LANG("obj.f08950f5dff1019e", list(user, src, user.p_their(), user.p_theyre(), user.p_their()))))
 	if(active)
 		playsound(src, on_sound, 50, TRUE)
 		add_fingerprint(user)
@@ -527,11 +528,11 @@
 
 /obj/item/melee/baton/security/suicide_act(mob/living/user)
 	if(cell?.charge && active)
-		user.visible_message(span_suicide("[user] is putting the live [name] in [user.p_their()] mouth! It looks like [user.p_theyre()] trying to commit suicide!"))
+		user.visible_message(span_suicide(LANG("obj.5c6a58e9d0a76904", list(user, name, user.p_their(), user.p_theyre()))))
 		finalize_baton_attack(user, user)
 		return FIRELOSS
 	else
-		user.visible_message(span_suicide("[user] is shoving \the [src] down their throat! It looks like [user.p_theyre()] trying to commit suicide!"))
+		user.visible_message(span_suicide(LANG("obj.0473819eb5524a61", list(user, src, user.p_theyre()))))
 		return OXYLOSS
 
 /obj/item/melee/baton/security/Destroy()
@@ -587,9 +588,9 @@
 /obj/item/melee/baton/security/examine(mob/user)
 	. = ..()
 	if(cell)
-		. += span_notice("\The [src] is [round(cell.percent())]% charged.")
+		. += span_notice(LANG("obj.f103c61308828e8d", list(src, round(cell.percent()))))
 	else
-		. += span_warning("\The [src] does not have a power source installed.")
+		. += span_warning(LANG("obj.a88e2f3257272994", list(src)))
 
 /obj/item/melee/baton/security/screwdriver_act(mob/living/user, obj/item/tool)
 	if(tryremovecell(user))
@@ -600,40 +601,40 @@
 	if(!istype(tool, /obj/item/stock_parts/power_store/cell))
 		return NONE
 	if(cell)
-		to_chat(user, span_warning("[src] already has a cell!"))
+		to_chat(user, span_warning(LANG("obj.6ce8d1004a112c57", list(src))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(astype(tool, /obj/item/stock_parts/power_store/cell).maxcharge < cell_hit_cost)
-		to_chat(user, span_notice("[src] requires a higher capacity cell."))
+		to_chat(user, span_notice(LANG("obj.82ea442cce47f39a", list(src))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!user.transferItemToLoc(tool, src))
 		return ITEM_INTERACT_BLOCKING
 
 	cell = tool
-	to_chat(user, span_notice("You install a cell in [src]."))
+	to_chat(user, span_notice(LANG("obj.9bc9caa999424042", list(src))))
 	update_appearance()
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/melee/baton/security/proc/tryremovecell(mob/user)
 	if(cell && can_remove_cell)
 		cell.forceMove(drop_location())
-		to_chat(user, span_notice("You remove the cell from [src]."))
+		to_chat(user, span_notice(LANG("obj.5fdb5c9e5937160a", list(src))))
 		return TRUE
 	return FALSE
 
 /obj/item/melee/baton/security/attack_self(mob/user)
 	if(cell?.charge >= cell_hit_cost && !active)
 		turn_on(user)
-		balloon_alert(user, "turned on")
+		balloon_alert(user, LANG("obj.9fae209bc47e34ea", null))
 	else
 		turn_off()
 		if(!cell)
-			balloon_alert(user, "no power source!")
+			balloon_alert(user, LANG("obj.64853493b9d0bea5", null))
 		else if(cell?.charge < cell_hit_cost)
-			balloon_alert(user, "out of charge!")
+			balloon_alert(user, LANG("obj.6428cbcddb15f126", null))
 		else
-			balloon_alert(user, "turned off")
+			balloon_alert(user, LANG("obj.49613fe46788cb6a", null))
 	add_fingerprint(user)
 
 /// Toggles the stun baton's light
@@ -670,8 +671,8 @@
 /obj/item/melee/baton/security/try_stun(mob/living/target, mob/living/user, harmbatonning)
 	if(!active && !harmbatonning && !user.combat_mode)
 		target.visible_message(
-			span_warning("[user] prods [target] with [src]. Luckily it was off."),
-			span_warning("[user] prods you with [src]. Luckily it was off."),
+			span_warning(LANG("obj.070608dbd4efcff4", list(user, target, src))),
+			span_warning(LANG("obj.ce3947690ea9cf21", list(user, src))),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
 		return FALSE
@@ -704,7 +705,7 @@
 /obj/item/melee/baton/security/proc/apply_stun_effect_end(mob/living/target)
 	var/trait_check = HAS_TRAIT(target, TRAIT_BATON_RESISTANCE) //var since we check it in out to_chat as well as determine stun duration
 	if(!target.IsKnockdown())
-		to_chat(target, span_warning("Your muscles seize, making you collapse[trait_check ? ", but your body quickly recovers..." : "!"]"))
+		to_chat(target, span_warning(LANG("obj.050b411ac2596e89", list(trait_check ? ", but your body quickly recovers..." : "!"))))
 
 	if(!trait_check)
 		target.Knockdown(knockdown_time)
@@ -844,11 +845,11 @@
 		return ..()
 
 	if(!can_upgrade)
-		user.visible_message(span_warning("This prod is already improved!"))
+		user.visible_message(span_warning(LANG("obj.83ea669370a84898", null)))
 		return ITEM_INTERACT_BLOCKING
 
 	if(cell)
-		user.visible_message(span_warning("You can't put the crystal onto the stunprod while it has a power cell installed!"))
+		user.visible_message(span_warning(LANG("obj.d4fc929f09f5557d", null)))
 		return ITEM_INTERACT_BLOCKING
 
 	var/our_prod
@@ -862,10 +863,10 @@
 		our_crystal.use(1)
 		our_prod = /obj/item/melee/baton/security/cattleprod/telecrystalprod
 	else
-		to_chat(user, span_notice("You don't think \the [tool] will do anything to improve \the [src]."))
+		to_chat(user, span_notice(LANG("obj.fb64298cad18fe1f", list(tool, src))))
 		return ITEM_INTERACT_BLOCKING
 
-	to_chat(user, span_notice("You place \the [tool] firmly into \the [sparkler]."))
+	to_chat(user, span_notice(LANG("obj.389c65b97b8888cf", list(tool, sparkler))))
 	remove_item_from_storage(user)
 	qdel(src)
 	var/obj/item/melee/baton/security/cattleprod/brand_new_prod = new our_prod(user.loc)
@@ -946,10 +947,10 @@
 	if(!user || !stuff_in_hand || !target.temporarilyRemoveItemFromInventory(stuff_in_hand))
 		return
 	if(user.put_in_inactive_hand(stuff_in_hand))
-		stuff_in_hand.loc.visible_message(span_warning("[stuff_in_hand] suddenly appears in [user]'s hand!"))
+		stuff_in_hand.loc.visible_message(span_warning(LANG("obj.ff6f288a839fc2b4", list(stuff_in_hand, user))))
 	else
 		stuff_in_hand.forceMove(user.drop_location())
-		stuff_in_hand.loc.visible_message(span_warning("[stuff_in_hand] suddenly appears!"))
+		stuff_in_hand.loc.visible_message(span_warning(LANG("obj.4e88a79e68e40f6e", list(stuff_in_hand))))
 
 	if(clumsy && user.dropItemToGround(src, force = TRUE, silent = TRUE))
 		do_teleport(src, get_turf(user), 50, channel = TELEPORT_CHANNEL_BLUESPACE) //Wait, where did it go?

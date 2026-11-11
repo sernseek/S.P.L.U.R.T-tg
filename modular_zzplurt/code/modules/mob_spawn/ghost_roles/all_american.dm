@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define ROLE_ALLAMERICAN "All-American Diner Staff"
 
 /datum/job/allamerican // Job Define
@@ -167,12 +168,12 @@
 
 /obj/machinery/computer/order_console/cook/allamerican/purchase_items(obj/item/card/id/card, express = FALSE)
 	if(!synced_bank_account)
-		say("Error, no department account found. Please report to your Regional Manager.")
+		say(LANG("obj.ae8baadc5474e07d", null))
 		return FALSE
 	var/final_cost = round(get_total_cost() * (express ? express_cost_multiplier : cargo_cost_multiplier))
 	if(synced_bank_account.adjust_money(-final_cost, "[name]: Purchase"))
 		return TRUE
-	say("Sorry, but you do not have enough [credit_type].")
+	say(LANG("obj.eac2f740e586a659", list(credit_type)))
 	return FALSE
 
 /obj/item/paper/fluff/ruins/allamericandiner/better

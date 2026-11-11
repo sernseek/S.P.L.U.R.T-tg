@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BP_MAX_ROOM_SIZE 300
 #define EXTRA_ROOM_CHECK_SKIP 1
 #define EXTRA_ROOM_CHECK_FAIL 2
@@ -142,20 +143,20 @@
 		if(!isnull(place.apc))
 			apc_map[place.name] = place.apc
 		if(length(apc_map) > 1) // When merging 2 or more areas make sure we arent merging their apc into 1 area
-			to_chat(creator, span_warning("Multiple APC's detected in the vicinity. only 1 is allowed."))
+			to_chat(creator, span_warning(LANG("_root.e61812f3570f2251", null)))
 			return
 		areas[place.name] = place
 
-	var/area_choice = tgui_input_list(creator, "Choose an area to expand or make a new area", "Area Expansion", areas)
+	var/area_choice = tgui_input_list(creator, LANG("_root.c96bf839f36b2df6", null), LANG("_root.2970f2dca68a8b5a", null), areas)
 	if(isnull(area_choice))
-		to_chat(creator, span_warning("No choice selected. The area remains undefined."))
+		to_chat(creator, span_warning(LANG("_root.32935ad09bca6395", null)))
 		return
 	area_choice = areas[area_choice]
 
 	var/area/newA
 	var/area/oldA = get_area(get_turf(creator))
 	if(!isarea(area_choice))
-		var/str = tgui_input_text(creator, "New area name", "Blueprint Editing", max_length = MAX_NAME_LEN)
+		var/str = tgui_input_text(creator, LANG("_root.e83e886ece865fad", null), LANG("_root.293628f4b70f3e59", null), max_length = MAX_NAME_LEN)
 		if(!str)
 			return
 		newA = new area_choice
@@ -169,7 +170,7 @@
 
 	//we haven't done anything. let's get outta here
 	if(newA == oldA)
-		to_chat(creator, span_warning("Selected choice is same as the area your standing in. No area changes were requested."))
+		to_chat(creator, span_warning(LANG("_root.19b61e02302dfec0", null)))
 		return
 
 	/**
@@ -189,7 +190,7 @@
 	for(var/area_name in affected_areas)
 		area_list += affected_areas[area_name]
 	SEND_GLOBAL_SIGNAL(COMSIG_AREA_CREATED, newA, area_list, creator)
-	to_chat(creator, span_notice("You have created a new area, named [newA.name]. It is now weather proof, and constructing an APC will allow it to be powered."))
+	to_chat(creator, span_notice(LANG("_root.9bf1ab0469875053", list(newA.name))))
 	creator.log_message("created a new area: [AREACOORD(creator)] (previously \"[oldA.name]\")", LOG_GAME)
 
 	//purge old areas that had all their turfs merged into the new one i.e. old empty areas. also recompute fire doors
@@ -210,6 +211,7 @@
 
 /proc/require_area_resort()
 	GLOB.sortedAreas = null
+	lang_area_name_index_invalidate() // ZH EDIT ADDITION - I18N - 区域增删/改名后，按区域名前缀拆合成名的索引随之失效
 
 /// Returns a sorted version of GLOB.areas, by name
 /proc/get_sorted_areas()

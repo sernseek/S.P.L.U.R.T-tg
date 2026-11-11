@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define ATMOS_PIPEDISPENSER 0
 #define DISPOSAL_PIPEDISPENSER 1
 #define TRANSIT_PIPEDISPENSER 2
@@ -50,7 +51,7 @@
 		var/list/r = list()
 		for(var/i in 1 to cat.len)
 			var/datum/pipe_info/info = cat[i]
-			r += list(list("pipe_name" = info.name, "pipe_index" = i, "all_layers" = info.all_layers, "dir" = NORTH))
+			r += list(list("pipe_name" = lang_localize_display_name(info.name), "pipe_index" = i, "all_layers" = info.all_layers, "dir" = NORTH)) // ZH EDIT - I18N: 管件名纯显示（act 走 pipe_index）。ORIGINAL: "pipe_name" = info.name
 			// if this is bendable, add the bent version of the pipe (disposals)
 			if (info.dirtype == PIPE_BENDABLE)
 				r += list(list("pipe_name" = "Bent " + info.name, "pipe_index" = i, "all_layers" = info.all_layers, "dir" = NORTHEAST))
@@ -107,7 +108,7 @@
 
 						var/obj/structure/disposalconstruct/disposal_out = new (loc, p_type)
 						if(!disposal_out.can_place())
-							to_chat(usr, span_warning("There's not enough room to build that here!"))
+							to_chat(usr, span_warning(LANG("obj.661530b523c9f61e", null)))
 							qdel(disposal_out)
 							return
 
@@ -138,7 +139,7 @@
 			if (ISNOTSTUB(target_dir))
 				p_init_dir = target_dir
 			else
-				to_chat(usr, span_warning("\The [src]'s screen flashes a warning: Can't configure a pipe to only connect in one direction."))
+				to_chat(usr, span_warning(LANG("obj.0c06b2dcf1e127b4", list(src))))
 
 		if("init_reset")
 			p_init_dir = ALL_CARDINALS
@@ -155,7 +156,7 @@
 	add_fingerprint(user)
 	if (!istype(tool, /obj/item/pipe) && !istype(tool, /obj/item/pipe_meter))
 		return NONE
-	to_chat(usr, span_notice("You put [tool] back into [src]."))
+	to_chat(usr, span_notice(LANG("obj.99c70bb46d9fa6a6", list(tool, src))))
 	qdel(tool)
 	return ITEM_INTERACT_SUCCESS
 

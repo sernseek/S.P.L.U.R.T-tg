@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /obj/item/rbmk_upgrade
 	name = "\improper RB-MK2 software upgrade disk"
@@ -18,9 +19,9 @@
 		var/obj/item/rbmk_upgrade/upgrade_disk = tool
 		if(upgrade_disk.can_upgrade(src))
 			upgrade_disk.apply_upgrade(src)
-			balloon_alert(user, "upgraded!")
+			balloon_alert(user, LANG("obj.997705060243b668", null))
 		else
-			balloon_alert(user, "can't upgrade!")
+			balloon_alert(user, LANG("obj.fbb3dc980f15d368", null))
 		return TRUE
 
 

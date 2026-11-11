@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define COOLDOWN_STUN (120 SECONDS)
 #define COOLDOWN_DAMAGE (60 SECONDS)
 #define COOLDOWN_MEME (30 SECONDS)
@@ -46,7 +47,7 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	for(var/mob/living/candidate in candidates)
 		if(candidate.stat != DEAD && !HAS_TRAIT(candidate, TRAIT_DEAF))
 			if(candidate.can_block_magic(MAGIC_RESISTANCE_HOLY|MAGIC_RESISTANCE_MIND, charge_cost = 0))
-				to_chat(user, span_userdanger("Something's wrong! [candidate] seems to be resisting your commands."))
+				to_chat(user, span_userdanger(LANG("_root.abace43f3d0fcd0f", list(candidate))))
 				continue
 
 			listeners += candidate
@@ -86,7 +87,7 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 		power_multiplier *= (1 + (1/specific_listeners.len)) //2x on a single guy, 1.5x on two and so on
 
 	for(var/datum/voice_of_god_command/command as anything in GLOB.voice_of_god_commands)
-		if(findtext(message, command.trigger))
+		if(findtext(message, command.get_active_trigger())) // ZH EDIT CHANGE - i18n: 走本地化触发式。ORIGINAL: if(findtext(message, command.trigger))
 			. = command.execute(listeners, user, power_multiplier, message) || command.cooldown
 			break
 
@@ -103,10 +104,28 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	var/is_regex = TRUE
 	/// cooldown variable which is normally returned to [proc/voice_of_god] and used as its return value.
 	var/cooldown = COOLDOWN_MEME
+	/// 惰性构建的「英文 + 本地化别名」触发正则，见 get_active_trigger()。 // ZH EDIT ADDITION - i18n
+	var/regex/localized_trigger // ZH EDIT ADDITION - i18n
 
 /datum/voice_of_god_command/New()
 	if(is_regex)
 		trigger = regex(trigger)
+
+// ZH EDIT ADDITION START - i18n
+/// 取实际用于匹配的触发式。中文服里玩家自然会用中文下命令（法术的输入框标题/提示都是中文），
+/// 而 trigger 全是英文正则 → 一条也匹配不上 = 整个法术失效。这里按
+/// strings/i18n/voice_of_god.json 给正则追加本地化别名（表里保留英文分支，双语都能触发）。
+///
+/// **惰性**构建而不是在 New() 里改 trigger：New() 跑在 GLOB 初始化期（见 code/game/world.dm
+/// 顶部的启动顺序注释，"GLOB =>" 早于 "world.New() => config.Load()"），那时 config 还没设
+/// i18n_server_locale，构建只会把英文正则钉死。首次施法时才构建，那已远在 config 之后。
+/datum/voice_of_god_command/proc/get_active_trigger()
+	if(!is_regex)
+		return trigger
+	if(isnull(localized_trigger))
+		localized_trigger = regex(lang_vog_trigger(initial(trigger)))
+	return localized_trigger
+// ZH EDIT ADDITION END
 
 /*
  * What happens when the command is triggered.

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/carp_migration
 	name = "Carp Migration"
 	typepath = /datum/round_event/carp_migration
@@ -37,7 +38,7 @@
 	start_when = rand(40, 60)
 
 /datum/round_event/carp_migration/announce(fake)
-	priority_announce("[fluff_signal] have been detected near [station_name()], please stand-by.", "Lifesign Alert")
+	priority_announce(LANG("datum.0d4f8b0909bcd519", list(fluff_signal, station_name())), "Lifesign Alert")
 
 /datum/round_event/carp_migration/start()
 	// Stores the most recent fish we spawn
@@ -84,10 +85,10 @@
 
 /datum/event_admin_setup/carp_migration/prompt_admins()
 	targets_per_z = list()
-	if (tgui_alert(usr, "Direct carp to your current location? Only applies to your current Z level.", "Carp Direction", list("Yes", "No")) != "Yes")
+	if (tgui_alert(usr, LANG("datum.6ba9669282540e98", null), LANG("datum.d89938fd3fc8e427", null), list("Yes", "No")) != "Yes")
 		return
 	record_admin_location()
-	while (tgui_alert(usr, "Add additional locations? Only applies to your current Z level.", "More Carp Direction", list("Yes", "No")) == "Yes")
+	while (tgui_alert(usr, LANG("datum.76506ecb86385419", null), LANG("datum.05d4670fb5ba75d3", null), list("Yes", "No")) == "Yes")
 		record_admin_location()
 
 /// Stores the admin's current location corresponding to the z level of that location

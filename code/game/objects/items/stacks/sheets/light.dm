@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/stack/light_w
 	name = "wired glass tile"
 	singular_name = "wired glass floor tile"
@@ -19,18 +20,18 @@
 
 /obj/item/stack/light_w/examine(mob/user)
 	. = ..()
-	. += span_warning("\The [src] looks unfinished, add <b>iron</b> to complete it.")
+	. += span_warning(LANG("obj.6b366c3f53481183", list(src)))
 
 /obj/item/stack/light_w/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(!istype(tool, /obj/item/stack/sheet/iron))
 		return ..()
 	var/obj/item/stack/sheet/iron/steel = tool
 	if(!steel.use(1))
-		to_chat(user, span_warning("You need one iron sheet to finish the light tile!"))
+		to_chat(user, span_warning(LANG("obj.f75625c3a550e094", null)))
 		return ITEM_INTERACT_BLOCKING
 
 	var/obj/item/stack/tile/light/finished_tiles = new(user.drop_location())
-	to_chat(user, span_notice("You make a light tile."))
+	to_chat(user, span_notice(LANG("obj.d856f14878a65f56", null)))
 	if(!QDELETED(finished_tiles))
 		finished_tiles.add_fingerprint(user)
 	use(1)

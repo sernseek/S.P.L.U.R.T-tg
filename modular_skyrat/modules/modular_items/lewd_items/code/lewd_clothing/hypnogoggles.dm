@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/glasses/hypno
 	name = "hypnotic goggles"
 	desc = "Woaa-a-ah... This is lewd."
@@ -51,7 +52,7 @@
 
 /obj/item/clothing/glasses/hypno/attack_self(mob/user)//Setting up hypnotising phrase
 	. = ..()
-	codephrase = tgui_input_text(user, "Change the hypnotic phrase", max_length = MAX_MESSAGE_LEN)
+	codephrase = tgui_input_text(user, LANG("obj.271254b9bc81a974", null), max_length = MAX_MESSAGE_LEN)
 
 /// Populates the list of hypnogoggle designs to pick from, called on init
 /obj/item/clothing/glasses/hypno/proc/populate_hypnogoggles_designs()
@@ -123,14 +124,14 @@
 									"You feel a part of your mind repeating this over and over. You need to follow these words.",
 									"Something about this sounds... right, for some reason. You feel like you should follow these words.",
 									"These words keep echoing in your mind. You find yourself completely fascinated by them.")))
-	to_chat(owner, span_boldwarning("You've been hypnotized by this sentence. You must follow these words. If it isn't a clear order, you can freely interpret how to do so, as long as you act like the words are your highest priority."))
+	to_chat(owner, span_boldwarning(LANG("datum.37d7dc9dee4f922f", null)))
 	var/atom/movable/screen/alert/hypnosis/hypno_alert = owner.throw_alert("hypnosis", /atom/movable/screen/alert/hypnosis)
 	hypno_alert.desc = "\"[hypnotic_phrase]\"... your mind seems to be fixated on this concept."
 	return ..()
 
 /datum/brain_trauma/very_special/induced_hypnosis/on_lose()
 	log_game("[key_name(owner)] is no longer hypnogoggled.")
-	to_chat(owner, span_userdanger("You suddenly snap out of your hypnosis. The phrase '[hypnotic_phrase]' no longer feels important to you."))
+	to_chat(owner, span_userdanger(LANG("datum.5defe236c1f40864", list(hypnotic_phrase))))
 	owner.clear_alert("hypnosis")
 	..()
 

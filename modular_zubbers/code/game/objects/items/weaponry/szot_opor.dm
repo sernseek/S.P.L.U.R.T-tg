@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Szot Dynamica's officer sidearm for when the shooting has stopped being useful.
 // Runs off a replaceable cell, which is the whole point of it.
 
@@ -85,36 +86,22 @@ GLOBAL_LIST_INIT(opor_rainbow, list(
 
 /obj/item/melee/energy/sword/opor/examine(mob/user)
 	. = ..()
-	. += span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src].")
+	. += span_notice(LANG("obj.443782c7961051dd", list(EXAMINE_HINT("look closer"), src)))
 	if(isnull(cell))
-		. += span_notice("There is no power cell installed.")
+		. += span_notice(LANG("obj.b21d2f5d4c232681", null))
 	else
-		. += span_notice("The power cell reads [round(cell.percent())]%. It can be <b>screwed</b> out.")
+		. += span_notice(LANG("obj.5033f467850d9636", list(round(cell.percent()))))
 	if(overclocked)
-		. += span_warning("The regulator has been bypassed. It draws power far faster than it ought to.")
+		. += span_warning(LANG("obj.4e1d453780a2786c", null))
 
 /obj/item/melee/energy/sword/opor/examine_more(mob/user)
 	. = ..()
 
-	. += "The 'Opór' entered service during a period in which the states that would later form the CIN were still \
-		defining themselves through resistance to foreign domination, corporate interference, and the considerably \
-		better armed people who tended to accompany both. Szot Dynamica's original proposal was unusually dry, \
-		describing a compact close-combat energy weapon for officers, boarding parties, and personnel expected to \
-		continue fighting after the loss of conventional arms. CIN propagandists were rather more enthusiastic. By the \
-		time the Opór entered widespread service, recruiting material had taken to describing it as a sword for \
-		soldiers who could not afford the luxury of surrender."
+	. += LANG("obj.274b04531d05ec0c", null)
 
-	. += "For its time, the design was exceptional. A self-contained emitter and replaceable power cell allowed the \
-		Opór to deliver a full-strength energy blade from a package small enough to wear at the hip. Modern weapons \
-		have since surpassed it through advances in compact power generation and exotic emitter materials, but while \
-		the design eventually left frontline service, large numbers survived in arsenals, ceremonial collections, and \
-		later military-surplus markets; and those developments did not make the antiques floating around the second \
-		hand market any less deadly. Many are still maintained today, helped by Szot's unusually stubborn insistence \
-		on user replaceable components wherever possible."
+	. += LANG("obj.fffc68e1cda381bc", null)
 
-	. += "Its name means 'resistance'. Old CIN recruiting material preferred a more elaborate interpretation: \
-		resistance to invasion, resistance to tyranny, and resistance to the suggestion that circumstances had \
-		already decided the outcome."
+	. += LANG("obj.3a933f132e6f971f", null)
 
 	return .
 
@@ -124,21 +111,21 @@ GLOBAL_LIST_INIT(opor_rainbow, list(
 
 /obj/item/melee/energy/sword/opor/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) && !cell?.use(swing_cost()))
-		balloon_alert(user, "cell dead!")
+		balloon_alert(user, LANG("obj.b62dbfa7bd6d0b5a", null))
 		attack_self(user)
 		return TRUE
 	return ..()
 
 /obj/item/melee/energy/sword/opor/attack_atom(atom/attacked_atom, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) && !cell?.use(swing_cost()))
-		balloon_alert(user, "cell dead!")
+		balloon_alert(user, LANG("obj.b62dbfa7bd6d0b5a", null))
 		attack_self(user)
 		return TRUE
 	return ..()
 
 /obj/item/melee/energy/sword/opor/attack_self(mob/user)
 	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) && (!cell || cell.charge < swing_cost()))
-		balloon_alert(user, "no charge!")
+		balloon_alert(user, LANG("obj.c0d39a143f2b1626", null))
 		return
 	return ..()
 
@@ -149,15 +136,15 @@ GLOBAL_LIST_INIT(opor_rainbow, list(
 
 /obj/item/melee/energy/sword/opor/screwdriver_act(mob/living/user, obj/item/tool)
 	if(!cell)
-		balloon_alert(user, "no cell!")
+		balloon_alert(user, LANG("obj.0210855e097c27b8", null))
 		return ITEM_INTERACT_BLOCKING
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
-		balloon_alert(user, "switch it off first!")
+		balloon_alert(user, LANG("obj.5553c802c384b0fa", null))
 		return ITEM_INTERACT_BLOCKING
 	user.put_in_hands(cell)
 	cell = null
 	update_appearance()
-	balloon_alert(user, "cell removed")
+	balloon_alert(user, LANG("obj.0dfdca6e675f39e2", null))
 	tool.play_tool_sound(src)
 	return ITEM_INTERACT_SUCCESS
 
@@ -166,16 +153,16 @@ GLOBAL_LIST_INIT(opor_rainbow, list(
 	if(!istype(tool, /obj/item/stock_parts/power_store/cell))
 		return ..()
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
-		balloon_alert(user, "switch it off first!")
+		balloon_alert(user, LANG("obj.5553c802c384b0fa", null))
 		return ITEM_INTERACT_BLOCKING
 	if(cell)
-		balloon_alert(user, "unscrew the old one first!")
+		balloon_alert(user, LANG("obj.87fe83fd3039d6a5", null))
 		return ITEM_INTERACT_BLOCKING
 	if(!user.transferItemToLoc(tool, src))
 		return ITEM_INTERACT_BLOCKING
 	cell = tool
 	update_appearance()
-	balloon_alert(user, "cell installed")
+	balloon_alert(user, LANG("obj.0e9b65ee8bac5441", null))
 	playsound(src, 'sound/machines/click.ogg', 40, TRUE)
 	return ITEM_INTERACT_SUCCESS
 
@@ -238,13 +225,12 @@ GLOBAL_LIST_INIT(opor_rainbow, list(
 
 /obj/item/melee/energy/sword/opor/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(overclocked)
-		balloon_alert(user, "already bypassed!")
+		balloon_alert(user, LANG("obj.1a2610e0d6cda4a1", null))
 		return FALSE
 	overclocked = TRUE
 	wound_bonus = 15
-	balloon_alert(user, "regulator bypassed")
-	to_chat(user, span_warning("WARNING: emitter regulator bypassed. Output limiter disengaged. This voids your \
-		warranty, and probably several treaties."))
+	balloon_alert(user, LANG("obj.f81ed9b250e3d7fd", null))
+	to_chat(user, span_warning(LANG("obj.e33349c6a4299944", null)))
 	playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 40, TRUE)
 	return TRUE
 
@@ -272,16 +258,13 @@ GLOBAL_LIST_INIT(opor_rainbow, list(
 
 /obj/item/clothing/head/beret/szot_surplus/examine(mob/user)
 	. = ..()
-	. += span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src].")
+	. += span_notice(LANG("obj.443782c7961051dd", list(EXAMINE_HINT("look closer"), src)))
 
 /obj/item/clothing/head/beret/szot_surplus/examine_more(mob/user)
 	. = ..()
 
-	. += "The badge identifies this as an officer's beret from one of the old Coalition militaries, though \
-		nobody seems able to agree which one. Depending on the seller, it was worn by revolutionary officers, \
-		copied from something worn by revolutionary officers, or merely found in the same warehouse."
+	. += LANG("obj.a740a1679037d0f8", null)
 
-	. += "Its actual provenance is hopelessly unclear. The revolutionary reputation, however, appears to \
-		have survived intact."
+	. += LANG("obj.8b929774a68ef804", null)
 
 	return .

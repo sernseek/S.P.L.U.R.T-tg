@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /datum/antagonist/bloodsucker/proc/return_full_name()
 	var/fullname = bloodsucker_name ? bloodsucker_name : owner.current.name
@@ -68,7 +69,7 @@
 			"Lady",
 			"Mistress",
 		)
-	to_chat(owner, span_announce("You have earned a title! You are now known as <i>[return_full_name()]</i>!"))
+	to_chat(owner, span_announce(LANG("datum.9001a0371e8d9131", list(return_full_name()))))
 
 ///Returns a Reputation for the Bloodsucker.
 /datum/antagonist/bloodsucker/proc/SelectReputation(am_fledgling = FALSE, forced = FALSE)
@@ -133,4 +134,4 @@
 			"Corrupt","Hellspawn","Tyrant","Sanguineous",
 		)
 
-	to_chat(owner, span_announce("You have earned a reputation! You are now known as <i>[return_full_name()]</i>!"))
+	to_chat(owner, span_announce(LANG("datum.dc9de5a08ee788ae", list(return_full_name()))))

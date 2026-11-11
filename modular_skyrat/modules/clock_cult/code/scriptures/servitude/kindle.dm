@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define EFFECT_TIME (6.5 SECONDS)
 
 // Clock cult's version of the "bullshit stun hand"
@@ -36,8 +37,8 @@
 		hit_mob.add_overlay(forbearance)
 		addtimer(CALLBACK(hit_mob, TYPE_PROC_REF(/atom, cut_overlay), forbearance), 10 SECONDS)
 
-		hit_mob.visible_message(span_warning("[hit_mob] stares blankly, as a field of energy flows around them."), \
-									   span_userdanger("You feel a slight shock as a wave of energy flows past you."))
+		hit_mob.visible_message(span_warning(LANG("datum.958a7bbc19850e51", list(hit_mob))), \
+									   span_userdanger(LANG("datum.25702594d77aba9a", null)))
 
 		playsound(invoker, 'sound/effects/magic/mm_hit.ogg', 50, TRUE)
 		return TRUE
@@ -53,10 +54,10 @@
 		hit_mob.color = LIGHT_COLOR_BLOOD_MAGIC
 		animate(hit_mob, color = mob_color, time = 30 SECONDS)
 
-		hit_mob.say("Fwebar uloft'gib mirlig yro'fara!")
+		hit_mob.say(LANG("datum.e14bfb2c4e379d83", null))
 
-		to_chat(invoker, span_warning("Some force greater than you intervenes! [hit_mob] is protected by Nar'sie!"))
-		to_chat(hit_mob, span_warning("You are protected by your faith to Nar'sie!"))
+		to_chat(invoker, span_warning(LANG("datum.bfed218fe8cd767d", list(hit_mob))))
+		to_chat(hit_mob, span_warning(LANG("datum.4856e25c0e25f9d4", null)))
 
 		playsound(invoker, 'sound/effects/magic/mm_hit.ogg', 50, TRUE)
 		return TRUE

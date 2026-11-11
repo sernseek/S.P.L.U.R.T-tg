@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/clown_rift
 	name = "Clown rift"
 	category = EVENT_CATEGORY_JANITORIAL
@@ -30,7 +31,7 @@
 	announce_to_ghosts(rift)
 
 /datum/round_event/clown_rift/announce(fake)
-	priority_announce("Clowning energy impact detected at [impact_area.name]")
+	priority_announce(LANG("datum.8b1b2f8b42961cba", list(impact_area.name)))
 
 /datum/round_event/clown_rift/proc/find_area()
 	var/static/list/allowed_areas

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/arachnid
 	name = "Arachnid"
 	id = SPECIES_ARACHNID
@@ -77,7 +78,7 @@
 
 	if(owner.has_status_effect(/datum/status_effect/web_cooldown))
 		if(feedback)
-			to_chat(owner, span_warning("You need to wait a while to regenerate web fluid."))
+			to_chat(owner, span_warning(LANG("datum.9c0687bdae0aef11", null)))
 		return FALSE
 
 
@@ -90,22 +91,22 @@
 		return FALSE
 
 	if(owner.nutrition < WEB_SPIN_NUTRITION_LOSS)
-		to_chat(owner, span_warning("You're too hungry to spin web right now, eat something first!"))
+		to_chat(owner, span_warning(LANG("datum.721210e0352f5a79", null)))
 		return FALSE
 
 	var/turf/target_turf = get_turf(owner)
 	if(!target_turf)
-		to_chat(owner, span_warning("There's no room to spin your web here!"))
+		to_chat(owner, span_warning(LANG("datum.c7b43e06d79df146", null)))
 		return FALSE
 
 	if(locate(/obj/structure/spider/stickyweb) in target_turf)
-		to_chat(owner, span_warning("There's already a web here!"))
+		to_chat(owner, span_warning(LANG("datum.11df247d78604d3e", null)))
 		return FALSE
 
 	// Should have some minimum amount of food before trying to activate
-	to_chat(owner, "<i>You begin spinning some web...</i>")
+	to_chat(owner, LANG("datum.829c971aa97e8597", null))
 	if(!do_after(owner, 10 SECONDS, target_turf, interaction_key = SPECIES_ARACHNID))
-		to_chat(owner, span_warning("Your web spinning was interrupted!"))
+		to_chat(owner, span_warning(LANG("datum.31f8ed6d5fd336d6", null)))
 		return FALSE
 
 	if(!IsAvailable(TRUE))
@@ -113,7 +114,7 @@
 
 	owner.adjust_nutrition(-WEB_SPIN_NUTRITION_LOSS)
 	owner:apply_status_effect(/datum/status_effect/web_cooldown)
-	to_chat(owner, "<i>You use up a fair amount of energy weaving a web on the ground with your spinneret!</i>")
+	to_chat(owner, LANG("datum.89b03d6f4bb7700c", null))
 	new /obj/structure/spider/stickyweb(target_turf, owner)
 	return TRUE
 
@@ -127,7 +128,7 @@
 
 /datum/action/innate/arachnid/spin_cocoon/set_ranged_ability(mob/living/on_who, text_to_show)
 	if(owner.nutrition < COCOON_NUTRITION_LOSS)
-		to_chat(owner, span_warning("You're too hungry to spin web right now, eat something first!"))
+		to_chat(owner, span_warning(LANG("datum.721210e0352f5a79", null)))
 		return FALSE
 
 	owner.adjust_nutrition(-COCOON_NUTRITION_LOSS * 0.25)
@@ -145,27 +146,27 @@
 		/atom/movable/screen //???
 	))
 	if(is_type_in_typecache(clicked_on, blacklisted_types))
-		to_chat(clicker, span_warning("You cannot wrap this!"))
+		to_chat(clicker, span_warning(LANG("datum.cdfd29a591d1f5cb", null)))
 		return FALSE
 
 	if(!isliving(clicked_on) && clicked_on.anchored)
-		to_chat(clicker, span_warning("[clicked_on] is bolted to the floor!"))
+		to_chat(clicker, span_warning(LANG("datum.1645eaf3a2147459", list(clicked_on))))
 		return FALSE
 
 	if(clicked_on == clicker)
 		clicker.visible_message(
-			span_danger("[clicker] starts to wrap themselves into a cocoon!"),
-			span_danger("You start to wrap yourself into a cocoon!")
+			span_danger(LANG("datum.aadfa09c199a172b", list(clicker))),
+			span_danger(LANG("datum.3d325df9311eacb3", null))
 		)
 	else
 		clicker.visible_message(
-			span_danger("[clicker] starts to wrap [clicked_on] into a cocoon!"),
-			span_warning("You start to wrap [clicked_on] into a cocoon.")
+			span_danger(LANG("datum.f575463f4ab535c8", list(clicker, clicked_on))),
+			span_warning(LANG("datum.6a7348fe52af9747", list(clicked_on)))
 		)
 
 	clicker.apply_status_effect(/datum/status_effect/web_cooldown)
 	if(!do_after(clicker, 10 SECONDS, clicked_on, interaction_key = SPECIES_ARACHNID))
-		to_chat(clicker, span_warning("Your web spinning was interrupted!"))
+		to_chat(clicker, span_warning(LANG("datum.31f8ed6d5fd336d6", null)))
 		return FALSE
 
 	clicker.adjust_nutrition(-COCOON_NUTRITION_LOSS * 0.75)
@@ -175,12 +176,12 @@
 	clicked_on.forceMove(casing)
 	if(clicked_on.density || ismob(clicked_on))
 		if(clicked_on == clicker)
-			clicker.visible_message(span_danger("[clicker] wraps themselves into a large cocoon!"))
+			clicker.visible_message(span_danger(LANG("datum.1f92408a3f456814", list(clicker))))
 		else
-			clicker.visible_message(span_danger("[clicker] wraps [clicked_on] into a large cocoon!"))
+			clicker.visible_message(span_danger(LANG("datum.e665193b5505fdcf", list(clicker, clicked_on))))
 		casing.icon_state = pick("cocoon_large1", "cocoon_large2", "cocoon_large3")
 	else
-		clicker.visible_message(span_danger("[clicker] wraps [clicked_on] into a cocoon!"))
+		clicker.visible_message(span_danger(LANG("datum.5fbbd0da717ca181", list(clicker, clicked_on))))
 
 
 /datum/status_effect/web_cooldown

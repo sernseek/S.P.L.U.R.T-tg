@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Machine that makes water and nothing else
 
 /obj/machinery/plumbing/synthesizer/water_synth
@@ -129,7 +130,7 @@
 
 /obj/machinery/chem_dispenser/frontier_appliance/examine(mob/user)
 	. = ..()
-	. += span_notice("It cannot be repacked, but can be deconstructed normally.")
+	. += span_notice(LANG("obj.7a0899a5d4f2d25d", null))
 
 // Deployable item for cargo for the sustenance machine
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/lizard
 	// Reptilian humanoids with scaled skin and tails.
 	name = "\improper Lizardperson"
@@ -91,10 +92,8 @@
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 		SPECIES_PERK_ICON = "thermometer-empty",
-		SPECIES_PERK_NAME = "Cold-blooded",
-		SPECIES_PERK_DESC = "Lizardpeople have higher tolerance for hot temperatures, but lower \
-			tolerance for cold temperatures. Additionally, they cannot self-regulate their body temperature - \
-			they are as cold or as warm as the environment around them is. Stay warm!",
+		SPECIES_PERK_NAME = LANG("datum.968c00ce3a1483c3", null),
+		SPECIES_PERK_DESC = LANG("datum.89f31680f38e3996", null),
 	))
 
 	return to_add

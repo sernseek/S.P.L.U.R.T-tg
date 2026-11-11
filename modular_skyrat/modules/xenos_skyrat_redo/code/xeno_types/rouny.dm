@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// SKYRAT MODULE SKYRAT_XENO_REDO
 
 #define EVASION_VENTCRAWL_INABILTY_CD_PERCENTAGE 0.8
@@ -49,36 +50,36 @@
 /datum/action/cooldown/alien/skyrat/evade/Activate()
 	. = ..()
 	if(evade_active) //Can't evade while we're already evading.
-		owner.balloon_alert(owner, "already evading")
+		owner.balloon_alert(owner, LANG("datum.c551506307550d9d", null))
 		return FALSE
 
-	owner.balloon_alert(owner, "evasive movements began")
+	owner.balloon_alert(owner, LANG("datum.1a2eb2067e45b92a", null))
 	playsound(owner, 'modular_skyrat/modules/xenos_skyrat_redo/sound/alien_hiss.ogg', 100, TRUE, 8, 0.9)
-	to_chat(owner, span_danger("We take evasive action, making us impossible to hit with projectiles for the next [evasion_duration / 10] seconds."))
+	to_chat(owner, span_danger(LANG("datum.06457c155f602dcb", list(evasion_duration / 10))))
 	addtimer(CALLBACK(src, PROC_REF(evasion_deactivate)), evasion_duration)
 	evade_active = TRUE
 	RegisterSignal(owner, COMSIG_PROJECTILE_ON_HIT, PROC_REF(on_projectile_hit))
 	REMOVE_TRAIT(owner, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 	addtimer(CALLBACK(src, PROC_REF(give_back_ventcrawl)), (cooldown_time * EVASION_VENTCRAWL_INABILTY_CD_PERCENTAGE)) //They cannot ventcrawl until the defined percent of the cooldown has passed
-	to_chat(owner, span_warning("We will be unable to crawl through vents for the next [(cooldown_time * EVASION_VENTCRAWL_INABILTY_CD_PERCENTAGE) / 10] seconds."))
+	to_chat(owner, span_warning(LANG("datum.6c8694a068643261", list((cooldown_time * EVASION_VENTCRAWL_INABILTY_CD_PERCENTAGE) / 10))))
 	return TRUE
 
 /// Handles deactivation of the xeno evasion ability, mainly unregistering the signal and giving a balloon alert
 /datum/action/cooldown/alien/skyrat/evade/proc/evasion_deactivate()
 	evade_active = FALSE
-	owner.balloon_alert(owner, "evasion ended")
+	owner.balloon_alert(owner, LANG("datum.95f132b59f8adcb5", null))
 	UnregisterSignal(owner, COMSIG_PROJECTILE_ON_HIT)
 
 /datum/action/cooldown/alien/skyrat/evade/proc/give_back_ventcrawl()
 	ADD_TRAIT(owner, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
-	to_chat(owner, span_notice("We are rested enough to crawl through vents again."))
+	to_chat(owner, span_notice(LANG("datum.473de65e2ac92b99", null)))
 
 /// Handles if either BULLET_ACT_HIT or BULLET_ACT_FORCE_PIERCE happens to something using the xeno evade ability
 /datum/action/cooldown/alien/skyrat/evade/proc/on_projectile_hit()
 	if(!INCAPACITATED_IGNORING(owner, INCAPABLE_GRAB) || !isturf(owner.loc) || !evade_active)
 		return BULLET_ACT_HIT
 
-	owner.visible_message(span_danger("[owner] effortlessly dodges the projectile!"), span_userdanger("You dodge the projectile!"))
+	owner.visible_message(span_danger(LANG("datum.89efbdd0077990c1", list(owner))), span_userdanger(LANG("datum.2cab9c7d9ad676d0", null)))
 	playsound(get_turf(owner), pick('sound/items/weapons/bulletflyby.ogg', 'sound/items/weapons/bulletflyby2.ogg', 'sound/items/weapons/bulletflyby3.ogg'), 75, TRUE)
 	owner.add_filter(RUNNER_BLUR_EFFECT, 2, gauss_blur_filter(5))
 	addtimer(CALLBACK(owner, TYPE_PROC_REF(/datum, remove_filter), RUNNER_BLUR_EFFECT), 0.5 SECONDS)

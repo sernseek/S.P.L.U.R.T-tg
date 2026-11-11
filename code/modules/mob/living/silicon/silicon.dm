@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/silicon
 	gender = NEUTER
 	abstract_type = /mob/living/silicon
@@ -162,7 +163,7 @@
 
 		var/msg = "--- "
 		for(var/alarm_type in alarm_types_show)
-			msg += "[uppertext(alarm_type)]: [alarm_types_show[alarm_type]] alarms detected. - "
+			msg += LANG("mob.fef5e58fee729cf1", list(uppertext(lang_alarm_type(alarm_type)), alarm_types_show[alarm_type])) // ZH EDIT - I18N: 类别名走域内表（ALARM_* 同时是 assoc 键，不能进反查表）
 
 		msg += "<A href=byond://?src=[REF(src)];showalerts=1'>\[Show Alerts\]</a>"
 		to_chat(src, msg)
@@ -175,7 +176,7 @@
 		var/msg = "--- "
 
 		for(var/alarm_type in alarm_types_clear)
-			msg += "[uppertext(alarm_type)]: [alarm_types_clear[alarm_type]] alarms cleared. - "
+			msg += LANG("mob.eb212485af84a065", list(uppertext(lang_alarm_type(alarm_type)), alarm_types_clear[alarm_type])) // ZH EDIT - I18N: 同上
 
 		msg += "<A href=byond://?src=[REF(src)];showalerts=1'>\[Show Alerts\]</a>"
 		to_chat(src, msg)
@@ -194,7 +195,7 @@
 /mob/living/silicon/try_inject(mob/user, target_zone, injection_flags)
 	. = ..()
 	if(!. && (injection_flags & INJECT_TRY_SHOW_ERROR_MESSAGE))
-		to_chat(user, span_alert("[p_Their()] outer shell is too tough."))
+		to_chat(user, span_alert(LANG("mob.ef6a313f4e5d82c4", list(p_Their()))))
 
 /proc/islinked(mob/living/silicon/robot/bot, mob/living/silicon/ai/ai)
 	if(!istype(bot) || !istype(ai))
@@ -209,13 +210,13 @@
 
 	if (href_list["printlawtext"]) // this is kinda backwards
 		if (href_list["dead"] && (!isdead(usr) && !usr.client.holder)) // do not print deadchat law notice if the user is now alive
-			to_chat(usr, span_warning("You cannot view law changes that were made while you were dead."))
+			to_chat(usr, span_warning(LANG("mob.4dd310f33f240bc6", null)))
 			return
 		to_chat(usr, href_list["printlawtext"])
 
 	if(href_list["track"])
 		if(!can_track(href_list["track"]))
-			to_chat(src, span_info("This person is not currently on cameras."))
+			to_chat(src, span_info(LANG("mob.96819875a936b209", null)))
 			return
 		var/mob/living/silicon/ai/AI
 		var/mob/living/silicon/robot/shell/shell
@@ -243,11 +244,11 @@
 
 /mob/living/silicon/proc/set_autosay() //For allowing the AI and borgs to set the radio behavior of auto announcements (state laws, arrivals).
 	if(!radio)
-		to_chat(src, span_alert("Radio not detected."))
+		to_chat(src, span_alert(LANG("mob.536e6ec73776b069", null)))
 		return
 
 	//Ask the user to pick a channel from what it has available.
-	var/chosen_channel = tgui_input_list(usr, "Select a channel", "Channel Selection", list("Default","None") + radio.channels)
+	var/chosen_channel = tgui_input_list(usr, LANG("mob.d694447fe0d0c106", null), LANG("mob.24c57c7698ae7217", null), list("Default","None") + radio.channels)
 	if(isnull(chosen_channel))
 		return
 	if(chosen_channel == "Default") //Autospeak on whatever frequency to which the radio is set, usually Common.
@@ -261,7 +262,7 @@
 				radiomod = ":" + key
 				break
 
-	to_chat(src, span_notice("Automatic announcements [chosen_channel == "None" ? "will not use the radio." : "set to [chosen_channel]."]"))
+	to_chat(src, span_notice(LANG("mob.62329beb9d82fd8b", list(chosen_channel == "None" ? "will not use the radio." : "set to [chosen_channel]."))))
 
 /mob/living/silicon/put_in_hand_check() // This check is for borgs being able to receive items, not put them in others' hands.
 	return FALSE
@@ -285,11 +286,11 @@
 		return
 	sensors_on = !sensors_on
 	if (!sensors_on)
-		to_chat(src, span_notice("Sensor overlay deactivated."))
+		to_chat(src, span_notice(LANG("mob.72e3e34fcb95c2d9", null)))
 		remove_sensors()
 		return
 	add_sensors()
-	to_chat(src, span_notice("Sensor overlay activated."))
+	to_chat(src, span_notice(LANG("mob.ed8b5f46f81980fd", null)))
 
 /mob/living/silicon/proc/GetPhoto(mob/user)
 	if (aicamera)

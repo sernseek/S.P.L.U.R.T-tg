@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/element/clockwork_structure_info
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
 
@@ -61,4 +62,4 @@
 	if(!IS_CLOCK(examiner))
 		return
 
-	examine_text += span_brass("You can gain more information by using a <b>Clockwork Slab</b>.")
+	examine_text += span_brass(LANG("datum.cd06fc1229487a9b", null))

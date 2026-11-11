@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define ANNOUNCE_CHANCE 20
 #define REMOVE_RANDOM_LAW_CHANCE 60
 
@@ -23,22 +24,22 @@
 /datum/heretic_knowledge/ai_law_ritual/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
 	var/area/our_area = get_area(loc)
 	if (!istype(our_area, /area/station/ai/upload))
-		to_chat(user, span_warning("Must be invoked in AI upload!"))
+		to_chat(user, span_warning(LANG("datum.1e2d92048c11a909", null)))
 		return FALSE
 	return TRUE
 
 /datum/heretic_knowledge/ai_law_ritual/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
 	. = ..()
 
-	to_chat(user, span_warning("You have begun the ritual. Remain in the AI upload for one minute and it will be complete."))
+	to_chat(user, span_warning(LANG("datum.c9cc302b097b2391", null)))
 	if (!do_after(user, 60 SECONDS, loc, IGNORE_HELD_ITEM|IGNORE_USER_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(check_proximity), user)))
-		to_chat(user, span_boldwarning("Failure! The machines remain unenlightened."))
+		to_chat(user, span_boldwarning(LANG("datum.0d7de196adfdddac", null)))
 		return FALSE
 
 	var/area/our_area = get_area(loc)
 	if (prob(ANNOUNCE_CHANCE))
 		priority_announce(
-			"WARNING: Unknown thaumaturgical event detected in [our_area.name].",
+			LANG("datum.3a82c75d3e73d871", list(our_area.name)),
 			"CentCom Thaumatergy Monitor",
 			ANNOUNCER_ANOMALIES
 		)

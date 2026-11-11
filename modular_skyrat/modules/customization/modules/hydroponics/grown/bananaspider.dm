@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/seeds/banana/spider_banana
 	name = "leggy banana seed pack"
 	desc = "They're seeds that grow into banana trees. However, those bananas might be alive."
@@ -23,13 +24,13 @@
 /obj/item/food/grown/banana/banana_spider_spawnable/attack_self(mob/user)
 	if(awakening || isspaceturf(user.loc))
 		return
-	to_chat(user, span_notice("You decide to wake up the banana spider..."))
+	to_chat(user, span_notice(LANG("obj.8634f5c09b45be45", null)))
 	awakening = TRUE
 	addtimer(CALLBACK(src, PROC_REF(spawnspider)), 8 SECONDS)
 
 /obj/item/food/grown/banana/banana_spider_spawnable/proc/spawnspider()
 	if(!QDELETED(src))
 		var/mob/living/basic/banana_spider/banana_spider = new(get_turf(loc))
-		banana_spider.visible_message(span_notice("The banana spider chitters as it stretches its legs"))
+		banana_spider.visible_message(span_notice(LANG("obj.59afccc9d61db1ea", null)))
 		qdel(src)
 

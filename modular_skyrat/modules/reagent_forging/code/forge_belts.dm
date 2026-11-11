@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////// HOLSTERS ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
@@ -178,7 +179,7 @@
 	if(istype(to_insert, /obj/item/gun/energy))
 		var/obj/item/gun/energy/energy_gun = to_insert
 		if(!energy_gun.can_charge)
-			to_chat(user, span_notice("Your gun has no external power connector."))
+			to_chat(user, span_notice(LANG("datum.3f23c5757e9f8e81", null)))
 			return FALSE
 	. = ..()
 
@@ -212,7 +213,7 @@
 
 /obj/machinery/recharger/belt_charger/proc/activate_with_item()
 	if(length(my_belt?.real_storage?.contents) > 0)
-		say("Charging...")
+		say(LANG("obj.03620ff3c0d82e51", null))
 		charging = my_belt.real_storage.contents[1]
 		playsound(src, 'sound/machines/ping.ogg', 30, TRUE, frequency = 0.8)
 		START_PROCESSING(SSmachines, src)
@@ -230,7 +231,7 @@
 	charging.update_appearance()
 
 /obj/machinery/recharger/belt_charger/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	to_chat(user, span_warning("You should insert the [tool] into the connected holster pouch, not the charging device itself!"))
+	to_chat(user, span_warning(LANG("obj.ba0b7619b073190b", list(tool))))
 	return ITEM_INTERACT_BLOCKING
 
 ////////////////////////////////////////////////////////////////////////////
@@ -309,10 +310,10 @@
 		return
 	var/obj/item/storage/belt/storage_pouch/pouch = locate() in real_location
 	if(!pouch)
-		pouch.balloon_alert(dumping_mob, "no pouch!")
+		pouch.balloon_alert(dumping_mob, LANG("datum.e29b497aaa623f68", null))
 		return //oopsie!! If we don't have a pouch! You're fucked!
 	if(locked)
-		pouch.balloon_alert(dumping_mob, "locked!")
+		pouch.balloon_alert(dumping_mob, LANG("datum.5d71bae27aaf9422", null))
 		return
 	pouch.atom_storage.dump_content_at(dest_object, dumping_mob)
 
@@ -327,15 +328,15 @@
 		add_fingerprint(user)
 		playsound(src, 'sound/items/unsheath.ogg', 50, TRUE, -5)
 		if(!user.put_in_hands(drawn_item))
-			to_chat(user, span_notice("You fumble for [drawn_item] and it falls on the floor."))
+			to_chat(user, span_notice(LANG("obj.02062406fe0a5020", list(drawn_item))))
 			update_appearance()
 			return CLICK_ACTION_SUCCESS
 		user.visible_message(
-			span_notice("[user] takes [drawn_item] out of [src]."),
-			span_notice("You take [drawn_item] out of [src]."))
+			span_notice(LANG("obj.1f34f194a347a912", list(user, drawn_item, src))),
+			span_notice(LANG("obj.604c7b94ff4abde3", list(drawn_item, src))))
 		update_appearance()
 	else
-		to_chat(user, span_warning("[src] is empty!"))
+		to_chat(user, span_warning(LANG("obj.02d482cc1aef0cef", list(src))))
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/storage/belt/sheath/hip_only/crusader/update_icon(updates)
@@ -349,9 +350,9 @@
 
 /obj/item/storage/belt/sheath/hip_only/crusader/examine(mob/user)
 	. = ..()
-	.+= span_notice("Ctrl-click it to easily open its inventory.")
+	.+= span_notice(LANG("obj.45c264f4d8ea027d", null))
 	if(contents.len == 2)	//If there's no sword/rod in the sheath slot it doesnt display the alt-click instruction
-		. += span_notice("Alt-click it to quickly draw the blade.")
+		. += span_notice(LANG("obj.ebf3b6e0466f52e5", null))
 		return
 
 

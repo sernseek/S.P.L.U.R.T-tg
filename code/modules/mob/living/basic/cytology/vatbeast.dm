@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// A mob that slaps people around and can be tamed as a mount
 /mob/living/basic/vatbeast
 	name = "vatbeast"
@@ -98,14 +99,14 @@
 	. = ..()
 	if (!.)
 		return
-	to_chat(on_who, span_notice("You prepare your [on_who == owner ? "":"steed's "]pimp-tentacle. <b>Left-click to slap a target!</b>"))
+	to_chat(on_who, span_notice(LANG("datum.d5050293b2fda665", list(on_who == owner ? "":"steed's "))))
 
 /datum/action/cooldown/tentacle_slap/unset_click_ability(mob/on_who, refund_cooldown = TRUE)
 	. = ..()
 	if (!.)
 		return
 	if(refund_cooldown)
-		to_chat(on_who, span_notice("You stop preparing your [on_who == owner ? "":"steed's "]pimp-tentacle."))
+		to_chat(on_who, span_notice(LANG("datum.9fe6ae809d9493aa", list(on_who == owner ? "":"steed's "))))
 
 /datum/action/cooldown/tentacle_slap/InterceptClickOn(mob/living/clicker, params, atom/target)
 	// Check if we can slap
@@ -113,7 +114,7 @@
 		return FALSE
 
 	if (!owner.Adjacent(target))
-		owner.balloon_alert(clicker, "too far!")
+		owner.balloon_alert(clicker, LANG("datum.f5e75781e8f1dc46", null))
 		return FALSE
 
 	// Do the slap
@@ -124,7 +125,7 @@
 	// Give feedback from the slap.
 	// Additional feedback for if a rider did it
 	if (clicker != owner)
-		to_chat(clicker, span_notice("You command [owner] to slap [target] with its tentacles."))
+		to_chat(clicker, span_notice(LANG("datum.2e9a99d7aacfe3f7", list(owner, target))))
 
 	return TRUE
 
@@ -132,8 +133,8 @@
 	var/mob/living/living_to_slap = to_slap
 
 	owner.visible_message(
-		span_warning("[owner] slaps [to_slap] with its tentacle!"),
-		span_notice("You slap [to_slap] with your tentacle."),
+		span_warning(LANG("datum.27223b04902662b0", list(owner, to_slap))),
+		span_notice(LANG("datum.60c8dd6d90f84141", list(to_slap))),
 	)
 	playsound(owner, 'sound/effects/emotes/assslap.ogg', 90)
 	var/atom/throw_target = get_edge_target_turf(to_slap, owner.dir)

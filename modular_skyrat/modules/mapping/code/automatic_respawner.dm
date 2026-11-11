@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/automatic_respawner
 	name = "Automatic Respawner"
 	desc = "Allows for lost souls to find a new body."
@@ -28,18 +29,18 @@
 
 		var/datum/component/respawner/mind_component = user.mind.GetComponent(target_component)
 		if(!mind_component)
-			to_chat(user, span_warning("You are not able to use [src]!"))
+			to_chat(user, span_warning(LANG("obj.8eb26d390f532c3d", list(src))))
 			return FALSE
 
 		if(mind_component.time_before_respawn && !COOLDOWN_FINISHED(mind_component, respawn_timer))
-			to_chat(user, span_warning("You have [COOLDOWN_TIMELEFT(mind_component, respawn_timer) / 10] seconds left before you can use [src]."))
+			to_chat(user, span_warning(LANG("obj.c24e63a47012f8b9", list(COOLDOWN_TIMELEFT(mind_component, respawn_timer) / 10, src))))
 			return FALSE
 
 	if(!COOLDOWN_FINISHED(src, respawn_cooldown))
-		to_chat(user, span_warning("[src] has [COOLDOWN_TIMELEFT(src, respawn_cooldown) / 10] seconds left before it can be used again. Please try again later."))
+		to_chat(user, span_warning(LANG("obj.68c86737671402fc", list(src, COOLDOWN_TIMELEFT(src, respawn_cooldown) / 10))))
 		return FALSE
 
-	var/choice = tgui_alert(user, "Do you wish to use the respawner? If you have a body, you will not be able to return to it.", name, list("Yes", "No"))
+	var/choice = tgui_alert(user, LANG("obj.435f556f8d7240f7", null), name, list("Yes", "No"))
 	if(choice != "Yes")
 		return FALSE
 
@@ -68,10 +69,10 @@
 	. = ..()
 	if(cooldown_time)
 		if(!COOLDOWN_FINISHED(src, respawn_cooldown))
-			. += span_warning("[src] has [COOLDOWN_TIMELEFT(src, respawn_cooldown) / 10] seconds left before it can be used again.")
+			. += span_warning(LANG("obj.c704cc675c5536a4", list(src, COOLDOWN_TIMELEFT(src, respawn_cooldown) / 10)))
 
 		else
-			. += span_abductor("[src] has a cooldown of [cooldown_time / 10] seconds between uses.")
+			. += span_abductor(LANG("obj.7b819db987713e37", list(src, cooldown_time / 10)))
 
 /obj/machinery/automatic_respawner/test
 	cooldown_time = 1.5 MINUTES

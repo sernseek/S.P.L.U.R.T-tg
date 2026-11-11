@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
  * False Walls
  */
@@ -100,21 +101,21 @@
 /obj/structure/falsewall/tool_act(mob/living/user, obj/item/tool, list/modifiers)
 	if(!opening || !tool.tool_behaviour)
 		return ..()
-	to_chat(user, span_warning("You must wait until the door has stopped moving!"))
+	to_chat(user, span_warning(LANG("obj.79d73a2a41526f00", null)))
 	return ITEM_INTERACT_BLOCKING
 
 /obj/structure/falsewall/screwdriver_act(mob/living/user, obj/item/tool)
 	if(!density)
-		to_chat(user, span_warning("You can't reach, close it first!"))
+		to_chat(user, span_warning(LANG("obj.bd26aaca35046453", null)))
 		return
 	var/turf/loc_turf = get_turf(src)
 	if(loc_turf.density)
-		to_chat(user, span_warning("[src] is blocked!"))
+		to_chat(user, span_warning(LANG("obj.1596b6909c5bb436", list(src))))
 		return ITEM_INTERACT_SUCCESS
 	if(!isfloorturf(loc_turf))
-		to_chat(user, span_warning("[src] bolts must be tightened on the floor!"))
+		to_chat(user, span_warning(LANG("obj.de34c64eda9d37e0", list(src))))
 		return ITEM_INTERACT_SUCCESS
-	user.visible_message(span_notice("[user] tightens some bolts on the wall."), span_notice("You tighten the bolts on the wall."))
+	user.visible_message(span_notice(LANG("obj.7015292b950755c7", list(user))), span_notice(LANG("obj.6bcc85763092c593", null)))
 	ChangeToWall()
 	return ITEM_INTERACT_SUCCESS
 
@@ -127,12 +128,12 @@
 
 /obj/structure/falsewall/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(opening)
-		to_chat(user, span_warning("You must wait until the door has stopped moving!"))
+		to_chat(user, span_warning(LANG("obj.79d73a2a41526f00", null)))
 		return ITEM_INTERACT_BLOCKING // honest to god no idea what the point of this blocker is, I'm just the messenger
 	return NONE
 
 /obj/structure/falsewall/proc/dismantle(mob/user, disassembled=TRUE, obj/item/tool = null)
-	user.visible_message(span_notice("[user] dismantles the false wall."), span_notice("You dismantle the false wall."))
+	user.visible_message(span_notice(LANG("obj.53c21018eed8ce7d", list(user))), span_notice(LANG("obj.f2e26fd8651820c4", null)))
 	if(tool)
 		tool.play_tool_sound(src, 100)
 	else
@@ -448,7 +449,7 @@
 
 /obj/structure/falsewall/material/finalize_material_effects(list/materials)
 	. = ..()
-	desc = "A huge chunk of [get_material_english_list(materials)] used to separate rooms."
+	desc = LANG("obj.2d73a0c8464b7da6", list(get_material_english_list(materials)))
 
 /obj/structure/falsewall/material/toggle_open()
 	if(!QDELETED(src))

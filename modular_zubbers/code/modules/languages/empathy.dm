@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/language/marish
 	name = "Marish"
 	desc = "Where shadekin have a language rooted in empathy, there are still subtle tones and syllables that are as delicate as the emotions that shadekin normally communicate with."
@@ -58,7 +59,7 @@
 	var/empathy_timer = 2 SECONDS
 	var/obj/item/organ/ears/shadekin/user_ears = user.get_organ_slot(ORGAN_SLOT_EARS)
 	var/mode = istype(user_ears)
-	user.balloon_alert_to_viewers("[mode ? "ears vibrate" : "shivers"]", "projecting thoughts...")
+	user.balloon_alert_to_viewers("[mode ? "ears vibrate" : "shivers"]", LANG("obj.366ccd6e51ada910", null))
 
 	switch(shadekin_mood)
 		if(SANITY_LEVEL_GREAT)
@@ -88,7 +89,7 @@
 		to_chat(living_mob, rendered)
 		if(living_mob != user)
 			mode = istype(target_ears)
-			living_mob.balloon_alert_to_viewers("[mode ? "ears vibrate" : "shivers"]", "transmission heard...")
+			living_mob.balloon_alert_to_viewers("[mode ? "ears vibrate" : "shivers"]", LANG("obj.e67bb6f2ebbc74ca", null))
 
 	if(length(GLOB.dead_mob_list))
 		for(var/mob/dead_mob in GLOB.dead_mob_list)

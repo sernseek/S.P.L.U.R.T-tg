@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define LANGUAGE_IMPLANT "implant"
 
 /obj/item/organ/cyberimp/brain/empathic_sensor
@@ -20,7 +21,7 @@
 	UnregisterSignal(owner, COMSIG_MOB_SAY)
 	owner.remove_language(/datum/language/marish/empathy, source = LANGUAGE_IMPLANT)
 	addtimer(CALLBACK(src, PROC_REF(reboot)), 180 / severity)
-	to_chat(owner, span_warning("You feel overwhelmed!"))
+	to_chat(owner, span_warning(LANG("obj.887c315ad6e27883", null)))
 	switch(severity)
 		if (EMP_HEAVY)
 			owner.adjust_stutter(180 SECONDS)
@@ -34,7 +35,7 @@
 		return
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	owner.grant_language(/datum/language/marish/empathy, source = LANGUAGE_IMPLANT)
-	to_chat(owner, span_abductor("Your mind opens to others. You can hear the thoughts of those around you, but only faintly."))
+	to_chat(owner, span_abductor(LANG("obj.4ee2a7011aada393", null)))
 
 /obj/item/organ/cyberimp/brain/empathic_sensor/on_mob_remove(mob/living/carbon/implant_owner)
 	. = ..()
@@ -43,11 +44,11 @@
 	implant_owner.remove_language(/datum/language/marish/empathy, source = LANGUAGE_IMPLANT)
 	if(QDELETED(src))
 		return
-	to_chat(implant_owner, span_abductor("Your mind closes from others. It's quiet, now."))
+	to_chat(implant_owner, span_abductor(LANG("obj.4a74201796fabcbc", null)))
 
 /obj/item/organ/cyberimp/brain/empathic_sensor/on_mob_insert(mob/living/carbon/receiver)
 	. = ..()
-	to_chat(receiver, span_abductor("You begin to feel an awareness of those around you."))
+	to_chat(receiver, span_abductor(LANG("obj.5e51dc98750e3751", null)))
 	addtimer(CALLBACK(src, PROC_REF(implant_ready)), 90)
 
 /obj/item/organ/cyberimp/brain/empathic_sensor/proc/reboot()
@@ -59,7 +60,7 @@
 /obj/item/organ/cyberimp/brain/empathic_sensor/proc/modify_speech(datum/source, list/speech_args)
 	ASYNC
 		if(organ_flags & ORGAN_FAILING) //just in case they somehow activate this while the implant is disabled...
-			to_chat(owner, span_abductor("You are unable to project your thoughts."))
+			to_chat(owner, span_abductor(LANG("obj.7ee488fc01d415cd", null)))
 			return
 		actually_modify_speech(source, speech_args)
 	speech_args[SPEECH_MESSAGE] = "" // Makes it not send to chat verbally
@@ -74,7 +75,7 @@
 	var/mob/living/carbon/human/user = source
 	var/obj/item/organ/ears/shadekin/user_ears = user.get_organ_slot(ORGAN_SLOT_EARS)
 	var/mode = istype(user_ears)
-	user.balloon_alert_to_viewers("[mode ? "ears vibrate" : "shivers"]", "projecting thoughts...")
+	user.balloon_alert_to_viewers("[mode ? "ears vibrate" : "shivers"]", LANG("obj.366ccd6e51ada910", null))
 
 	if(!do_after(source, 2 SECONDS, source))
 		message = full_capitalize(rot13(message))
@@ -91,7 +92,7 @@
 		to_chat(living_mob, rendered)
 		if(living_mob != user)
 			mode = istype(target_ears)
-			living_mob.balloon_alert_to_viewers("[mode ? "ears vibrate" : "shivers"]", "transmission heard...")
+			living_mob.balloon_alert_to_viewers("[mode ? "ears vibrate" : "shivers"]", LANG("obj.e67bb6f2ebbc74ca", null))
 
 	if(length(GLOB.dead_mob_list))
 		for(var/mob/dead_mob in GLOB.dead_mob_list)

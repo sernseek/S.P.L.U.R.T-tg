@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //For ruin-specific machines --- limitied/unique functions, or functions mimicked from normal machines.
 //Think along the lines of a console with lore or a fuse box that needs x fuses to activate --- or, just a retextured GPS Computer, like the first item
 
@@ -14,8 +15,8 @@
 /obj/item/gps/computer/space/wrench_act(mob/living/user, obj/item/I)
 	. = ..()
 	if(I.use_tool(src, user, 20, volume=50))
-		user.visible_message(span_warning("[user] disassembles [src]."),
-			span_notice("You start to disassemble [src]..."), span_hear("You hear clanking and banging noises."))
+		user.visible_message(span_warning(LANG("obj.64d85c99dc62f8de", list(user, src))),
+			span_notice(LANG("obj.c234e380f56e7a65", list(src))), span_hear(LANG("obj.f070a678bd67cf40", null)))
 		deconstruct(TRUE)
 	return TRUE
 

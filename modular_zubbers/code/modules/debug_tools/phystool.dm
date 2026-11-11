@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/phystool
 	name = "Toolgun"
 	desc = "Some kind of a revolver with a bluespace power cell and an anomaly core attached together."
@@ -33,9 +34,9 @@
 
 /obj/item/phystool/examine(mob/user)
 	. = ..()
-	. += span_notice("Use ALT + LMB on the device to choose the mode.")
+	. += span_notice(LANG("obj.534d596a01d2daa0", null))
 	if(!selected_mode)
-		. += span_notice("No selected mode!")
+		. += span_notice(LANG("obj.71a5f8d9236eeb86", null))
 		return
 	. += span_notice(selected_mode.desc)
 
@@ -43,7 +44,7 @@
 	. = ..()
 	if(selected_mode)
 		qdel(selected_mode)
-	var/datum/phystool_mode/mode_to_select = tgui_input_list(user, "Select work mode:", "Phystool mode", available_modes)
+	var/datum/phystool_mode/mode_to_select = tgui_input_list(user, LANG("obj.d918a20520b57d4a", null), LANG("obj.30e942cca68dbd86", null), available_modes)
 	if(!mode_to_select)
 		return
 	selected_mode = new mode_to_select

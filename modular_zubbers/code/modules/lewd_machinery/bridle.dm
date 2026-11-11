@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /obj/item/clothing/mask/bridle
 	name = "bridle"
@@ -63,9 +64,9 @@
 		return
 	straps_locked = !straps_locked
 	if(straps_locked)
-		to_chat(user, span_notice("You secure the bridle's straps."))
+		to_chat(user, span_notice(LANG("obj.b6878cc85f1d11df", null)))
 	else
-		to_chat(user, span_notice("You loosen the bridle's straps."))
+		to_chat(user, span_notice(LANG("obj.f57b28b26d14daed", null)))
 
 /obj/item/clothing/mask/bridle/proc/get_wearer()
 	var/mob/living/carbon/wearer = istype(loc, /mob/living/carbon) ? loc : null
@@ -82,15 +83,15 @@
 	if(!user)
 		return
 	if(should_show_user_message(user))
-		to_chat(user, span_notice("The straps are too secure to adjust."))
+		to_chat(user, span_notice(LANG("obj.81bbc63fa620c720", null)))
 	else
-		to_chat(user, span_warning("The straps are too secure!"))
+		to_chat(user, span_warning(LANG("obj.922c4eeeab98a787", null)))
 
 /obj/item/clothing/mask/bridle/examine(mob/user)
 	. = ..()
 	var/blinders_state_text = blinders_enabled ? "down" : "up"
 	var/gag_state_text = gag_enabled ? "set" : "unset"
-	. += span_notice("The blinders are [blinders_state_text], and the bit is [gag_state_text].")
+	. += span_notice(LANG("obj.d18cd56c492cd136", list(blinders_state_text, gag_state_text)))
 
 /obj/item/clothing/mask/bridle/proc/update_bridle_state(mob/user, notify_wearer = TRUE)
 	var/mob/living/carbon/wearer = get_wearer()
@@ -115,11 +116,11 @@
 					blinders_effect = "restoring your sight"
 					blinders_self = "raise, restoring your sight"
 				if(user && user != wearer)
-					to_chat(wearer, span_userdanger("[user] [blinders_action] the bridle's blinders, [blinders_effect]."))
+					to_chat(wearer, span_userdanger(LANG("obj.31f58f62a45db510", list(user, blinders_action, blinders_effect))))
 				else if(user)
-					to_chat(wearer, span_notice("You [blinders_action_self] the bridle's blinders, [blinders_effect]."))
+					to_chat(wearer, span_notice(LANG("obj.ec02078fab0bcb34", list(blinders_action_self, blinders_effect))))
 				else
-					to_chat(wearer, span_notice("The bridle's blinders [blinders_self]."))
+					to_chat(wearer, span_notice(LANG("obj.6d82f6b9498e7e8a", list(blinders_self))))
 			last_blinders_enabled = blinders_enabled
 		if(gag_enabled != last_gag_enabled)
 			if(notify_wearer)
@@ -138,11 +139,11 @@
 					gag_effect = "letting you speak freely"
 					gag_self = "loosens, allowing you to speak freely"
 				if(user && user != wearer)
-					to_chat(wearer, span_userdanger("[user] [gag_action] the bridle's bit, [gag_effect]."))
+					to_chat(wearer, span_userdanger(LANG("obj.20dd90cd9c270777", list(user, gag_action, gag_effect))))
 				else if(user)
-					to_chat(wearer, span_notice("You [gag_action_self] the bridle's bit, [gag_effect]."))
+					to_chat(wearer, span_notice(LANG("obj.f8d9357c426f6d8a", list(gag_action_self, gag_effect))))
 				else
-					to_chat(wearer, span_notice("The bridle's bit [gag_self]."))
+					to_chat(wearer, span_notice(LANG("obj.5d0971286d2a4809", list(gag_self))))
 			last_gag_enabled = gag_enabled
 		wearer.update_tint()
 		wearer.update_worn_mask()
@@ -162,7 +163,7 @@
 			blinders_action = "lower"
 		else
 			blinders_action = "raise"
-		to_chat(user, span_notice("You [blinders_action] the bridle's blinders."))
+		to_chat(user, span_notice(LANG("obj.a78f54c5289cecf7", list(blinders_action))))
 	update_bridle_state(user)
 
 /obj/item/clothing/mask/bridle/proc/toggle_gag(mob/user)
@@ -176,7 +177,7 @@
 			gag_action = "secure"
 		else
 			gag_action = "loosen"
-		to_chat(user, span_notice("You [gag_action] the bridle's bit."))
+		to_chat(user, span_notice(LANG("obj.01c28a77a3e00829", list(gag_action))))
 	update_bridle_state(user)
 
 /obj/item/clothing/mask/bridle/proc/cycle_mode(mob/user)
@@ -211,7 +212,7 @@
 		else
 			balloon_state = "none"
 		if(should_show_user_message(user))
-			balloon_alert(user, "mode: [balloon_state]")
+			balloon_alert(user, LANG("obj.a72852bfd5dc43d4", list(balloon_state)))
 	if(should_show_user_message(user))
 		var/state_text
 		if(blinders_enabled && gag_enabled)
@@ -222,7 +223,7 @@
 			state_text = "bit"
 		else
 			state_text = "none"
-		to_chat(user, span_notice("Bridle set to: [state_text]."))
+		to_chat(user, span_notice(LANG("obj.09ff3835a8c5a48b", list(state_text))))
 	update_bridle_state(user, notify_wearer)
 
 /obj/item/clothing/mask/bridle/proc/strip_adjust(mob/living/carbon/wearer, mob/living/stripper)
@@ -234,7 +235,7 @@
 	if(wearer.get_item_by_slot(ITEM_SLOT_MASK) != src)
 		return
 	if(!stripper.Adjacent(wearer))
-		wearer.balloon_alert(stripper, "can't reach!")
+		wearer.balloon_alert(stripper, LANG("obj.fba9228dcadf2006", null))
 		return
 	if(!do_after(stripper, strip_adjust_delay, wearer))
 		return
@@ -260,7 +261,7 @@
 	if(old_gag != new_gag)
 		parts += (new_gag ? "set the bridle's bit" : "loosen the bridle's bit")
 	var/action_text = parts.len ? jointext(parts, " and ") : "adjust the bridle"
-	to_chat(stripper, span_notice("You [action_text]."))
+	to_chat(stripper, span_notice(LANG("obj.9390931e31ef1711", list(action_text))))
 	set_mode(new_blinders, new_gag, stripper, TRUE)
 
 /datum/strippable_item/mob_item_slot/mask/get_alternate_actions(atom/source, mob/user, obj/item/item)
@@ -298,7 +299,7 @@
 	if(emote.key in list("snort", "neigh", "neigh2")) //Can still do horse emotes because DUH
 		return NONE
 	if(!emote.hands_use_check && (emote.emote_type & EMOTE_AUDIBLE))
-		source.audible_message("makes a [pick("strong ", "weak ", "")]noise.", audible_message_flags = EMOTE_MESSAGE|ALWAYS_SHOW_SELF_MESSAGE)
+		source.audible_message(LANG("obj.2d4d2b60232e2c81", list(pick("strong ", "weak ", ""))), audible_message_flags = EMOTE_MESSAGE|ALWAYS_SHOW_SELF_MESSAGE)
 		return COMPONENT_CANT_EMOTE
 	return NONE
 

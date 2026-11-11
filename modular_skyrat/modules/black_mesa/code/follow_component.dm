@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Follow component
  *
@@ -54,13 +55,13 @@
 	if(following)
 		if(follow_sounds)
 			playsound(parent_mob, pick(follow_sounds), 100)
-		INVOKE_ASYNC(parent_mob, TYPE_PROC_REF(/atom/movable, say), "Following you!")
+		INVOKE_ASYNC(parent_mob, TYPE_PROC_REF(/atom/movable, say), LANG("datum.0b23acedf43d61f5", null))
 		parent_mob.Goto(living_user, follow_speed, follow_distance)
 	else
 		if(unfollow_sounds)
 			playsound(parent_mob, pick(unfollow_sounds), 100)
-		INVOKE_ASYNC(parent_mob, TYPE_PROC_REF(/atom/movable, say), "No longer following!")
+		INVOKE_ASYNC(parent_mob, TYPE_PROC_REF(/atom/movable, say), LANG("datum.6af38bdaf452138b", null))
 		parent_mob.LoseTarget()
 
 /datum/component/follow/proc/on_examine(datum/source, mob/examiner, list/examine_text)
-	examine_text += "Alt-click to make them follow you!"
+	examine_text += LANG("datum.91d65c366ea627db", null)

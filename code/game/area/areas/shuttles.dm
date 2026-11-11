@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 //These are shuttle areas; all subtypes are only used as teleportation markers, they have no actual function beyond that.
 //Multi area shuttles are a thing now, use subtypes! ~ninjanomnom
@@ -278,18 +279,18 @@
 
 	var/mob/living/L = AM
 	if(L.pulling && istype(L.pulling, /obj/item/bodypart/head))
-		to_chat(L, span_notice("Your offering is accepted. You may pass."), confidential = TRUE)
+		to_chat(L, span_notice(LANG("obj.4fc28c206f96f0df", null)), confidential = TRUE)
 		qdel(L.pulling)
 		var/turf/LA = get_turf(pick(warp_points))
 		L.forceMove(LA)
 		L.remove_status_effect(/datum/status_effect/hallucination)
-		to_chat(L, "<span class='reallybig redtext'>The battle is won. Your bloodlust subsides.</span>", confidential = TRUE)
+		to_chat(L, LANG("obj.f0f974375e6756a7", null), confidential = TRUE)
 		for(var/obj/item/chainsaw/doomslayer/chainsaw in L)
 			qdel(chainsaw)
 		var/obj/item/skeleton_key/key = new(L)
 		L.put_in_hands(key)
 	else
-		to_chat(L, span_warning("You are not yet worthy of passing. Drag a severed head to the barrier to be allowed entry to the hall of champions."), confidential = TRUE)
+		to_chat(L, span_warning(LANG("obj.d40de33f63b5299e", null)), confidential = TRUE)
 
 /obj/effect/landmark/shuttle_arena_safe
 	name = "hall of champions"
@@ -315,5 +316,5 @@
 	var/obj/effect/landmark/LA = pick(warp_points)
 	var/mob/living/M = AM
 	M.forceMove(get_turf(LA))
-	to_chat(M, "<span class='reallybig redtext'>You're trapped in a deadly arena! To escape, you'll need to drag a severed head to the escape portals.</span>", confidential = TRUE)
+	to_chat(M, LANG("obj.23087e52a0c8655a", null), confidential = TRUE)
 	M.apply_status_effect(/datum/status_effect/mayhem)

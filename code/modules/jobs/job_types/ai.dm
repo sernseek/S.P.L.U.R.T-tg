@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/job/ai
 	title = JOB_AI
 	description = "Assist the crew, follow your laws, coordinate your cyborgs."
@@ -59,7 +60,7 @@
 			sync_target.notify_ai(AI_NOTIFICATION_AI_SHELL)
 		else
 			sync_target.notify_ai(TRUE)
-		sync_target.visible_message(span_notice("[sync_target] gently chimes."), span_notice("LawSync protocol engaged."))
+		sync_target.visible_message(span_notice(LANG("datum.b033815b5b1f2177", list(sync_target))), span_notice(LANG("datum.cd29dfbfdf2cc2ab", null)))
 		log_combat(ai_spawn, sync_target, "forcibly synced cyborg laws via spawning in")
 		sync_target.lawsync()
 		sync_target.lawupdate = TRUE
@@ -119,7 +120,7 @@
 /datum/job/ai/announce_job(mob/living/joining_mob)
 	. = ..()
 	if(SSticker.HasRoundStarted())
-		minor_announce("[joining_mob] has been downloaded to an empty bluespace-networked AI core at [AREACOORD(joining_mob)].")
+		minor_announce(LANG("datum.ee3a7574dccc311f", list(joining_mob, AREACOORD(joining_mob))))
 
 
 /datum/job/ai/config_check()

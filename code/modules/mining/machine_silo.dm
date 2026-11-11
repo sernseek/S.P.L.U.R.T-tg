@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Always announce this action
 #define ALWAYS_ANNOUNCE (ALL)
 // Announced when someone tries to ban someone without QM access
@@ -124,10 +125,10 @@
 
 /obj/machinery/ore_silo/examine(mob/user)
 	. = ..()
-	. += span_notice("It can be linked to techfabs, circuit printers and protolathes with a multitool.")
-	. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "closed" : "open"].")
+	. += span_notice(LANG("obj.c246f12a465b0eae", null))
+	. += span_notice(LANG("obj.f3fabb12d30acb3c", list(EXAMINE_HINT("screwed"), panel_open ? "closed" : "open")))
 	if(panel_open)
-		. += span_notice("The whole machine can be [EXAMINE_HINT("pried")] apart.")
+		. += span_notice(LANG("obj.3a115ecaeb354764", list(EXAMINE_HINT("pried"))))
 
 /obj/machinery/ore_silo/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = NONE
@@ -135,7 +136,7 @@
 		return
 
 	if(held_item.tool_behaviour == TOOL_SCREWDRIVER)
-		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] Panel"
+		context[SCREENTIP_CONTEXT_LMB] = LANG("obj.3a1f9b9bcb4eed7a", list(panel_open ? "Close" : "Open"))
 		return CONTEXTUAL_SCREENTIP_SET
 
 	if(held_item.tool_behaviour == TOOL_MULTITOOL)
@@ -166,7 +167,7 @@
 
 /obj/machinery/ore_silo/multitool_act(mob/living/user, obj/item/multitool/I)
 	I.set_buffer(src)
-	balloon_alert(user, "saved to multitool buffer")
+	balloon_alert(user, LANG("obj.84afb909aab2db8b", null))
 	return ITEM_INTERACT_SUCCESS
 
 
@@ -213,15 +214,15 @@
 	if(user_data[SILICON_OVERRIDE] || user_data[CHAMELEON_OVERRIDE] || astype(user_data["accesses"], /list)?.Find(ACCESS_QM))
 		return COMPONENT_ORE_SILO_ALLOW
 	if(user_data[ID_READ_FAILURE])
-		physical_receptacle.say("SILO ERR: ID interface failure. Please contact the Head of Personnel.")
+		physical_receptacle.say(LANG("obj.5c9f81397e147902", null))
 		return COMPONENT_ORE_SILO_DENY
 	if(!user_data["account_id"] || !isnum(user_data["account_id"]))
 		if(prob(5))
-			physical_receptacle.say("SILO ERR: Bank account ID not found. Initiating anti-communist silo-access policy.")
-		physical_receptacle.say("SILO ERR: No account ID found. Please contact Head of Personnel.")
+			physical_receptacle.say(LANG("obj.3995e616a4dace89", null))
+		physical_receptacle.say(LANG("obj.a2b942c6b104fba6", null))
 		return COMPONENT_ORE_SILO_DENY
 	if(banned_users.Find(user_data["account_id"]))
-		physical_receptacle.say("SILO ERR: You are banned from using this ore silo.")
+		physical_receptacle.say(LANG("obj.e0a198813755a2ae", null))
 		return COMPONENT_ORE_SILO_DENY
 	return COMPONENT_ORE_SILO_ALLOW
 
@@ -250,7 +251,7 @@
 		data["machines"] += list(
 			list(
 				"icon" = icon2base64(icon(initial(parent.icon), initial(parent.icon_state), frame = 1)),
-				"name" = parent.name,
+				"name" = parent.lang_localize_name_for_display(parent.name), // ZH EDIT - I18N: 机器名纯显示（act 走 ref）；atom 版守玩家改名。ORIGINAL: "name" = parent.name,
 				"on_hold" = !!holds[remote],
 				"location" = get_area_name(parent, TRUE),
 			)
@@ -351,7 +352,7 @@
 		CRASH("Bad arguments passed to [callee]")
 	var/emagged = obj_flags & EMAGGED
 	if((isAI(user) || iscyborg(user) || isdrone(user)) && !emagged)
-		to_chat(user, span_danger("A scroll of red text occludes your vision: ACCESS ENFORCEMENT _disabled_ for SILICON INTERFACE."))
+		to_chat(user, span_danger(LANG("obj.fc8a223f0cba95fe", null)))
 		user.flash_act(intensity = 1, affect_silicon = TRUE)
 		handle_access_action_feedback(
 			BAN_ATTEMPT_FAILURE_SOULLESS_MACHINE,
@@ -367,7 +368,7 @@
 	// like ban people who haven't joined the round yet
 	var/haxxor_card_ban_immunity = !isnull(target_user_data[CHAMELEON_OVERRIDE])
 
-	to_chat(user, span_warning("You press the button to [target_is_banned ? "un" : ""]ban [target_user_data["name"]]'s account..."))
+	to_chat(user, span_warning(LANG("obj.d499369f0d6693ba", list(target_is_banned ? "un" : "", target_user_data["name"]))))
 	// No feedback if emagged
 	if(emagged)
 		if(!haxxor_card_ban_immunity && isnum(target_bank_id))

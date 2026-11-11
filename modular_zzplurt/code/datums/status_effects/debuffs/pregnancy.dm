@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Who is the liar but he who denies that Jesus is the Christ? This is the antichrist, he who denies the Father and the Son.
  * - John 2:22
@@ -116,13 +117,13 @@
 	pregnancy_duration = preference_source.prefs.read_preference(/datum/preference/numeric/pregnancy/duration) * PREGNANCY_DURATION_MULTIPLIER
 
 /datum/status_effect/pregnancy/proc/try_rename_baby(mob/user)
-	var/target_name = reject_bad_name(tgui_input_text(src, "What will the name of [mother_name || "someone"]'s offspring?", "The miracle of birth"))
+	var/target_name = reject_bad_name(tgui_input_text(src, LANG("datum.28f5d22ed31afd20", list(mother_name || "someone")), LANG("datum.6a0719f52c568d6e", null)))
 	if(!target_name || !user.Adjacent(owner))
 		return
 
 	baby_name = target_name
-	owner.visible_message(span_notice("[user] writes \"[target_name]\" on [owner]'s belly."), \
-								span_notice("[user] writes \"[target_name]\" on your belly."))
+	owner.visible_message(span_notice(LANG("datum.0aa5854c73e5a502", list(user, target_name, owner))), \
+								span_notice(LANG("datum.1a06951d877ef6af", list(user, target_name))))
 
 /datum/status_effect/pregnancy/proc/on_death(datum/source)
 	SIGNAL_HANDLER
@@ -157,7 +158,7 @@
 		var/mob/living/carbon/abortos = source
 		if(pregnancy_flags & PREGNANCY_FLAG_NAUSEA) // This one is debateable
 			abortos.vomit(vomit_flags = MOB_VOMIT_STUN | MOB_VOMIT_HARM | MOB_VOMIT_BLOOD, lost_nutrition = 20)
-		to_chat(abortos, span_userdanger("Your belly shrivels up!"))
+		to_chat(abortos, span_userdanger(LANG("datum.43ef92465e21d4ed", null)))
 	qdel(src)
 
 /datum/status_effect/pregnancy/tick(seconds_between_ticks)
@@ -169,13 +170,13 @@
 
 	if(pregnancy_stage >= 2)
 		if(previous_stage < 2)
-			to_chat(owner, span_warning("You can feel some pressure build up against your chest cavity."))
+			to_chat(owner, span_warning(LANG("datum.eb868586870f7676", null)))
 		//big wave of nausea every 40 seconds or so
 		else
 			if(SPT_PROB(1.5, seconds_between_ticks))
 				if(pregnancy_flags & PREGNANCY_FLAG_NAUSEA)
 					owner.adjust_disgust(30)
-				to_chat(owner, span_warning("Something [pick("squirms", "shakes", "kicks")] inside you."))
+				to_chat(owner, span_warning(LANG("datum.1fbc073282535021", list(pick("squirms", "shakes", "kicks")))))
 
 	if(pregnancy_stage >= 3)
 		if(previous_stage < 3)
@@ -185,7 +186,7 @@
 					previous_belly_size = belly.genital_size
 					if(belly.genital_size < 4)
 						belly.set_size(4)
-						to_chat(owner, span_warning("Your [belly] balloons in size as your egg grows."))
+						to_chat(owner, span_warning(LANG("datum.f2c5d6050a0b7511", list(belly))))
 		else if(owner.get_stamina_loss() < 50)
 			owner.adjust_stamina_loss(2.5 * seconds_between_ticks)
 
@@ -194,7 +195,7 @@
 			owner.add_mood_event("preggers", /datum/mood_event/pregnant_labor)
 			owner.adjust_stamina_loss(rand(50, 100))
 			owner.emote("scream")
-			to_chat(owner, span_userdanger("Your water broke! You need to lay down and squeeze the egg out!"))
+			to_chat(owner, span_userdanger(LANG("datum.e72efca4c266127d", null)))
 		else
 			var/can_deliver = (owner.body_position == LYING_DOWN)
 			if(can_deliver && ishuman(owner))
@@ -207,7 +208,7 @@
 					owner.adjust_disgust(3 * seconds_between_ticks)
 				if((owner.get_stamina_loss() < 100) && SPT_PROB(5, seconds_between_ticks))
 					owner.emote("scream")
-					to_chat(owner, "You REALLY need to give birth!")
+					to_chat(owner, LANG("datum.1fd0e10830cae304", null))
 			else
 				var/egg_species = "animal"
 				if(ishuman(owner) && ispath(baby_type, /mob/living/carbon/human))
@@ -216,8 +217,8 @@
 				else
 					egg_species = LOWER_TEXT(initial(baby_type.name))
 				owner.visible_message(\
-					span_nicegreen("[owner] gives birth to \a [egg_species] egg!"), \
-					span_nicegreen("You give birth to \a [egg_species] egg!"))
+					span_nicegreen(LANG("datum.aa2c241866c6eb67", list(owner, egg_species))), \
+					span_nicegreen(LANG("datum.06c87a87a5f35a61", list(egg_species))))
 
 				var/obj/item/organ/genital/belly/belly = owner.get_organ_slot(ORGAN_SLOT_BELLY)
 				if(istype(belly) && !isnull(previous_belly_size))

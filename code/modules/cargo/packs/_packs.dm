@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/supply_pack
 	/// The name of the supply pack, as listed on th cargo purchasing UI.
 	var/name = "Crate"
@@ -48,7 +49,7 @@
 	var/list/data = list()
 	for(var/obj/item/item as anything in contains)
 		var/list/item_data = list(
-			"name" = item.name,
+			"name" = lang_localize_display_name(item.name), // ZH EDIT - I18N: 货运包名纯显示（act 走 pack.id）。ORIGINAL: "name" = item.name,
 			"icon" = item.greyscale_config ? null : item.icon,
 			"icon_state" = item.greyscale_config ? null : item.icon_state,
 			"amount" = contains[item]
@@ -176,7 +177,7 @@
 			var/message = "[possible_stack::singular_name]: requested=[available_quantity] sheets, available=[market_quantity] sheets, adjusted=[market_quantity - available_quantity] sheets."
 			available_quantity = market_quantity
 			if(!available_quantity)
-				. += "[possible_stack::singular_name]: order cancelled due to insufficient sheets in the market."
+				. += LANG("datum.845e9fa47a614d29", list(possible_stack::singular_name))
 				contains -= possible_stack
 				continue
 			. += message

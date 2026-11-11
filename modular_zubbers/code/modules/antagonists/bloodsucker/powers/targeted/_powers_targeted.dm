@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // NOTE: All Targeted spells are Toggles! We just don't bother checking here.
 /datum/action/cooldown/bloodsucker/targeted
 	power_flags = NONE
@@ -58,7 +59,7 @@
 		// Out of Range
 		if(!(target_atom in view(target_range, owner)))
 			if(target_range > 1) // Only warn for range if it's greater than 1
-				owner.balloon_alert(owner, "out of range.")
+				owner.balloon_alert(owner, LANG("datum.8122803fcecd44c8", null))
 			return FALSE
 	return istype(target_atom)
 

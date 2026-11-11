@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // TODO: Work into reworked uplinks.
 /// Selects a set number of unique items from the uplink, and deducts a percentage discount from them
 /proc/create_uplink_sales(num, datum/uplink_category/category, limited_stock, list/sale_items)
@@ -45,8 +46,14 @@
 		uplink_item.stock_key = WEAKREF(uplink_item)
 		uplink_item.category = category
 		uplink_item.cost = max(round(uplink_item.cost * (1 - discount)),1)
-		uplink_item.name += " ([round(((initial(uplink_item.cost)-uplink_item.cost)/initial(uplink_item.cost))*100)]% off!)"
-		uplink_item.desc += " Normally costs [initial(uplink_item.cost)] TC. All sales final. [pick(disclaimer)]"
+		// ZH EDIT CHANGE - i18n: reverse the base name/desc before appending the runtime-composed discount suffix +
+		// sale text (which otherwise break the whole-string P1 reverse, leaving the base english). The sale text
+		// " Normally costs {0} TC. All sales final. {1}" is a boundary-template-engine template (translated downstream
+		// via P1); the short " (N% off!)" suffix is below the template min-anchor so it's localized directly here.
+		// no-op on en. - ORIGINAL: uplink_item.name += " ([...]% off!)" ; uplink_item.desc += " Normally costs [...] TC. All sales final. [pick(disclaimer)]"
+		var/off_percent = round(((initial(uplink_item.cost)-uplink_item.cost)/initial(uplink_item.cost))*100)
+		uplink_item.name = "[lang_reverse_text(uplink_item.name)][(GLOB.i18n_server_locale || DEFAULT_UI_LOCALE) != DEFAULT_UI_LOCALE ? "（[off_percent]% 折扣！）" : " ([off_percent]% off!)"]"
+		uplink_item.desc = "[lang_reverse_text(uplink_item.desc)] Normally costs [initial(uplink_item.cost)] TC. All sales final. [pick(disclaimer)]"
 		uplink_item.item = taken_item.item
 		uplink_item.discounted = TRUE
 
@@ -179,9 +186,9 @@
 			ADD_TRAIT(contained, TRAIT_CONTRABAND, INNATE_TRAIT)
 	var/mob/living/carbon/human/human_user = user
 	if(istype(human_user) && isitem(spawned_item) && human_user.put_in_hands(spawned_item))
-		to_chat(human_user, span_boldnotice("[spawned_item] materializes into your hands!"))
+		to_chat(human_user, span_boldnotice(LANG("datum.75ba6893d3b7f517", list(spawned_item))))
 	else
-		to_chat(user, span_boldnotice("[spawned_item] materializes onto the floor!"))
+		to_chat(user, span_boldnotice(LANG("datum.3feae979c134b400", list(spawned_item))))
 	SEND_SIGNAL(uplink_handler, COMSIG_ON_UPLINK_PURCHASE, spawned_item, user)
 	return spawned_item
 

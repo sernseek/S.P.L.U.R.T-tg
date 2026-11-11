@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/mob_spawn/ghost_role/human/vitezstvi_merc
 	name = "Vítězství Arms contractor bunk"
 	desc = "A stasis pod with a Vítězství Arms label. It's hard at work containing the smells of cheap tobacco and vodka; you can see what appears to be a PSC soldier sleeping almost comically peacefully inside, clad in full combat gear."
@@ -17,7 +18,7 @@
 	// inert until the shuttle commits; the deploy poll offers the role at that same moment
 	if(!EMERGENCY_PAST_POINT_OF_NO_RETURN)
 		if(!silent)
-			to_chat(user, span_warning("The contractor inside is still sleeping off a professional quantity of vodka! They will awaken on approach..."))
+			to_chat(user, span_warning(LANG("obj.30db221e5a87f2b8", null)))
 		return FALSE
 	return ..()
 

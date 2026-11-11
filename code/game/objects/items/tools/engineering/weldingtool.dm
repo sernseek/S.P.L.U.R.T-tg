@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/weldingtool
 	name = "welding tool"
 	desc = "A standard edition welder provided by Nanotrasen."
@@ -115,7 +116,7 @@
 
 
 /obj/item/weldingtool/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] welds [user.p_their()] every orifice closed! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.a31c308b017418a9", list(user, user.p_their(), user.p_theyre()))))
 	return FIRELOSS
 
 /obj/item/weldingtool/screwdriver_act(mob/living/user, obj/item/tool)
@@ -145,7 +146,7 @@
 /obj/item/weldingtool/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!status && interacting_with.is_refillable())
 		reagents.trans_to(interacting_with, reagents.total_volume, transferred_by = user)
-		to_chat(user, span_notice("You empty [src]'s fuel tank into [interacting_with]."))
+		to_chat(user, span_notice(LANG("obj.0dbc49ea6c308c76", list(src, interacting_with))))
 		update_appearance()
 		return ITEM_INTERACT_SUCCESS
 	if(!ishuman(interacting_with))
@@ -166,11 +167,11 @@
 		return NONE
 
 	if (!affecting.brute_dam)
-		balloon_alert(user, "limb not damaged")
+		balloon_alert(user, LANG("obj.aca69bd8ad34eb10", null))
 		return ITEM_INTERACT_BLOCKING
 
-	user.visible_message(span_notice("[user] starts to fix some of the dents on [attacked_humanoid == user ? user.p_their() : "[attacked_humanoid]'s"] [affecting.name]."),
-		span_notice("You start fixing some of the dents on [attacked_humanoid == user ? "your" : "[attacked_humanoid]'s"] [affecting.name]."))
+	user.visible_message(span_notice(LANG("obj.102599de4328c6cc", list(user, attacked_humanoid == user ? user.p_their() : "[attacked_humanoid]'s", affecting.name))),
+		span_notice(LANG("obj.d9ca7e1b8b4542ea", list(attacked_humanoid == user ? "your" : "[attacked_humanoid]'s", affecting.name))))
 	var/use_delay = 1 SECONDS // SKYRAT EDIT - original repeating ? 1 SECONDS : 0
 	if(user == attacked_humanoid)
 		use_delay = 5 SECONDS
@@ -248,7 +249,7 @@
 // /Switches the welder on
 /obj/item/weldingtool/proc/switched_on(mob/user)
 	if(!status)
-		balloon_alert(user, "unsecured!")
+		balloon_alert(user, LANG("obj.5a902d7a5bee9164", null))
 		return
 	set_welding(!welding)
 	if(welding)
@@ -260,7 +261,7 @@
 			update_appearance()
 			START_PROCESSING(SSobj, src)
 		else
-			balloon_alert(user, "no fuel!")
+			balloon_alert(user, LANG("obj.1b220a79f75bded9", null))
 			switched_off()
 	else
 		playsound(loc, deactivation_sound, 50, TRUE)
@@ -278,7 +279,7 @@
 
 /obj/item/weldingtool/examine(mob/user)
 	. = ..()
-	. += "It contains [get_fuel()] unit\s of fuel out of [max_fuel]."
+	. += LANG("obj.0d3482c989b5f6c5", list(get_fuel(), max_fuel))
 
 /obj/item/weldingtool/get_temperature()
 	return welding * heat
@@ -290,27 +291,27 @@
 /// If welding tool ran out of fuel during a construction task, construction fails.
 /obj/item/weldingtool/tool_use_check(mob/living/user, amount, heat_required)
 	if(!isOn() || !check_fuel())
-		to_chat(user, span_warning("[src] has to be on to complete this task!"))
+		to_chat(user, span_warning(LANG("obj.5f9e6829627723e9", list(src))))
 		return FALSE
 	if(get_fuel() < amount)
-		to_chat(user, span_warning("You need more welding fuel to complete this task!"))
+		to_chat(user, span_warning(LANG("obj.ff6b84ef3456c583", null)))
 		return FALSE
 	if(heat < heat_required)
-		to_chat(user, span_warning("[src] is not hot enough to complete this task!"))
+		to_chat(user, span_warning(LANG("obj.fe7e2bc651e1c434", list(src))))
 		return FALSE
 	return TRUE
 
 /// Ran when the welder is attacked by a screwdriver.
 /obj/item/weldingtool/proc/flamethrower_screwdriver(obj/item/tool, mob/user)
 	if(welding)
-		to_chat(user, span_warning("Turn it off first!"))
+		to_chat(user, span_warning(LANG("obj.6daf7903002d1e5d", null)))
 		return
 	status = !status
 	if(status)
-		to_chat(user, span_notice("You resecure [src] and close the fuel tank."))
+		to_chat(user, span_notice(LANG("obj.a4021c4d641fa2fc", list(src))))
 		reagents.flags &= ~(OPENCONTAINER)
 	else
-		to_chat(user, span_notice("[src] can now be attached, modified, and refuelled."))
+		to_chat(user, span_notice(LANG("obj.a10402c007f7055a", list(src))))
 		reagents.flags |= OPENCONTAINER
 	add_fingerprint(user)
 
@@ -324,10 +325,10 @@
 				user.transferItemToLoc(src, flamethrower_frame, TRUE)
 			flamethrower_frame.weldtool = src
 			add_fingerprint(user)
-			to_chat(user, span_notice("You add a rod to a welder, starting to build a flamethrower."))
+			to_chat(user, span_notice(LANG("obj.d05e34a8795048dc", null)))
 			user.put_in_hands(flamethrower_frame)
 		else
-			to_chat(user, span_warning("You need one rod to start building a flamethrower!"))
+			to_chat(user, span_warning(LANG("obj.8ce70e48e1a1fab2", null)))
 
 /obj/item/weldingtool/ignition_effect(atom/ignitable_atom, mob/user)
 	if(use_tool(ignitable_atom, user, 0))

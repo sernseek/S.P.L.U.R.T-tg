@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Checks is the parent mob is currently off duty. Returns `FALSE` if the mob isn't clocked out.
  *
@@ -47,8 +48,8 @@
 		return FALSE
 
 	if(target_human.check_if_off_duty(list(/datum/job_department/security)))
-		to_chat(user, span_notice("[target_human] is off-duty!"))
+		to_chat(user, span_notice(LANG("obj.657e887f8f1c1ead", list(target_human))))
 		return TRUE
 
-	to_chat(user, span_notice("[target_human] is not off-duty!"))
+	to_chat(user, span_notice(LANG("obj.990e7bcad9bfb8f8", list(target_human))))
 	return FALSE

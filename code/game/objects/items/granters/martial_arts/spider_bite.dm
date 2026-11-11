@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/book/granter/martial/spider_bite
 	martial = /datum/martial_art/spiders_bite
 
@@ -28,7 +29,7 @@
 	. = ..()
 	if(uses <= 0)
 		name = "empty scroll"
-		desc = "It's completely blank."
+		desc = LANG("obj.e75602d9c7399aee", null)
 		icon_state = "blankscroll"
 	else
 		name = initial(name)

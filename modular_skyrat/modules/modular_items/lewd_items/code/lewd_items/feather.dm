@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/tickle_feather
 	name = "tickling feather"
 	desc = "A rather ticklish feather that can be used in both mirth and malice."
@@ -20,14 +21,14 @@
 		return
 
 	if(!target.check_erp_prefs(/datum/preference/toggle/erp/sex_toy, user, src))
-		to_chat(user, span_danger("[target] doesn't want you to do that."))
+		to_chat(user, span_danger(LANG("obj.8d0a01828f0e2a19", list(target))))
 		return
 
 	var/message = ""
 	switch(user.zone_selected) //to let code know what part of body we gonna tickle
 		if(BODY_ZONE_PRECISE_GROIN)
 			if(carbon_target && !carbon_target.is_bottomless())
-				to_chat(user, span_danger("Looks like [target]'s groin is covered!"))
+				to_chat(user, span_danger(LANG("obj.c5b0317d58c50f81", list(target))))
 				return
 
 			message = (user == target) ? pick("tickles [target.p_them()]self with [src]",
@@ -39,7 +40,7 @@
 			if(carbon_target)
 				var/obj/item/organ/genital/badonkers = carbon_target.get_organ_slot(ORGAN_SLOT_BREASTS)
 				if(!badonkers?.is_exposed())
-					to_chat(user, span_danger("Looks like [target]'s chest is covered!"))
+					to_chat(user, span_danger(LANG("obj.b0aede841acb5a5f", list(target))))
 					return
 
 				message = (user == target) ? pick("tickles [target.p_them()]self with [src]",
@@ -53,7 +54,7 @@
 					: pick("teases [target]'s touch sensors with [src]")
 		if(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 			if(carbon_target && !carbon_target.has_feet(REQUIRE_GENITAL_EXPOSED))
-				to_chat(user, span_danger("Looks like [target]'s feets are covered!"))
+				to_chat(user, span_danger(LANG("obj.42f4863611ebf7c4", list(target))))
 				return
 
 			message = (user == target) ? pick("tickles [target.p_them()]self with [src]",
@@ -63,7 +64,7 @@
 					"uses [src] to tickle [target]'s toes")
 		if(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM)
 			if(carbon_target && !carbon_target.is_topless())
-				to_chat(user, span_danger("Looks like [target]'s armpits are covered!"))
+				to_chat(user, span_danger(LANG("obj.bd3c8ac13d7a164a", list(target))))
 				return
 
 			message = (user == target) ? pick("tickles [target.p_them()]self with [src]",

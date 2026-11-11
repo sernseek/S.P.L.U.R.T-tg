@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define OD_CHANCE_NO_TRAUMA 95
 
 // Hexacrocin. Advanced aphrodisiac that can cause brain traumas.
@@ -40,7 +41,7 @@
 	if(prob(OD_CHANCE_NO_TRAUMA) || HAS_TRAIT(exposed_mob, TRAIT_BIMBO))
 		return ..()
 
-	to_chat(exposed_mob, span_purple("Your libido is going haywire! It feels like speaking is much harder..."))
+	to_chat(exposed_mob, span_purple(LANG("datum.85c37dac751cc778", null)))
 	exposed_mob.gain_trauma(/datum/brain_trauma/very_special/bimbo, TRAUMA_RESILIENCE_BASIC)
 	ADD_TRAIT(exposed_mob, TRAIT_BIMBO, TRAIT_LEWDCHEM)
 

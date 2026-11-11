@@ -238,6 +238,7 @@ export const DmTarget = new Juke.Target({
     'modular_skyrat/**', ///SKYRAT EDIT ADDITION - Making the CBT work
     'modular_zubbers/**', ///BUBBER EDIT ADDITION - Making the CBT work
     'modular_zzplurt/**', ///SPLURT EDIT ADDITION - Making the CBT work
+    'modular_zh/**', // ZH EDIT ADDITION - localization modules
     'sound/**',
     'tgui/public/tgui.html',
     `${DME_NAME}.dme`,
@@ -382,6 +383,9 @@ export const TgFontTarget = new Juke.Target({
 export const TguiTarget = new Juke.Target({
   dependsOn: [BunTarget, BiomeInstallTarget],
   inputs: [
+    'tools/i18n/tgui-catalog.mjs',
+    'strings/i18n/en/tgui.json',
+    'strings/i18n/zh-Hans/tgui.json',
     'tgui/rspack.config.ts',
     'tgui/**/package.json',
     'tgui/packages/**/*.+(js|cjs|ts|tsx|jsx|scss)',
@@ -417,6 +421,40 @@ export const TguiLintTarget = new Juke.Target({
   dependsOn: [BunTarget, BiomeCheckTarget, TguiTscTarget],
 });
 
+export const I18nCheckTarget = new Juke.Target({
+  dependsOn: [BunTarget],
+  executes: async () => {
+    await Juke.exec('cargo', [
+      'test',
+      '--manifest-path',
+      'tools/i18n/Cargo.toml',
+    ]);
+    await Juke.exec('cargo', [
+      'run',
+      '--release',
+      '--manifest-path',
+      'tools/i18n/Cargo.toml',
+      '--',
+      'lint',
+    ]);
+    await Juke.exec('cargo', [
+      'run',
+      '--release',
+      '--manifest-path',
+      'tools/i18n/Cargo.toml',
+      '--',
+      'catalog-audit',
+    ]);
+    await bun(
+      './tgui',
+      '../tools/i18n/tgui-catalog.mjs',
+      'extract',
+      '--check',
+    );
+    await bun('./tgui', 'test', 'packages/tgui/i18n/*.test.ts');
+  },
+});
+
 export const TguiDevTarget = new Juke.Target({
   dependsOn: [BunTarget],
   executes: ({ args }) => bun('./tgui', 'tgui:dev', ...args),
@@ -432,7 +470,7 @@ export const TestTarget = new Juke.Target({
 });
 
 export const LintTarget = new Juke.Target({
-  dependsOn: [TguiLintTarget],
+  dependsOn: [TguiLintTarget, I18nCheckTarget],
 });
 
 export const BuildTarget = new Juke.Target({

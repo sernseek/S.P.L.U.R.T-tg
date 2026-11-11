@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Global list of ALL loadout datums instantiated.
 /// Loadout datums are created by loadout categories.
 GLOBAL_LIST_EMPTY(all_loadout_datums)
@@ -171,7 +172,7 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 	if(!loadout?[item_path])
 		return FALSE
 
-	var/chosen_color = tgui_color_picker(user, "Pick new color. Setting color to pitch black will remove the existing color.", "Repaint item", "#000000")
+	var/chosen_color = tgui_color_picker(user, LANG("datum.f2ff0f34681e2b66", null), LANG("datum.41df43f093a1ffde", null), "#000000")
 	if(isnull(chosen_color))
 		return FALSE
 
@@ -251,7 +252,7 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 	var/list/loadout = manager.get_current_loadout() // BUBBER EDIT: Multiple loadout presets: ORIGINAL: var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
 	var/input_name = tgui_input_text(
 		user = user,
-		message = "What [isname ? "name" : "description"] do you want to give the [name]? Leave blank to clear.",
+		message = LANG("datum.7f79015dcdd01127", list(isname ? "name" : "description", name)),
 		title = "[name] [isname ? "name" : "description"]",
 		default = loadout?[item_path]?[name_slot], // plop in existing name (if any)
 		max_length = isname ? MAX_NAME_LEN : MAX_DESC_LEN,
@@ -511,21 +512,21 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 
 	// SKYRAT EDIT ADDITION
 	if(donator_only)
-		displayed_text[FA_ICON_MONEY_BILL] = "Donator only"
+		displayed_text[FA_ICON_MONEY_BILL] = lang_reverse_text("Donator only") // ZH EDIT CHANGE - I18N
 
 	if(ckeywhitelist)
-		displayed_text[FA_ICON_LOCK] = "Player Whitelist: [ckeywhitelist.Join(", ")]"
+		displayed_text[FA_ICON_LOCK] = "[lang_reverse_text("Player Whitelist:")] [ckeywhitelist.Join(", ")]" // ZH EDIT CHANGE - I18N
 
 	if(restricted_roles || blacklisted_roles)
 		var/list/tooltip_text = list()
 		if(restricted_roles)
-			tooltip_text += "Job Whitelist: [restricted_roles.Join(", ")]"
+			tooltip_text += "[lang_reverse_text("Job Whitelist:")] [jointext(lang_reverse_string_list(restricted_roles.Copy()), ", ")]" // ZH EDIT CHANGE - I18N - copy so comparisons keep canonical names
 		if(blacklisted_roles)
-			tooltip_text += "Job Blacklist: [blacklisted_roles.Join(", ")]"
+			tooltip_text += "[lang_reverse_text("Job Blacklist:")] [jointext(lang_reverse_string_list(blacklisted_roles.Copy()), ", ")]" // ZH EDIT CHANGE - I18N
 		displayed_text[FA_ICON_TOOLBOX] = tooltip_text.Join("\n")
 
 	if(restricted_species)
-		displayed_text[FA_ICON_DNA] = "Species Whitelist: [restricted_species.Join(", ")]"
+		displayed_text[FA_ICON_DNA] = "[lang_reverse_text("Species Whitelist:")] [jointext(lang_reverse_string_list(restricted_species.Copy()), ", ")]" // ZH EDIT CHANGE - I18N
 	// SKYRAT EDIT ADDITION
 	return displayed_text
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/paper/paperslip/ration_ticket
 	name = "ration ticket - standard"
 	desc = "A little slip of paper that'll slot right into any cargo console and put your alotted food ration on the next shuttle to the station."
@@ -35,7 +36,7 @@
 	var/meats_choice = show_radial_menu(user, object_we_attack, radial_meat_options, require_near = TRUE)
 
 	if(!meats_choice)
-		object_we_attack.balloon_alert(user, "no selection made")
+		object_we_attack.balloon_alert(user, LANG("obj.00c9d29a651e4c53", null))
 		forceMove(drop_location(object_we_attack))
 		playsound(object_we_attack, 'sound/machines/terminal/terminal_insert_disc.ogg', 50, FALSE)
 		return
@@ -67,7 +68,7 @@
 	var/produce_choice = show_radial_menu(user, object_we_attack, radial_produce_options, require_near = TRUE)
 
 	if(!produce_choice)
-		object_we_attack.balloon_alert(user, "no selection made")
+		object_we_attack.balloon_alert(user, LANG("obj.00c9d29a651e4c53", null))
 		// Reset the list if we fail
 		items_we_deliver = list()
 		forceMove(drop_location(object_we_attack))
@@ -98,7 +99,7 @@
 	var/flour_choice = show_radial_menu(user, object_we_attack, radial_flour_options, require_near = TRUE)
 
 	if(!flour_choice)
-		object_we_attack.balloon_alert(user, "no selection made")
+		object_we_attack.balloon_alert(user, LANG("obj.00c9d29a651e4c53", null))
 		// Reset the list if we fail
 		items_we_deliver = list()
 		forceMove(drop_location(object_we_attack))
@@ -152,7 +153,7 @@
 		manifest_can_fail = FALSE,
 		can_be_cancelled = FALSE,
 	)
-	object_we_attack.say("Ration order placed! It will arrive on the next cargo shuttle!")
+	object_we_attack.say(LANG("obj.9bada937720b5a42", null))
 	SSshuttle.shopping_list += new_order
 	qdel(src)
 
@@ -194,7 +195,7 @@
 	var/alcohol_choice = show_radial_menu(user, object_we_attack, radial_alcohol_options, require_near = TRUE)
 
 	if(!alcohol_choice)
-		object_we_attack.balloon_alert(user, "no selection made")
+		object_we_attack.balloon_alert(user, LANG("obj.00c9d29a651e4c53", null))
 		forceMove(drop_location(object_we_attack))
 		return
 
@@ -229,7 +230,7 @@
 	var/consumables_choice = show_radial_menu(user, object_we_attack, radial_consumables_options, require_near = TRUE)
 
 	if(!consumables_choice)
-		object_we_attack.balloon_alert(user, "no selection made")
+		object_we_attack.balloon_alert(user, LANG("obj.00c9d29a651e4c53", null))
 		// Reset the list if we fail
 		items_we_deliver = list()
 		forceMove(drop_location(object_we_attack))

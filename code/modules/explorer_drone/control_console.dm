@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/computer/exodrone_control_console
 	name = "exploration drone control console"
 	desc = "Control exploration drones from interstellar distances. Communication lag not included."
@@ -53,6 +54,8 @@
 /obj/machinery/computer/exodrone_control_console/ui_static_data(mob/user)
 	. = ..()
 	.["all_tools"] = GLOB.exodrone_tool_metadata
+	// ZH EDIT ADDITION - I18N - 工具名是 all_tools 的键，负载翻译只收值；另发一份名字列表让它们进 overlay（前端不读这个字段）
+	.["tool_names"] = assoc_to_keys(GLOB.exodrone_tool_metadata)
 	.["all_bands"] = GLOB.exoscanner_bands
 
 /obj/machinery/computer/exodrone_control_console/ui_data(mob/user)
@@ -90,7 +93,7 @@
 	else
 		var/list/exodrones = list()
 		for(var/obj/item/exodrone/drone in GLOB.exodrones)
-			exodrones += list(list("name"=drone.name,"controlled"=drone.controlled,"description"=drone.ui_description(),"ref"=ref(drone)))
+			exodrones += list(list("name"=drone.lang_localize_name_for_display(drone.name),"controlled"=drone.controlled,"description"=drone.ui_description(),"ref"=ref(drone))) // ZH EDIT - I18N: 无人机名纯显示（act 走 ref）；atom 版守玩家改名
 		.["all_drones"] = exodrones
 
 /obj/machinery/computer/exodrone_control_console/update_overlays()
@@ -136,7 +139,7 @@
 					if(!target_site)
 						return TRUE
 					if(!controlled_drone.check_blacklist())
-						say("Error - An unauthorized object was found inside the cargo!")
+						say(LANG("obj.b9623c90c28cdf6f", null))
 						return TRUE
 				controlled_drone.launch_for(target_site)
 			return TRUE

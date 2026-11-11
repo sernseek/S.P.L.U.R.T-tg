@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define TIGHT_SLOWDOWN 2
 
 /obj/item/clothing/suit/corset
@@ -19,7 +20,7 @@
 
 /obj/item/clothing/suit/corset/click_alt(mob/user)
 	laced_tight = !laced_tight
-	to_chat(user, span_notice("You [laced_tight ? "tighten" : "loosen"] the corset, making it far [laced_tight ? "harder" : "easier"] to breathe."))
+	to_chat(user, span_notice(LANG("obj.5b7244b564cbf726", list(laced_tight ? "tighten" : "loosen", laced_tight ? "harder" : "easier"))))
 	conditional_pref_sound(user, laced_tight ? get_sfx(SFX_CLOTH_PICKUP) : get_sfx(SFX_CLOTH_DROP), 40, TRUE)
 	. = CLICK_ACTION_SUCCESS
 	if(laced_tight)
@@ -30,11 +31,11 @@
 /obj/item/clothing/suit/corset/equipped(mob/living/carbon/human/user, slot)
 	. = ..()
 	if(laced_tight && src == user.wear_suit)
-		to_chat(user, span_purple("The corset squeezes tightly against your ribs! Breathing suddenly feels much more difficult."))
+		to_chat(user, span_purple(LANG("obj.e070509b4e20cb02", null)))
 
 /obj/item/clothing/suit/corset/dropped(mob/living/carbon/human/user)
 	. = ..()
 	if(laced_tight && src == user.wear_suit)
-		to_chat(user, span_purple("Phew. Now you can breathe normally."))
+		to_chat(user, span_purple(LANG("obj.06264ba82e0b0a46", null)))
 
 #undef TIGHT_SLOWDOWN

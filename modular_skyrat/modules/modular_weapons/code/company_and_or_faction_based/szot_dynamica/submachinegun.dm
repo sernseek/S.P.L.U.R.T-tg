@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Rapid firing submachinegun firing .27-54 Cesarzowa
 
 /obj/item/gun/ballistic/automatic/miecz
@@ -48,17 +49,12 @@
 
 /obj/item/gun/ballistic/automatic/miecz/examine(mob/user)
 	. = ..()
-	. += span_notice("You can <b>examine closer</b> to learn a little more about this weapon.")
+	. += span_notice(LANG("obj.b663717df67087e6", null))
 
 /obj/item/gun/ballistic/automatic/miecz/examine_more(mob/user)
 	. = ..()
 
-	. += "The Miecz is one of the newest weapons to come out of CIN member state hands and \
-		into the wild, typically the frontier. It was built alongside the round it fires, the \
-		.27-54 Cesarzowa pistol round. Based on the proven Lanca design, it seeks to bring that \
-		same reliable weapon design into the form factor of a submachinegun. While it is significantly \
-		larger than many comparable weapons in TerraGov use, it more than makes up for it with ease \
-		of control and a significant fire rate."
+	. += LANG("obj.14e229cccf195c3b", null)
 
 	return .
 

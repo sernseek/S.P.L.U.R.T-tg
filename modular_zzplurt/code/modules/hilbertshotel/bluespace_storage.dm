@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/storage/box/bluespace
 	name = "bluespace box"
 	desc = "A box that stores items in a bluespace pocket dimension."
@@ -43,7 +44,7 @@
 	else if(length(contents))
 		return ..()
 	else
-		visible_message(span_danger("[src] begins rapidly shrinking!"))
+		visible_message(span_danger(LANG("obj.203007a5022b3358", list(src))))
 		var/matrix/shrink_back = matrix()
 		shrink_back.Scale(0.1,0.1)
 		animate(src, 3 SECONDS, transform = shrink_back)
@@ -80,7 +81,7 @@
 	if(current_area != creation_area)
 		var/obj/machinery/room_controller/controller = origin_controller?.resolve()
 		do_harmless_sparks(3, FALSE, src)
-		visible_message(span_danger("[src] vanishes in a flash of light!"))
+		visible_message(span_danger(LANG("obj.844b770dc0a32968", list(src))))
 		if(controller)
 			forceMove(controller)
 			controller.bluespace_box = src

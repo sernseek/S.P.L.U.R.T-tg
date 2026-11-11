@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Not to be confused with /obj/item/reagent_containers/cup/glass/bottle
 
 /obj/item/reagent_containers/cup/bottle
@@ -257,11 +258,11 @@
 	. = ..()
 	if(prob(50))
 		name = "Acidic buffer bottle"
-		desc = "A small bottle of acidic buffer."
+		desc = LANG("obj.ce30039ac6aaa0be", null)
 		reagents.add_reagent(/datum/reagent/reaction_agent/acidic_buffer, 30)
 	else
 		name = "Basic buffer bottle"
-		desc = "A small bottle of basic buffer."
+		desc = LANG("obj.0a25d5cd98bd19a4", null)
 		reagents.add_reagent(/datum/reagent/reaction_agent/basic_buffer, 30)
 
 /obj/item/reagent_containers/cup/bottle/acidic_buffer
@@ -528,8 +529,8 @@
 
 /obj/item/reagent_containers/cup/bottle/syrup_bottle/examine(mob/user)
 	. = ..()
-	. += span_notice("Alt-click to toggle the pump cap.")
-	. += span_notice("Use a pen on it to rename it.")
+	. += span_notice(LANG("obj.fdaf9a38d68bba94", null))
+	. += span_notice(LANG("obj.bf7b7e643116231f", null))
 
 /obj/item/reagent_containers/cup/bottle/syrup_bottle/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
 	. = ..()
@@ -555,15 +556,15 @@
 
 /obj/item/reagent_containers/cup/bottle/syrup_bottle/proc/refillable_act(mob/user, obj/item/tool)
 	if(!reagents.total_volume)
-		balloon_alert(user, "bottle empty!")
+		balloon_alert(user, LANG("obj.e60040d374368614", null))
 		return ITEM_INTERACT_BLOCKING
 	if(tool.reagents.holder_full())
-		balloon_alert(user, "container full!")
+		balloon_alert(user, LANG("obj.dbac962389e54430", null))
 		return ITEM_INTERACT_BLOCKING
 
 	var/transfer_amount = round(reagents.trans_to(tool, amount_per_transfer_from_this, transferred_by = user), CHEMICAL_VOLUME_ROUNDING)
 	if(transfer_amount)
-		balloon_alert(user, "transferred [transfer_amount] unit\s")
+		balloon_alert(user, LANG("obj.cb1aa9db10b5d39c", list(transfer_amount)))
 	flick("syrup_anim",src)
 	tool.update_appearance()
 	update_appearance()
@@ -578,10 +579,10 @@
 
 /obj/item/reagent_containers/cup/bottle/syrup_bottle/click_alt(mob/user)
 	if(is_open_container())
-		balloon_alert(user, "put pump cap on")
+		balloon_alert(user, LANG("obj.8986f2ccecda1bda", null))
 		update_container_flags(SEALED_CONTAINER | TRANSPARENT)
 	else
-		balloon_alert(user, "removed pump cap")
+		balloon_alert(user, LANG("obj.68b58460e9543505", null))
 		reset_container_flags()
 
 	update_appearance()

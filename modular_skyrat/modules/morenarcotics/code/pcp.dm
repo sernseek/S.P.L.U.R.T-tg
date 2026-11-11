@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/chemical_reaction/pcp
 	results = list(/datum/reagent/drug/pcp = 1)
 	required_reagents = list(/datum/reagent/pcc = 1, /datum/reagent/iron = 2) //iron is just a replacement for magnesium
@@ -70,7 +71,7 @@
 		QDEL_NULL(pcp_rage)
 	if(pcp_tenacity)
 		QDEL_NULL(pcp_tenacity)
-	L.visible_message(span_danger("[L] collapses onto the floor!")) //you pretty much pass out
+	L.visible_message(span_danger(LANG("datum.5d39e298c951d530", list(L)))) //you pretty much pass out
 	L.Paralyze(pcp_lifetime,TRUE)
 	L.drop_all_held_items()
 	..()
@@ -84,7 +85,7 @@
 	if(SPT_PROB(2.5, seconds_per_tick))
 		M.emote(pick("twitch","drool"))
 	if(SPT_PROB(1.5, seconds_per_tick))
-		M.visible_message(span_danger("[M] flails their arms around everywhere!"))
+		M.visible_message(span_danger(LANG("datum.ed696384a3d66232", list(M))))
 		M.drop_all_held_items()
 	..()
 	. = TRUE

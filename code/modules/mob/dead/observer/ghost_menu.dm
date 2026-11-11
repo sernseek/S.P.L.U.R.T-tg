@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_DATUM_INIT(ghost_menu, /datum/ghost_menu, new)
 
 /datum/ghost_menu
@@ -152,7 +153,7 @@ GLOBAL_DATUM_INIT(ghost_menu, /datum/ghost_menu, new)
 
 /datum/ghost_menu/proc/tray_view(mob/dead/observer/user)
 	if(SSlag_switch.measures[DISABLE_GHOST_ZOOM_TRAY] && !user.client?.holder)
-		to_chat(user, span_notice("That verb is currently globally disabled."))
+		to_chat(user, span_notice(LANG("datum.a5704d229be02a14", null)))
 		return
 	t_ray_scan(user)
 
@@ -176,7 +177,7 @@ GLOBAL_DATUM_INIT(ghost_menu, /datum/ghost_menu, new)
 
 /datum/ghost_menu/proc/set_view(mob/dead/observer/user, new_view)
 	if(SSlag_switch.measures[DISABLE_GHOST_ZOOM_TRAY] && !user.client?.holder)
-		to_chat(user, span_notice("That verb is currently globally disabled."))
+		to_chat(user, span_notice(LANG("datum.a5704d229be02a14", null)))
 		return TRUE
 	var/max_view = user.client.prefs.unlock_content ? GHOST_MAX_VIEW_RANGE_MEMBER : GHOST_MAX_VIEW_RANGE_DEFAULT
 	if(max_view >= new_view && new_view < GHOST_MIN_VIEW_RANGE)

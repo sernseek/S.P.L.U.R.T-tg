@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /atom/movable/screen/alert/status_effect/vulnerable_to_damage
 	name = "Vulnerable To Damage"
 	desc = "You will take more damage than normal while your body recovers from mending itself!"
@@ -17,14 +18,14 @@
 	duration = 15 MINUTES
 
 /datum/status_effect/vulnerable_to_damage/on_apply()
-	to_chat(owner, span_userdanger("Your body suddenly feels weak and fragile!"))
+	to_chat(owner, span_userdanger(LANG("datum.f6e7f492b7d05881", null)))
 	var/mob/living/carbon/human/carbon_owner = owner
 	carbon_owner.physiology.damage_resistance -= damage_resistance_subtraction
 	carbon_owner.physiology.bleed_mod += bleed_modifier_addition
 	return ..()
 
 /datum/status_effect/vulnerable_to_damage/on_remove()
-	to_chat(owner, span_notice("You seem to have recovered from your unnatural fragility!"))
+	to_chat(owner, span_notice(LANG("datum.9a20382d953632c2", null)))
 	var/mob/living/carbon/human/carbon_recoverer = owner
 	carbon_recoverer.physiology.damage_resistance += damage_resistance_subtraction
 	carbon_recoverer.physiology.bleed_mod -= bleed_modifier_addition

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/shield/big_bertha
 	name = "Big Bertha"
 	desc = "A shield so fat and heavy, it should block just about anything, as long as you have the stamina for it."
@@ -35,9 +36,9 @@
 
 	if(prob(owner.get_stamina_loss()))
 		owner.visible_message(
-			span_warning("The force of [attack_text] from [hitby] knocks down [owner]!"),
-			span_userdanger("The force of [attack_text] from [hitby] knocks you down!"),
-			span_notice("You hear a loud thud!"),
+			span_warning(LANG("obj.597dc5c10e64e5f8", list(attack_text, hitby, owner))),
+			span_userdanger(LANG("obj.02b74e95b578edd0", list(attack_text, hitby))),
+			span_notice(LANG("obj.f4a69f8888a0a376", null)),
 			COMBAT_MESSAGE_RANGE
 		)
 		owner.Knockdown(2 SECONDS) //The shield saved you, but at what cost?

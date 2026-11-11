@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /obj/item/storage/toolbox/syndicate
 	name = "tactical toolbox" // BUBBER EDIT CHANGE: Just a normal toolbox. Original: name = "suspicious looking toolbox"
@@ -98,7 +99,7 @@
 
 /obj/item/storage/toolbox/guncase/traitor/examine(mob/user)
 	. = ..()
-	. += span_notice("Activate the Evidence Disposal Explosive using Alt-Right-Click.")
+	. += span_notice(LANG("obj.77f127d87e4b1d70", null))
 
 /obj/item/storage/toolbox/guncase/traitor/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
@@ -122,16 +123,16 @@
 /obj/item/storage/toolbox/guncase/traitor/click_alt_secondary(mob/user)
 	. = ..()
 	if(currently_exploding)
-		user.balloon_alert(user, "already exploding!")
+		user.balloon_alert(user, LANG("obj.b98ad083bad44465", null))
 		return
 
-	var/i_dont_even_think_once_about_blowing_stuff_up = tgui_alert(user, "Would you like to activate the evidence disposal bomb now?", "BYE BYE", list("Yes","No"))
+	var/i_dont_even_think_once_about_blowing_stuff_up = tgui_alert(user, LANG("obj.4a09f031e3231c6b", null), LANG("obj.2754c85b02b195a4", null), list("Yes","No"))
 
 	if(i_dont_even_think_once_about_blowing_stuff_up != "Yes" || currently_exploding || QDELETED(user) || QDELETED(src) || !user.can_perform_action(src, NEED_DEXTERITY|NEED_HANDS|ALLOW_RESTING))
 		return
 
 	explosion_timer = addtimer(CALLBACK(src, PROC_REF(think_fast_chucklenuts)), 5 SECONDS, (TIMER_UNIQUE|TIMER_OVERRIDE))
-	to_chat(user, span_warning("You prime [src]'s evidence disposal bomb!"))
+	to_chat(user, span_warning(LANG("obj.f0976dccb5899355", list(src))))
 	log_bomber(user, "has activated a", src, "for detonation")
 	playsound(src, 'sound/items/weapons/armbomb.ogg', 50, TRUE)
 	currently_exploding = TRUE
@@ -281,10 +282,10 @@
 
 	if(is_simian(user))
 		atom_storage.locked = STORAGE_NOT_LOCKED
-		to_chat(user, span_notice("You place your paw on the paw scanner, and hear a soft click as [src] unlocks!"))
+		to_chat(user, span_notice(LANG("obj.cf9b90f234162899", list(src))))
 		playsound(src, 'sound/items/click.ogg', 25, TRUE)
 		return TRUE
-	to_chat(user, span_warning("You put your hand on the hand scanner, and it rejects it with an angry chimpanzee screech!"))
+	to_chat(user, span_warning(LANG("obj.cf3b22cdb9de610f", null)))
 	playsound(src, SFX_SCREECH, 75, TRUE)
 	return FALSE
 
@@ -333,14 +334,14 @@
 		return NONE
 	if(!tool.toolspeed)
 		return ITEM_INTERACT_BLOCKING
-	balloon_alert(user, "constructing...")
+	balloon_alert(user, LANG("obj.6d69dc2ba89e58df", null))
 	if(!tool.use_tool(src, user, 2 SECONDS, volume = 20))
 		return ITEM_INTERACT_BLOCKING
 
-	balloon_alert(user, "constructed!")
+	balloon_alert(user, LANG("obj.ddc1329a475e1243", null))
 	user.visible_message(
-		span_danger("[user] bashes [src] with [tool]!"),
-		span_danger("You bash [src] with [tool]!"),
+		span_danger(LANG("obj.2a0f4de079b6287d", list(user, src, tool))),
+		span_danger(LANG("obj.acf5f95aa290b2ea", list(src, tool))),
 		null,
 		COMBAT_MESSAGE_RANGE,
 	)

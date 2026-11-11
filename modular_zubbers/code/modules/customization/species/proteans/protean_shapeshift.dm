@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/protean/on_species_gain(mob/living/carbon/human/target)
 	. = ..()
 	var/datum/action/innate/alter_form/protean/alter_action = new
@@ -41,5 +42,5 @@
 			var/mob/living/carbon/person = owner
 			var/datum/species/protean/species = person.dna.species
 			if(owner.loc == species.species_modsuit)
-				return to_chat(owner, span_notice("You must leave your suit first!"))
+				return to_chat(owner, span_notice(LANG("datum.7566637572aa6641", null)))
 			begin_character_alteration(alterer)

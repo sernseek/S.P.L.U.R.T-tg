@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/mindless_killer
 	///how much force is added to items before hitting a mindless mob
 	var/mindless_force = 10
@@ -21,7 +22,7 @@
 /datum/component/mindless_killer/proc/examine(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 
-	examine_list += span_danger("It has an awful gleam against those who cannot think.")
+	examine_list += span_danger(LANG("datum.0e68c524ea8e7123", null))
 
 /datum/component/mindless_killer/proc/deal_smite(datum/source, mob/living/target_mob, mob/user, proximity_flag, list/modifiers)
 	SIGNAL_HANDLER

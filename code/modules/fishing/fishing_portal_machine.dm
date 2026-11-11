@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/fishing_portal_generator
 	name = "fish-porter 3000"
 	desc = "Fishing anywhere, anytime... anyway what was I talking about?"
@@ -66,11 +67,11 @@
 
 /obj/machinery/fishing_portal_generator/multitool_act(mob/living/user, obj/item/multitool/tool)
 	if(machine_stat & NOPOWER)
-		balloon_alert(user, "no power!")
+		balloon_alert(user, LANG("obj.b3e1b703b228ad7a", null))
 		return ITEM_INTERACT_BLOCKING
 	var/unlink = tool.buffer == src
 	tool.set_buffer(unlink ? null : src)
-	balloon_alert(user, "fish-porter [unlink ? "un" : ""]linked")
+	balloon_alert(user, LANG("obj.8d9dee0303c2ac06", list(unlink ? "un" : "")))
 	if(!unlink)
 		tool.item_flags |= ITEM_HAS_CONTEXTUAL_SCREENTIPS
 		RegisterSignal(tool, COMSIG_ITEM_REQUESTING_CONTEXT_FOR_TARGET, PROC_REF(multitool_context))
@@ -79,10 +80,10 @@
 
 /obj/machinery/fishing_portal_generator/multitool_act_secondary(mob/living/user, obj/item/tool)
 	if(machine_stat & NOPOWER)
-		balloon_alert(user, "no power!")
+		balloon_alert(user, LANG("obj.b3e1b703b228ad7a", null))
 		return ITEM_INTERACT_BLOCKING
 	if(!length(linked_fishing_spots))
-		balloon_alert(user, "nothing to unlink!")
+		balloon_alert(user, LANG("obj.0c60f06a8eabfa64", null))
 		return ITEM_INTERACT_BLOCKING
 	var/list/fishing_list = list()
 	var/id = 1
@@ -104,7 +105,7 @@
 	if(QDELETED(spot) || !(spot in linked_fishing_spots) || !can_interact(user))
 		return
 	unlink_fishing_spot(spot)
-	balloon_alert(user, "fishing spot unlinked")
+	balloon_alert(user, LANG("obj.17563469601085f7", null))
 
 /obj/machinery/fishing_portal_generator/proc/multitool_context(obj/item/source, list/context, atom/target, mob/living/user)
 	SIGNAL_HANDLER
@@ -122,21 +123,21 @@
 	if(istype(spot, /obj/machinery/fishing_portal_generator)) //Don't link it to itself or other fishing portals.
 		return
 	if(length(linked_fishing_spots) >= max_fishing_spots)
-		spot.balloon_alert(user, "cannot link more!")
+		spot.balloon_alert(user, LANG("obj.9ce3062b98039847", null))
 		return ITEM_INTERACT_BLOCKING
 	for(var/other_spot in linked_fishing_spots)
 		var/datum/fish_source/stored = linked_fishing_spots[other_spot]
 		if(stored == source)
-			spot.balloon_alert(user, "already linked!")
+			spot.balloon_alert(user, LANG("obj.cc32a1c7c966a07a", null))
 			playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 15, FALSE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 			return ITEM_INTERACT_BLOCKING
 	if(HAS_TRAIT(spot, TRAIT_UNLINKABLE_FISHING_SPOT))
-		spot.balloon_alert(user, "unlinkable fishing spot!")
+		spot.balloon_alert(user, LANG("obj.d5274abf570e914a", null))
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 15, FALSE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 		return ITEM_INTERACT_BLOCKING
 	LAZYSET(linked_fishing_spots, spot, source)
 	RegisterSignal(spot, SIGNAL_REMOVETRAIT(TRAIT_FISHING_SPOT), PROC_REF(unlink_fishing_spot))
-	spot.balloon_alert(user, "fishing spot linked")
+	spot.balloon_alert(user, LANG("obj.c6f938da9004f0de", null))
 	playsound(spot, 'sound/machines/ping.ogg', 15, TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 	return ITEM_INTERACT_SUCCESS
 
@@ -150,14 +151,13 @@
 
 /obj/machinery/fishing_portal_generator/examine(mob/user)
 	. = ..()
-	. += span_notice("You can unlock further portal settings by completing fish scanning experiments, \
-		or by connecting it to other fishing spots with a multitool.")
+	. += span_notice(LANG("obj.5e939d0728fac542", null))
 
 /obj/machinery/fishing_portal_generator/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
-	balloon_alert(user, "syndicate setting loaded")
+	balloon_alert(user, LANG("obj.31ff9a68e1b2e85f", null))
 	playsound(src, SFX_SPARKS, 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	return TRUE
 
@@ -201,7 +201,7 @@
 	if(QDELETED(selected_source))
 		return
 	if(machine_stat & NOPOWER)
-		balloon_alert(user, "no power!")
+		balloon_alert(user, LANG("obj.b3e1b703b228ad7a", null))
 		return ITEM_INTERACT_BLOCKING
 	if(!all_destinations && !istype(selected_source, /datum/fish_source/portal)) //likely from a linked fishing spot
 		var/abort = TRUE
@@ -219,7 +219,7 @@
 				current_linked_atom = spot
 			break
 		if(abort && !all_destinations)
-			balloon_alert(user, "cannot reach linked!")
+			balloon_alert(user, LANG("obj.eff86646dfe266ef", null))
 			return
 
 	active = AddComponent(/datum/component/fishing_spot, selected_source)

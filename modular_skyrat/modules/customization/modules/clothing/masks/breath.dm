@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/mask/breath/vox
 	desc = "A close-fitting mask that can be connected to an air supply. This one's got an easily accessible feeding port to be more suitable for the Vox crewmembers."
 	name = "vox breath mask"
@@ -26,17 +27,17 @@
 			if (0)
 				flags_inv = HIDEHAIR
 				icon_state = initial(icon_state) + "_open"
-				to_chat(user, "You put the balaclava away, revealing your face.")
+				to_chat(user, LANG("obj.3b7a31f7ab8bc344", null))
 				open = 1
 			if (1)
 				flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
 				icon_state = initial(icon_state) + "_mouth"
-				to_chat(user, "You adjust the balaclava up to cover your mouth.")
+				to_chat(user, LANG("obj.18093b32f0ade7d3", null))
 				open = 2
 			else
 				flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDEHAIR
 				icon_state = initial(icon_state)
-				to_chat(user, "You pull the balaclava up to cover your whole head.")
+				to_chat(user, LANG("obj.bc348054e48f4c44", null))
 				open = 0
 		user.update_body_parts()
 		user.update_worn_ears()
@@ -45,7 +46,7 @@
 /obj/item/clothing/mask/balaclavaadjust/attack_self(mob/user)
 	adjust_mask(user)
 
-GAME_VERB_SRC(/obj/item/clothing/mask/balaclavaadjust, toggle, usr, "Adjust Balaclava", "Object")
+GAME_VERB_SRC(/obj/item/clothing/mask/balaclavaadjust, toggle, usr, "调整巴拉克拉瓦头套", "Object")
 		adjust_mask(usr)
 
 /obj/item/clothing/mask/balaclava/threehole

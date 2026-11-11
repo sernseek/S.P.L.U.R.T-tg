@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BLOOD_AMOUNT_TO_STEAL_PERCENT_RATIO 5 // 1u, 5%, 10u, 50%
 #define PHYLACTERY_ACCOUNT_MIN 300
 
@@ -54,21 +55,21 @@
 		var/mob/living/curr_mob = entry[5]
 		var/datum/reagents/holder = entry[6]
 		if (curr_mob?.can_block_magic(MAGIC_RESISTANCE))
-			to_chat(curr_mob, span_warning("You feel the cold grasp of capitalism gripping your finances... but then it slips away."))
+			to_chat(curr_mob, span_warning(LANG("datum.fded0fede8f6a393", null)))
 			continue
 
 		var/to_steal = (creds * ((blood_amount * 0.01) * BLOOD_AMOUNT_TO_STEAL_PERCENT_RATIO))
 
 		if (from_phylactery)
 			if (account.account_balance < PHYLACTERY_ACCOUNT_MIN)
-				to_chat(user, span_warning("Not enough money to extract from a phylacterized sample of blood!"))
+				to_chat(user, span_warning(LANG("datum.9feb5fe08bad87c2", null)))
 				continue
 
 		to_steal = floor(to_steal)
 		account.adjust_money(-to_steal, "##^@%%$^")
 		if (curr_mob != null)
-			to_chat(curr_mob, span_warning("You feel the cold grasp of capitalism gripping your finanaces and tearing them away... someone just stole some of your money through the mansus!"))
-			curr_mob.balloon_alert(curr_mob, "money stolen!")
+			to_chat(curr_mob, span_warning(LANG("datum.251d0002f66cb9df", null)))
+			curr_mob.balloon_alert(curr_mob, LANG("datum.c44eee5cd7e185c8", null))
 
 		// no space cash bc space cash is picky
 		var/obj/item/holochip/cash = new /obj/item/holochip(loc)

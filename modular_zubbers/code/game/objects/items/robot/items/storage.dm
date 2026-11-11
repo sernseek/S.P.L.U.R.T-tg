@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/borg/apparatus/paper_manipulator
 	name = "paperwork manipulation apparatus"
 	desc = "An apparatus for carrying, deploying, and manipulating sheets of paper."
@@ -38,8 +39,8 @@
 /obj/item/borg/apparatus/research/examine()
 	. = ..()
 	if(stored)
-		. += "The gripper currently has [stored] secured."
-	. += span_notice(" <i>Alt-click</i> will drop the currently held item. ")
+		. += LANG("obj.92c33bca91cdf577", list(stored))
+	. += span_notice(LANG("obj.fc2bf9bb3751e3f1", null))
 
 //To build funny little gadgets
 
@@ -65,12 +66,12 @@
 /obj/item/borg/apparatus/circuit_sci/examine()
 	. = ..()
 	if(stored)
-		. += "The gripper currently has [stored] secured."
-	. += span_notice(" <i>Alt-click</i> will drop the currently held item. ")
+		. += LANG("obj.92c33bca91cdf577", list(stored))
+	. += span_notice(LANG("obj.fc2bf9bb3751e3f1", null))
 
 /obj/item/borg/apparatus/circuit_sci/pre_attack(atom/atom, mob/living/user, params) // copy and paste
 	if(istype(atom, /obj/item/ai_module) && !stored) //If an admin wants a borg to upload laws, who am I to stop them? Otherwise, we can hint that it fails
-		to_chat(user, span_warning("This circuit board doesn't seem to have standard robot apparatus pin holes. You're unable to pick it up."))
+		to_chat(user, span_warning(LANG("obj.d3e4aec4b1415567", null)))
 	return ..()
 
 //Illegal gripper to allow research cyborgs when hacked to do further robotics work
@@ -95,8 +96,8 @@
 /obj/item/borg/apparatus/illegal/examine()
 	. = ..()
 	if(stored)
-		. += "The apparatus currently has [stored] secured."
-	. += span_notice(" <i>Alt-click</i> will drop the currently held item. ")
+		. += LANG("obj.929ca228fbd7968b", list(stored))
+	. += span_notice(LANG("obj.fc2bf9bb3751e3f1", null))
 
 /obj/item/borg/apparatus/tank_manipulator
 	name = "tank manipulation apparatus"
@@ -231,5 +232,5 @@
 /obj/item/borg/apparatus/mining/examine()
 	. = ..()
 	if(stored)
-		. += "The gripper currently has [stored] secured."
-	. += span_notice(" <i>Alt-click</i> will drop the currently held item. ")
+		. += LANG("obj.92c33bca91cdf577", list(stored))
+	. += span_notice(LANG("obj.fc2bf9bb3751e3f1", null))

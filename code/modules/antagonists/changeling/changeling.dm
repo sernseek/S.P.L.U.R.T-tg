@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Helper to format the text that gets thrown onto the chem hud element.
 #define FORMAT_CHEM_MAX_TEXT(charges) MAPTEXT("<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='#dd2828'>[round(charges)]</font></div>")
 /// Helper to format the text that gets thrown onto the chem hud element.
@@ -253,7 +254,7 @@
 
 /datum/antagonist/changeling/farewell()
 	if(owner.current)
-		to_chat(owner.current, span_userdanger("You grow weak and lose your powers! You are no longer a changeling and are stuck in your current form!"))
+		to_chat(owner.current, span_userdanger(LANG("datum.751c137b8e00005a", null)))
 
 /*
  * Instantiate the cellular emporium for the changeling.
@@ -412,28 +413,28 @@
 		CRASH("Changeling purchase_power attempted to purchase an invalid typepath! (got: [sting_path])")
 
 	if(purchased_powers[sting_path])
-		to_chat(owner.current, span_warning("We have already evolved this ability!"))
+		to_chat(owner.current, span_warning(LANG("datum.8125cb91350c5324", null)))
 		return FALSE
 
 	if(genetic_points < initial(sting_path.dna_cost))
-		to_chat(owner.current, span_warning("We have reached our capacity for abilities!"))
+		to_chat(owner.current, span_warning(LANG("datum.0867cad7f598b254", null)))
 		return FALSE
 
 	if(absorbed_count < initial(sting_path.req_dna))
-		to_chat(owner.current, span_warning("We lack the DNA to evolve this ability!"))
+		to_chat(owner.current, span_warning(LANG("datum.8033df8759f25a76", null)))
 		return FALSE
 
 	if(true_absorbs < initial(sting_path.req_absorbs))
-		to_chat(owner.current, span_warning("We lack the absorbed DNA to evolve this ability!"))
+		to_chat(owner.current, span_warning(LANG("datum.c78a5169448fac3b", null)))
 		return FALSE
 
 	if(initial(sting_path.dna_cost) < 0)
-		to_chat(owner.current, span_warning("We cannot evolve this ability!"))
+		to_chat(owner.current, span_warning(LANG("datum.fe2b1327b4bb8bbf", null)))
 		return FALSE
 
 	//To avoid potential exploits by buying new powers while in stasis, which clears your verblist. // Probably not a problem anymore, but whatever.
 	if(HAS_TRAIT(owner.current, TRAIT_DEATHCOMA))
-		to_chat(owner.current, span_warning("We lack the energy to evolve new abilities right now!"))
+		to_chat(owner.current, span_warning(LANG("datum.27e83744ce4db585", null)))
 		return FALSE
 
 	var/success = give_power(sting_path)
@@ -455,7 +456,7 @@
 	var/datum/action/changeling/new_action = new power_path()
 
 	if(!new_action)
-		to_chat(owner.current, "This is awkward. Changeling power purchase failed, please report this bug to a coder!")
+		to_chat(owner.current, LANG("datum.2f8aabfedbcaed31", null))
 		CRASH("Changeling give_power was unable to grant a new changeling action for path [power_path]!")
 
 	purchased_powers[power_path] = new_action
@@ -470,18 +471,18 @@
  */
 /datum/antagonist/changeling/proc/readapt()
 	if(!ishuman(owner.current) || ismonkey(owner.current))
-		to_chat(owner.current, span_warning("We can't remove our evolutions in this form!"))
+		to_chat(owner.current, span_warning(LANG("datum.07197905bb616b94", null)))
 		return FALSE
 
 	if(HAS_TRAIT_FROM(owner.current, TRAIT_DEATHCOMA, CHANGELING_TRAIT))
-		to_chat(owner.current, span_warning("We are too busy reforming ourselves to readapt right now!"))
+		to_chat(owner.current, span_warning(LANG("datum.95dfa5954147da33", null)))
 		return FALSE
 
 	if(!can_respec)
-		to_chat(owner.current, span_warning("You lack the power to readapt your evolutions!"))
+		to_chat(owner.current, span_warning(LANG("datum.1a9a3b950694ca54", null)))
 		return FALSE
 
-	to_chat(owner.current, span_notice("We have removed our evolutions from this form, and are now ready to readapt."))
+	to_chat(owner.current, span_notice(LANG("datum.32ebd098bf72847b", null)))
 	remove_changeling_powers()
 	can_respec -= 1
 	SSblackbox.record_feedback("tally", "changeling_power_purchase", 1, "Readapt")
@@ -521,32 +522,32 @@
 		var/datum/changeling_profile/top_profile = stored_profiles[1]
 		if(top_profile.dna.is_same_as(user.dna) && stored_profiles.len > dna_max)
 			if(verbose)
-				to_chat(user, span_warning("We have reached our capacity to store genetic information! We must transform before absorbing more."))
+				to_chat(user, span_warning(LANG("datum.9c384d041d06dc73", null)))
 			return FALSE
 
 	if(!target.has_dna())
 		if(verbose)
-			to_chat(user, span_warning("[target] is not compatible with our biology."))
+			to_chat(user, span_warning(LANG("datum.d79f4b0871eb3eba", list(target))))
 		return FALSE
 	if(has_profile_with_dna(target.dna))
 		if(verbose)
-			to_chat(user, span_warning("We already have this DNA in storage!"))
+			to_chat(user, span_warning(LANG("datum.b81073e9791f3b06", null)))
 		return FALSE
 	if(HAS_TRAIT(target, TRAIT_NO_DNA_COPY))
 		if(verbose)
-			to_chat(user, span_warning("[target] is not compatible with our biology."))
+			to_chat(user, span_warning(LANG("datum.d79f4b0871eb3eba", list(target))))
 		return FALSE
 	if(HAS_TRAIT(target, TRAIT_BADDNA))
 		if(verbose)
-			to_chat(user, span_warning("[target]'s DNA is ruined beyond usability!"))
+			to_chat(user, span_warning(LANG("datum.66d972eb2981a3cc", list(target))))
 		return FALSE
 	if(HAS_TRAIT(target, TRAIT_HUSK))
 		if(verbose)
-			to_chat(user, span_warning("[target]'s body is ruined beyond usability!"))
+			to_chat(user, span_warning(LANG("datum.af6e349634cb7158", list(target))))
 		return FALSE
 	if(!ishuman(target) || ismonkey(target))//Absorbing monkeys is entirely possible, but it can cause issues with transforming. That's what lesser form is for anyway!
 		if(verbose)
-			to_chat(user, span_warning("We could gain no benefit from absorbing a lesser creature."))
+			to_chat(user, span_warning(LANG("datum.3d184efc94037957", null)))
 		return FALSE
 
 	return TRUE
@@ -795,7 +796,7 @@
  */
 /datum/antagonist/changeling/proc/admin_restore_appearance(mob/admin)
 	if(!stored_profiles.len || !iscarbon(owner.current))
-		to_chat(admin, span_danger("Resetting DNA failed!"))
+		to_chat(admin, span_danger(LANG("datum.80ac470956580927", null)))
 		return
 
 	var/mob/living/carbon/carbon_owner = owner.current
@@ -1128,9 +1129,9 @@
 			/*
 			if(!objective.check_completion())
 				changeling_win = FALSE
-			parts += "<b>Objective #[count]</b>: [objective.explanation_text] [objective.get_roundend_success_suffix()]"
+			parts += "<b>[lang_reverse_text("Objective")] #[count]</b>: [lang_reverse_text(objective.explanation_text)] [objective.get_roundend_success_suffix()]" // ZH EDIT - I18N - reverse non-interpolated full-sentence objectives (interpolated ones miss and still hit the to_chat boundary engine)
 			*/
-			parts += "<b>Objective #[count]</b>: [objective.explanation_text]"
+			parts += "<b>[lang_reverse_text("Objective")] #[count]</b>: [lang_reverse_text(objective.explanation_text)]" // ZH EDIT - I18N - reverse non-interpolated full-sentence objectives (interpolated ones miss and still hit the to_chat boundary engine)
 			// SKYRAT EDIT END - No greentext
 			count++
 
@@ -1188,8 +1189,7 @@
 
 /datum/antagonist/changeling/headslug/greet()
 	play_stinger()
-	to_chat(owner, span_bolddanger("You are a fresh changeling birthed from a headslug! \
-		You aren't as strong as a normal changeling, as you are newly born."))
+	to_chat(owner, span_bolddanger(LANG("datum.35e523f626aa6820", null)))
 
 
 /datum/antagonist/changeling/space
@@ -1201,7 +1201,7 @@
 
 /datum/antagonist/changeling/space/greet()
 	play_stinger()
-	to_chat(src, span_changeling("Our mind stirs to life, from the depths of an endless slumber..."))
+	to_chat(src, span_changeling(LANG("datum.ec54669ea80ab4d0", null)))
 
 /datum/outfit/changeling
 	name = "Changeling"

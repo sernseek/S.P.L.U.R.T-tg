@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /* Mind Restoration
  * Slight stealth reduction
  * Reduces resistance
@@ -108,11 +109,11 @@
 			eyes.apply_organ_damage(-2)
 			if(prob(20))
 				if(infected_mob.is_blind_from(EYE_DAMAGE))
-					to_chat(infected_mob, span_warning("Your vision slowly returns..."))
+					to_chat(infected_mob, span_warning(LANG("datum.075ce441371afaf3", null)))
 					infected_mob.adjust_eye_blur(20 SECONDS)
 
 				else if(infected_mob.is_nearsighted_from(EYE_DAMAGE))
-					to_chat(infected_mob, span_warning("The blackness in your peripheral vision begins to fade."))
+					to_chat(infected_mob, span_warning(LANG("datum.9924278487fbdd07", null)))
 					infected_mob.adjust_eye_blur(5 SECONDS)
 
 		else

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/disease/transformation_race
 	name = "Transformation"
 	max_stages = 5
@@ -39,7 +40,7 @@
 		if(5)
 			var/datum/species/species_type = race
 			affected_mob.set_species(species_type, icon_update = TRUE, pref_load = FALSE)
-			to_chat(affected_mob, span_warning("You've become \a [LOWER_TEXT(initial(species_type.name))]!"))
+			to_chat(affected_mob, span_warning(LANG("datum.f4b118b915979236", list(LOWER_TEXT(initial(species_type.name))))))
 			cure()
 
 /datum/disease/transformation_race/synthetic

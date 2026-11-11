@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/empowered_borer_egg
 	name = "strange egg"
 	desc = "All slimy and yuck."
@@ -12,7 +13,7 @@
 
 /obj/item/organ/empowered_borer_egg/on_find(mob/living/finder)
 	..()
-	to_chat(finder, span_warning("You found an unknown egg in [owner]'s [zone]!"))
+	to_chat(finder, span_warning(LANG("obj.6cf60afdabad2645", list(owner, zone))))
 
 /obj/item/organ/empowered_borer_egg/Initialize(mapload)
 	. = ..()
@@ -25,7 +26,7 @@
 
 /obj/item/organ/empowered_borer_egg/on_mob_remove(mob/living/carbon/M, special = FALSE, movement_flags)
 	. = ..()
-	visible_message(span_warning(span_italics("As [src] is cut out of [M], it quickly vibrates and shatters, leaving nothing but some goop!")))
+	visible_message(span_warning(span_italics(LANG("obj.424d6b545e992936", list(src, M)))))
 	new/obj/effect/decal/cleanable/food/egg_smudge(get_turf(src))
 	qdel(src)
 
@@ -42,13 +43,13 @@
 		borer_egg.generation = generation
 		var/obj/item/bodypart/chest/chest = owner.get_bodypart(BODY_ZONE_CHEST)
 		chest.dismember()
-		owner.visible_message(span_danger("An egg explodes out of [owner]'s chest, sending gore flying everywhere!"), span_danger("An egg explodes out of your chest, giblets flying everywhere!"))
+		owner.visible_message(span_danger(LANG("obj.f5cdf564c42a18d3", list(owner))), span_danger(LANG("obj.f39b677b76c56445", null)))
 		return
 	var/mob/dead/observer/new_borer = pick(candidates)
 	var/mob/living/basic/cortical_borer/empowered/spawned_cb = new(get_turf(owner))
 	var/obj/item/bodypart/chest/chest = owner.get_bodypart(BODY_ZONE_CHEST)
 	chest.dismember()
-	owner.visible_message(span_danger("[spawned_cb] explodes out of [owner]'s chest, sending gore flying everywhere!"), span_danger("[spawned_cb] explodes out of your chest, giblets flying everywhere!"))
+	owner.visible_message(span_danger(LANG("obj.15bcddc60c34f370", list(spawned_cb, owner))), span_danger(LANG("obj.702a03c7d23e13e3", list(spawned_cb))))
 	spawned_cb.generation = generation
 	spawned_cb.ckey = new_borer.ckey
 	spawned_cb.mind.add_antag_datum(/datum/antagonist/cortical_borer)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Used to stop synth structural damage
 /obj/item/stack/medical/wound_recovery/robofoam
 	name = "robotic repair spray"
@@ -19,7 +20,7 @@
 
 /obj/item/stack/medical/wound_recovery/robofoam/examine(mob/user)
 	. = ..()
-	. += span_notice("This <b>cheaper</b> foam can only be used to fill <b>structural</b> wounds on synthetics.")
+	. += span_notice(LANG("obj.dbff2a7dd1b9cb87", null))
 	return .
 
 /obj/item/stack/medical/wound_recovery/robofoam/post_heal_effects(amount_healed, mob/living/carbon/healed_mob, mob/user)
@@ -53,7 +54,7 @@
 
 /obj/item/stack/medical/wound_recovery/robofoam_super/examine(mob/user)
 	. = ..()
-	. += span_notice("This more <b>expensive</b> foam can be used to fill <b>any</b> type of wound on synthetics.")
+	. += span_notice(LANG("obj.52f56a5a2cd696ff", null))
 	return .
 
 /obj/item/stack/medical/wound_recovery/robofoam_super/post_heal_effects(amount_healed, mob/living/carbon/healed_mob, mob/user)
@@ -78,10 +79,10 @@
 	if(ishuman(L))
 		var/obj/item/bodypart/affecting = L.get_bodypart(check_zone(user.zone_selected))
 		if(!affecting)
-			to_chat(user, span_warning("The limb is missing!"))
+			to_chat(user, span_warning(LANG("obj.fc2e5421ecac7cb8", null)))
 			return
 		if(!IS_ROBOTIC_LIMB(affecting))
-			to_chat(user, span_notice("Robotic patches won't work on an organic limb!"))
+			to_chat(user, span_notice(LANG("obj.70346865c6f113a7", null)))
 			return
 	return ..()
 

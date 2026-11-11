@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*!
 
 This component makes it possible to make things edible. What this means is that you can take a bite or force someone to take a bite (in the case of items).
@@ -244,61 +245,68 @@ Behavior that's still missing from this component that original food items had t
 		return
 	if(foodtypes)
 		var/list/types = bitfield_to_list(foodtypes, FOOD_FLAGS)
-		examine_list += span_notice("It is [LOWER_TEXT(english_list(types))].")
+		// ZH EDIT CHANGE - i18n: 食物类别名逐个反查 + 中文用顿号连接。ORIGINAL: examine_list += span_notice(LANG("datum.62eee539c1582dc1", list(LOWER_TEXT(english_list(types)))))
+		if(GLOB.i18n_server_locale != DEFAULT_UI_LOCALE)
+			var/list/translated_types = list()
+			for(var/food_type in types)
+				translated_types += lang_localize_arg(LOWER_TEXT(food_type)) // 单词类别名在 _state_words 里，全局反查够不着
+			examine_list += span_notice(LANG("datum.62eee539c1582dc1", list(english_list(translated_types, and_text = "、", comma_text = "、"))))
+		else
+			examine_list += span_notice(LANG("datum.62eee539c1582dc1", list(LOWER_TEXT(lang_english_list(types)))))
 
 	var/quality = get_perceived_food_quality(user)
 	if(quality > 0)
 		var/quality_label = GLOB.food_quality_description[quality]
-		examine_list += span_green("You find this meal [quality_label].")
+		examine_list += span_green(LANG("datum.1434dd593434a3a6", list(quality_label)))
 	else if (quality == 0)
-		examine_list += span_notice("You find this meal edible.")
+		examine_list += span_notice(LANG("datum.3aee60d1aec694f8", null))
 	else if (quality <= FOOD_QUALITY_DANGEROUS)
-		examine_list += span_warning("You may die from eating this meal.")
+		examine_list += span_warning(LANG("datum.fb550620b389234d", null))
 	else if (quality <= TOXIC_FOOD_QUALITY_THRESHOLD)
-		examine_list += span_warning("You find this meal disgusting!")
+		examine_list += span_warning(LANG("datum.6f35e3f8d1b6cba2", null))
 	else
-		examine_list += span_warning("You find this meal inedible.")
+		examine_list += span_warning(LANG("datum.c1859e8e40a70f97", null))
 
 	if(owner.reagents.total_volume > 0)
 		var/purity = owner.reagents.get_average_purity(/datum/reagent/consumable)
 		switch(purity)
 			if(0 to 0.2)
-				examine_list += span_warning("It is made of terrible ingredients shortening the effect...")
+				examine_list += span_warning(LANG("datum.2d8efb5b021a104f", null))
 			if(0.2 to 0.4)
-				examine_list += span_warning("It is made of synthetic ingredients shortening the effect.")
+				examine_list += span_warning(LANG("datum.df9bf2b2107c3c13", null))
 			if(0.4 to 0.6)
-				examine_list += span_notice("It is made of average quality ingredients.")
+				examine_list += span_notice(LANG("datum.cacee4e7598dc477", null))
 			if(0.6 to 0.8)
-				examine_list += span_green("It is made of organic ingredients prolonging the effect.")
+				examine_list += span_green(LANG("datum.8f300331d53329be", null))
 			if(0.8 to 1)
-				examine_list += span_green("It is made of finest ingredients prolonging the effect!")
+				examine_list += span_green(LANG("datum.ef938bc6be3f8e6e", null))
 
 	var/datum/mind/mind = user.mind
 	if(mind && HAS_TRAIT_FROM(owner, TRAIT_HANDMADE, REF(mind)))
-		examine_list += span_green("[owner] was made by you!")
+		examine_list += span_green(LANG("datum.8bfff79cc5891082", list(owner)))
 
 	if(!(food_flags & FOOD_IN_CONTAINER))
 		switch(bitecount)
 			if(0)
 				pass()
 			if(1)
-				examine_list += span_notice("[owner] was bitten by someone!")
+				examine_list += span_notice(LANG("datum.67083ac368ef7197", list(owner)))
 			if(2, 3)
-				examine_list += span_notice("[owner] was bitten [bitecount] times!")
+				examine_list += span_notice(LANG("datum.f86a4da7c530246d", list(owner, bitecount)))
 			else
-				examine_list += span_notice("[owner] was bitten multiple times!")
+				examine_list += span_notice(LANG("datum.146a9176c8f8c350", list(owner)))
 
 	if(GLOB.debugging_enabled)
-		examine_list += span_notice("Reagent purities:")
+		examine_list += span_notice(LANG("datum.43ba72ff679d7e96", null))
 		for(var/datum/reagent/reagent as anything in owner.reagents.reagent_list)
-			examine_list += span_notice("- [reagent.name] [reagent.volume]u: [round(reagent.purity * 100)]% pure")
+			examine_list += span_notice(LANG("datum.1dbfe65aed0d5b28", list(reagent.name, reagent.volume, round(reagent.purity * 100))))
 
 	if(!HAS_TRAIT(user, TRAIT_REMOTE_TASTING))
 		return
 	var/fraction = min(bite_consumption / owner.reagents.total_volume, 1)
 	checkLiked(fraction, user)
 	if (!owner.reagents.get_reagent_amount(/datum/reagent/consumable/salt))
-		examine_list += span_notice("It could use a little more Sodium Chloride...")
+		examine_list += span_notice(LANG("datum.703e1c661710309b", null))
 	if (isliving(user))
 		var/mob/living/living_user = user
 		living_user.taste_container(owner.reagents)
@@ -331,7 +339,7 @@ Behavior that's still missing from this component that original food items had t
 	original_atom.reagents.trans_to(this_food, original_atom.reagents.total_volume / chosen_processing_option[TOOL_PROCESSING_AMOUNT], copy_only = TRUE)
 
 	if(!HAS_TRAIT(this_food, TRAIT_FOOD_DONT_INHERIT_NAME_FROM_PROCESSED) && original_atom.name != initial(original_atom.name))
-		this_food.name = "slice of [original_atom.name]"
+		this_food.name = LANG("datum.cfae57ede34d2b76", list(original_atom.name)) // ZH EDIT CHANGE - I18N - ORIGINAL: this_food.name = "slice of [original_atom.name]"
 		//It inherits the name of the original, which may already have a prefix
 		//So we need to make sure we don't double up on prefixes
 		//This is called before set_custom_materials() anyway
@@ -406,15 +414,15 @@ Behavior that's still missing from this component that original food items had t
 		var/message_to_blind_consumer = ""
 
 		if(junkiness && eater.satiety < -150 && eater.nutrition > NUTRITION_LEVEL_STARVING + 50 && !HAS_TRAIT(eater, TRAIT_VORACIOUS) && !HAS_TRAIT(eater, TRAIT_GLUTTON))
-			to_chat(eater, span_warning("You don't feel like eating any more junk food at the moment!"))
+			to_chat(eater, span_warning(LANG("datum.f1d2250c9949ffdf", null)))
 			return
 		else if(fullness > (600 * (1 + eater.overeatduration / (4000 SECONDS)))) // The more you eat - the more you can eat
 			if(HAS_TRAIT(eater, TRAIT_VORACIOUS) || HAS_TRAIT(eater, TRAIT_GLUTTON))
-				message_to_nearby_audience = span_notice("[eater] voraciously forces \the [parent] down [eater.p_their()] throat.")
-				message_to_consumer = span_notice("You voraciously force \the [parent] down your throat.")
+				message_to_nearby_audience = span_notice(GLOB.i18n_server_locale == DEFAULT_UI_LOCALE ? "[eater] voraciously forces \the [parent] down [eater.p_their()] throat." : LANG("datum.1b18ce0b364e1f2a", list(eater, parent, eater.p_their()))) // ZH EDIT CHANGE - ORIGINAL: message_to_nearby_audience = span_notice("[eater] voraciously forces \the [parent] down [eater.p_their()] throat.")
+				message_to_consumer = span_notice(GLOB.i18n_server_locale == DEFAULT_UI_LOCALE ? "You voraciously force \the [parent] down your throat." : LANG("datum.3ec260172ca79c8b", list(parent))) // ZH EDIT CHANGE - ORIGINAL: message_to_consumer = span_notice("You voraciously force \the [parent] down your throat.")
 			else
-				message_to_nearby_audience = span_warning("[eater] cannot force any more of \the [parent] to go down [eater.p_their()] throat!")
-				message_to_consumer = span_warning("You cannot force any more of \the [parent] to go down your throat!")
+				message_to_nearby_audience = span_warning(GLOB.i18n_server_locale == DEFAULT_UI_LOCALE ? "[eater] cannot force any more of \the [parent] to go down [eater.p_their()] throat!" : LANG("datum.b0d9350592223f35", list(eater, parent, eater.p_their()))) // ZH EDIT CHANGE - ORIGINAL: message_to_nearby_audience = span_warning("[eater] cannot force any more of \the [parent] to go down [eater.p_their()] throat!")
+				message_to_consumer = span_warning(GLOB.i18n_server_locale == DEFAULT_UI_LOCALE ? "You cannot force any more of \the [parent] to go down your throat!" : LANG("datum.b103b002f33b4afc", list(parent))) // ZH EDIT CHANGE - ORIGINAL: message_to_consumer = span_warning("You cannot force any more of \the [parent] to go down your throat!")
 				message_to_blind_consumer = message_to_consumer
 				eater.show_message(message_to_consumer, MSG_VISUAL, message_to_blind_consumer)
 				eater.visible_message(message_to_nearby_audience, ignored_mobs = eater)
@@ -423,19 +431,19 @@ Behavior that's still missing from this component that original food items had t
 		else if(fullness > 500)
 			if(HAS_TRAIT(eater, TRAIT_VORACIOUS))
 				message_to_nearby_audience = span_notice("[eater] [eatverb]s \the [parent].")
-				message_to_consumer = span_notice("You [eatverb] \the [parent].")
+				message_to_consumer = span_notice(GLOB.i18n_server_locale == DEFAULT_UI_LOCALE ? "You [eatverb] \the [parent]." : LANG("datum.767bf1806ccd199e", list(eatverb, parent))) // ZH EDIT CHANGE - ORIGINAL: span_notice("You [eatverb] \the [parent].")
 			else
-				message_to_nearby_audience = span_notice("[eater] unwillingly [eatverb]s a bit of \the [parent].")
-				message_to_consumer = span_notice("You unwillingly [eatverb] a bit of \the [parent].")
+				message_to_nearby_audience = span_notice(GLOB.i18n_server_locale == DEFAULT_UI_LOCALE ? "[eater] unwillingly [eatverb]s a bit of \the [parent]." : LANG("datum.6d9f895f7a006022", list(eater, eatverb, parent))) // ZH EDIT CHANGE - ORIGINAL: message_to_nearby_audience = span_notice("[eater] unwillingly [eatverb]s a bit of \the [parent].")
+				message_to_consumer = span_notice(GLOB.i18n_server_locale == DEFAULT_UI_LOCALE ? "You unwillingly [eatverb] a bit of \the [parent]." : LANG("datum.d76f02158695b70f", list(eatverb, parent))) // ZH EDIT CHANGE - ORIGINAL: message_to_consumer = span_notice("You unwillingly [eatverb] a bit of \the [parent].")
 		else if(fullness > 150)
 			message_to_nearby_audience = span_notice("[eater] [eatverb]s \the [parent].")
-			message_to_consumer = span_notice("You [eatverb] \the [parent].")
+			message_to_consumer = span_notice(GLOB.i18n_server_locale == DEFAULT_UI_LOCALE ? "You [eatverb] \the [parent]." : LANG("datum.767bf1806ccd199e", list(eatverb, parent))) // ZH EDIT CHANGE - ORIGINAL: span_notice("You [eatverb] \the [parent].")
 		else if(fullness > 50)
-			message_to_nearby_audience = span_notice("[eater] hungrily [eatverb]s \the [parent].")
-			message_to_consumer = span_notice("You hungrily [eatverb] \the [parent].")
+			message_to_nearby_audience = span_notice(GLOB.i18n_server_locale == DEFAULT_UI_LOCALE ? "[eater] hungrily [eatverb]s \the [parent]." : LANG("datum.cf353468e105879b", list(eater, eatverb, parent))) // ZH EDIT CHANGE - ORIGINAL: message_to_nearby_audience = span_notice("[eater] hungrily [eatverb]s \the [parent].")
+			message_to_consumer = span_notice(GLOB.i18n_server_locale == DEFAULT_UI_LOCALE ? "You hungrily [eatverb] \the [parent]." : LANG("datum.54d72dc917883b85", list(eatverb, parent))) // ZH EDIT CHANGE - ORIGINAL: message_to_consumer = span_notice("You hungrily [eatverb] \the [parent].")
 		else
-			message_to_nearby_audience = span_notice("[eater] hungrily [eatverb]s \the [parent], gobbling it down!")
-			message_to_consumer = span_notice("You hungrily [eatverb] \the [parent], gobbling it down!")
+			message_to_nearby_audience = span_notice(GLOB.i18n_server_locale == DEFAULT_UI_LOCALE ? "[eater] hungrily [eatverb]s \the [parent], gobbling it down!" : LANG("datum.38eca4eb914a3f25", list(eater, eatverb, parent))) // ZH EDIT CHANGE - ORIGINAL: message_to_nearby_audience = span_notice("[eater] hungrily [eatverb]s \the [parent], gobbling it down!")
+			message_to_consumer = span_notice(GLOB.i18n_server_locale == DEFAULT_UI_LOCALE ? "You hungrily [eatverb] \the [parent], gobbling it down!" : LANG("datum.01926ba03befaa70", list(eatverb, parent))) // ZH EDIT CHANGE - ORIGINAL: message_to_consumer = span_notice("You hungrily [eatverb] \the [parent], gobbling it down!")
 
 		//if we're blind, we want to feel how hungrily we ate that food
 		message_to_blind_consumer = message_to_consumer
@@ -444,22 +452,22 @@ Behavior that's still missing from this component that original food items had t
 
 	else //If you're feeding it to someone else.
 		if(isbrain(eater))
-			to_chat(feeder, span_warning("[eater] doesn't seem to have a mouth!"))
+			to_chat(feeder, span_warning(LANG("datum.71f4bc4a11b112ae", list(eater))))
 			return
 		if(fullness <= (600 * (1 + eater.overeatduration / (2000 SECONDS))) || HAS_TRAIT(eater, TRAIT_VORACIOUS))
 			eater.visible_message(
-				span_danger("[feeder] attempts to [eater.get_bodypart(BODY_ZONE_HEAD) ? "feed [eater] [parent]." : "stuff [parent] down [eater]'s throat hole! Gross."]"),
-				span_userdanger("[feeder] attempts to [eater.get_bodypart(BODY_ZONE_HEAD) ? "feed you [parent]." : "stuff [parent] down your throat hole! Gross."]")
+				span_danger(LANG("datum.6a589e64f47622fc", list(feeder, eater.get_bodypart(BODY_ZONE_HEAD) ? "feed [eater] [parent]." : "stuff [parent] down [eater]'s throat hole! Gross."))),
+				span_userdanger(LANG("datum.6a589e64f47622fc", list(feeder, eater.get_bodypart(BODY_ZONE_HEAD) ? "feed you [parent]." : "stuff [parent] down your throat hole! Gross.")))
 			)
 			if(eater.is_blind())
-				to_chat(eater, span_userdanger("You feel someone trying to feed you something!"))
+				to_chat(eater, span_userdanger(LANG("datum.a2964620106f9adc", null)))
 		else
 			eater.visible_message(
-				span_danger("[feeder] cannot force any more of [parent] down [eater]'s [eater.get_bodypart(BODY_ZONE_HEAD) ? "throat!" : "throat hole! Eugh."]"),
-				span_userdanger("[feeder] cannot force any more of [parent] down your [eater.get_bodypart(BODY_ZONE_HEAD) ? "throat!" : "throat hole! Eugh."]")
+				span_danger(LANG("datum.8968f0a2df4aefd2", list(feeder, parent, eater, eater.get_bodypart(BODY_ZONE_HEAD) ? "throat!" : "throat hole! Eugh."))),
+				span_userdanger(LANG("datum.5c9a4562be9bf40f", list(feeder, parent, eater.get_bodypart(BODY_ZONE_HEAD) ? "throat!" : "throat hole! Eugh.")))
 			)
 			if(eater.is_blind())
-				to_chat(eater, span_userdanger("You're too full to eat what's being fed to you!"))
+				to_chat(eater, span_userdanger(LANG("datum.23daaa27e0b39a64", null)))
 			return
 		if(!do_after(feeder, delay = time_to_eat, target = eater)) //Wait 3-ish seconds before you can feed
 			return
@@ -467,11 +475,11 @@ Behavior that's still missing from this component that original food items had t
 			return
 		log_combat(feeder, eater, "fed", owner.reagents.get_reagent_log_string())
 		eater.visible_message(
-			span_danger("[feeder] forces [eater] to eat [parent]!"),
-			span_userdanger("[feeder] forces you to eat [parent]!")
+			span_danger(LANG("datum.723d26c455d2d8e8", list(feeder, eater, parent))),
+			span_userdanger(LANG("datum.65c76386b756ede5", list(feeder, parent)))
 		)
 		if(eater.is_blind())
-			to_chat(eater, span_userdanger("You're forced to eat something!"))
+			to_chat(eater, span_userdanger(LANG("datum.133c422da7bd8e1a", null)))
 
 	TakeBite(eater, feeder)
 
@@ -561,16 +569,16 @@ Behavior that's still missing from this component that original food items had t
 	if(!iscarbon(eater))
 		return FALSE
 	if(eater.is_mouth_covered())
-		eater.balloon_alert(feeder, "mouth is covered!")
+		eater.balloon_alert(feeder, LANG("datum.290d96e84b1cc00c", null))
 		return FALSE
 
 	var/atom/food = parent
 
 	if(food.flags_1 & HOLOGRAM_1)
 		if(eater == feeder)
-			to_chat(eater, span_notice("You try to take a bite out of [food], but it fades away!"))
+			to_chat(eater, span_notice(LANG("datum.3a54d9649fe1fabc", list(food))))
 		else
-			to_chat(feeder, span_notice("You try to feed [eater] [food], but it fades away!"))
+			to_chat(feeder, span_notice(LANG("datum.602447a5630bc0d2", list(eater, food))))
 
 		qdel(food)
 		return FALSE
@@ -622,13 +630,13 @@ Behavior that's still missing from this component that original food items had t
 		return
 
 	if(food_quality <= TOXIC_FOOD_QUALITY_THRESHOLD)
-		to_chat(gourmand,span_warning("What the hell was that thing?!"))
+		to_chat(gourmand,span_warning(LANG("datum.19446d290901e609", null)))
 		gourmand.adjust_disgust(25 + 30 * fraction)
 		gourmand.add_mood_event("toxic_food", /datum/mood_event/disgusting_food)
 		return
 
 	if(food_quality < 0)
-		to_chat(gourmand,span_notice("That didn't taste very good..."))
+		to_chat(gourmand,span_notice(LANG("datum.f5c1a01c1820cb2d", null)))
 		gourmand.adjust_disgust(11 + 15 * fraction)
 		gourmand.add_mood_event("gross_food", /datum/mood_event/gross_food)
 		return
@@ -641,7 +649,7 @@ Behavior that's still missing from this component that original food items had t
 	gourmand.add_mood_event("quality_food", /datum/mood_event/food, food_quality, timeout_mod)
 	gourmand.adjust_disgust(-5 + -2 * food_quality * fraction)
 	var/quality_label = GLOB.food_quality_description[food_quality]
-	to_chat(gourmand, span_notice("That's \an [quality_label] meal."))
+	to_chat(gourmand, span_notice(LANG("datum.00afea411a28dcc4", list(quality_label))))
 
 /// Get the complexity of the crafted food. Some ingredients may influence this value.
 /datum/component/edible/proc/get_recipe_complexity()
@@ -708,7 +716,7 @@ Behavior that's still missing from this component that original food items had t
 	if (QDELETED(parent)) // might be destroyed by the callback
 		return
 
-	to_chat(feeder, span_warning("There is nothing left of [parent], oh no!"))
+	to_chat(feeder, span_warning(LANG("datum.49a37f3d2918a953", list(parent))))
 	if(isturf(parent))
 		var/turf/T = parent
 		T.ScrapeAway(1, CHANGETURF_INHERIT_AIR)
@@ -725,12 +733,12 @@ Behavior that's still missing from this component that original food items had t
 	var/atom/food = parent
 
 	if(food.flags_1 & HOLOGRAM_1)
-		to_chat(doggy, span_notice("You try to take a bite out of [food], but it fades away!"))
+		to_chat(doggy, span_notice(LANG("datum.3a54d9649fe1fabc", list(food))))
 		qdel(food)
 		return
 
 	if(bitecount == 0 || prob(50))
-		doggy.manual_emote("nibbles away at \the [food].")
+		doggy.manual_emote(LANG("datum.4d78ce19f194074f", list(food)))
 	bitecount++
 	. = COMPONENT_CANCEL_ATTACK_CHAIN
 
@@ -766,13 +774,13 @@ Behavior that's still missing from this component that original food items had t
 	var/atom/food = parent
 
 	if(food.flags_1 & HOLOGRAM_1)
-		to_chat(eater, span_notice("You try to take a bite out of [food], but it fades away!"))
+		to_chat(eater, span_notice(LANG("datum.3a54d9649fe1fabc", list(food))))
 		qdel(food)
 		return COMPONENT_ATOM_EATEN
 
 	if(foodtypes & edible_flags)
 		food.reagents.trans_to(eater, food.reagents.total_volume, transferred_by = eater)
-		eater.visible_message(span_warning("[eater] eats [food]!"), span_notice("You eat [food]."))
+		eater.visible_message(span_warning(LANG("datum.bd6d66807b923e64", list(eater, food))), span_notice(LANG("datum.0a3b720072b9511f", list(food))))
 		playsound(get_turf(eater),'sound/items/eatfood.ogg', rand(30,50), TRUE)
 		qdel(food)
 		return COMPONENT_ATOM_EATEN

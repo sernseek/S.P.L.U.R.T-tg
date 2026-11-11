@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Attached to a mob with an AI controller, if this mob is attacked then it will replace the AI controller.
  */
@@ -26,6 +27,6 @@
 
 	if (!victim.ai_controller || victim.stat == DEAD)
 		return
-	victim.balloon_alert_to_viewers("looks upset")
+	victim.balloon_alert_to_viewers(LANG("datum.0002006ddb4e4a89", null))
 	victim.ai_controller = new awake_controller(victim)
 	victim.RemoveElement(/datum/element/sedated_mob, awake_controller)

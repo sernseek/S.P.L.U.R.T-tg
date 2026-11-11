@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/mod/module/mind_swap
 	name = "MOD Neural Transference module"
 	desc = "Swaps the MOD wearer's and Assistant AI's neural pathways."
@@ -17,10 +18,10 @@
 
 /obj/item/mod/module/mind_swap/on_select()
 	if(!mod.ai_assistant)
-		balloon_alert(mod.wearer, "no AI present")
+		balloon_alert(mod.wearer, LANG("obj.b968c6bf13088cf3", null))
 		return
 	if(isnull(mod.wearer.client))
-		balloon_alert(mod.ai_assistant, "host is unresponsive")
+		balloon_alert(mod.ai_assistant, LANG("obj.5827f00a6a45219a", null))
 		return
 	if(isnull(mod.ai_assistant.client))
 		balloon_alert(mod.wearer, UNLINT("AI is unresponsive"))

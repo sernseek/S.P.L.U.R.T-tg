@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item
 	/// If this collar counts as a pet collar for kink purposes, such as with MKUltra
 	var/kink_collar = FALSE
@@ -43,7 +44,7 @@
 		new treat_path(src)
 
 /obj/item/clothing/neck/human_petcollar/attack_self(mob/user)
-	tagname = stripped_input(user, "Would you like to change the name on the tag?", "Name your new pet", "Spot", MAX_NAME_LEN)
+	tagname = stripped_input(user, LANG("obj.caff9b8cf4adcde9", null), LANG("obj.f428d0a3eb8ed8ce", null), "Spot", MAX_NAME_LEN)
 	if(tagname)
 		name = "[initial(name)] - [tagname]"
 
@@ -91,19 +92,19 @@
 
 /obj/item/clothing/neck/human_petcollar/locked/proc/try_lock(atom/source, mob/user, obj/item/attacking_item, params)
 	if(istype(attacking_item, /obj/item/key/collar))
-		to_chat(user, span_warning("With a click, the collar [locked ? "unlocks" : "locks"]!"))
+		to_chat(user, span_warning(LANG("obj.159582522ba96fd3", list(locked ? "unlocks" : "locks"))))
 		locked = !locked
 	return TRUE
 
 /obj/item/clothing/neck/human_petcollar/locked/attack_hand(mob/user)
 	if(loc == user && user.get_item_by_slot(ITEM_SLOT_NECK) && locked)
-		to_chat(user, span_warning("The collar is locked! You'll need unlock the collar before you can take it off!"))
+		to_chat(user, span_warning(LANG("obj.77022fac362d787e", null)))
 		return
 	..()
 
 /obj/item/clothing/neck/human_petcollar/locked/examine(mob/user)
 	. = ..()
-	. += "It seems to be [locked ? "locked" : "unlocked"]."
+	. += LANG("obj.b7fef062b5d1727d", list(locked ? "locked" : "unlocked"))
 
 /obj/item/clothing/neck/human_petcollar/locked/bell
 	name = "bell collar"

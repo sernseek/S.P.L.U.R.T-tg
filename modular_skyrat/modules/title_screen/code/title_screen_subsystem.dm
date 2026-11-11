@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 SUBSYSTEM_DEF(title)
 	name = "Title Screen"
 	ss_flags = SS_NO_FIRE
@@ -29,7 +30,7 @@ SUBSYSTEM_DEF(title)
 /datum/controller/subsystem/title/Initialize()
 	var/dat
 	if(!fexists("[global.config.directory]/splurt/splurt_title.txt")) // SPLURT EDIT - original title_html.txt
-		to_chat(world, span_boldwarning("CRITICAL ERROR: Unable to read splurt_title.txt, reverting to backup title html, please check your server config and ensure this file exists.")) // BUBBER EDIT - original title_html.txt
+		to_chat(world, span_boldwarning(LANG("datum.ae992888397255b5", null))) // BUBBER EDIT - original title_html.txt
 		dat = DEFAULT_TITLE_HTML
 	else
 		dat = file2text("[global.config.directory]/splurt/splurt_title.txt") // SPLURT EDIT - original title_html.txt

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Cyborg
 
 /datum/design/borg_suit
@@ -1971,7 +1972,7 @@
 	. = ..()
 	var/obj/item/mod/construction/plating/armor_type = build_path
 	var/datum/mod_theme/theme = GLOB.mod_themes[initial(armor_type.theme)]
-	desc = "External plating for a MODsuit. [theme.desc]"
+	desc = LANG("datum.ac33c823207d9390", list(theme.desc))
 
 /datum/design/mod_plating/civilian
 	name = "MOD Civilian Plating"
@@ -2097,7 +2098,7 @@
 /datum/design/module/New()
 	. = ..()
 	var/obj/item/mod/module/module = build_path
-	desc = "[initial(module.desc)] It uses [initial(module.complexity)] complexity."
+	desc = LANG("datum.d29ee95676afb56c", list(initial(module.desc), initial(module.complexity)))
 
 /datum/design/module/mod_storage
 	name = "Compact Storage Module"

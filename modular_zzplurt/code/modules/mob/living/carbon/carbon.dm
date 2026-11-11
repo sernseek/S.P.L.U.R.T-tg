@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Liquid Panty Dropper effect
 /mob/living/carbon/proc/clothing_burst(throw_clothes = FALSE)
 	// Variable for if the action succeeded
@@ -36,7 +37,7 @@
 	// When successfully disrobing a target
 	if(user_disrobed)
 		// Display a chat message
-		visible_message(span_userlove("[src] suddenly bursts out of [p_their()] clothes!"), span_userlove("You suddenly burst out of your clothes!"))
+		visible_message(span_userlove(LANG("mob.f02cf5cc64a4811b", list(src, p_their()))), span_userlove(LANG("mob.6e9c1ca15db3fb4d", null)))
 
 		// Play the ripped poster sound
 		playsound(loc, 'sound/items/poster/poster_ripped.ogg', 50, 1)

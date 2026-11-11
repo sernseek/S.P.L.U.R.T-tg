@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/skillchip/musical
 	name = "\improper Old Copy of \"Space Station 13: The Musical\""
 	desc = "An old copy of \"Space Station 13: The Musical\", \
@@ -70,22 +71,22 @@
 
 /obj/item/skillchip/musical/examine(mob/user)
 	. = ..()
-	. += span_tinynoticeital("Huh, looks like it'd fit in a skillchip adapter.")
+	. += span_tinynoticeital(LANG("obj.bc1546fbf814e47e", null))
 
 /obj/item/skillchip/musical/examine_more(mob/user)
 	. = ..()
 	var/list/songs = list()
-	songs += "&bull; \"The Ballad of Space Station 13\""
-	songs += "&bull; \"The Captain's Call\""
-	songs += "&bull; \"A Mime's Lament\""
-	songs += "&bull; \"Banned from Cargo\""
-	songs += "&bull; \"Botany Blues\""
-	songs += "&bull; \"Clown Song\""
-	songs += "&bull; \"Elegy to an Engineer\""
-	songs += "&bull; \"Medical Malpractitioner\""
-	songs += "&bull; \"Security Strike\""
-	songs += "&bull; \"Send for the Shuttle\""
-	songs += "&bull;  And one song scratched out..."
+	songs += LANG("obj.c68db4682f47bc70", null)
+	songs += LANG("obj.6bb3af7d1e431925", null)
+	songs += LANG("obj.b3e7bf32d51c6d0e", null)
+	songs += LANG("obj.a55638f18c7377b9", null)
+	songs += LANG("obj.4f816f3bac96aaa6", null)
+	songs += LANG("obj.dd0d5c6ce9ee3551", null)
+	songs += LANG("obj.410d13b21669cbf8", null)
+	songs += LANG("obj.bce9bd0cad5d5b09", null)
+	songs += LANG("obj.6f8d86915c4a2309", null)
+	songs += LANG("obj.e73474cbd879a774", null)
+	songs += LANG("obj.4d4da9166cb611e9", null)
 
-	. += span_notice("<i>On the back of the chip, you see a list of songs:</i>")
+	. += span_notice(LANG("obj.dd15f82532c11408", null))
 	. += span_smallnotice("<i>[jointext(songs, "<br>")]</i>")

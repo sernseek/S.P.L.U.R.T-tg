@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Open the ui, nothing special here
 // Maybe make it update static data?
 /datum/controller/subsystem/gamemode/ui_interact(mob/user, datum/tgui/ui)
@@ -89,7 +90,7 @@
 			for(var/storyteller_type in storytellers)
 				var/datum/storyteller/storyboy = storytellers[storyteller_type]
 				name_list[storyboy.name] = storyboy.type
-			var/new_storyteller_name = input(usr, "Choose new storyteller (circumvents voted one):", "Storyteller")  as null|anything in name_list
+			var/new_storyteller_name = input(usr, LANG("datum.59c6cea866f14e10", null), LANG("datum.028452598648ae71", null))  as null|anything in name_list
 			if(!new_storyteller_name)
 				return
 			message_admins("[key_name_admin(usr)] has changed the Storyteller to [new_storyteller_name].")
@@ -103,8 +104,8 @@
 					var/track_to_adjust = params["track"]
 					var/num = tgui_input_number(\
 					usr, \
-					"Set [track_to_adjust] track points",
-					title = "Track points", \
+					LANG("datum.87f2d6c4b2b514c9", list(track_to_adjust)),
+					title = LANG("datum.c11fe1e54a4e0092", null), \
 					default = event_track_points[track_to_adjust], \
 					max_value = point_thresholds[track_to_adjust]*5, \
 					)
@@ -128,7 +129,7 @@
 					log_admin_private("[key_name(usr)] refunded scheduled event [sch_event.event.name].")
 					SSgamemode.refund_scheduled_event(sch_event)
 				if("reschedule")
-					var/new_schedule = tgui_input_number(usr, "Set time in seconds in which to fire event", "Rescheduling event", 0, 3600, 0)
+					var/new_schedule = tgui_input_number(usr, LANG("datum.01cab908a07bef55", null), LANG("datum.70de4d8b4ad847c7", null), 0, 3600, 0)
 					if(isnull(new_schedule) || QDELETED(sch_event))
 						return
 					sch_event.start_time = world.time + (new_schedule SECONDS)

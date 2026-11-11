@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The threshld which determine if someone is tipsy vs drunk
 #define TIPSY_THRESHOLD 23.4 // Original 6
 // SKYRAT EDIT CHANGE END - ALCOHOL_PROCESSING
@@ -239,7 +240,7 @@
 	if(drunk_value >= 81)
 		owner.adjust_tox_loss(1)
 		if(!IS_UNCONSCIOUS_OR_CRIT(owner) && prob(5))
-			to_chat(owner, span_warning("Maybe you should lie down for a bit..."))
+			to_chat(owner, span_warning(LANG("datum.47634e46e44f05d1", null)))
 
 	// Over 91, we gain even more toxloss, brain damage, and have a chance of dropping into a long sleep
 	if(drunk_value >= 91)
@@ -265,7 +266,7 @@
 		return
 	*/ // SKYRAT EDIT REMOVAL END
 	if(SSshuttle.emergency.mode == SHUTTLE_DOCKED && is_station_level(owner.z))// Don't put us in a deep sleep if the shuttle's here. QoL, mainly.
-		to_chat(owner, span_warning("You're so tired... but you can't miss that shuttle..."))
+		to_chat(owner, span_warning(LANG("datum.71fdc048f7e539f3", null)))
 	else
 		owner.Sleeping(90 SECONDS)
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/shoes/sneakers
 	dying_key = DYE_REGISTRY_SNEAKERS
 	icon = 'icons/map_icons/clothing/shoes.dmi'
@@ -153,7 +154,7 @@
 
 /obj/item/clothing/shoes/sneakers/orange/attack_self(mob/user)
 	if(attached_cuffs)
-		to_chat(user, span_notice("You remove [attached_cuffs] from [src]."))
+		to_chat(user, span_notice(LANG("obj.cbed32661d4c054a", list(attached_cuffs, src))))
 		if(Adjacent(user)) //tk is love, tk is life.
 			user.put_in_hands(attached_cuffs)
 		else
@@ -169,7 +170,7 @@
 
 /obj/item/clothing/shoes/sneakers/orange/can_mob_unequip(mob/user)
 	if(user.get_item_by_slot(slot_flags) == src && attached_cuffs)
-		to_chat(user, span_warning("You need help taking these off!"))
+		to_chat(user, span_warning(LANG("obj.b3cfd9355cc0175c", null)))
 		return FALSE
 	return ..()
 
@@ -177,7 +178,7 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/c = user
 		if(c.shoes == src && attached_cuffs)
-			to_chat(c, span_warning("You need help taking these off!"))
+			to_chat(c, span_warning(LANG("obj.b3cfd9355cc0175c", null)))
 			return
 	return ..()
 

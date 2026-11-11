@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/cigarette/pipe/crackpipe
 	name = "crack pipe"
 	desc = "A slick glass pipe made for smoking one thing: crack."
@@ -13,7 +14,7 @@
 	if(smoketime <= 0)
 		if(ismob(loc))
 			var/mob/living/smoking_mob = loc
-			to_chat(smoking_mob, span_notice("Your [name] goes out."))
+			to_chat(smoking_mob, span_notice(LANG("obj.a821e0acd40c0998", list(name))))
 			lit = FALSE
 			icon_state = icon_off
 			inhand_icon_state = icon_off
@@ -29,7 +30,7 @@
 
 /obj/item/cigarette/pipe/crackpipe/attackby(obj/item/used_item, mob/user, params)
 	if(is_type_in_list(used_item, list(/obj/item/reagent_containers/crack,/obj/item/reagent_containers/blacktar)))
-		to_chat(user, span_notice("You stuff [used_item] into [src]."))
+		to_chat(user, span_notice(LANG("obj.16ae151750ce356a", list(used_item, src))))
 		smoketime = 2 * 60
 		name = "[used_item.name]-packed [initial(name)]"
 		if(used_item.reagents)
@@ -41,6 +42,6 @@
 			if(smoketime > 0)
 				light(lighting_text)
 			else
-				to_chat(user, span_warning("There is nothing to smoke!"))
+				to_chat(user, span_warning(LANG("obj.3556913a68fa0be7", null)))
 		else
 			return ..()

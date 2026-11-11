@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/computer/sat_control
 	icon_state = MAP_SWITCH("computer", "/obj/machinery/computer/piratepad_control")
 	name = "satellite control"
@@ -28,7 +29,7 @@
 		if(satellite.id != toggled_id)
 			continue
 		if(satellite.obj_flags & EMAGGED)
-			to_chat(usr, span_warning("The satellite doesn't seem to respond...?"))
+			to_chat(usr, span_warning(LANG("obj.224807475b3d661f", null)))
 			return
 		if(is_valid_z_level(get_turf(satellite), current_turf))
 			satellite.toggle()

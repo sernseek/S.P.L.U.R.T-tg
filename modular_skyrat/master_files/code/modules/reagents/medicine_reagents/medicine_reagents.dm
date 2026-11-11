@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Numbing effects
 
 /datum/reagent/consumable/ethanol/drunken_espatier
@@ -10,7 +11,7 @@
 		return
 	if(HAS_TRAIT_FROM(exposed_mob, TRAIT_HUSK, CHANGELING_DRAIN) && (exposed_mob.reagents.get_reagent_amount(/datum/reagent/medicine/rezadone) + reac_volume >= 20))//Costs a little more than a normal husk
 		exposed_mob.cure_husk(CHANGELING_DRAIN)
-		exposed_mob.visible_message("<span class='nicegreen'>A rubbery liquid coats [exposed_mob]'s tissues. [exposed_mob] looks a lot healthier!")
+		exposed_mob.visible_message(LANG("datum.59ebe686b0ab3f84", list(exposed_mob, exposed_mob)))
 
 /datum/reagent/medicine/regen_jelly/expose_mob(mob/living/carbon/human/exposed_mob, reac_volume)
 	. = ..()

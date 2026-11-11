@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ
 	name = "organ"
 	icon = 'icons/obj/medical/organs/organs.dmi'
@@ -203,7 +204,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	if(HAS_MIND_TRAIT(user, TRAIT_ENTRAILS_READER) || isobserver(user))
 		if(HAS_TRAIT(src, TRAIT_CLIENT_STARTING_ORGAN))
-			. += span_info("Lived in and homely. Proven to work. This should fetch a high price on the market.")
+			. += span_info(LANG("obj.ecb7548563c55668", null))
 
 	if(organ_flags & ORGAN_FAILING)
 		. += span_warning("[src] [failing_desc]")
@@ -211,9 +212,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	if(damage > high_threshold)
 		if(IS_ROBOTIC_ORGAN(src))
-			. += span_warning("[src] seems to be malfunctioning.")
+			. += span_warning(LANG("obj.24cae1f3eda5faf1", list(src)))
 			return
-		. += span_warning("[src] is starting to look discolored.")
+		. += span_warning(LANG("obj.183141768d6a94d3", list(src)))
 
 /// Returns a line to be displayed regarding valid insertion zones
 /obj/item/organ/proc/zones_tip()
@@ -530,9 +531,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(!HAS_TRAIT(eater, TRAIT_READY_TO_OPERATE))
 		return NONE
 	if(eater == feeder)
-		to_chat(feeder, span_warning("You feel it unwise to eat [source] while you're undergoing surgery."))
+		to_chat(feeder, span_warning(LANG("obj.56846e55adba2110", list(source))))
 	else
-		to_chat(feeder, span_warning("The only thing you could think of doing with [source] right now is feeding it to [eater], but that doesn't seem right."))
+		to_chat(feeder, span_warning(LANG("obj.68da28d469c85c9c", list(source, eater))))
 	return BLOCK_EAT_ATTEMPT
 
 /// Get all possible organ slots by checking every organ, and then store it and give it whenever needed

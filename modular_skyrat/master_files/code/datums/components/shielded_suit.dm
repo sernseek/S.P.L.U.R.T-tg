@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/shielded/suit
 
 /datum/component/shielded/suit/process(seconds_per_tick)
@@ -18,7 +19,7 @@
 
 /datum/component/shielded/suit/default_run_hit_callback(mob/living/owner, attack_text, current_charges)
 	var/obj/item/item_parent = parent
-	owner.visible_message(span_danger("[owner]'s armor absorbs [attack_text]!"))
+	owner.visible_message(span_danger(LANG("datum.8063f04ab2cf4cf8", list(owner, attack_text))))
 	if(current_charges <= 0)
-		owner.visible_message(span_warning("[owner]'s armor breaks!"))
+		owner.visible_message(span_warning(LANG("datum.b8ea8e9c44a96f3b", list(owner))))
 		playsound(item_parent, 'sound/items/ceramic_break.ogg', 60, TRUE)

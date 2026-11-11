@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /**
  * Handles simple payment operations where the cost of the object in question doesn't change.
@@ -97,12 +98,12 @@
 
 		if(armless)
 			if(!user.pulling || !iscash(user.pulling) && !istype(user.pulling, /obj/item/card/id))
-				to_chat(user, span_notice("Try pulling a valid ID, space cash, holochip or coin while using \the [parent]!"))
+				to_chat(user, span_notice(LANG("datum.4138cbc31c021e9c", list(parent))))
 				return FALSE
 		return FALSE
 
 	if(physical_cash_total < total_cost)
-		to_chat(user, span_warning("Insufficient funds. Aborting."))
+		to_chat(user, span_warning(LANG("datum.ba09eaf4cca26ed3", null)))
 		return FALSE
 	for(var/obj/cash_object in counted_money)
 		qdel(cash_object)
@@ -121,7 +122,7 @@
 		else
 			user.pulling = holochange
 	log_econ("[total_cost] [MONEY_NAME] were spent on [parent] by [user].")
-	to_chat(user, span_notice("Purchase completed with held [MONEY_NAME]."))
+	to_chat(user, span_notice(LANG("datum.75b1e71e001ddaaf", list(MONEY_NAME))))
 	playsound(user, 'sound/effects/cashregister.ogg', 20, TRUE)
 	return TRUE
 
@@ -133,40 +134,40 @@
 
 	if(!idcard)
 		if(transaction_style == PAYMENT_VENDING)
-			to_chat(user, span_warning("No card found."))
+			to_chat(user, span_warning(LANG("datum.d252af12d697d427", null)))
 		return FALSE
 	if(!idcard?.registered_account)
 		switch(transaction_style)
 			if(PAYMENT_FRIENDLY)
-				to_chat(user, span_warning("There's no account detected on your ID, how mysterious!"))
+				to_chat(user, span_warning(LANG("datum.522a0c5493ee63ab", null)))
 			if(PAYMENT_ANGRY)
-				to_chat(user, span_warning("ARE YOU JOKING. YOU DON'T HAVE A BANK ACCOUNT ON YOUR ID YOU IDIOT."))
+				to_chat(user, span_warning(LANG("datum.ace3e54b19388aa5", null)))
 			if(PAYMENT_CLINICAL)
-				to_chat(user, span_warning("ID Card lacks a bank account. Advancing."))
+				to_chat(user, span_warning(LANG("datum.38d83f77a79d90f8", null)))
 			if(PAYMENT_VENDING)
-				to_chat(user, span_warning("No account found."))
+				to_chat(user, span_warning(LANG("datum.e15072d68009375b", null)))
 
 		return FALSE
 
 	if(!idcard.can_be_used_in_payment(user))
-		atom_parent.say("Departmental accounts have been blacklisted from personal expenses due to embezzlement.")
+		atom_parent.say(LANG("datum.1a1c311c554dd2ff", null))
 		return FALSE
 
 	if(!(idcard.registered_account.has_money(total_cost)))
 		switch(transaction_style)
 			if(PAYMENT_FRIENDLY)
-				to_chat(user, span_warning("I'm so sorry... You don't seem to have enough money."))
+				to_chat(user, span_warning(LANG("datum.a2042e92016f957a", null)))
 			if(PAYMENT_ANGRY)
-				to_chat(user, span_warning("YOU MORON. YOU ABSOLUTE BAFOON. YOU INSUFFERABLE TOOL. YOU ARE POOR."))
+				to_chat(user, span_warning(LANG("datum.040f4ddab63fde94", null)))
 			if(PAYMENT_CLINICAL)
-				to_chat(user, span_warning("ID Card lacks funds. Aborting."))
+				to_chat(user, span_warning(LANG("datum.beffae1b6f877930", null)))
 			if(PAYMENT_VENDING)
-				to_chat(user, span_warning("You do not possess the funds to purchase that."))
-		atom_parent.balloon_alert(user, "needs [total_cost] [MONEY_NAME_AUTOPURAL(total_cost)]!")
+				to_chat(user, span_warning(LANG("datum.107f4d46c7ea10d5", null)))
+		atom_parent.balloon_alert(user, LANG("datum.0250228f64b936ff", list(total_cost, MONEY_NAME_AUTOPURAL(total_cost))))
 		return FALSE
 	target_acc.transfer_money(idcard.registered_account, total_cost, "Nanotrasen: Usage of Corporate Machinery")
 	log_econ("[total_cost] [MONEY_NAME] were spent on [parent] by [user] via [idcard.registered_account.account_holder]'s card.")
-	idcard.registered_account.bank_card_talk("[total_cost] [MONEY_NAME] deducted from your account.")
+	idcard.registered_account.bank_card_talk(LANG("datum.45b1d5d4cb3bc986", list(total_cost, MONEY_NAME)))
 	playsound(src, 'sound/effects/cashregister.ogg', 20, TRUE)
 	SSeconomy.add_audit_entry(idcard.registered_account, total_cost, parent)
 	return TRUE

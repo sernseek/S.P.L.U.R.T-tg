@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Dead mobs can exist whenever. This is needful
 
 INITIALIZE_IMMEDIATE(/mob/dead)
@@ -37,20 +38,20 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 		return
 	var/time_remaining = SSticker.GetTimeLeft()
 	if(time_remaining > 0)
-		. += "Time To Start: [round(time_remaining/10)]s"
+		. += LANG("mob.089189a1a541d986", list(round(time_remaining/10)))
 	else if(time_remaining == -10)
-		. += "Time To Start: DELAYED"
+		. += LANG("mob.fb6871ae7f5c5364", null)
 	else
-		. += "Time To Start: SOON"
+		. += LANG("mob.3a00d81170010fe0", null)
 
-	. += "Players: [LAZYLEN(GLOB.clients)]"
-	. += "Players Ready: [SSticker.totalPlayersReady]"
+	. += LANG("mob.8044ca8f5aec8106", list(LAZYLEN(GLOB.clients)))
+	. += LANG("mob.7fba5fa702c55178", list(SSticker.totalPlayersReady))
 	if(client.holder)
-		. += "Admins Ready: [SSticker.total_admins_ready] / [length(GLOB.admins)]" // BUBBER ADDITION END - /tg/ removed this in #90572, but we still use a custom lobby screen
+		. += LANG("mob.846d709a9710791e", list(SSticker.total_admins_ready, length(GLOB.admins))) // BUBBER ADDITION END - /tg/ removed this in #90572, but we still use a custom lobby screen
 
 #define SERVER_HOPPER_TRAIT "server_hopper"
 
-GAME_VERB_PROC_DESC(/mob/dead, server_hop, "Server Hop", "Jump to the other server", "OOC")
+GAME_VERB_PROC_DESC(/mob/dead, server_hop, "服务器跳转", "Jump to the other server", "OOC")
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM)) // in case the round is ending and a cinematic is already playing we don't wanna clash with that (yes i know)
 		return
 	var/list/our_id = CONFIG_GET(string/cross_comms_name)
@@ -59,22 +60,22 @@ GAME_VERB_PROC_DESC(/mob/dead, server_hop, "Server Hop", "Jump to the other serv
 	switch(length(csa))
 		if(0)
 			UNASSIGN_GAME_VERB(src, /mob/dead, server_hop)
-			to_chat(src, span_notice("Server Hop has been disabled."))
+			to_chat(src, span_notice(LANG("mob.65c6c56e1ca618eb", null)))
 		if(1)
 			pick = csa[1]
 		else
-			pick = tgui_input_list(src, "Server to jump to", "Server Hop", csa)
+			pick = tgui_input_list(src, LANG("mob.17bb19eb71b353b8", null), LANG("mob.b8fb2a347f1dc727", null), csa)
 
 	if(isnull(pick))
 		return
 
 	var/addr = csa[pick]
 
-	if(tgui_alert(usr, "Jump to server [pick] ([addr])?", "Server Hop", list("Yes", "No")) != "Yes")
+	if(tgui_alert(usr, LANG("mob.cb56e4101a01eb9e", list(pick, addr)), LANG("mob.b8fb2a347f1dc727", null), list("Yes", "No")) != "Yes")
 		return
 
 	var/client/hopper = client
-	to_chat(hopper, span_notice("Sending you to [pick]."))
+	to_chat(hopper, span_notice(LANG("mob.4cf0422f0bd8bc9c", list(pick))))
 	var/atom/movable/screen/splash/fade_in = new(null, null, hopper, FALSE)
 	fade_in.fade(FALSE)
 

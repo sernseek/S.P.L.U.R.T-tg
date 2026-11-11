@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/under/syndicate
 	name = "tactical turtleneck"
 	desc = "A nondescript and slightly suspicious looking turtleneck with digital camouflage cargo pants."
@@ -75,8 +76,8 @@
 
 /obj/item/clothing/under/syndicate/tacticool/examine(mob/user)
 	. = ..()
-	. += "It has a label that says cleaning this 'genuine' Waffle Corp. product with cleaning solutions other than Grime Liberator telelocational podcrystals will void the warranty."
-	. += "What on earth is a <font color='red'>tele</font>locational pod<font color='red'>crystal</font>?"
+	. += LANG("obj.f70a9344ffca3f0d", null)
+	. += LANG("obj.132b5002f403001f", null)
 
 /obj/item/clothing/under/syndicate/tacticool/dye_item(dye_color, dye_key_override)
 	if(dye_color == DYE_SYNDICATE)

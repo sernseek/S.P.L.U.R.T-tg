@@ -1,5 +1,7 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //GAME_VERB(/client, mentorhelp, "Mentorhelp", "Mentor", msg as text)
-GAME_VERB(/client, mentorhelp, "Mentorhelp", "Mentor")
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+GAME_VERB(/client, mentorhelp, "导师帮助", "Mentor")
 	VERB_ARG(msg, VERB_ARG_TYPE_TEXT, VERB_ARG_SOURCE_INPUT)
 	//clean the input msg
 	if(!msg)
@@ -24,7 +26,7 @@ GAME_VERB(/client, mentorhelp, "Mentorhelp", "Mentor")
 			SEND_SOUND(mentor_client, 'sound/items/bikehorn.ogg')
 			to_chat(mentor_client, mentor_msg)
 
-	to_chat(src, span_mentor("PM to-<b>Mentors</b>: [msg]"))
+	to_chat(src, span_mentor(LANG("client.25d147d73c704d7b", list(msg))))
 	return
 
 /proc/get_mentor_counts()

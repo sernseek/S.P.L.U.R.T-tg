@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/objective/heretic_wildcard
 	abstract_type = /datum/objective/heretic_wildcard
 	var/list/datum/heretic_knowledge/knowledge_to_gain = list()
@@ -11,7 +12,7 @@
 	for (var/datum/heretic_knowledge/iter_knowledge as anything in knowledge_to_gain)
 		our_heretic.gain_knowledge(iter_knowledge, HERETIC_KNOWLEDGE_SHOP)
 		our_heretic.heretic_shops[HERETIC_KNOWLEDGE_SHOP] -= iter_knowledge
-		to_chat(our_heretic.owner, span_boldnotice("To accomplish your objectives, you have been given the [iter_knowledge::name] knowledge node for free."))
+		to_chat(our_heretic.owner, span_boldnotice(LANG("datum.b79ebaa68d2d2877", list(iter_knowledge::name))))
 		our_heretic.update_data_for_all_viewers()
 
 /datum/objective/heretic_wildcard/proc/increment_progress(datum/antagonist/heretic/our_heretic, atom/target)
@@ -40,5 +41,5 @@
 
 /datum/objective/heretic_wildcard/proc/do_finished_text_and_flavor(datum/antagonist/heretic/our_heretic)
 	to_chat(our_heretic.owner, span_hypnophrase(finish_text))
-	to_chat(our_heretic.owner, span_warning("You can no longer obtain knowledge points from your [name] objective, as it has been completed."))
+	to_chat(our_heretic.owner, span_warning(LANG("datum.fe6a1671b98f98e4", list(name))))
 	SEND_SOUND(our_heretic.owner.current, sound('sound/effects/magic/knock.ogg'))

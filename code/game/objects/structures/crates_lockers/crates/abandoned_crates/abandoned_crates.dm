@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Originally coded by ISaidNo, later modified by Kelenius. Ported from Baystation12.
 
 /obj/structure/closet/crate/secure/loot
@@ -122,7 +123,7 @@
 	if(!user.can_perform_action(src))
 		return
 
-	var/input = tgui_input_text(user, title = "Deca-code lock", message = "Enter [code_length] digits. All digits must be unique.", max_length = code_length)
+	var/input = tgui_input_text(user, title = LANG("obj.14eee6fcc5fbceff", null), message = LANG("obj.69270ce2099e68d0", list(code_length)), max_length = code_length)
 
 	if(input == code)
 		if(!spawned_loot)
@@ -133,10 +134,10 @@
 		return
 
 	if(!validate_input(input))
-		to_chat(user, span_notice("You leave the crate alone."))
+		to_chat(user, span_notice(LANG("obj.3f95a50585ffc6e6", null)))
 		return
 
-	to_chat(user, span_warning("A red light flashes."))
+	to_chat(user, span_warning(LANG("obj.503e48f9f8b8fdae", null)))
 	previous_attempts += list(bulls_and_cows(input))
 	attempts--
 

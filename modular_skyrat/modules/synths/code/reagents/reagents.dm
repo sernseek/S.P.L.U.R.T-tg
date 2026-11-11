@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define NANITE_SLURRY_ORGANIC_PURGE_RATE 4
 #define NANITE_SLURRY_ORGANIC_VOMIT_CHANCE 25
 
@@ -70,9 +71,9 @@
 
 /datum/reagent/medicine/nanite_slurry/overdose_start(mob/living/affected_mob)
 	if(affected_mob.mob_biotypes & MOB_ROBOTIC)
-		to_chat(affected_mob, span_danger("Your interior systems are overheating as they're being repaired!"))
+		to_chat(affected_mob, span_danger(LANG("datum.cbd02519925262a8", null)))
 	else
-		to_chat(affected_mob, span_danger("Your stomach lurches as concentrations of nanites begin disposing of themselves."))
+		to_chat(affected_mob, span_danger(LANG("datum.9ead110d8f701401", null)))
 
 /datum/reagent/medicine/nanite_slurry/overdose_process(mob/living/carbon/affected_mob, seconds_per_tick, times_fired) // Mostly to treat a synthetic being EMP'd
 	if(affected_mob.mob_biotypes & MOB_ROBOTIC)

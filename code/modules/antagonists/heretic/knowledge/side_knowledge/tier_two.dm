@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*!
  * Tier 2 knowledge: Defensive tools and curses
  */
@@ -177,7 +178,7 @@
 		)
 		return TRUE*/ // BUBBER EDIT REMOVAL - No rust paintings oh my god bruh
 
-	user.balloon_alert(user, "no additional atom present!")
+	user.balloon_alert(user, LANG("datum.ffbbb54f9a320759", null))
 	return FALSE
 
 /datum/heretic_knowledge/hypnosis_ritual
@@ -213,7 +214,7 @@
 			has_written_text = TRUE
 
 	if(!has_written_text && has_paper)
-		loc.balloon_alert(user, "write your hypnosis on the paper!")
+		loc.balloon_alert(user, LANG("datum.357d94890593f2e1", null))
 		return FALSE
 
 	return ..()

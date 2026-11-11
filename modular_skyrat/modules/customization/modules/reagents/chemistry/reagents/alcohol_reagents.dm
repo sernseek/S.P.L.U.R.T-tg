@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Modular Booze REAGENTS, see the following file for the mixes: modular_skyrat\modules\customization\modules\food_and_drinks\recipes\drinks_recipes.dm
 
 /datum/reagent/consumable/ethanol/whiskey
@@ -166,7 +167,7 @@
 
 /datum/reagent/consumable/ethanol/gunfire/on_mob_life(mob/living/carbon/M)
 	if (prob(3))
-		to_chat(M,span_notice("You feel the gunfire pop in your mouth."))
+		to_chat(M,span_notice(LANG("datum.9829f0d067168744", null)))
 	return ..()
 
 /datum/reagent/consumable/ethanol/hellfire

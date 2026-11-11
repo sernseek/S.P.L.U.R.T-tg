@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/shadekin
 	name = "Shadekin"
 	id = SPECIES_SHADEKIN
@@ -36,8 +37,8 @@
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "lightbulb",
-		SPECIES_PERK_NAME = "Dark Regeneration",
-		SPECIES_PERK_DESC = "Shadekins regenerate their physical wounds while in the darkness."
+		SPECIES_PERK_NAME = LANG("datum.000169c90b1204dd", null),
+		SPECIES_PERK_DESC = LANG("datum.88206ebc9596f738", null)
 	))
 
 	return to_add

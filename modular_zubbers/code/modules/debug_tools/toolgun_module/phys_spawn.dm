@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define SPAWN_MODE_MOB_COOLDOWN 5 SECONDS
 #define SPAWN_MODE_MEGAFAUNA_COOLDOWN 30 SECONDS
 
@@ -19,9 +20,9 @@
 
 /datum/phystool_mode/spawn_mode/use_act(mob/user)
 	. = ..()
-	var/text_path = tgui_input_text(user, "Enter object path:", "Spawn tool", "none", 256, FALSE)
+	var/text_path = tgui_input_text(user, LANG("datum.a9fbd4534beb186e", null), LANG("datum.5198bcd5214d5eb8", null), "none", 256, FALSE)
 	if(!text_path)
-		user.balloon_alert(user, "enter path!")
+		user.balloon_alert(user, LANG("datum.462b3dc42d3e21f9", null))
 		return FALSE
 	selected_object = text2path(text_path)
 	if(!ispath(selected_object))
@@ -29,20 +30,20 @@
 	for(var/black_list_item in black_list)
 		if(ispath(selected_object, black_list_item))
 			selected_object = null
-			user.balloon_alert(user, "spawn blocked!")
+			user.balloon_alert(user, LANG("datum.95fc83198b9a1e7a", null))
 			return FALSE
-	user.balloon_alert(user, "selected!")
-	to_chat(user, span_notice("Current spawn type [selected_object]."))
+	user.balloon_alert(user, LANG("datum.66b25a954b20e31d", null))
+	to_chat(user, span_notice(LANG("datum.984f64c0cfeeb6b0", list(selected_object))))
 
 /datum/phystool_mode/spawn_mode/main_act(atom/target, mob/user)
 	. = ..()
 
 	if(!selected_object)
-		user.balloon_alert(user, "select type first!")
+		user.balloon_alert(user, LANG("datum.3b3531adf76e9371", null))
 		return FALSE
 
 	if(!COOLDOWN_FINISHED(src, spawn_cooldown))
-		user.balloon_alert(user, "wait!")
+		user.balloon_alert(user, LANG("datum.9cfa14e635d23a67", null))
 		return FALSE
 	var/target_cooldown
 	if(ispath(selected_object, /mob/living/simple_animal/hostile/megafauna))

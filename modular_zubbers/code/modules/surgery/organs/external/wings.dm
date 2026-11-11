@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/wings/moth
 	name = "moth wings"
 	desc = "A pair of fuzzy moth wings."
@@ -46,14 +47,14 @@
 	var/datum/gas_mixture/environment = our_turf.return_air()
 
 	if(environment.return_pressure() < (HAZARD_LOW_PRESSURE))
-		to_chat(owner, span_warning("There's far too little air for your wings to work against!"))
+		to_chat(owner, span_warning(LANG("datum.a8e0a6a8ca35e8bb", null)))
 		return
 
 	if(owner.incapacitated)
 		return
 
 	if(!COOLDOWN_FINISHED(src, dash_cooldown))
-		to_chat(owner, span_warning("Your wings are extraordinarily tired, give them some rest!"))
+		to_chat(owner, span_warning(LANG("datum.4e4b715772f4909e", null)))
 		return
 
 	var/atom/dash_target = get_edge_target_turf(owner, owner.dir) //gets the user's direction
@@ -61,13 +62,13 @@
 	ADD_TRAIT(owner, TRAIT_MOVE_FLOATING, LEAPING_TRAIT)
 	if (owner.throw_at(dash_target, jumpdistance, jumpspeed, spin = FALSE, diagonals_first = TRUE, callback = TRAIT_CALLBACK_REMOVE(owner, TRAIT_MOVE_FLOATING, LEAPING_TRAIT)))
 		playsound(owner, 'sound/mobs/humanoids/moth/moth_flutter.ogg', 50, TRUE, TRUE)
-		owner.visible_message(span_warning("[usr] propels themselves forwards with a heavy wingbeat!"))
+		owner.visible_message(span_warning(LANG("datum.d2e165ec530b1f91", list(usr))))
 		COOLDOWN_START(src, dash_cooldown, 6 SECONDS)
 		var/mob/living/dash_user = owner
 		if(istype(dash_user))
 			dash_user.adjust_stamina_loss(40) //Given the risk of flying into things and crashing quite violently, you get four of these. Every one slows you down anyway.
 	else
-		to_chat(owner, span_warning("Something prevents you from dashing forward!"))
+		to_chat(owner, span_warning(LANG("datum.9227c41df31765a4", null)))
 
 /datum/emote/living/mothic_dash
 	key = "mdash"
@@ -110,7 +111,7 @@
 	var/turf/check_turf = get_turf(user)
 	var/datum/gas_mixture/environment = check_turf.return_air()
 	if(environment.return_pressure() < (HAZARD_LOW_PRESSURE))
-		to_chat(user, span_warning("There's far too little air for your wings to work against!"))
+		to_chat(user, span_warning(LANG("obj.a8e0a6a8ca35e8bb", null)))
 		return ITEM_INTERACT_BLOCKING
 	. = ..()
 	qdel(src)

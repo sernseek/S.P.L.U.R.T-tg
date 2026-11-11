@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/power/rbmk2/proc/trigger_voidout()
 
 	var/turf/origin_turf = get_turf(src)
@@ -96,8 +97,8 @@
 
 	if(our_turf && our_turf == their_turf)
 		kill_target.visible_message(
-			span_danger("Something terrible violently phases right into [kill_target]!"),
-			span_userdanger("Something terrible violently phases right into you, stealing something precious!"),
+			span_danger(LANG("obj.b9aed04366f545db", list(kill_target))),
+			span_userdanger(LANG("obj.1e4861e5924bcf28", null)),
 		)
 		var/obj/item/organ/heart/target_heart = kill_target.get_organ_slot(ORGAN_SLOT_HEART)
 		kill_target.add_splatter_floor(their_turf)
@@ -125,7 +126,7 @@
 
 	if(desired_target)
 		desired_target.ominous_nosebleed()
-		to_chat(desired_target, span_hear("You hear a voice in your head... [span_big("\'Run.\'")]"))
+		to_chat(desired_target, span_hear(LANG("obj.68d1053c1304bf31", list(span_big("\'Run.\'")))))
 		desired_target.playsound_local(get_turf(desired_target), 'modular_zubbers/sound/machines/rbmk2/voidout_run.ogg', 50, FALSE)
 
 	kill_target = desired_target

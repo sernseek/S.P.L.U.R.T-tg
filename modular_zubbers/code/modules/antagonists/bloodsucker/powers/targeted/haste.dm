@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /* Level 1: Speed to location
  * Level 2: Dodge Bullets
  * Level 3: Stun People Passed
@@ -21,20 +22,20 @@
 /datum/action/cooldown/bloodsucker/targeted/haste/get_power_desc_extended()
 	. = "Dash to a location, knocking down anyone in your way, and refilling your stamina. Those nearby may be knocked away, stunned, or left empty-handed.\n"
 	if(level_current >= HASTE_GETUP_LEVEL)
-		. += "Dashing from lying down will get you up, but won't affect your foes."
+		. += LANG("datum.4f53d46510404e2d", null)
 	else
-		. += "You cannot dash while knocked down."
+		. += LANG("datum.57693c09eaea0198", null)
 
 /datum/action/cooldown/bloodsucker/targeted/haste/get_power_explanation_extended()
 	. = list()
-	. += "Click anywhere to immediately dash towards that location."
-	. += "At level [HASTE_GETUP_LEVEL], if you are lying down, you will get up and regain your stamina, but the resulting dash will not knock down those nearby."
-	. += "Haste will knockdown your enemies for [DisplayTimeText(GetKnockdown())] and refill your stamina, but using haste while knocked down will make it go on cooldown for [DisplayTimeText(cooldown_time * 3)]"
-	. += "The Power will not work if you are lying down, in no gravity, or are aggressively grabbed."
-	. += "Anyone in your way during your Haste will be knocked down."
-	. += "Higher levels will increase the knockdown dealt to enemies."
-	. += "It will also refill your stamina so you can keep moving."
-	. += "If Fortitude is active, using haste will disable it."
+	. += LANG("datum.b42e4e4f708e3bd5", null)
+	. += LANG("datum.7a99e478f7469ad3", list(HASTE_GETUP_LEVEL))
+	. += LANG("datum.21d0f4fd21cb9654", list(DisplayTimeText(GetKnockdown()), DisplayTimeText(cooldown_time * 3)))
+	. += LANG("datum.33861aea85125ef8", null)
+	. += LANG("datum.0f854243cbc7ce4a", null)
+	. += LANG("datum.1744cdbdfddb1406", null)
+	. += LANG("datum.d9537caeba3cbe61", null)
+	. += LANG("datum.18af4b6682297a86", null)
 
 /datum/action/cooldown/bloodsucker/targeted/haste/can_use(mob/living/carbon/user, trigger_flags)
 	. = ..()
@@ -42,13 +43,13 @@
 		return FALSE
 	// Being Grabbed
 	if(user.pulledby && user.pulledby.grab_state >= GRAB_AGGRESSIVE)
-		user.balloon_alert(user, "you're being grabbed!")
+		user.balloon_alert(user, LANG("datum.9c3a45cae86932f2", null))
 		return FALSE
 	if(!user.has_gravity(user.loc)) //We dont want people to be able to use this to fly around in space
-		user.balloon_alert(user, "you cannot dash while floating!")
+		user.balloon_alert(user, LANG("datum.63a6b2b3d8e7d6b1", null))
 		return FALSE
 	if(level_current < HASTE_GETUP_LEVEL && user.body_position == LYING_DOWN)
-		user.balloon_alert(user, "you must be standing to dash!")
+		user.balloon_alert(user, LANG("datum.27a0cdf115fd142d", null))
 		return FALSE
 	return TRUE
 
@@ -66,7 +67,7 @@
 	var/stuns_mobs = TRUE
 	var/temp_cooldown = cooldown_time
 	if(level_current >= HASTE_GETUP_LEVEL && user.body_position == LYING_DOWN)
-		to_chat(user, span_danger("Your heart takes a beat, and you force yourself to stand up!"))
+		to_chat(user, span_danger(LANG("datum.1ca9d4c5ff99232c", null)))
 		user.SetKnockdown(0)
 		user.set_stamina_loss(0)
 		user.set_resting(FALSE, FALSE, TRUE)
@@ -79,7 +80,7 @@
 	user.pulledby?.stop_pulling()
 	// Go to target turf
 	// DO NOT USE WALK TO.
-	owner.balloon_alert(owner, "you dash into the air!")
+	owner.balloon_alert(owner, LANG("datum.426ffdca59493e9d", null))
 	playsound(get_turf(owner), 'sound/items/weapons/punchmiss.ogg', 25, 1, -1)
 	var/safety = get_dist(user, targeted_turf) * 3 + 1
 	var/consequetive_failures = 0

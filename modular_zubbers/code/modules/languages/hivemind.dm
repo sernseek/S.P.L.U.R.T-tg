@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/language_holder/xeno_hybrid
 	understood_languages = list(
 		/datum/language/common = list(LANGUAGE_ATOM),
@@ -33,7 +34,7 @@
 /obj/item/organ/tongue/xeno_hybrid/proc/actually_modify_speech(datum/source, list/speech_args)
 	var/message = speech_args[SPEECH_MESSAGE]
 	var/mob/living/carbon/human/user = source
-	user.balloon_alert_to_viewers("Looks distracted...", "Concentrating...")
+	user.balloon_alert_to_viewers(LANG("obj.6ab07733564daf18", null), LANG("obj.570ff622337a54b4", null))
 
 	if(!do_after(source, 2 SECONDS, source))
 		message = full_capitalize(rot13(message))
@@ -46,7 +47,7 @@
 			continue
 		to_chat(living_mob, rendered)
 		if(living_mob != user)
-			living_mob.balloon_alert_to_viewers("Looks distracted...", "A voice murmurs in your head...")
+			living_mob.balloon_alert_to_viewers(LANG("obj.6ab07733564daf18", null), LANG("obj.faaa9aff0847208a", null))
 
 	if(length(GLOB.dead_mob_list))
 		for(var/mob/dead_mob in GLOB.dead_mob_list)

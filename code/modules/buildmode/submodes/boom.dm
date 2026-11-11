@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BOOM_DEVASTATION "devastation"
 #define BOOM_HEAVY "heavy"
 #define BOOM_LIGHT "light"
@@ -17,14 +18,12 @@
 
 /datum/buildmode_mode/boom/show_help(client/builder)
 	to_chat(builder, span_purple(boxed_message(
-		"[span_bold("Set explosion destructiveness")] -> Right Mouse Button on buildmode button\n\
-		[span_bold("Kaboom")] -> Mouse Button on obj\n\n\
-		[span_warning("NOTE:")] Using the \"Config/Launch Supplypod\" verb allows you to do this in an IC way (i.e., making a cruise missile come down from the sky and explode wherever you click!)"))
+		LANG("datum.1774e16547d6f0cf", list(span_bold("Set explosion destructiveness"), span_bold("Kaboom"), span_warning("NOTE:")))))
 	)
 
 /datum/buildmode_mode/boom/change_settings(client/c)
 	for (var/explosion_level in explosions)
-		explosions[explosion_level] = input(c, "Range of total [explosion_level]. 0 to none", "Input") as num|null
+		explosions[explosion_level] = input(c, LANG("datum.593032cd51bcdef1", list(explosion_level)), LANG("datum.8c7e56a24e9ebe25", null)) as num|null
 		if(explosions[explosion_level] == null || explosions[explosion_level] < 0)
 			explosions[explosion_level] = 0
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/blood_worm
 	icon = 'icons/mob/nonhuman-player/blood_worm_32x32.dmi'
 
@@ -197,7 +198,7 @@
 
 /mob/living/basic/blood_worm/update_name(updates)
 	. = ..()
-	name = "[initial(name)] ([id_number])"
+	name = "[lang_reverse_text(initial(name))] ([id_number])" // ZH EDIT - retain localized name after updating
 	real_name = name
 
 /mob/living/basic/blood_worm/adjust_health(amount, updating_health, forced)

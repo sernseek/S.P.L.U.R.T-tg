@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///Percentage of a civilian bounty the civilian will make.
 #define CIV_BOUNTY_SPLIT 30
 #define HIGH_PRIORITY_BOUNTY_ODDS 20
@@ -52,7 +53,7 @@
 
 /obj/machinery/computer/piratepad_control/multitool_act(mob/living/user, obj/item/multitool/I)
 	if(istype(I) && istype(I.buffer,/obj/machinery/piratepad/civilian))
-		to_chat(user, span_notice("You link [src] with [I.buffer] in [I] buffer."))
+		to_chat(user, span_notice(LANG("obj.806c484e24c32b14", list(src, I.buffer, I))))
 		pad_ref = WEAKREF(I.buffer)
 		return TRUE
 
@@ -162,7 +163,7 @@
 				for(var/datum/bank_account/helper in stack_item.contribution)
 					if(istype(helper?.civilian_bounty, stack_item.type))
 						helper.reset_bounty(inserted_scan_id)
-						helper.bank_card_talk("Your [stack_item.name] bounty has been completed for matching the completed station bounty!")
+						helper.bank_card_talk(LANG("obj.0c37355e0105609c", list(stack_item.name)))
 			else
 				id_account.reset_bounty(inserted_scan_id)
 
@@ -175,7 +176,7 @@
 	if(check_global)
 		update_global_bounty_list(round(CIV_BOUNTY_BASELINE + (SSeconomy.civ_bounty_tracker / 3)), FALSE)
 
-	pad.visible_message(span_notice("[pad] activates!"))
+	pad.visible_message(span_notice(LANG("obj.f40f58585fecd2fe", list(pad))))
 	pad.finish_sending()
 	playsound(loc, 'sound/machines/synth/synth_yes.ogg', 30 , TRUE)
 	sending = FALSE
@@ -188,10 +189,10 @@
 		return FALSE
 	if((id_account.civilian_bounty || id_account.bounties) && !COOLDOWN_FINISHED(id_account, bounty_timer))
 		var/time_left = DisplayTimeText(COOLDOWN_TIMELEFT(id_account, bounty_timer), round_seconds_to = 1)
-		balloon_alert(user, "try again in [time_left]!")
+		balloon_alert(user, LANG("obj.22b3f3756d795d4c", list(time_left)))
 		return FALSE
 	if(!inserted_scan_id.trim)
-		say("Requesting ID card has no job assignment registered!")
+		say(LANG("obj.898ed9d2d8b67c49", null))
 		return FALSE
 
 	var/list/datum/bounty/crumbs = inserted_scan_id.trim.generate_bounty_list()
@@ -258,7 +259,7 @@
 		if(data["listBounty"]["name"] == global_bounty.name)
 			continue
 		data["listBounty"] += list(list(
-			"name" = global_bounty.name,
+			"name" = lang_localize_display_name(global_bounty.name), // ZH EDIT - I18N: 赏金名纯显示。ORIGINAL: "name" = global_bounty.name,
 			"description" = global_bounty.description,
 			"reward" = global_bounty.get_bounty_reward(),
 			"claimed" = global_bounty.claimed,
@@ -316,8 +317,8 @@
 		else
 			id_eject(user, target)
 
-	user.visible_message(span_notice("[user] inserts \the [card_to_insert] into \the [src]."),
-						span_notice("You insert \the [card_to_insert] into \the [src]."))
+	user.visible_message(span_notice(LANG("obj.6d5d915032f1b86c", list(user, card_to_insert, src))),
+						span_notice(LANG("obj.a9ab5056327dd722", list(card_to_insert, src))))
 	playsound(src, 'sound/machines/terminal/terminal_insert_disc.ogg', 50, FALSE)
 	ui_interact(user)
 	return TRUE
@@ -325,12 +326,12 @@
 ///Removes A stored ID card.
 /obj/machinery/computer/piratepad_control/civilian/proc/id_eject(mob/user, obj/item/target)
 	if(!target)
-		to_chat(user, span_warning("That slot is empty!"))
+		to_chat(user, span_warning(LANG("obj.53373b0aadb1d5b5", null)))
 		return FALSE
 	else
 		try_put_in_hand(target, user)
-		user.visible_message(span_notice("[user] gets \the [target] from \the [src]."), \
-							span_notice("You get \the [target] from \the [src]."))
+		user.visible_message(span_notice(LANG("obj.346daeb107005139", list(user, target, src))), \
+							span_notice(LANG("obj.a6b1141d153bdae3", list(target, src))))
 		playsound(src, 'sound/machines/terminal/terminal_insert_disc.ogg', 50, FALSE)
 		inserted_scan_id = null
 		return TRUE
@@ -393,7 +394,7 @@
  */
 /obj/machinery/computer/piratepad_control/civilian/proc/print_sheet(mob/living/user)
 	if(!COOLDOWN_FINISHED(src, sheet_printer_cooldown))
-		balloon_alert(user, "printer spooling!")
+		balloon_alert(user, LANG("obj.38863b8f37e777de", null))
 		return FALSE
 
 	var/obj/item/paper/paper = new(loc)
@@ -427,7 +428,7 @@
 	var/uses = 2
 
 /obj/item/civ_bounty_beacon/attack_self()
-	loc.visible_message(span_warning("\The [src] begins to beep loudly!"))
+	loc.visible_message(span_warning(LANG("obj.41be4252fed1b7ee", list(src))))
 	addtimer(CALLBACK(src, PROC_REF(launch_payload)), 1 SECONDS)
 
 /obj/item/civ_bounty_beacon/proc/launch_payload()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/oven/range_frontier
 	name = "frontier range"
 	desc = "A combined oven and stove commonly seen on the frontier. Comes from the factory packed up \
@@ -17,7 +18,7 @@
 
 /obj/machinery/oven/range_frontier/examine(mob/user)
 	. = ..()
-	. += span_notice("It cannot be repacked, but can be deconstructed normally.")
+	. += span_notice(LANG("obj.7a0899a5d4f2d25d", null))
 
 /obj/machinery/oven/range_frontier/unanchored
 	anchored = FALSE

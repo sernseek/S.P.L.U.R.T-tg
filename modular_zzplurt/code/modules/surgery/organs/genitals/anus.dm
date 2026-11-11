@@ -1,13 +1,14 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/genital/anus/get_description_string(datum/sprite_accessory/genital/gas)
 	var/u_His = owner?.p_their() || "their"
 	var/anus_style = gas ? LOWER_TEXT(gas.icon_state) : LOWER_TEXT(genital_name)
 
-	desc = "You see [u_His] squishy [anus_style] pucker parting [u_His] asscheeks"
+	desc = LANG("obj.0548df5d2dd0dac4", list(u_His, anus_style, u_His))
 
 /obj/item/organ/genital/anus/get_sprite_size_string()
 	. = "[genital_type]_[floor(genital_size)]"
 	if(uses_skintones)
-		. += "_s"
+		. += LANG("obj.1b7c729d6f75ef28", null)
 
 /obj/item/organ/genital/anus/build_from_dna(datum/dna/DNA, associated_key)
 	set_size(DNA.features["butt_size"]) // yes

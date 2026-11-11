@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/construction/rcd/arcd/mattermanipulator
 	name = "matter manipulator"
 	desc = "A strange, familiar yet distinctly different analogue to the Nanotrasen standard RCD. Works at range, and can deconstruct reinforced walls. Reload using metal, glass, or plasteel."
@@ -87,7 +88,7 @@
 	banned_upgrades = RCD_ALL_UPGRADES
 
 /obj/item/construction/rcd/robotics_rcd/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
-	balloon_alert(user, "no deconstruction mode")
+	balloon_alert(user, LANG("obj.b8ebdc30f5be7862", null))
 	return NONE
 
 //Research cyborg RCD upgrade

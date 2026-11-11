@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 #define PLATFORM_WARNING_MODIFIER 5 SECONDS
 
@@ -54,13 +55,13 @@
 
 /obj/item/boulder/examine(mob/user)
 	. = ..()
-	. += span_notice("This boulder would take [durability] more steps to refine or break.")
+	. += span_notice(LANG("obj.c187ef28582f0c6d", list(durability)))
 	if(HAS_TRAIT(user, TRAIT_BOULDER_BREAKER))
-		. += span_notice("You can crush this boulder with your bare hands.")
+		. += span_notice(LANG("obj.c513c159439fb122", null))
 
 /obj/item/boulder/examine_more(mob/user)
 	. = ..()
-	. += span_notice("[span_bold("Boulders")] can either be cracked open by [span_bold("mining tools")], or processed into sheets with [span_bold("refineries or smelters")]. Undisturbed boulders can be collected by the [span_bold("BRM")].")
+	. += span_notice(LANG("obj.3b483921e8f4cd36", list(span_bold("Boulders"), span_bold("mining tools"), span_bold("refineries or smelters"), span_bold("BRM"))))
 
 /obj/item/boulder/update_icon_state()
 	. = ..()
@@ -128,7 +129,7 @@
 /obj/item/boulder/proc/create_platform(atom/interacting_with, mob/living/user, timer_override = null)
 	if(locate(/obj/structure/lattice/catwalk/boulder, interacting_with))
 		if(user)
-			to_chat(user, span_warning("There is already a boulder platform here!"))
+			to_chat(user, span_warning(LANG("obj.f5d6df925d01ad48", null)))
 		return null
 
 	var/active_platform_lifespan = platform_lifespan //Default to the assigned value.
@@ -138,7 +139,7 @@
 	var/obj/structure/lattice/catwalk/boulder/platform = new(interacting_with)
 	addtimer(CALLBACK(platform, TYPE_PROC_REF(/obj/structure/lattice/catwalk/boulder, pre_self_destruct)), active_platform_lifespan)
 	// See Lattice.dm for more info
-	visible_message(span_notice("\The [src] floats on \the [interacting_with], forming a temporary platform!"))
+	visible_message(span_notice(LANG("obj.3305beb4e8e5948e", list(src, interacting_with))))
 	qdel(src)
 	return platform
 
@@ -219,7 +220,7 @@
 /obj/item/boulder/proc/break_apart()
 	if(length(contents))
 		var/list/quips = list("Clang!", "Crack!", "Bang!", "Clunk!", "Clank!")
-		visible_message(span_notice("[pick(quips)] Something falls out of \the [src]!"))
+		visible_message(span_notice(LANG("obj.c7129054b110919f", list(pick(quips), src))))
 		playsound(loc, 'sound/effects/pickaxe/picaxe1.ogg', 60, FALSE)
 		for(var/obj/item/content as anything in contents)
 			content.forceMove(get_turf(src))

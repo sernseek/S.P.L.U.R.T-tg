@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Equips this mob with a given outfit and loadout items as per the passed preferences.
  *
@@ -44,37 +45,37 @@
 		// BUBBER EDIT ADDITION BEGIN
 		if(item.restricted_roles && equipping && !(equipping.title in item.restricted_roles))
 			if(preference_source.parent)
-				to_chat(preference_source.parent, span_warning("You were unable to get a loadout item ([initial(item.item_path.name)]) due to job restrictions!"))
+				to_chat(preference_source.parent, span_warning(LANG("mob.d1bda95e45fcf573", list(initial(item.item_path.name)))))
 			loadout_datums -= item
 			continue
 
 		if(item.blacklisted_roles && equipping && (equipping.title in item.blacklisted_roles))
 			if(preference_source.parent)
-				to_chat(preference_source.parent, span_warning("You were unable to get a loadout item ([initial(item.item_path.name)]) due to job blacklists!"))
+				to_chat(preference_source.parent, span_warning(LANG("mob.1255f196dfd008ee", list(initial(item.item_path.name)))))
 			loadout_datums -= item
 			continue
 
 		if(item.restricted_species && !(dna.species.id in item.restricted_species))
 			if(preference_source.parent)
-				to_chat(preference_source.parent, span_warning("You were unable to get a loadout item ([initial(item.item_path.name)]) due to species restrictions!"))
+				to_chat(preference_source.parent, span_warning(LANG("mob.5d5090368a130760", list(initial(item.item_path.name)))))
 			loadout_datums -= item
 			continue
 
 		if(item.blacklisted_species && (dna.species.id in item.blacklisted_species))
 			if(preference_source.parent)
-				to_chat(preference_source.parent, span_warning("You were unable to get a loadout item ([initial(item.item_path.name)]) due to species blacklists!"))
+				to_chat(preference_source.parent, span_warning(LANG("mob.b85f4b49bfec5273", list(initial(item.item_path.name)))))
 			loadout_datums -= item
 			continue
 
 		if(item.donator_only && !SSplayer_ranks.is_donator(preference_source?.parent))
 			if(preference_source.parent)
-				to_chat(preference_source.parent, span_warning("You were unable to get a loadout item ([initial(item.item_path.name)]) due to donator restrictions!"))
+				to_chat(preference_source.parent, span_warning(LANG("mob.e59f4a6d0953938d", list(initial(item.item_path.name)))))
 			loadout_datums -= item
 			continue
 
 		if(item.ckeywhitelist && !(preference_source?.parent?.ckey in item.ckeywhitelist)) // Sanity checking
 			if(preference_source.parent)
-				to_chat(preference_source.parent, span_warning("You were unable to get a loadout item ([initial(item.item_path.name)]) due to CKEY restrictions!"))
+				to_chat(preference_source.parent, span_warning(LANG("mob.4de02d3599c07fa6", list(initial(item.item_path.name)))))
 			loadout_datums -= item
 			continue
 

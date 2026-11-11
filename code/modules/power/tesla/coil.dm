@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/power/energy_accumulator/tesla_coil
 	name = "tesla coil"
 	desc = "For the union!"
@@ -39,7 +40,7 @@
 	if(panel_open)
 		return NONE
 	if(anchored)
-		balloon_alert(user, "unanchor first!")
+		balloon_alert(user, LANG("obj.3e9391607cda6ee1", null))
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 

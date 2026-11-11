@@ -18,12 +18,10 @@
 	if(length(choices) == 1) // Only one choice, no need to vote. Let's just auto-rotate it to the only remaining map because it would just happen anyways.
 		var/datum/map_config/change_me_out = global.config.maplist[choices[1]]
 		finalize_vote(choices[1])// voted by not voting, very sad.
-		to_chat(world, span_boldannounce("The map vote has been skipped because there is only one map left to vote for. \
-			The map has been changed to [change_me_out.map_name]."))
+		to_chat(world, span_boldannounce(LANG("datum.33b9e7525fa9c4eb", list(lang_map_display_name(change_me_out.map_name)))))
 		return FALSE
 	if(length(choices) == 0)
-		to_chat(world, span_boldannounce("A map vote was called, but there are no maps to vote for! \
-			Players, complain to the admins. Admins, complain to the coders."))
+		to_chat(world, span_boldannounce(LANG("datum.b86fbca1075f4adb", null)))
 		return FALSE
 
 	return TRUE
@@ -56,6 +54,10 @@
 
 /datum/vote/map_vote/get_result_text(list/all_winners, real_winner, list/non_voters)
 	return null
+
+/// ZH EDIT ADDITION - i18n: 投票里地图名显示成「译名-英文」，键仍是英文 map_name（act 回传/匹配用）。
+/datum/vote/map_vote/get_choice_display_name(choice)
+	return lang_map_display_name(choice)
 
 /datum/vote/map_vote/get_vote_result(list/non_voters)
 	// Even if we have default no vote off,

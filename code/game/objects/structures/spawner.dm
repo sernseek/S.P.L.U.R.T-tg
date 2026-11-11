@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/spawner
 	name = "monster nest"
 	icon = 'icons/mob/simple/animal.dmi'
@@ -35,9 +36,9 @@
 	if(!scanner_taggable)
 		return
 	if(gps_tagged)
-		. += span_notice("A holotag's been attached, projecting \"<b>[assigned_tag]</b>\".")
+		. += span_notice(LANG("obj.87719a64febc4f0a", list(assigned_tag)))
 	else
-		. += span_notice("It looks like you could probably scan and tag it with a <b>[scanner_descriptor]</b>.")
+		. += span_notice(LANG("obj.16d820bf79d39124", list(scanner_descriptor)))
 
 /obj/structure/spawner/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(scanner_taggable && is_type_in_list(tool, scanner_types))
@@ -49,9 +50,9 @@
 /// Tag the spawner, prefixing its GPS entry with an identifier - or giving it one, if nonexistent.
 /obj/structure/spawner/proc/gps_tag(mob/user)
 	if(gps_tagged)
-		to_chat(user, span_warning("[src] already has a holotag attached!"))
+		to_chat(user, span_warning(LANG("obj.d71d9076936be231", list(src))))
 		return
-	to_chat(user, span_notice("You affix a holotag to [src]."))
+	to_chat(user, span_notice(LANG("obj.1fe95f8dedaf0ae1", list(src))))
 	playsound(src, 'sound/machines/beep/twobeep.ogg', 100)
 	gps_tagged = TRUE
 	assigned_tag = "\[[mob_gps_id]-[rand(100,999)]\] " + spawner_gps_id
@@ -203,13 +204,13 @@
 
 /obj/structure/spawner/nether/examine(mob/user)
 	. = ..()
-	. += "A direct link to another dimension full of creatures not very happy to see you. [span_warning("Entering the link would be a very bad idea.")]"
+	. += LANG("obj.98bc52192958b396", list(span_warning("Entering the link would be a very bad idea.")))
 
 /obj/structure/spawner/nether/attack_hand(mob/user, list/modifiers)
 	. = ..()
 	user.visible_message(
-		span_warning("[user] is violently pulled into the link!"),
-		span_userdanger("Touching the portal, you are quickly pulled through into a world of unimaginable horror!")
+		span_warning(LANG("obj.0a35c4b6b2ffabf3", list(user))),
+		span_userdanger(LANG("obj.0293a5ce17cdb2c4", null))
 	)
 	contents.Add(user)
 
@@ -222,7 +223,7 @@
 			var/mob/living/basic/blankbody/newmob = new(loc)
 			newmob.name = "[living_mob]"
 			newmob.desc = "It's [living_mob], but [living_mob.p_their()] flesh has an ashy texture, and [living_mob.p_their()] face is featureless save an eerie smile."
-			src.visible_message(span_warning("[living_mob] reemerges from the link!"))
+			src.visible_message(span_warning(LANG("obj.c2292f433277ebcc", list(living_mob))))
 			qdel(living_mob)
 
 /obj/structure/spawner/sentient
@@ -232,7 +233,7 @@
 /obj/structure/spawner/sentient/Initialize(mapload)
 	. = ..()
 	notify_ghosts(
-		"A [name] has been created in \the [get_area(src)]!",
+		LANG("obj.6148cca5269c70f7", list(name, get_area(src))),
 		source = src,
 		header = "Sentient Spawner Created",
 		notify_flags = NOTIFY_CATEGORY_NOFLASH,
@@ -276,16 +277,16 @@
 	if(!IS_CULTIST(user) && isliving(user))
 		var/mob/living/living_user = user
 		living_user.adjust_organ_loss(ORGAN_SLOT_BRAIN, 15)
-		. += span_danger("The voices of the damned echo relentlessly in your mind, continously rebounding on the walls of your self the more you focus on [src]. Your head pounds, better keep away...")
+		. += span_danger(LANG("obj.158eacb2d6c9da92", list(src)))
 	else
-		. += span_cult("The gateway will create one weak proteon construct every [spawn_time * 0.1] seconds, up to a total of [max_mobs], that may be controlled by the spirits of the dead.")
+		. += span_cult(LANG("obj.caf4e47b11d05fb8", list(spawn_time * 0.1, max_mobs)))
 
 /obj/structure/spawner/sentient/proteon_spawner/became_player_controlled(mob/living/basic/construct/proteon/proteon)
 	proteon.mind.add_antag_datum(/datum/antagonist/cult)
 	proteon.add_filter("awoken_proteon", 3, list("type" = "outline", "color" = COLOR_CULT_RED, "size" = 2))
-	visible_message(span_cult_bold("[proteon] awakens, glowing an eerie red as it stirs from its stupor!"))
+	visible_message(span_cult_bold(LANG("obj.a3455471e9f66488", list(proteon))))
 	playsound(proteon, 'sound/items/haunted/ghostitemattack.ogg', 100, TRUE)
-	proteon.balloon_alert_to_viewers("awoken!")
+	proteon.balloon_alert_to_viewers(LANG("obj.5f8822ca6001bf4a", null))
 	addtimer(CALLBACK(src, PROC_REF(remove_wake_outline), proteon), 8 SECONDS)
 
 /obj/structure/spawner/sentient/proteon_spawner/proc/remove_wake_outline(mob/proteon)
@@ -294,4 +295,4 @@
 
 /obj/structure/spawner/sentient/proteon_spawner/handle_deconstruct(disassembled)
 	playsound(src, 'sound/effects/hallucinations/veryfar_noise.ogg', 75)
-	visible_message(span_cult_bold("[src] completely falls apart, the screams of the damned reaching a feverous pitch before slowly fading away into nothing."))
+	visible_message(span_cult_bold(LANG("obj.1fc8b953c593c3b2", list(src))))

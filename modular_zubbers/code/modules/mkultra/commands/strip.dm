@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/mkultra_command/strip
 	name = "Strip"
 	description = "Have your enthralled strip for you."
@@ -20,4 +21,4 @@
 		if(stuff == person.w_uniform)
 			person.dropItemToGround(stuff)
 			continue
-	to_chat(person, span_userlove("Before you can even think about it, your own hands move to take off your clothes in response to [status.get_gender()]'s command!"))
+	to_chat(person, span_userlove(LANG("datum.c50ae9abdf4305cd", list(status.get_gender()))))

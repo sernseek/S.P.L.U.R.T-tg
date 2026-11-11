@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/door_assembly/door_assembly_bronze/clock
 	airlock_type = /obj/machinery/door/airlock/bronze/clock
 
@@ -37,7 +38,7 @@
 	else
 		user.Paralyze(20)
 		user.electrocute_act(25, src, 1, SHOCK_NOGLOVES|SHOCK_SUPPRESS_MESSAGE)
-		to_chat(user, span_warning("You feel a sudden jolt as you touch [src]!"))
+		to_chat(user, span_warning(LANG("obj.17e56ce0d136fd38", list(src))))
 		return FALSE
 
 

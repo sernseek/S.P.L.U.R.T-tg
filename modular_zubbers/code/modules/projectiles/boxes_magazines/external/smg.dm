@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/ammo_box/magazine/wt550m9
 	name = "\improper WT-550 magazine"
 
@@ -81,7 +82,7 @@
 
 /obj/item/ammo_box/magazine/recharge/ntmp5/attackby(obj/item/A, mob/user)
 	if(istype(A, /obj/item/ntusp_conversion_kit))
-		to_chat(user, span_danger("[A] makes a whirring sound as it modifies \the [src]'s lens to fabricate more lethal rounds."))
+		to_chat(user, span_danger(LANG("obj.0601d64ec82fa914", list(A, src))))
 		new /obj/item/ammo_box/magazine/recharge/ntmp5/laser/empty(get_turf(src))
 		qdel(src)
 	else
@@ -89,7 +90,7 @@
 
 /obj/item/ammo_box/magazine/recharge/ntmp5/laser/attackby(obj/item/A, mob/user)
 	if(istype(A, /obj/item/ntusp_conversion_kit))
-		to_chat(user, span_notice("[A] makes a whirring sound as it modifies \the [src]'s lens to fabricate less lethal rounds."))
+		to_chat(user, span_notice(LANG("obj.5b11c938c6c53812", list(A, src))))
 		new /obj/item/ammo_box/magazine/recharge/ntmp5/empty(get_turf(src))
 		qdel(src)
 	else

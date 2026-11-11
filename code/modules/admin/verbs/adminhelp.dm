@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Client var used for returning the ahelp verb
 /client/var/adminhelptimerid = 0
 /// Client var used for tracking the ticket the (usually) not-admin client is dealing with
@@ -306,7 +307,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 	if(urgent)
 		var/extra_message = CONFIG_GET(string/urgent_ahelp_message)
-		to_chat(initiator, span_boldwarning("Notified admins to prioritize your ticket"))
+		to_chat(initiator, span_boldwarning(LANG("datum.5b329a6119cd6d0a", null)))
 		var/datum/discord_embed/embed = format_embed_discord(message)
 		embed.content = extra_message
 		embed.footer = "This player requested an admin"
@@ -324,7 +325,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	// BUBBER EDIT END
 	log_admin_private("Ticket #[id]: [key_name(initiator)]: [name] - heard by [admin_number_present] non-AFK admins who have +BAN.")
 	if(admin_number_present <= 0)
-		to_chat(initiator, span_notice("No active admins are online, your adminhelp was sent to admins who are available through IRC or Discord."), confidential = TRUE)
+		to_chat(initiator, span_notice(LANG("datum.208d07eda5972e5e", null)), confidential = TRUE)
 		heard_by_no_admins = TRUE
 		var/regular_webhook_url = CONFIG_GET(string/regular_adminhelp_webhook_url)
 		if(regular_webhook_url && (!urgent || regular_webhook_url != CONFIG_GET(string/urgent_adminhelp_webhook_url)))
@@ -391,10 +392,10 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	if(!ref_src)
 		ref_src = "[REF(src)]"
 	. = ADMIN_FULLMONTY_NONAME(initiator.mob)
-	. += " (<A href='byond://?_src_=holder;[HrefToken()];showmessageckey=[initiator.ckey]'>NOTES</A>)"
+	. += LANG("datum.1037fb2866cf28df", list(HrefToken(), initiator.ckey))
 	if(state == AHELP_ACTIVE)
 		if (CONFIG_GET(flag/popup_admin_pm))
-			. += " (<A href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];adminpopup=[REF(initiator)]'>POPUP</A>)"
+			. += LANG("datum.e2cdd57a5a1f03da", list(HrefToken(forceGlobal = TRUE), REF(initiator)))
 		. += ClosureLinks(ref_src)
 
 //private
@@ -402,9 +403,9 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	if(!ref_src)
 		ref_src = "[REF(src)]"
 	. = " (<A href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];ahelp=[ref_src];ahelp_action=reject'>REJT</A>)"
-	. += " (<A href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];ahelp=[ref_src];ahelp_action=icissue'>IC</A>)"
-	. += " (<A href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];ahelp=[ref_src];ahelp_action=close'>CLOSE</A>)"
-	. += " (<A href='byond://?_src_=holder;[HrefToken(forceGlobal = TRUE)];ahelp=[ref_src];ahelp_action=resolve'>RSLVE</A>)"
+	. += LANG("datum.5ec8bf2cc0ce7616", list(HrefToken(forceGlobal = TRUE), ref_src))
+	. += LANG("datum.40cd514e079982ea", list(HrefToken(forceGlobal = TRUE), ref_src))
+	. += LANG("datum.78ee1acc7ebdc621", list(HrefToken(forceGlobal = TRUE), ref_src))
 
 //private
 /datum/admin_help/proc/LinkedReplyName(ref_src)
@@ -462,11 +463,11 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 //Reopen a closed ticket
 /datum/admin_help/proc/Reopen()
 	if(state == AHELP_ACTIVE)
-		to_chat(usr, span_warning("This ticket is already open."), confidential = TRUE)
+		to_chat(usr, span_warning(LANG("datum.2c53e590d7b2de2c", null)), confidential = TRUE)
 		return
 
 	if(GLOB.ahelp_tickets.CKey2ActiveTicket(initiator_ckey))
-		to_chat(usr, span_warning("This user already has an active ticket, cannot reopen this one."), confidential = TRUE)
+		to_chat(usr, span_warning(LANG("datum.2ff119cf9d80f51b", null)), confidential = TRUE)
 		return
 
 	statclick = new(null, src)
@@ -509,7 +510,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		return
 	//SKYRAT EDIT ADDITION BEGIN - ADMIN
 	if(handler && handler != usr.ckey)
-		var/response = tgui_alert(usr, "This ticket is already being handled by [handler]. Do you want to continue?", "Ticket already assigned", list("Yes", "No"))
+		var/response = tgui_alert(usr, LANG("datum.38e616ab87ecdcb5", list(handler)), LANG("datum.9783196e406c6ef3", null), list("Yes", "No"))
 		if(!response || response == "No")
 			return
 	//SKYRAT EDIT ADDITION END
@@ -531,7 +532,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		return
 	//SKYRAT EDIT ADDITION BEGIN - ADMIN
 	if(handler && handler != usr.ckey)
-		var/response = tgui_alert(usr, "This ticket is already being handled by [handler]. Do you want to continue?", "Ticket already assigned", list("Yes", "No"))
+		var/response = tgui_alert(usr, LANG("datum.38e616ab87ecdcb5", list(handler)), LANG("datum.9783196e406c6ef3", null), list("Yes", "No"))
 		if(!response || response == "No")
 			return
 	//SKYRAT EDIT ADDITION END
@@ -542,7 +543,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	addtimer(CALLBACK(initiator, TYPE_PROC_REF(/client, giveadminhelpverb)), 5 SECONDS)
 	send2adminchat("Ticket #[id]:", "Marked as resolved by [key_name]") // BUBBER EDIT - LOG ALL AHELPS TO DISCORD
 	AddInteraction("<font color='green'>Resolved by [key_name].</font>", player_message = "<font color='green'>Ticket resolved!</font>")
-	to_chat(initiator, span_adminhelp("Your ticket has been resolved by an admin. The Adminhelp verb will be returned to you shortly."), confidential = TRUE)
+	to_chat(initiator, span_adminhelp(LANG("datum.f2a9f822d00780be", null)), confidential = TRUE)
 	if(!silent)
 		SSblackbox.record_feedback("tally", "ahelp_stats", 1, "resolved")
 		var/msg = "Ticket [TicketHref("#[id]")] resolved by [key_name]"
@@ -556,7 +557,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		return
 	//SKYRAT EDIT ADDITION BEGIN - ADMIN
 	if(handler && handler != usr.ckey)
-		var/response = tgui_alert(usr, "This ticket is already being handled by [handler]. Do you want to continue?", "Ticket already assigned", list("Yes", "No"))
+		var/response = tgui_alert(usr, LANG("datum.38e616ab87ecdcb5", list(handler)), LANG("datum.9783196e406c6ef3", null), list("Yes", "No"))
 		if(!response || response == "No")
 			return
 	//SKYRAT EDIT ADDITION END
@@ -565,9 +566,9 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		send2adminchat("[key_name]", "Rejected Adminhelp: [id]") // BUBBER EDIT - LOG ALL AHELPS TO DISCORD
 		SEND_SOUND(initiator, sound('sound/effects/adminhelp.ogg'))
 
-		to_chat(initiator, "<font color='red' size='4'><b>- AdminHelp Rejected! -</b></font>", confidential = TRUE)
-		to_chat(initiator, "<font color='red'><b>Your admin help was rejected.</b> The adminhelp verb has been returned to you so that you may try again.</font>", confidential = TRUE)
-		to_chat(initiator, "Please try to be calm, clear, and descriptive in admin helps, do not assume the admin has seen any related events, and clearly state the names of anybody you are reporting.", confidential = TRUE)
+		to_chat(initiator, LANG("datum.5c20f19b591abc28", null), confidential = TRUE)
+		to_chat(initiator, LANG("datum.8351562ff95da5ea", null), confidential = TRUE)
+		to_chat(initiator, LANG("datum.ccd3713e21ad1d0c", null), confidential = TRUE)
 
 	SSblackbox.record_feedback("tally", "ahelp_stats", 1, "rejected")
 	var/msg = "Ticket [TicketHref("#[id]")] rejected by [key_name]"
@@ -583,7 +584,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		return
 	//SKYRAT EDIT ADDITION BEGIN - ADMIN
 	if(handler && handler != usr.ckey)
-		var/response = tgui_alert(usr, "This ticket is already being handled by [handler]. Do you want to continue?", "Ticket already assigned", list("Yes", "No"))
+		var/response = tgui_alert(usr, LANG("datum.38e616ab87ecdcb5", list(handler)), LANG("datum.9783196e406c6ef3", null), list("Yes", "No"))
 		if(!response || response == "No")
 			return
 	//SKYRAT EDIT ADDITION END
@@ -654,7 +655,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 			return "INVALID, CALL A CODER"
 
 /datum/admin_help/proc/Retitle()
-	var/new_title = input(usr, "Enter a title for the ticket", "Rename Ticket", name) as text|null
+	var/new_title = input(usr, LANG("datum.f207f8c48e39c8dd", null), LANG("datum.97c58878ab47f5e0", null), name) as text|null
 	if(new_title)
 		name = new_title
 		//not saying the original name cause it could be a long ass message
@@ -820,7 +821,7 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 
 /datum/admin_help_ui_handler/proc/perform_adminhelp(client/user_client, message, urgent)
 	if(GLOB.say_disabled) //This is here to try to identify lag problems
-		to_chat(usr, span_danger("Speech is currently admin-disabled."), confidential = TRUE)
+		to_chat(usr, span_danger(LANG("datum.b79ad8a388d1b3a4", null)), confidential = TRUE)
 		return
 
 	if(!message)
@@ -828,7 +829,7 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 
 	//handle muting and automuting
 	if(user_client.prefs.muted & MUTE_ADMINHELP)
-		to_chat(user_client, span_danger("Error: Admin-PM: You cannot send adminhelps (Muted)."), confidential = TRUE)
+		to_chat(user_client, span_danger(LANG("datum.9d889263ff529024", null)), confidential = TRUE)
 		return
 	if(user_client.handle_spam_prevention(message, MUTE_ADMINHELP))
 		return
@@ -851,7 +852,7 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 
 	new /datum/admin_help(message, user_client, FALSE, null, urgent) // SKYRAT EDIT - Handling tickets - ORIGINAL: new /datum/admin_help(message, user_client, FALSE, urgent)
 
-GAME_VERB_HIDDEN(/client, no_tgui_adminhelp, "NoTguiAdminhelp")
+GAME_VERB_HIDDEN(/client, no_tgui_adminhelp, "无 TGUI 管理员帮助")
 	VERB_ARG(message, VERB_ARG_TYPE_MESSAGE, VERB_ARG_SOURCE_INPUT)
 	if(adminhelptimerid)
 		return
@@ -860,11 +861,11 @@ GAME_VERB_HIDDEN(/client, no_tgui_adminhelp, "NoTguiAdminhelp")
 
 	GLOB.admin_help_ui_handler.perform_adminhelp(src, message, FALSE)
 
-GAME_VERB(/client, adminhelp, "Adminhelp", "Admin")
+GAME_VERB(/client, adminhelp, "管理员帮助", "Admin")
 	GLOB.admin_help_ui_handler.ui_interact(mob)
-	to_chat(src, span_boldnotice("Adminhelp failing to open or work? <a href='byond://?src=[REF(src)];tguiless_adminhelp=1'>Click here</a>"))
+	to_chat(src, span_boldnotice(LANG("client.f2319813978632ea", list(REF(src)))))
 
-GAME_VERB(/client, view_latest_ticket, "View Latest Ticket", "Admin")
+GAME_VERB(/client, view_latest_ticket, "查看最新工单", "Admin")
 	if(!current_ticket)
 		// Check if the client had previous tickets, and show the latest one
 		var/list/prev_tickets = list()
@@ -884,7 +885,7 @@ GAME_VERB(/client, view_latest_ticket, "View Latest Ticket", "Admin")
 			return
 
 		// client had no tickets this round
-		to_chat(src, span_warning("You have not had an ahelp ticket this round."))
+		to_chat(src, span_warning(LANG("client.a553ec9ac3364804", null)))
 		return
 
 	current_ticket.player_ticket_panel()

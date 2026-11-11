@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Copy and paste of monkey's super kitty ears
 /obj/item/organ/ears/cat/super
 	name = "Super Kitty Ears"
@@ -43,14 +44,14 @@
 	if(!iscarbon(user) || !user.is_holding(src))
 		return FALSE
 	user.visible_message(
-		span_warning("[user] raises \the [src] to [user.p_their()] head and gently places it on [user.p_their()] head!"),
-		span_danger("A strange feline comes over you. You place \the [src] on your head!"),
+		span_warning(LANG("obj.cf4e12028ada5cd8", list(user, src, user.p_their(), user.p_their()))),
+		span_danger(LANG("obj.e2d912994b9deb19", list(src))),
 	)
 	playsound(user, 'sound/effects/meow1.ogg', 50, TRUE)
 
 	user.visible_message(
-		span_warning("\The [src] melt into [user]'s head!"),
-		span_userdanger("Everything is so much louder!"),
+		span_warning(LANG("obj.98bfbb1312d2a180", list(src, user))),
+		span_userdanger(LANG("obj.11438dd196c9accf", null)),
 	)
 
 	user.temporarilyRemoveItemFromInventory(src, force = TRUE)

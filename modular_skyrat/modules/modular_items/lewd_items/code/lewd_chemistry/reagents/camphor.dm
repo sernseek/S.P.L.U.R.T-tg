@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Camphor. Used to reduce libido.
 /// Able to reset one's genital size back to normal upon OD, or alternatively, if the user sets the size and then disables the organ, that size.
 /datum/reagent/drug/aphrodisiac/camphor
@@ -18,7 +19,7 @@
 	exposed_mob.adjust_arousal(arousal_adjust_amount)
 	exposed_mob.adjust_pleasure(pleasure_adjust_amount)
 	if(exposed_mob.arousal <= 0 && old_arousal > 0)
-		to_chat(exposed_mob, span_notice("You no longer feel aroused."))
+		to_chat(exposed_mob, span_notice(LANG("datum.31c44357a3c66d8c", null)))
 
 /datum/reagent/drug/aphrodisiac/camphor/overdose_effects(mob/living/carbon/human/exposed_mob)
 	var/modified_genitals = FALSE
@@ -82,7 +83,7 @@
 
 // Notify the user that they're overdosing. Doesn't affect their mood.
 /datum/reagent/drug/aphrodisiac/camphor/overdose_start(mob/living/carbon/human/exposed_mob)
-	to_chat(exposed_mob, span_userdanger("You feel like you took too much [name]!"))
+	to_chat(exposed_mob, span_userdanger(LANG("datum.6edb1afbc6f2b172", list(name))))
 	exposed_mob.add_mood_event("[type]_overdose", /datum/mood_event/minor_overdose, name)
 
 /datum/chemical_reaction/camphor

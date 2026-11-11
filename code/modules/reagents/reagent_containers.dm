@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/reagent_containers
 	name = "Container"
 	desc = "..."
@@ -88,9 +89,9 @@
 	. = ..()
 	if(has_variable_transfer_amount)
 		if(possible_transfer_amounts.len > 1)
-			. += span_notice("Left-click or right-click in-hand to increase or decrease its transfer amount. It is currently set to [amount_per_transfer_from_this] units.")
+			. += span_notice(LANG("obj.8388868412335ab5", list(amount_per_transfer_from_this)))
 		else if(possible_transfer_amounts.len)
-			. += span_notice("Left-click or right-click in-hand to view its transfer amount.")
+			. += span_notice(LANG("obj.f9f955539bd74e77", null))
 	if(isliving(user) && HAS_TRAIT(user, TRAIT_REMOTE_TASTING))
 		var/mob/living/living_user = user
 		living_user.taste_container(reagents)
@@ -130,7 +131,7 @@
 		else
 			CRASH("change_transfer_amount() called with invalid direction value")
 	amount_per_transfer_from_this = possible_transfer_amounts[index]
-	balloon_alert(user, "transferring [amount_per_transfer_from_this]u")
+	balloon_alert(user, LANG("obj.c9e1c7c3607ef31f", list(amount_per_transfer_from_this)))
 	mode_change_message(user)
 
 /obj/item/reagent_containers/interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
@@ -152,8 +153,8 @@
 
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.visible_message(
-		span_danger("[user] splashes the contents of [src] onto [target][punctuation]"),
-		span_danger("You splash the contents of [src] onto [target][punctuation]"),
+		span_danger(LANG("obj.22e69bb6324a2446", list(user, src, target, punctuation))),
+		span_danger(LANG("obj.6e8c9c457b14fba4", list(src, target, punctuation))),
 		ignored_mobs = target,
 	)
 	SEND_SIGNAL(target, COMSIG_ATOM_SPLASHED)
@@ -183,7 +184,7 @@
 	if(!iscarbon(eater))
 		return FALSE
 	if(!reagents || !reagents.total_volume)
-		to_chat(user, span_warning("[src] is empty!"))
+		to_chat(user, span_warning(LANG("obj.02d482cc1aef0cef", list(src))))
 		return FALSE
 	var/mob/living/carbon/as_carbon = eater
 	var/covered = ""
@@ -192,8 +193,17 @@
 	else if(as_carbon.is_mouth_covered(ITEM_SLOT_MASK))
 		covered = "mask"
 	if(covered)
+		// ZH EDIT CHANGE START - i18n: 拆成两条整句模板。原写法把 "headgear"/"mask" 当 LANG 实参，
+		// 而它们是**单 token 局部量** —— LANG 实参的多词闸门按设计不收（单 token 实参里 act/黑板键
+		// 浓度极高），于是模板译好了、槽里漏出英文（玩家看到「你必须先取下你的headgear！」）。
+		// 整条走模板既绕开那道闸门，也让中文语序自己排。所有格代词经 lang_pronoun 走语法表。
+		// ORIGINAL: to_chat(user, span_warning(LANG("obj.87a227577f22b424", list(who, covered))))
 		var/who = (isnull(user) || eater == user) ? "your" : "[eater.p_their()]"
-		to_chat(user, span_warning("You have to remove [who] [covered] first!"))
+		if(covered == "headgear")
+			to_chat(user, span_warning(LANG("obj.892b7338f1a82533", list(lang_pronoun(who)))))
+		else
+			to_chat(user, span_warning(LANG("obj.725be70e424818d6", list(lang_pronoun(who)))))
+		// ZH EDIT CHANGE END
 		return FALSE
 	return TRUE
 
@@ -247,8 +257,8 @@
 		var/turf_splash_multiplier = 1 - splash_multiplier
 		var/mob/M = target
 		var/turf/target_turf = get_turf(target)
-		target.visible_message(span_danger("[M] is splashed with something!"), \
-						span_userdanger("[M] is splashed with something!"))
+		target.visible_message(span_danger(LANG("obj.99b5b6e03516a2d5", list(M))), \
+						span_userdanger(LANG("obj.99b5b6e03516a2d5", list(M))))
 		if(splasher)
 			log_combat(splasher, M, "splashed", src, "containing [reagents.get_reagent_log_string()] [was_thrown ? "(thrown)" : ""]")
 		reagents.expose(target, TOUCH, splash_multiplier)
@@ -257,7 +267,7 @@
 			target_turf.add_liquid_from_reagents(reagents, reagent_multiplier = (1 - splash_multiplier)) // SKYRAT EDIT ADDITION - liquid spills (molotov buff) (huge)
 
 	else if(bartender_check(target, splasher) && was_thrown)
-		visible_message(span_notice("[src] lands onto \the [target] without spilling a single drop."))
+		visible_message(span_notice(LANG("obj.de966dc5e4a8e214", list(src, target))))
 		return
 
 	else
@@ -268,7 +278,7 @@
 				log_combat(splasher, target, "splashed [english_list(reagents.reagent_list)]", src, "in [AREACOORD(target)] [was_thrown ? "(thrown)" : ""]")
 				message_admins("[ADMIN_LOOKUPFLW(splasher)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] in [ADMIN_VERBOSEJMP(target)].")
 		else
-			visible_message(span_notice("[src] spills its contents all over [target]."))
+			visible_message(span_notice(LANG("obj.a8b32e1542793b98", list(src, target))))
 			reagents.expose(target, TOUCH)
 		//SKYRAT EDIT END
 		if(QDELETED(src))
@@ -401,33 +411,33 @@
 
 /obj/item/reagent_containers/proc/try_refill(atom/target, mob/living/user)
 	if(!reagents.total_volume)
-		to_chat(user, span_warning("[src] is empty!"))
+		to_chat(user, span_warning(LANG("obj.02d482cc1aef0cef", list(src))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(target.reagents.holder_full())
-		to_chat(user, span_warning("[target] is full."))
+		to_chat(user, span_warning(LANG("obj.8e2d390ca03cb226", list(target))))
 		return ITEM_INTERACT_BLOCKING
 
 	var/trans = round(reagents.trans_to(target, amount_per_transfer_from_this, transferred_by = user), CHEMICAL_VOLUME_ROUNDING)
 	playsound(target.loc, SFX_LIQUID_POUR, 50, TRUE)
 	if(trans)
-		to_chat(user, span_notice("You transfer [trans] unit\s of the solution to [target]."))
+		to_chat(user, span_notice(LANG("obj.a73d822ccbbf7d67", list(trans, target))))
 	SEND_SIGNAL(src, COMSIG_REAGENTS_CUP_TRANSFER_TO, target)
 	target.update_appearance()
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/proc/try_drain(atom/target, mob/living/user)
 	if(!target.reagents.total_volume)
-		to_chat(user, span_warning("[target] is empty and can't be refilled!"))
+		to_chat(user, span_warning(LANG("obj.85e36271be99865d", list(target))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(reagents.holder_full())
-		to_chat(user, span_warning("[src] is full."))
+		to_chat(user, span_warning(LANG("obj.8e2d390ca03cb226", list(src))))
 		return ITEM_INTERACT_BLOCKING
 
 	var/trans = round(target.reagents.trans_to(src, amount_per_transfer_from_this, transferred_by = user), CHEMICAL_VOLUME_ROUNDING)
 	playsound(target.loc, SFX_LIQUID_POUR, 50, TRUE)
-	to_chat(user, span_notice("You fill [src] with [trans] unit\s of the contents of [target]."))
+	to_chat(user, span_notice(LANG("obj.c64f659090acb8eb", list(src, trans, target))))
 	SEND_SIGNAL(src, COMSIG_REAGENTS_CUP_TRANSFER_FROM, target)
 	target.update_appearance()
 	return ITEM_INTERACT_SUCCESS

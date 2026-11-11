@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// A component that is given to a body when the soul inside is inhabiting a soulcatcher. this is mostly here so that the bodies of souls can be revived.
 /datum/component/previous_body
 	/// What soulcatcher soul do we need to return to the body?
@@ -34,7 +35,7 @@
 	if(!target_soul || !target_soul.body_scan_needed)
 		return FALSE
 
-	to_chat(target_soul, span_cyan("Your body has scanned, revealing your true identity."))
+	to_chat(target_soul, span_cyan(LANG("datum.2848b77dc651da16", null)))
 	target_soul.body_scan_needed = FALSE
 
 	SEND_SIGNAL(target_soul, COMSIG_CARRIER_MOB_REFRESH_APPEARANCE)

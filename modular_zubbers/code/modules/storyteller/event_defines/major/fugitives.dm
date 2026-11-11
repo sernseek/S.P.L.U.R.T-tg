@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define TEAM_BACKSTORY_SIZE 4
 
 /datum/round_event_control/fugitives
@@ -145,13 +146,13 @@
 				var/mob/spawned_mob = spawner.create_from_ghost(our_candidate)
 				candidates -= our_candidate
 				notify_ghosts(
-					"[spawner.prompt_name] has awoken: [spawned_mob]!",
+					LANG("datum.a28ace146ef1fb8a", list(spawner.prompt_name, spawned_mob)),
 					source = spawned_mob,
 					header = "Come look!",
 				)
 			else
 				notify_ghosts(
-					"[spawner.prompt_name] spawner has been created!",
+					LANG("datum.1fa067077c32a8cc", list(spawner.prompt_name)),
 					source = spawner,
 					header = "Spawn Here!",
 				)

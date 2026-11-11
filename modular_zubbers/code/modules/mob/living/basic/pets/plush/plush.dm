@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // For plushmium
 /mob/living/basic/pet/plush
 	name = "plushie"
@@ -62,10 +63,10 @@
 //attacking yourself transfers your mind into the plush!
 /obj/item/toy/plushie_shell/attack_self(mob/user)
 	if(user.mind)
-		var/safety = (tgui_alert(user, "The plushie is staring back at you intensely, it seems cursed! (Permanently become a plushie)", "Hugging this is a bad idea.", list("Hug it!", "Cancel")))
+		var/safety = (tgui_alert(user, LANG("obj.71ef17b11c36243e", null), LANG("obj.aac0dc56ac6731d2", null), list("Hug it!", "Cancel")))
 		if(safety == "Cancel" || !in_range(src, user))
 			return
-		to_chat(user, span_userdanger("You hug the strange plushie. You fool."))
+		to_chat(user, span_userdanger(LANG("obj.c08851a6cf81e2f8", null)))
 
 		//setup the mob
 		var/mob/living/basic/pet/plush/new_plushie = new /mob/living/basic/pet/plush(user.loc)

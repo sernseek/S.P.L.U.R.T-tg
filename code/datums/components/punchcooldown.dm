@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///Your favourite Jojoke. Used for the gloves of the north star.
 /datum/component/wearertargeting/punchcooldown
 	signals = list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_LIVING_HAND_ITEM_ATTACK)
@@ -27,7 +28,7 @@
 	INVOKE_ASYNC(src, PROC_REF(do_changewarcry), user)
 
 /datum/component/wearertargeting/punchcooldown/proc/do_changewarcry(mob/user)
-	var/input = tgui_input_text(user, "What do you want your battlecry to be?", "Battle Cry", max_length = 6)
+	var/input = tgui_input_text(user, LANG("datum.545047b85ef49744", null), LANG("datum.ede1244dd2bb0fa8", null), max_length = 6)
 	if(!QDELETED(src) && !QDELETED(user) && !user.Adjacent(parent))
 		return
 	if(input)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Service modules for MODsuits
 
 ///Bike Horn - Plays a bike horn sound.
@@ -48,7 +49,7 @@
 	if(!isitem(target))
 		return
 	if(!isturf(target.loc))
-		balloon_alert(mod.wearer, "not in storage!")
+		balloon_alert(mod.wearer, LANG("obj.cff36f54adb1401f", null))
 		return
 	var/obj/item/microwave_target = target
 	do_sparks(2, TRUE, mod.wearer)
@@ -56,7 +57,7 @@
 	if(microwave_target.microwave_act(microwaver = mod.wearer) & COMPONENT_MICROWAVE_SUCCESS)
 		playsound(src, 'sound/machines/microwave/microwave-end.ogg', 50, FALSE)
 	else
-		balloon_alert(mod.wearer, "can't be microwaved!")
+		balloon_alert(mod.wearer, LANG("obj.fc614343acb1b5f1", null))
 	do_sparks(2, TRUE, microwave_target)
 	drain_power(use_energy_cost)
 

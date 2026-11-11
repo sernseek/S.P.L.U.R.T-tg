@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/job/cyborg
 	title = JOB_CYBORG
 	description = "Assist the crew, follow your laws, obey your AI."
@@ -38,12 +39,12 @@
 			robot_spawn.notify_ai(AI_NOTIFICATION_AI_SHELL)
 		else
 			robot_spawn.notify_ai(TRUE)
-		robot_spawn.visible_message(span_notice("[robot_spawn] gently chimes."), span_notice("LawSync protocol engaged."))
+		robot_spawn.visible_message(span_notice(LANG("datum.b033815b5b1f2177", list(robot_spawn))), span_notice(LANG("datum.cd29dfbfdf2cc2ab", null)))
 		robot_spawn.lawupdate = TRUE
 		robot_spawn.lawsync()
 		robot_spawn.show_laws()
 		if(HAS_TRAIT(SSstation, STATION_TRAIT_HOS_AI))
-			robot_spawn.visible_message(self_message = span_alert("Securityborg has been enabled for this shift."))
+			robot_spawn.visible_message(self_message = span_alert(LANG("datum.1eefe2cb3784588e", null)))
 	//SKYRAT EDIT END
 	if(!robot_spawn.connected_ai) // Only log if there's no Master AI
 		robot_spawn.log_current_laws()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/razor
 	var/extended = 1
 
@@ -21,7 +22,7 @@
 	var/extended_icon_state = "straightrazor_open"
 
 /obj/item/razor/straightrazor/suicide_act(mob/user)
-	user.visible_message(span_suicide("[user] is slitting [user.p_their()] own throat with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.f142631a3589037f", list(user, user.p_their(), src, user.p_theyre()))))
 	return (BRUTELOSS)
 
 /obj/item/razor/straightrazor/attack_self(mob/user)

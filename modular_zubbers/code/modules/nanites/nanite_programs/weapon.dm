@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Programs specifically engineered to cause harm to either the user or its surroundings (as opposed to ones that only do it due to broken programming)
 //Very dangerous!
 
@@ -14,7 +15,7 @@
 	else
 		host_mob.adjust_brute_loss(1, TRUE)
 	if(prob(3))
-		to_chat(host_mob, span_warning("You feel a stab of pain from somewhere inside you."))
+		to_chat(host_mob, span_warning(LANG("datum.9c0e153b6b0c1d79", null)))
 
 /datum/nanite_program/poison
 	name = "Poisoning"
@@ -25,7 +26,7 @@
 /datum/nanite_program/poison/active_effect()
 	host_mob.adjust_tox_loss(1)
 	if(prob(2))
-		to_chat(host_mob, span_warning("You feel nauseous."))
+		to_chat(host_mob, span_warning(LANG("datum.fd5c10a4c0b146df", null)))
 		if(iscarbon(host_mob))
 			var/mob/living/carbon/C = host_mob
 			C.vomit(20)
@@ -68,12 +69,12 @@
 
 /datum/nanite_program/meltdown/enable_passive_effect()
 	. = ..()
-	to_chat(host_mob, span_userdanger("Your blood is burning!"))
+	to_chat(host_mob, span_userdanger(LANG("datum.2be9b797a85f4d5e", null)))
 	nanites.safety_threshold = 0
 
 /datum/nanite_program/meltdown/disable_passive_effect()
 	. = ..()
-	to_chat(host_mob, span_warning("Your blood cools down, and the pain gradually fades."))
+	to_chat(host_mob, span_warning(LANG("datum.54578eb9370c904e", null)))
 
 /datum/nanite_program/explosive
 	name = "Chain Detonation"
@@ -84,8 +85,8 @@
 	rogue_types = list(/datum/nanite_program/toxic)
 
 /datum/nanite_program/explosive/on_trigger(comm_message)
-	host_mob.visible_message(span_warning("[host_mob] starts emitting a high-pitched buzzing, and [host_mob.p_their()] skin begins to glow..."),\
-							span_userdanger("You start emitting a high-pitched buzzing, and your skin begins to glow..."))
+	host_mob.visible_message(span_warning(LANG("datum.d72b2ad362bd81bf", list(host_mob, host_mob.p_their()))),\
+							span_userdanger(LANG("datum.8e3defce5e84910a", null)))
 	addtimer(CALLBACK(src, PROC_REF(boom)), clamp((nanites.nanite_volume * 0.35), 25, 150))
 
 /datum/nanite_program/explosive/proc/boom()

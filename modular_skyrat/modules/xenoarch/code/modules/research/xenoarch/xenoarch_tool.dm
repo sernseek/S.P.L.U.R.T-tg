@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/xenoarch
 	name = "parent dev item"
 	icon = 'modular_skyrat/modules/xenoarch/icons/xenoarch_items.dmi'
@@ -15,17 +16,17 @@
 /obj/item/xenoarch/hammer/examine(mob/user)
 	. = ..()
 	if(advanced)
-		. += span_notice("This is an advanced hammer. It can change its digging depth from 1 to 30. Click to change depth.")
+		. += span_notice(LANG("obj.87ab7ab38e1f3b3b", null))
 
-	. += span_notice("Current Digging Depth: [dig_amount]cm")
+	. += span_notice(LANG("obj.b4c9ca452812e1c1", list(dig_amount)))
 
 /obj/item/xenoarch/hammer/attack_self(mob/user, modifiers)
 	. = ..()
 	if(!advanced)
-		to_chat(user, span_warning("This is not an advanced hammer, it cannot change its digging depth."))
+		to_chat(user, span_warning(LANG("obj.dba114b6bdbfffb6", null)))
 		return
 
-	var/user_choice = input(user, "Choose the digging depth. 1 to 30", "Digging Depth Selection") as null|num
+	var/user_choice = input(user, LANG("obj.b490defdabce5b48", null), LANG("obj.187c7b420ebb98f9", null)) as null|num
 	if(!user_choice)
 		dig_amount = 1
 		dig_speed = 1
@@ -44,7 +45,7 @@
 
 	dig_amount = round_dig
 	dig_speed = round_dig * 0.5
-	to_chat(user, span_notice("You change the hammer's digging depth to [round_dig]cm."))
+	to_chat(user, span_notice(LANG("obj.16295f5e7623bace", list(round_dig))))
 
 /obj/item/xenoarch/hammer/cm1
 	name = "hammer (1cm)"
@@ -277,14 +278,14 @@
 
 			else
 				if(!spam_protection)
-					to_chat(user, span_warning("Your [name] is full and can't hold any more!"))
+					to_chat(user, span_warning(LANG("obj.852c4a22e92ffc7e", list(name))))
 					spam_protection = TRUE
 					continue
 
 	if(show_message)
 		playsound(user, SFX_RUSTLE, 50, TRUE)
-		user.visible_message(span_notice("[user] scoops up the items beneath [user.p_them()]."), \
-			span_notice("You scoop up the items beneath you with your [name]."))
+		user.visible_message(span_notice(LANG("obj.da5b4781a48d8a42", list(user, user.p_them()))), \
+			span_notice(LANG("obj.f5b31ad3d37cae98", list(name))))
 
 	spam_protection = FALSE
 

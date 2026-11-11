@@ -1,6 +1,7 @@
-ADMIN_VERB(debug_maintenance_loot, R_DEBUG, "Debug Maintenance Loot", "List all items in the game that are not in maintenance loot", ADMIN_CATEGORY_DEBUG)
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+ADMIN_VERB(debug_maintenance_loot, R_DEBUG, "调试维修战利品", "List all items in the game that are not in maintenance loot", ADMIN_CATEGORY_DEBUG)
 
-	var/confirm = input(user,"Are you sure you wish to debug maintenance loot? This process takes up a lot of the server's resources.","Debug Maintenance Loot","Cancel") as null|anything in list("Yes","No","Cancel")
+	var/confirm = input(user,LANG("datum.28edebbe5e63dc9c", null),LANG("datum.7c22d9b837e71dd8", null),"Cancel") as null|anything in list("Yes","No","Cancel")
 	if(confirm != "Yes")
 		return
 
@@ -22,9 +23,9 @@ ADMIN_VERB(debug_maintenance_loot, R_DEBUG, "Debug Maintenance Loot", "List all 
 
 	user << browse(returning_data, "window=maintenace_report")
 
-ADMIN_VERB(simulate_maintenance_loot, R_DEBUG, "Simulate Maintenance Loot", "Simulate 100 maintenance loot spawns. Special trait modifiers NOT applied.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(simulate_maintenance_loot, R_DEBUG, "模拟维修战利品", "Simulate 100 maintenance loot spawns. Special trait modifiers NOT applied.", ADMIN_CATEGORY_DEBUG)
 
-	var/confirm = input(user,"Are you sure you wish to simulate maintenance loot? This process takes up a lot of the server's resources.","Simulate Maintenance Loot","Cancel") as null|anything in list("Yes","No","Cancel")
+	var/confirm = input(user,LANG("datum.b4aa256b9586045d", null),LANG("datum.78291b4f3103a4b9", null),"Cancel") as null|anything in list("Yes","No","Cancel")
 	if(confirm != "Yes")
 		return
 
@@ -55,7 +56,7 @@ ADMIN_VERB(simulate_maintenance_loot, R_DEBUG, "Simulate Maintenance Loot", "Sim
 
 	user << browse(returning_data, "window=maintenace_report")
 
-ADMIN_VERB(find_nullspaced_objects, R_DEBUG, "Find Nullspaced Objects", "Popup a list of all objects with a loc of null", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(find_nullspaced_objects, R_DEBUG, "查找 Nullspace 对象", "Popup a list of all objects with a loc of null", ADMIN_CATEGORY_DEBUG)
 	var/list/nullspaced_objects = list()
 	for(var/atom/object as anything)
 		if(!isnull(object.loc))
@@ -98,7 +99,7 @@ ADMIN_VERB(find_nullspaced_objects, R_DEBUG, "Find Nullspaced Objects", "Popup a
 	var/title = "<h1>List of all objects with a loc of null:</h1><br>"
 	user << browse(HTML_SKELETON_TITLE(title, "[jointext(strings, "<br>")]"), "window=maintenace_report")
 
-ADMIN_VERB(toggle_tgui_fallback, R_DEBUG, "Toggle Old TGUI Globally", "ONLY use this in the case of TGUI being broken. This will toggle it for everyone.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(toggle_tgui_fallback, R_DEBUG, "全局切换旧版 TGUI", "ONLY use this in the case of TGUI being broken. This will toggle it for everyone.", ADMIN_CATEGORY_DEBUG)
 	if(isnull(GLOB.tgui_fallback_enabled))
 		GLOB.tgui_fallback_enabled = FALSE
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/surgery_operation/organ/repair/brain/advanced
 	name = "trauma surgery"
 	rnd_name = "Neurectomy (Advanced Brain Surgery)"
@@ -42,14 +43,14 @@
 	var/obj/item/organ/brain/human_brain = operating_on
 	var/mob/living/carbon/human/brain_owner = human_brain.owner
 	if(brain_owner.reagents?.get_reagent_amount(reagent_1_type) < reagent_1_amount)
-		surgeon.balloon_alert(surgeon, "missing [LOWER_TEXT(reagent_1_type.name)]!")
+		surgeon.balloon_alert(surgeon, LANG("datum.af167a8b0d81fc21", list(LOWER_TEXT(reagent_1_type.name))))
 		return FALSE
 
 	if(reagent_2_type && (brain_owner.reagents?.get_reagent_amount(reagent_2_type) < reagent_2_amount))
-		surgeon.balloon_alert(surgeon, "missing [LOWER_TEXT(reagent_2_type.name)]!")
+		surgeon.balloon_alert(surgeon, LANG("datum.af167a8b0d81fc21", list(LOWER_TEXT(reagent_2_type.name))))
 		return FALSE
 
-	surgeon.balloon_alert_to_viewers("applying chemicals...", vision_distance = COMBAT_MESSAGE_RANGE)
+	surgeon.balloon_alert_to_viewers(LANG("datum.48671c8e1ab665b6", null), vision_distance = COMBAT_MESSAGE_RANGE)
 	if(do_after(surgeon, 1.5 SECONDS))
 		return TRUE
 

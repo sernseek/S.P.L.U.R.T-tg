@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //enchanted cutlass item for the galloway pirate ship ruin. I'm gonna over-explain some things for my memory and study alone
 
 /obj/item/claymore/cutlass_enchanted
@@ -26,10 +27,10 @@
 		return SECONDARY_ATTACK_CALL_NORMAL
 
 	if(!victim.client?.prefs?.read_preference(/datum/preference/toggle/erp/hypnosis)) // Checks their hypno pref, if it's set to off, it fails!
-		to_chat(user, span_notice("You attempt to caress [victim] with the enchanted cutlass, but they resist the hypnotic influence!"))
+		to_chat(user, span_notice(LANG("obj.bc79e734c697e695", list(victim))))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-	user.visible_message(span_notice("[user] begins to draw the blade close to [victim]...")) // prepping the action....
+	user.visible_message(span_notice(LANG("obj.1d3ac647224e6bb2", list(user, victim)))) // prepping the action....
 
 	if(!do_after(user, 3 SECONDS, target = victim, // Adds a 3 second action bar, if the move away the action fails
 		extra_checks = CALLBACK(src, PROC_REF(still_adjacent), user, victim),
@@ -43,7 +44,7 @@
 	return !QDELETED(user) && !QDELETED(victim) && Adjacent(user, victim) //cancels the effect if the user or target gets deleted for whatever reason lol
 
 /obj/item/claymore/cutlass_enchanted/proc/apply_hypnotic_effect(mob/living/user, mob/living/victim) //the effect itself, only applies if the timer, pref, etc was met
-	user.visible_message(span_warning("[user] caresses [victim] with the warm steel of their cutlass!"))
+	user.visible_message(span_warning(LANG("obj.a97cee0ad74027fd", list(user, victim))))
 	to_chat(victim, span_hypnophrase(pick(list( //cool hypno phrases for the target to read
 		"The warmth of the blackened steel washes over you, and you feel your will slipping away...",
 		"The blade's enchantment whispers secrets of the deep, drawing you into its shadowy embrace...",
@@ -51,7 +52,7 @@
 		"The runes on the blade pulse with a hypnotic rhythm, clouding your thoughts and bending your will...",
 	))))
 	playsound(get_turf(user), 'sound/effects/magic/voidblink.ogg', 50, TRUE, 7) //plays a sound on successful effect
-	to_chat(user, span_notice("You caress [victim] with the enchanted cutlass, hopefully weakening their resolve!")) // on success,  it sends a message to the user
+	to_chat(user, span_notice(LANG("obj.678f279f003cf8cd", list(victim)))) // on success,  it sends a message to the user
 	victim.add_mood_event("mavarian_hypnosis", /datum/mood_event/enchant_hypnotized) // the moodlet is added to the victim on success
 
 /obj/item/claymore/cutlass_enchanted/Initialize(mapload)

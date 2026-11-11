@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define PAPERS_PER_OVERLAY 8
 #define PAPER_OVERLAY_PIXEL_SHIFT 2
 /obj/item/paper_bin
@@ -45,7 +46,7 @@
 	var/obj/item/paper/paper = new papertype
 	if(check_holidays(APRIL_FOOLS))
 		if(prob(30))
-			paper.add_raw_text("<font face=\"[CRAYON_FONT]\" color=\"red\"><b>HONK HONK HONK HONK HONK HONK HONK<br>HOOOOOOOOOOOOOOOOOOOOOONK<br>APRIL FOOLS</b></font>")
+			paper.add_raw_text(LANG("obj.2d72732dade11400", list(CRAYON_FONT)))
 			paper.AddElement(/datum/element/honkspam)
 			paper.update_appearance()
 	return paper
@@ -54,7 +55,7 @@
 	if(!droppoint)
 		droppoint = drop_location()
 	if(collapse)
-		visible_message(span_warning("The stack of paper collapses!"))
+		visible_message(span_warning(LANG("obj.5d9519149c50f677", null)))
 	for(var/obj/item/paper/stacked_paper in paper_stack) //first, dump all of the paper that already exists
 		stacked_paper.forceMove(droppoint)
 		if(!stacked_paper.pixel_y)
@@ -103,7 +104,7 @@
 		pen.add_fingerprint(user)
 		pen.forceMove(user.loc)
 		user.put_in_hands(pen)
-		to_chat(user, span_notice("You take [pen] out of [src]."))
+		to_chat(user, span_notice(LANG("obj.604c7b94ff4abde3", list(pen, src))))
 		bin_pen = null
 		update_appearance()
 	else if(total_paper > 0)
@@ -112,10 +113,10 @@
 		top_paper.add_fingerprint(user)
 		top_paper.forceMove(user.loc)
 		user.put_in_hands(top_paper)
-		to_chat(user, span_notice("You take [top_paper] out of [src]."))
+		to_chat(user, span_notice(LANG("obj.604c7b94ff4abde3", list(top_paper, src))))
 		update_appearance()
 	else
-		to_chat(user, span_warning("[src] is empty!"))
+		to_chat(user, span_warning(LANG("obj.02d482cc1aef0cef", list(src))))
 	add_fingerprint(user)
 	return ..()
 
@@ -127,7 +128,7 @@
 	if(istype(tool, /obj/item/paper))
 		if(!user.transferItemToLoc(tool, src, silent = FALSE))
 			return ITEM_INTERACT_BLOCKING
-		to_chat(user, span_notice("You put [tool] in [src]."))
+		to_chat(user, span_notice(LANG("obj.de7df6459b40f465", list(tool, src))))
 		paper_stack += tool
 		total_paper += 1
 		update_appearance()
@@ -136,7 +137,7 @@
 	if(istype(tool, /obj/item/pen) && !bin_pen)
 		if(!user.transferItemToLoc(tool, src, silent = FALSE))
 			return ITEM_INTERACT_BLOCKING
-		to_chat(user, span_notice("You put [tool] in [src]."))
+		to_chat(user, span_notice(LANG("obj.de7df6459b40f465", list(tool, src))))
 		bin_pen = tool
 		update_appearance()
 		return ITEM_INTERACT_SUCCESS
@@ -155,9 +156,10 @@
 /obj/item/paper_bin/examine(mob/user)
 	. = ..()
 	if(total_paper)
-		. += "It contains [total_paper > 1 ? "[total_paper] papers" : "one paper"]."
+		// ZH EDIT - I18N: arg has a number prefix (not reversible whole) -> reverse just the paper noun
+		. += LANG("obj.1a9d798883f44c06", list(total_paper > 1 ? "[total_paper] [lang_reverse_text("papers")]" : lang_reverse_text("one paper")))
 	else
-		. += "It doesn't contain anything."
+		. += LANG("obj.fbbb0e831fde3c1b", null)
 
 /obj/item/paper_bin/update_icon_state()
 	if(total_paper < 1)
@@ -258,13 +260,13 @@
 
 /obj/item/paper_bin/bundlenatural/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(istype(tool, /obj/item/paper/carbon))
-		to_chat(user, span_warning("[tool] won't fit into [src]."))
+		to_chat(user, span_warning(LANG("obj.e9a1b6e8e00ee6f2", list(tool, src))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(tool.get_sharpness())
 		if(!tool.use_tool(src, user, 1 SECONDS))
 			return ITEM_INTERACT_BLOCKING
-		to_chat(user, span_notice("You slice the cable from [src]."))
+		to_chat(user, span_notice(LANG("obj.904d27a40aa43978", list(src))))
 		deconstruct(TRUE)
 		return ITEM_INTERACT_SUCCESS
 

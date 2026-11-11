@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Programs generated through degradation of other complex programs.
 //They generally cause minor damage or annoyance.
 
@@ -20,7 +21,7 @@
 /datum/nanite_program/necrotic/active_effect()
 	host_mob.adjust_brute_loss(0.75, TRUE)
 	if(prob(1))
-		to_chat(host_mob, span_warning("You feel a mild ache from somewhere inside you."))
+		to_chat(host_mob, span_warning(LANG("datum.f11f8b8ba33af93e", null)))
 
 //Programs that don't directly interact with the body will decay into this
 /datum/nanite_program/toxic
@@ -33,7 +34,7 @@
 /datum/nanite_program/toxic/active_effect()
 	host_mob.adjust_tox_loss(0.5)
 	if(prob(1))
-		to_chat(host_mob, span_warning("You feel a bit sick."))
+		to_chat(host_mob, span_warning(LANG("datum.7c724716aeeae5dc", null)))
 
 //Generic blood-affecting programs will decay into this
 /datum/nanite_program/suffocating
@@ -46,7 +47,7 @@
 /datum/nanite_program/suffocating/active_effect()
 	host_mob.adjust_oxy_loss(3, 0)
 	if(prob(1))
-		to_chat(host_mob, span_warning("You feel short of breath."))
+		to_chat(host_mob, span_warning(LANG("datum.6fc5ef1726e54996", null)))
 
 //Generic brain-affecting programs will decay into this
 /datum/nanite_program/brain_decay
@@ -97,7 +98,7 @@
 		var/can_scratch = !host_mob.incapacitated && host_mob.is_location_accessible(picked_bodypart)
 
 		host_mob.visible_message("[can_scratch ? span_warning("[host_mob] scratches [host_mob.p_their()] [bodypart.name].") : ""]",\
-		span_warning("Your [bodypart.name] itches. [can_scratch ? " You scratch it." : ""]"))
+		span_warning(LANG("datum.3e3c19fa179704e3", list(bodypart.name, can_scratch ? " You scratch it." : ""))))
 
 //Generic nerve-affecting programs will decay into this
 /datum/nanite_program/nerve_decay
@@ -109,11 +110,11 @@
 
 /datum/nanite_program/nerve_decay/active_effect()
 	if(prob(5))
-		to_chat(host_mob, span_warning("You feel unbalanced!"))
+		to_chat(host_mob, span_warning(LANG("datum.9aa6aa3b04a42b86", null)))
 		host_mob.adjust_confusion(10)
 	else if(prob(4))
-		to_chat(host_mob, span_warning("You can't feel your hands!"))
+		to_chat(host_mob, span_warning(LANG("datum.0f36acb7b9febe80", null)))
 		host_mob.drop_all_held_items()
 	else if(prob(4))
-		to_chat(host_mob, span_warning("You can't feel your legs!"))
+		to_chat(host_mob, span_warning(LANG("datum.cf021497f1c9cec1", null)))
 		host_mob.Paralyze(30)

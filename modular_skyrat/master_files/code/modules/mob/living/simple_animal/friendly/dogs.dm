@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/pet/dog/markus
 	name = "\proper Markus"
 	desc = "The supply department's overfed yet still beloved dog."
@@ -248,9 +249,9 @@
 
 	add_fingerprint(user, TRUE)
 	investigate_log("has been gibbed due to being emagged by [user].", INVESTIGATE_DEATHS)
-	visible_message(span_boldwarning("[user] swipes a card through [target]!"), span_notice("You overload [target]s internal reactor..."))
+	visible_message(span_boldwarning(LANG("mob.aa4faa1bc299a33f", list(user, target))), span_notice(LANG("mob.3ff70b47411db327", list(target))))
 
-	notify_ghosts("[user] has shortcircuited [target] to explode in 60 seconds!",
+	notify_ghosts(LANG("mob.b8d62116bbd54714", list(user, target)),
 		source = target,
 		notify_flags = NOTIFY_CATEGORY_NOFLASH,
 		header = "Borgi Emagged",
@@ -260,7 +261,7 @@
 	return TRUE
 
 /mob/living/basic/pet/dog/corgi/borgi/proc/explode_imminent()
-	visible_message(span_bolddanger("[src] makes an odd whining noise!"))
+	visible_message(span_bolddanger(LANG("mob.68305384b29ba9cf", list(src))))
 	do_jitter_animation(30)
 
 	addtimer(CALLBACK(src, PROC_REF(explode)), 10 SECONDS)

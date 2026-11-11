@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Microwaving doesn't use recipes, instead it calls the microwave_act of the objects.
 // For food, this creates something based on the food's cooked_type
 
@@ -146,10 +147,10 @@
 	context[SCREENTIP_CONTEXT_LMB] = "Show menu"
 
 	if(vampire_charging_capable)
-		context[SCREENTIP_CONTEXT_ALT_LMB] = "Change to [vampire_charging_enabled ? "cook" : "charge"]"
+		context[SCREENTIP_CONTEXT_ALT_LMB] = LANG("obj.b345730db62168b1", list(vampire_charging_enabled ? "cook" : "charge"))
 
 	if(length(ingredients) != 0)
-		context[SCREENTIP_CONTEXT_RMB] = "Start [vampire_charging_enabled ? "charging" : "cooking"]"
+		context[SCREENTIP_CONTEXT_RMB] = LANG("obj.66b32c80a5235d7b", list(vampire_charging_enabled ? "charging" : "cooking"))
 
 	return CONTEXTUAL_SCREENTIP_SET
 
@@ -165,36 +166,36 @@
 	for(var/datum/stock_part/capacitor/capacitor in component_parts)
 		if(capacitor.tier >= 2)
 			vampire_charging_capable = TRUE
-			visible_message(span_notice("The [EXAMINE_HINT("Charge Ready")] light on \the [src] flickers to life."))
+			visible_message(span_notice(LANG("obj.bd5376d3d1bbeb7d", list(EXAMINE_HINT("Charge Ready"), src))))
 			break
 
 /obj/machinery/microwave/examine(mob/user)
 	. = ..()
 	if(vampire_charging_capable)
-		. += span_info("This model features Wave™: a Nanotrasen exclusive. Our latest and greatest, Wave™ allows your PDA to be charged wirelessly through microwave frequencies! You can Wave-charge your device by placing it inside and selecting the charge mode.")
-		. += span_info("Because nothing says 'future' like charging your PDA while overcooking your leftovers. Nanotrasen Wave™ - Multitasking, redefined.")
+		. += span_info(LANG("obj.8a343ca71f0101e5", null))
+		. += span_info(LANG("obj.92ea02eb3b6d3ae7", null))
 
 	if(cell_powered)
-		. += span_notice("This model is wireless, powered by portable cells. [isnull(cell) ? "The cell slot is empty." : "[EXAMINE_HINT("Ctrl-click")] to remove the power cell."]")
+		. += span_notice(LANG("obj.927af204e293c3c9", list(isnull(cell) ? "The cell slot is empty." : "[EXAMINE_HINT("Ctrl-click")] to remove the power cell.")))
 
 	if(!operating)
 		if(!operating && vampire_charging_capable)
-			. += span_notice("[EXAMINE_HINT("Alt-click")] to change default mode.")
+			. += span_notice(LANG("obj.113826e7c802291a", list(EXAMINE_HINT("Alt-click"))))
 
-		. += span_notice("[EXAMINE_HINT("Right-click")] to start [vampire_charging_enabled ? "charging" : "cooking"] cycle.")
+		. += span_notice(LANG("obj.efe8ded7cd698ae6", list(EXAMINE_HINT("Right-click"), vampire_charging_enabled ? "charging" : "cooking")))
 
 	if(!in_range(user, src) && !issilicon(user) && !isobserver(user))
-		. += span_warning("You're too far away to examine [src]'s contents and display!")
+		. += span_warning(LANG("obj.7f267c3242b59931", list(src)))
 		return
 	if(operating)
-		. += span_notice("\The [src] is operating.")
+		. += span_notice(LANG("obj.b8933a4bd014357c", list(src)))
 		return
 
 	if(length(ingredients))
 		if(issilicon(user))
-			. += span_notice("\The [src] camera shows:")
+			. += span_notice(LANG("obj.1542da463f5f8322", list(src)))
 		else
-			. += span_notice("\The [src] contains:")
+			. += span_notice(LANG("obj.43cd9c42848e6bce", list(src)))
 		var/list/items_counts = new
 		for(var/i in ingredients)
 			if(isstack(i))
@@ -204,9 +205,9 @@
 				var/atom/movable/single_item = i
 				items_counts[single_item.name]++
 		for(var/item in items_counts)
-			. += span_notice("- [items_counts[item]]x [item].")
+			. += span_notice(LANG("obj.f2bf9e2bde340faf", list(items_counts[item], item)))
 	else
-		. += span_notice("\The [src] is empty.")
+		. += span_notice(LANG("obj.c8ad1ee9ae7c9da4", list(src)))
 
 	if(!(machine_stat & (NOPOWER|BROKEN)))
 		. += "[span_notice("The status display reads:")]\n"+\
@@ -215,7 +216,7 @@
 		span_notice("- Power: <b>[efficiency * TIER_1_CELL_CHARGE_RATE]W</b>.")
 
 		if(cell_powered)
-			. += span_notice("- Charge: <b>[isnull(cell) ? "INSERT CELL" : "[round(cell.percent())]%"]</b>.")
+			. += span_notice(LANG("obj.4e79d634b335e3a3", list(isnull(cell) ? "INSERT CELL" : "[round(cell.percent())]%")))
 
 #define MICROWAVE_INGREDIENT_OVERLAY_SIZE 24
 
@@ -330,16 +331,16 @@
 		return NONE
 
 	user.visible_message(
-		span_notice("[user] starts to fix part of [src]."),
-		span_notice("You start to fix part of [src]..."),
+		span_notice(LANG("obj.6c102cee14ab2745", list(user, src))),
+		span_notice(LANG("obj.98f1883132f75209", list(src))),
 	)
 
 	if(!tool.use_tool(src, user, 2 SECONDS, volume = 50))
 		return ITEM_INTERACT_BLOCKING
 
 	user.visible_message(
-		span_notice("[user] fixes part of [src]."),
-		span_notice("You fix part of [src]."),
+		span_notice(LANG("obj.037dbf0eb193e4ac", list(user, src))),
+		span_notice(LANG("obj.fc597ad4140cd86c", list(src))),
 	)
 	broken = KINDA_BROKEN // Fix it a bit
 	update_appearance()
@@ -350,16 +351,16 @@
 		return NONE
 
 	user.visible_message(
-		span_notice("[user] starts to fix part of [src]."),
-		span_notice("You start to fix part of [src]..."),
+		span_notice(LANG("obj.6c102cee14ab2745", list(user, src))),
+		span_notice(LANG("obj.98f1883132f75209", list(src))),
 	)
 
 	if(!tool.use_tool(src, user, 2 SECONDS, amount = 1, volume = 50))
 		return ITEM_INTERACT_BLOCKING
 
 	user.visible_message(
-		span_notice("[user] fixes [src]."),
-		span_notice("You fix [src]."),
+		span_notice(LANG("obj.39c573f3413054d3", list(user, src))),
+		span_notice(LANG("obj.3d88763b886ab6fc", list(src))),
 	)
 	broken = NOT_BROKEN
 	update_appearance()
@@ -386,13 +387,13 @@
 
 	if(dirty >= MAX_MICROWAVE_DIRTINESS) // The microwave is all dirty so can't be used!
 		if(IS_EDIBLE(item))
-			balloon_alert(user, "it's too dirty!")
+			balloon_alert(user, LANG("obj.a7a507da774dd533", null))
 			return ITEM_INTERACT_BLOCKING
 		return NONE
 
 	if(broken > NOT_BROKEN)
 		if(IS_EDIBLE(item))
-			balloon_alert(user, "it's broken!")
+			balloon_alert(user, LANG("obj.77c0e4a7c3579c6d", null))
 			return ITEM_INTERACT_BLOCKING
 		return NONE
 
@@ -408,31 +409,31 @@
 			update_appearance()
 			return ITEM_INTERACT_BLOCKING
 		cell = item
-		balloon_alert(user, "[swapped ? "swapped" : "inserted"] cell")
+		balloon_alert(user, LANG("obj.6ee936a83e61bd67", list(swapped ? "swapped" : "inserted")))
 		update_appearance()
 		return ITEM_INTERACT_SUCCESS
 
 	if(!anchored)
 		if(IS_EDIBLE(item))
-			balloon_alert(user, "not secured!")
+			balloon_alert(user, LANG("obj.801f0be9a529882b", null))
 			return ITEM_INTERACT_BLOCKING
 		return NONE
 
 	if(vampire_charging_capable && istype(item, /obj/item/modular_computer) && ingredients.len > 0)
-		balloon_alert(user, "max 1 device!")
+		balloon_alert(user, LANG("obj.0eef77d6caf2c2bf", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(item.w_class <= WEIGHT_CLASS_NORMAL && !user.combat_mode && isnull(item.atom_storage))
 		if(ingredients.len >= max_n_of_items)
-			balloon_alert(user, "it's full!")
+			balloon_alert(user, LANG("obj.2cb7d3546d66854d", null))
 			return ITEM_INTERACT_BLOCKING
 		if(!user.transferItemToLoc(item, src))
-			balloon_alert(user, "it's stuck to your hand!")
+			balloon_alert(user, LANG("obj.f84f0f5d8dcd2ecb", null))
 			return ITEM_INTERACT_BLOCKING
 
 		ingredients += item
 		open(autoclose = 0.6 SECONDS)
-		user.visible_message(span_notice("[user] adds \a [item] to \the [src]."), span_notice("You add [item] to \the [src]."))
+		user.visible_message(span_notice(LANG("obj.6776a8eeb48ddb0a", list(user, item, src))), span_notice(LANG("obj.dc741820a0ec26a7", list(item, src))))
 		update_appearance()
 		return ITEM_INTERACT_SUCCESS
 
@@ -449,7 +450,7 @@
 	var/loaded = 0
 	if(!istype(tool, /obj/item/storage/bag/tray))
 		// Non-tray dumping requires a do_after
-		to_chat(user, span_notice("You start dumping out the contents of [tool] into [src]..."))
+		to_chat(user, span_notice(LANG("obj.66f692814914ab0d", list(tool, src))))
 		if(!do_after(user, 2 SECONDS, target = tool))
 			return
 
@@ -457,7 +458,7 @@
 		if(!IS_EDIBLE(tray_item))
 			continue
 		if(ingredients.len >= max_n_of_items)
-			balloon_alert(user, "it's full!")
+			balloon_alert(user, LANG("obj.2cb7d3546d66854d", null))
 			return
 		if(tool.atom_storage.attempt_remove(tray_item, src))
 			loaded++
@@ -465,7 +466,7 @@
 
 	if(loaded)
 		open(autoclose = 0.6 SECONDS)
-		to_chat(user, span_notice("You insert [loaded] items into \the [src]."))
+		to_chat(user, span_notice(LANG("obj.1de8bb225ce0e2a7", list(loaded, src))))
 		update_appearance()
 
 /obj/machinery/microwave/mouse_drop_receive(obj/item/tool, mob/user, params)
@@ -476,7 +477,7 @@
 /obj/machinery/microwave/attack_hand_secondary(mob/user, list/modifiers)
 	if(user.can_perform_action(src, ALLOW_SILICON_REACH))
 		if(!length(ingredients))
-			balloon_alert(user, "it's empty!")
+			balloon_alert(user, LANG("obj.76a90f7c0f5ea424", null))
 			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 		start_cycle(user)
@@ -488,10 +489,10 @@
 		return NONE
 
 	vampire_charging_enabled = !vampire_charging_enabled
-	balloon_alert(user, "set to [vampire_charging_enabled ? "charge" : "cook"]")
+	balloon_alert(user, LANG("obj.28f94138c1669b1d", list(vampire_charging_enabled ? "charge" : "cook")))
 	playsound(src, 'sound/machines/beep/twobeep_high.ogg', 50, FALSE)
 	if(HAS_SILICON_ACCESS(user))
-		visible_message(span_notice("[user] sets \the [src] to [vampire_charging_enabled ? "charge" : "cook"]."), blind_message = span_notice("You hear \the [src] make an informative beep!"))
+		visible_message(span_notice(LANG("obj.184c07909457181c", list(user, src, vampire_charging_enabled ? "charge" : "cook"))), blind_message = span_notice(LANG("obj.0d2afbf4e8f703c8", list(src))))
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/microwave/click_ctrl(mob/user)
@@ -500,7 +501,7 @@
 
 	if(cell_powered && !isnull(cell))
 		user.put_in_hands(cell)
-		balloon_alert(user, "removed cell")
+		balloon_alert(user, LANG("obj.c3e0259563aa1887", null))
 		cell = null
 		update_appearance()
 		return CLICK_ACTION_SUCCESS
@@ -511,7 +512,7 @@
 	. = ..()
 
 	if(!anchored)
-		balloon_alert(user, "not secured!")
+		balloon_alert(user, LANG("obj.801f0be9a529882b", null))
 		return
 	if(operating || panel_open || !user.can_perform_action(src, ALLOW_SILICON_REACH))
 		return
@@ -522,7 +523,7 @@
 		if(HAS_AI_ACCESS(user))
 			user.examinate(src)
 		else
-			balloon_alert(user, "it's empty!")
+			balloon_alert(user, LANG("obj.76a90f7c0f5ea424", null))
 		return
 
 	var/choice = show_radial_menu(user, src, HAS_AI_ACCESS(user) ? ai_radial_options : radial_options, require_near = !HAS_SILICON_ACCESS(user))
@@ -587,13 +588,13 @@
 		return
 
 	if(wire_disabled)
-		audible_message("[src] buzzes.")
+		audible_message(LANG("obj.9f1f2989394f9812", list(src)))
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
 		return
 
 	if(cell_powered && cell?.charge < TIER_1_CELL_CHARGE_RATE * efficiency)
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
-		balloon_alert(cooker, "no power draw!")
+		balloon_alert(cooker, LANG("obj.3aacf14694229d1d", null))
 		return
 
 	if(cooker && HAS_TRAIT(cooker, TRAIT_CURSED) && prob(7))
@@ -612,7 +613,7 @@
 		if(istype(potential_fooditem, /obj/item/modular_computer) && prob(75))
 			pda_failure = TRUE
 			notify_ghosts(
-				"[cooker.real_name] has overheated their PDA!",
+				LANG("obj.1589f3188d46edfb", list(cooker.real_name)),
 				source = src,
 				notify_flags = NOTIFY_CATEGORY_NOFLASH,
 				header = "Hunger Games: Catching Fire",
@@ -631,14 +632,14 @@
 			playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
 			return
 
-	visible_message(span_notice("\The [src] turns on."), null, span_hear("You hear a microwave humming."))
+	visible_message(span_notice(LANG("obj.2769877b0ebe4fae", list(src))), null, span_hear(LANG("obj.a14ceee429788bd2", null)))
 	operating = TRUE
 	set_light(l_range = 1.5, l_power = 1.2, l_on = TRUE)
 	soundloop.start()
 	update_appearance()
 
 /obj/machinery/microwave/proc/spark()
-	visible_message(span_warning("Sparks fly around [src]!"))
+	visible_message(span_warning(LANG("obj.4e567583ebceff06", list(src))))
 	do_sparks(2, TRUE, src)
 
 /**
@@ -704,7 +705,7 @@
 			for(var/mob/smeller in get_hearers_in_view(DEFAULT_MESSAGE_RANGE, src))
 				if(HAS_TRAIT(smeller, TRAIT_ANOSMIA))
 					cant_smell += smeller
-			visible_message(span_danger("You smell a burnt smell coming from [src]!"), ignored_mobs = cant_smell)
+			visible_message(span_danger(LANG("obj.6d67c4b61a4de348", list(src))), ignored_mobs = cant_smell)
 			add_shared_particles(/particles/smoke)
 			addtimer(CALLBACK(src, TYPE_PROC_REF(/atom/movable, remove_shared_particles), /particles/smoke), 10 SECONDS)
 			Shake(duration = 1 SECONDS)
@@ -771,7 +772,7 @@
 	cook_loop(type = MICROWAVE_NORMAL, cycles = 10, cooker = cooker)
 
 /obj/machinery/microwave/proc/muck_finish()
-	visible_message(span_warning("\The [src] gets covered in muck!"))
+	visible_message(span_warning(LANG("obj.5ba803b56ef08beb", list(src))))
 
 	dirty = MAX_MICROWAVE_DIRTINESS
 	dirty_anim_playing = FALSE
@@ -819,7 +820,7 @@
 
 /obj/machinery/microwave/proc/charge(mob/cooker)
 	if(!vampire_charging_capable)
-		balloon_alert(cooker, "needs upgrade!")
+		balloon_alert(cooker, LANG("obj.f2f557628758fa4a", null))
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
 		return
 
@@ -827,14 +828,14 @@
 		return
 
 	if(wire_disabled)
-		audible_message("[src] buzzes.")
+		audible_message(LANG("obj.9f1f2989394f9812", list(src)))
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
 		return
 
 	// We should only be charging PDAs
 	for(var/atom/movable/potential_item as anything in ingredients)
 		if(!istype(potential_item, /obj/item/modular_computer))
-			balloon_alert(cooker, "pda only!")
+			balloon_alert(cooker, LANG("obj.b2023d4fbfa15edf", null))
 			playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
 			eject()
 			return
@@ -856,7 +857,7 @@
 
 	if(cell_powered && (isnull(cell) || !cell.charge))
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
-		balloon_alert(cooker, "no power draw!")
+		balloon_alert(cooker, LANG("obj.3aacf14694229d1d", null))
 		return
 
 	if(!vampire_charge_amount || !length(ingredients) || vampire_charge_amount < 25)

@@ -1,8 +1,9 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 ////  Toggles Selected quirks on selected mobs
 /client/proc/toggle_quirk(mob/living/carbon/human/selected_mob)
 	if (!istype(selected_mob))
-		to_chat(usr, "This can only be used on /mob/living/carbon/human.")
+		to_chat(usr, LANG("client.7d5ef419b6dc3426", null))
 		return
 
 	var/list/options = list("Clear"="Clear")
@@ -11,10 +12,10 @@
 		var/quirk_name = initial(applicable_quirk.name)
 		options[selected_mob.has_quirk(applicable_quirk) ? "[quirk_name] (Remove)" : "[quirk_name] (Add)"] = applicable_quirk
 
-	var/result = tgui_input_list(usr, "Choose quirk to add/remove", "Mob Quirks", options)
+	var/result = tgui_input_list(usr, LANG("client.b1be79e5649e97ba", null), LANG("client.dbe7a3d7aa20fd69", null), options)
 
 	if(QDELETED(selected_mob))
-		to_chat(usr, "Mob doesn't exist anymore")
+		to_chat(usr, LANG("client.4068a4c39ab7926b", null))
 		return
 
 	if(result)
@@ -31,7 +32,7 @@
 ////  "Teaches" Martial arts to the selected mob
 /client/proc/teach_martial_art(mob/living/carbon/selected_mob)
 	if (!istype(selected_mob))
-		to_chat(usr, "This can only be used on /mob/living/carbon.")
+		to_chat(usr, LANG("client.5519505c2d10dd12", null))
 		return
 
 	var/list/art_paths = subtypesof(/datum/martial_art)
@@ -39,12 +40,12 @@
 	for(var/martial_art_skill in art_paths)
 		var/datum/martial_art/martial_skill = martial_art_skill
 		art_names[initial(martial_skill.name)] = martial_skill
-	var/result = tgui_input_list(usr, "Choose the martial art to teach", "JUDO CHOP", art_names)
+	var/result = tgui_input_list(usr, LANG("client.5962091364ccf470", null), LANG("client.918a4230a25a86ef", null), art_names)
 	if(isnull(result))
 		return
 
 	if(QDELETED(selected_mob))
-		to_chat(usr, "Mob doesn't exist anymore")
+		to_chat(usr, LANG("client.4068a4c39ab7926b", null))
 		return
 	if(result)
 		var/chosen_art = art_names[result]
@@ -56,9 +57,9 @@
 ////  Sets species of the selected client
 /client/proc/set_species(mob/living/carbon/human/selected_mob)
 	if (istype(selected_mob))
-		var/result = tgui_input_list(usr, "Choose a new species","Species", GLOB.species_list)
+		var/result = tgui_input_list(usr, LANG("client.ae3418a89c0ef66d", null),LANG("client.85a5d525356ee5fa", null), GLOB.species_list)
 		if(QDELETED(selected_mob))
-			to_chat(usr, "Mob doesn't exist anymore")
+			to_chat(usr, LANG("client.4068a4c39ab7926b", null))
 			return
 		if(result)
 			admin_ticket_log("[key_name_admin(usr)] has modified the bodyparts of [selected_mob] to [result]")

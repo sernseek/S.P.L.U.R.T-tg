@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Action that allows Oversized characters to see themselves at normal size (1x) instead of their actual 2x size.
 /// This is a visual-only effect that only affects the character's own view.
 /datum/action/oversized_self_view
@@ -59,7 +60,7 @@
 	RegisterSignal(human_owner, COMSIG_MOB_SWAP_HANDS, PROC_REF(on_appearance_update))
 
 	active = TRUE
-	to_chat(human_owner, span_notice("You now see yourself at normal size."))
+	to_chat(human_owner, span_notice(LANG("datum.71bad17c47507da4", null)))
 
 /datum/action/oversized_self_view/proc/disable_normal_view()
 	var/mob/living/carbon/human/human_owner = owner
@@ -82,7 +83,7 @@
 
 	normal_size_image = null
 	active = FALSE
-	to_chat(human_owner, span_notice("You now see yourself at your actual size."))
+	to_chat(human_owner, span_notice(LANG("datum.e4f9612879c4eff2", null)))
 
 /datum/action/oversized_self_view/proc/on_z_change(mob/living/carbon/human/source)
 	SIGNAL_HANDLER

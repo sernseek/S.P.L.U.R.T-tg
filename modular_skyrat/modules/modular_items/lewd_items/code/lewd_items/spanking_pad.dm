@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/spanking_pad
 	name = "spanking pad"
 	desc = "A leather pad with a handle."
@@ -46,7 +47,7 @@
 /obj/item/spanking_pad/examine(mob/user)
 	. = ..()
 	if(!color_changed)
-		. += span_notice("Alt-click to change it's color.")
+		. += span_notice(LANG("obj.ffa2b27c6831e98e", null))
 
 /obj/item/spanking_pad/click_alt(mob/user)
 	if(color_changed)
@@ -72,11 +73,11 @@
 		return
 
 	if(!target.check_erp_prefs(/datum/preference/toggle/erp/sex_toy, user, src))
-		to_chat(user, span_danger("[target] doesn't want you to do that."))
+		to_chat(user, span_danger(LANG("obj.8d0a01828f0e2a19", list(target))))
 		return
 
 	if(carbon_target && !carbon_target.is_bottomless())
-		to_chat(user, span_danger("[target]'s butt is covered!"))
+		to_chat(user, span_danger(LANG("obj.6b7eb5bf20160db4", list(target))))
 		return
 
 	var/message = (user == target) ? pick("spanks themselves with [src]",

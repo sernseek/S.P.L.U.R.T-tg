@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/mod/module/dna_lock/reinforced
 	var/obj/item/implant/explosive/macro // Not really a macrobomb :P
 
@@ -34,7 +35,7 @@
 		macro.modsuit_explosion()
 		owner.spasm_animation(600)
 	else
-		to_chat(user, "You feel safe knowing your modsuit did not blow up in your face.")
+		to_chat(user, LANG("obj.8dc1c4b6620fdac5", null))
 
 /obj/item/mod/control/pre_equipped/contractor/doStrip(mob/living/carbon/stripper, mob/owner)
 	if(!istype(stripper, /mob/living/carbon))
@@ -43,8 +44,8 @@
 	var/alert
 	if(dna_lock)
 		alert = tgui_alert(stripper,
-			"As you go to pull the modsuit off of [owner], you spot a what appears to be a failsafe. \n If you pull any further, it looks like a fuse for a bomb will be pulled. Continue???",
-			"Are you REALLY SURE?",
+			LANG("obj.b3229bbbaeed72b2", list(owner)),
+			LANG("obj.e8ea54cce8f7047c", null),
 			list(PULL_SUIT, IGNORE_SUIT, DUMP_CONTENTS), 10 SECONDS, TRUE)
 
 
@@ -65,8 +66,8 @@
 	var/alert
 	if(dna_lock)
 		alert = tgui_alert(stripper,
-			"As you go to pull the modsuit off of [owner], you spot a what appears to be a failsafe. \n If you pull any further, it looks like a fuse for a bomb will be pulled. Continue???",
-			"Are you REALLY SURE?",
+			LANG("obj.b3229bbbaeed72b2", list(owner)),
+			LANG("obj.e8ea54cce8f7047c", null),
 			list(PULL_SUIT, IGNORE_SUIT, DUMP_CONTENTS), 10 SECONDS, TRUE)
 
 

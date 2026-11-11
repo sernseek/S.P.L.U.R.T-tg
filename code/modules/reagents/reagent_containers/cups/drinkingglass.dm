@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/reagent_containers/cup/glass/drinkingglass
 	name = "drinking glass"
 	desc = "Your standard drinking glass."
@@ -52,7 +53,7 @@
 /obj/item/reagent_containers/cup/glass/drinkingglass/examine(mob/user)
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_WAS_RENAMED))
-		. += span_notice("This glass has been given a custom name. It can be removed by washing it.")
+		. += span_notice(LANG("obj.1272de7b45676e50", null))
 
 /obj/item/reagent_containers/cup/glass/drinkingglass/proc/on_cleaned(obj/source_component, obj/source)
 	SIGNAL_HANDLER
@@ -98,9 +99,9 @@
 		return
 	. = ..()
 	if(length(reagents.reagent_list))
-		desc = "The challenge is not taking as many as you can, but guessing what it is before you pass out."
+		desc = LANG("obj.b049848e43cc1053", null)
 	else
-		desc = "A shot glass - the universal symbol for bad decisions."
+		desc = LANG("obj.517c0088f0f77cf3", null)
 
 /obj/item/reagent_containers/cup/glass/drinkingglass/filled
 	base_container_type = /obj/item/reagent_containers/cup/glass/drinkingglass

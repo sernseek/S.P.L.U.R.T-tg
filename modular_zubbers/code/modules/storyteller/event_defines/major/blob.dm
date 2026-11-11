@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/blob
 	name = "Blob"
 	typepath = /datum/round_event/ghost_role/blob
@@ -23,7 +24,7 @@
 /datum/round_event/ghost_role/blob/announce(fake)
 	if(!fake)
 		return //the mob itself handles this.
-	priority_announce("Confirmed outbreak of level 5 biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert", ANNOUNCER_OUTBREAK5)
+	priority_announce(LANG("datum.4bada0d03b828da2", list(station_name())), "Biohazard Alert", ANNOUNCER_OUTBREAK5)
 
 /datum/round_event/ghost_role/blob/spawn_role()
 	if(!GLOB.blobstart.len)

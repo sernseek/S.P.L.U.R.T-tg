@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_LIST(admin_objective_list) //Prefilled admin assignable objective list
 GLOBAL_LIST_EMPTY(objectives) //SKYRAT EDIT ADDITION
 
@@ -50,7 +51,7 @@ GLOBAL_LIST_EMPTY(objectives) //SKYRAT EDIT ADDITION
 	if(target?.current)
 		def_value = target.current
 
-	var/mob/new_target = input(admin,"Select target:", "Objective target", def_value) as null|anything in possible_targets
+	var/mob/new_target = input(admin,LANG("datum.ec5526967efafb21", null), LANG("datum.83e3a58e00d79722", null), def_value) as null|anything in possible_targets
 	if (!new_target)
 		return
 
@@ -103,7 +104,7 @@ GLOBAL_LIST_EMPTY(objectives) //SKYRAT EDIT ADDITION
 /datum/objective/proc/get_roundend_success_suffix()
 	if(no_failure)
 		return "" // Just print the objective with no success/fail evaluation, as it has no mechanical backing
-	return check_completion() ? span_greentext("Success!") : span_redtext("Fail.")
+	return check_completion() ? span_greentext(lang_reverse_text("Success!")) : span_redtext(lang_reverse_text("Fail.")) // ZH EDIT - I18N
 
 /datum/objective/proc/is_unique_objective(possible_target, dupe_search_range)
 	if(!islist(dupe_search_range))
@@ -669,17 +670,17 @@ GLOBAL_LIST_EMPTY(possible_items)
 
 /datum/objective/steal/admin_edit(mob/admin)
 	var/list/possible_items_all = GLOB.possible_items
-	var/new_target = input(admin,"Select target:", "Objective target", steal_target) as null|anything in sort_names(possible_items_all)+"custom"
+	var/new_target = input(admin,LANG("datum.ec5526967efafb21", null), LANG("datum.83e3a58e00d79722", null), steal_target) as null|anything in sort_names(possible_items_all)+"custom"
 	if (!new_target)
 		return
 
 	if (new_target == "custom") //Can set custom items.
-		var/custom_path = input(admin,"Search for target item type:","Type") as null|text
+		var/custom_path = input(admin,LANG("datum.33335c92eedf3383", null),LANG("datum.184466608a09f8b1", null)) as null|text
 		if (!custom_path)
 			return
 		var/obj/item/custom_target = pick_closest_path(custom_path, make_types_fancy(subtypesof(/obj/item)))
 		var/custom_name = initial(custom_target.name)
-		custom_name = stripped_input(admin,"Enter target name:", "Objective target", custom_name)
+		custom_name = stripped_input(admin,LANG("datum.63cd96aa53c9660f", null), LANG("datum.83e3a58e00d79722", null), custom_name)
 		if (!custom_name)
 			return
 		steal_target = custom_target
@@ -756,7 +757,7 @@ GLOBAL_LIST_EMPTY(possible_items)
 	return captured_amount >= target_amount
 
 /datum/objective/capture/admin_edit(mob/admin)
-	var/count = input(admin,"How many mobs to capture ?","capture",target_amount) as num|null
+	var/count = input(admin,LANG("datum.4653ba77269f81dd", null),LANG("datum.6883a5a29f918234", null),target_amount) as num|null
 	if(count)
 		target_amount = count
 	update_explanation_text()
@@ -813,7 +814,7 @@ GLOBAL_LIST_EMPTY(possible_items)
 	explanation_text = "Extract [target_amount] compatible genome\s."
 
 /datum/objective/absorb/admin_edit(mob/admin)
-	var/count = input(admin,"How many people to absorb?","absorb",target_amount) as num|null
+	var/count = input(admin,LANG("datum.dc90ede28eed22c5", null),LANG("datum.e7d38b6ba3708ce6", null),target_amount) as num|null
 	if(count)
 		target_amount = count
 	update_explanation_text()
@@ -900,10 +901,10 @@ GLOBAL_LIST_EMPTY(possible_items)
 /datum/objective/destroy/admin_edit(mob/admin)
 	var/list/possible_targets = active_ais(1)
 	if(possible_targets.len)
-		var/mob/new_target = input(admin,"Select target:", "Objective target") as null|anything in sort_names(possible_targets)
+		var/mob/new_target = input(admin,LANG("datum.ec5526967efafb21", null), LANG("datum.83e3a58e00d79722", null)) as null|anything in sort_names(possible_targets)
 		target = new_target.mind
 	else
-		to_chat(admin, span_boldwarning("No active AIs with minds."))
+		to_chat(admin, span_boldwarning(LANG("datum.78a01c034b97cf48", null)))
 	update_explanation_text()
 
 /datum/objective/steal_n_of_type
@@ -1004,7 +1005,7 @@ GLOBAL_LIST_EMPTY(possible_items)
 	no_failure = TRUE
 
 /datum/objective/custom/admin_edit(mob/admin)
-	var/expl = stripped_input(admin, "Custom objective:", "Objective", explanation_text)
+	var/expl = stripped_input(admin, LANG("datum.577672889a34b922", null), LANG("datum.161e201425e206dd", null), explanation_text)
 	if(expl)
 		explanation_text = expl
 

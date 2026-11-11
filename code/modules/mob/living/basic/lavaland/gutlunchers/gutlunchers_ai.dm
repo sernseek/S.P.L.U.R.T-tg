@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MAXIMUM_GUTLUNCH_POP 20
 /datum/ai_controller/basic_controller/gutlunch
 	ai_movement = /datum/ai_movement/basic_avoidance
@@ -54,7 +55,7 @@
 
 /datum/pet_command/breed/gutlunch/set_command_target(mob/living/parent, atom/target)
 	if(GLOB.gutlunch_count >= MAXIMUM_GUTLUNCH_POP)
-		parent.balloon_alert_to_viewers("can't reproduce anymore!")
+		parent.balloon_alert_to_viewers(LANG("datum.157d30d4b052b070", null))
 		return FALSE
 	return ..()
 
@@ -79,7 +80,7 @@
 		if(!living_pawn.client || !living_pawn.faction_check_atom(potential_friend) || living_pawn.has_ally(REF(potential_friend)))
 			continue
 		living_pawn.befriend(potential_friend)
-		to_chat(potential_friend, span_nicegreen("[living_pawn] looks at you with endearing eyes!"))
+		to_chat(potential_friend, span_nicegreen(LANG("datum.847656603c776c1e", list(living_pawn))))
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 

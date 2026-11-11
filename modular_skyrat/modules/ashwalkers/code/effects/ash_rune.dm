@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_LIST_EMPTY(ash_rituals)
 
 /obj/effect/ash_rune
@@ -18,14 +19,14 @@ GLOBAL_LIST_EMPTY(ash_rituals)
 /obj/effect/ash_rune/examine(mob/user)
 	. = ..()
 	if(!current_ritual)
-		. += span_notice("<br>There is no selected ritual at this moment-- use the central rune to select a ritual.")
+		. += span_notice(LANG("obj.030794a33140ed91", null))
 		return
-	. += span_notice("<br>The current ritual is: [current_ritual.name]")
+	. += span_notice(LANG("obj.a4d778f99122b5b9", list(current_ritual.name)))
 	. += span_notice(current_ritual.desc)
-	. += span_warning("<br>The required components are as follows:")
+	. += span_warning(LANG("obj.b589ae7313dda83d", null))
 	for(var/the_components in current_ritual.required_components)
 		var/atom/component_name = current_ritual.required_components[the_components]
-		. += span_warning("[the_components] component is [initial(component_name.name)]")
+		. += span_warning(LANG("obj.52ddc6aac5b573a8", list(the_components, initial(component_name.name))))
 
 /obj/effect/ash_rune/Initialize(mapload)
 	. = ..()
@@ -54,11 +55,11 @@ GLOBAL_LIST_EMPTY(ash_rituals)
 	if(current_ritual && is_species(user, /datum/species/lizard/ashwalker))
 		current_ritual.ritual_start(src)
 		return
-	current_ritual = tgui_input_list(user, "Choose the ritual to begin...", "Ritual Choice", GLOB.ash_rituals)
+	current_ritual = tgui_input_list(user, LANG("obj.1775c84eabfd66f7", null), LANG("obj.1606d62cffac5a4f", null), GLOB.ash_rituals)
 	if(!current_ritual)
 		return
 	current_ritual = GLOB.ash_rituals[current_ritual]
-	balloon_alert_to_viewers("ritual has been chosen-- examine the central rune for more information.")
+	balloon_alert_to_viewers(LANG("obj.f00ebe1b1935fdc5", null))
 
 // this is solely for aesthetics... though the central rune will check the directions, of which this is on
 /obj/effect/side_rune

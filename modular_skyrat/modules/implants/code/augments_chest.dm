@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/cyberimp/chest/scanner
 	name = "internal health analyzer"
 	desc = "An advanced health analyzer implant, designed to directly interface with a host's body and relay scan information to the brain on command."
@@ -14,7 +15,7 @@
 	. = ..()
 	var/obj/item/organ/cyberimp/chest/scanner/our_scanner = target
 	if(our_scanner.organ_flags & ORGAN_FAILING)
-		to_chat(owner, span_warning("Your health analyzer relays an error! It can't interface with your body in its current condition!"))
+		to_chat(owner, span_warning(LANG("datum.147e84496e95c32f", null)))
 		return
 	if(trigger_flags & TRIGGER_SECONDARY_ACTION)
 		chemscan(owner, owner)

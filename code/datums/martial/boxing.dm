@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define LEFT_RIGHT_COMBO "DH"
 #define RIGHT_LEFT_COMBO "HD"
 #define LEFT_LEFT_COMBO "HH"
@@ -88,7 +89,7 @@
 
 /datum/martial_art/boxing/grab_act(mob/living/attacker, mob/living/defender)
 	if(honorable_boxer && !ignore_grab_restriction)
-		attacker.balloon_alert(attacker, "no grabbing while boxing!")
+		attacker.balloon_alert(attacker, LANG("datum.4888073e82e0b96a", null))
 		return MARTIAL_ATTACK_FAIL
 	return MARTIAL_ATTACK_INVALID //UNLESS YOU'RE EVIL
 
@@ -103,7 +104,7 @@
 
 	if(honorable_boxer) //Being a good sport, you never hit someone on the ground or already knocked down. It shows you're the better person.
 		if((defender.body_position == LYING_DOWN && defender.get_stamina_loss() >= 100) || IS_UNCONSCIOUS(defender)) //If they're in stamcrit or unconscious, don't bloody punch them
-			attacker.balloon_alert(attacker, "unsportsmanlike behaviour!")
+			attacker.balloon_alert(attacker, LANG("datum.772a38420e40e7ab", null))
 			return FALSE
 
 	var/obj/item/bodypart/arm/active_arm = attacker.get_active_hand()
@@ -145,9 +146,9 @@
 	// Similar to a normal punch, should we have a value of 0 for our lower force, we simply miss outright.
 	if(!lower_force)
 		playsound(defender.loc, active_arm.unarmed_miss_sound, 25, TRUE, -1)
-		defender.visible_message(span_warning("[attacker]'s punch misses [defender]!"), \
-			span_danger("You avoid [attacker]'s punch!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, attacker)
-		to_chat(attacker, span_warning("Your punch misses [defender]!"))
+		defender.visible_message(span_warning(LANG("datum.02d8b90bf7cab7c8", list(attacker, defender))), \
+			span_danger(LANG("datum.1c13df50e998dbb3", list(attacker))), span_hear(LANG("datum.b8189c1ed616b3a4", null)), COMBAT_MESSAGE_RANGE, attacker)
+		to_chat(attacker, span_warning(LANG("datum.67d5615ccb5f4c93", list(defender))))
 		log_combat(attacker, defender, "attempted to hit", "punch (boxing) ")
 		return FALSE
 
@@ -230,14 +231,14 @@
 	playsound(defender, attack_sound, 25, TRUE, -1)
 
 	defender.visible_message(
-		span_danger("[attacker] [current_atk_verb] [defender]!"),
-		span_userdanger("You're [current_atk_verbed] by [attacker]!"),
-		span_hear("You hear a sickening sound of flesh hitting flesh!"),
+		span_danger(LANG("datum.dd02d8c90a5dee7a", list(attacker, current_atk_verb, defender))),
+		span_userdanger(LANG("datum.c61afe56230b45a4", list(current_atk_verbed, attacker))),
+		span_hear(LANG("datum.6c7f8149b8c68cd4", null)),
 		COMBAT_MESSAGE_RANGE,
 		attacker,
 	)
 
-	to_chat(attacker, span_danger("You [current_atk_verbed] [defender]!"))
+	to_chat(attacker, span_danger(LANG("datum.22d557f300d422c9", list(current_atk_verbed, defender))))
 
 	// Determines the total amount of experience earned per punch
 	var/experience_earned = round(damage/4, 1)
@@ -278,26 +279,26 @@
 /datum/martial_art/boxing/proc/crit_effect(mob/living/attacker, mob/living/defender, armor_block = 0, damage_type = STAMINA, damage = 0)
 	if(defender.get_timed_status_effect_duration(/datum/status_effect/staggered))
 		defender.visible_message(
-			span_danger("[attacker] knocks [defender] out with a haymaker!"),
-			span_userdanger("You're knocked unconscious by [attacker]!"),
-			span_hear("You hear a sickening sound of flesh hitting flesh!"),
+			span_danger(LANG("datum.454b0e163b68a5f7", list(attacker, defender))),
+			span_userdanger(LANG("datum.1ace6279c0000c05", list(attacker))),
+			span_hear(LANG("datum.6c7f8149b8c68cd4", null)),
 			COMBAT_MESSAGE_RANGE,
 			attacker,
 		)
-		to_chat(attacker, span_danger("You knock [defender] out with a haymaker!"))
+		to_chat(attacker, span_danger(LANG("datum.00087ddbe1a4f1cd", list(defender))))
 		defender.apply_effect(20 SECONDS, EFFECT_KNOCKDOWN, armor_block)
 		defender.SetSleeping(10 SECONDS)
 		log_combat(attacker, defender, "knocked out (boxing) ")
 	else
 		defender.visible_message(
-			span_danger("[attacker] staggers [defender] with a haymaker!"),
-			span_userdanger("You're nearly knocked off your feet by [attacker]!"),
-			span_hear("You hear a sickening sound of flesh hitting flesh!"),
+			span_danger(LANG("datum.962ddadceaa1df0c", list(attacker, defender))),
+			span_userdanger(LANG("datum.706ff84088f01398", list(attacker))),
+			span_hear(LANG("datum.6c7f8149b8c68cd4", null)),
 			COMBAT_MESSAGE_RANGE,
 			attacker,
 		)
 		defender.adjust_staggered_up_to(STAGGERED_SLOWDOWN_LENGTH, 10 SECONDS)
-		to_chat(attacker, span_danger("You stagger [defender] with a haymaker!"))
+		to_chat(attacker, span_danger(LANG("datum.fde652f7c6bdbd50", list(defender))))
 		log_combat(attacker, defender, "staggered (boxing) ")
 
 	if(attacker.pulling == defender && attacker.grab_state >= GRAB_AGGRESSIVE) // dubious a normal boxer will be in a state where this happens, buuuut.
@@ -366,8 +367,8 @@
 		perform_extra_effect(boxer, attacker)
 
 	boxer.visible_message(
-		span_danger("[boxer] [block_text]s [attack_text]!"),
-		span_userdanger("You [block_text] [attack_text]!"),
+		span_danger(LANG("datum.73829518320af0f7", list(boxer, block_text, attack_text))),
+		span_userdanger(LANG("datum.22d557f300d422c9", list(block_text, attack_text))),
 	)
 	if(block_text == "evade")
 		playsound(boxer.loc, active_arm.unarmed_miss_sound, 25, TRUE, -1)
@@ -382,16 +383,16 @@
 /datum/martial_art/boxing/get_style_help()
 	. = list()
 
-	. += "<b><i>You focus on your form, visualizing how best to throw a punch.</i></b>"
-	. += "<b><i>What moves you perform depend on what mouse buttons you click, and whether the last button clicked matches which hand you have selected when you throw the last punch.</i></b>"
+	. += LANG("datum.a77f13cb21ec2ef4", null)
+	. += LANG("datum.992f91de25f70aa3", null)
 
-	. += "[span_notice("Straight Punch")]: Left Left/Right Right with the matching hand. Regular damage."
-	. += "[span_notice("Jab")]: Left Left/Right Right with the opposite hand. Regular damage. If you're blind, you'll make a blind jab instead."
-	. += "[span_notice("Left/Right Hook")]: Left Right/Right Left with the matching hand. Does extra damage, but slows your next hit."
-	. += "[span_notice("Uppercut")]: Left Right/Right Left with the opposite hand. Has a higher probability to knock out the target, but slows your next hit.</b>"
+	. += LANG("datum.3b73f12c9e5414d5", list(span_notice("Straight Punch")))
+	. += LANG("datum.5875868472e93bbb", list(span_notice("Jab")))
+	. += LANG("datum.57a429f3cd35817b", list(span_notice("Left/Right Hook")))
+	. += LANG("datum.4fdb50c5a878d379", list(span_notice("Uppercut")))
 
-	. += "<b><i>While in Throw Mode, you can block incoming punches and return a bit of damage back to an attacker. Blocking attacks this way causes you to lose some stamina damage.</i></b>"
-	. += "<b><i>Your boxing abilities are only able to be used on other boxers.</i></b>"
+	. += LANG("datum.65ebfffc9d11c66e", null)
+	. += LANG("datum.f7479c586df306cc", null)
 	return .
 
 // Boxing Variants!
@@ -410,16 +411,16 @@
 /datum/martial_art/boxing/evil/get_style_help()
 	. = list()
 
-	. += "<b><i>You contemplate on the violence ahead, visualizing how best to throw a punch.</i></b>"
-	. += "<b><i>What moves you perform depend on what mouse buttons you click, and whether the last button clicked matches which hand you have selected when you throw the last punch.</i></b>"
+	. += LANG("datum.b667ba4c345b2b50", null)
+	. += LANG("datum.992f91de25f70aa3", null)
 
-	. += "[span_notice("Straight Punch")]: Left Left/Right Right with the matching hand. Regular damage."
-	. += "[span_notice("Jab")]: Left Left/Right Right with the opposite hand. Regular damage. If you're blind, you'll make a blind jab instead."
-	. += "[span_notice("Left/Right Hook")]: Left Right/Right Left with the matching hand. Does extra damage, but slows your next hit."
-	. += "[span_notice("Uppercut")]: Left Right/Right Left with the opposite hand. Has a higher probability to knock out the target, but slows your next hit."
-	. += "[span_notice("Sucker Punch")]: Any combination done to a vulnerable target becomes a sucker punch. This could knock them out in one!.</b>"
+	. += LANG("datum.3b73f12c9e5414d5", list(span_notice("Straight Punch")))
+	. += LANG("datum.5875868472e93bbb", list(span_notice("Jab")))
+	. += LANG("datum.57a429f3cd35817b", list(span_notice("Left/Right Hook")))
+	. += LANG("datum.d413901ebfd4bba5", list(span_notice("Uppercut")))
+	. += LANG("datum.f479f0b5ad1696b9", list(span_notice("Sucker Punch")))
 
-	. += "<b><i>While in Throw Mode, you can block incoming punches and return a bit of damage back to an attacker. Blocking attacks this way causes you to lose some stamina damage.</i></b>"
+	. += LANG("datum.65ebfffc9d11c66e", null)
 	return .
 
 /// Hunter Boxing: for the uncaring, completely deranged one-spacer ecological disaster.
@@ -442,18 +443,18 @@
 /datum/martial_art/boxing/hunter/get_style_help()
 	. = list()
 
-	. += "<b><i>You focus on your Fists. You focus on Adventure. You focus on the Hunt.</i></b>"
-	. += "<b><i>What moves you perform depend on what mouse buttons you click, and whether the last button clicked matches which hand you have selected when you throw the last punch.</i></b>"
+	. += LANG("datum.df134b0e69bcffa9", null)
+	. += LANG("datum.992f91de25f70aa3", null)
 
-	. += "[span_notice("Straight Punch")]: Left Left/Right Right with the matching hand. Regular damage."
-	. += "[span_notice("Jab")]: Left Left/Right Right with the opposite hand. Regular damage. If you're blind, you'll make a blind jab instead."
-	. += "[span_notice("Left/Right Hook")]: Left Right/Right Left with the matching hand. Does extra damage, but slows your next hit."
-	. += "[span_notice("Uppercut")]: Left Right/Right Left with the opposite hand. Has a higher probability to critically hit the target, but slows your next hit.</b>"
+	. += LANG("datum.3b73f12c9e5414d5", list(span_notice("Straight Punch")))
+	. += LANG("datum.5875868472e93bbb", list(span_notice("Jab")))
+	. += LANG("datum.57a429f3cd35817b", list(span_notice("Left/Right Hook")))
+	. += LANG("datum.0e20e36640ad72de", list(span_notice("Uppercut")))
 
-	. += "<b><i>While in Throw Mode, you can block incoming punches and return a bit of damage back to an attacker. Blocking attacks this way causes you to lose some stamina damage.</i></b>"
-	. += "<b><i>Stringing together effective combos restores some of your health and deals even more damage.</i></b>"
+	. += LANG("datum.65ebfffc9d11c66e", null)
+	. += LANG("datum.36623ed7b41a5ecb", null)
 
-	. += "<b><i>Your hunter boxing abilities are only able to be used on the various flora, fauna and unnatural creatures that reside in this universe. Against normal humanoids, you are just a boxer.</i></b>"
+	. += LANG("datum.cc6673058a982396", null)
 	return .
 
 /datum/martial_art/boxing/hunter/honor_check(mob/living/possible_boxer)
@@ -478,13 +479,13 @@
 	var/second_word_pick = pick(second_word_strike)
 
 	defender.visible_message(
-		span_danger("[attacker] knocks the absolute bajeezus out of [defender] utilizing the terrifying [first_word_pick][second_word_pick]!!!"),
-		span_userdanger("You have the absolute bajeezus knocked out of you by [attacker]!!!"),
-		span_hear("You hear a sickening sound of flesh hitting flesh!"),
+		span_danger(LANG("datum.844bdfdcceb3c233", list(attacker, defender, first_word_pick, second_word_pick))),
+		span_userdanger(LANG("datum.f1bd5e9ee15153e9", list(attacker))),
+		span_hear(LANG("datum.6c7f8149b8c68cd4", null)),
 		COMBAT_MESSAGE_RANGE,
 		attacker,
 	)
-	to_chat(attacker, span_danger("You knock the absolute bajeezus out of [defender] out with the terrifying [first_word_pick][second_word_pick]!!!"))
+	to_chat(attacker, span_danger(LANG("datum.abf44ab6d56f0b28", list(defender, first_word_pick, second_word_pick))))
 	if(ishuman(attacker))
 		var/mob/living/carbon/human/human_attacker = attacker
 		human_attacker.force_say()

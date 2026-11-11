@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CHOICE_RANDOM_APPEARANCE "Random"
 #define CHOICE_PREFS_APPEARANCE "Look-a-like"
 #define CHOICE_PICK_PLAYER "Pick player"
@@ -26,16 +27,16 @@
 
 /datum/smite/custom_imaginary_friend/configure(client/user)
 	var/appearance_choice = tgui_alert(user,
-		"Do you want the imaginary friend(s) to share name and appearance with their currently selected character preferences?",
-		"Imaginary Friend Appearance?",
+		LANG("datum.eb8d3645a325586d", null),
+		LANG("datum.0eb2ecaa8e6cc65c", null),
 		list(CHOICE_PREFS_APPEARANCE, CHOICE_RANDOM_APPEARANCE, CHOICE_CANCEL))
 	if (isnull(appearance_choice) || appearance_choice == CHOICE_CANCEL)
 		return FALSE
 	random_appearance = appearance_choice == CHOICE_RANDOM_APPEARANCE
 
 	var/client_selection_choice = tgui_alert(user,
-		"Do you want to pick a specific player, or poll for ghosts?",
-		"Imaginary Friend Selection?",
+		LANG("datum.2365785f6fedbefe", null),
+		LANG("datum.f69dff6509af39ab", null),
 		list(CHOICE_PICK_PLAYER, CHOICE_POLL_GHOSTS, CHOICE_CANCEL))
 
 	if(isnull(client_selection_choice) || client_selection_choice == CHOICE_CANCEL)
@@ -43,7 +44,7 @@
 	ghost_polling = client_selection_choice == CHOICE_POLL_GHOSTS
 
 	if(ghost_polling)
-		var/how_many = tgui_input_number(user, "How many imaginary friends should be added?", "Imaginary friend count", default = 1, min_value = 1)
+		var/how_many = tgui_input_number(user, LANG("datum.7475eb5fa08318be", null), LANG("datum.8507aafb50c9a6a5", null), default = 1, min_value = 1)
 		if(isnull(how_many) || how_many < 1)
 			return FALSE
 		polled_friend_count = how_many
@@ -62,7 +63,7 @@
 	)
 	var/volunteer_count = length(volunteers)
 	if(volunteer_count == 0)
-		to_chat(user, span_warning("No candidates volunteered, aborting."))
+		to_chat(user, span_warning(LANG("datum.b6513cb8a1d808e9", null)))
 		return
 
 	shuffle_inplace(volunteers)
@@ -77,25 +78,25 @@
 
 /// Pick client manually
 /datum/smite/custom_imaginary_friend/proc/pick_client(client/user)
-	var/picked_client = tgui_input_list(user, "Pick the player to put in control", "New Imaginary Friend", sort_list(GLOB.clients))
+	var/picked_client = tgui_input_list(user, LANG("datum.1d4472f0a52a7e21", null), LANG("datum.e5575a41321158a5", null), sort_list(GLOB.clients))
 	if(isnull(picked_client))
 		return
 
 	var/client/friend_candidate_client = picked_client
 	if(QDELETED(friend_candidate_client))
-		to_chat(user, span_warning("Selected player no longer has a client, aborting."))
+		to_chat(user, span_warning(LANG("datum.80b653a8873b088d", null)))
 		return
 
 	if(isliving(friend_candidate_client.mob))
 		var/end_them_choice = tgui_alert(user,
-			"This player already has a living mob ([friend_candidate_client.mob]). Do you still want to turn them into an Imaginary Friend?",
-			"Remove player from mob?",
+			LANG("datum.3d155d6e19838c8a", list(friend_candidate_client.mob)),
+			LANG("datum.a0c5cb311eb123dd", null),
 			list(CHOICE_END_THEM, CHOICE_CANCEL))
 		if(end_them_choice == CHOICE_CANCEL)
 			return
 
 	if(QDELETED(friend_candidate_client))
-		to_chat(user, span_warning("Selected player no longer has a client, aborting."))
+		to_chat(user, span_warning(LANG("datum.80b653a8873b088d", null)))
 		return
 
 	return list(friend_candidate_client)
@@ -106,7 +107,7 @@
 
 	// Run this check before and after polling, we don't wanna poll for something which already stopped existing
 	if(QDELETED(target))
-		to_chat(user, span_warning("The target mob no longer exists, aborting."))
+		to_chat(user, span_warning(LANG("datum.ecf8d7a0a13d1244", null)))
 		return
 
 	var/list/friend_candidates
@@ -116,11 +117,11 @@
 		friend_candidates = pick_client(user)
 
 	if(QDELETED(target))
-		to_chat(user, span_warning("The target mob no longer exists, aborting."))
+		to_chat(user, span_warning(LANG("datum.ecf8d7a0a13d1244", null)))
 		return
 
 	if(isnull(friend_candidates) || !length(friend_candidates))
-		to_chat(user, span_warning("No provided imaginary friend candidates, aborting."))
+		to_chat(user, span_warning(LANG("datum.9103ec22cffe1eb0", null)))
 		return
 
 	var/list/final_clients = list()
@@ -130,7 +131,7 @@
 		final_clients += client
 
 	if(!length(final_clients))
-		to_chat(user, span_warning("No provided imaginary friend candidates had clients, aborting."))
+		to_chat(user, span_warning(LANG("datum.5c5e6c70d867ed9c", null)))
 		return
 
 	for(var/client/friend_candidate_client as anything in final_clients)

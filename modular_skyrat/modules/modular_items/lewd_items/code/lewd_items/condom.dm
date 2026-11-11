@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ////////////
 ///CONDOM///
 ////////////
@@ -28,7 +29,7 @@
 	icon_state = "[base_icon_state]_[current_color]"
 
 /obj/item/condom_pack/attack_self(mob/user)
-	to_chat(user, span_notice("You start to open the condom pack..."))
+	to_chat(user, span_notice(LANG("obj.e32241a2bc25de78", null)))
 	if(!do_after(user, 1.5 SECONDS, target = user))
 		return
 	conditional_pref_sound(src.loc, 'sound/items/poster/poster_ripped.ogg', 50, TRUE)

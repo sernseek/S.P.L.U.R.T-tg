@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/carbon/proc/protean_main_ui()
 	var/datum/species/protean/species = dna.species
 	if(!istype(species))
@@ -12,7 +13,7 @@
 	var/datum/species/protean/species = dna.species
 	var/obj/item/mod/control/pre_equipped/protean/suit = species.species_modsuit
 	if(incapacitated && loc != suit)
-		balloon_alert(src, "incapacitated!")
+		balloon_alert(src, LANG("mob.7ac2788bbe3be4b1", null))
 		return
 
 	brain.replace_limbs()
@@ -25,7 +26,7 @@
 
 	var/obj/item/mod/control/pre_equipped/protean/suit = species.species_modsuit
 	species.species_modsuit.toggle_lock()
-	to_chat(src, span_notice("You [suit.modlocked ? "<b>lock</b>" : "<b>unlock</b>"] the suit [isprotean(suit.wearer) || loc == suit ? "" : "onto [suit.wearer]"]"))
+	to_chat(src, span_notice(LANG("mob.d31e11321bc63010", list(suit.modlocked ? "<b>lock</b>" : "<b>unlock</b>", isprotean(suit.wearer) || loc == suit ? "" : "onto [suit.wearer]"))))
 	playsound(src, 'sound/machines/click.ogg', 25)
 
 /mob/living/carbon/proc/suit_transformation(forced = FALSE)
@@ -40,7 +41,7 @@
 		if(!incapacitated)
 			brain.go_into_suit(forced)
 		else
-			balloon_alert(src, "incapacitated!")
+			balloon_alert(src, LANG("mob.7ac2788bbe3be4b1", null))
 
 /mob/living/carbon/proc/low_power()
 	var/datum/species/protean/species = dna.species
@@ -48,13 +49,13 @@
 		return
 	var/obj/item/organ/stomach/protean/stomach = get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(!istype(stomach))
-		to_chat(src, span_warning("You are missing a stomach and can't turn on low power mode"))
+		to_chat(src, span_warning(LANG("mob.f360a083dd230dff", null)))
 		return
 	if(loc == species.species_modsuit)
-		to_chat(src, span_notice("You can't toggle low power when in a suit form!"))
+		to_chat(src, span_notice(LANG("mob.fd750461f10658ff", null)))
 		return
 	if(!do_after(src, 2.5 SECONDS)) // Long enough to where our stomach can process inbetween activations
-		src.loc.balloon_alert(src, "toggle interrupted")
+		src.loc.balloon_alert(src, LANG("mob.08fef07e4f494aba", null))
 		return
 	var/datum/status_effect/protean_low_power_mode/effect = /datum/status_effect/protean_low_power_mode/low_power
 	if(istype(has_status_effect(effect), effect))

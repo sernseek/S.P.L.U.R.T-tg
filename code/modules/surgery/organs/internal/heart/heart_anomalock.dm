@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*!
  * Contains Voltaic Combat Cyberheart
  */
@@ -39,7 +40,7 @@
 
 /obj/item/organ/heart/cybernetic/anomalock/examine(mob/user)
 	. = ..()
-	. += span_info("The voltaic boost will avoid healing toxin damage at all in slime-based humanoids, to prevent harmful side effects.")
+	. += span_info(LANG("obj.49b4e96594074d40", null))
 
 /obj/item/organ/heart/cybernetic/anomalock/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
@@ -80,8 +81,8 @@
 /obj/item/organ/heart/cybernetic/anomalock/proc/self_implant(mob/living/carbon/user)
 	if(DOING_INTERACTION(user, DOAFTER_IMPLANTING_HEART))
 		return ITEM_INTERACT_BLOCKING
-	user.balloon_alert(user, "this will hurt...")
-	to_chat(user, span_userdanger("Black cyberveins tear your skin apart, pulling the heart into your ribcage. This feels unwise.."))
+	user.balloon_alert(user, LANG("obj.3509fd81d4cf6f8f", null))
+	to_chat(user, span_userdanger(LANG("obj.4616d0d3e36e22a9", null)))
 	if(!do_after(user, 5 SECONDS, interaction_key = DOAFTER_IMPLANTING_HEART))
 		return ITEM_INTERACT_BLOCKING
 	if(!user.temporarilyRemoveItemFromInventory(src))
@@ -156,7 +157,7 @@
 
 ///Alerts our owner that the organ is ready to do its thing again
 /obj/item/organ/heart/cybernetic/anomalock/proc/notify_cooldown(mob/living/carbon/organ_owner)
-	balloon_alert(organ_owner, "your heart strengthtens")
+	balloon_alert(organ_owner, LANG("obj.7249910ac8b53ec8", null))
 	playsound(organ_owner, 'sound/items/eshield_recharge.ogg', 40)
 	// BUBBER EDIT - Application of EMP resistance
 	organ_owner.AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_CONTENTS|EMP_NO_EXAMINE)
@@ -166,26 +167,26 @@
 	if(!istype(tool, required_anomaly))
 		return NONE
 	if(!isnull(core))
-		balloon_alert(user, "core already in!")
+		balloon_alert(user, LANG("obj.e3ef097dc22a2ed0", null))
 		return ITEM_INTERACT_BLOCKING
 	if(!user.transferItemToLoc(tool, src))
 		return ITEM_INTERACT_BLOCKING
-	balloon_alert(user, "core installed")
+	balloon_alert(user, LANG("obj.1a2673f997ae855a", null))
 	playsound(src, 'sound/machines/click.ogg', 30, TRUE)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/organ/heart/cybernetic/anomalock/screwdriver_act(mob/living/user, obj/item/tool)
 	if(isnull(core))
-		balloon_alert(user, "no core!")
+		balloon_alert(user, LANG("obj.9c96952522f32061", null))
 		return ITEM_INTERACT_BLOCKING
 	if((organ_flags & ORGAN_FAILING) || !core_removable)
-		balloon_alert(user, "can't remove core!")
+		balloon_alert(user, LANG("obj.2c698594e61739d5", null))
 		return ITEM_INTERACT_BLOCKING
-	balloon_alert(user, "removing core...")
+	balloon_alert(user, LANG("obj.4afc363abc5bbb3a", null))
 	if(!do_after(user, 3 SECONDS, target = src))
-		balloon_alert(user, "interrupted!")
+		balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 		return ITEM_INTERACT_BLOCKING
-	balloon_alert(user, "core removed")
+	balloon_alert(user, LANG("obj.8b10ca6a98faa6f4", null))
 	user.put_in_hands(core)
 	return ITEM_INTERACT_SUCCESS
 
@@ -241,7 +242,7 @@
 	owner.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
 	owner.reagents.add_reagent(/datum/reagent/medicine/coagulant, 5)
 	owner.add_filter("emp_shield", 2, outline_filter(1, "#639BFF"))
-	to_chat(owner, span_revendanger("You feel a burst of energy! It's do or die!"))
+	to_chat(owner, span_revendanger(LANG("datum.b51ae5e316ba0f1a", null)))
 	owner.add_traits(list(TRAIT_NOSOFTCRIT, TRAIT_NOHARDCRIT, TRAIT_ANALGESIA), TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/voltaic_overdrive/on_remove()
@@ -249,7 +250,7 @@
 	UnregisterSignal(owner, COMSIG_CARBON_LOSE_ORGAN)
 	owner.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
 	owner.remove_filter("emp_shield")
-	owner.balloon_alert(owner, "your heart weakens")
+	owner.balloon_alert(owner, LANG("datum.76bbdcf0b0a39ad6", null))
 	owner.remove_traits(list(TRAIT_NOSOFTCRIT, TRAIT_NOHARDCRIT, TRAIT_ANALGESIA), TRAIT_STATUS_EFFECT(id))
 	// BUBBER EDIT - Removal of the addition of EMP resistance
 	owner.RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_CONTENTS|EMP_NO_EXAMINE)
@@ -269,9 +270,9 @@
 
 /obj/item/organ/heart/cybernetic/anomalock/hear_beat_noise(mob/living/hearer)
 	if(prob(1))
-		to_chat(hearer, span_danger("Yeah. Press a metal disk to the chest of a living arc flash hazard. See what that gets you.")) //the guy is LITERALLY sparking like a tesla coil.
+		to_chat(hearer, span_danger(LANG("obj.517ebb070d1e154c", null))) //the guy is LITERALLY sparking like a tesla coil.
 	else
-		to_chat(hearer, span_danger("An electrical arc strikes your stethoscope, conducting into you!"))
+		to_chat(hearer, span_danger(LANG("obj.484d6548da389045", null)))
 	if(hearer.electrocute_act(15, "stethoscope", flags = SHOCK_NOGLOVES)) //the stethoscope is in your ears. (returns true if it does damage so we only scream in that case)
 		hearer.emote("scream")
 	return span_danger("[owner.p_Their()] heart produces [beat_noise].")

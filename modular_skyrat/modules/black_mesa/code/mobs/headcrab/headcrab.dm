@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Headcrab (/mob/living/basic/blackmesa/xen/headcrab)
  * Parasitic alien that jumps at targets and can zombify humans.
@@ -149,7 +150,7 @@
 
 	// Visual and sound feedback for zombie creation
 	playsound(new_zombie, 'modular_skyrat/modules/black_mesa/sound/mobs/headcrab/attack1.ogg', 100, FALSE)
-	visible_message(span_warning("The corpse of [target_human.name] suddenly rises, a headcrab controlling its lifeless body!"))
+	visible_message(span_warning(LANG("mob.d5cec4d576dac622", list(target_human.name))))
 
 	// Move the mind into the zombie, if we have one
 	if(!isnull(mind))
@@ -187,7 +188,7 @@
 	if(dist > maximum_distance)
 		var/mob/living/living_owner = owner
 		if(istype(living_owner))
-			living_owner.balloon_alert(living_owner, "too far!")
+			living_owner.balloon_alert(living_owner, LANG("datum.f5e75781e8f1dc46", null))
 		return FALSE
 	. = ..()
 

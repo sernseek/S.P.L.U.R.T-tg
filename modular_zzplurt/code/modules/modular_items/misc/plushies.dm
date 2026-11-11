@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Saliith Plushie && Pinpointer ///
 /* // Saliith Plushie (Removed at request)
 GLOBAL_DATUM_INIT(saliith_plushie, /obj/item/toy/plush/lizard_plushie/saliith, new)
@@ -142,7 +143,7 @@ GLOBAL_DATUM_INIT(saliith_plushie, /obj/item/toy/plush/lizard_plushie/saliith, n
 	var/choice_text = choice
 	if(ispath(choice_text))
 		choice_text = initial(choice.name)
-	to_chat(M, "<span class='hear'>The box opens, revealing the [choice_text]!</span>")
+	to_chat(M, LANG("obj.3830467147cae769", list(choice_text)))
 	playsound(src.loc, 'sound/items/poster/poster_ripped.ogg', 50, 1)
 	M.temporarilyRemoveItemFromInventory(src, TRUE)
 	M.put_in_hands(new choice)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/mind
 	var/datum/opposing_force/opposing_force
 
@@ -5,7 +6,7 @@
 	QDEL_NULL(opposing_force)
 	return ..()
 
-GAME_VERB_DESC(/mob, opposing_force, "Opposing Force", "View your opposing force panel, or request one.", "OOC")
+GAME_VERB_DESC(/mob, opposing_force, "敌对行动申请", "View your opposing force panel, or request one.", "OOC")
 	// Mind checks
 	if(!mind)
 		var/fail_message = "You have no mind!"
@@ -14,14 +15,14 @@ GAME_VERB_DESC(/mob, opposing_force, "Opposing Force", "View your opposing force
 		to_chat(src, span_warning(fail_message))
 		return
 	if(mind?.assigned_role.title == ROLE_GHOST_CAFE)
-		to_chat(src, span_warning("You have to be inside the current round to request an opfor."))
+		to_chat(src, span_warning(LANG("mob.97844714a17c36a3", null)))
 		return
 	if(is_banned_from(ckey, BAN_ANTAGONIST))
-		to_chat(src, span_warning("You are antagonist banned!"))
+		to_chat(src, span_warning(LANG("mob.e652f911fc961fab", null)))
 		return
 
 	if(is_banned_from(ckey, BAN_OPFOR))
-		to_chat(src, span_warning("You are OPFOR banned!"))
+		to_chat(src, span_warning(LANG("mob.e0c3bbd2edbcb0e9", null)))
 		return
 
 	if(!mind.opposing_force)

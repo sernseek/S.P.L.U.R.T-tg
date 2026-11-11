@@ -1,12 +1,13 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /**
  * Enables an admin to upload a new titlescreen image.
  */
-ADMIN_VERB(admin_change_title_screen, R_FUN, "Title Screen: Change", "Upload a new titlescreen image.", ADMIN_CATEGORY_FUN)
+ADMIN_VERB(admin_change_title_screen, R_FUN, "标题画面：更改", "Upload a new titlescreen image.", ADMIN_CATEGORY_FUN)
 	log_admin("[key_name(user)] is changing the title screen.")
 	message_admins("[key_name_admin(user)] is changing the title screen.")
 
-	switch(alert(usr, "Please select a new title screen.", "Title Screen", "Change", "Reset", "Cancel"))
+	switch(alert(usr, LANG("datum.901865e97bc57fba", null), LANG("datum.b4e55da514865786", null), "Change", "Reset", "Cancel"))
 		if("Change")
 			var/file = input(user) as icon|null
 			if(!file)
@@ -20,22 +21,22 @@ ADMIN_VERB(admin_change_title_screen, R_FUN, "Title Screen: Change", "Upload a n
 /**
  * Sets a titlescreen notice, a big red text on the main screen.
  */
-ADMIN_VERB(change_title_screen_notice, R_FUN, "Title Screen: Set Notice", "Sets a titlescreen notice, a big red text on the main screen.", ADMIN_CATEGORY_FUN)
+ADMIN_VERB(change_title_screen_notice, R_FUN, "标题画面：设置公告", "Sets a titlescreen notice, a big red text on the main screen.", ADMIN_CATEGORY_FUN)
 	log_admin("[key_name(usr)] is setting the title screen notice.")
 	message_admins("[key_name_admin(usr)] is setting the title screen notice.")
 
-	var/new_notice = input(usr, "Please input a notice to be displayed on the title screen:", "Titlescreen Notice") as text|null
+	var/new_notice = input(usr, LANG("datum.3c9ed76748c01b3d", null), LANG("datum.5a174e2073ed7296", null)) as text|null
 	SStitle.set_notice(new_notice)
 	if(!new_notice)
 		return
 	for(var/mob/dead/new_player/new_player in GLOB.new_player_list)
-		to_chat(new_player, span_boldannounce("TITLE NOTICE UPDATED: [new_notice]"))
+		to_chat(new_player, span_boldannounce(LANG("datum.e918a8a8626872c7", list(new_notice))))
 		SEND_SOUND(new_player,  sound('modular_skyrat/modules/admin/sound/duckhonk.ogg'))
 
 /**
  * Reloads the titlescreen if it is bugged for someone.
  */
-ADMIN_VERB(fix_title_screen, R_ADMIN, "Fix Lobby Screen", "Lobbyscreen broke? Press this.", ADMIN_CATEGORY_MAIN)
+ADMIN_VERB(fix_title_screen, R_ADMIN, "修复大厅屏幕", "Lobbyscreen broke? Press this.", ADMIN_CATEGORY_MAIN)
 	if(istype(user.mob, /mob/dead/new_player))
 		var/mob/dead/new_player/new_player = user.mob
 		new_player.show_title_screen()
@@ -46,11 +47,11 @@ ADMIN_VERB(fix_title_screen, R_ADMIN, "Fix Lobby Screen", "Lobbyscreen broke? Pr
 /**
  * An admin debug command that enables you to change the HTML on the go.
  */
-ADMIN_VERB(change_title_screen_html, R_DEBUG, "Title Screen: Set HTML", "Change lobby screen HTML on the go.", ADMIN_CATEGORY_FUN)
+ADMIN_VERB(change_title_screen_html, R_DEBUG, "标题画面：设置 HTML", "Change lobby screen HTML on the go.", ADMIN_CATEGORY_FUN)
 	log_admin("[key_name(user)] is setting the title screen HTML.")
 	message_admins("[key_name_admin(user)] is setting the title screen HTML.")
 
-	var/new_html = input(usr, "Please enter your desired HTML(WARNING: YOU WILL BREAK SHIT)", "DANGER: TITLE HTML EDIT") as message|null
+	var/new_html = input(usr, LANG("datum.2ee1a063216ea07a", null), LANG("datum.c18ee36f23e87bb3", null)) as message|null
 
 	if(!new_html)
 		return

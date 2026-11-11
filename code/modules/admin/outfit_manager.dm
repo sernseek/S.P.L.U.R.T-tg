@@ -1,4 +1,5 @@
-ADMIN_VERB(outfit_manager, R_DEBUG|R_ADMIN, "Outfit Manager", "View and edit outfits.", ADMIN_CATEGORY_DEBUG)
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+ADMIN_VERB(outfit_manager, R_DEBUG|R_ADMIN, "装束管理器", "View and edit outfits.", ADMIN_CATEGORY_DEBUG)
 	var/static/datum/outfit_manager/ui = new
 	ui.ui_interact(user.mob)
 
@@ -44,7 +45,7 @@ ADMIN_VERB(outfit_manager, R_DEBUG|R_ADMIN, "Outfit Manager", "View and edit out
 		if("load")
 			ui.user.client.holder.load_outfit(ui.user)
 		if("copy")
-			var/datum/outfit/outfit = tgui_input_list(ui.user, "Pick an outfit to copy from", "Outfit Manager", subtypesof(/datum/outfit))
+			var/datum/outfit/outfit = tgui_input_list(ui.user, LANG("datum.68e08b2cfd72c1a5", null), LANG("datum.deca34c3e4533b02", null), subtypesof(/datum/outfit))
 			if(isnull(outfit))
 				return
 			if(!ispath(outfit))

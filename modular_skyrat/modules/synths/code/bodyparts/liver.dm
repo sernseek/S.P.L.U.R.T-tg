@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/liver/synth
 	name = "reagent processing unit"
 	desc = "An electronic device that processes the beneficial chemicals for the synthetic user."
@@ -23,10 +24,10 @@
 		COOLDOWN_START(src, severe_cooldown, 10 SECONDS)
 		switch(severity)
 			if(EMP_HEAVY)
-				to_chat(owner, span_warning("Alert: Critical! Reagent processing unit failure, seek maintenance immediately. Error Code: DR-1k"))
+				to_chat(owner, span_warning(LANG("obj.4436d1ff6fe84e71", null)))
 				apply_organ_damage(SYNTH_ORGAN_HEAVY_EMP_DAMAGE, maxHealth, required_organ_flag = ORGAN_ROBOTIC)
 			if(EMP_LIGHT)
-				to_chat(owner, span_warning("Alert: Reagent processing unit failure, seek maintenance for diagnostic. Error Code: DR-0k"))
+				to_chat(owner, span_warning(LANG("obj.7a67bbf3223fb2c0", null)))
 				apply_organ_damage(SYNTH_ORGAN_LIGHT_EMP_DAMAGE, maxHealth, required_organ_flag = ORGAN_ROBOTIC)
 
 /datum/design/synth_liver

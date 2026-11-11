@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /// Checks if the target's head is bio protected, returns true if this is the case
 /mob/living/basic/cortical_borer/proc/check_for_target_bio_protection(mob/living/carbon/human/target)
@@ -14,20 +15,20 @@
 
 /mob/living/basic/cortical_borer/proc/try_enter_host(mob/living/carbon/human/victim)
 	if(check_for_target_bio_protection(victim))
-		balloon_alert(src, "head too protected!")
+		balloon_alert(src, LANG("mob.4a57a0e3f60fed0b", null))
 		return FALSE
 	if(victim.has_borer())
-		balloon_alert(src, "already occupied")
+		balloon_alert(src, LANG("mob.98035670da501da4", null))
 		return FALSE
 	if(!do_after(src, (((upgrade_flags & BORER_FAST_BORING) && !(upgrade_flags & BORER_HIDING)) ? 3 SECONDS : 6 SECONDS), target = victim))
-		balloon_alert(src, "keep still")
+		balloon_alert(src, LANG("mob.90eac13f90f07f14", null))
 		return FALSE
 	if(get_dist(victim, src) > 1)
-		balloon_alert(src, "too far")
+		balloon_alert(src, LANG("mob.3052188b38b19a29", null))
 		return FALSE
 	var/obj/item/organ/brain/brain = victim.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(!istype(brain))
-		balloon_alert(src, "no brain")
+		balloon_alert(src, LANG("mob.55805105236267c6", null))
 		return FALSE
 
 	return enter_host(victim, brain)
@@ -37,7 +38,7 @@
 	forceMove(human_host)
 
 	if(!(upgrade_flags & BORER_STEALTH_MODE))
-		to_chat(human_host, span_notice("A chilling sensation goes down your spine..."))
+		to_chat(human_host, span_notice(LANG("mob.5a299e3c9fcb1bc5", null)))
 	copy_languages(human_host)
 
 	var/obj/item/organ/borer_body/borer_organ = new()
@@ -54,11 +55,11 @@
 
 /mob/living/basic/cortical_borer/proc/try_leave_host()
 	if(host_sugar())
-		balloon_alert(src, "cannot function with sugar in host")
+		balloon_alert(src, LANG("mob.8371672bfb76245d", null))
 		return TRUE // We force a cooldown over sugar
-	balloon_alert(src, "left host")
+	balloon_alert(src, LANG("mob.4070d0bee3811286", null))
 	if(!(upgrade_flags & BORER_STEALTH_MODE))
-		to_chat(human_host, span_notice("Something carefully tickles your inner ear..."))
+		to_chat(human_host, span_notice(LANG("mob.44a6f0c3c1521933", null)))
 	return leave_host()
 
 /mob/living/basic/cortical_borer/proc/leave_host()

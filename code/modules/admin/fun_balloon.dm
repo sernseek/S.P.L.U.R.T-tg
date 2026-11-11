@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/fun_balloon
 	name = "fun balloon"
 	desc = "This is going to be a laugh riot."
@@ -28,7 +29,7 @@
 	return
 
 /obj/effect/fun_balloon/proc/pop()
-	visible_message(span_notice("[src] pops!"))
+	visible_message(span_notice(LANG("obj.955f4e4adf1b90c5", list(src))))
 	playsound(get_turf(src), pop_sound_effect, 50, TRUE, -1)
 	qdel(src)
 
@@ -78,7 +79,7 @@
 
 		if("select_antag")
 			var/list/paths = subtypesof(/datum/antagonist)
-			antag_type = input(usr,"Select antag", "Antagonist selection") as null|anything in sort_list(paths)
+			antag_type = input(usr,LANG("obj.fe8eda0062c0cba5", null), LANG("obj.5763302b01971976", null)) as null|anything in sort_list(paths)
 			make_antag = TRUE
 
 		if("pop")
@@ -96,7 +97,7 @@
 			bodies += possessable
 
 	var/list/candidates = SSpolling.poll_ghosts_for_targets(
-		question = "Would you like to be [span_notice(group_name)]?",
+		question = LANG("obj.6967dd2040abc777", list(span_notice(group_name))),
 		role = ROLE_SENTIENCE,
 		check_jobban = ROLE_SENTIENCE,
 		poll_time = 10 SECONDS,
@@ -139,7 +140,7 @@
 		var/turf/drop_off = find_safe_turf(z)
 		new /obj/effect/temp_visual/gravpush(get_turf(dispersed_mob))
 		dispersed_mob.forceMove(drop_off)
-		dispersed_mob.balloon_alert(dispersed_mob, "pop!")
+		dispersed_mob.balloon_alert(dispersed_mob, LANG("obj.01729c70d37c8999", null))
 
 // ----------- Station Crash
 // Can't think of anywhere better to put it right now

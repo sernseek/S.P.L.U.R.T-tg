@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/closet/crate/secure/syndicrate
 	name = "surplus syndicrate"
 	desc = "A conspicuous crate with the Syndicate logo on it. You don't know how to open it."
@@ -26,7 +27,7 @@
 		return FALSE
 
 	if(!broken && !force && !created_items)
-		balloon_alert(user, "locked!")
+		balloon_alert(user, LANG("obj.5d71bae27aaf9422", null))
 		return FALSE
 
 	return TRUE
@@ -38,7 +39,7 @@
 		return ..()
 	if(prob(75))
 		return ..()
-	visible_message(span_danger("The syndicrate's anti-tamper system activates!"))
+	visible_message(span_danger(LANG("obj.fa3c61cd75a85216", null)))
 	explosion(src, heavy_impact_range = 1, light_impact_range = 2, flash_range = 2)
 	qdel(src)
 
@@ -51,7 +52,7 @@
 		new item_path(src)
 	unlock_contents = list()
 	qdel(tool)
-	to_chat(user, span_notice("You twist the key into both locks at once, opening the crate."))
+	to_chat(user, span_notice(LANG("obj.1047b1e72b1bffa3", null)))
 	playsound(src, 'sound/machines/airlock/boltsup.ogg', 50, vary = FALSE)
 	togglelock(user)
 	return ITEM_INTERACT_SUCCESS
@@ -63,8 +64,8 @@
 		add_fingerprint(user)
 	locked = !locked
 	user.visible_message(
-		span_notice("[user] [locked ? "locks" : "unlocks"] [src]."),
-		span_notice("You [locked ? "locked" : "unlocked"] [src]."),
+		span_notice(LANG("obj.6afbb5c3aa5fc504", list(user, locked ? "locks" : "unlocks", src))),
+		span_notice(LANG("obj.d6171b714b8cf981", list(locked ? "locked" : "unlocked", src))),
 	)
 	update_appearance()
 

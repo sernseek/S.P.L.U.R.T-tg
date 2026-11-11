@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/element/skirt_peeking
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
 
@@ -43,7 +44,7 @@
 
 /datum/element/skirt_peeking/proc/on_examine(mob/living/carbon/human/peeked, mob/peeker, list/examine_list)
 	if(can_skirt_peek(peeked, peeker))
-		examine_list += span_purple("[peeked.p_theyre(TRUE)] wearing a skirt! I can probably give it a little peek <b>looking closer</b>.")
+		examine_list += span_purple(LANG("datum.fb86c83a35ce76fd", list(peeked.p_theyre(TRUE))))
 
 /datum/element/skirt_peeking/proc/on_closer_look(mob/living/carbon/human/peeked, mob/peeker, list/examine_content)
 	if(can_skirt_peek(peeked, peeker))
@@ -66,5 +67,5 @@
 		return
 	if(!(!peeked.client && (peeked.stat == STABLE) && peeked.has_status_effect(/datum/status_effect/grouped/blindness)))
 		return
-	to_chat(peeked, span_warning("You notice [peeker] looking under your [worn_uniform.name]!"))
-	to_chat(peeker, span_warning("[peeked] notices you peeking under [peeked.p_their()] [worn_uniform.name]!"))
+	to_chat(peeked, span_warning(LANG("datum.69bdcf5cf261f495", list(peeker, worn_uniform.name))))
+	to_chat(peeker, span_warning(LANG("datum.614c03dbbad906c9", list(peeked, peeked.p_their(), worn_uniform.name))))

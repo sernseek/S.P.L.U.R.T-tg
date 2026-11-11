@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/ai_controller/basic_controller/bot/honkbot
 	blackboard = list(
 		BB_TARGETING_STRATEGY = /datum/targeting_strategy/basic/secbot,
@@ -123,7 +124,7 @@
 	if(get_dist(controller.pawn, living_target) > 1)
 		return AI_BEHAVIOR_INSTANT
 	var/mob/living/living_pawn = controller.pawn
-	living_pawn.manual_emote("celebrates with [living_target]!")
+	living_pawn.manual_emote(LANG("datum.7a01e7ead1892c7d", list(living_target)))
 	INVOKE_ASYNC(living_pawn, TYPE_PROC_REF(/mob, emote), "flip")
 	INVOKE_ASYNC(living_pawn, TYPE_PROC_REF(/mob, emote), "beep")
 	return start_async()

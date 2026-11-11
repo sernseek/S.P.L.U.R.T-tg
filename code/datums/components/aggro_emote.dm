@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// A component for ai-controlled atoms which plays a sound if they switch to a living target which they can attack
 /datum/component/aggro_emote
 	/// Blackboard key in which target data is stored
@@ -89,7 +90,7 @@
 		source.manual_emote("[pick(audible_emote_list)]")
 		playsound(source, sound_to_play, 80, vary = TRUE)
 	else if(random_number_in_range <= (audible_emote_length + emotes_length))
-		source.manual_emote("[pick(emote_list)] at [new_target].")
+		source.manual_emote(LANG("datum.6fef9504dfcf62e4", list(pick(emote_list), new_target)))
 	else
 		INVOKE_ASYNC(mob, TYPE_PROC_REF(/atom/movable, say), pick(speak_list), forced = "AI Controller")
 		playsound(source, sound_to_play, 80, vary = TRUE)

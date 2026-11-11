@@ -1,10 +1,11 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_LIST_EMPTY(bunker_passthrough)
 
 //ADMIN_VERB(addbunkerbypass, R_ADMIN, "Add PB Bypass", "Allows a given ckey to connect despite the panic bunker for a given round.", ADMIN_CATEGORY_MAIN, ckeytobypass as text|null)
-ADMIN_VERB(addbunkerbypass, R_ADMIN, "Add PB Bypass", "Allows a given ckey to connect despite the panic bunker for a given round.", ADMIN_CATEGORY_MAIN)
+ADMIN_VERB(addbunkerbypass, R_ADMIN, "添加恐慌地堡豁免", "Allows a given ckey to connect despite the panic bunker for a given round.", ADMIN_CATEGORY_MAIN)
 	VERB_ARG(ckeytobypass, VERB_ARG_TYPE_TEXT, VERB_ARG_SOURCE_INPUT)
 	if(!CONFIG_GET(flag/sql_enabled))
-		to_chat(usr, span_adminnotice("The Database is not enabled!"))
+		to_chat(usr, span_adminnotice(LANG("datum.5bf16f98199b79cc", null)))
 		return
 
 	GLOB.bunker_passthrough |= ckey(ckeytobypass)
@@ -14,10 +15,10 @@ ADMIN_VERB(addbunkerbypass, R_ADMIN, "Add PB Bypass", "Allows a given ckey to co
 	message_admins("[key_name_admin(usr)] has added [ckeytobypass] to the current round's bunker bypass list.")
 
 //ADMIN_VERB(revokebunkerbypass, R_ADMIN, "Revoke PB Bypass", "Revoke's a ckey's permission to bypass the panic bunker for a given round.", ADMIN_CATEGORY_MAIN, ckeytobypass as text|null)
-ADMIN_VERB(revokebunkerbypass, R_ADMIN, "Revoke PB Bypass", "Revoke's a ckey's permission to bypass the panic bunker for a given round.", ADMIN_CATEGORY_MAIN)
+ADMIN_VERB(revokebunkerbypass, R_ADMIN, "撤销恐慌地堡豁免", "Revoke's a ckey's permission to bypass the panic bunker for a given round.", ADMIN_CATEGORY_MAIN)
 	VERB_ARG(ckeytobypass, VERB_ARG_TYPE_TEXT, VERB_ARG_SOURCE_INPUT)
 	if(!CONFIG_GET(flag/sql_enabled))
-		to_chat(usr, span_adminnotice("The Database is not enabled!"))
+		to_chat(usr, span_adminnotice(LANG("datum.5bf16f98199b79cc", null)))
 		return
 
 	GLOB.bunker_passthrough -= ckey(ckeytobypass)
@@ -27,20 +28,24 @@ ADMIN_VERB(revokebunkerbypass, R_ADMIN, "Revoke PB Bypass", "Revoke's a ckey's p
 
 /datum/tgs_chat_command/addbunkerbypass
 	name = "whitelist"
-	help_text = "whitelist <ckey>"
+	help_text = "【管理员】whitelist <ckey> —— 添加本回合紧急封锁绕过" // ZH EDIT CHANGE - I18N - ORIGINAL: help_text = "whitelist <ckey>"
 	admin_only = TRUE
 
 /datum/tgs_chat_command/addbunkerbypass/Run(datum/tgs_chat_user/sender, params)
 	if(!CONFIG_GET(flag/sql_enabled))
-		return "The Database is not enabled!"
+		return new /datum/tgs_message_content("❌ **无法添加紧急封锁绕过：** SQL 数据库未启用。")
 
-	GLOB.bunker_passthrough |= ckey(params)
+	var/target_ckey = ckey(params)
+	if(!target_ckey)
+		return new /datum/tgs_message_content("⚠️ **请输入有效的 ckey。**\n> 用法：`whitelist <ckey>`")
 
-	GLOB.bunker_passthrough[ckey(params)] = world.realtime
+	GLOB.bunker_passthrough |= target_ckey
+
+	GLOB.bunker_passthrough[target_ckey] = world.realtime
 	SSpersistence.save_panic_bunker() //we can do this every time, it's okay
-	log_admin("[sender.friendly_name] has added [params] to the current round's bunker bypass list.")
-	message_admins("[sender.friendly_name] has added [params] to the current round's bunker bypass list.")
-	return new /datum/tgs_message_content("[params] has been added to the current round's bunker bypass list.")
+	log_admin("[sender.friendly_name] has added [target_ckey] to the current round's bunker bypass list.")
+	message_admins("[sender.friendly_name] has added [target_ckey] to the current round's bunker bypass list.")
+	return new /datum/tgs_message_content("✅ **紧急封锁绕过添加成功**\n> `[target_ckey]` 本回合可以绕过紧急封锁。")
 
 /datum/controller/subsystem/persistence/proc/load_panic_bunker()
 	var/bunker_path = file("data/bunker_passthrough.json")

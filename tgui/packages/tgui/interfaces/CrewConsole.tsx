@@ -200,6 +200,9 @@ const CrewTable = () => {
       <Table>
         <Table.Row>
           <Table.Cell bold>Name</Table.Cell>
+          {/* ZH EDIT ADDITION START - empty header cell for the robotic-species icon column (keeps header aligned with the extra body cell) */}
+          <Table.Cell bold collapsing />
+          {/* ZH EDIT ADDITION END */}
           <Table.Cell bold collapsing />
           <Table.Cell bold collapsing textAlign="center">
             Vitals

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/bellyriding
 	/// Who is currently attached to us?
 	var/mob/living/carbon/human/current_victim = null
@@ -151,15 +152,15 @@
 
 	// victim checks
 	if(current_victim)
-		to_chat(user, span_warning("There's someone already strapped to your belly!"))
+		to_chat(user, span_warning(LANG("datum.60897bccac92db91", null)))
 		return FALSE
 	if((!victim.handcuffed && !get_arms_missing(victim)) || (!victim.legcuffed && !get_legs_missing(victim)))
-		to_chat(user, span_warning("[victim] needs to be both handcuffed and legcuffed!"))
+		to_chat(user, span_warning(LANG("datum.f7f8da83195ad438", list(victim))))
 		return FALSE
 
 	// user checks
 	if(victim.mob_size > parent.mob_size)
-		to_chat(user, span_warning("[victim] is bigger than you, how would that even work?"))
+		to_chat(user, span_warning(LANG("datum.d10e6721fbd32f39", list(victim))))
 		return FALSE
 
 	return parent.is_buckle_possible(victim, TRUE, TRUE)
@@ -270,11 +271,11 @@
 		// small chance for dick to slip out (give a chance for other holes to shine)
 		var/obj/item/organ/genital/penis/penis = parent.get_organ_slot(ORGAN_SLOT_PENIS)
 		parent.visible_message(
-			span_love("[parent]'s [penis.genital_type] cock slips out of [current_victim]'s orifice!"),
-			span_love("Your [penis.genital_type] cock slips out of [current_victim]'s hole!"), // assume the ppl using this item wont know what an orifice is
+			span_love(LANG("datum.80497036f5f61e6c", list(parent, penis.genital_type, current_victim))),
+			span_love(LANG("datum.6e89b43ea5ff510e", list(penis.genital_type, current_victim))), // assume the ppl using this item wont know what an orifice is
 			ignored_mobs = list(current_victim)
 		)
-		to_chat(current_victim, span_love("[parent]'s [penis.genital_type] cock slips out of your hole!"))
+		to_chat(current_victim, span_love(LANG("datum.353dded025ace994", list(parent, penis.genital_type))))
 		playsound(current_victim, 'sound/effects/emotes/kiss.ogg', 50, TRUE, -6)
 		last_interaction = null
 		return
@@ -401,14 +402,14 @@
 		return FALSE
 
 	if(current_victim)
-		to_chat(user, span_warning("There's someone already strapped to your belly!"))
+		to_chat(user, span_warning(LANG("datum.60897bccac92db91", null)))
 		return FALSE
 	if(!victim.handcuffed || !victim.legcuffed)
-		to_chat(user, span_warning("[victim] needs to be both handcuffed and legcuffed!"))
+		to_chat(user, span_warning(LANG("datum.f7f8da83195ad438", list(victim))))
 		return FALSE
 
 	if(victim.mob_size > parent.mob_size)
-		to_chat(user, span_warning("[victim] is bigger than you, how would that even work?"))
+		to_chat(user, span_warning(LANG("datum.d10e6721fbd32f39", list(victim))))
 		return FALSE
 
 	return parent.is_buckle_possible(victim, TRUE, TRUE)
@@ -499,8 +500,8 @@
 	active = TRUE
 	build_all_button_icons(UPDATE_BUTTON_BACKGROUND) // why yes this IS necessary
 
-	to_chat(comp.current_victim, span_notice("[owner] repositions you, your rear pressing against [owner.p_their()] eager cock.. Oh no."))
-	to_chat(owner, span_notice("You reposition [comp.current_victim] to rest against your eager cock."))
+	to_chat(comp.current_victim, span_notice(LANG("datum.f5db03cd2cdbc02e", list(owner, owner.p_their()))))
+	to_chat(owner, span_notice(LANG("datum.ef5e45258c667257", list(comp.current_victim))))
 
 /datum/action/innate/toggle_bellyriding_heehee_pp/Deactivate()
 	var/datum/component/bellyriding/comp = owner.GetComponent(/datum/component/bellyriding)
@@ -508,5 +509,5 @@
 	active = FALSE
 	build_all_button_icons(UPDATE_BUTTON_BACKGROUND)
 
-	to_chat(comp.current_victim, span_notice("[owner] moves you out of [owner.p_their()] cock's way.. relief at last."))
-	to_chat(owner, span_notice("You move [comp.current_victim] out of your cock's way.. for now."))
+	to_chat(comp.current_victim, span_notice(LANG("datum.2b428c6afce072a4", list(owner, owner.p_their()))))
+	to_chat(owner, span_notice(LANG("datum.a227bf67a17c5afa", list(comp.current_victim))))

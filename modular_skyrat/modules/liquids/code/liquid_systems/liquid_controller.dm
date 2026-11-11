@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 SUBSYSTEM_DEF(liquids)
 	name = "Liquid Turfs"
 	wait = 1 SECONDS
@@ -119,5 +120,5 @@ SUBSYSTEM_DEF(liquids)
 		if(T.lgroup)
 			T.lgroup.amount_of_active_turfs--
 
-ADMIN_VERB(toggle_liquid_debug, R_DEBUG, "Liquid Groups Color Debug", "Liquid Groups Color Debug.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(toggle_liquid_debug, R_DEBUG, "液体组颜色调试", "Liquid Groups Color Debug.", ADMIN_CATEGORY_DEBUG)
 	GLOB.liquid_debug_colors = !GLOB.liquid_debug_colors

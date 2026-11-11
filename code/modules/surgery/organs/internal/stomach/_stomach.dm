@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //The contant in the rate of reagent transfer on life ticks
 #define STOMACH_METABOLISM_CONSTANT 0.25
 
@@ -127,13 +128,13 @@
 	//The stomach is damage has nutriment but low on theshhold, lo prob of vomit
 	if(SPT_PROB(0.0125 * damage * nutri_vol * nutri_vol, seconds_per_tick))
 		body.vomit(VOMIT_CATEGORY_DEFAULT, lost_nutrition = damage)
-		to_chat(body, span_warning("Your stomach reels in pain as you're incapable of holding down all that food!"))
+		to_chat(body, span_warning(LANG("obj.f027fa5d5b1a13d1", null)))
 		return
 
 	// the change of vomit is now high
 	if(damage > high_threshold && SPT_PROB(0.05 * damage * nutri_vol * nutri_vol, seconds_per_tick))
 		body.vomit(VOMIT_CATEGORY_DEFAULT, lost_nutrition = damage)
-		to_chat(body, span_warning("Your stomach reels in pain as you're incapable of holding down all that food!"))
+		to_chat(body, span_warning(LANG("obj.f027fa5d5b1a13d1", null)))
 
 /obj/item/organ/stomach/proc/handle_hunger(mob/living/carbon/human/human, seconds_per_tick)
 	if(HAS_TRAIT(human, TRAIT_NOHUNGER))
@@ -142,12 +143,12 @@
 	//The fucking TRAIT_FAT mutation is the dumbest shit ever. It makes the code so difficult to work with
 	if(HAS_TRAIT_FROM(human, TRAIT_FAT, OBESITY))//I share your pain, past coder.
 		if(human.overeatduration < (OVEREAT_TIME_LIMIT))
-			to_chat(human, span_notice("You feel fit again!"))
+			to_chat(human, span_notice(LANG("obj.3382ad86492c617f", null)))
 			human.remove_traits(list(TRAIT_FAT, TRAIT_OFF_BALANCE_TACKLER), OBESITY)
 
 	else
 		if(human.overeatduration >= (OVEREAT_TIME_LIMIT))
-			to_chat(human, span_danger("You suddenly feel blubbery!"))
+			to_chat(human, span_danger(LANG("obj.4a521717c23d05a5", null)))
 			human.add_traits(list(TRAIT_FAT, TRAIT_OFF_BALANCE_TACKLER), OBESITY)
 
 	// nutrition decrease and satiety
@@ -185,15 +186,15 @@
 		human.metabolism_efficiency = 1
 	else if(nutrition > NUTRITION_LEVEL_FED && human.satiety > 80)
 		if(human.metabolism_efficiency != 1.25)
-			to_chat(human, span_notice("You feel vigorous."))
+			to_chat(human, span_notice(LANG("obj.d338ce421b18b937", null)))
 			human.metabolism_efficiency = 1.25
 	else if(nutrition < NUTRITION_LEVEL_STARVING + 50)
 		if(human.metabolism_efficiency != 0.8)
-			to_chat(human, span_notice("You feel sluggish."))
+			to_chat(human, span_notice(LANG("obj.1aa06284c0cfbde2", null)))
 		human.metabolism_efficiency = 0.8
 	else
 		if(human.metabolism_efficiency == 1.25)
-			to_chat(human, span_notice("You no longer feel vigorous."))
+			to_chat(human, span_notice(LANG("obj.fcc742b82741cc71", null)))
 		human.metabolism_efficiency = 1
 
 	//Hunger slowdown for if mood isn't enabled
@@ -287,8 +288,8 @@
 			if (emptied > 0)
 				owner.apply_damage(emptied * 5, BRUTE, BODY_ZONE_CHEST, wound_bonus = CANT_WOUND, wound_clothing = FALSE)
 				playsound(get_turf(src), 'sound/effects/splat.ogg', 50)
-				owner.visible_message(span_danger("Contents of [owner]'s intestines spill out from a huge cut in [owner.p_their()] [chest]!"),
-					span_userdanger("Contents of your intestines spill out from a huge cut in your [chest]!"))
+				owner.visible_message(span_danger(LANG("obj.d466eae0026cfc54", list(owner, owner.p_their(), chest))),
+					span_userdanger(LANG("obj.5713d7be5f8a6aa4", list(chest))))
 			return
 
 	// Digest the stuff in our stomach, just a bit
@@ -328,7 +329,7 @@
 		if (HAS_TRAIT(owner, TRAIT_ANALGESIA))
 			continue
 
-		owner.visible_message(span_warning("[owner] doubles over in pain!"), span_userdanger("You feel a sharp, searing sensation in your stomach!"))
+		owner.visible_message(span_warning(LANG("obj.4f2b1df7c7806f36", list(owner))), span_userdanger(LANG("obj.c23633ddac952db3", null)))
 		owner.Paralyze(1 SECONDS)
 		owner.adjust_eye_blur(5 SECONDS)
 
@@ -355,7 +356,7 @@
 					disgusted.adjust_stutter(2 SECONDS)
 				disgusted.adjust_confusion(2 SECONDS)
 			if(SPT_PROB(5, seconds_per_tick) && !IS_UNCONSCIOUS_OR_CRIT(disgusted))
-				to_chat(disgusted, span_warning("You feel kind of iffy..."))
+				to_chat(disgusted, span_warning(LANG("obj.f60fbe43f3323103", null)))
 			disgusted.adjust_jitter(-6 SECONDS)
 		if(disgust >= DISGUST_LEVEL_VERYGROSS)
 			if(SPT_PROB(pukeprob, seconds_per_tick)) //iT hAndLeS mOrE ThaN PukInG
@@ -424,7 +425,7 @@
 		return
 	if (owner.vomit(MOB_VOMIT_MESSAGE | MOB_VOMIT_FORCE))
 		// Since we vomited with a force flag, we should've vomited out at least one item
-		owner.visible_message(span_danger("[owner] doubles over from [attacker]'s punch, vomiting out the contents of [owner.p_their()] stomach!"))
+		owner.visible_message(span_danger(LANG("obj.b85772650a95c9ea", list(owner, attacker, owner.p_their()))))
 
 /// 60% chance to spew out each item when vomiting
 /obj/item/organ/stomach/proc/on_vomit(mob/living/carbon/vomiter, distance, force)
@@ -435,13 +436,13 @@
 /obj/item/organ/stomach/tool_act(mob/living/user, obj/item/tool, list/modifiers)
 	if (tool.tool_behaviour == TOOL_SCALPEL)
 		if (cut_open_damage > 0)
-			balloon_alert(user, "already cut open!")
+			balloon_alert(user, LANG("obj.6b43507d9ed52469", null))
 			return ITEM_INTERACT_FAILURE
 
-		balloon_alert(user, "cutting open...")
+		balloon_alert(user, LANG("obj.0dca019141b42a2a", null))
 		playsound(user, 'sound/items/handling/surgery/scalpel1.ogg', 75)
 		if (!do_after(user, 3 SECONDS, src))
-			balloon_alert(user, "interrupted!")
+			balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 			apply_organ_damage(tool.force)
 			return ITEM_INTERACT_FAILURE
 
@@ -449,7 +450,7 @@
 		var/emptied = empty_contents()
 		if (emptied > 0)
 			playsound(get_turf(src), 'sound/effects/splat.ogg', 50)
-		user.visible_message(span_warning("[user] cuts [src] open[emptied ? "!" : ", but it's empty."]"), span_notice("You cut [src] open[emptied ? "." : ", but there's nothing inside."]"))
+		user.visible_message(span_warning(LANG("obj.83b6fcfa164d8488", list(user, src, emptied ? "!" : ", but it's empty."))), span_notice(LANG("obj.a5266d1cfc00fed2", list(src, emptied ? "." : ", but there's nothing inside."))))
 		cut_open_damage += apply_organ_damage(maxHealth * 0.5)
 		return ITEM_INTERACT_SUCCESS
 
@@ -457,18 +458,18 @@
 		return ..()
 
 	if (cut_open_damage <= 0)
-		balloon_alert(user, "fully intact!")
+		balloon_alert(user, LANG("obj.a4242e1767db8f15", null))
 		return ITEM_INTERACT_FAILURE
 
 	playsound(user, 'sound/items/handling/surgery/cautery1.ogg', 75)
-	balloon_alert(user, "mending the incision...")
+	balloon_alert(user, LANG("obj.0d171f9d792f48ba", null))
 	if (!do_after(user, 3 SECONDS, src))
-		balloon_alert(user, "interrupted!")
+		balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 		apply_organ_damage(tool.force)
 		return ITEM_INTERACT_FAILURE
 
 	playsound(user, 'sound/items/handling/surgery/cautery2.ogg', 75)
-	balloon_alert(user, "incision mended")
+	balloon_alert(user, LANG("obj.97a0bb6cf451c944", null))
 	apply_organ_damage(-cut_open_damage)
 	cut_open_damage = 0 // Just in case
 	return ITEM_INTERACT_SUCCESS
@@ -482,7 +483,7 @@
 /obj/item/organ/stomach/examine(mob/user)
 	. = ..()
 	if (cut_open_damage)
-		. += span_danger("It has a sizeable cut in it, exposing its insides!")
+		. += span_danger(LANG("obj.f10cabe0eaea8706", null))
 
 /obj/item/organ/stomach/bone
 	name = "mass of bones"

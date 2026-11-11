@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // The spooky "void" / "abyssal" / "madness" mask for heretics.
 /obj/item/clothing/mask/madness_mask
 	name = "abyssal mask"
@@ -19,10 +20,10 @@
 /obj/item/clothing/mask/madness_mask/examine(mob/user)
 	. = ..()
 	if(IS_HERETIC_OR_MONSTER(user))
-		. += span_notice("Actively drains the sanity and stamina of nearby non-heretics when worn.")
-		. += span_notice("If forced onto the face of a non-heretic, they will be unable to remove it willingly.")
+		. += span_notice(LANG("obj.e45d15b34fe0be61", null))
+		. += span_notice(LANG("obj.409f3f1331550631", null))
 	else
-		. += span_danger("The eyes fill you with dread... You best avoid it.")
+		. += span_danger(LANG("obj.36fd86e31e718efd", null))
 
 /obj/item/clothing/mask/madness_mask/equipped(mob/user, slot)
 	. = ..()
@@ -38,7 +39,7 @@
 		return
 
 	ADD_TRAIT(src, TRAIT_NODROP, CLOTHING_TRAIT)
-	to_chat(user, span_userdanger("[src] clamps tightly to your face as you feel your soul draining away! Melt it off with acid or fire!")) // BUBBER EDIT ADDITION - "Melt it off with acid or fire!"
+	to_chat(user, span_userdanger(LANG("obj.5c7d0df76db750d5", list(src)))) // BUBBER EDIT ADDITION - "Melt it off with acid or fire!"
 
 /obj/item/clothing/mask/madness_mask/dropped(mob/M)
 	local_user = null

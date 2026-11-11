@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define REGULAR_PICKUP_MOD 1
 #define CULTIST_PICKUP_MOD 2
 #define PICKUP_SHOCK_DAMAGE 25
@@ -47,7 +48,7 @@
 	if(IS_CULTIST(equipper_living))
 		power_multiplier = CULTIST_PICKUP_MOD
 
-	to_chat(equipper_living, span_warning("As you [slot == ITEM_SLOT_HANDS ? "touch" : "equip"] [source], you feel a jolt course through you!"))
+	to_chat(equipper_living, span_warning(LANG("datum.d85393c292329280", list(slot == ITEM_SLOT_HANDS ? "touch" : "equip", source))))
 
 	equipper_living.dropItemToGround(source, TRUE)
 	equipper_living.electrocute_act(PICKUP_SHOCK_DAMAGE * power_multiplier, src, 1, SHOCK_NOGLOVES|SHOCK_SUPPRESS_MESSAGE)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Port Tarkon, 8 people trapped in a revamped charlie-station like ghost role. Survive the aliens and threats, Fix the port and/or finish construction
 
 /obj/effect/mob_spawn/ghost_role/human/tarkon
@@ -330,14 +331,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/cryopod/tarkon, 32)
 	for(var/mob/M in range(7,src))
 		shake_camera(M, 15, 1)
 	playsound(get_turf(src),'sound/effects/explosion/explosionfar.ogg', 200, TRUE)
-	visible_message(span_boldannounce("The nest's entrance starts to crumble before something charges forth!"))
+	visible_message(span_boldannounce(LANG("obj.502bd934dfb85a7b", null)))
 	new boss_mob(loc)
 	new loot_drop(loc)
 	qdel(src)
 
 /obj/effect/nest_break/Initialize(mapload)
 	. = ..()
-	visible_message(span_boldannounce("The nest rumbles violently as the entrance begins to crack and break apart!"))
+	visible_message(span_boldannounce(LANG("obj.e4a4e2fde79ad75a", null)))
 	playsound(loc,'sound/effects/tendril_destroyed.ogg', 200, FALSE, 50, TRUE, TRUE)
 	addtimer(CALLBACK(src, PROC_REF(rustle)), 5 SECONDS)
 	do_jiggle_sr()

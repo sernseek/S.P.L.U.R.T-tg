@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Global cached list of job exemption to lower stress on the database
 // Associative list of ckey to associative list of job titles which were granted the exemption ex. `job_exempt_cache[ckey][job_title]` being null is no exemption and being TRUE is an exemption
 GLOBAL_LIST_INIT(job_exempt_cache, list())
@@ -145,5 +146,5 @@ GLOBAL_LIST_INIT(job_exempt_cache, list())
 			// If a client whose job exemption is being modified, announce it to the player aswell
 			var/client/client = GLOB.directory[target_ckey]
 			if(client)
-				to_chat(client, span_boldnotice("Job exemption status for [job_title] has been [newstate ? "activated" : "deactivated"]"))
+				to_chat(client, span_boldnotice(LANG("_root.34608d2683cbcde5", list(job_title, newstate ? "activated" : "deactivated"))))
 	show_job_exempt_menu(user, target_ckey)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CANCEL_FAKE_ALERT -1
 
 /datum/hallucination/station_message
@@ -23,14 +24,14 @@
 	require_hearing = TRUE
 
 /datum/hallucination/station_message/blob_alert/do_fake_alert()
-	priority_announce("Confirmed outbreak of level 5 biohazard aboard [station_name()]. All personnel must contain the outbreak.", \
+	priority_announce(LANG("datum.4bada0d03b828da2", list(station_name())), \
 		"Biohazard Alert", ANNOUNCER_OUTBREAK5, players = list(hallucinator))
 
 /datum/hallucination/station_message/shuttle_dock
 
 /datum/hallucination/station_message/shuttle_dock/do_fake_alert()
 	priority_announce(
-		text = "[SSshuttle.emergency] has docked with the station. You have [DisplayTimeText(SSshuttle.emergency_dock_time)] to board the emergency shuttle.",
+		text = LANG("datum.a215ab15c2195d6b", list(SSshuttle.emergency, DisplayTimeText(SSshuttle.emergency_dock_time))),
 		title = "Emergency Shuttle Arrival",
 		sound = ANNOUNCER_SHUTTLEDOCK,
 		sender_override = "Emergency Shuttle Uplink Alert",
@@ -84,7 +85,7 @@
 	var/list/fake_ascension = pick(ascension_bodies)
 	var/announcement_text = replacetext(fake_ascension["text"], "%FAKENAME%", totally_real_heretic.real_name)
 	priority_announce(
-		text = "[generate_heretic_text()] [announcement_text] [generate_heretic_text()]",
+		text = LANG("datum.e4bf1a906e486ccb", list(generate_heretic_text(), announcement_text, generate_heretic_text())),
 		title = "[generate_heretic_text()]",
 		sound = fake_ascension["sound"],
 		players = list(hallucinator),
@@ -106,8 +107,8 @@
 	var/area/fake_summon_area = GLOB.areas_by_type[fake_summon_area_type]
 
 	priority_announce(
-		text = "Figments from an eldritch god are being summoned by [totally_real_cult_leader.real_name] into [fake_summon_area] from an unknown dimension. Disrupt the ritual at all costs!",
-		title = "[command_name()] Higher Dimensional Affairs",
+		text = LANG("datum.683a137cb1d09eb5", list(totally_real_cult_leader.real_name, fake_summon_area)),
+		title = LANG("datum.92d186ed5b00090d", list(command_name())),
 		sound = 'sound/music/antag/bloodcult/bloodcult_scribe.ogg',
 		has_important_message = TRUE,
 		players = list(hallucinator),
@@ -124,7 +125,7 @@
 
 /datum/hallucination/station_message/supermatter_delam/do_fake_alert()
 	SEND_SOUND(hallucinator, 'sound/effects/magic/charge.ogg')
-	to_chat(hallucinator, span_bolddanger("You feel reality distort for a moment..."))
+	to_chat(hallucinator, span_bolddanger(LANG("datum.dc04792aeb00cad4", null)))
 
 /datum/hallucination/station_message/clock_cult_ark
 	// Clock cult's long gone, but this stays for posterity.

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  *	# Ghoul Pinpointer
  *
@@ -27,5 +28,5 @@
 
 /datum/status_effect/agent_pinpointer/ghoul_edition/Destroy()
 	if(scan_target)
-		to_chat(owner, span_notice("You've lost your master's trail."))
+		to_chat(owner, span_notice(LANG("datum.b87ae244cec74a68", null)))
 	return ..()

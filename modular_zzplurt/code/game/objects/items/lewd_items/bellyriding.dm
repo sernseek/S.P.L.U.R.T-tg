@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/suit/bellyriding_harness
 	name = "dual harness"
 	desc = "LustWish-brand harness, suitable for fastening one person under or beneath another. \
@@ -19,7 +20,7 @@
 /obj/item/clothing/suit/bellyriding_harness/mob_can_equip(mob/living/user, slot, disable_warning, bypass_equip_delay_self, ignore_equipped, indirect_action)
 	if(isteshari(user) || user.mob_size < 1) // fuck you
 		if(!disable_warning)
-			to_chat(user, span_warning("This harness is far too big for you to wear!"))
+			to_chat(user, span_warning(LANG("obj.0f496146f3facc53", null)))
 		return FALSE
 	return ..()
 
@@ -40,7 +41,7 @@
 	if(wearer.get_slot_by_item(src) == ITEM_SLOT_OCLOTHING)
 		var/datum/component/bellyriding/rider_comp = wearer.GetComponent(/datum/component/bellyriding)
 		if(rider_comp?.current_victim)
-			to_chat(user, span_warning("Someone is currently riding [wearer == user ? "you" : wearer], untie them first!"))
+			to_chat(user, span_warning(LANG("obj.092f06e1b5136640", list(wearer == user ? "you" : wearer))))
 			return FALSE
 
 	return ..()

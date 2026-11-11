@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/spell/toggle_eye_shields
 	name = "Toggle Eye Shields"
 	desc = "Toggle your protective eye shields."
@@ -12,7 +13,7 @@
 	if(!eyes)
 		return
 	if(!eyes.eyes_shielded)
-		to_chat(owner, span_notice("Nearly opaque lenses slide down to shield your eyes."))
+		to_chat(owner, span_notice(LANG("datum.c588a23b29fef1ea", null)))
 		eyes.eyes_shielded = TRUE
 		eyes.flash_protect = FLASH_PROTECTION_WELDER_SENSITIVE
 		owner.overlay_fullscreen("eyeshield", /atom/movable/screen/fullscreen/blind)
@@ -20,7 +21,7 @@
 		human_owner.dna.update_ui_block((/datum/dna_block/identity/eye_colors))
 		human_owner.update_body()
 	else
-		to_chat(owner, span_notice("Your protective lenses retract out of the way."))
+		to_chat(owner, span_notice(LANG("datum.6c0bdc08a512eb61", null)))
 		eyes.eyes_shielded = FALSE
 		eyes.flash_protect = FLASH_PROTECTION_HYPER_SENSITIVE
 		owner.clear_fullscreen("eyeshield")
@@ -66,16 +67,15 @@
 	var/mob/living/carbon/human/snake_owner = owner
 	var/datum/species/gas/gas_species = snake_owner.dna.species
 	if(owner.incapacitated)
-		to_chat(owner, span_warning("You can't do a threat display in your current state."))
+		to_chat(owner, span_warning(LANG("datum.e707d43ee3c0c3c4", null)))
 		return
 	if(gas_species.displaying_threat == FALSE)
 		gas_species.threat_overlay = image('modular_skyrat/modules/bodyparts/icons/serpentid_parts_greyscale.dmi', "threat", MOB_LAYER)
-		var/message = tgui_alert(owner, "Would you like to show a scary message?", "Be Scary", list("Yes", "No", "Cancel"))
+		var/message = tgui_alert(owner, LANG("datum.07c3ef3eff15bf2f", null), LANG("datum.f573905b89b82f13", null), list("Yes", "No", "Cancel"))
 		if(message == "Cancel")
 			return
 		else if(message == "Yes")
-			owner.visible_message(span_warning("\The [owner]'s skin shifts to a deep red colour with dark chevrons running down in an almost hypnotic \
-				pattern. Standing tall, [owner.p_they()] strikes, sharp spikes aimed at those threatening [owner.p_them()], claws whooshing through the air past them."))
+			owner.visible_message(span_warning(LANG("datum.70bd368c7626cbfd", list(owner, owner.p_they(), owner.p_them()))))
 		playsound(owner.loc, 'modular_skyrat/modules/emotes/sound/emotes/angryserpentid.ogg', 60, 0)
 		gas_species.displaying_threat = TRUE
 		snake_owner.add_overlay(gas_species.threat_overlay)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/trash_pile
 	name = "trash pile"
 	desc = "A heap of dense garbage. Perhaps there is something interesting inside?"
@@ -87,7 +88,7 @@
 	if(!ishuman(user) || user.combat_mode || !user.ckey)
 		return ..()
 
-	user.visible_message("[user] searches through \the [src]...", span_notice("You search through \the [src]..."))
+	user.visible_message(LANG("obj.b3b48e90a5c4aaa1", list(user, src)), span_notice(LANG("obj.79f93eb4fdb30631", list(src))))
 
 	playsound(get_turf(src), pick('sound/effects/rustle/rustle1.ogg','sound/effects/rustle/rustle2.ogg','sound/effects/rustle/rustle3.ogg','sound/effects/rustle/rustle4.ogg','sound/effects/rustle/rustle5.ogg'), 50)
 
@@ -103,11 +104,11 @@
 				searched_by_ckeys[user.ckey] = 0
 		if(istype(hidden_atom, /mob/living))
 			var/mob/living/hidden_mob = hidden_atom
-			balloon_alert(user, "someone is inside!")
+			balloon_alert(user, LANG("obj.35409d7b75673723", null))
 			eject_mob(hidden_mob)
 		else if (istype(hidden_atom, /obj/item))
 			var/obj/item/hidden_item = hidden_atom
-			balloon_alert(user, "found something!")
+			balloon_alert(user, LANG("obj.7e56583099c9d50c", null))
 			hidden_item.forceMove(get_turf(src))
 		return
 
@@ -119,14 +120,14 @@
 	SEND_SIGNAL(user, COMSIG_LIVING_SEARCHED_TRASH_PILE, src)
 
 	if(searched_by_ckeys[user.ckey])
-		balloon_alert(user, "empty...")
+		balloon_alert(user, LANG("obj.7fb765b3090913a2", null))
 		return TRUE
 	var/obj/item/spawned_item = prob(25) ? pick_weight_recursive(GLOB.common_loot) : pick_weight_recursive(GLOB.trash_pile_loot)
 	spawned_item = new spawned_item(get_turf(src))
 	if(spawned_item)
-		balloon_alert(user, "found [spawned_item.name]!")
+		balloon_alert(user, LANG("obj.f72aecbfe2030d02", list(spawned_item.name)))
 	else
-		balloon_alert(user, "found nothing...")
+		balloon_alert(user, LANG("obj.e108f6bd37e51635", null))
 
 	searched_by_ckeys[user.ckey] = 1
 
@@ -140,10 +141,10 @@
 		return ..()
 
 	if(length(contents) >= 10)
-		balloon_alert(user, "it's full!")
+		balloon_alert(user, LANG("obj.2cb7d3546d66854d", null))
 		return
 
-	balloon_alert(user, "hiding item...")
+	balloon_alert(user, LANG("obj.cece4dc64d0437c7", null))
 	if(!do_after(user, hide_item_time, user))
 		return
 
@@ -151,7 +152,7 @@
 		return
 
 	if(user.transferItemToLoc(attacking_item, src))
-		balloon_alert(user, "item hidden!")
+		balloon_alert(user, LANG("obj.a93674dafd60a531", null))
 
 /obj/structure/trash_pile/mouse_drop_receive(atom/movable/dropped_atom, mob/user, params)
 
@@ -163,8 +164,8 @@
 		return
 
 	user.visible_message(
-		span_warning("[user] starts diving into [src]."),
-		span_notice("You start diving into [src]...")
+		span_warning(LANG("obj.625b9c5839be77b7", list(user, src))),
+		span_notice(LANG("obj.bb4c711c9389c8bd", list(src)))
 	)
 
 	var/adjusted_dive_time = hide_person_time
@@ -178,7 +179,7 @@
 		return
 
 	for(var/mob/hidden_mob in contents)
-		balloon_alert(user, "someone is inside!")
+		balloon_alert(user, LANG("obj.35409d7b75673723", null))
 		eject_mob(hidden_mob)
 		return
 

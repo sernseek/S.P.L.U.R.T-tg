@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///chemical plumbing filter. If it's not filtered by left and right, it goes straight.
 /obj/machinery/plumbing/filter
 	name = "chemical filter"
@@ -42,7 +43,7 @@
 		if("add")
 			var/which = params["which"]
 
-			var/selected_reagent = tgui_input_list(usr, "Select [which] reagent", "Reagent", GLOB.name2reagent)
+			var/selected_reagent = tgui_input_list(usr, LANG("obj.e9f57c3f35d243da", list(which)), LANG("obj.c5160de6a7b5b7a3", null), GLOB.name2reagent)
 			if(!selected_reagent)
 				return
 			if(QDELETED(ui) || ui.status != UI_INTERACTIVE)

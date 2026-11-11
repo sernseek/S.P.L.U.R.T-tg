@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // This'll take a bit of explaining.
 // Clock cult, the (shitty) gamemode is not coming back, this antagonist datum is for the soon-to-come OPFOR bundle
 // However, the bundle gives `/datum/antagonist/clock_cultist/solo`, which is the same as `/datum/antagonist/clock_cultist`, but lacks conversion.
@@ -56,7 +57,7 @@
 
 	recall.unmark_item()
 	recall.mark_item(slab)
-	to_chat(owner.current, span_brass("You re-attune yourself to a new Clockwork Slab."))
+	to_chat(owner.current, span_brass(LANG("datum.e3a76c4fb5b8652d", null)))
 
 
 /datum/outfit/clock/preview

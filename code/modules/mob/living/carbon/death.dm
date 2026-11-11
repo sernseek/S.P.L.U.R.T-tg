@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/carbon/death(gibbed)
 	if(stat == DEAD)
 		return
@@ -24,7 +25,7 @@
 	var/atom/Tsec = drop_location()
 	for(var/mob/M in src)
 		M.forceMove(Tsec)
-		visible_message(span_danger("[M] bursts out of [src]!"))
+		visible_message(span_danger(LANG("mob.be53b94537db4d1f", list(M, src))))
 	return ..()
 
 /mob/living/carbon/get_gibs_type(drop_bitflags = NONE)
@@ -105,6 +106,6 @@
 	if(!..())
 		return FALSE
 	if(!(mobility_flags & MOBILITY_USE)) //just while I finish up the new 'fun' suiciding verb. This is to prevent metagaming via suicide
-		to_chat(src, span_warning("You can't commit suicide whilst immobile! (You can type Ghost instead however)."))
+		to_chat(src, span_warning(LANG("mob.7e3cbb84ff971b81", null)))
 		return FALSE
 	return TRUE

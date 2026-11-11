@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 *	BIMBO
 */
@@ -115,20 +116,20 @@
 	if(!in_company())
 		//since you aren't within company, you won't be satisfied
 		satisfaction = clamp(satisfaction - 1, 0, 1000)
-		to_chat(human_owner, span_purple("You feel so alone, but you could just... Satisfy yourself...")) // SPLURT EDIT CHANGE - Hexacrocin OD Bounty - message, was "You feel so alone without someone..."
+		to_chat(human_owner, span_purple(LANG("datum.be606489715b7c14", null))) // SPLURT EDIT CHANGE - Hexacrocin OD Bounty - message, was "You feel so alone without someone..."
 		return
 
 	switch(satisfaction)
 		if(0 to 100)
-			to_chat(human_owner, span_purple("You can feel yourself growing restless, carnal needs starting to well up inside you.")) //SPLURT EDIT CHANGE - Hexacrocin OD Bounty - message, was "You can't STAND it, you need a partner NOW!"
+			to_chat(human_owner, span_purple(LANG("datum.d9f54e54e282e823", null))) //SPLURT EDIT CHANGE - Hexacrocin OD Bounty - message, was "You can't STAND it, you need a partner NOW!"
 		if(101 to 150)
-			to_chat(human_owner, span_purple("Your body has returned to normal, as far as you can tell...")) //SPLURT EDIT CHANGE - Hexacrocin OD Bounty - message, was "You'd hit that. Yeah. That's at least a six."
+			to_chat(human_owner, span_purple(LANG("datum.c1a8211d873edb73", null))) //SPLURT EDIT CHANGE - Hexacrocin OD Bounty - message, was "You'd hit that. Yeah. That's at least a six."
 		if(151 to 200)
-			to_chat(human_owner, span_purple("The nice, warm sensation barely lingers within you.")) // SPLURT EDIT CHANGE - Hexacrocin OD Bounty - message, was "Your clothes are feeling tight."
+			to_chat(human_owner, span_purple(LANG("datum.e80e5e3a56e2b477", null))) // SPLURT EDIT CHANGE - Hexacrocin OD Bounty - message, was "Your clothes are feeling tight."
 		if(201 to 250)
-			to_chat(human_owner, span_purple("The pleasantly warm feeling in your body is fading, but it's still present.")) // SPLURT EDIT CHANGE - Hexacrocin OD Bounty - message, was "Desire fogs your decisions."
+			to_chat(human_owner, span_purple(LANG("datum.3518b38d1ea957a8", null))) // SPLURT EDIT CHANGE - Hexacrocin OD Bounty - message, was "Desire fogs your decisions."
 		if(251 to 1000)
-			to_chat(human_owner, span_purple("Your body feels pleasantly warm and slightly tingly. It's a good feeling.")) // SPLURT EDIT CHANGE - Hexacrocin OD Bounty - message, was "Jeez, it's hot in here.."
+			to_chat(human_owner, span_purple(LANG("datum.da468f420f32b92b", null))) // SPLURT EDIT CHANGE - Hexacrocin OD Bounty - message, was "Jeez, it's hot in here.."
 
 /**
  * If we have another human in view, return true

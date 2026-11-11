@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Abstract holder for golem status effects, you should never have more than one of these active
 /datum/status_effect/golem
 	id = "golem_status"
@@ -140,7 +141,7 @@
 
 /datum/status_effect/golem/on_remove()
 	if(mineral_name)
-		to_chat(owner, span_warning("The effect of the [mineral_name] fades."))
+		to_chat(owner, span_warning(LANG("datum.8322c37bdf0e241a", list(mineral_name))))
 	QDEL_LIST(active_overlays)
 	owner.remove_filter("[id]_filter")
 	return ..()
@@ -516,14 +517,14 @@
 	. = ..()
 	if (!.)
 		return
-	to_chat(owner, span_notice("You start to emit a healthy glow."))
+	to_chat(owner, span_notice(LANG("datum.cdb43058f8b638cf", null)))
 	lightbulb = owner.mob_light(glow_range, glow_power, glow_color)
 	owner.add_filter(LIGHTBULB_FILTER, 2, list("type" = "outline", "color" = glow_color, "alpha" = 60, "size" = 1))
 
 /datum/status_effect/golem/lightbulb/on_remove()
 	QDEL_NULL(lightbulb)
 	owner.remove_filter(LIGHTBULB_FILTER)
-	to_chat(owner, span_warning("Your glow fades."))
+	to_chat(owner, span_warning(LANG("datum.ef7b077068a6b809", null)))
 	return ..()
 
 #undef LIGHTBULB_FILTER

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /turf
 	var/datum/liquid_group/lgroup
 	var/obj/effect/abstract/liquid_turf/liquids
@@ -342,18 +343,18 @@
 	if(mob_turf.turf_height - turf_height <= -TURF_HEIGHT_BLOCK_THRESHOLD)
 		//Climb up
 		if(user == dropped_mob)
-			user.balloon_alert_to_viewers("climbing...")
+			user.balloon_alert_to_viewers(LANG("turf.a83a369af8eda267", null))
 		else
-			dropped_mob.balloon_alert_to_viewers("being pulled up...")
+			dropped_mob.balloon_alert_to_viewers(LANG("turf.bfd586fb0ebd2338", null))
 		if(do_after(user, 2 SECONDS, dropped_mob))
 			dropped_mob.forceMove(src)
 		return
 	if(turf_height - mob_turf.turf_height <= -TURF_HEIGHT_BLOCK_THRESHOLD)
 		//Climb down
 		if(user == dropped_mob)
-			user.balloon_alert_to_viewers("climbing down...")
+			user.balloon_alert_to_viewers(LANG("turf.3c17a2a789b2ef86", null))
 		else
-			dropped_mob.balloon_alert_to_viewers("being lowered...")
+			dropped_mob.balloon_alert_to_viewers(LANG("turf.a4c386bdd0626dce", null))
 		if(do_after(user, 2 SECONDS, dropped_mob))
 			dropped_mob.forceMove(src)
 		return

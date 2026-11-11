@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/projectile/energy/snare
 	name = "energy snare"
 	icon_state = "e_netting"
@@ -79,31 +80,31 @@
 
 	if(isidcard(tool))
 		if(!anchored)
-			balloon_alert(user, "wrench the beacon first!")
+			balloon_alert(user, LANG("obj.8b87a3d70fb0ba6c", null))
 			return
 
 		if(obj_flags & EMAGGED)
-			balloon_alert(user, "the access control is fried!")
+			balloon_alert(user, LANG("obj.df8329097608e0cb", null))
 			return
 
 		var/obj/item/card/id/id_card = tool
 		if((ACCESS_SECURITY in id_card.GetAccess()))
 			locked = !locked
-			balloon_alert(user, "beacon [locked ? "locked" : "unlocked"]")
+			balloon_alert(user, LANG("obj.f9f0930e3593d4a2", list(locked ? "locked" : "unlocked")))
 		else
-			balloon_alert(user, "no access!")
+			balloon_alert(user, LANG("obj.ddafd75296a2dc2d", null))
 
 /obj/item/dragnet_beacon/wrench_act(mob/living/user, obj/item/tool)
 	if(user.is_holding(src))
-		balloon_alert(user, "put it down first!")
+		balloon_alert(user, LANG("obj.da2d4c0814fc8262", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(anchored && locked)
-		balloon_alert(user, "must be unlocked first!")
+		balloon_alert(user, LANG("obj.ba4d82de132f0a53", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(isinspace() && !anchored)
-		balloon_alert(user, "nothing to anchor to!")
+		balloon_alert(user, LANG("obj.117d1d87fb9714ab", null))
 		return ITEM_INTERACT_BLOCKING
 
 	set_anchored(!anchored)
@@ -117,5 +118,5 @@
 	locked = FALSE
 	set_anchored(FALSE)
 	do_sparks(3, TRUE, src)
-	balloon_alert(user, "beacon unlocked")
+	balloon_alert(user, LANG("obj.fc0c5e63ce041c39", null))
 	return TRUE

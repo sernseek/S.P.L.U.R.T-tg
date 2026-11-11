@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Snacks and drinks for the 'snacks' tab of vendors
 
 /obj/item/food/vendor_snacks
@@ -75,7 +76,7 @@
 
 /obj/item/food/vendor_snacks/mochi_ice_cream/matcha/examine_more(mob/user)
 	. = ..()
-	. += span_notice("A small label on the container specifies that this icecream is made using only culinary grade matcha grown outside of the Sol system.")
+	. += span_notice(LANG("obj.f11a52b57eec9d1f", null))
 	return .
 
 /obj/item/trash/vendor_trash/mochi_ice_cream
@@ -193,7 +194,7 @@
 
 /obj/item/reagent_containers/cup/soda_cans/skyrat/lemonade/examine_more(mob/user)
 	. = ..()
-	. += span_notice("Markings on the can indicate this one was made on <i>factory ship 1023</i> of the Grand Nomad Fleet.")
+	. += span_notice(LANG("obj.6a538e3baa20118c", null))
 	return .
 
 /obj/item/reagent_containers/cup/soda_cans/skyrat/navy_rum
@@ -205,7 +206,7 @@
 
 /obj/item/reagent_containers/cup/soda_cans/skyrat/navy_rum/examine_more(mob/user)
 	. = ..()
-	. += span_notice("Markings on the can indicate this one was made on <i>factory ship 1506</i> of the Grand Nomad Fleet.")
+	. += span_notice(LANG("obj.0eaa5386f06ff5d7", null))
 	return .
 
 /obj/item/reagent_containers/cup/soda_cans/skyrat/soda_water_moth
@@ -217,7 +218,7 @@
 
 /obj/item/reagent_containers/cup/soda_cans/skyrat/soda_water_moth/examine_more(mob/user)
 	. = ..()
-	. += span_notice("Markings on the can indicate this one was made on <i>factory ship 1023</i> of the Grand Nomad Fleet.")
+	. += span_notice(LANG("obj.6a538e3baa20118c", null))
 	return .
 
 /obj/item/reagent_containers/cup/soda_cans/skyrat/ginger_beer
@@ -229,7 +230,7 @@
 
 /obj/item/reagent_containers/cup/soda_cans/skyrat/ginger_beer/examine_more(mob/user)
 	. = ..()
-	. += span_notice("Markings on the can indicate this one was made on <i>factory ship 1023</i> of the Grand Nomad Fleet.")
+	. += span_notice(LANG("obj.6a538e3baa20118c", null))
 	return .
 
 /*

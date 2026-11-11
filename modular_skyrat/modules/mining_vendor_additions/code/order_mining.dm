@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/orderable_item/mining/survival_bodybag
 	purchase_path = /obj/item/bodybag/environmental
 	cost_per_order = 500
@@ -14,9 +15,7 @@
 	SIGNAL_HANDLER
 	if(icon_state == "crusher_glaive")
 		name = "proto-kinetic glaive"
-		desc = "A modified proto-kinetic crusher, it is still little more than various mining tools cobbled together \
-			into a high-tech knife on a stick with a handguard and goliath-leather grip. While equally as effective as its unmodified compatriots, \
-		it still does little to aid any but the most skilled - or suicidal."
+		desc = LANG("obj.75b5a736be2a4091", null)
 		attack_verb_continuous = list("slices", "slashes", "cleaves", "chops", "stabs")
 		attack_verb_simple = list("slice", "slash", "cleave", "chop", "stab")
 		inhand_x_dimension = 64

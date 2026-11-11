@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/alien
 	name = "alien hunter"
 	desc = "Hiss!"
@@ -73,7 +74,7 @@
 		return FALSE
 	if(locate(/obj/structure/alien/weeds/node) in get_turf(src))
 		return FALSE
-	visible_message(span_alertalien("[src] plants some alien weeds!"))
+	visible_message(span_alertalien(LANG("mob.f4785f5c2bf56b8c", list(src))))
 	new /obj/structure/alien/weeds/node(loc)
 	return TRUE
 
@@ -83,7 +84,7 @@
 		return FALSE
 	if(locate(/obj/structure/alien/egg) in get_turf(src))
 		return FALSE
-	visible_message(span_alertalien("[src] lays an egg!"))
+	visible_message(span_alertalien(LANG("mob.e0a767fee8b79dc2", list(src))))
 	new /obj/structure/alien/egg(loc)
 	return TRUE
 

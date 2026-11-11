@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/sign/flag
 	name = "blank flag"
 	desc = "The flag of nothing. It has nothing on it. Magnificient."
@@ -19,7 +20,7 @@
 			return
 		if(!user.can_perform_action(src, NEED_DEXTERITY))
 			return
-		user.visible_message(span_notice("[user] grabs and folds \the [src.name]."), span_notice("You grab and fold \the [src.name]."))
+		user.visible_message(span_notice(LANG("obj.c9da7713216df903", list(user, src.name))), span_notice(LANG("obj.4e7205b6e00d8209", list(src.name))))
 		var/obj/item/flag_item = new item_flag(loc)
 		TransferComponents(flag_item)
 		user.put_in_hands(flag_item)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/toiletbong
 	name = "toilet bong"
 	desc = "A repurposed toilet with re-arranged piping and an attached flamethrower. Why would anyone build this?"
@@ -23,13 +24,13 @@
 	if(toilet)
 		for(var/obj/item/cistern_item in toilet.contents)
 			cistern_item.forceMove(crafter.drop_location())
-			to_chat(crafter, span_warning("[cistern_item] falls out of the toilet!"))
+			to_chat(crafter, span_warning(LANG("obj.0faaa105847c0343", list(cistern_item))))
 		setDir(toilet.dir)
 		forceMove(toilet.loc)
 
 	crafter.visible_message(
-		span_notice("[crafter] attaches the flamethrower to the repurposed toilet."),
-		span_notice("You attach the flamethrower to the repurposed toilet."),
+		span_notice(LANG("obj.ab5097c7cc8e3e8e", list(crafter))),
+		span_notice(LANG("obj.2764ac655c23b6cc", null)),
 	)
 	return ..()
 
@@ -41,19 +42,19 @@
 /obj/structure/toiletbong/attack_hand(mob/living/carbon/user)
 	. = ..()
 	if (!anchored)
-		user.balloon_alert(user, "secure it first!")
+		user.balloon_alert(user, LANG("obj.e30cef1e78b85e3b", null))
 		return
 	if (!LAZYLEN(contents))
-		user.balloon_alert(user, "it's empty!")
+		user.balloon_alert(user, LANG("obj.76a90f7c0f5ea424", null))
 		return
-	user.visible_message(span_boldnotice("[user] takes a huge drag on the [src]."))
+	user.visible_message(span_boldnotice(LANG("obj.9912c4774db40b0e", list(user, src))))
 	if (!do_after(user, 2 SECONDS, target = src))
 		return
 	var/turf/toiletbong_location = loc
 	toiletbong_location.hotspot_expose(1000, 5)
 	for (var/obj/item/item in contents)
 		if (item.resistance_flags & INDESTRUCTIBLE)
-			user.balloon_alert(user, "[item.name] is blocking the pipes!")
+			user.balloon_alert(user, LANG("obj.a19196597b6861d3", list(item.name)))
 			continue
 		playsound(src, 'sound/items/modsuit/flamethrower.ogg', 50)
 
@@ -61,11 +62,11 @@
 		do_chem_smoke(amount = smoke_amount, holder = src, location = loc, carry = item.reagents, carry_limit = 20, smoke_type = /datum/effect_system/fluid_spread/smoke/chem/smoke_machine)
 		if (prob(5) && !(obj_flags & EMAGGED))
 			if(user.get_liked_foodtypes() & GORE)
-				user.balloon_alert(user, "a hidden treat!")
-				user.visible_message(span_danger("[user] fishes a mouse out of the pipes."))
+				user.balloon_alert(user, LANG("obj.3f5fa41f018c7373", null))
+				user.visible_message(span_danger(LANG("obj.75c206b477ac3966", list(user))))
 			else
-				to_chat(user, span_userdanger("There was something disgusting in the pipes!"))
-				user.visible_message(span_danger("[user] spits out a mouse."))
+				to_chat(user, span_userdanger(LANG("obj.836dffd7860df41e", null)))
+				user.visible_message(span_danger(LANG("obj.e83468cd684ca8be", list(user))))
 				user.adjust_disgust(50)
 				user.vomit(VOMIT_CATEGORY_DEFAULT)
 			var/mob/living/spawned_mob = new /mob/living/basic/mouse(get_turf(user))
@@ -90,7 +91,7 @@
 	if(anchored)
 		return FALSE
 	tool.play_tool_sound(src)
-	to_chat(user, span_notice("You begin taking apart the [src]."))
+	to_chat(user, span_notice(LANG("obj.6cb50b2d21a79b41", list(src))))
 	if (!do_after(user, 10 SECONDS, target = src))
 		return FALSE
 	new /obj/item/flamethrower(get_turf(src))
@@ -106,7 +107,7 @@
 	obj_flags |= EMAGGED
 	smokeradius = 2
 	playsound(src, 'sound/effects/fish_splash.ogg', 50)
-	balloon_alert(user, "toilet broke")
+	balloon_alert(user, LANG("obj.8e94d9080485c920", null))
 	if (emag_card)
-		to_chat(user, span_boldwarning("The [emag_card] falls into the toilet. You fish it back out. Looks like you broke the toilet."))
+		to_chat(user, span_boldwarning(LANG("obj.08a106701c40a98b", list(emag_card))))
 	return TRUE

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /** Facial Hypertrichosis
  * No change to stealth.
  * Increases resistance.
@@ -31,5 +32,5 @@
 		var/mob/living/carbon/human/manly_man = manly_mob
 		var/index = min(max(beard_order.Find(manly_man.facial_hairstyle)+1, disease.stage-1), beard_order.len)
 		if(index > 0 && manly_man.facial_hairstyle != beard_order[index])
-			to_chat(manly_man, span_warning("Your chin itches."))
+			to_chat(manly_man, span_warning(LANG("datum.e48dfea511deec45", null)))
 			manly_man.set_facial_hairstyle(beard_order[index], update = TRUE)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Stirling generator, like a miniature TEG, pipe hot air in, and keep the air around it cold
 
 /obj/machinery/power/stirling_generator
@@ -42,10 +43,10 @@
 
 /obj/machinery/power/stirling_generator/examine(mob/user)
 	. = ..()
-	. += span_notice("You can use a <b>wrench</b> with <b>Left-Click</b> to rotate the generator.")
-	. += span_notice("It will not work in a <b>vacuum</b> as it must be cooled by the gas around it.")
-	. += span_notice("It is currently generating <b>[current_power_generation / 1000] kW</b> of power.")
-	. += span_notice("It has a maximum power output of <b>[max_power_output / 1000] kW</b> at a temperature difference of <b>[max_efficient_heat_difference] K</b>.")
+	. += span_notice(LANG("obj.39a3ff4b85ba6035", null))
+	. += span_notice(LANG("obj.0b312feac86ad375", null))
+	. += span_notice(LANG("obj.b75acd09e32f11a5", list(current_power_generation / 1000)))
+	. += span_notice(LANG("obj.b670cab8adfcebd1", list(max_power_output / 1000, max_efficient_heat_difference)))
 
 
 /obj/machinery/power/stirling_generator/Destroy()
@@ -112,7 +113,7 @@
 
 	wrench.play_tool_sound(src, 50)
 	setDir(turn(dir,-90))
-	to_chat(user, span_notice("You rotate [src]."))
+	to_chat(user, span_notice(LANG("obj.21b2b6d1ba9e2434", list(src))))
 	SEND_SIGNAL(src, COMSIG_MACHINERY_DEFAULT_ROTATE_WRENCH, user, wrench)
 	return TRUE
 

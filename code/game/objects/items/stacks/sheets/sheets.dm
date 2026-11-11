@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/stack/sheet
 	name = "sheet"
 	lefthand_file = 'icons/mob/inhands/items/sheets_lefthand.dmi'
@@ -43,7 +44,7 @@
 /obj/item/stack/sheet/examine(mob/user)
 	. = ..()
 	if (manufactured && gulag_value)
-		. += span_notice("It has been embossed with a manufacturer's mark of guaranteed quality.")
+		. += span_notice(LANG("obj.dcb373c11f908b5e", null))
 
 	var/datum/material/material = get_master_material()
 	if (!HAS_TRAIT(user, TRAIT_RESEARCH_SCANNER) || !material)
@@ -58,10 +59,10 @@
 		var/descriptor = property?.get_descriptor(prop_value)
 		var/tooltip_hint = property?.get_tooltip(prop_value)
 		if (descriptor) // Overriden derivative property?
-			material_string += span_tooltip("[property]: [tooltip_hint]", descriptor)
+			material_string += span_tooltip("[lang_localize_arg("[property]")]: [lang_localize_arg(tooltip_hint)]", lang_localize_arg(descriptor)) // ZH EDIT - I18N: 描述符/提示逐项翻（get_descriptor 的 return 字面量已进目录）
 
 	if (length(material_string))
-		. += span_info("[capitalize(material.name)] is [english_list(material_string)].")
+		. += span_info(LANG("obj.120458d2dd2fe467", list(capitalize(material.name), lang_english_list(material_string)))) // ZH EDIT - I18N
 
 /obj/item/stack/sheet/add(_amount)
 	. = ..()
@@ -107,7 +108,7 @@
 		var/obj/item/new_shard = new shard_to_create(target)
 		new_shard.add_fingerprint(user)
 		shards_created += "[new_shard.name]"
-	user.visible_message(span_notice("[user] shatters the sheet of [name] on [target], leaving [english_list(shards_created)]."), \
-		span_notice("You shatter the sheet of [name] on [target], leaving [english_list(shards_created)]."))
+	user.visible_message(span_notice(LANG("obj.87bfd4aaa0d460a3", list(user, name, target, lang_english_list(shards_created)))), \
+		span_notice(LANG("obj.fdeba7b45c21852b", list(name, target, lang_english_list(shards_created)))))
 	return TRUE
 

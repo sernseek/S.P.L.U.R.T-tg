@@ -63,6 +63,8 @@ export type CraftingData = {
   mode: BooleanLike;
   // Static
   atom_data: AtomData[];
+  // ZH EDIT ADDITION - I18N: 资源文件里的值保持英文，译文随 i18n 字段下发
+  i18n?: Record<string, string>;
   categories: string[];
   complexity: number;
   diet: Diet;

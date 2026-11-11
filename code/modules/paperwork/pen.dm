@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /* Pens!
  * Contains:
  * Pens
@@ -78,7 +79,7 @@
 	SIGNAL_HANDLER
 
 	if(user)
-		balloon_alert(user, "clicked")
+		balloon_alert(user, LANG("obj.23429591f893b108", null))
 	playsound(src, 'sound/items/pen_click.ogg', 30, TRUE, -3)
 	icon_state = initial(icon_state) + (active ? "_retracted" : "")
 	update_appearance(UPDATE_ICON)
@@ -103,7 +104,7 @@
 	SIGNAL_HANDLER
 
 /obj/item/pen/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] is scribbling numbers all over [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit sudoku..."))
+	user.visible_message(span_suicide(LANG("obj.5527d3f2cf74a8da", list(user, user.p_them(), src, user.p_theyre()))))
 	return BRUTELOSS
 
 /obj/item/pen/blue
@@ -146,9 +147,9 @@
 			chosen_color = "blue"
 		else
 			colour = COLOR_BLACK
-	to_chat(user, span_notice("\The [src] will now write in [chosen_color]."))
-	desc = "It's a fancy four-color ink pen, set to [chosen_color]."
-	balloon_alert(user, "clicked")
+	to_chat(user, span_notice(LANG("obj.f4e5e48c887e636c", list(src, chosen_color))))
+	desc = LANG("obj.e07620c003658b0e", list(chosen_color))
+	balloon_alert(user, LANG("obj.23429591f893b108", null))
 	playsound(src, 'sound/machines/click.ogg', 30, TRUE, -3)
 
 /obj/item/pen/fountain
@@ -260,13 +261,13 @@
 
 /obj/item/pen/item_ctrl_click(mob/living/carbon/user)
 	if(loc != user)
-		to_chat(user, span_warning("You must be holding the pen to continue!"))
+		to_chat(user, span_warning(LANG("obj.24985dda38d848b4", null)))
 		return CLICK_ACTION_BLOCKING
-	var/deg = tgui_input_number(user, "What angle would you like to rotate the pen head to? (0-360)", "Rotate Pen Head", max_value = 360)
+	var/deg = tgui_input_number(user, LANG("obj.ec2d01be458ea3a7", null), LANG("obj.33b60fa732bed34b", null), max_value = 360)
 	if(isnull(deg) || QDELETED(user) || QDELETED(src) || !user.can_perform_action(src, FORBID_TELEKINESIS_REACH) || loc != user)
 		return CLICK_ACTION_BLOCKING
 	degrees = deg
-	to_chat(user, span_notice("You rotate the top of the pen to [deg] degrees."))
+	to_chat(user, span_notice(LANG("obj.f63e335f170cd799", list(deg))))
 	SEND_SIGNAL(src, COMSIG_PEN_ROTATED, deg, user)
 	return CLICK_ACTION_SUCCESS
 
@@ -275,8 +276,8 @@
 		return ..()
 	if(!M.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
 		return FALSE
-	to_chat(user, span_warning("You stab [M] with the pen."))
-	to_chat(M, span_danger("You feel a tiny prick!"))
+	to_chat(user, span_warning(LANG("obj.2c7803a3ece034b3", list(M))))
+	to_chat(M, span_danger(LANG("obj.d366f84feb09c62c", null)))
 	log_combat(user, M, "stabbed", src)
 	return TRUE
 
@@ -426,17 +427,17 @@
 	playsound(source, 'sound/items/weapons/saberoff.ogg', 5, TRUE)
 	UnregisterSignal(source, list(COMSIG_ITEM_UNEMBEDDED, COMSIG_ITEM_FAILED_EMBED))
 	victim.visible_message(
-		message = span_warning("The blade of the [hidden_name] retracts as \the [source] is removed from [victim]!"),
-		self_message = span_warning("The blade of the [hidden_name] retracts as \the [source] is removed from you!"),
-		blind_message = span_warning("You hear an energy blade retract!"),
+		message = span_warning(LANG("obj.bf65467aec4bd90d", list(hidden_name, source, victim))),
+		self_message = span_warning(LANG("obj.5e1a6a86d8f794f1", list(hidden_name, source))),
+		blind_message = span_warning(LANG("obj.fa6dd3859eaf5637", null)),
 		vision_distance = 1
 	)
 
 /obj/item/pen/edagger/suicide_act(mob/living/user)
 	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
-		user.visible_message(span_suicide("[user] forcefully rams the pen into their mouth!"))
+		user.visible_message(span_suicide(LANG("obj.d25cfb20adae01bc", list(user))))
 	else
-		user.visible_message(span_suicide("[user] is holding a pen up to their mouth! It looks like [user.p_theyre()] trying to commit suicide!"))
+		user.visible_message(span_suicide(LANG("obj.82fe45d0c8bf7582", list(user, user.p_theyre()))))
 		attack_self(user)
 	return BRUTELOSS
 
@@ -578,12 +579,12 @@
 
 /obj/item/pen/red/security/examine(mob/user)
 	. = ..()
-	. += span_notice("To initiate the surrender prompt, simply click on an individual within your proximity.")
+	. += span_notice(LANG("obj.a5a31998ab39f127", null))
 
 //Code from the medical penlight
 /obj/item/pen/red/security/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!COOLDOWN_FINISHED(src, holosign_cooldown))
-		balloon_alert(user, "not ready!")
+		balloon_alert(user, LANG("obj.1125a29f654ba3e2", null))
 		return ITEM_INTERACT_BLOCKING
 
 	var/turf/target_turf = get_turf(interacting_with)
@@ -593,7 +594,7 @@
 		return ITEM_INTERACT_BLOCKING
 
 	living_target.apply_status_effect(/datum/status_effect/surrender_timed)
-	to_chat(living_target, span_userdanger("[user] requests your immediate surrender! You are given 30 seconds to comply!"))
+	to_chat(living_target, span_userdanger(LANG("obj.89e9e061ba715e66", list(user))))
 	new /obj/effect/temp_visual/security_holosign(target_turf, user) //produce a holographic glow
 	COOLDOWN_START(src, holosign_cooldown, 30 SECONDS)
 	return ITEM_INTERACT_SUCCESS
@@ -608,4 +609,4 @@
 	. = ..()
 	playsound(loc, 'sound/machines/chime.ogg', 50, FALSE) //make some noise!
 	if(creator)
-		visible_message(span_danger("[creator] created a security hologram!"))
+		visible_message(span_danger(LANG("obj.c52b04acfa59af2a", list(creator))))

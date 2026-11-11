@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //the following 2 procs are staying here because its for AI and its shells (also AI controlled)
 /mob/living/silicon/compose_track_href(atom/movable/speaker, namepart)
 	if(!HAS_TRAIT(src, TRAIT_CAN_GET_AI_TRACKING_MESSAGE))
@@ -17,7 +18,7 @@
 	// AIs cannot speak if silent AI is on.
 	// Unless forced is set, as that's probably stating laws or something.
 	if(!forced && CONFIG_GET(flag/silent_ai))
-		to_chat(src, span_danger("The ability for AIs to speak is currently disabled via server config."))
+		to_chat(src, span_danger(LANG("mob.72d4e1faef6195b8", null)))
 		return FALSE
 
 	return ..()
@@ -26,7 +27,7 @@
 	if(incapacitated)
 		return FALSE
 	if(!radio_enabled) //AI cannot speak if radio is disabled (via intellicard) or depowered.
-		to_chat(src, span_danger("Your radio transmitter is offline!"))
+		to_chat(src, span_danger(LANG("mob.ee7eb43243067712", null)))
 		return FALSE
 	. = ..()
 	if(.)
@@ -54,7 +55,7 @@
 	var/obj/machinery/holopad/active_pad = current
 	// Only continue if there is a hologram and its master is the user.
 	if(!istype(active_pad) || !active_pad.masters[src])
-		to_chat(src, span_alert("No holopad connected."))
+		to_chat(src, span_alert(LANG("mob.91a0a16449869dc9", null)))
 		return
 
 	var/obj/effect/overlay/holo_pad_hologram/ai_holo = active_pad.masters[src]
@@ -68,7 +69,7 @@
 // Make sure that the code compiles with AI_VOX undefined
 #ifdef AI_VOX
 #define VOX_DELAY 600
-GAME_VERB_DESC(/mob/living/silicon/ai, announcement_help, "Announcement Help", "Display a list of vocal words to announce to the crew.", "AI Commands")
+GAME_VERB_DESC(/mob/living/silicon/ai, announcement_help, "公告帮助", "Display a list of vocal words to announce to the crew.", "AI Commands")
 
 	if(incapacitated)
 		return
@@ -137,7 +138,7 @@ GAME_VERB_DESC(/mob/living/silicon/ai, announcement_help, "Announcement Help", "
 			incorrect_words += word
 
 	if(incorrect_words.len)
-		to_chat(src, span_notice("These words are not available on the announcement system: [english_list(incorrect_words)]."))
+		to_chat(src, span_notice(LANG("mob.5d25ab4d5a21f99b", list(lang_english_list(incorrect_words)))))
 		return
 
 	announcing_vox = world.time + VOX_DELAY

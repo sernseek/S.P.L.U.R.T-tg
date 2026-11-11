@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Shower Curtains
  */
@@ -45,7 +46,7 @@
 /obj/structure/curtain/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(!istype(tool, /obj/item/toy/crayon))
 		return NONE
-	color = tgui_color_picker(user, "", "Choose Color", color)
+	color = tgui_color_picker(user, "", LANG("obj.d472a9f2c270f157", null), color)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/curtain/wrench_act(mob/living/user, obj/item/tool)
@@ -58,10 +59,10 @@
 	if(anchored)
 		return TRUE
 
-	user.visible_message(span_warning("[user] cuts apart [src]."),
-		span_notice("You start to cut apart [src]."), span_hear("You hear cutting."))
+	user.visible_message(span_warning(LANG("obj.5b4896dbaa07367d", list(user, src))),
+		span_notice(LANG("obj.3fe80d07a62c36d5", list(src))), span_hear(LANG("obj.cbfa7730eca28115", null)))
 	if(I.use_tool(src, user, 50, volume=100) && !anchored)
-		to_chat(user, span_notice("You cut apart [src]."))
+		to_chat(user, span_notice(LANG("obj.9f42ff1450750446", list(src))))
 		deconstruct()
 
 	return TRUE

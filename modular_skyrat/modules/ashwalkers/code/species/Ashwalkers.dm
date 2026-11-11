@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/lizard/ashwalker
 	mutanteyes = /obj/item/organ/eyes/night_vision/ashwalker
 	bodypart_overrides = list(
@@ -65,7 +66,7 @@
 	SIGNAL_HANDLER
 	// if the world time hasn't yet passed the time required for evolution
 	if(world.time < (evo_time + stage_time))
-		to_chat(human_target, span_warning("More time is necessary to evolve-- twenty minutes between each evolution..."))
+		to_chat(human_target, span_warning(LANG("datum.8cc569c6cade3a5c", null)))
 		return
 	// since it was time, go up a stage and now we check what to add
 	current_stage++
@@ -75,10 +76,10 @@
 	switch(current_stage)
 		if(1)
 			ADD_TRAIT(human_target, TRAIT_ASHSTORM_IMMUNE, REF(src))
-			to_chat(human_target, span_notice("The biting wind seems to sting less..."))
+			to_chat(human_target, span_notice(LANG("datum.41335994f760fbd6", null)))
 		if(2)
 			species_target.damage_modifier += 10
-			to_chat(human_target, span_notice("Your body seems to be sturdier..."))
+			to_chat(human_target, span_notice(LANG("datum.75fb3742a050336f", null)))
 		if(3)
 			var/obj/item/bodypart/arm/left/left_arm = human_target.get_bodypart(BODY_ZONE_L_ARM)
 			if(left_arm)
@@ -90,22 +91,22 @@
 				right_arm.unarmed_damage_low += 5
 				right_arm.unarmed_damage_high += 5
 
-			to_chat(human_target, span_notice("Your arms seem denser..."))
+			to_chat(human_target, span_notice(LANG("datum.04d786db2224e8c8", null)))
 		if(4)
 			ADD_TRAIT(human_target, TRAIT_LAVA_IMMUNE, REF(src))
-			to_chat(human_target, span_notice("Your body feels hotter..."))
+			to_chat(human_target, span_notice(LANG("datum.91f4b4c265da6147", null)))
 		if(5)
 			var/datum/action/cooldown/mob_cooldown/fire_breath/granted_action
 			granted_action = new(human_target)
 			granted_action.Grant(human_target)
-			to_chat(human_target, span_notice("Your throat feels larger..."))
+			to_chat(human_target, span_notice(LANG("datum.d817570135ef1660", null)))
 		if(6 to INFINITY)
-			to_chat(human_target, span_warning("You have already reached the pinnacle of your current body!"))
+			to_chat(human_target, span_warning(LANG("datum.a52e94f0d879b180", null)))
 
 
 /datum/component/ash_age/proc/on_examine(atom/target_atom, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 	if(world.time < (evo_time + stage_time))
-		examine_list += span_notice("[human_target] has not yet reached the age for evolving.")
+		examine_list += span_notice(LANG("datum.bea066b6d3ff6a0e", list(human_target)))
 		return
-	examine_list += span_warning("[human_target] has reached the age for evolving!")
+	examine_list += span_warning(LANG("datum.97db12885b095e49", list(human_target)))

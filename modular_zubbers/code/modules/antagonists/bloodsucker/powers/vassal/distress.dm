@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/bloodsucker/distress
 	name = "Distress"
 	desc = "Injure yourself, allowing you to make a desperate call for help to your Master."
@@ -16,8 +17,8 @@
 	var/turf/open/floor/target_area = get_area(owner)
 	var/datum/antagonist/ghoul/ghouldatum = owner.mind.has_antag_datum(/datum/antagonist/ghoul)
 
-	owner.balloon_alert(owner, "you call out for your master!")
-	to_chat(ghouldatum.master.owner, "<span class='userdanger'>[owner], your loyal Ghoul, is desperately calling for aid at [target_area]!</span>")
+	owner.balloon_alert(owner, LANG("datum.d0ca0009b19814f0", null))
+	to_chat(ghouldatum.master.owner, LANG("datum.4563428fec27c2d6", list(owner, target_area)))
 
 	var/mob/living/user = owner
 	user.adjust_brute_loss(10)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //File for miscellaneous fluff objects, both item and structure
 //This one is specifically for ruin-specific items, such as ID, lore, or super-specific decorations
 
@@ -96,7 +97,7 @@
 	if(atom_integrity >= 50)	//breaks it a bit earlier than it should, but still takes a few hits to kill it
 		return
 	else if(. && !QDELETED(src))
-		visible_message(span_notice("[src] sparks and explodes! You hear a faint, buzzy scream..."), span_hear("You hear a loud pop, followed by a faint, buzzy scream."))
+		visible_message(span_notice(LANG("obj.b09f8b0ff0769570", list(src))), span_hear(LANG("obj.3bdf0374298470ff", null)))
 		playsound(src.loc, 'modular_skyrat/modules/mapping/sounds/MachineDeath.ogg', 75, TRUE)	//Credit to @yungfunnyman#3798 on the SR Discord
 		do_sparks(2, TRUE, src)
 		qdel(src)

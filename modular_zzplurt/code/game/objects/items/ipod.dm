@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define IPOD_MAX_BROADCAST_CHANNELS 2 // set this to 0 to disable radio functionality
 
 GLOBAL_LIST_EMPTY(ipod_radio) //list of all ipods set to radio mode
@@ -88,7 +89,7 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 /obj/item/clothing/ears/ipod/examine(mob/user)
 	. = ..()
 	if(other_ipod_ref)
-		. += "This headphone is in shared listening mode."
+		. += LANG("obj.aa8ee430e6fd8118", null)
 	else if(radio_mode)
 		var/listeners = 0
 		for(var/obj/item/clothing/ears/ipod/other_ipod in GLOB.ipod_radio) // fetch and update current song from found radio
@@ -99,43 +100,43 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 			listeners++
 		var/headphones_string = listeners == 1 ? "There is 1 headphone tuned in" : "There are [listeners] headphones tuned in"
 		if(radio_dj_owner)
-			. += "This headphone is the DJ of broadcast [get_radio_name()]. [headphones_string]. Listener uploads are [radio_dj_owner_allow_listen_upload ? "enabled" : "disabled"]."
-			. += "Right click to set the broadcast name."
-			. += "Ctrl click to toggle listener uploads."
+			. += LANG("obj.c2e5348b68694d10", list(get_radio_name(), headphones_string, radio_dj_owner_allow_listen_upload ? "enabled" : "disabled"))
+			. += LANG("obj.f1c56185065dbe39", null)
+			. += LANG("obj.148e80042a0eef61", null)
 		else
-			. += "This headphone is tuned into broadcast [get_radio_name()]. [headphones_string]."
+			. += LANG("obj.ec8dd787702c82bd", list(get_radio_name(), headphones_string))
 			if(radio_dj_owner_allow_listen_upload)
-				. += "You have upload privilege on this broadcast channel."
+				. += LANG("obj.2fe4348aeec725b1", null)
 	else
-		. += "Tapping this on another headphone will set both to shared listening mode."
+		. += LANG("obj.be5140d0ca15165e", null)
 #if IPOD_MAX_BROADCAST_CHANNELS > 0 // radio mode
-		. += "Use in hand to set to broadcast mode."
+		. += LANG("obj.c415bbca8d9d66ce", null)
 #endif
-	. += "Alt click to set the volume."
+	. += LANG("obj.22a118fafd973721", null)
 
 /obj/item/clothing/ears/ipod/proc/upload(mob/owner)
 	if(!istype(owner)) // this should never happen... but doesn't hurt to check
 		return
 	var/mob/user = owner
 	if(user.stat != STABLE)
-		to_chat(user, span_warning("You can't do that right now."))
+		to_chat(user, span_warning(LANG("obj.02b3e4e73fefdc7e", null)))
 		return
 	if(loc != user) // headphones no longer on mob, abort
 		return
 	if(!user.ckey)
 		return
 	if(radio_mode && !radio_dj_owner && !radio_dj_owner_allow_listen_upload)
-		to_chat(user, span_warning("You are not the DJ for broadcast [get_radio_name()]."))
+		to_chat(user, span_warning(LANG("obj.a3da4f23ae69356a", list(get_radio_name()))))
 		return
 	if(lastfilechange)
 		if(world.time < lastfilechange + 2 MINUTES)
-			to_chat(user, span_warning("You've uploaded a new track too recently, try again later!"))
+			to_chat(user, span_warning(LANG("obj.56639eaf53bb532c", null)))
 			return
 	if(world.time < uploadattempt + 10 SECONDS) // automatically cancel any attempt to reattempt an upload in less than 10 seconds
-		to_chat(user, span_warning("Please wait while attempting to reupload."))
+		to_chat(user, span_warning(LANG("obj.e5e601e999f0a0f8", null)))
 		return
 	if(playing)
-		to_chat(user, span_warning("You must first stop playing to track to upload a new track."))
+		to_chat(user, span_warning(LANG("obj.a0e2d13c3a707e71", null)))
 		return
 	if(upload_active)
 		return
@@ -147,7 +148,7 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 
 /obj/item/clothing/ears/ipod/proc/upload_file(mob/user)
 	set waitfor = FALSE
-	var/infile = input(user, "CHOOSE A NEW SONG", src) as null|file
+	var/infile = input(user, LANG("obj.6f7bd0334ea0328f", null), src) as null|file
 	if(QDELETED(src)) // yes, this thread will continue to exist even if headphones are destroyed, so catch it here
 		return
 	upload_active = FALSE
@@ -161,33 +162,33 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 	if(playing)
 		return
 	if(world.time > uploadattempt + 30 SECONDS) // automatically cancel any attempt to upload if taken more than 30 seconds
-		to_chat(user, span_warning("Your connect was timed out, try uploading again!"))
+		to_chat(user, span_warning(LANG("obj.a6ce5b4f893d1f1f", null)))
 		return
 	if(world.time < GLOB.ipod_last_upload + 30 SECONDS)
-		to_chat(user, span_warning("Another user has uploaded a new track recently, try again soon!"))
+		to_chat(user, span_warning(LANG("obj.83673c98fafae958", null)))
 		return
 	if(isnull(infile)) // sometimes this fails, thank you BYOND
-		to_chat(user, span_warning("Error, could not upload."))
+		to_chat(user, span_warning(LANG("obj.ea0a1bb218392d7a", null)))
 		return
 	if(length("[infile]") < length("a.ogg")) // minimum supported filename
-		to_chat(user, span_warning("Error, filename too short."))
+		to_chat(user, span_warning(LANG("obj.96aa8c2030ce9c78", null)))
 		return
 	if(length("[infile]") > 256) // maximum supported filename
-		to_chat(user, span_warning("Error, filename too long."))
+		to_chat(user, span_warning(LANG("obj.4e9b45bc342d09c4", null)))
 		return
 	var/file_extension = LOWER_TEXT(copytext("[infile]", -4))
 	if(!(file_extension == ".ogg" || file_extension == ".mp3"))
-		to_chat(user, span_warning("File type must be OGG or MP3: [sanitize("[infile]")]"))
+		to_chat(user, span_warning(LANG("obj.ef7f42576aabbb9c", list(sanitize("[infile]")))))
 		return
 	var/filelength = length(infile)
 	if(radio_mode && filelength > 3242880) // radio broadcasting has a tighter file size limit
-		to_chat(user, span_warning("Error: Too big, 3MB or less!"))
+		to_chat(user, span_warning(LANG("obj.b0f2e36f5be88208", null)))
 		return
 	if(filelength > 6485760)
-		to_chat(user, span_warning("Error: Too big, 6MB or less!"))
+		to_chat(user, span_warning(LANG("obj.7a14a78d8431e2f0", null)))
 		return
 	if(filelength < 4096)
-		to_chat(user, span_warning("Error: Not a valid OOG or MP3!"))
+		to_chat(user, span_warning(LANG("obj.4822154c8e5ec127", null)))
 		return
 
 	GLOB.ipod_last_upload = world.time
@@ -196,7 +197,7 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 	if(fexists(logged_filename))
 		fdel(logged_filename)
 	if(!fcopy(infile, logged_filename))
-		to_chat(user, span_warning("Could not upload song."))
+		to_chat(user, span_warning(LANG("obj.8c80ea30b12a8949", null)))
 		return
 	if(QDELETED(user) || QDELETED(src) || loc != user) // clean up uploaded file if object/user was deleted while upload was in progress/headphones were removed during upload
 		if(fexists(logged_filename))
@@ -206,38 +207,38 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 	lastfilechange = world.time
 	var/sound_length = SSsounds.get_sound_length(logged_filename) // this uses the rust-g library to check if file is valid
 	if(isnull(sound_length) || sound_length <= 0) // invalid file, abort
-		to_chat(user, span_warning("The song codec was invalid, aborting!"))
+		to_chat(user, span_warning(LANG("obj.6817914cfd0ba6f2", null)))
 		user.log_message("uploaded an invalid song: [logged_filename]", LOG_GAME)
 		log_admin("[key_name(user)] attempted to upload an corrupted song to their headphones. The source filename was '[sanitize("[infile]")]'.")
 		if(fexists(logged_filename))
 			fdel(logged_filename)
 		return
 	if(sound_length <= 20) // song length too short
-		to_chat(user, span_warning("The song length was too short, aborting!"))
+		to_chat(user, span_warning(LANG("obj.81e7302b7d28ec3c", null)))
 		fdel(logged_filename)
 		return
 	var/uploaded_song = file(logged_filename)
 	if(!uploaded_song || !fexists(uploaded_song))
-		to_chat(user, span_warning("Upload failed to finish, aborting!"))
+		to_chat(user, span_warning(LANG("obj.53e7d4696b1cda6d", null)))
 		user.log_message("attempted to upload a song: [logged_filename]", LOG_GAME)
 		return
 	if(length(uploaded_song) != filelength)
-		to_chat(user, span_warning("Upload failed to finish, aborting!"))
+		to_chat(user, span_warning(LANG("obj.53e7d4696b1cda6d", null)))
 		user.log_message("attempted to upload a song: [logged_filename]", LOG_GAME)
 		log_admin("[key_name(user)] attempted to upload an incomplete song to their headphones. The source filename was '[sanitize("[infile]")]'.")
 		fdel(logged_filename)
 		return
 	if(radio_mode && !radio_dj_owner && !radio_dj_owner_allow_listen_upload) // check again after upload
-		to_chat(user, span_warning("You are not the DJ for broadcast [get_radio_name()]."))
+		to_chat(user, span_warning(LANG("obj.a3da4f23ae69356a", list(get_radio_name()))))
 		fdel(logged_filename)
 		return
 
 	playsound(loc, 'sound/misc/escape_menu/esc_close.ogg', 100, FALSE, -1)
 	if(!radio_mode)
-		to_chat(user, span_warning("The song has been uploaded, ready to play!"))
+		to_chat(user, span_warning(LANG("obj.966bc55e32f9252d", null)))
 		user.log_message("uploaded a song to headphones: [logged_filename]", LOG_GAME)
 	else
-		to_chat(user, span_warning("The song is now broadcasting on [get_radio_name()]!"))
+		to_chat(user, span_warning(LANG("obj.85e5fbd1345578b5", list(get_radio_name()))))
 		user.log_message("uploaded a song to headphones broadcast [get_radio_name()]: [logged_filename]", LOG_GAME)
 
 	if(playing && !isnull(music_player.active_song_sound)) // check again after uploading
@@ -268,7 +269,7 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 			if(other_ipod.is_worn) // alert them
 				var/mob/living/carbon/human/wearer = other_ipod.loc
 				if(istype(wearer))
-					to_chat(wearer, span_warning("A new song has been uploaded."))
+					to_chat(wearer, span_warning(LANG("obj.26dd40898dfe3f1d", null)))
 		else
 			other_ipod_ref = null
 	else if(radio_mode) // set all other radios to start playing
@@ -307,12 +308,12 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 /obj/item/clothing/ears/ipod/proc/toggle(owner)
 	var/mob/user = owner
 	if(user.stat != STABLE || !is_worn)
-		to_chat(user, span_warning("You can't do that right now."))
+		to_chat(user, span_warning(LANG("obj.02b3e4e73fefdc7e", null)))
 		return
 	if(!playing)
 		if(curfile)
 			if(world.time < GLOB.ipod_last_play + 7 SECONDS)
-				to_chat(user, span_warning("Headphones are buffering..."))
+				to_chat(user, span_warning(LANG("obj.368bb271fee4cc09", null)))
 				return
 			GLOB.ipod_last_play = world.time
 			playing = TRUE
@@ -323,7 +324,7 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 			playsound(loc, 'modular_zzplurt/sound/items/headphones_on.ogg', 20, FALSE)
 			user.log_message("played song on headphones: [curfile]", LOG_GAME)
 		else
-			to_chat(user, span_warning("No track is currently uploaded."))
+			to_chat(user, span_warning(LANG("obj.3a8f4a325ccf80f5", null)))
 			return
 	else
 		playing = FALSE
@@ -331,7 +332,7 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 			music_player.unlisten_all()
 		stop_other_headphones()
 		playsound(loc, 'modular_zzplurt/sound/items/headphones_off.ogg', 20, FALSE)
-	to_chat(user, span_notice("You turn the music [playing? "on. Untz Untz Untz!" : "off."]"))
+	to_chat(user, span_notice(LANG("obj.66066e77f2ef1053", list(playing? "on. Untz Untz Untz!" : "off."))))
 
 /obj/item/clothing/ears/ipod/proc/stop_other_headphones(do_unlink = FALSE)
 	if(!other_ipod_ref)
@@ -347,7 +348,7 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 			if(other_ipod.is_worn)
 				var/mob/living/carbon/human/wearer = other_ipod.loc
 				if(istype(wearer))
-					to_chat(wearer, span_warning("The headphone's connection suddenly disconnects."))
+					to_chat(wearer, span_warning(LANG("obj.7a3120bed18ecc21", null)))
 			other_ipod.update_play_button_state_icon()
 	else
 		other_ipod_ref = null
@@ -402,7 +403,7 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 		if(other_ipod.is_worn)
 			var/mob/living/carbon/human/wearer = other_ipod.loc
 			if(istype(wearer))
-				to_chat(wearer, span_notice("The headphone's connection suddenly disconnects."))
+				to_chat(wearer, span_notice(LANG("obj.7a3120bed18ecc21", null)))
 		other_ipod.update_play_button_state_icon()
 	other_ipod_ref = null
 	update_play_button_state_icon()
@@ -428,7 +429,7 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 			music_player.selection = current_song
 		update_play_button_state_icon()
 		other_ipod.update_play_button_state_icon()
-		balloon_alert(user, "successfully linked headphones")
+		balloon_alert(user, LANG("obj.b79b0916da0c7ae6", null))
 		return TRUE
 	return ..()
 
@@ -448,12 +449,12 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 		radio_mode = 0
 		radio_dj_owner = FALSE
 		update_play_button_state_icon()
-		balloon_alert(user, "turned off radio mode")
-		to_chat(user, span_notice("You turned off the radio."))
+		balloon_alert(user, LANG("obj.9c6cdc7720057175", null))
+		to_chat(user, span_notice(LANG("obj.f8aac82a9f3397dd", null)))
 		playsound(loc, 'modular_zzplurt/sound/items/headphones_click.ogg', 20, FALSE)
 		return
 
-	balloon_alert(user, "switch broadcast")
+	balloon_alert(user, LANG("obj.081217a8822312d8", null))
 	if(radio_mode)
 		var/listeners = 0
 		var/found_dj = FALSE
@@ -472,7 +473,7 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 					if(other_ipod.is_worn) // alert them of new listener
 						var/mob/living/carbon/human/wearer = other_ipod.loc
 						if(istype(wearer))
-							to_chat(wearer, span_warning("A new listener has tuned in!"))
+							to_chat(wearer, span_warning(LANG("obj.288a01ef845de60e", null)))
 					other_ipod.lasttunein = world.time
 			if(!other_ipod.curfile)
 				continue
@@ -516,31 +517,31 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 	. = ..()
 	if(!radio_mode || !radio_dj_owner)
 		return
-	var/str = reject_bad_text(tgui_input_text(user, "Broadcast name", "Set new broadcast name", get_radio_name(), MAX_NAME_LEN))
+	var/str = reject_bad_text(tgui_input_text(user, LANG("obj.1dee4fae3472edb5", null), LANG("obj.fbe2ca0a1f23d0a7", null), get_radio_name(), MAX_NAME_LEN))
 	if(QDELETED(src))
 		return
 	if(!str)
-		to_chat(user, span_warning("Invalid text!"))
+		to_chat(user, span_warning(LANG("obj.7b1614ecfc89ed38", null)))
 		return
 	if(QDELETED(user) || loc != user || !user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
-		to_chat(user, span_warning("Can't reach [src]!"))
+		to_chat(user, span_warning(LANG("obj.767b59a4e6b83ab5", list(src))))
 		return
 	if(radio_mode >= 1 && radio_mode <= IPOD_MAX_BROADCAST_CHANNELS && radio_dj_owner)
 		GLOB.ipod_cast_names[radio_mode] = str
-		to_chat(user, span_notice("You set the broadcast name to '[str]'."))
+		to_chat(user, span_notice(LANG("obj.ac2b9474505f79e2", list(str))))
 		user.log_message("set the broadcast name to: [str]", LOG_GAME)
 		return
-	to_chat(user, span_warning("The connection to the broadcast fizzled out!"))
+	to_chat(user, span_warning(LANG("obj.38056cfa458862fb", null)))
 
 /obj/item/clothing/ears/ipod/item_ctrl_click(mob/user)
 	. = ..()
 	if(!radio_mode)
 		return NONE
 	if(isnull(user?.mind) || user.stat != STABLE)
-		to_chat(user, span_warning("You can't do that right now."))
+		to_chat(user, span_warning(LANG("obj.02b3e4e73fefdc7e", null)))
 		return NONE
 	if(!radio_dj_owner)
-		to_chat(user, span_warning("You are not the DJ for broadcast [get_radio_name()]."))
+		to_chat(user, span_warning(LANG("obj.a3da4f23ae69356a", list(get_radio_name()))))
 		return NONE
 	radio_dj_owner_allow_listen_upload = !radio_dj_owner_allow_listen_upload
 	for(var/obj/item/clothing/ears/ipod/other_ipod in GLOB.ipod_radio) // fetch and update radio_dj_owner_allow_listen_upload of listeners
@@ -549,16 +550,16 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 		if(other_ipod == src)
 			continue
 		other_ipod.radio_dj_owner_allow_listen_upload = radio_dj_owner_allow_listen_upload
-	to_chat(user, span_notice("You've [radio_dj_owner_allow_listen_upload ? "allowed" : "disabled"] listeners to uploads songs!"))
+	to_chat(user, span_notice(LANG("obj.a9e654bf0352df92", list(radio_dj_owner_allow_listen_upload ? "allowed" : "disabled"))))
 	playsound(loc, 'modular_zzplurt/sound/items/headphones_click.ogg', 20, FALSE)
 	return CLICK_ACTION_SUCCESS
 #endif // radio mode
 
 /obj/item/clothing/ears/ipod/click_alt(mob/user)
 	if(isnull(user?.mind) || user.stat != STABLE)
-		to_chat(user, span_warning("You can't do that right now."))
+		to_chat(user, span_warning(LANG("obj.02b3e4e73fefdc7e", null)))
 		return NONE
-	var/new_volume = tgui_input_number(user, "", "Set volume", volume, 100)
+	var/new_volume = tgui_input_number(user, "", LANG("obj.29e442481eb538e9", null), volume, 100)
 	if(QDELETED(src) || QDELETED(user) || !isnum(new_volume) || loc != user || !user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return NONE
 	volume = new_volume
@@ -583,7 +584,7 @@ GLOBAL_VAR_INIT(ipod_last_play, 0) //last time of the last played track, to prev
 		playing = FALSE
 		if(!isnull(music_player.active_song_sound))
 			music_player.unlisten_all()
-		to_chat(user, span_notice("The headphones turn off and go into standby mode."))
+		to_chat(user, span_notice(LANG("obj.f6e145920a2e9f22", null)))
 	is_worn = FALSE
 	if(is_registered_on_death)
 		UnregisterSignal(user, COMSIG_LIVING_DEATH)

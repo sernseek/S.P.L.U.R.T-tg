@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // None of these are really complex enough to merit their own file
 
 /**
@@ -176,7 +177,7 @@
 /datum/pet_command/attack/proc/refuse_target(mob/living/parent, atom/target)
 	var/mob/living/living_parent = parent
 	living_parent.balloon_alert_to_viewers("[refuse_reaction]")
-	living_parent.visible_message(span_notice("[living_parent] refuses to attack [target]."))
+	living_parent.visible_message(span_notice(LANG("datum.e624b755ef31cdcc", list(living_parent, target))))
 
 /datum/pet_command/attack/execute_action(datum/ai_controller/controller)
 	controller.set_behavior_tree_override(SUBPLAN_ID_PET_COMMAND, attack_subtree)

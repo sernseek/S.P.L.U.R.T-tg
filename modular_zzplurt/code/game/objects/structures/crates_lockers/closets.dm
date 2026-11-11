@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/closet
 	/// The overlay for packing peanuts
 	var/obj/effect/overlay/packing_peanuts/packing_overlay
@@ -36,9 +37,9 @@
 	. = ..()
 	if(opened)
 		if(packing_overlay)
-			. += span_notice("[p_Theyre()] filled to the brim with packing peanuts. [EXAMINE_HINT("Alt-RMB")] to take them out.")
+			. += span_notice(LANG("obj.b5d6a21890cc2417", list(p_Theyre(), EXAMINE_HINT("Alt-RMB"))))
 		else if(packable && !packing_overlay)
-			. += span_notice("[p_They()] can be packed with [EXAMINE_HINT("packing peanuts")] for safer delivery of fragile objects.")
+			. += span_notice(LANG("obj.f4c36d3a927fe9e9", list(p_They(), EXAMINE_HINT("packing peanuts"))))
 
 /obj/structure/closet/update_overlays()
 	. = ..()
@@ -63,10 +64,10 @@
 			take_contents()
 		return TRUE //no afterattack
 	else if(opened && packing_overlay && !iscyborg(user)) //Don't let cyborgs pack things, they lose their modules like that
-		balloon_alert(user, "packing item...")
+		balloon_alert(user, LANG("obj.b46dee7bf8266936", null))
 		if(do_after(user, 1 SECONDS, target = src))
 			insert(W)
-			balloon_alert(user, "packed!")
+			balloon_alert(user, LANG("obj.cd240f65f85348e7", null))
 		return TRUE
 	return ..()
 
@@ -87,20 +88,20 @@
 
 /obj/structure/closet/proc/try_packing(obj/item/stack/peanuts, mob/user)
 	if(user)
-		balloon_alert(user, "packing...")
+		balloon_alert(user, LANG("obj.9221416a57778ef3", null))
 		if(!do_after(user, 3 SECONDS, src))
 			return FALSE
 	if(!peanuts.use(10))
-		balloon_alert(user, "not enough [peanuts]!")
+		balloon_alert(user, LANG("obj.98d23e06e35c4140", list(peanuts)))
 		return FALSE
 	var/successfully_packed = get_packed()
 	if(successfully_packed && user)
-		balloon_alert(user, "packed!")
+		balloon_alert(user, LANG("obj.cd240f65f85348e7", null))
 	return successfully_packed
 
 /obj/structure/closet/proc/try_unpacking(mob/user, create_peanuts = TRUE)
 	if(user)
-		balloon_alert(user, "unpacking...")
+		balloon_alert(user, LANG("obj.55353aa3667973ef", null))
 		if(!do_after(user, 1 SECONDS, src))
 			return FALSE
 	var/successfully_unpacked = get_unpacked(create_peanuts)
@@ -108,7 +109,7 @@
 		if(opened)
 			dump_contents()
 		if(user)
-			balloon_alert(user, "unpacked!")
+			balloon_alert(user, LANG("obj.e8159ba6035f439e", null))
 	return successfully_unpacked
 
 /obj/structure/closet/proc/get_packed()

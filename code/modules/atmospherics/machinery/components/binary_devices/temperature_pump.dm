@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/atmospherics/components/binary/temperature_pump
 	icon_state = "tpump_map-3"
 	name = "temperature pump"
@@ -19,14 +20,14 @@
 
 /obj/machinery/atmospherics/components/binary/temperature_pump/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
-	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
+	context[SCREENTIP_CONTEXT_CTRL_LMB] = LANG("obj.fed2f8dfb3af5666", list(on ? "off" : "on"))
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Maximize transfer rate"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/components/binary/temperature_pump/click_ctrl(mob/user)
 	if(is_operational)
 		set_on(!on)
-		balloon_alert(user, "turned [on ? "on" : "off"]")
+		balloon_alert(user, LANG("obj.8fcfde3cd8c5cffd", list(on ? "on" : "off")))
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
 		return CLICK_ACTION_SUCCESS
 	return CLICK_ACTION_BLOCKING
@@ -37,7 +38,7 @@
 
 	heat_transfer_rate = max_heat_transfer_rate
 	investigate_log("was set to [heat_transfer_rate]% by [key_name(user)]", INVESTIGATE_ATMOS)
-	balloon_alert(user, "transfer rate set to [heat_transfer_rate]%")
+	balloon_alert(user, LANG("obj.2538085077dddb16", list(heat_transfer_rate)))
 	update_appearance(UPDATE_ICON)
 	return CLICK_ACTION_SUCCESS
 

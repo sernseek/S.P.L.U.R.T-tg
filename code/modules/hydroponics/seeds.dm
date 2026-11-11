@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // ********************************************************
 // Here's all the seeds (plants) that can be used in hydro
 // ********************************************************
@@ -126,9 +127,9 @@
 
 /obj/item/seeds/examine(mob/user)
 	. = ..()
-	. += span_notice("Use a pen on it to rename it or change its description.")
+	. += span_notice(LANG("obj.0c5d3a1f57ceec3a", null))
 	if(reagents_add && user.can_see_reagents())
-		. += span_notice("- Plant Reagents -")
+		. += span_notice(LANG("obj.29a5ea7d9e774134", null))
 		for(var/datum/plant_gene/reagent/reagent_gene in genes)
 			. += span_notice("- [reagent_gene.get_name()] -")
 
@@ -479,7 +480,7 @@
 	. = input
 	if(product && !productdesc)
 		productdesc = initial(product.desc)
-	var/newproductdesc = tgui_input_text(user, "Write a new product description", "Product Description", productdesc, max_length = MAX_DESC_LEN)
+	var/newproductdesc = tgui_input_text(user, LANG("obj.155c5d0f5701760f", null), LANG("obj.f4707d0942d24285", null), productdesc, max_length = MAX_DESC_LEN)
 	if(isnull(newproductdesc))
 		return
 	if(!user.can_perform_action(src))

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/cell_charger_multi
 	name = "multi-cell charging rack"
 	desc = "A cell charging rack for multiple batteries."
@@ -36,7 +37,7 @@
 /obj/machinery/cell_charger_multi/click_alt(mob/user)
 	if(!can_interact(user) || !charging_batteries.len)
 		return
-	to_chat(user, span_notice("You activate the quick release as all the cells pop out!"))
+	to_chat(user, span_notice(LANG("obj.d929e1badef7503b", null)))
 	for(var/i in charging_batteries)
 		removecell()
 	return CLICK_ACTION_SUCCESS
@@ -44,49 +45,49 @@
 /obj/machinery/cell_charger_multi/examine(mob/user)
 	. = ..()
 	if(!charging_batteries.len)
-		. += "There are no cells in [src]."
+		. += LANG("obj.4d1f049a8bc14a84", list(src))
 	else
-		. += "There are [charging_batteries.len] cells in [src]."
+		. += LANG("obj.894e8427d8b3773c", list(charging_batteries.len, src))
 		for(var/obj/item/stock_parts/power_store/cell/charging in charging_batteries)
-			. += "There's [charging] cell in the charger, current charge: [round(charging.percent(), 1)]%."
+			. += LANG("obj.ef59e67cb6b77620", list(charging, round(charging.percent(), 1)))
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("The status display reads: Charging power: <b>[display_power(charge_rate, convert = FALSE)]</b> per cell.")
-	. += span_notice("Alt click it to remove all the cells at once!")
+		. += span_notice(LANG("obj.950628d2734e1f1b", list(display_power(charge_rate, convert = FALSE))))
+	. += span_notice(LANG("obj.6b876f29e7ec3797", null))
 
 /obj/machinery/cell_charger_multi/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ..()
 	if(length(charging_batteries))
-		to_chat(user, span_warning("[src] must have no cells inside!"))
+		to_chat(user, span_warning(LANG("obj.128fad95941ae74a", list(src))))
 		return ITEM_INTERACT_BLOCKING
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/cell_charger_multi/attackby(obj/item/tool, mob/user, params)
 	if(istype(tool, /obj/item/stock_parts/power_store/cell) && !panel_open)
 		if(machine_stat & BROKEN)
-			to_chat(user, span_warning("[src] is broken!"))
+			to_chat(user, span_warning(LANG("obj.e2c73115e801b359", list(src))))
 			return
 		if(!anchored)
-			to_chat(user, span_warning("[src] isn't attached to the ground!"))
+			to_chat(user, span_warning(LANG("obj.f467682f5bf33467", list(src))))
 			return
 		var/obj/item/stock_parts/power_store/cell/inserting_cell = tool
 		if(inserting_cell.chargerate <= 0)
-			to_chat(user, span_warning("[inserting_cell] cannot be recharged!"))
+			to_chat(user, span_warning(LANG("obj.d4b2e04f1ab025de", list(inserting_cell))))
 			return
 		if(length(charging_batteries) >= max_batteries)
-			to_chat(user, span_warning("[src] is full, and cannot hold anymore cells!"))
+			to_chat(user, span_warning(LANG("obj.4599e6423f3a5dbe", list(src))))
 			return
 		else
 			var/area/current_area = loc.loc // Gets our locations location, like a dream within a dream
 			if(!isarea(current_area))
 				return
 			if(current_area.power_equip == 0) // There's no APC in this area, don't try to cheat power!
-				to_chat(user, span_warning("[src] blinks red as you try to insert the cell!"))
+				to_chat(user, span_warning(LANG("obj.ebb2a520235ba42f", list(src))))
 				return
 			if(!user.transferItemToLoc(tool,src))
 				return
 
 			charging_batteries += tool
-			user.visible_message(span_notice("[user] inserts a cell into [src]."), span_notice("You insert a cell into [src]."))
+			user.visible_message(span_notice(LANG("obj.c4a3d9201d508013", list(user, src))), span_notice(LANG("obj.0e4e6b90adadf964", list(src))))
 			update_appearance()
 	else
 		if(default_deconstruction_crowbar(tool))
@@ -122,7 +123,7 @@
 	if(!charging_batteries.len)
 		return
 
-	to_chat(user, span_notice("You telekinetically remove [removecell(user)] from [src]."))
+	to_chat(user, span_notice(LANG("obj.2e70f3132b99713e", list(removecell(user), src))))
 
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
@@ -165,7 +166,7 @@
 	user.put_in_hands(charging)
 	charging.add_fingerprint(user)
 
-	user.visible_message(span_notice("[user] removes [charging] from [src]."), span_notice("You remove [charging] from [src]."))
+	user.visible_message(span_notice(LANG("obj.4a2c1fddbcf43cde", list(user, charging, src))), span_notice(LANG("obj.cbed32661d4c054a", list(charging, src))))
 
 /obj/machinery/cell_charger_multi/proc/removecell(mob/user)
 	if(!charging_batteries.len)
@@ -175,7 +176,7 @@
 		var/list/buttons = list()
 		for(var/obj/item/stock_parts/power_store/cell/battery in charging_batteries)
 			buttons["[battery.name] ([round(battery.percent(), 1)]%)"] = battery
-		var/cell_name = tgui_input_list(user, "Please choose what cell you'd like to remove.", "Remove a cell", buttons)
+		var/cell_name = tgui_input_list(user, LANG("obj.8ba5d457784be70c", null), LANG("obj.bbe3072dc2846a30", null), buttons)
 		if(!in_range(loc, user))
 			return FALSE
 		charging = buttons[cell_name]

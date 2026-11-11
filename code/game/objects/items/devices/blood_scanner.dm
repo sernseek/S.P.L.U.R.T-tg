@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///Pricks people with a big needle and gives the user a bunch of info about bloodtype, tox damage, other such stuff. if you fuck up it stabs the guy a bit.
 /obj/item/blood_scanner
 	name = "hemoanalytic scanner"
@@ -24,8 +25,8 @@
 	var/obj/item/bodypart/poked_bit = poked_guy.get_bodypart(check_zone(user.zone_selected))
 	if(!poked_bit)
 		return
-	user.visible_message(span_notice("[user] pricks [poked_guy] with [src]."), span_notice("You begin scanning [poked_guy] with [src]."), ignored_mobs = poked_guy)
-	to_chat(poked_guy, span_notice("[user] slides the needle of [src] into your [poked_bit] and begins pressing buttons."))
+	user.visible_message(span_notice(LANG("obj.ff8141943518cc43", list(user, poked_guy, src))), span_notice(LANG("obj.49fb9a69fd98274a", list(poked_guy, src))), ignored_mobs = poked_guy)
+	to_chat(poked_guy, span_notice(LANG("obj.f33df72c7e6e3182", list(user, src, poked_bit))))
 	var/success = do_after(user, 2 SECONDS, poked_guy)
 	if(success)
 		scan_blood(scanner = user, scanned_person = poked_guy)
@@ -41,8 +42,8 @@
 		return NONE
 	var/mob/living/carbon/poked_guy = interacting_with
 	var/obj/item/bodypart/poked_bit = poked_guy.get_bodypart(check_zone(user.zone_selected))
-	user.visible_message(span_notice("[user] pricks [poked_guy] with [src]."), span_notice("You begin scanning [poked_guy] with [src]."), ignored_mobs = poked_guy)
-	to_chat(poked_guy, span_notice("[user] slides the needle of [src] into your [poked_bit] and begins pressing buttons."))
+	user.visible_message(span_notice(LANG("obj.ff8141943518cc43", list(user, poked_guy, src))), span_notice(LANG("obj.49fb9a69fd98274a", list(poked_guy, src))), ignored_mobs = poked_guy)
+	to_chat(poked_guy, span_notice(LANG("obj.f33df72c7e6e3182", list(user, src, poked_bit))))
 	var/success = do_after(user, 2 SECONDS, poked_guy)
 	if(success)
 		chemscan(user, poked_guy, reagent_types_to_check = /datum/reagent/medicine)
@@ -80,16 +81,16 @@
 
 /obj/item/blood_scanner/proc/regret(mob/living/stabber, mob/living/stabbed, obj/item/bodypart/to_stab)
 	to_stab?.force_wound_upwards(/datum/wound/pierce/bleed/moderate/needle_fail, wound_source = "idiot moved with a needle in them")
-	stabber.visible_message(span_warning("[src]'s needle is ripped out, tearing a hole in [stabbed]'s [to_stab]!"), span_warning("Damnit! The needle is torn out, making a tiny hole in [stabbed.p_their()] [to_stab]."), ignored_mobs = stabbed)
-	to_chat(stabbed, span_userdanger("<b>OWWW!</b> The needle of [src] is ripped out, tearing a small hole in your [to_stab]!"))
+	stabber.visible_message(span_warning(LANG("obj.f9e339473c22cd0a", list(src, stabbed, to_stab))), span_warning(LANG("obj.a27ec79faa8fc607", list(stabbed.p_their(), to_stab))), ignored_mobs = stabbed)
+	to_chat(stabbed, span_userdanger(LANG("obj.49ebdb863acbf4ee", list(src, to_stab))))
 
 /obj/item/blood_scanner/proc/usable_check(mob/living/person_scanning, atom/scanee)
 	if(!isliving(scanee))
 		return FALSE
 	if(!istype(scanee, /mob/living/carbon))
-		to_chat(person_scanning, span_warning("[src] is incompatible."))
+		to_chat(person_scanning, span_warning(LANG("obj.bebb5abd1da1b21f", list(src))))
 		return FALSE
 	if(!person_scanning.can_read(src) || person_scanning.is_blind())
-		to_chat(person_scanning, span_warning("You are unable to read [src]'s screen!"))
+		to_chat(person_scanning, span_warning(LANG("obj.0c9c4071466e7633", list(src))))
 		return FALSE
 	return TRUE

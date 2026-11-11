@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event/droppod_airraid
 	start_when = 50
 	end_when = 999
@@ -198,7 +199,7 @@
 /datum/round_event/droppod_airraid/proc/after_wave()
 	var/static/mutable_appearance/target_appearance = mutable_appearance('icons/obj/supplypods_32x32.dmi', "LZ")
 	var/turf/ghost_target_turf = pick(get_area_turfs(get_current_wave()))
-	notify_ghosts("A droppod wave is attacking [get_current_wave().name]!", source = ghost_target_turf, header = "Invasion in progress", alert_overlay = target_appearance)
+	notify_ghosts(LANG("datum.65506441fe84cf67", list(get_current_wave().name)), source = ghost_target_turf, header = "Invasion in progress", alert_overlay = target_appearance)
 	set_next_incident_time()
 	current_wave++
 
@@ -285,7 +286,7 @@
 	min_droppod_dropdelay = 30
 
 /datum/round_event/droppod_airraid/syndicate/announce(fake)
-	priority_announce("Alert! The Syndicate is sending orbital drop shock troopers to [GLOB.station_name]. Please brace for impact.", "Incoming Enemy Signatures", 'sound/announcer/alarm/airraid.ogg',color_override = "red")
+	priority_announce(LANG("datum.b4b8805888fddce9", list(GLOB.station_name)), "Incoming Enemy Signatures", 'sound/announcer/alarm/airraid.ogg',color_override = "red")
 
 /datum/round_event/droppod_airraid/syndicate/new_boss_spawn()
 	. = ..()
@@ -296,7 +297,7 @@
 		grievous.add_faction(ROLE_SYNDICATE)
 
 /datum/round_event/droppod_airraid/syndicate/announce_end()
-	priority_announce("The Syndicate attack on [GLOB.station_name] has ceased. Please calmly return to your work tasks.")
+	priority_announce(LANG("datum.8547036433550edc", list(GLOB.station_name)))
 
 ////////////////////////////////////////
 
@@ -321,7 +322,7 @@
 	time_to_next_wave_droppod_factor = 50
 
 /datum/round_event/droppod_airraid/syndicate/lesser/announce(fake)
-	priority_announce("Alert! The Syndicate is sending a skirmishing party to [GLOB.station_name]. Please brace for impact.", "Incoming Enemy Scouts", sound = 'sound/announcer/notice/notice1.ogg', color_override = "orange")
+	priority_announce(LANG("datum.dd46bf42c87e22d5", list(GLOB.station_name)), "Incoming Enemy Scouts", sound = 'sound/announcer/notice/notice1.ogg', color_override = "orange")
 
 //////////////////////////////////////
 //////////////// BOTS ////////////////
@@ -359,7 +360,7 @@
 	min_droppod_dropdelay = 30
 
 /datum/round_event/droppod_airraid/hivebots/announce(fake)
-	priority_announce("Alert! Unidentified pod signatures have been detected en-route to [GLOB.station_name]. Please brace for impact.", "Unidentified Drop Pods", sound = 'sound/announcer/notice/notice1.ogg', color_override = "orange")
+	priority_announce(LANG("datum.7730555a598aebba", list(GLOB.station_name)), "Unidentified Drop Pods", sound = 'sound/announcer/notice/notice1.ogg', color_override = "orange")
 
 /datum/round_event/droppod_airraid/hivebots/announce_end()
-	priority_announce("The pod fleet colliding into [GLOB.station_name] has ceased. Please calmly return to your work tasks.")
+	priority_announce(LANG("datum.a01502957a5f1ab6", list(GLOB.station_name)))

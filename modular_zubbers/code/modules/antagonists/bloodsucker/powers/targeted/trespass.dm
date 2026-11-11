@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/bloodsucker/targeted/trespass
 	name = "Trespass"
 	desc = "Become mist and advance two tiles in one direction. Useful for skipping past doors and barricades."
@@ -12,10 +13,10 @@
 
 /datum/action/cooldown/bloodsucker/targeted/trespass/get_power_explanation_extended()
 	. = list()
-	. += "Click anywhere [target_range] tiles away from you to teleport."
-	. += "This power goes through all obstacles except Walls."
-	. += "Higher levels decrease the sound played from using the Power, and increase the speed of the transition."
-	. += "It takes [DisplayTimeText(GetTeleportDelay())] to teleport."
+	. += LANG("datum.bc525dfe75908fa8", list(target_range))
+	. += LANG("datum.2f015f126443fb6d", null)
+	. += LANG("datum.a240f85ec24f9ad3", null)
+	. += LANG("datum.452dfcc324961a91", list(DisplayTimeText(GetTeleportDelay())))
 
 /datum/action/cooldown/bloodsucker/targeted/trespass/can_use(mob/living/carbon/user, trigger_flags)
 	. = ..()
@@ -51,7 +52,7 @@
 		// ERROR! Wall!
 		if(iswallturf(from_turf))
 			var/wallwarning = (i == 1) ? "in the way" : "at your destination"
-			owner.balloon_alert(owner, "there is a wall [wallwarning].")
+			owner.balloon_alert(owner, LANG("datum.34edbe2f338713a5", list(wallwarning)))
 			return FALSE
 	// Done
 	target_turf = from_turf
@@ -66,8 +67,8 @@
 	var/turf/my_turf = get_turf(owner)
 
 	user.visible_message(
-		span_warning("[user]'s form dissipates into a cloud of mist!"),
-		span_notice("You disspiate into formless mist."),
+		span_warning(LANG("datum.14a75f28132f8ef6", list(user))),
+		span_notice(LANG("datum.42d2967c415adb56", null)),
 	)
 	// Effect Origin
 	var/sound_strength = max(60, 70 - level_current * 10)

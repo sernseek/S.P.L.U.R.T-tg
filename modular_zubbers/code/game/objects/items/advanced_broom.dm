@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Items the advanced broom can move per lane in one sweep, against 20 for a plain one
 #define ADVANCED_BROOM_PUSH_LIMIT 15
 /// Movement penalty while the bristles are charged
@@ -15,7 +16,7 @@
 
 /obj/item/pushbroom/advanced/examine(mob/user)
 	. = ..()
-	. += span_notice("The bristle charge is set to <b>[wide_sweep ? "ON" : "OFF"]</b>.")
+	. += span_notice(LANG("obj.0be69e53de3bd91e", list(wide_sweep ? "ON" : "OFF")))
 
 /obj/item/pushbroom/advanced/update_overlays()
 	. = ..()
@@ -55,7 +56,7 @@
 	update_appearance()
 	holder.update_equipment_speed_mods()
 	playsound(holder, wide_sweep ? 'sound/machines/synth/synth_yes.ogg' : 'sound/machines/synth/synth_no.ogg', 40, TRUE, frequency = rand(5120, 8800))
-	holder.balloon_alert(holder, "bristle charge [wide_sweep ? "on" : "off"]")
+	holder.balloon_alert(holder, LANG("obj.84b08c3c670e5316", list(wide_sweep ? "on" : "off")))
 
 /obj/item/pushbroom/advanced/sweep(mob/user, atom/atom)
 	. = ..()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/jelly
 	mutant_bodyparts = list()
 	hair_alpha = 160 //a notch brighter so it blends better.
@@ -63,8 +64,8 @@
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "biohazard",
-		SPECIES_PERK_NAME = "Squishy Form",
-		SPECIES_PERK_DESC = "Being made of slime, you have the ability to alter your physical form to be whatever you choose! You may grow ears, change your hair, and even become a taur-like if you so choose, at the press of a button and the snap of a finger!"
+		SPECIES_PERK_NAME = LANG("datum.6c7577440f930e17", null),
+		SPECIES_PERK_DESC = LANG("datum.91b3186a2b1de18f", null)
 	))
 
 	return perk_descriptions
@@ -121,7 +122,7 @@
 		return
 	alterer.visible_message(
 		span_notice("[owner] [shapeshift_text]"),
-		span_notice("You focus intently on altering your body while standing perfectly still...")
+		span_notice(LANG("datum.77be045a4c9de2e2", null))
 	)
 	change_form(alterer)
 
@@ -183,8 +184,8 @@
 
 	var/new_mutant_colour = tgui_color_picker(
 		alterer,
-		"Choose your character's new [color_choice = "All" ? "" : LOWER_TEXT(color_choice)] color:",
-		"Form Alteration",
+		LANG("datum.118ff48c2b3ee4a4", list(color_choice = "All" ? "" : LOWER_TEXT(color_choice))),
+		LANG("datum.7aaef146e88b87c1", null),
 		alterer.dna.features[color_target]
 	)
 	if(!new_mutant_colour)
@@ -192,20 +193,20 @@
 
 	var/marking_reset = tgui_alert(
 		alterer,
-		"Would you like to reset your markings to match your new colors?",
-		"Reset markings",
+		LANG("datum.1b099a2773f0a9cc", null),
+		LANG("datum.9439a8020ebf41f8", null),
 		list("Yes", "No"),
 	)
 	var/mutant_part_reset = tgui_alert(
 		alterer,
-		"Would you like to reset your mutant body parts(not limbs) to match your new colors?",
-		"Reset mutant parts",
+		LANG("datum.69e2f7b000961634", null),
+		LANG("datum.78c4118f37e3f6b3", null),
 		list("Yes", "No"),
 	)
 	var/hair_reset = tgui_alert(
 		alterer,
-		"Would you like to reset your hair to match your new colors?",
-		"Reset hair",
+		LANG("datum.d9a5dee1c98d0368", null),
+		LANG("datum.9ced8c056765e9c3", null),
 		list("Hair", "Facial Hair", "Both", "None"),
 	)
 
@@ -275,18 +276,18 @@
 		return
 	switch(target_hair)
 		if("Hair")
-			var/new_style = tgui_input_list(owner, "Select a hair style", "Hair Alterations", SSaccessories.hairstyles_list)
+			var/new_style = tgui_input_list(owner, LANG("datum.2e464f6c2398ac49", null), LANG("datum.68c7fd0872462218", null), SSaccessories.hairstyles_list)
 			if(new_style)
 				alterer.set_hairstyle(new_style, update = TRUE)
 		if("Facial Hair")
-			var/new_style = tgui_input_list(alterer, "Select a facial hair style", "Hair Alterations", SSaccessories.facial_hairstyles_list)
+			var/new_style = tgui_input_list(alterer, LANG("datum.df720244d72117e8", null), LANG("datum.68c7fd0872462218", null), SSaccessories.facial_hairstyles_list)
 			if(new_style)
 				alterer.set_facial_hairstyle(new_style, update = TRUE)
 		if("Hair Color")
-			var/hair_area = tgui_alert(alterer, "Select which color you would like to change", "Hair Color Alterations", list("Hairstyle", "Facial Hair", "Both"))
+			var/hair_area = tgui_alert(alterer, LANG("datum.a2fbdd01e8dc9980", null), LANG("datum.acfbf5c764cbadcc", null), list("Hairstyle", "Facial Hair", "Both"))
 			if(!hair_area)
 				return
-			var/new_hair_color = tgui_color_picker(alterer, "Select your new hair color", "Hair Color Alterations", alterer.dna.features[FEATURE_MUTANT_COLOR])
+			var/new_hair_color = tgui_color_picker(alterer, LANG("datum.6a38b3761a7ddfa8", null), LANG("datum.acfbf5c764cbadcc", null), alterer.dna.features[FEATURE_MUTANT_COLOR])
 			if(!new_hair_color)
 				return
 
@@ -313,8 +314,8 @@
 		key_list.Remove("Genitals")
 	var/dna_alteration = tgui_input_list(
 		alterer,
-		"Select what part of your DNA you'd like to alter",
-		"DNA Alteration",
+		LANG("datum.00f45ca31fc2e61c", null),
+		LANG("datum.a351df4feae470f5", null),
 		key_list,
 	)
 	if(!dna_alteration)
@@ -322,7 +323,7 @@
 	switch(dna_alteration)
 		if("Body Size")
 			if(oversized_user && !HAS_TRAIT(alterer, TRAIT_OVERSIZED))
-				var/reset_size = tgui_alert(alterer, "Do you wish to return to being oversized?", "Size Change", list("Yes", "No"))
+				var/reset_size = tgui_alert(alterer, LANG("datum.ad188441eb41b622", null), LANG("datum.0eaf6f27787a7a13", null), list("Yes", "No"))
 				if(reset_size == "Yes")
 					alterer.add_quirk(/datum/quirk/oversized)
 					return
@@ -338,8 +339,8 @@
 			//) - SPLURT EDIT - ORIGINAL
 			var/new_body_size = tgui_input_number(
 				alterer,
-				"Choose your desired sprite size: ([BODY_SIZE_MIN * 100]% to [BODY_SIZE_MAX * 100]%). Warning: May make your character look distorted",
-				"Size Change",
+				LANG("datum.768912b9ba1b6585", list(BODY_SIZE_MIN * 100, BODY_SIZE_MAX * 100)),
+				LANG("datum.0eaf6f27787a7a13", null),
 				default = min(alterer.current_size * 100, BODY_SIZE_MAX * 100),
 				max_value = BODY_SIZE_MAX * 100,
 				min_value = BODY_SIZE_MIN * 100,
@@ -364,8 +365,8 @@
 		if("Gender")
 			var/new_gender = tgui_input_list(
 				alterer,
-				"What gender do you want?",
-				"Gender Alteration",
+				LANG("datum.d593ad9bcc66b166", null),
+				LANG("datum.82aca0ea466be365", null),
 				list(MALE, FEMALE, PLURAL, NEUTER)
 			)
 			if(!new_gender)
@@ -374,8 +375,8 @@
 
 			var/chosen_physique = tgui_input_list(
 				alterer,
-				"What physique to go along with it?",
-				"Bodytype Alteration",
+				LANG("datum.d1bda06fb57215e9", null),
+				LANG("datum.b67c22c6c3b8c840", null),
 				list(MALE, FEMALE, "Don't change")
 				)
 
@@ -408,8 +409,8 @@
 		mutant_part_list[block::feature_key] = block
 	var/chosen_key = tgui_input_list(
 		alterer,
-		"Select the part you want to alter",
-		"Body Part Alterations",
+		LANG("datum.1afe48a53df532bc", null),
+		LANG("datum.20a1aa5c5938fda0", null),
 		mutant_part_list,
 	)
 	if(!chosen_key)
@@ -418,8 +419,8 @@
 	var/choice_list = available_choices[chosen_key]
 	var/chosen_name_key = tgui_input_list(
 		alterer,
-		"What do you want the part to become?",
-		"Body Part Alterations",
+		LANG("datum.a3da619cd1eafa1a", null),
+		LANG("datum.20a1aa5c5938fda0", null),
 		choice_list,
 	)
 	if(!chosen_name_key)
@@ -481,8 +482,8 @@
 	var/list/candidates = GLOB.body_marking_sets
 	var/chosen_name = tgui_input_list(
 		alterer,
-		"Select which set of markings would you like to change into",
-		"Marking Alterations",
+		LANG("datum.c46516be82fe7960", null),
+		LANG("datum.9c8eed2de0da3231", null),
 		candidates,
 	)
 	if(!chosen_name)
@@ -508,12 +509,12 @@
 	if(alterer.get_organ_slot(ORGAN_SLOT_BELLY))
 		genital_list += list("Belly Size")
 	if(!length(genital_list))
-		alterer.balloon_alert(alterer, "no genitals!")
+		alterer.balloon_alert(alterer, LANG("datum.e52cb7ebc0ef392f", null))
 
 	var/dna_alteration = tgui_input_list(
 		alterer,
-		"Select what bodypart you'd like to alter",
-		"Genital Alteration",
+		LANG("datum.be2e024fc3c4c753", null),
+		LANG("datum.0954ca9b64fe3b5b", null),
 		genital_list
 	)
 	if(!dna_alteration)
@@ -529,8 +530,8 @@
 			var/obj/item/organ/genital/breasts/melons = alterer.get_organ_slot(ORGAN_SLOT_BREASTS)
 			var/new_size = tgui_input_list(
 				alterer,
-				"Choose your character's breasts size:",
-				"DNA Alteration",
+				LANG("datum.2fbf94883ca18164", null),
+				LANG("datum.a351df4feae470f5", null),
 				GLOB.breast_size_to_number,
 			)
 			if(!new_size)
@@ -544,8 +545,8 @@
 				max_girth = alterer.dna.features["penis_size"]
 			var/new_girth = tgui_input_number(
 				alterer,
-				"Choose your penis girth:\n(1-[max_girth] (based on length) in inches)",
-				"Character Preference",
+				LANG("datum.761a4cc3afd591b9", list(max_girth)),
+				LANG("datum.78f80c295b6adf9f", null),
 				max_value = max_girth,
 				min_value = 1
 			)
@@ -557,8 +558,8 @@
 			var/obj/item/organ/genital/penis/wang = alterer.get_organ_slot(ORGAN_SLOT_PENIS)
 			var/new_length = tgui_input_number(
 				alterer,
-				"Choose your penis length:\n([PENIS_MIN_LENGTH]-[PENIS_MAX_LENGTH] inches)",
-				"DNA Alteration",
+				LANG("datum.577a274c6cb84df7", list(PENIS_MIN_LENGTH, PENIS_MAX_LENGTH)),
+				LANG("datum.a351df4feae470f5", null),
 				max_value = PENIS_MAX_LENGTH,
 				min_value = PENIS_MIN_LENGTH,
 			)
@@ -574,8 +575,8 @@
 			var/obj/item/organ/genital/penis/schlong = alterer.get_organ_slot(ORGAN_SLOT_PENIS)
 			var/new_sheath = tgui_input_list(
 				alterer,
-				"Choose your penis sheath",
-				"DNA Alteration",
+				LANG("datum.a6d8073ad873f8b7", null),
+				LANG("datum.a351df4feae470f5", null),
 				SHEATH_MODES,
 			)
 			if(new_sheath)
@@ -590,8 +591,8 @@
 			var/obj/item/organ/genital/testicles/avocados = alterer.get_organ_slot(ORGAN_SLOT_TESTICLES)
 			var/new_size = tgui_input_list(
 				alterer,
-				"Choose your character's testicles size:",
-				"Character Preference",
+				LANG("datum.4c74bfeb273e0f04", null),
+				LANG("datum.78f80c295b6adf9f", null),
 				GLOB.preference_balls_sizes,
 			)
 			if(new_size)
@@ -602,8 +603,8 @@
 			var/obj/item/organ/genital/butt/buttocks = alterer.get_organ_slot(ORGAN_SLOT_BUTT)
 			var/new_size = tgui_input_number(
 				alterer,
-				"Choose your character's butt size:",
-				"Character Preference",
+				LANG("datum.39c386c4843b921d", null),
+				LANG("datum.78f80c295b6adf9f", null),
 				max_value = BUTT_MAX_SIZE,
 				min_value = BUTT_MIN_SIZE,
 			)
@@ -616,8 +617,8 @@
 			var/obj/item/organ/genital/belly/tummy = alterer.get_organ_slot(ORGAN_SLOT_BELLY)
 			var/new_size = tgui_input_number(
 				alterer,
-				"Choose your character's belly size:",
-				"Character Preference",
+				LANG("datum.d68942352f956cbf", null),
+				LANG("datum.78f80c295b6adf9f", null),
 				max_value = BELLY_MAX_SIZE,
 				min_value = BELLY_MIN_SIZE,
 			)
@@ -636,8 +637,8 @@
 /datum/action/innate/alter_form/proc/begin_character_alteration(mob/living/carbon/human/alterer)
 	var/list/mob/living/carbon/viable_targets = list()
 
-	to_chat(alterer, span_userdanger("This ability is not meant to be used for mechanical advantage."))
-	to_chat(alterer, span_warning("Your use of character mode will be admin logged! Don't mess about!"))
+	to_chat(alterer, span_userdanger(LANG("datum.858be29afb0b3c99", null)))
+	to_chat(alterer, span_warning(LANG("datum.57c4e4974c94f838", null)))
 
 	for (var/mob/living/carbon/human/iter_carbon in view(alterer))
 		if (!is_valid_char_alteration_target(iter_carbon))
@@ -646,20 +647,20 @@
 
 	var/mob/living/carbon/target = tgui_input_list(
 		alterer,
-		"Who do you want to transform?",
-		"Visible mobs",
+		LANG("datum.d4a51538af95270f", null),
+		LANG("datum.bc6493afcfc160e3", null),
 		viable_targets,
 		alterer,
 		5 SECONDS,
 	)
 	if (isnull(target) || !is_valid_char_alteration_target(target))
-		alterer.balloon_alert(alterer, "invalid selection!")
+		alterer.balloon_alert(alterer, LANG("datum.63a7193b86a7f022", null))
 		return
 
 	var/mode = tgui_alert(
 		alterer,
-		"Do you want to use your characters, or theirs?",
-		"Character Source",
+		LANG("datum.2fb5dee4d19891a1", null),
+		LANG("datum.3ad59b35347d0bca", null),
 		list("Yours", "Theirs", "Cancel"),
 		5 SECONDS,
 		FALSE
@@ -677,7 +678,7 @@
 			return
 
 	if (isnull(target_client) || isnull(target_mob))
-		alterer.balloon_alert(alterer, "invalid selection!")
+		alterer.balloon_alert(alterer, LANG("datum.63a7193b86a7f022", null))
 		return
 
 	var/list/prefdata_names = target_client.prefs.create_character_profiles()
@@ -688,12 +689,12 @@
 	var/target_char_name = tgui_input_list(
 		target_mob,
 		target_char_tgui_title,
-		"Character",
+		LANG("datum.c2e2f52bbe0870ed", null),
 		prefdata_names,
 		timeout = 5 SECONDS
 	)
 	if (isnull(target_char_name))
-		alterer.balloon_alert(alterer, "no selection!")
+		alterer.balloon_alert(alterer, LANG("datum.72281623be840217", null))
 		return
 
 	if (!is_valid_char_alteration_target(target))
@@ -701,15 +702,15 @@
 
 	var/allowed = tgui_alert(
 		target,
-		"[alterer.get_visible_name()] wants to transform you into [target_char_name]. Do you consent?",
-		"Transformation",
+		LANG("datum.148ed95a567d21b2", list(alterer.get_visible_name(), target_char_name)),
+		LANG("datum.5fa63e8f5de2dbe8", null),
 		list("No", "Yes"),
 		10 SECONDS,
 		FALSE
 	)
 
 	if (allowed != "Yes")
-		alterer.balloon_alert(alterer, "transformation rejected")
+		alterer.balloon_alert(alterer, LANG("datum.42796a6e4ac7d7fb", null))
 		return
 
 	var/datum/preferences/prefs = target_client?.prefs
@@ -736,8 +737,8 @@
  */
 /datum/action/innate/alter_form/proc/do_char_alteration(mob/living/carbon/human/alterer, mob/living/carbon/human/target, datum/preferences/char_source)
 	target.visible_message(
-		span_warning("[target.get_visible_name()] unnervingly twitches, [target.p_their()] body distorting... until eventually transforming into something new."),
-		span_warning("Your body sears and tears, taking a new form!")
+		span_warning(LANG("datum.427e7b850b176d24", list(target.get_visible_name(), target.p_their()))),
+		span_warning(LANG("datum.50d134dfb3fc9963", null))
 	)
 	var/original_name = target.dna.real_name
 

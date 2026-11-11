@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/mod/control/pre_equipped/protean
 	name = "\improper Protean modsuit"
 	desc = "The modsuit unit of a Protean, allowing them to retract into it, or to deploy a suit that protects against various environments."
@@ -33,11 +34,11 @@
 	return ..()
 
 /obj/item/mod/control/pre_equipped/protean/wrench_act(mob/living/user, obj/item/wrench)
-	to_chat(user, span_warning("The core is integrated and cannot be removed from the [src]."))
+	to_chat(user, span_warning(LANG("obj.8c354e86c418f09a", list(src))))
 	return FALSE // Can't remove the core.
 
 /obj/item/mod/control/pre_equipped/protean/emag_act(mob/user, obj/item/card/emag/emag_card)
-	to_chat(user, span_warning("The [src] does not respond to the [emag_card]."))
+	to_chat(user, span_warning(LANG("obj.ed6f4f2183556b03", list(src, emag_card))))
 	return FALSE // Nope
 
 /obj/item/mod/control/pre_equipped/protean/canStrip(mob/who)
@@ -50,12 +51,12 @@
 	var/obj/item/mod/module/storage/inventory = locate() in src.modules
 	if(!isnull(inventory))
 		src.atom_storage.remove_all()
-		to_chat(stripper, span_notice("You empty out all the items from the Protean's internal storage module!"))
-		stripper.balloon_alert(stripper, "emptied storage")
+		to_chat(stripper, span_notice(LANG("obj.1db650e9fa88d7ac", null)))
+		stripper.balloon_alert(stripper, LANG("obj.12f3de48921d2632", null))
 		return TRUE
 
-	to_chat(stripper, span_warning("This suit seems to be a part of them. You can't remove it!"))
-	stripper.balloon_alert(stripper, "can't strip a Protean's suit!")
+	to_chat(stripper, span_warning(LANG("obj.f60764d2b85634da", null)))
+	stripper.balloon_alert(stripper, LANG("obj.765ced3071492667", null))
 	return ..()
 
 /obj/item/mod/control/pre_equipped/protean/proc/drop_suit()
@@ -87,35 +88,35 @@
 		RegisterSignal(user, COMSIG_OOC_ESCAPE, PROC_REF(ooc_escape))
 		if(modlocked)
 			ADD_TRAIT(src, TRAIT_NODROP, "protean")
-			to_chat(user, span_warning("The suit does not seem to be able to come off..."))
+			to_chat(user, span_warning(LANG("obj.d5636231f341f730", null)))
 	else
 		UnregisterSignal(user, COMSIG_OOC_ESCAPE)
 
 /obj/item/mod/control/pre_equipped/protean/choose_deploy(mob/user)
 	if(!isprotean(user) && modlocked && active)
-		balloon_alert(user, "it refuses to listen")
+		balloon_alert(user, LANG("obj.d953009393ffc8a0", null))
 		return FALSE
 	return ..()
 
 /obj/item/mod/control/pre_equipped/protean/toggle_activate(mob/user, force_deactivate)
 	if(!force_deactivate && modlocked && !isprotean(user) && active)
-		balloon_alert(user, "it doesn't turn off")
+		balloon_alert(user, LANG("obj.8623f77bc72268eb", null))
 		return FALSE
 	if(!active && user.has_status_effect(/datum/status_effect/protean_low_power_mode))
-		balloon_alert(user, "low power")
+		balloon_alert(user, LANG("obj.06b54e8fb44190d1", null))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return FALSE
 	return ..()
 
 /obj/item/mod/control/pre_equipped/protean/quick_deploy(mob/user)
 	if(!isprotean(user) && modlocked && active)
-		balloon_alert(user, "it won't undeploy")
+		balloon_alert(user, LANG("obj.95388ab3d601e3ba", null))
 		return FALSE
 	return ..()
 
 /obj/item/mod/control/pre_equipped/protean/retract(mob/user, obj/item/part, instant)
 	if(!isprotean(user) && modlocked && active && !instant)
-		balloon_alert(user, "that button is unresponsive")
+		balloon_alert(user, LANG("obj.877fb37caeea37f2", null))
 		return FALSE
 	return ..()
 
@@ -131,19 +132,19 @@
 	if(brain?.dead && open && istype(tool, /obj/item/organ/stomach/protean) && do_after(user, 10 SECONDS) && !refactory)
 		var/obj/item/organ/stomach = tool
 		stomach.Insert(protean_core.linked_species.owner, TRUE, DELETE_IF_REPLACED)
-		balloon_alert(user, "inserted!")
+		balloon_alert(user, LANG("obj.863baa0b9898fd21", null))
 		playsound(src, 'sound/machines/click.ogg', 50, TRUE, SILENCED_SOUND_EXTRARANGE)
 		brain.revive_timer()
 		return ITEM_INTERACT_SUCCESS
 
 	if(istype(tool, /obj/item/mod/construction/plating))
 		if(stored_modsuit)
-			balloon_alert(user, "remove assimilated suit")
+			balloon_alert(user, LANG("obj.1d3862027a9450b2", null))
 			return ITEM_INTERACT_BLOCKING
 		if(active)
-			balloon_alert(user, "turn it off")
+			balloon_alert(user, LANG("obj.3834a0ff1eb4ba7f", null))
 			return ITEM_INTERACT_BLOCKING
-		to_chat(user, span_notice("You begin to copy [tool], destroying it in the process!"))
+		to_chat(user, span_notice(LANG("obj.1134c6abc473b597", list(tool))))
 		if(!do_after(user, 4 SECONDS))
 			return ITEM_INTERACT_BLOCKING
 		protean_core.linked_species.assimilate_theme(user, tool)
@@ -153,7 +154,7 @@
 
 	if(istype(tool, /obj/item/mod/control))
 		if(active)
-			balloon_alert(user, "turn it off")
+			balloon_alert(user, LANG("obj.3834a0ff1eb4ba7f", null))
 			return ITEM_INTERACT_BLOCKING
 
 		var/static/list/obj/item/mod/control/banned_modsuits = list(
@@ -163,10 +164,10 @@
 				)
 
 		if(is_type_in_list(tool, banned_modsuits))
-			balloon_alert(user, "incompatable")
+			balloon_alert(user, LANG("obj.de0a41b616ccdccb", null))
 			return ITEM_INTERACT_BLOCKING
 
-		to_chat(user, span_notice("The suit begins to slowly absorb [tool]!"))
+		to_chat(user, span_notice(LANG("obj.09af2cc2e0613094", list(tool))))
 		if(!do_after(user, 4 SECONDS))
 			return ITEM_INTERACT_BLOCKING
 		protean_core.linked_species.assimilate_modsuit(user, tool)
@@ -176,16 +177,16 @@
 	// Memory Wipe Via Pen
 
 	if(brain?.dead && istype(tool, /obj/item/pen))
-		to_chat(user, span_notice("You begin to reset the Protean's random access memory using a pen!"))
-		user.balloon_alert_to_viewers("resetting memory")
-		user.visible_message(span_boldwarning("[user] is reaching a pen into [protean_in_suit] to find the reset button!"))
+		to_chat(user, span_notice(LANG("obj.5d2327c232eac6b8", null)))
+		user.balloon_alert_to_viewers(LANG("obj.541dfbd093f490a1", null))
+		user.visible_message(span_boldwarning(LANG("obj.0c28a703dbe0d947", list(user, protean_in_suit))))
 		playsound(src, 'sound/machines/synth/synth_no.ogg', 100)
 		if(!do_after(user, 10 SECONDS))
 			return
-		protean_in_suit.say("Alert - Random Access Memory Reset. Current memories lost. Any interactions that were ongoing have been forgotten.", forced = TRUE)
+		protean_in_suit.say(LANG("obj.660bf6420ee30e2d", null), forced = TRUE)
 		protean_in_suit.log_message("has had their memory reset.", LOG_ATTACK)
 		message_admins("[ADMIN_LOOKUPFLW(protean_in_suit)] has had their memories reset with a pen by [ADMIN_LOOKUPFLW(user)]")
-		to_chat(protean_in_suit, span_boldwarning("Your memories have been reset. You cannot remember who reset you or any of the events leading up to your reset."))
+		to_chat(protean_in_suit, span_boldwarning(LANG("obj.10e67106e0fd0042", null)))
 		playsound(src, 'sound/machines/synth/synth_yes.ogg', 100)
 		playsound(src, 'sound/machines/click.ogg', 100)
 		protean_in_suit.SetSleeping(1 MINUTES)
@@ -216,16 +217,16 @@
 			else
 				. += isnull(refactory) ? span_warning("<b>Insert a new refactory</b>") : span_notice("<b>Refactory Installed! Repairing systems...</b>")
 		if(protean_in_suit.key && !protean_in_suit.client)  // We have to put these here because you're examining an object, and not a carbon, and players otherwise can't tell if anyone is home.
-			. += span_deadsay("[t_He] [t_has] entered stasis and [t_has] been completely unresponsive to anything for [round(((world.time - protean_in_suit.lastclienttime) / (1 MINUTES)),1)] minutes. [t_He] may snap out of it soon.")
+			. += span_deadsay(LANG("obj.d46d2e4daeeac3d2", list(t_He, t_has, t_has, round(((world.time - protean_in_suit.lastclienttime) / (1 MINUTES)),1), t_He)))
 		if(!protean_in_suit.key)
-			. += span_deadsay("[t_He] [t_is] totally listless. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")
+			. += span_deadsay(LANG("obj.cb9d47585758c7e9", list(t_He, t_is, t_him)))
 
 /obj/item/mod/control/pre_equipped/protean/blob_act(obj/structure/blob/B)
 	var/obj/item/mod/core/protean/p_core = core
 	var/mob/living/carbon/human/protean = p_core?.linked_species.owner
 	var/obj/item/organ/brain/protean/brain = protean?.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(!brain.dead && !isnull(brain))
-		to_chat(protean, span_boldwarning("The [B] crushes you relentlessly until your refactory pops."))
+		to_chat(protean, span_boldwarning(LANG("obj.15647ee3de2a4f92", list(B))))
 		protean.take_overall_damage(300)
 	return ..()
 

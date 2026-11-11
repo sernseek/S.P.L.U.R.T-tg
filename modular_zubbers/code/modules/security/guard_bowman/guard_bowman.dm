@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //guard bowman headsets, issued to department guards instead of a plain dept headset
 //can send one-way reports on the security channel through the announcement network, but carry no security key so they never hear it back
 
@@ -52,7 +53,7 @@
 		return ..()
 
 	if(!COOLDOWN_FINISHED(src, report_cooldown))
-		balloon_alert_to_viewers("still recharging")
+		balloon_alert_to_viewers(LANG("obj.29fe70af0644addc", null))
 		return
 
 	var/spoken_language = language || talking_movable.get_selected_language()
@@ -73,7 +74,7 @@
 
 	var/obj/machinery/announcement_system/announcer = get_announcement_system(/datum/aas_config_entry/guard_report, src, list(RADIO_CHANNEL_SECURITY))
 	if(!announcer)
-		balloon_alert_to_viewers("no response")
+		balloon_alert_to_viewers(LANG("obj.372d902bfd322595", null))
 		return
 
 	announcer.announce(/datum/aas_config_entry/guard_report, list(
@@ -85,14 +86,14 @@
 	if(report_sound)
 		playsound(talking_movable, report_sound, radio_sound_volume, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT)
 	var/security_span = get_radio_span(GLOB.default_radio_channels[RADIO_CHANNEL_SECURITY])
-	to_chat(talking_movable, "<span class='[security_span]'><span class='name'>\[Security\] The Automated Announcement System</span> coldly states, <span class='message robot'>\"Your message has been received.\"</span></span>")
+	to_chat(talking_movable, LANG("obj.35c538b0b163cec4", list(security_span)))
 
 //lets the bogus report through even with a real key installed
 /obj/item/radio/headset/guard_bowman/click_alt(mob/user)
 	if(!(obj_flags & EMAGGED))
 		return NONE
 	if(!COOLDOWN_FINISHED(src, report_cooldown))
-		balloon_alert_to_viewers("still recharging")
+		balloon_alert_to_viewers(LANG("obj.29fe70af0644addc", null))
 		return CLICK_ACTION_BLOCKING
 	send_report(user, "")
 	return CLICK_ACTION_SUCCESS
@@ -102,23 +103,23 @@
 	if(!(item_flags & IN_INVENTORY) || loc != user)
 		return
 	if(obj_flags & EMAGGED)
-		. += span_info("<b>Alt-click</b> to send a 'totally legitimate' report.")
+		. += span_info(LANG("obj.ba6cc8be8bb74a88", null))
 	if(RADIO_CHANNEL_SECURITY in channels)
 		return
 	var/security_span = get_radio_span(GLOB.default_radio_channels[RADIO_CHANNEL_SECURITY])
-	. += span_notice("<ul style='display:inline-block; margin: 0; list-style: square;'><li><b>[span_class(security_span, RADIO_TOKEN_SECURITY)]</b> to report an incident on the security channel</li></ul>")
+	. += span_notice(LANG("obj.1924d079d923f73d", list(span_class(security_span, RADIO_TOKEN_SECURITY))))
 	if(!get_announcement_system(/datum/aas_config_entry/guard_report, src, list(RADIO_CHANNEL_SECURITY)))
-		. += span_warning("Its status display reads: ERROR")
+		. += span_warning(LANG("obj.08fa0d3223aeda36", null))
 	else if(!COOLDOWN_FINISHED(src, report_cooldown))
-		. += span_notice("Its status display reads: It can send another message in [DisplayTimeText(COOLDOWN_TIMELEFT(src, report_cooldown))]!")
+		. += span_notice(LANG("obj.d5bab3f3955938fa", list(DisplayTimeText(COOLDOWN_TIMELEFT(src, report_cooldown)))))
 	else
-		. += span_notice("Its status display reads: It can send a message right now.")
+		. += span_notice(LANG("obj.1f9f49d91e312059", null))
 
 /obj/item/radio/headset/guard_bowman/emag_act(mob/user, obj/item/card/emag/emag_card)
 	. = ..()
 	if(obj_flags & EMAGGED)
 		return .
-	balloon_alert(user, "report filter disabled")
+	balloon_alert(user, LANG("obj.7682bf1cce8dd219", null))
 	playsound(src, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	obj_flags |= EMAGGED
 	return TRUE

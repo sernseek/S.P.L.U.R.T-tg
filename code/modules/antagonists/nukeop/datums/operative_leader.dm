@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/antagonist/nukeop/leader
 	name = "Nuclear Operative Leader"
 	nukeop_outfit = /datum/outfit/syndicate/leader
@@ -11,7 +12,7 @@
 /datum/antagonist/nukeop/leader/memorize_code()
 	. = ..()
 	var/obj/item/paper/nuke_code_paper = new(get_turf(owner.current))
-	nuke_code_paper.add_raw_text("The nuclear authorization code is: <b>[nuke_team.memorized_code]</b>")
+	nuke_code_paper.add_raw_text(LANG("datum.80679267878c4573", list(nuke_team.memorized_code)))
 	nuke_code_paper.name = "nuclear bomb code"
 	nuke_code_paper.update_appearance()
 	owner.current.put_in_hands(nuke_code_paper)
@@ -26,10 +27,10 @@
 
 /datum/antagonist/nukeop/leader/greet()
 	play_stinger()
-	to_chat(owner, "<span class='warningplain'><B>You are the Syndicate [title] for this mission. You are responsible for guiding your team.</B></span>")
-	to_chat(owner, "<span class='warningplain'><B>If you feel you are not up to this task, trade your headset with another operative.</B></span>")
+	to_chat(owner, LANG("datum.cb8902e8adea1138", list(title)))
+	to_chat(owner, LANG("datum.3c440342cfd72d84", null))
 	if(!CONFIG_GET(flag/disable_warops))
-		to_chat(owner, "<span class='warningplain'><B>In your hand you will find a special item capable of triggering a greater challenge for your team. Examine it carefully and consult with your fellow operatives before activating it.</B></span>")
+		to_chat(owner, LANG("datum.27effbcf3558e27b", null))
 	owner.announce_objectives()
 
 /datum/antagonist/nukeop/leader/on_gain()
@@ -50,8 +51,8 @@
 	var/randomname = pick(GLOB.last_names)
 	var/newname = tgui_input_text(
 		owner.current,
-		"You are the nuclear operative [title]. Please choose a last name for your family.",
-		"Name change",
+		LANG("datum.232cff57c1c15cca", list(title)),
+		LANG("datum.b4bf4c54d223e79b", null),
 		randomname,
 		max_length = MAX_NAME_LEN,
 	)

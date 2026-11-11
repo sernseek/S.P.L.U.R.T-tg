@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/reagent/changeling_zombie_virus
 	name = "NT-CZV-1"
 	description = "\[CLASSIFED\]. THIS INCIDENT HAS BEEN REPORTED. DO NOT CONSUME. DISPOSE OF SAFELY."
@@ -71,5 +72,5 @@
 		return
 
 	if(infecting_human.AddComponent(/datum/component/changeling_zombie_infection))
-		to_chat(infecting_human,span_warning("You accidentally scratch your [found_hand.name] on [source]. Ouch."))
+		to_chat(infecting_human,span_warning(LANG("datum.3649fa51aaff806c", list(found_hand.name, source))))
 		found_hand.receive_damage(1)

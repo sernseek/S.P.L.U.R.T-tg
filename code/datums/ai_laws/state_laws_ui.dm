@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Basic UI that Silicons can use to state their laws.
 /datum/state_laws_ui
 	/// Silicon that owns this UI.
@@ -99,7 +100,7 @@
 	var/list/to_state_cached = to_state.Copy()
 
 	//"radiomod" is inserted before a hardcoded message to change if and how it is handled by an internal radio.
-	owner.say("[owner.radiomod] Current Active Laws:", forced = forced_log_message)
+	owner.say(LANG("datum.95a614f67d279f8a", list(owner.radiomod)), forced = forced_log_message)
 	sleep(1 SECONDS)
 
 	if (lawcache_zeroth && (force_all_laws || (lawcache_zeroth in to_state_cached)))
@@ -108,20 +109,20 @@
 
 	for (var/law in lawcache_hacked)
 		if (force_all_laws || (law in to_state_cached))
-			owner.say("[owner.radiomod] [ion_num()]. [law]", forced = forced_log_message, message_mods = list(MODE_SEQUENTIAL = TRUE, SAY_MOD_VERB = "states"))
+			owner.say(LANG("datum.205929e8e46c414b", list(owner.radiomod, ion_num(), law)), forced = forced_log_message, message_mods = list(MODE_SEQUENTIAL = TRUE, SAY_MOD_VERB = "states"))
 			sleep(1 SECONDS)
 
 	var/number = 1
 	for (var/law_text, is_ioned in lawcache_inherent)
 		if (force_all_laws || (law_text in to_state_cached))
-			owner.say("[owner.radiomod] [is_ioned ? ion_num() : number]. [law_text]", forced = forced_log_message, message_mods = list(MODE_SEQUENTIAL = TRUE, SAY_MOD_VERB = "states"))
+			owner.say(LANG("datum.205929e8e46c414b", list(owner.radiomod, is_ioned ? ion_num() : number, law_text)), forced = forced_log_message, message_mods = list(MODE_SEQUENTIAL = TRUE, SAY_MOD_VERB = "states"))
 			if(!is_ioned)
 				number++
 			sleep(1 SECONDS)
 
 	for (var/law_text, is_ioned in lawcache_supplied)
 		if (force_all_laws || (law_text in to_state_cached))
-			owner.say("[owner.radiomod] [is_ioned ? ion_num() : number]. [law_text]", forced = forced_log_message, message_mods = list(MODE_SEQUENTIAL = TRUE, SAY_MOD_VERB = "states"))
+			owner.say(LANG("datum.205929e8e46c414b", list(owner.radiomod, is_ioned ? ion_num() : number, law_text)), forced = forced_log_message, message_mods = list(MODE_SEQUENTIAL = TRUE, SAY_MOD_VERB = "states"))
 			if(!is_ioned)
 				number++
 			sleep(1 SECONDS)

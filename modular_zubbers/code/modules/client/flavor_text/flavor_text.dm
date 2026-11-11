@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //This is Bubberstation's special client preferences file, for flavor text. Background stuff like cultures will go here later.
 
 //NSFW Flavor text, a way to let players express their NSFW side without having it be visible in their normal flavor text.
@@ -100,7 +101,7 @@
 
 /datum/preference/text/headshot/silicon/apply_headshot(value)
 	if(stored_link[usr.ckey] != value)
-		to_chat(usr, span_notice("Please use a relatively SFW image of the head and shoulder area to maintain immersion level. Think of it as a headshot for your ID. Lastly, [span_bold("do not use a real life photo or use any image that is less than serious.")]"))
+		to_chat(usr, span_notice(LANG("datum.7da2af25f60c5607", list(span_bold("do not use a real life photo or use any image that is less than serious.")))))
 		log_game("[usr] has set their Silicon Headshot image to '[value]'.")
 	stored_link[usr?.ckey] = value
 	usr?.client?.prefs.headshot_silicon = value

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/element/inorganic_rejection
 	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
 
@@ -25,5 +26,5 @@
 /datum/element/inorganic_rejection/proc/reject_now(mob/living/source, obj/item/organ/organ)
 	organ.Remove(source)
 	organ.forceMove(get_turf(source))
-	to_chat(source, span_danger("Your body rejected [organ]!"))
-	organ.balloon_alert_to_viewers("rejected!", vision_distance = 1)
+	to_chat(source, span_danger(LANG("datum.427ddff45515f6df", list(organ))))
+	organ.balloon_alert_to_viewers(LANG("datum.c10edb676d93174f", null), vision_distance = 1)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/pet/gondola/gondolapod
 	name = "gondola"
 	real_name = "gondola"
@@ -47,9 +48,9 @@
 /mob/living/basic/pet/gondola/gondolapod/examine(mob/user)
 	. = ..()
 	if (contents.len)
-		. += span_notice("It looks like it hasn't made its delivery yet.")
+		. += span_notice(LANG("mob.8a9b49a01ab97ba9", null))
 	else
-		. += span_notice("It looks like it has already made its delivery.")
+		. += span_notice(LANG("mob.4acdee06062c437e", null))
 
 /mob/living/basic/pet/gondola/gondolapod/set_opened()
 	opened = TRUE
@@ -98,7 +99,7 @@
 	var/mob/living/basic/pet/gondola/gondolapod/gondola_owner = owner
 	var/total = gondola_owner.contents.len
 	if (total)
-		to_chat(gondola_owner, span_notice("You detect [total] object\s within your incredibly vast belly."))
+		to_chat(gondola_owner, span_notice(LANG("datum.21f6789c6c6884c3", list(total))))
 	else
-		to_chat(gondola_owner, span_notice("A closer look inside yourself reveals... nothing."))
+		to_chat(gondola_owner, span_notice(LANG("datum.d99b4df1a4a951d0", null)))
 	return TRUE

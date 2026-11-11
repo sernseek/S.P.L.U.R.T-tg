@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /** Drone Shell: Ghost role item for drones
  *
  * A simple mob spawner item that transforms into a maintenance drone
@@ -27,7 +28,7 @@
 	var/area/area = get_area(src)
 	if(area)
 		notify_ghosts(
-			"A drone shell has been created in \the [area.name].",
+			LANG("obj.29f7c73a9c0434e7", list(area.name)),
 			source = src,
 			header = "Drone Shell Created",
 			click_interact = TRUE,
@@ -53,6 +54,6 @@
 		var/minutes_left = required_playtime - current_playtime
 		var/playtime_left = DisplayTimeText(minutes_left * (1 MINUTES))
 		if(!silent)
-			to_chat(user, span_danger("You need to play [playtime_left] more as [required_role] to spawn as a Maintenance Drone!"))
+			to_chat(user, span_danger(LANG("obj.367c6ce554285b00", list(playtime_left, required_role))))
 		return FALSE
 	return ..()

@@ -1,27 +1,28 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/pinpointer/nuke
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	var/mode = TRACK_NUKE_DISK
 
 /obj/item/pinpointer/nuke/examine(mob/user)
 	. = ..()
-	var/msg = "Its tracking indicator reads "
+	var/msg = GLOB.i18n_server_locale == DEFAULT_UI_LOCALE ? "Its tracking indicator reads " : lang_reverse_text("Its tracking indicator reads") // ZH EDIT CHANGE - I18N: 半句前缀拼上后缀后谁也不是目录键；引号里的追踪代码是刻意的代码样式，保持原样 - ORIGINAL: var/msg = "Its tracking indicator reads "
 	switch(mode)
 		if(TRACK_NUKE_DISK)
-			msg += "\"nuclear_disk\"."
+			msg += LANG("obj.154f86ea0d061b3d", null)
 		if(TRACK_MALF_AI)
 			msg += "\"01000001 01001001\"."
 		if(TRACK_INFILTRATOR)
-			msg += "\"vasvygengbefuvc\"."
+			msg += LANG("obj.ba6e5a83fa0483cd", null)
 		/// SKYRAT EDIT BEGIN
 		if(TRACK_GOLDENEYE)
-			msg += "\"goldeneye_key\"."
+			msg += LANG("obj.5260cc04780ea703", null)
 		/// SKYRAT EDIT END
 		else
 			msg = "Its tracking indicator is blank."
 	. += msg
 	for(var/obj/machinery/nuclearbomb/bomb as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/nuclearbomb))
 		if(bomb.timing)
-			. += "Extreme danger. Arming signal detected. Time remaining: [bomb.get_time_left()]."
+			. += LANG("obj.bd76de8eae070a2b", list(bomb.get_time_left()))
 
 /obj/item/pinpointer/nuke/process(seconds_per_tick)
 	..()
@@ -34,7 +35,7 @@
 		playsound(src, 'sound/items/nuke_toy_lowpower.ogg', 50, FALSE)
 		if(isliving(loc))
 			var/mob/living/alerted_holder = loc
-			to_chat(alerted_holder, span_userdanger("Your [name] vibrates and lets out an ominous alarm. Uh oh."))
+			to_chat(alerted_holder, span_userdanger(LANG("obj.60b954c6fe57aab1", list(name))))
 		return
 
 /obj/item/pinpointer/nuke/scan_for_target()
@@ -65,7 +66,7 @@
 /obj/item/pinpointer/nuke/proc/switch_mode_to(new_mode)
 	if(isliving(loc))
 		var/mob/living/L = loc
-		to_chat(L, span_userdanger("Your [name] beeps as it reconfigures its tracking algorithms."))
+		to_chat(L, span_userdanger(LANG("obj.21c54b21f1b38033", list(name))))
 		playsound(L, 'sound/machines/beep/triple_beep.ogg', 50, TRUE)
 	mode = new_mode
 	scan_for_target()

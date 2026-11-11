@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/tree
 	name = "pine tree"
 	desc = "A pissed off tree-like alien. It seems annoyed with the festivities..."
@@ -95,8 +96,8 @@
 	if(prob(paralyze_prob + boost))
 		victim.Paralyze(paralyze_value + boost)
 		victim.visible_message(
-			span_danger("[src] knocks down [victim]!"),
-			span_userdanger("[src] knocks you down!"),
+			span_danger(LANG("mob.751de108dbfcd3d0", list(src, victim))),
+			span_userdanger(LANG("mob.f835f12eb2f64f6a", list(src))),
 		)
 
 /datum/ai_controller/basic_controller/tree

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define POP_PER_BORER 30
 
 /proc/printborer(datum/mind/borer)
@@ -106,7 +107,7 @@
 	announce_when = rand(announce_when, announce_when + 50)
 
 /datum/round_event/ghost_role/cortical_borer/announce(fake)
-	priority_announce("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert", ANNOUNCER_ALIENS)
+	priority_announce(LANG("datum.9d5038a31b818751", list(station_name())), "Lifesign Alert", ANNOUNCER_ALIENS)
 
 /datum/round_event/ghost_role/cortical_borer/start()
 	var/list/vents = list()
@@ -135,9 +136,9 @@
 		var/mob/living/basic/cortical_borer/spawned_cb = new /mob/living/basic/cortical_borer(vent_turf)
 		spawned_cb.ckey = new_borer.ckey
 		spawned_cb.mind.add_antag_datum(/datum/antagonist/cortical_borer)
-		to_chat(spawned_cb, span_warning("You are a cortical borer! You can fear someone to make them stop moving, but make sure to inhabit them! You only grow/heal/talk when inside a host!"))
+		to_chat(spawned_cb, span_warning(LANG("datum.4caf4163855c521a", null)))
 	for(var/mob/dead_mob in GLOB.dead_mob_list)
-		to_chat(dead_mob, span_notice("The cortical borers have been selected, you are able to orbit them! Remember, they can reproduce!"))
+		to_chat(dead_mob, span_notice(LANG("datum.dded6cdca0c7cfaa", null)))
 
 /datum/dynamic_ruleset/midround/from_ghosts/cortical_borer
 	name = "Cortical Borer Infestation"

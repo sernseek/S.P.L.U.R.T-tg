@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living
 	var/size_multiplier = RESIZE_NORMAL
 	var/mob_size_base_health
@@ -115,7 +116,7 @@
 
 	return ..()
 
-GAME_VERB_DESC(/mob/living, switch_scaling, "Switch scaling mode", "Switch sharp/fuzzy scaling for current mob.", "IC")
+GAME_VERB_DESC(/mob/living, switch_scaling, "切换缩放模式", "Switch sharp/fuzzy scaling for current mob.", "IC")
 	fuzzy = !fuzzy
 	regenerate_icons()
 

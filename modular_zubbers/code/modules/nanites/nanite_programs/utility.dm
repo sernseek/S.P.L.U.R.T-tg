@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Programs that interact with other programs or nanites directly, or have other special purposes.
 /datum/nanite_program/viral
 	name = "Viral Replica"
@@ -233,7 +234,7 @@
 	. = ..()
 
 /datum/nanite_program/nanite_sting/on_trigger(comm_message)
-	to_chat(host_mob, span_warning("Your hands becomes sharp and prickly."))
+	to_chat(host_mob, span_warning(LANG("datum.95b3cee3edb4c120", null)))
 	RegisterSignal(host_mob, COMSIG_LIVING_EARLY_UNARMED_ATTACK, PROC_REF(on_attack_hand))
 	decay_timer = addtimer(CALLBACK(src, PROC_REF(decay_sting)), 30 SECONDS, TIMER_STOPPABLE)
 
@@ -243,17 +244,17 @@
 	if(!isliving(living))
 		return
 	if(!CAN_HAVE_NANITES(living))
-		host_mob.balloon_alert(host_mob, "can't be infected!")
+		host_mob.balloon_alert(host_mob, LANG("datum.c0384dd5f3b5ccbe", null))
 		return
 	if(SEND_SIGNAL(living, COMSIG_HAS_NANITES))
-		host_mob.balloon_alert(host_mob, "already infected!")
+		host_mob.balloon_alert(host_mob, LANG("datum.98909f3d3195d6a4", null))
 		return
 	if(!living.Adjacent(host_mob))
-		host_mob.balloon_alert(host_mob, "can't reach!")
+		host_mob.balloon_alert(host_mob, LANG("datum.fba9228dcadf2006", null))
 		return
 	var/chances = 100 - living.run_armor_check(host_mob.zone_selected, BIO, silent = TRUE)
 	var/success = prob(chances)
-	host_mob.balloon_alert(host_mob, "[chances]% chance [success ? "success" : "failed!"]")
+	host_mob.balloon_alert(host_mob, LANG("datum.60c4803acf02b6f8", list(chances, success ? "success" : "failed!")))
 	if(success)
 		//unlike with Infective Exo-Locomotion, this can't take over existing nanites, because Nanite Sting only targets non-hosts.
 		living.AddComponent(/datum/component/nanites, 5)
@@ -261,11 +262,11 @@
 		// SEND_SIGNAL(living, COMSIG_NANITE_SET_CLOUD, nanites.cloud_id) won't set the cloud
 		SEND_SIGNAL(living, COMSIG_NANITE_SET_CLOUD_SYNC, NANITE_CLOUD_DISABLE)
 		living.investigate_log("was infected by a nanite cluster with cloud ID [nanites.cloud_id] by [key_name(host_mob)] at [AREACOORD(living)].", INVESTIGATE_NANITES)
-		to_chat(living, span_warning("You feel a tiny prick."))
+		to_chat(living, span_warning(LANG("datum.8ab80b34b0ce2ae9", null)))
 	decay_sting()
 
 /datum/nanite_program/nanite_sting/proc/decay_sting()
-	to_chat(host_mob, span_warning("Your hands no longer feel like they're covered in spines."))
+	to_chat(host_mob, span_warning(LANG("datum.91c27e52391f9534", null)))
 	deltimer(decay_timer)
 	decay_timer = null
 	UnregisterSignal(host_mob, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
@@ -320,8 +321,8 @@
 
 /datum/nanite_program/dermal_button/proc/press()
 	if(activated)
-		host_mob.visible_message(span_notice("[host_mob] presses a button on [host_mob.p_their()] forearm."),
-								span_notice("You press the nanite button on your forearm."), null, 2)
+		host_mob.visible_message(span_notice(LANG("datum.d74a9319054440bc", list(host_mob, host_mob.p_their()))),
+								span_notice(LANG("datum.94a45c935acb3ec4", null)), null, 2)
 		var/datum/nanite_extra_setting/sent_code = extra_settings[NES_SENT_CODE]
 		SEND_SIGNAL(host_mob, COMSIG_NANITE_SIGNAL, sent_code.get_value(), "a [name] program")
 

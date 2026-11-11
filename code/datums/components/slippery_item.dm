@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Item is slippery - picking it up or using it may cause it to immediately fall out of the user's hands
 /datum/component/slippery_item
 	/// Chance the item will fall on pick up or use
@@ -115,8 +116,8 @@
 			if(empty_hand == user.active_hand_index)
 				continue
 			if(user.putItemFromInventoryInHandIfPossible(source, empty_hand))
-				to_chat(user, span_notice("[source] slips out of your hands - but you manage to catch it, just in time."))
+				to_chat(user, span_notice(LANG("datum.62fb524006db1773", list(source))))
 			return TRUE
 
-	to_chat(user, span_warning("[source] slips out of your hands!"))
+	to_chat(user, span_warning(LANG("datum.5ceefb68176e21ff", list(source))))
 	return TRUE

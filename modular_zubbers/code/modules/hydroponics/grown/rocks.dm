@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/seeds/rockfruit
 	name = "pack of rockfruit seedlings"
 	desc = "Small seedlings of the golem rockfruit plant. There's a warning label on its packaging: \n\
@@ -51,7 +52,7 @@
 	if(!(do_after(user, 2 SECONDS)))
 		return
 	user.show_message(span_notice("You peel off the rocky shell of the rockfruit, revealing the fruity goodness inside!"))
-	balloon_alert(user, "peeled")
+	balloon_alert(user, LANG("obj.9dd7278b7572e02f", null))
 
 	// The fruit inside
 	var/obj/item/food/grown/peel_prod

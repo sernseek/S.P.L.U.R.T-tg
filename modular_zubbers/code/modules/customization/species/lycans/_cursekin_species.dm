@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/human/cursekin
 	name = "\improper Cursekin"
 	plural_form = "\improper Cursekin"
@@ -28,22 +29,20 @@
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = FA_ICON_ROBOT,
-			SPECIES_PERK_NAME = "Inorganic Rejection",
-			SPECIES_PERK_DESC = "The curse afflicting the Cursekin prevents their bodies from being augmented with cybernetic organs \
-			or implants."
+			SPECIES_PERK_NAME = LANG("datum.d7c5a41a1a0d6f22", null),
+			SPECIES_PERK_DESC = LANG("datum.54af8d942c4946a6", null)
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = FA_ICON_CLOUD_MOON,
-			SPECIES_PERK_NAME = "Silver Weakness",
-			SPECIES_PERK_DESC = "You are burnt by silver, especially the reagent. This is vastly amplified while you are in your Lycan form."
+			SPECIES_PERK_NAME = LANG("datum.2e9147341d2927e1", null),
+			SPECIES_PERK_DESC = LANG("datum.9a02b135f89b488d", null)
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = FA_ICON_MOON,
-			SPECIES_PERK_NAME = "Lycan Transformation",
-			SPECIES_PERK_DESC = "Due to the curse, Cursekin are capable of transforming into Lycans, taking on all of the perks and \
-			drawbacks of that form. See the Lycan species page for more.",
+			SPECIES_PERK_NAME = LANG("datum.346241ebaaddf74e", null),
+			SPECIES_PERK_DESC = LANG("datum.73c24ebe86484de6", null),
 		),
 	)
 

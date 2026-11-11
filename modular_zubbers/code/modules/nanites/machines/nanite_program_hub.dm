@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/nanite_program_hub
 	name = "nanite program hub"
 	desc = "Compiles nanite programs from the techweb servers and downloads them into disks."
@@ -30,7 +31,7 @@
 
 /obj/machinery/nanite_program_hub/examine(mob/user)
 	. = ..()
-	. += span_notice("Use with a linked multitool to link to a techweb server.")
+	. += span_notice(LANG("obj.a9868600a5be0db1", null))
 
 /obj/machinery/nanite_program_hub/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
@@ -64,7 +65,7 @@
 	var/obj/item/disk/nanite_program/new_disk = tool
 	if(!user.transferItemToLoc(new_disk, src))
 		return NONE
-	to_chat(user, span_notice("You insert [new_disk] into [src]"))
+	to_chat(user, span_notice(LANG("obj.a0235cf5996a0849", list(new_disk, src))))
 	playsound(src, 'sound/machines/terminal/terminal_insert_disc.ogg', 50, FALSE)
 	if(disk)
 		eject(user)
@@ -74,7 +75,7 @@
 /obj/machinery/nanite_program_hub/multitool_act(mob/living/user, obj/item/multitool/tool)
 	if(!QDELETED(tool.buffer) && istype(tool.buffer, /datum/techweb))
 		linked_techweb = tool.buffer
-		balloon_alert(user, "linked!")
+		balloon_alert(user, LANG("obj.f6c856f74a0a1b4e", null))
 		update_static_data_for_all_viewers()
 	return TRUE
 
@@ -99,7 +100,7 @@
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
 	if(disk && user.can_perform_action(src, !issilicon(user)))
-		to_chat(user, span_notice("You take out [disk] from [src]."))
+		to_chat(user, span_notice(LANG("obj.0b17bc8467640555", list(disk, src))))
 		eject(user)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 

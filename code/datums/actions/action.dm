@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * # Action system
  *
@@ -59,6 +60,11 @@
 
 /datum/action/New(Target)
 	link_to(Target)
+	// ZH EDIT ADDITION START - i18n - 全服中文时反查技能/法术 name/desc
+	if(GLOB.i18n_server_locale != DEFAULT_UI_LOCALE)
+		name = lang_reverse_text(name)
+		desc = lang_reverse_text(desc)
+	// ZH EDIT ADDITION END
 
 /// Links the passed target to our action, registering any relevant signals
 /datum/action/proc/link_to(Target)
@@ -182,37 +188,37 @@
 	if((check_flags & AB_CHECK_CONSCIOUS) && IS_UNCONSCIOUS_OR_CRIT(owner))
 		if (feedback)
 			if(owner.stat == DEAD)
-				owner.balloon_alert(owner, "dead!")
+				owner.balloon_alert(owner, LANG("datum.1bf49ad4e413a0a1", null))
 			else if(IS_UNCONSCIOUS(owner))
-				owner.balloon_alert(owner, "unconscious!")
+				owner.balloon_alert(owner, LANG("datum.dc8b5a428036bfca", null))
 			else
-				owner.balloon_alert(owner, "in critical!")
+				owner.balloon_alert(owner, LANG("datum.b49fe5107e2b7291", null))
 		return FALSE
 	if((check_flags & AB_CHECK_HANDS_BLOCKED) && HAS_TRAIT(owner, TRAIT_HANDS_BLOCKED))
 		if (feedback)
-			owner.balloon_alert(owner, "hands blocked!")
+			owner.balloon_alert(owner, LANG("datum.d15078255110e2c5", null))
 		return FALSE
 	if((check_flags & AB_CHECK_IMMOBILE) && HAS_TRAIT(owner, TRAIT_IMMOBILIZED))
 		if (feedback)
-			owner.balloon_alert(owner, "can't move!")
+			owner.balloon_alert(owner, LANG("datum.b5c8ce04aa8e539a", null))
 		return FALSE
 	if((check_flags & AB_CHECK_INCAPACITATED) && HAS_TRAIT(owner, TRAIT_INCAPACITATED))
 		if (feedback)
-			owner.balloon_alert(owner, "incapacitated!")
+			owner.balloon_alert(owner, LANG("datum.7ac2788bbe3be4b1", null))
 		return FALSE
 	if((check_flags & AB_CHECK_LYING) && isliving(owner))
 		var/mob/living/action_owner = owner
 		if(action_owner.body_position == LYING_DOWN)
 			if (feedback)
-				owner.balloon_alert(owner, "must stand up!")
+				owner.balloon_alert(owner, LANG("datum.70b816d084765a90", null))
 			return FALSE
 	if((check_flags & AB_CHECK_PHASED) && HAS_TRAIT(owner, TRAIT_MAGICALLY_PHASED))
 		if (feedback)
-			owner.balloon_alert(owner, "incorporeal!")
+			owner.balloon_alert(owner, LANG("datum.1919c2bca8803ea8", null))
 		return FALSE
 	if((check_flags & AB_CHECK_OPEN_TURF) && !isopenturf(owner.loc))
 		if (feedback)
-			owner.balloon_alert(owner, "not enough space!")
+			owner.balloon_alert(owner, LANG("datum.5f5397de25d6f763", null))
 		return FALSE
 	return TRUE
 

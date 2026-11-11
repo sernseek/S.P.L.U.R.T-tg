@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Clients aren't datums so we have to define these procs indpendently.
 // These verbs are called for all key press and release events
 GAME_VERB_NATIVE_INSTANT(/client, keyDown, "keyDown", null, _key as text, mousepos_x as num, mousepos_y as num, sizex as num, sizey as num)
@@ -21,7 +22,7 @@ GAME_VERB_NATIVE_INSTANT(/client, keyDown, "keyDown", null, _key as text, mousep
 			keysend_tripped = TRUE
 			next_keysend_trip_reset = world.time + (2 SECONDS)
 		else
-			to_chat(src, span_userdanger("Flooding keysends! This could have been caused by lag, or due to a plugged-in game controller. You have been disconnected from the server automatically."))
+			to_chat(src, span_userdanger(LANG("client.dc011c2a15b0f186", null)))
 			log_admin("Client [ckey] was just autokicked for flooding keysends; likely abuse but potentially lagspike.")
 			message_admins("Client [ckey] was just autokicked for flooding keysends; likely abuse but potentially lagspike.")
 			qdel(src)
@@ -29,7 +30,7 @@ GAME_VERB_NATIVE_INSTANT(/client, keyDown, "keyDown", null, _key as text, mousep
 
 	///Check if the key is short enough to even be a real key
 	if(LAZYLEN(_key) > MAX_KEYPRESS_COMMANDLENGTH)
-		to_chat(src, span_userdanger("Invalid KeyDown detected! You have been disconnected from the server automatically."))
+		to_chat(src, span_userdanger(LANG("client.5d5e62d48ad657b3", null)))
 		log_admin("Client [ckey] just attempted to send an invalid keypress. Keymessage was over [MAX_KEYPRESS_COMMANDLENGTH] characters, autokicking due to likely abuse.")
 		message_admins("Client [ckey] just attempted to send an invalid keypress. Keymessage was over [MAX_KEYPRESS_COMMANDLENGTH] characters, autokicking due to likely abuse.")
 		qdel(src)

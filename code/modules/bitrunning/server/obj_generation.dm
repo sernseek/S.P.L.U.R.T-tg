@@ -148,15 +148,15 @@
 		disk_ban += "powers"
 
 	if(length(import_ban))
-		to_chat(neo, span_warning("This domain forbids the use of [english_list(import_ban)], your externally loaded [english_list(disk_ban)] will not be granted!"))
+		to_chat(neo, span_warning(LANG("obj.ae02fc76a839ff41", list(lang_english_list(import_ban), lang_english_list(disk_ban)))))
 
 	var/return_flags = NONE
 	return_flags = SEND_SIGNAL(neo, COMSIG_BITRUNNER_STOCKING_GEAR, avatar, domain_forbids_flags)
 
 	if(return_flags & BITRUNNER_GEAR_LOAD_FAILED)
-		to_chat(neo, span_warning("At least one of your external data sources has encountered a failure in its loading process. Check for overlapping or inactive disks."))
+		to_chat(neo, span_warning(LANG("obj.434392643daef8d1", null)))
 	if(return_flags & BITRUNNER_GEAR_LOAD_BLOCKED)
-		to_chat(neo, span_warning("At least one of your external data sources has been blocked from fully loading. Check domain restrictions."))
+		to_chat(neo, span_warning(LANG("obj.848987ecf00fe257", null)))
 
 	var/obj/item/organ/brain/neo_brain = neo.get_organ_slot(ORGAN_SLOT_BRAIN)
 	for(var/obj/item/skillchip/skill_chip as anything in neo_brain?.skillchips)

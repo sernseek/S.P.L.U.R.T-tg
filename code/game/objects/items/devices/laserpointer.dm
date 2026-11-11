@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/laser_pointer
 	name = "laser pointer"
 	desc = "Don't shine it in your eyes!"
@@ -75,7 +76,7 @@
 /obj/item/laser_pointer/screwdriver_act(mob/living/user, obj/item/tool)
 	if(diode)
 		tool.play_tool_sound(src)
-		balloon_alert(user, "removed diode")
+		balloon_alert(user, LANG("obj.540a04af9714b90d", null))
 		diode.forceMove(drop_location())
 		diode = null
 		return TRUE
@@ -86,7 +87,7 @@
 	if(tool_behaviour != TOOL_WIRECUTTER && tool_behaviour != TOOL_HEMOSTAT)
 		return ..()
 	tool.play_tool_sound(src)
-	balloon_alert(user, "removed crystal lens")
+	balloon_alert(user, LANG("obj.3cc7f25759f5e58b", null))
 	crystal_lens.forceMove(drop_location())
 	crystal_lens = null
 	return ITEM_INTERACT_SUCCESS
@@ -94,21 +95,21 @@
 /obj/item/laser_pointer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(istype(tool, /obj/item/stock_parts/micro_laser))
 		if(diode)
-			balloon_alert(user, "already has a diode!")
+			balloon_alert(user, LANG("obj.f6b014fc685b9671", null))
 			return ITEM_INTERACT_BLOCKING
 		var/obj/item/stock_parts/attack_diode = tool
 		if(crystal_lens && attack_diode.rating < 3) //only tier 3 and up are small enough to fit
-			to_chat(user, span_warning("You try to jam \the [tool.name] in place, but \the [crystal_lens.name] is in the way!"))
+			to_chat(user, span_warning(LANG("obj.2a58b15fe39da57e", list(tool.name, crystal_lens.name))))
 			playsound(src, 'sound/machines/airlock/airlock_alien_prying.ogg', 20)
 			if(!do_after(user, 2 SECONDS, src))
 				return ITEM_INTERACT_BLOCKING
 			var/atom/atom_to_teleport = pick(user, tool)
 			if(atom_to_teleport == user)
-				to_chat(user, span_warning("You jam \the [tool.name] in too hard and break \the [crystal_lens.name] inside, teleporting you away!"))
+				to_chat(user, span_warning(LANG("obj.63122a797d95a85f", list(tool.name, crystal_lens.name))))
 				user.drop_all_held_items()
 			else if(atom_to_teleport == tool)
 				tool.forceMove(drop_location())
-				to_chat(user, span_warning("You jam \the [tool.name] in too hard and break \the [crystal_lens.name] inside, teleporting \the [tool.name] away!"))
+				to_chat(user, span_warning(LANG("obj.8c66fb6001eb1fbe", list(tool.name, crystal_lens.name, tool.name))))
 			do_teleport(atom_to_teleport, get_turf(src), crystal_lens.blink_range, asoundin = 'sound/effects/phasein.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
 			qdel(crystal_lens)
 			return ITEM_INTERACT_SUCCESS
@@ -116,7 +117,7 @@
 			return ITEM_INTERACT_BLOCKING
 		playsound(src, 'sound/items/tools/screwdriver.ogg', 30)
 		diode = tool
-		balloon_alert(user, "installed \the [diode.name]")
+		balloon_alert(user, LANG("obj.ddc17aca2d2c2c29", list(diode.name)))
 		//we have a diode now, try starting a charge sequence in case the pointer was charging when we took out the diode
 		recharging = TRUE
 		START_PROCESSING(SSobj, src)
@@ -124,22 +125,22 @@
 
 	if(istype(tool, /obj/item/stack/ore/bluespace_crystal))
 		if(crystal_lens)
-			balloon_alert(user, "already has a lens!")
+			balloon_alert(user, LANG("obj.a9a84fa7610c0ed7", null))
 			return ITEM_INTERACT_BLOCKING
 		//the crystal stack we're trying to install a crystal from
 		var/obj/item/stack/ore/bluespace_crystal/crystal_stack = tool
 		if(diode && diode.rating < 3) //only lasers of tier 3 and up can house a lens
-			to_chat(user, span_warning("You try to jam \the [crystal_stack.name] in front of the diode, but it's a bad fit!"))
+			to_chat(user, span_warning(LANG("obj.c201306e1ce761d5", list(crystal_stack.name))))
 			playsound(src, 'sound/machines/airlock/airlock_alien_prying.ogg', 20)
 			if(!do_after(user, 2 SECONDS, src))
 				return ITEM_INTERACT_BLOCKING
 			var/atom/atom_to_teleport = pick(user, src)
 			if(atom_to_teleport == user)
-				to_chat(user, span_warning("You press on \the [crystal_stack.name] too hard and are teleported away!"))
+				to_chat(user, span_warning(LANG("obj.54dc680f32593ae8", list(crystal_stack.name))))
 				user.drop_all_held_items()
 			else if(atom_to_teleport == src)
 				forceMove(drop_location())
-				to_chat(user, span_warning("You press on \the [crystal_stack.name] too hard and \the [src] is teleported away!"))
+				to_chat(user, span_warning(LANG("obj.8be0c990ddba6db0", list(crystal_stack.name, src))))
 			do_teleport(atom_to_teleport, get_turf(src), crystal_stack.blink_range, asoundin = 'sound/effects/phasein.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
 			crystal_stack.use_tool(src, user, amount = 1) //use only one if we were installing from a stack of crystals
 			return ITEM_INTERACT_SUCCESS
@@ -150,9 +151,8 @@
 		single_crystal.forceMove(src)
 		crystal_lens = single_crystal
 		playsound(src, 'sound/items/tools/screwdriver2.ogg', 30)
-		balloon_alert(user, "installed \the [crystal_lens.name]")
-		to_chat(user, span_notice("You install a [crystal_lens.name] in [src]. \
-			It can now be used to shine through obstacles at the cost of double the energy drain."))
+		balloon_alert(user, LANG("obj.ddc17aca2d2c2c29", list(crystal_lens.name)))
+		to_chat(user, span_notice(LANG("obj.71d1e6f95ef1522f", list(crystal_lens.name, src))))
 		return ITEM_INTERACT_SUCCESS
 
 	return NONE
@@ -161,14 +161,14 @@
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
 		if(isnull(diode))
-			. += span_notice("The diode is missing.")
+			. += span_notice(LANG("obj.9ef6aa2959b2616c", null))
 		else
-			. += span_notice("A class <b>[diode.rating]</b> laser diode is installed. It is <i>screwed</i> in place.")
-		. += span_notice("A small display reads out that[recharge_locked ? " it is currently recharging to full, and" : ""] there is <b>[energy * 10]%</b> total charge remaining.")
+			. += span_notice(LANG("obj.f599396e5c7dce8b", list(diode.rating)))
+		. += span_notice(LANG("obj.eacd34d8e37ab96c", list(recharge_locked ? " it is currently recharging to full, and" : "", energy * 10)))
 		if(crystal_lens)
-			. += span_notice("There is a <b>[crystal_lens.name]</b> fit neatly before the focus lens. It can be <i>plucked out</i> with some <i>wirecutters</i>.")
+			. += span_notice(LANG("obj.aa422979ae22a1ac", list(crystal_lens.name)))
 		else if(diode) //hint at the ability to modify the pointer with a crystal only if we have a diode
-			. += span_notice("<i>You could examine it more thoroughly...</i>")
+			. += span_notice(LANG("obj.e08610866072a4d2", null))
 
 /obj/item/laser_pointer/examine_more(mob/user)
 	. = ..()
@@ -176,12 +176,11 @@
 		return
 	switch(diode.rating)
 		if(1)
-			. += "<i>\The [diode.name] is fit neatly into the casing.</i>"
+			. += LANG("obj.9ed0fe28da062a8a", list(diode.name))
 		if(2)
-			. += "<i>\The [diode.name] is secured in place, with a little bit of room left between it and the focus lens.</i>"
+			. += LANG("obj.5c98024051addef7", list(diode.name))
 		if(3 to 4)
-			. += "<i>\The [diode.name]'s size is much smaller compared to the previous generation lasers, \
-			and the wide margin between it and the focus lens could probably house <b>a crystal</b> of some sort.</i>"
+			. += LANG("obj.3b48a208ee5e2cc7", list(diode.name))
 
 /obj/item/laser_pointer/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	laser_act(interacting_with, user, modifiers)
@@ -195,32 +194,32 @@
 ///Handles shining the clicked atom,
 /obj/item/laser_pointer/proc/laser_act(atom/target, mob/living/user, list/modifiers)
 	if(isnull(diode))
-		to_chat(user, span_notice("You point [src] at [target], but nothing happens!"))
+		to_chat(user, span_notice(LANG("obj.45bb2b4292e6dffb", list(src, target))))
 		return
 	if(!ISADVANCEDTOOLUSER(user))
-		to_chat(user, span_warning("You don't have the dexterity to do this!"))
+		to_chat(user, span_warning(LANG("obj.e8ba50af79992c6d", null)))
 		return
 	if(HAS_TRAIT(user, TRAIT_CHUNKYFINGERS))
-		to_chat(user, span_warning("Your fingers can't press the button!"))
+		to_chat(user, span_warning(LANG("obj.56e539bb88567901", null)))
 		return
 
 	if(max_range != INFINITY)
 		if(!IN_GIVEN_RANGE(target, user, max_range))
-			to_chat(user, span_warning("\The [target] is too far away!"))
+			to_chat(user, span_warning(LANG("obj.4b15eda245438854", list(target))))
 			return
 		if(!(user in (view(max_range, target)))) //check if we are visible from the target's PoV
 			if(isnull(crystal_lens))
-				to_chat(user, span_warning("You can't point with [src] through walls!"))
+				to_chat(user, span_warning(LANG("obj.8e7ecb26bb8f5555", list(src))))
 				return
 			if(!((user.sight & SEE_OBJS) || (user.sight & SEE_MOBS))) //only let it work if we have xray or thermals. mesons don't count because they are easier to get.
-				to_chat(user, span_notice("You can't quite make out your target and you fail to shine at it."))
+				to_chat(user, span_notice(LANG("obj.7208ccd346ad0f07", null)))
 				return
 
 	add_fingerprint(user)
 
 	//nothing happens if the battery has been drained and has not fully recharged yet
 	if(recharge_locked)
-		to_chat(user, span_notice("You point [src] at [target], but it's still charging."))
+		to_chat(user, span_notice(LANG("obj.106ee95699004305", list(src, target))))
 		return
 
 	//The message we send to the user upon using the pointer
@@ -256,7 +255,7 @@
 			outmsg = span_notice("You point [src] at [target_sillycone], but [target_sillycone.p_they()] appear[target_sillycone.p_s()] to be non-functioning.")
 		if(prob(effectchance * diode.rating) && target_sillycone.flash_act(affect_silicon = TRUE))
 			target_sillycone.set_temp_blindness_if_lower(5 SECONDS)
-			to_chat(target_sillycone, span_danger("Your sensors were overloaded by a laser!"))
+			to_chat(target_sillycone, span_danger(LANG("obj.3eb4dac404bf966b", null)))
 			outmsg = span_notice("You overload [target_sillycone] by shining [src] at [target_sillycone.p_their()] sensors.")
 			log_combat(user, target_sillycone, "shone in the sensors", src)
 		else
@@ -282,13 +281,13 @@
 		target_cat.setDir(get_dir(target_cat, targloc)) // kitty always looks at the light
 		if(target_cat.body_position == STANDING_UP)
 			if(prob(effectchance * diode.rating))
-				target_cat.visible_message(span_warning("[target_cat] makes a grab for the light!"), span_userdanger("LIGHT!"))
+				target_cat.visible_message(span_warning(LANG("obj.c45b56b30479ea13", list(target_cat))), span_userdanger(LANG("obj.24f13c388ad20d0a", null)))
 				target_cat.Move(targloc, get_dir(target_cat, targloc))
 				log_combat(user, target_cat, "moved with a laser pointer", src)
 			else
-				target_cat.visible_message(span_notice("[target_cat] looks briefly distracted by the light."), span_warning("You're briefly tempted by the shiny light..."))
+				target_cat.visible_message(span_notice(LANG("obj.89766f76ef09055d", list(target_cat))), span_warning(LANG("obj.958edba319a416d3", null)))
 		else
-			target_cat.visible_message(span_notice("[target_cat] stares at the light."), span_warning("You stare at the light..."))
+			target_cat.visible_message(span_notice(LANG("obj.22e5e7c73644d44d", list(target_cat))), span_warning(LANG("obj.dda3d809f0181b04", null)))
 	//The pointer is shining, change its sprite to show
 	icon_state = "pointer_[pointer_icon_state]"
 
@@ -304,9 +303,9 @@
 		laser.pixel_z = target.pixel_z + rand(-5,5)
 
 	if(outmsg)
-		user.visible_message(span_danger("[user] points [src] at [target]!"), outmsg) //SKYRAT EDIT CHANGE - ORIGINAL: to_chat(user, outmsg)
+		user.visible_message(span_danger(LANG("obj.59c3217a5a9c1999", list(user, src, target))), outmsg) //SKYRAT EDIT CHANGE - ORIGINAL: to_chat(user, outmsg)
 	else
-		to_chat(user, span_info("You point [src] at [target]."))
+		to_chat(user, span_info(LANG("obj.e006774943129279", list(src, target))))
 
 	//we have successfully shone our pointer, reduce our battery depending on whether we have an extra lens or not
 	energy -= crystal_lens ? 2 : 1
@@ -315,7 +314,7 @@
 			recharging = TRUE
 			START_PROCESSING(SSobj, src)
 		if(energy <= 0) //battery is completely dry, recharge the pointer to full then let us use it again
-			to_chat(user, span_warning("[src]'s battery is overused, it needs time to recharge!"))
+			to_chat(user, span_warning(LANG("obj.551ebbbaa34cc770", list(src))))
 			recharge_locked = TRUE
 
 	//flash a pointer blip at the target

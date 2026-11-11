@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/vehicle/sealed/mecha/durand
 	desc = "An aging combat exosuit utilized by the Nanotrasen corporation. Originally developed to combat hostile alien lifeforms."
 	name = "\improper Durand"
@@ -95,14 +96,14 @@
 
 	if(!defense_mode && cell?.charge < 100) // If it's off, and we have less than 100 units of power
 		if (user)
-			balloon_alert(user, "insufficient power")
+			balloon_alert(user, LANG("obj.847c6ee475af64f8", null))
 		return
 
 	switching = TRUE
 	defense_mode = !defense_mode
 
 	if(user)
-		balloon_alert(user, "shield [defense_mode ? "enabled" : "disabled"]")
+		balloon_alert(user, LANG("obj.ac69276f2e0696c8", list(defense_mode ? "enabled" : "disabled")))
 		log_message("User has toggled defense mode -- now [defense_mode ? "enabled" : "disabled"].", LOG_MECHA)
 	else
 		log_message("defense mode state changed -- now [defense_mode ? "enabled" : "disabled"].", LOG_MECHA)

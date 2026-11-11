@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  *	# Dominate;
  *
@@ -44,21 +45,21 @@
 /datum/action/cooldown/bloodsucker/targeted/mesmerize/dominate/get_power_desc_extended()
 	. = ..()
 	if(level_current >= DOMINATE_GHOULIZE_LEVEL)
-		. += "If your target is in critical condition or dead, they will instead be turned into a temporary Ghoul. This will cost [TEMP_GHOULIZE_COST] blood. Pre-existing dead ghouls will simply be revived."
+		. += LANG("datum.dfe0570a2a39e5d4", list(TEMP_GHOULIZE_COST))
 
 /datum/action/cooldown/bloodsucker/targeted/mesmerize/dominate/get_power_explanation_extended()
 	. = list()
-	. += "Click any person to, after [DisplayTimeText(mesmerize_delay)], stun them for [DisplayTimeText(get_power_time())]."
-	. += "Right clicking on your victim however will apply a knockdown will confuse and slow them down for [DisplayTimeText(get_power_time())]."
-	. += "A left click will completely immobilize, and blind them for the next [DisplayTimeText(get_power_time())] seconds, and will also mute them for [DisplayTimeText(get_power_time())] seconds."
-	. += "While this ability is active, you will be able to see additional information about everyone in the room."
-	. += "At level [DOMINATE_XRAY_LEVEL], you will gain X-Ray vision while this ability is active."
-	. += "At level [DOMINATE_GHOULIZE_LEVEL], while adjacent to the target, if your target is in critical condition or dead, they will instead be turned into a temporary Ghoul. This will cost [TEMP_GHOULIZE_COST] blood."
-	. += "The victim must have atleast [BLOOD_VOLUME_BAD] blood to be ghouled."
-	. += "The ghoul will be mute and deaf if the level of [src] is not at least [DOMINATE_NON_MUTE_GHOULIZE_LEVEL]"
-	. += "If you use this on a currently dead normal Ghoul, they will will not suddenly cease to live as if a temporary Ghoul."
-	. += "They will have complete loyalty to you, until their death in [DisplayTimeText(get_ghoul_duration())] upon use."
-	. += "Ghoulizing or reviving a ghoul will make this ability go on cooldown for [DisplayTimeText(get_ghoulize_cooldown())]."
+	. += LANG("datum.ec3979e3e3a5762b", list(DisplayTimeText(mesmerize_delay), DisplayTimeText(get_power_time())))
+	. += LANG("datum.20ab440b0d89c6f7", list(DisplayTimeText(get_power_time())))
+	. += LANG("datum.88cd7d72f136452d", list(DisplayTimeText(get_power_time()), DisplayTimeText(get_power_time())))
+	. += LANG("datum.3a6c04a25a9d3423", null)
+	. += LANG("datum.d071d544d0725849", list(DOMINATE_XRAY_LEVEL))
+	. += LANG("datum.dfb85b4dc2fdcb9b", list(DOMINATE_GHOULIZE_LEVEL, TEMP_GHOULIZE_COST))
+	. += LANG("datum.a2d2f1569d34739e", list(BLOOD_VOLUME_BAD))
+	. += LANG("datum.42aeb1819e678dd8", list(src, DOMINATE_NON_MUTE_GHOULIZE_LEVEL))
+	. += LANG("datum.57f57519740fc489", null)
+	. += LANG("datum.e79eda28f0fbf80c", list(DisplayTimeText(get_ghoul_duration())))
+	. += LANG("datum.93bf59ff663c561b", list(DisplayTimeText(get_ghoulize_cooldown())))
 
 /datum/action/cooldown/bloodsucker/targeted/mesmerize/dominate/CheckCanTarget(atom/target_atom)
 	var/mob/living/selected_target = target_atom
@@ -104,9 +105,9 @@
 			attempt_ghoulize(target, user)
 		else
 			if(IS_GHOUL(target_mob))
-				owner.balloon_alert(owner, "too far to revive!")
+				owner.balloon_alert(owner, LANG("datum.8601337967f5ba43", null))
 			else
-				owner.balloon_alert(owner, "too far to ghoul!")
+				owner.balloon_alert(owner, LANG("datum.7dd2e7429c68b114", null))
 		return TRUE
 	return ..()
 
@@ -116,34 +117,34 @@
 	if(!victim_has_blood(target))
 		return FALSE
 	if(ghoul)
-		owner.balloon_alert(owner, "attempting to revive.")
+		owner.balloon_alert(owner, LANG("datum.a4a0012b97ba0c70", null))
 	else
-		owner.balloon_alert(owner, "attempting to ghoul.")
+		owner.balloon_alert(owner, LANG("datum.e0433dcd5ef1a30a", null))
 	if(!do_after(user, 6 SECONDS, target, NONE, TRUE))
 		return FALSE
 	if(!victim_has_blood(target))
 		return FALSE
 	if(ghoul?.master == bloodsuckerdatum_power)
 		if(target.stat != DEAD)
-			owner.balloon_alert(owner, "not dead!")
+			owner.balloon_alert(owner, LANG("datum.f5271c5dfec0a80a", null))
 			return FALSE
 		PowerActivatedSuccesfully(get_ghoulize_cooldown())
-		to_chat(user, span_warning("We revive [target]!"))
-		owner.balloon_alert(owner, "successfully revived!")
+		to_chat(user, span_warning(LANG("datum.c1420e157f463265", list(target))))
+		owner.balloon_alert(owner, LANG("datum.d4d901f326d51a33", null))
 		target.mind?.grab_ghost()
 		target.revive(ADMIN_HEAL_ALL)
 		pay_cost(TEMP_GHOULIZE_COST - bloodcost)
 		log_combat(owner, target, "tremere revived", addition="Revived their ghoul using dominate")
 		return FALSE
 	if(!bloodsuckerdatum_power.make_ghoul(target))
-		owner.balloon_alert(owner, "not a valid target for ghouling!.")
+		owner.balloon_alert(owner, LANG("datum.e19896d4b6f902ea", null))
 		return
 
 	/*if(IS_MONSTERHUNTER(target))
 		to_chat(target, span_notice("Their body refuses to react..."))
 		return*/
 	PowerActivatedSuccesfully(get_ghoulize_cooldown())
-	to_chat(user, span_warning("We revive [target]!"))
+	to_chat(user, span_warning(LANG("datum.c1420e157f463265", list(target))))
 	// no escaping at this point
 	target.mind?.grab_ghost(TRUE)
 	target.revive(ADMIN_HEAL_ALL)
@@ -153,8 +154,8 @@
 	log_combat(owner, target, "tremere mindslaved", addition="Revived and converted [target] into a temporary tremere ghoul for [DisplayTimeText(living_time)].")
 	if(level_current <= DOMINATE_NON_MUTE_GHOULIZE_LEVEL)
 		target.add_traits(list(TRAIT_MUTE, TRAIT_DEAF), DOMINATE_TRAIT)
-	user.balloon_alert(target, "only [DisplayTimeText(living_time)] left to live!")
-	to_chat(target, span_warning("You will only live for [DisplayTimeText(living_time)]! Obey your master and go out in a blaze of glory!"))
+	user.balloon_alert(target, LANG("datum.c35d2d27fa30312c", list(DisplayTimeText(living_time))))
+	to_chat(target, span_warning(LANG("datum.56cd5bd8d3c496f0", list(DisplayTimeText(living_time)))))
 	var/timer_id = addtimer(CALLBACK(src, PROC_REF(end_possession), target), living_time, TIMER_STOPPABLE)
 	// timer that only the master and thrall can see
 	setup_timer(user, target, living_time, timer_id)
@@ -169,7 +170,7 @@
 	if(IS_GHOUL(target))
 		return TRUE
 	if(target.blood_volume < BLOOD_VOLUME_BAD)
-		owner.balloon_alert(owner, "not enough blood in victim!")
+		owner.balloon_alert(owner, LANG("datum.4709ed4274b959f7", null))
 		return FALSE
 	return TRUE
 
@@ -198,9 +199,9 @@
 	if(!HAS_TRAIT(user, TRAIT_NOBLOOD))
 		user.blood_volume = 0
 	if(!IS_GHOUL(user))
-		to_chat(user, span_warning("You feel the blood keeping you alive run out!"))
+		to_chat(user, span_warning(LANG("datum.933679bbff7c0ef9", null)))
 		return
-	to_chat(user, span_warning("You feel the Blood of your Master run out!"))
+	to_chat(user, span_warning(LANG("datum.5f97c48a7cd52863", null)))
 	user.mind?.remove_antag_datum(/datum/antagonist/ghoul)
 	if(user.stat == DEAD)
 		return

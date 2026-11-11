@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Chance the malf AI gets a single special objective that isn't assassinate.
 #define PROB_SPECIAL 30
 
@@ -171,7 +172,7 @@
 	malf_ai.set_syndie_radio()
 	malf_ai.try_sync_laws()
 
-	to_chat(malf_ai, "Your radio has been upgraded! Use :t to speak on an encrypted channel with Syndicate Agents!")
+	to_chat(malf_ai, LANG("datum.29e4eb3bf183aced", null))
 
 	if(malf_ai.malf_picker)
 		return
@@ -211,7 +212,7 @@
 		for(var/datum/objective/objective in objectives)
 			if(!objective.check_completion())
 				malf_ai_won = FALSE
-			objectives_text += "<br><B>Objective #[count]</B>: [objective.explanation_text] [objective.get_roundend_success_suffix()]"
+			objectives_text += "<br><B>[lang_reverse_text("Objective")] #[count]</B>: [lang_reverse_text(objective.explanation_text)] [objective.get_roundend_success_suffix()]" // ZH EDIT CHANGE - I18N - reverse non-interpolated full-sentence objectives
 			count++
 
 	result += objectives_text
@@ -272,7 +273,7 @@
 	malf_ai.laws.protected_zeroth = TRUE
 
 	malf_ai.set_syndie_radio()
-	to_chat(malf_ai, "Your radio has been upgraded! Use :t to speak on an encrypted channel with Syndicate Agents!")
+	to_chat(malf_ai, LANG("datum.29e4eb3bf183aced", null))
 
 	malf_ai.add_malf_picker()
 

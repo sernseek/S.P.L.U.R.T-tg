@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/emote/living/scream
 	vary = TRUE
 	mob_type_blacklist_typecache = list(/mob/living/basic/slime, /mob/living/brain)
@@ -33,7 +34,7 @@
 		var/mob/living/silicon/robot/robot_user = user
 
 		if(robot_user.cell?.charge < STANDARD_CELL_CHARGE * 0.2)
-			to_chat(robot_user , span_warning("Scream module deactivated. Please recharge."))
+			to_chat(robot_user , span_warning(LANG("datum.db37b9343126e9ce", null)))
 			return FALSE
 		robot_user.cell.use(STANDARD_CELL_CHARGE * 0.2)
 	return ..()

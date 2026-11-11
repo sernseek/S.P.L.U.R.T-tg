@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define DOAFTER_SOURCE_LYCAN_DOOR_PRY "lycan door pry"
 #define FORCE_TO_BURN_RATIO 1.5
 
@@ -83,39 +84,38 @@
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = FA_ICON_ROBOT,
-			SPECIES_PERK_NAME = "Inorganic Rejection",
-			SPECIES_PERK_DESC = "The curse afflicting the cursekin prevents their bodies from being augmented with cybernetic organs \
-			or implants."
+			SPECIES_PERK_NAME = LANG("datum.d7c5a41a1a0d6f22", null),
+			SPECIES_PERK_DESC = LANG("datum.dbce69dc0d514216", null)
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = FA_ICON_CLOUD_MOON,
-			SPECIES_PERK_NAME = "Silver Weakness",
-			SPECIES_PERK_DESC = "You are burnt by silver, including silver weaponry."
+			SPECIES_PERK_NAME = LANG("datum.2e9147341d2927e1", null),
+			SPECIES_PERK_DESC = LANG("datum.c26a89e6e101b184", null)
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = FA_ICON_GUN,
-			SPECIES_PERK_NAME = "Chunky Fingers",
-			SPECIES_PERK_DESC = "While in Lycan form, you cannot use guns without special trigger-guards, nor batons.",
+			SPECIES_PERK_NAME = LANG("datum.73c3a21910bf2b34", null),
+			SPECIES_PERK_DESC = LANG("datum.964a27f0727c69a5", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = FA_ICON_SHIRT,
-			SPECIES_PERK_NAME = "Unclotheable",
-			SPECIES_PERK_DESC = "While in Lycan form, you drop all your clothing to the floor.",
+			SPECIES_PERK_NAME = LANG("datum.b2e2e2b1b2469782", null),
+			SPECIES_PERK_DESC = LANG("datum.c04e659c98ee6480", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = FA_ICON_MOON,
-			SPECIES_PERK_NAME = "Lycan Strength",
-			SPECIES_PERK_DESC = "While in Lycan form, your claws deal significant damage - about circular saw level.",
+			SPECIES_PERK_NAME = LANG("datum.a8082b843bcfed02", null),
+			SPECIES_PERK_DESC = LANG("datum.bbf0f00fcd508447", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = FA_ICON_SHIELD,
-			SPECIES_PERK_NAME = "Lycan Resilience",
-			SPECIES_PERK_DESC = "While in Lycan form, you take 50% less brute and 20% less burn.",
+			SPECIES_PERK_NAME = LANG("datum.711ce8f4e59a6854", null),
+			SPECIES_PERK_DESC = LANG("datum.3d227d253c05ca95", null),
 		),
 	)
 
@@ -197,8 +197,8 @@
 /datum/species/lycan/proc/on_baned(mob/living/carbon/human/baned, obj/source, mob/user)
 	SIGNAL_HANDLER
 
-	baned.visible_message(span_warning("[baned] seems to react negatively to the silver, [baned.p_their()] flesh scorching and burning on contact!"), ignored_mobs = list(baned))
-	to_chat(baned, span_bolddanger("The sister moon casts its light on you, and you feel your flesh scorch!"))
+	baned.visible_message(span_warning(LANG("datum.eea6a61c5dd7afe0", list(baned, baned.p_their()))), ignored_mobs = list(baned))
+	to_chat(baned, span_bolddanger(LANG("datum.e1b45f7aba044892", null)))
 	INVOKE_ASYNC(baned, TYPE_PROC_REF(/mob, emote), "scream")
 
 	var/target_zone

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/heart/snail
 	name = "twin gastropod hearts"
 	desc = "A primary heart normally nestled inside a gastropod's shell, and another in the owner's actual chest; necessary to maintain ample bloodflow through essentially two torsos."
@@ -56,7 +57,7 @@
 		return
 
 	if(COOLDOWN_FINISHED(src, shell_effect_cd))
-		source.visible_message(span_warning("[source]'s shell weathers the blow, absorbing most of the shock!"))
+		source.visible_message(span_warning(LANG("obj.1223277b2cc0bf9d", list(source))))
 		playsound(source, 'sound/items/weapons/parry.ogg', 50, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 
 	COOLDOWN_START(src, shell_effect_cd, 5 SECONDS) // Cooldown resets EVERY time we get hit

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MAXIMUM_EMP_WIRES 3
 
 /**
@@ -324,10 +325,9 @@
 
 		var/study_length = 1 SECONDS * floor(min(photo.picture.psize_x, photo.picture.psize_y) / 32)
 		if(study_length >= 4 SECONDS)
-			to_chat(user, span_notice("<i>You squint [photo]... Hey, there's blueprints in the frame! Really wish the photo was zoomed in, though. \
-				It's rather difficult to make out the wires.</i>"))
+			to_chat(user, span_notice(LANG("datum.07f8eadd4ff6192a", list(photo))))
 		else
-			to_chat(user, span_notice("<i>You glance at [photo], looking for wires in the pictured blueprints.</i>"))
+			to_chat(user, span_notice(LANG("datum.986e8d8acc957c7e", list(photo))))
 
 		if(do_after(user, study_length, holder, interaction_key = STUDY_INTERACTION_KEY, cog_icon = null))
 			LAZYSET(studied_photos, REF(user.mind), REF(photo))
@@ -363,7 +363,9 @@
 		payload.Add(list(list(
 			"color" = color,
 			"shownColor" = colorblind ? default_possible_colors[color] : color,
-			"wire" = (((reveal_wires || always_reveal_wire(color)) && !is_dud_color(color)) ? get_wire(color) : null),
+			// ZH EDIT ADDITION - I18N: shownColor 同时是 CSS 颜色名，必须留英文；另发一个显示字段。
+			"shownColorLabel" = lang_wire_colour(colorblind ? default_possible_colors[color] : color),
+			"wire" = (((reveal_wires || always_reveal_wire(color)) && !is_dud_color(color)) ? lang_runtime_domain_text("wires", get_wire(color)) : null), // ZH EDIT CHANGE - I18N - 电线名走显式 scoped:wires 域，永不进入全局反查。 ORIGINAL: "wire" = (((reveal_wires || always_reveal_wire(color)) && !is_dud_color(color)) ? get_wire(color) : null),
 			"cut" = is_color_cut(color),
 			"attached" = is_attached(color)
 		)))
@@ -388,7 +390,7 @@
 				cut_color(target_wire, source = L)
 				. = TRUE
 			else
-				to_chat(L, span_warning("You need wirecutters!"))
+				to_chat(L, span_warning(LANG("datum.2e60587f1189ca0e", null)))
 		if("pulse")
 			I = L.is_holding_tool_quality(TOOL_MULTITOOL)
 			if(I || isAdminGhostAI(usr))
@@ -397,7 +399,7 @@
 				pulse_color(target_wire, L)
 				. = TRUE
 			else
-				to_chat(L, span_warning("You need a multitool!"))
+				to_chat(L, span_warning(LANG("datum.ebcbba059c8e0eb2", null)))
 		if("attach")
 			if(is_attached(target_wire))
 				I = detach_assembly(target_wire)
@@ -415,6 +417,6 @@
 							A.forceMove(L.drop_location())
 						. = TRUE
 					else
-						to_chat(L, span_warning("You cannot attach this assembly to these wires!"))
+						to_chat(L, span_warning(LANG("datum.164a105522d58d65", null)))
 
 #undef MAXIMUM_EMP_WIRES

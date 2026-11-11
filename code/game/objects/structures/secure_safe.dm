@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/wallframe/secure_safe
 	name = "secure safe frame"
 	desc = "A locked safe. It being unpowered prevents any access until placed back onto a wall."
@@ -41,8 +42,8 @@
 		return FALSE
 
 	obj_flags |= EMAGGED
-	visible_message(span_warning("Sparks fly from [src]!"), blind_message = span_hear("You hear a faint electrical spark."))
-	balloon_alert(user, "lock destroyed")
+	visible_message(span_warning(LANG("obj.4ebe3de564d9fd88", list(src))), blind_message = span_hear(LANG("obj.e9bee9b372539a94", null)))
+	balloon_alert(user, LANG("obj.c20bce4a91712e62", null))
 	playsound(src, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	stored_lock_code = null
 	atom_storage.locked = STORAGE_NOT_LOCKED

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/vulpkanin
 	name = "Vulpkanin"
 	plural_form = "Vulpkanin"
@@ -36,36 +37,36 @@
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "face-smile-beam",
-		SPECIES_PERK_NAME = "Peanut Butter Affinity",
-		SPECIES_PERK_DESC = "Vulpkanin LOVE peanutbutter, and get quite excited when eating it.",
+		SPECIES_PERK_NAME = LANG("datum.303632e0f0cad5b4", null),
+		SPECIES_PERK_DESC = LANG("datum.f3229c6227d9dbb9", null),
 	))
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "shoe-prints",
-		SPECIES_PERK_NAME = "Hardened Soles",
-		SPECIES_PERK_DESC = "Vulpkanin have feet that can withstand more than most species.",
+		SPECIES_PERK_NAME = LANG("datum.b9ef4cdcbce54b54", null),
+		SPECIES_PERK_DESC = LANG("datum.5d4d38e3b9569289", null),
 	))
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "eye",
-		SPECIES_PERK_NAME = "Night Vision",
-		SPECIES_PERK_DESC = "Vulpkanin eyes can see better in the dark than most species.",
+		SPECIES_PERK_NAME = LANG("datum.cb95f802766549e4", null),
+		SPECIES_PERK_DESC = LANG("datum.dabed070d145125e", null),
 	))
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "biohazard",
-		SPECIES_PERK_NAME = "Chocolate Allergy",
-		SPECIES_PERK_DESC = "Vulpkanin will start rapidly taking toxic damage when consuming coco.",
+		SPECIES_PERK_NAME = LANG("datum.41fcb045c52ce1f6", null),
+		SPECIES_PERK_DESC = LANG("datum.7c048db3d4892981", null),
 	))
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "stomach",
-		SPECIES_PERK_NAME = "Hunger",
-		SPECIES_PERK_DESC = "Vulpkanin will get hungrier 50% faster than most species.",
+		SPECIES_PERK_NAME = LANG("datum.cca4b750e1794fbe", null),
+		SPECIES_PERK_DESC = LANG("datum.60c821afb59a8ead", null),
 	))
 
 	return to_add

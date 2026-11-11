@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_LIST_EMPTY(station_turfs)
 
 /// Any floor or wall. What makes up the station and the rest of the map.
@@ -373,7 +374,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			break
 	if(prev_turf && !(flags & FALL_NO_MESSAGE))
 		for(var/mov_name in falling_mov_names)
-			prev_turf.visible_message(span_danger("[mov_name] falls through [prev_turf]!"))
+			prev_turf.visible_message(span_danger(LANG("turf.62a6eb9f9cbe3b26", list(mov_name, prev_turf))))
 	if(!(flags & FALL_INTERCEPTED) && zFall(falling, levels + 1))
 		return FALSE
 	for(var/atom/movable/falling_mov as anything in falling_movables)
@@ -854,7 +855,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		return
 	if(!GLOB.preset_fish_sources[fish_source].has_known_fishes(src))
 		return
-	. += span_tinynoticeital("This is a fishing spot. You can look again to list its fishes...")
+	. += span_tinynoticeital(LANG("turf.4d4c2b223e883de2", null))
 
 /turf/examine_more(mob/user)
 	. = ..()

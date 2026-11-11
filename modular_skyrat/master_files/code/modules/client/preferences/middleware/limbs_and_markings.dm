@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define ORGANS_DEFAULT_NAME "Default"
 #define LIMBS_DEFAULT_NAME "None"
 
@@ -167,7 +168,7 @@
 	// BUBBERSTATION EDIT START: TGUI COLOR PICKER
 	var/new_color = tgui_color_picker(
 		usr,
-		"Select new color",
+		LANG("datum.f5c48c3f4295ed36", null),
 		null,
 		preferences.body_markings[limb_slot][marking_entry_name][1],
 	)  // BUBBERSTATION EDIT END: TGUI COLOR PICKER

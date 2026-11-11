@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/fleshmind_create_structure
 	name = "Create Tech Structure"
 	desc = "Creates a tech structure of your choice at your location(must be on wireweed)."
@@ -16,7 +17,7 @@
 /datum/action/cooldown/fleshmind_create_structure/Activate(atom/target)
 	var/datum/component/human_corruption/our_component = owner.GetComponent(/datum/component/human_corruption)
 	if(!our_component?.our_controller)
-		to_chat(owner, span_warning("There is no hive link to tunnel this power through!"))
+		to_chat(owner, span_warning(LANG("datum.fa494b2acd9e8e02", null)))
 		return
 	var/datum/fleshmind_controller/owner_controller = our_component.our_controller
 
@@ -28,12 +29,12 @@
 		return
 	var/obj/structure/fleshmind/wireweed/under_wireweed = locate() in get_turf(owner)
 	if(!under_wireweed)
-		to_chat(owner, span_warning("There needs to be wireweed underneath you!"))
+		to_chat(owner, span_warning(LANG("datum.726c0fab79f4d5cc", null)))
 		return
 	if(QDELETED(owner_controller)) // Input is not async
 		return
 	if(initial(picked_stucture_type.required_controller_level) > owner_controller.level)
-		to_chat(owner, span_warning("Our processor core is not strong enough yet!"))
+		to_chat(owner, span_warning(LANG("datum.6fbd8729f016ade0", null)))
 		return
 	owner_controller.spawn_structure(get_turf(owner), picked_stucture_type)
 	StartCooldownSelf()
@@ -62,7 +63,7 @@
 		if(iterating_mob.faction_check_atom(owner.get_faction(), iterating_mob))
 			continue
 		iterating_mob.ai_controller.set_blackboard_key(BB_BASIC_MOB_REINFORCEMENT_TARGET, owner.loc)
-	owner.visible_message(span_warning("[owner] lets out a horrible screech!"), span_notice("You let out a calling screech!"))
+	owner.visible_message(span_warning(LANG("datum.d3bbc29b0dbd46ef", list(owner))), span_notice(LANG("datum.beb3c9a551e7ba2e", null)))
 	playsound(owner, 'modular_skyrat/modules/horrorform/sound/horror_scream.ogg', 100, TRUE)
 	StartCooldownSelf()
 
@@ -74,13 +75,13 @@
 	button_icon_state = "hivemind_link"
 
 /datum/action/innate/fleshmind_flesh_chat/Activate(atom/target)
-	var/message = tgui_input_text(owner, "Send a message to the fleshmind.", "Flesh Chat")
+	var/message = tgui_input_text(owner, LANG("datum.5ecab204cdcc99d4", null), LANG("datum.10871168ddf168e5", null))
 	if(!message)
 		return
 	for(var/mob/iterating_mob in GLOB.player_list)
 		if(!(iterating_mob.has_faction(FACTION_FLESHMIND)) && !isobserver(iterating_mob))
 			continue
-		to_chat(iterating_mob, span_purple("<b>FLESHMIND ([owner]):</b> [message]"))
+		to_chat(iterating_mob, span_purple(LANG("datum.81586861d80139dc", list(owner, message))))
 
 /datum/action/cooldown/fleshmind_plant_weeds
 	name = "Create Wireweed"
@@ -93,13 +94,13 @@
 /datum/action/cooldown/fleshmind_plant_weeds/Activate(atom/target)
 	var/datum/component/human_corruption/our_component = owner.GetComponent(/datum/component/human_corruption)
 	if(!our_component?.our_controller)
-		to_chat(owner, span_warning("There is no hive link to tunnel this power through!"))
+		to_chat(owner, span_warning(LANG("datum.fa494b2acd9e8e02", null)))
 		return
 	var/datum/fleshmind_controller/owner_controller = our_component.our_controller
 	var/obj/structure/fleshmind/wireweed/under_wireweed = locate() in get_turf(owner)
 	if(under_wireweed)
-		to_chat(owner, span_warning("There is already wireweed beneath you!"))
+		to_chat(owner, span_warning(LANG("datum.6ceadab979f6808d", null)))
 		return
 	owner_controller.spawn_wireweed(get_turf(owner), /obj/structure/fleshmind/wireweed)
-	to_chat(owner, span_green("Wireweed planted!"))
+	to_chat(owner, span_green(LANG("datum.7ba30e59e80dcc37", null)))
 	StartCooldownSelf()

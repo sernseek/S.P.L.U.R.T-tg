@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/eyes/synth
 	name = "optical sensors"
 	icon_state = "eyes_cyber"
@@ -19,10 +20,10 @@
 		COOLDOWN_START(src, severe_cooldown, 10 SECONDS)
 		switch(severity)
 			if(EMP_HEAVY)
-				to_chat(owner, span_warning("Alert:Severe electromagnetic interference clouds your optics with static. Error Code: I-CS6"))
+				to_chat(owner, span_warning(LANG("obj.dd0ddb0c131e9125", null)))
 				apply_organ_damage(SYNTH_ORGAN_HEAVY_EMP_DAMAGE, maxHealth, required_organ_flag = ORGAN_ROBOTIC)
 			if(EMP_LIGHT)
-				to_chat(owner, span_warning("Alert: Mild interference clouds your optics with static. Error Code: I-CS0"))
+				to_chat(owner, span_warning(LANG("obj.5188865aa2b7275e", null)))
 				apply_organ_damage(SYNTH_ORGAN_LIGHT_EMP_DAMAGE, maxHealth, required_organ_flag = ORGAN_ROBOTIC)
 
 /datum/design/synth_eyes

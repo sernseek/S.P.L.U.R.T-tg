@@ -10,6 +10,8 @@ type Data = {
 
 type Spawner = {
   name: string;
+  // ZH EDIT ADDITION - I18N - canonical English key; "name" is localized for display
+  id: string;
   amount_left: number;
   infinite: BooleanLike;
 } & Partial<{
@@ -28,7 +30,7 @@ export const SpawnersMenu = (props) => {
       <Window.Content scrollable>
         <Stack vertical>
           {spawners.map((spawner) => (
-            <Stack.Item key={spawner.name}>
+            <Stack.Item key={spawner.id}>
               <Section
                 fill
                 // Capitalizes the spawner name
@@ -41,7 +43,8 @@ export const SpawnersMenu = (props) => {
                       </Stack.Item>
                     ) : (
                       <Stack.Item fontSize="14px" color="green">
-                        {spawner.amount_left} left
+                        {/* ZH EDIT - I18N - was "left"; means remaining count, not direction (avoids 左 mistranslation) */}
+                        {spawner.amount_left} remaining
                       </Stack.Item>
                     )}
                     <Stack.Item>
@@ -49,7 +52,8 @@ export const SpawnersMenu = (props) => {
                         content="Jump"
                         onClick={() =>
                           act('jump', {
-                            name: spawner.name,
+                            // ZH EDIT CHANGE - I18N - ORIGINAL: name: spawner.name,
+                            id: spawner.id,
                           })
                         }
                       />
@@ -57,7 +61,8 @@ export const SpawnersMenu = (props) => {
                         content="Spawn"
                         onClick={() =>
                           act('spawn', {
-                            name: spawner.name,
+                            // ZH EDIT CHANGE - I18N - ORIGINAL: name: spawner.name,
+                            id: spawner.id,
                           })
                         }
                       />

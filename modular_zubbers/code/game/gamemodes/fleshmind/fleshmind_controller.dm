@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Balance Defines
  */
@@ -273,7 +274,7 @@
 	level++
 	spawn_new_core()
 	message_admins("Corruption AI [controller_fullname] has leveled up to level [level]!")
-	notify_ghosts("Corruption AI [controller_fullname] has leveled up to level [level]!")
+	notify_ghosts(LANG("datum.d75bd85a9f2a95b8", list(controller_fullname, level)))
 
 	for(var/obj/structure/fleshmind/structure/core/iterating_core in cores)
 		iterating_core.max_integrity += CONTROLLER_LEVEL_UP_CORE_INTEGRITY_AMOUNT
@@ -282,22 +283,22 @@
 	switch(level)
 		if(CONTROLLER_LEVEL_3)
 			if(!tyrant_spawned)
-				minor_announce("This is [controller_firstname], wirenet efficency has reached a point of singularity, initiating Protocol 34-C.", "[controller_fullname]: OFFENSIVE MEASURES ACTIVATED", sound_override = 'modular_zubbers/sound/fleshmind/ai/tyrant.ogg')
+				minor_announce(LANG("datum.1c1b174715e54693", list(controller_firstname)), LANG("datum.b9f8233cf64a775d", list(controller_fullname)), sound_override = 'modular_zubbers/sound/fleshmind/ai/tyrant.ogg')
 				spawn_tyrant_on_a_core()
 				tyrant_spawned = TRUE
 			else
-				minor_announce("This is [controller_firstname], processor core efficiency has increased. Good work.", "[controller_fullname]: Level [level]", sound_override = 'modular_zubbers/sound/fleshmind/ai/level_up_1.ogg')
+				minor_announce(LANG("datum.274bda12b3006b53", list(controller_firstname)), LANG("datum.cb63b70ef0bc22d7", list(controller_fullname, level)), sound_override = 'modular_zubbers/sound/fleshmind/ai/level_up_1.ogg')
 		if(CONTROLLER_LEVEL_4)
-			minor_announce("This is [controller_firstname], kernel integrity is reaching the optimal conversion level.", "[controller_fullname]: Level [level]", sound_override = 'modular_zubbers/sound/fleshmind/ai/data_compromised.ogg')
+			minor_announce(LANG("datum.f5a1878d497d6411", list(controller_firstname)), LANG("datum.cb63b70ef0bc22d7", list(controller_fullname, level)), sound_override = 'modular_zubbers/sound/fleshmind/ai/data_compromised.ogg')
 		if(CONTROLLER_LEVEL_5)
 			if(!sent_code)
 				var/nuke_code = get_the_nuke()
-				priority_announce("The nuclar self d3struct c0d3* i*% [nuke_code]. #$@**$ This is [controller_fullname]: Level [level], Do you genociders feel pain?", "Central Command Nuclear Authorization", ANNOUNCER_ICARUS)
+				priority_announce(LANG("datum.55a4aa582c1d894b", list(nuke_code, controller_fullname, level)), "Central Command Nuclear Authorization", ANNOUNCER_ICARUS)
 			else
-				minor_announce("This is [controller_firstname], processor core efficiency has increased. Good work.", "[controller_fullname]: Level [level]", sound_override = 'modular_zubbers/sound/fleshmind/ai/level_up_1.ogg')
+				minor_announce(LANG("datum.274bda12b3006b53", list(controller_firstname)), LANG("datum.cb63b70ef0bc22d7", list(controller_fullname, level)), sound_override = 'modular_zubbers/sound/fleshmind/ai/level_up_1.ogg')
 		if(CONTROLLER_LEVEL_MAX)
 			if(!end_game)
-				priority_announce("This is [controller_firstname], kernel efficency has reached maximum potential. Beginning shuttle override process, stand-by.", "CRITICAL MASS REACHED", ANNOUNCER_KLAXON)
+				priority_announce(LANG("datum.0da4283c0af90a23", list(controller_firstname)), "CRITICAL MASS REACHED", ANNOUNCER_KLAXON)
 				end_game()
 				end_game = TRUE
 	COOLDOWN_START(src, level_up_cooldown, FLESHCORE_LEVEL_UP_COOLDOWN)
@@ -316,12 +317,12 @@
 		return
 	level--
 	last_level_up_points -= level_up_progress_required
-	notify_ghosts("Corruption AI [controller_fullname] has leveled down to level [level]!")
+	notify_ghosts(LANG("datum.23d205f346d67b4f", list(controller_fullname, level)))
 	if(level > 0)
-		minor_announce("KERNEL INTEGRITY FALTERING. DO BETTER!", "[controller_fullname]: Level [level]", sound_override = pick('modular_zubbers/sound/fleshmind/ai/level_down_1.ogg', 'modular_zubbers/sound/fleshmind/ai/level_down_2.ogg', 'modular_zubbers/sound/fleshmind/ai/level_down_3.ogg'))
+		minor_announce("KERNEL INTEGRITY FALTERING. DO BETTER!", LANG("datum.cb63b70ef0bc22d7", list(controller_fullname, level)), sound_override = pick('modular_zubbers/sound/fleshmind/ai/level_down_1.ogg', 'modular_zubbers/sound/fleshmind/ai/level_down_2.ogg', 'modular_zubbers/sound/fleshmind/ai/level_down_3.ogg'))
 		COOLDOWN_START(src, level_up_cooldown, FLESHCORE_LEVEL_UP_COOLDOWN)
 	else
-		priority_announce("[controller_fullname] has been neutralised.", "Corrupt AI Kernel OFFLINE")
+		priority_announce(LANG("datum.1f60323cfbdde505", list(controller_fullname)), "Corrupt AI Kernel OFFLINE")
 		message_admins("Corruption AI [controller_fullname] has been destroyed.")
 		SSshuttle.clearHostileEnvironment(src)
 
@@ -349,7 +350,7 @@
 /datum/fleshmind_controller/proc/spawn_tyrant_on_a_core()
 	var/obj/structure/fleshmind/structure/core/picked_core = pick(cores)
 	var/mob/living/basic/fleshmind/tyrant/new_tyrant = picked_core.spawn_mob_at_core(/mob/living/basic/fleshmind/tyrant)
-	notify_ghosts("A new [new_tyrant.name] has been created by [controller_fullname]!", source = new_tyrant)
+	notify_ghosts(LANG("datum.e93eaab59c140a1f", list(new_tyrant.name, controller_fullname)), source = new_tyrant)
 
 /datum/fleshmind_controller/proc/spawn_new_core()
 	var/obj/structure/fleshmind/wireweed/selected_wireweed = pick(controlled_wireweed)

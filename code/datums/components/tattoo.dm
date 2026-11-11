@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * ### engraved component!
  *
@@ -58,5 +59,5 @@
 		if(possibly_blocking.body_parts_covered & tatted_limb.body_part) //check to see if something is obscuring their tattoo.
 			return
 
-	examine_list += span_notice("[tatted_limb] of [bodypart_owner] has a tattoo!")
+	examine_list += span_notice(LANG("datum.376658342df9ccaa", list(tatted_limb, bodypart_owner)))
 	examine_list += span_boldnotice(tattoo_description)

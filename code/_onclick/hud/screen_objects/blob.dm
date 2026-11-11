@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /atom/movable/screen/blob
 	icon = 'icons/hud/blob.dmi'
 	mouse_over_pointer = MOUSE_HAND_POINTER
@@ -32,7 +33,7 @@
 		var/mob/eye/blob/B = hud.mymob
 		if(!B.placed)
 			name = "Place Blob Core"
-			desc = "Attempt to place your blob core at this location."
+			desc = LANG("atom.073c0960741f6277", null)
 		else
 			name = initial(name)
 			desc = initial(desc)
@@ -56,7 +57,7 @@
 /atom/movable/screen/blob/blobbernaut/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
 	name = "Produce Blobbernaut ([BLOBMOB_BLOBBERNAUT_RESOURCE_COST])"
-	desc = "Produces a strong, smart blobbernaut from a factory blob for [BLOBMOB_BLOBBERNAUT_RESOURCE_COST] resources.<br>The factory blob used will become fragile and unable to produce spores."
+	desc = LANG("atom.b5e087c1b79d103e", list(BLOBMOB_BLOBBERNAUT_RESOURCE_COST))
 
 /atom/movable/screen/blob/blobbernaut/Click()
 	if(!isovermind(usr))
@@ -74,7 +75,7 @@
 /atom/movable/screen/blob/resource_blob/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
 	name = "Produce Resource Blob ([BLOB_STRUCTURE_RESOURCE_COST])"
-	desc = "Produces a resource blob for [BLOB_STRUCTURE_RESOURCE_COST] resources.<br>Resource blobs will give you resources every few seconds."
+	desc = LANG("atom.beb675d6eff309be", list(BLOB_STRUCTURE_RESOURCE_COST))
 
 /atom/movable/screen/blob/resource_blob/Click()
 	if(!isovermind(usr))
@@ -91,7 +92,7 @@
 /atom/movable/screen/blob/node_blob/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
 	name = "Produce Node Blob ([BLOB_STRUCTURE_NODE_COST])"
-	desc = "Produces a node blob for [BLOB_STRUCTURE_NODE_COST] resources.<br>Node blobs will expand and activate nearby resource and factory blobs."
+	desc = LANG("atom.38f3335d96b3ceae", list(BLOB_STRUCTURE_NODE_COST))
 
 /atom/movable/screen/blob/node_blob/Click()
 	if(!isovermind(usr))
@@ -108,7 +109,7 @@
 /atom/movable/screen/blob/factory_blob/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
 	name = "Produce Factory Blob ([BLOB_STRUCTURE_FACTORY_COST])"
-	desc = "Produces a factory blob for [BLOB_STRUCTURE_FACTORY_COST] resources.<br>Factory blobs will produce spores every few seconds."
+	desc = LANG("atom.d1b220e184747818", list(BLOB_STRUCTURE_FACTORY_COST))
 
 /atom/movable/screen/blob/factory_blob/Click()
 	if(!isovermind(usr))
@@ -127,11 +128,13 @@
 	if(hud?.mymob && isovermind(hud.mymob))
 		var/mob/eye/blob/B = hud.mymob
 		if(B.free_strain_rerolls)
-			name = "[initial(name)] (FREE)"
-			desc = "Randomly rerolls your strain for free."
+			// ZH EDIT CHANGE - i18n: initial(name) 会覆盖已反查的中文名；英文字面后缀进 _name_suffixes.json 一并反查
+			name = "[lang_reverse_text(initial(name))] [lang_reverse_text("(FREE)")]"
+			desc = LANG("atom.664b7ddae3269c99", null)
 		else
-			name = "[initial(name)] ([BLOB_POWER_REROLL_COST])"
-			desc = "Allows you to choose a new strain from [BLOB_POWER_REROLL_CHOICES] random choices for [BLOB_POWER_REROLL_COST] resources."
+			// ZH EDIT CHANGE - i18n: initial(name) 是编译期英文原值，会覆盖掉 /atom/Initialize 反查好的中文名
+			name = "[lang_reverse_text(initial(name))] ([BLOB_POWER_REROLL_COST])"
+			desc = LANG("atom.5a02817ab91444b3", list(BLOB_POWER_REROLL_CHOICES, BLOB_POWER_REROLL_COST))
 	return ..()
 
 /atom/movable/screen/blob/readapt_strain/Click()
@@ -149,7 +152,7 @@
 /atom/movable/screen/blob/relocate_core/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
 	name = "Relocate Core ([BLOB_POWER_RELOCATE_COST])"
-	desc = "Swaps a node and your core for [BLOB_POWER_RELOCATE_COST] resources."
+	desc = LANG("atom.6edc491cf08ab058", list(BLOB_POWER_RELOCATE_COST))
 
 /atom/movable/screen/blob/relocate_core/Click()
 	if(isovermind(usr))

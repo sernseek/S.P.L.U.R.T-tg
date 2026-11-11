@@ -6,6 +6,7 @@ SUBSYSTEM_DEF(statpanels)
 	ss_flags = SS_NO_INIT
 	var/list/currentrun = list()
 	var/list/global_data
+	var/list/localized_global_data // ZH EDIT ADDITION - i18n - one shared localization per subsystem fire
 	var/list/mc_data
 
 	///how many subsystem fires between most tab updates
@@ -25,15 +26,15 @@ SUBSYSTEM_DEF(statpanels)
 		if(isnull(SSmapping.current_map))
 			global_data = list("Loading")
 		else if(SSmapping.current_map.feedback_link)
-			global_data = list(list("Map: [SSmapping.current_map.map_name]", " (Feedback)", "action=openLink&link=[SSmapping.current_map.feedback_link]"))
+			global_data = list(list("[lang_reverse_text("Map:")] [lang_map_display_name(SSmapping.current_map.map_name)]", " [lang_reverse_text("(Feedback)")]", "action=openLink&link=[SSmapping.current_map.feedback_link]")) // ZH EDIT CHANGE - I18N - ORIGINAL: global_data = list(list("Map: [SSmapping.current_map.map_name]", " (Feedback)", "action=openLink&link=[SSmapping.current_map.feedback_link]"))
 		else
-			global_data = list("Map: [SSmapping.current_map?.map_name]")
+			global_data = list("[lang_reverse_text("Map:")] [lang_map_display_name(SSmapping.current_map?.map_name)]") // ZH EDIT CHANGE - I18N - ORIGINAL: global_data = list("Map: [SSmapping.current_map?.map_name]")
 
 		if(SSmapping.current_map?.mapping_url)
-			global_data += list(list("same_line", " | (View in Browser)", "action=openWebMap"))
+			global_data += list(list("same_line", " | [lang_reverse_text("(View in Browser)")]", "action=openWebMap"))
 
 		if(cached)
-			global_data += "Next Map: [cached.map_name]"
+			global_data += "[lang_reverse_text("Next Map")]: [lang_map_display_name(cached.map_name)]" // ZH EDIT CHANGE - I18N - ORIGINAL: global_data += "Next Map: [cached.map_name]"
 
 		// BUBBER EDIT ADDITION BEGIN - Extra stat panel info
 		var/real_round_time = world.timeofday - SSticker.real_round_start_time
@@ -43,21 +44,25 @@ SUBSYSTEM_DEF(statpanels)
 		// BUBBER EDIT ADDITION END - Extra stat panel info
 
 		global_data += list(
-			"Round ID: [GLOB.round_id ? GLOB.round_id : "NULL"]",
-			"Connected: [GLOB.clients.len] | Active: [active_players]/[CONFIG_GET(number/hard_popcap)] | Observing: [observing_players]", // BUBBER EDIT ADDITION - Extra stat panel info
-			"OOC: [GLOB.ooc_allowed ? "Enabled" : "Disabled"]", // BUBBER EDIT ADDITION - Extra stat panel info
+			"[lang_reverse_text("Round ID")]: [GLOB.round_id ? GLOB.round_id : "NULL"]",
+			"[lang_reverse_text("Connected")]: [GLOB.clients.len] | [lang_reverse_text("Active")]: [active_players]/[CONFIG_GET(number/hard_popcap)] | [lang_reverse_text("Observing")]: [observing_players]", // BUBBER EDIT ADDITION - Extra stat panel info
+			"OOC: [GLOB.ooc_allowed ? lang_reverse_text("Enabled") : lang_reverse_text("Disabled")]", // BUBBER EDIT ADDITION - Extra stat panel info
 			" ", // BUBBER EDIT ADDITION - Extra stat panel info
-			"Storyteller: [SSgamemode.storyteller ? SSgamemode.storyteller.name : "N/A"]", // BUBBER EDIT ADDITION - Extra stat panel info
-			"Station Time: [server_timestamp(format = "YYYY-MM-DD hh:mm:ss", ic_time = TRUE)]",
-			"Round Time: [time2text(real_round_time, "hh:mm:ss", 0)]", // BUBBER EDIT CHANGE - Extra stat panel info - ORIGINAL: "Round Time: [ROUND_TIME()]"
-			"Server Time: [time2text(world.timeofday, "YYYY-MM-DD hh:mm:ss", world.timezone)]",
-			"Time Dilation: [round(SStime_track.time_dilation_current,1)]% AVG:([round(SStime_track.time_dilation_avg_fast,1)]%, [round(SStime_track.time_dilation_avg,1)]%, [round(SStime_track.time_dilation_avg_slow,1)]%)",
+			"[lang_reverse_text("Storyteller")]: [SSgamemode.storyteller ? lang_reverse_text(SSgamemode.storyteller.name) : "N/A"]", // BUBBER EDIT ADDITION - Extra stat panel info
+			"[lang_reverse_text("Station Time")]: [server_timestamp(format = "YYYY-MM-DD hh:mm:ss", ic_time = TRUE)]",
+			"[lang_reverse_text("Round Time")]: [time2text(real_round_time, "hh:mm:ss", 0)]", // BUBBER EDIT CHANGE - Extra stat panel info - ORIGINAL: "Round Time: [ROUND_TIME()]"
+			"[lang_reverse_text("Server Time")]: [time2text(world.timeofday, "YYYY-MM-DD hh:mm:ss", world.timezone)]",
+			"[lang_reverse_text("Time Dilation")]: [round(SStime_track.time_dilation_current,1)]% AVG:([round(SStime_track.time_dilation_avg_fast,1)]%, [round(SStime_track.time_dilation_avg,1)]%, [round(SStime_track.time_dilation_avg_slow,1)]%)",
 		)
 
 		if(SSshuttle.emergency)
 			var/ETA = SSshuttle.emergency.getModeStr()
 			if(ETA)
 				global_data += "[ETA] [SSshuttle.emergency.getTimerStr()]"
+		// ZH EDIT ADDITION START - i18n - global_data is identical for every client; localize it once per status refresh
+		if(num_fires % status_wait == 0)
+			localized_global_data = i18n_localize_stat_list(global_data)
+		// ZH EDIT ADDITION END
 
 		src.currentrun = GLOB.clients.Copy()
 		mc_data = null
@@ -108,10 +113,34 @@ SUBSYSTEM_DEF(statpanels)
 /datum/controller/subsystem/statpanels/proc/set_status_tab(client/target)
 	if(!global_data)//statbrowser hasnt fired yet and we were called from immediate_send_stat_data()
 		return
+	var/list/status_items = target.mob?.get_status_tab_items()
+	// ZH EDIT - i18n - 状态栏 AC 子串兜底：顶部 global_data + 角色 other_str 各过本地化副本
+	// （仅全服中文时；不改共享 global_data；只翻文本不动点击链接）。ORIGINAL: 直接传 global_data / status_items
 	target.stat_panel.send_message("update_stat", list(
-		"global_data" = global_data,
-		"other_str" = target.mob?.get_status_tab_items(),
+		"global_data" = localized_global_data || i18n_localize_stat_list(global_data), // ZH EDIT CHANGE - i18n - reuse the per-fire shared result
+		"other_str" = i18n_localize_stat_list(status_items),
 	))
+
+// ZH EDIT ADDITION START - i18n - 返回状态栏列表的本地化副本（locale==en 或空时原样返回，零开销）
+/datum/controller/subsystem/statpanels/proc/i18n_localize_stat_list(list/items)
+	if(!items || GLOB.i18n_server_locale == DEFAULT_UI_LOCALE)
+		return items
+	var/list/out = list()
+	for(var/entry in items)
+		if(istext(entry))
+			out += lang_fallback_apply(entry)
+		else if(islist(entry)) // [text, 高亮text, link] 或 ["same_line", text, url]：只翻文本
+			var/list/entry_list = entry
+			var/list/sub = entry_list.Copy()
+			if(length(sub) >= 1 && istext(sub[1]) && sub[1] != "same_line")
+				sub[1] = lang_fallback_apply(sub[1])
+			if(length(sub) >= 2 && istext(sub[2]))
+				sub[2] = lang_fallback_apply(sub[2])
+			out += list(sub)
+		else
+			out += entry
+	return out
+// ZH EDIT ADDITION END
 
 /datum/controller/subsystem/statpanels/proc/set_MC_tab(client/target)
 	var/turf/eye_turf = get_turf(target.eye)

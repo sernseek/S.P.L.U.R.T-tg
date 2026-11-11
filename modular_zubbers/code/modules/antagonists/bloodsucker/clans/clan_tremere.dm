@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/bloodsucker_clan/tremere
 	name = CLAN_TREMERE
 	description = "The Tremere Clan is extremely weak to True Faith, and will burn when entering areas considered such, like the Chapel. \n\
@@ -27,7 +28,7 @@
 	. = ..()
 	var/area/current_area = get_area(bloodsuckerdatum.owner.current)
 	if(istype(current_area, /area/station/service/chapel))
-		to_chat(bloodsuckerdatum.owner.current, span_warning("You don't belong in holy areas! The Faith burns you!"))
+		to_chat(bloodsuckerdatum.owner.current, span_warning(LANG("datum.19a45c4fc6aa50c2", null)))
 		bloodsuckerdatum.owner.current.adjust_fire_loss(10)
 		bloodsuckerdatum.owner.current.adjust_fire_stacks(2)
 		bloodsuckerdatum.owner.current.ignite_mob()
@@ -37,8 +38,8 @@
 
 /datum/bloodsucker_clan/tremere/level_message(power_name)
 	var/mob/living/carbon/human/human_user = bloodsuckerdatum.owner.current
-	human_user.balloon_alert(human_user, "upgraded [power_name]!")
-	to_chat(human_user, span_notice("You have upgraded [power_name]!"))
+	human_user.balloon_alert(human_user, LANG("datum.b7c3518517293628", list(power_name)))
+	to_chat(human_user, span_notice(LANG("datum.359a388a01a27a00", list(power_name))))
 
 // redefine the default args
 /datum/bloodsucker_clan/tremere/list_available_powers(already_known, powers_list)
@@ -59,5 +60,5 @@
 
 /datum/bloodsucker_clan/tremere/on_ghoul_made(datum/antagonist/bloodsucker/source, mob/living/user, mob/living/target)
 	. = ..()
-	to_chat(bloodsuckerdatum.owner.current, span_danger("You have now gained an additional Rank to spend!"))
+	to_chat(bloodsuckerdatum.owner.current, span_danger(LANG("datum.0b4d0639180e2738", null)))
 	bloodsuckerdatum.AdjustUnspentRank(1)

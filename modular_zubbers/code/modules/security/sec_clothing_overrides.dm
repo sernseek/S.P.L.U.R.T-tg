@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 *	Security clothing reskins and such.
 */
@@ -37,7 +38,7 @@
 		return
 
 	if(!resolve_parent.IsReachableBy(user))
-		resolve_parent.balloon_alert(user, "can't reach!")
+		resolve_parent.balloon_alert(user, LANG("datum.fba9228dcadf2006", null))
 		return FALSE
 
 	if(!isliving(user) || user.incapacitated)
@@ -50,7 +51,7 @@
 	attempt_remove(gun_to_draw, get_turf(user))
 	playsound(resolve_parent, 'modular_skyrat/modules/sec_haul/sound/holsterout.ogg', 50, TRUE, -5)
 	INVOKE_ASYNC(user, TYPE_PROC_REF(/mob, put_in_hands), gun_to_draw)
-	user.visible_message(span_warning("[user] draws [gun_to_draw] from [resolve_parent]!"), span_notice("You draw [gun_to_draw] from [resolve_parent]."))
+	user.visible_message(span_warning(LANG("datum.e20111a7a1cbac66", list(user, gun_to_draw, resolve_parent))), span_notice(LANG("datum.c181111076c5ffd1", list(gun_to_draw, resolve_parent))))
 
 /*
 * GLASSES
@@ -130,7 +131,7 @@
 
 /obj/item/clothing/head/helmet/sec/click_alt(mob/user)
 	flipped_visor = !flipped_visor
-	balloon_alert(user, "visor flipped")
+	balloon_alert(user, LANG("obj.7abc9479fcefd7df", null))
 	// base_icon_state is modified for seclight attachment component
 	base_icon_state = "[initial(base_icon_state)][flipped_visor ? "-novisor" : ""]"
 	icon_state = base_icon_state
@@ -151,7 +152,7 @@
 
 /obj/item/clothing/head/helmet/sec/futuristic/click_alt(mob/user)
 	flipped_visor = !flipped_visor
-	balloon_alert(user, "visor flipped")
+	balloon_alert(user, LANG("obj.7abc9479fcefd7df", null))
 	// base_icon_state is modified for seclight attachment component
 	base_icon_state = "[initial(base_icon_state)][flipped_visor ? "-novisor" : ""]"
 	icon_state = base_icon_state
@@ -209,7 +210,7 @@
 
 /obj/item/clothing/neck/security_cape/click_alt(mob/user)
 	swapped = !swapped
-	to_chat(user, span_notice("You swap which arm [src] will lay over."))
+	to_chat(user, span_notice(LANG("obj.44625d4d53a89e45", list(src))))
 	update_appearance()
 	return CLICK_ACTION_SUCCESS
 

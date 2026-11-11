@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/autosurgeon/bodypart
 	name = "bodypart upgrade autosurgeon"
 	desc = "A device that will expertly replace your bodypart."
@@ -16,14 +17,14 @@
 /obj/item/autosurgeon/bodypart/proc/insert_bodypart(obj/item/I)
 	storedbodypart = I
 	I.forceMove(src)
-	name = "[initial(name)] ([storedbodypart.name])"
+	name = "[lang_reverse_text(initial(name))] ([storedbodypart.name])"  // i18n: initial(name) 会覆盖掉已反查的中文名
 
 /obj/item/autosurgeon/bodypart/attack_self(mob/user)//when the object it used...
 	if(!uses)
-		to_chat(user, span_alert("[src] has already been used. The tools are dull and won't reactivate."))
+		to_chat(user, span_alert(LANG("obj.8104ad50cb01368d", list(src))))
 		return
 	if(!storedbodypart)
-		to_chat(user, span_alert("[src] currently has no implant stored."))
+		to_chat(user, span_alert(LANG("obj.7c5b6298c5edfb9e", list(src))))
 		return
 	if(!ishuman(user))
 		return
@@ -33,13 +34,13 @@
 	var/obj/item/bodypart/oldBP = H.get_bodypart(storedbodypart.body_zone)
 
 	if(oldBP)
-		to_chat(H, span_warning("The [src] removes your [oldBP.name]!"))
+		to_chat(H, span_warning(LANG("obj.ac75381dd67608c2", list(src, oldBP.name))))
 		oldBP.dismember()
 
-	user.visible_message(span_notice("[H] presses a button on [src], and you hear a short mechanical noise."), span_notice("You feel a sharp sting as [src] plunges into your body."))
+	user.visible_message(span_notice(LANG("obj.00b555708325e69b", list(H, src))), span_notice(LANG("obj.d2eeea8407c5243f", list(src))))
 
 	if(!storedbodypart.try_attach_limb(H))
-		to_chat(H, span_warning("The [src] fails to attach [storedbodypart]!"))
+		to_chat(H, span_warning(LANG("obj.42f1dc61caa886c5", list(src, storedbodypart))))
 		return
 
 	playsound(get_turf(H), 'sound/items/weapons/circsawhit.ogg', 50, TRUE)
@@ -47,20 +48,20 @@
 	name = initial(name)
 	uses--
 	if(!uses)
-		desc = "[initial(desc)] Looks like it's been used up."
+		desc = LANG("obj.8c69c278a06af8a9", list(initial(desc)))
 
 /obj/item/autosurgeon/bodypart/attackby(obj/item/I, mob/user, params)
 	if(istype(I, bodypart_type))
 		if(storedbodypart)
-			to_chat(user, span_alert("[src] already has an implant stored."))
+			to_chat(user, span_alert(LANG("obj.e7325773024711f3", list(src))))
 			return
 		else if(!uses)
-			to_chat(user, span_alert("[src] has already been used up."))
+			to_chat(user, span_alert(LANG("obj.a5f6a38757782cbc", list(src))))
 			return
 		if(!user.transferItemToLoc(I, src))
 			return
 		storedbodypart = I
-		to_chat(user, span_notice("You insert the [I] into [src]."))
+		to_chat(user, span_notice(LANG("obj.efd435e696e36781", list(I, src))))
 	else
 		return ..()
 
@@ -68,17 +69,17 @@
 	if(..())
 		return TRUE
 	if(!storedbodypart)
-		to_chat(user, span_warning("There's no implant in [src] for you to remove!"))
+		to_chat(user, span_warning(LANG("obj.215a92c5e4dd44f5", list(src))))
 	else
 		var/atom/drop_loc = user.drop_location()
 		for(var/J in src)
 			var/atom/movable/AM = J
 			AM.forceMove(drop_loc)
 
-		to_chat(user, span_notice("You remove the [storedbodypart] from [src]."))
+		to_chat(user, span_notice(LANG("obj.0133908911d9431b", list(storedbodypart, src))))
 		I.play_tool_sound(src)
 		storedbodypart = null
 		uses--
 		if(!uses)
-			desc = "[initial(desc)] Looks like it's been used up."
+			desc = LANG("obj.8c69c278a06af8a9", list(initial(desc)))
 	return TRUE

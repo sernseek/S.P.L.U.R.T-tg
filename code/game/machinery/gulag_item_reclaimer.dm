@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/gulag_item_reclaimer
 	name = "equipment reclaimer station"
 	desc = "Used to reclaim your items after you finish your sentence at the labor camp."
@@ -40,7 +41,7 @@
 	obj_flags |= EMAGGED
 	screen_icon = "emagged_general"
 	update_appearance()
-	balloon_alert(user, "id checker scrambled")
+	balloon_alert(user, LANG("obj.f8b9607c65b94406", null))
 	return TRUE
 
 /obj/machinery/gulag_item_reclaimer/ui_interact(mob/user, datum/tgui/ui)
@@ -69,7 +70,7 @@
 	for(var/i in stored_items)
 		var/mob/thismob = i
 		if(QDELETED(thismob))
-			say("Alert! Unable to locate vital signals of a previously processed prisoner. Ejecting equipment!")
+			say(LANG("obj.c49cc120560fd861", null))
 			drop_items(thismob)
 			continue
 		var/list/mob_info = list()
@@ -91,7 +92,7 @@
 		if("release_items")
 			var/mob/living/carbon/human/H = locate(params["mobref"]) in stored_items
 			if(H != usr && !allowed(usr))
-				to_chat(usr, span_warning("Access denied."))
+				to_chat(usr, span_warning(LANG("obj.077f9b52c530e7f8", null)))
 				return
 			drop_items(H)
 			. = TRUE
@@ -100,7 +101,7 @@
 	if(!stored_items[user])
 		return
 	if(!use_energy(active_power_usage, force = FALSE))
-		balloon_alert(user, "not enough energy!")
+		balloon_alert(user, LANG("obj.204cf586a1a03b27", null))
 		return
 	var/drop_location = drop_location()
 	for(var/i in stored_items[user])

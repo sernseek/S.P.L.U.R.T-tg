@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Used to generate an asset key for a temporary image unique to this user.
 #define TEMP_IMAGE_PATH(ref) ("ntos_messenger[ref]_temp_image.png")
 /// Purpose is evident by the name, hopefully.
@@ -164,9 +165,9 @@
 	switch(action)
 		if("PDA_ringSet")
 			var/mob/living/user = usr
-			var/new_ringtone = tgui_input_text(user, "Enter a new ringtone", "Ringtone", ringtone, max_length = MAX_MESSAGE_LEN, encode = FALSE)
+			var/new_ringtone = tgui_input_text(user, LANG("datum.0217372dd680b50a", null), LANG("datum.d1ce851530a75356", null), ringtone, max_length = MAX_MESSAGE_LEN, encode = FALSE)
 			if(!computer.can_interact(user))
-				computer.balloon_alert(user, "can't reach!")
+				computer.balloon_alert(user, LANG("datum.fba9228dcadf2006", null))
 				return FALSE
 			return set_ringtone(new_ringtone, user)
 
@@ -221,11 +222,11 @@
 
 		if("PDA_sendEveryone")
 			if(!sending_and_receiving)
-				to_chat(usr, span_notice("ERROR: This device has sending disabled."))
+				to_chat(usr, span_notice(LANG("datum.c18de31842e30083", null)))
 				return FALSE
 
 			if(!spam_mode)
-				to_chat(usr, span_notice("ERROR: This device does not have mass-messaging perms."))
+				to_chat(usr, span_notice(LANG("datum.d637215dfe23b252", null)))
 				return FALSE
 
 			if(!can_send_everyone_message())
@@ -259,7 +260,7 @@
 
 		if("PDA_sendMessage")
 			if(!sending_and_receiving)
-				to_chat(usr, span_notice("ERROR: This device has sending disabled."))
+				to_chat(usr, span_notice(LANG("datum.c18de31842e30083", null)))
 				return FALSE
 
 			// target ref, can either be a chat in saved_chats
@@ -286,7 +287,7 @@
 					var/datum/pda_chat/target_chat = target
 					target_messenger = target_chat.recipient?.resolve()
 					if(!istype(target_messenger))
-						to_chat(usr, span_notice("ERROR: Recipient no longer exists."))
+						to_chat(usr, span_notice(LANG("datum.638153605d5e36e1", null)))
 						return FALSE
 				else if(istype(target, /datum/computer_file/program/messenger))
 					target_messenger = target
@@ -396,12 +397,12 @@
 		return
 	var/datum/computer_file/program/messenger/target = chat.recipient?.resolve()
 	if(!istype(target) || !istype(target.computer))
-		to_chat(user, span_notice("ERROR: Recipient no longer exists."))
+		to_chat(user, span_notice(LANG("datum.638153605d5e36e1", null)))
 		chat.recipient = null
 		chat.can_reply = FALSE
 		return
 	var/target_name = target.computer.saved_identification
-	var/input_message = tgui_input_text(user, "Enter [mime_mode ? "emojis":"a message"]. Start with # for subtle.", "NT Messaging[target_name ? " ([target_name])" : ""]", max_length = MAX_MESSAGE_LEN, encode = FALSE) // BUBBER EDIT CHANGE - SUBTLE MESSAGES
+	var/input_message = tgui_input_text(user, LANG("datum.483a8095cf418611", list(mime_mode ? "emojis":"a message")), LANG("datum.fe2ffd5864a951ab", list(target_name ? " ([target_name])" : "")), max_length = MAX_MESSAGE_LEN, encode = FALSE) // BUBBER EDIT CHANGE - SUBTLE MESSAGES
 	send_message(user, input_message, list(chat), subtle = subtle) // BUBBER EDIT CHANGE - SUBTLE MESSAGES - Original: send_message(user, input_message, list(chat))
 
 /// Helper proc that sends a message to everyone
@@ -511,21 +512,21 @@
 
 			if(!target_chat.can_reply)
 				if(should_alert)
-					to_chat(sender, span_notice("ERROR: Recipient has receiving disabled."))
+					to_chat(sender, span_notice(LANG("datum.d09ba16fff8ba53c", null)))
 				continue
 
 			target_messenger = target_chat.recipient?.resolve()
 
 			if(!istype(target_messenger))
 				if(should_alert)
-					to_chat(sender, span_notice("ERROR: Recipient no longer exists."))
+					to_chat(sender, span_notice(LANG("datum.638153605d5e36e1", null)))
 				target_chat.can_reply = FALSE
 				target_chat.recipient = null
 				continue
 
 			if(!target_messenger.sending_and_receiving)
 				if(should_alert)
-					to_chat(sender, span_notice("ERROR: Recipient has receiving disabled."))
+					to_chat(sender, span_notice(LANG("datum.d09ba16fff8ba53c", null)))
 				continue
 
 		else if(istype(target, /datum/computer_file/program/messenger))
@@ -533,7 +534,7 @@
 
 			if(!target_messenger.sending_and_receiving)
 				if(should_alert)
-					to_chat(sender, span_notice("ERROR: Recipient has receiving disabled."))
+					to_chat(sender, span_notice(LANG("datum.d09ba16fff8ba53c", null)))
 				continue
 
 			target_chat = find_chat_by_recipient(REF(target))
@@ -595,7 +596,7 @@
 	if(is_within_radio_jammer_range(computer) && !rigged)
 		// different message so people know it's a radio jammer
 		if(sender)
-			to_chat(sender, span_notice("ERROR: Network unavailable, please try again later."))
+			to_chat(sender, span_notice(LANG("datum.992b8e7dd74bb398", null)))
 		if(alert_able && !alert_silenced)
 			playsound(computer, 'sound/machines/terminal/terminal_error.ogg', 15, TRUE)
 		return FALSE
@@ -634,13 +635,13 @@
 	// If it didn't reach, note that fact
 	if (!signal.data["done"])
 		if(sender)
-			to_chat(sender, span_notice("ERROR: Server is not responding."))
+			to_chat(sender, span_notice(LANG("datum.f991b4d4eae59e45", null)))
 		if(alert_able && !alert_silenced)
 			playsound(computer, 'sound/machines/terminal/terminal_error.ogg', 15, TRUE)
 		return FALSE
 
 	// SKYRAT EDIT BEGIN - PDA messages show a visible message; again!
-	sender.visible_message(span_notice("[sender]'s PDA rings out with the soft sound of keypresses."), vision_distance = COMBAT_MESSAGE_RANGE)
+	sender.visible_message(span_notice(LANG("datum.7ec410b3b697da7f", list(sender))), vision_distance = COMBAT_MESSAGE_RANGE)
 	// SKYRAT EDIT END
 
 	var/shell_addendum = ""
@@ -675,9 +676,9 @@
 
 	if(sender)
 		if(subtle)
-			to_chat(sender, span_subtlepda("Subtle PDA message sent to [signal.format_target()]: \"[message]\""))
+			to_chat(sender, span_subtlepda(LANG("datum.17f4373b115de448", list(signal.format_target(), message))))
 		else
-			to_chat(sender, span_info("PDA message sent to [signal.format_target()]: \"[message]\""))
+			to_chat(sender, span_info(LANG("datum.e257b5827dc19d18", list(signal.format_target(), message))))
 	// BUBBER EDIT CHANGE END
 
 	if (alert_able && !alert_silenced)
@@ -768,9 +769,9 @@
 		var/photo_message = signal.data["photo"] ? " (<a href='byond://?src=[REF(src)];choice=[photo_href];skiprefresh=1;target=[REF(chat)]'>Photo Attached</a>)" : ""
 		// BUBBER EDIT CHANGE BEGIN - SUBTLE MESSAGES
 		if(is_subtle)
-			to_chat(messaged_mob, span_subtlepda("[icon2html(computer, messaged_mob)] <b>Subtle PDA message from [sender_title], </b>\"[inbound_message]\"[photo_message] [reply]"))
+			to_chat(messaged_mob, span_subtlepda(LANG("datum.cc851b0b10bc2a89", list(icon2html(computer, messaged_mob), sender_title, inbound_message, photo_message, reply))))
 		else
-			to_chat(messaged_mob, span_infoplain("[icon2html(computer, messaged_mob)] <b>PDA message from [sender_title], </b>\"[inbound_message]\"[photo_message] [reply]"))
+			to_chat(messaged_mob, span_infoplain(LANG("datum.443f01c8cab43478", list(icon2html(computer, messaged_mob), sender_title, inbound_message, photo_message, reply))))
 		// BUBBER EDIT CHANGE END - SUBTLE MESSAGES
 
 		SEND_SIGNAL(computer, COMSIG_COMPUTER_RECEIVED_MESSAGE, sender_title, inbound_message, photo_message)

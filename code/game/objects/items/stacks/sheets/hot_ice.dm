@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/stack/sheet/hot_ice
 	name = "hot ice"
 	icon_state = "hot-ice"
@@ -9,5 +10,5 @@
 	merge_type = /obj/item/stack/sheet/hot_ice
 
 /obj/item/stack/sheet/hot_ice/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] begins licking \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.9bb5c4fb28bfabe5", list(user, src, user.p_theyre()))))
 	return FIRELOSS//dont you kids know that stuff is toxic?

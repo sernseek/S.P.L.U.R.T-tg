@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// A floating eyeball which keeps its distance and sometimes make you look away.
 /mob/living/basic/mining/watcher
 	name = "watcher"
@@ -74,7 +75,7 @@
 
 /// I love eating diamonds yum
 /mob/living/basic/mining/watcher/proc/consume(atom/movable/thing)
-	visible_message(span_warning("[thing] seems to vanish into [src]'s body!"))
+	visible_message(span_warning(LANG("mob.a9ce499665632fc2", list(thing, src))))
 	thing.forceMove(src)
 
 /// More durable, burning projectiles

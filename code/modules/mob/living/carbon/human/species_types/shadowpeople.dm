@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/shadow
 	// Humans cursed to stay in the darkness, lest their life forces drain. They regain health in shadow and die in light.
 	name = "Shadow"
@@ -77,22 +78,20 @@
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "moon",
-			SPECIES_PERK_NAME = "Shadowborn",
-			SPECIES_PERK_DESC = "Their skin blooms in the darkness. All kinds of damage, \
-				no matter how extreme, will heal over time as long as there is no light.",
+			SPECIES_PERK_NAME = LANG("datum.65a823f46a4c1c49", null),
+			SPECIES_PERK_DESC = LANG("datum.b172651a934b1f20", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "eye",
-			SPECIES_PERK_NAME = "Nightvision",
-			SPECIES_PERK_DESC = "Their eyes are adapted to the night, and can see in the dark with no problems.",
+			SPECIES_PERK_NAME = LANG("datum.ac6f015f15b87f50", null),
+			SPECIES_PERK_DESC = LANG("datum.110ab3d41c67405d", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "sun",
-			SPECIES_PERK_NAME = "Lightburn",
-			SPECIES_PERK_DESC = "Their flesh withers in the light. Any exposure to light is \
-				incredibly painful for the shadowperson, charring their skin.",
+			SPECIES_PERK_NAME = LANG("datum.d4804e7a8d450f85", null),
+			SPECIES_PERK_DESC = LANG("datum.dbdfb2a8d99ec6e1", null),
 		),
 	)
 
@@ -125,8 +124,8 @@
 		flashed.adjust_confusion_up_to(1 SECONDS, 3 SECONDS)
 
 	INVOKE_ASYNC(flashed, TYPE_PROC_REF(/mob, emote), "scream")
-	flashed.visible_message(span_danger("[flashed] wails in pain as a burst of light singes their flesh!"), \
-		span_danger("You wail in pain as the sudden burst of light singes your flesh!"), \
-		span_danger("Something wails in pain! It sounds like a terrifying monster! Good thing you can't see it, or you'd probably be freaking out right now."))
+	flashed.visible_message(span_danger(LANG("datum.76a40350b453a42a", list(flashed))), \
+		span_danger(LANG("datum.dc75ceece958f92c", null)), \
+		span_danger(LANG("datum.0b4f450b4159fc50", null)))
 
 	return FLASH_OVERRIDDEN

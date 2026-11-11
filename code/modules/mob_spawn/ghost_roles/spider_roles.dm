@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/spider/eggcluster
 	name = "egg cluster"
 	icon = 'icons/effects/effects.dmi'
@@ -27,15 +28,15 @@
 	if(istype(user, /mob/living/basic/spider/giant/midwife))
 		switch(spawner.amount_grown)
 			if(0 to 24)
-				. += span_info("These eggs look shrunken and dormant.")
+				. += span_info(LANG("obj.03996bbaeb1bd13e", null))
 			if(25 to 49)
-				. += span_info("These eggs have begun to move, pulsating, gestating...")
+				. += span_info(LANG("obj.11362670c813ad5f", null))
 			if(50 to 74)
-				. += span_info("These eggs are rippling, unseen life stirring beneath its skin.")
+				. += span_info(LANG("obj.95cfab54a3dd5d16", null))
 			if(75 to 99)
-				. += span_info("These eggs swell with unseen life. They are almost ready to burst.")
+				. += span_info(LANG("obj.4734a7c944b98c4c", null))
 			if(100 to INFINITY)
-				. += span_info("These eggs are plump, teeming with life. Any moment now...")
+				. += span_info(LANG("obj.d252a30b0fc65f6c", null))
 
 /obj/structure/spider/eggcluster/abnormal
 	name = "abnormal egg cluster"
@@ -112,7 +113,7 @@
 		if(flash_window)
 			notify_flags_to_pass &= GHOST_NOTIFY_FLASH_WINDOW
 		notify_ghosts(
-			"[src] is ready to hatch!",
+			LANG("obj.6b8ec072c16a7e29", list(src)),
 			source = src,
 			header = "Spider Infestation",
 			click_interact = TRUE,
@@ -137,7 +138,7 @@
 		return FALSE
 	if(!ready)
 		if(!silent)
-			to_chat(user, span_warning("\The [src] is not ready to hatch yet!"))
+			to_chat(user, span_warning(LANG("obj.39fd5ce5a8b812ba", list(src))))
 		return FALSE
 	return TRUE
 

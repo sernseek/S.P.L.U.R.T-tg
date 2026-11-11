@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/stock_parts/capacitor/Initialize(mapload)
 	. = ..()
 
@@ -19,9 +20,9 @@
 	var/datum/component/polarization_controller/window_polarization_controller = target.GetComponent(/datum/component/polarization_controller)
 
 	if(window_polarization_controller)
-		balloon_alert(user, "polarization controller already installed!")
+		balloon_alert(user, LANG("obj.543f35d80f4bd290", null))
 		return
 
 	target.AddComponent(/datum/component/polarization_controller, src) // No need to do anything else, the component will handle moving the capacitor into the window.
 
-	target.balloon_alert(user, "polarization controller installed")
+	target.balloon_alert(user, LANG("obj.ef2291b905be869c", null))

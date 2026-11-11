@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/religion_rites/banish_nightmare
 	name = "Banish Nightmare"
 	desc = "Banish the corpse of a Nightmare (or its heart) back from whence it came. In protecting the dreams of \
@@ -27,7 +28,7 @@
 			break
 
 	if(!has_nightmare)
-		to_chat(user, span_warning("There is no Nightmare corpse or heart to banish!"))
+		to_chat(user, span_warning(LANG("datum.ac0f87ff940721a6", null)))
 		return FALSE
 
 	return ..()
@@ -63,9 +64,9 @@
 		for(var/i in 1 to give_heart)
 			new /obj/item/organ/heart/evolved/sacred/dreamer(get_turf(religious_tool))
 		playsound(religious_tool, 'sound/effects/pray.ogg', 50, TRUE, frequency = 0.5)
-		to_chat(user, span_hypnophrase("[GLOB.deity] blesses you."))
+		to_chat(user, span_hypnophrase(LANG("datum.7cbed5be5973b2dc", list(GLOB.deity))))
 	else
-		to_chat(user, span_hypnophrase("[GLOB.deity] smiles upon you."))
+		to_chat(user, span_hypnophrase(LANG("datum.944277374d0ce24d", list(GLOB.deity))))
 	user.add_mood_event("banish_nightmare", /datum/mood_event/banish_nightmare)
 
 /datum/mood_event/banish_nightmare

@@ -1,4 +1,5 @@
-ADMIN_VERB(fishing_calculator, R_DEBUG, "Fishing Calculator", "A calculator... for fishes?", ADMIN_CATEGORY_DEBUG)
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+ADMIN_VERB(fishing_calculator, R_DEBUG, "钓鱼计算器", "A calculator... for fishes?", ADMIN_CATEGORY_DEBUG)
 	var/datum/fishing_calculator/ui = new
 	ui.ui_interact(user.mob)
 
@@ -34,11 +35,11 @@ ADMIN_VERB(fishing_calculator, R_DEBUG, "Fishing Calculator", "A calculator... f
 		if("recalc")
 			var/rod_type = text2path(params["rod"])
 			if(!rod_type)
-				to_chat(user, span_warning("A fishing rod is needed in order to fish."))
+				to_chat(user, span_warning(LANG("datum.6b58b505f885efbc", null)))
 				return
 			var/hook_type = text2path(params["hook"])
 			if(!hook_type)
-				to_chat(user, span_warning("A fishing hook is needed in order to fish."))
+				to_chat(user, span_warning(LANG("datum.508c07b4f08ec779", null)))
 				return
 			var/bait_type = text2path(params["bait"])
 			var/line_type = text2path(params["line"])

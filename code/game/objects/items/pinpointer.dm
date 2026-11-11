@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Pinpointers are used to track atoms from a distance as long as they're on the same z-level. The captain and nuke ops have ones that track the nuclear authentication disk.
 /obj/item/pinpointer
 	name = "pinpointer"
@@ -49,12 +50,12 @@
 	if(!process_scan) //since it's not scanning on process, it scans here.
 		scan_for_target()
 	toggle_on()
-	user.visible_message(span_notice("[user] [active ? "" : "de"]activates [user.p_their()] pinpointer."), span_notice("You [active ? "" : "de"]activate your pinpointer."))
+	user.visible_message(span_notice(LANG("obj.61f418922633a996", list(user, active ? "" : "de", user.p_their()))), span_notice(LANG("obj.2130e177c3191d0f", list(active ? "" : "de"))))
 
 /obj/item/pinpointer/examine(mob/user)
 	. = ..()
 	if(target)
-		. += "It is currently tracking [target]."
+		. += LANG("obj.e56e24ae79c325a9", list(target))
 
 /obj/item/pinpointer/proc/toggle_on()
 	active = !active
@@ -136,14 +137,14 @@
 /obj/item/pinpointer/crew/attack_self(mob/living/user)
 	if(active)
 		toggle_on()
-		user.visible_message(span_notice("[user] deactivates [user.p_their()] pinpointer."), span_notice("You deactivate your pinpointer."))
+		user.visible_message(span_notice(LANG("obj.e071a18911742ecd", list(user, user.p_their()))), span_notice(LANG("obj.a32108c2eb71bbf2", null)))
 		return
 
 	if (!pinpointer_owner)
 		pinpointer_owner = user
 
 	if (pinpointer_owner && pinpointer_owner != user)
-		to_chat(user, span_notice("The pinpointer doesn't respond. It seems to only recognise its owner."))
+		to_chat(user, span_notice(LANG("obj.f535b0b892aa0fd3", null)))
 		return
 
 	var/list/name_counts = list()
@@ -167,9 +168,9 @@
 		name_counts[crewmember_name] = 1
 
 	if(!length(names))
-		user.visible_message(span_notice("[user]'s pinpointer fails to detect a signal."), span_notice("Your pinpointer fails to detect a signal."))
+		user.visible_message(span_notice(LANG("obj.c9da780148522e0e", list(user))), span_notice(LANG("obj.0231797fbf72b3cd", null)))
 		return
-	var/pinpoint_target = tgui_input_list(user, "Person to track", "Pinpoint", sort_list(names))
+	var/pinpoint_target = tgui_input_list(user, LANG("obj.6a2d6f8772d4bf71", null), LANG("obj.fd79c8aec9c83cbc", null), sort_list(names))
 	if(isnull(pinpoint_target))
 		return
 	if(isnull(names[pinpoint_target]))
@@ -178,7 +179,7 @@
 		return
 	target = names[pinpoint_target]
 	toggle_on()
-	user.visible_message(span_notice("[user] activates [user.p_their()] pinpointer."), span_notice("You activate your pinpointer."))
+	user.visible_message(span_notice(LANG("obj.89f64c47c408d5a4", list(user, user.p_their()))), span_notice(LANG("obj.bf506523725f5605", null)))
 
 /obj/item/pinpointer/crew/scan_for_target()
 	if(target)
@@ -208,7 +209,7 @@
 		return
 	var/mob/mob_holder = get(target, /mob)
 	if(istype(mob_holder))
-		. += "Its pair is being held by [mob_holder]."
+		. += LANG("obj.fda4589402d690ed", list(mob_holder))
 		return
 
 /obj/item/pinpointer/shuttle
@@ -266,5 +267,5 @@ GLOBAL_LIST_EMPTY(sniffable_sheets)
 	if(!new_sheet_target)
 		target = null
 		return
-	say("Located [new_sheet_target.amount] [new_sheet_target.singular_name]s!")
+	say(LANG("obj.0c4f8dabcb535567", list(new_sheet_target.amount, new_sheet_target.singular_name)))
 	target = new_sheet_target

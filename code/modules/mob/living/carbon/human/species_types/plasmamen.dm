@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/plasmaman
 	name = "\improper Plasmaman"
 	plural_form = "Plasmamen"
@@ -106,40 +107,38 @@
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "user-shield",
-			SPECIES_PERK_NAME = "Protected",
-			SPECIES_PERK_DESC = "Plasmamen are immune to radiation, poisons, and most diseases.",
+			SPECIES_PERK_NAME = LANG("datum.b8c175b82091e58c", null),
+			SPECIES_PERK_DESC = LANG("datum.5a0d59e6cd733059", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "bone",
-			SPECIES_PERK_NAME = "Wound Resistance",
-			SPECIES_PERK_DESC = "Plasmamen have higher tolerance for damage that would wound others.",
+			SPECIES_PERK_NAME = LANG("datum.40e966258ce56010", null),
+			SPECIES_PERK_DESC = LANG("datum.623d925ecbbfaf97", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "wind",
-			SPECIES_PERK_NAME = "Plasma Healing",
-			SPECIES_PERK_DESC = "Plasmamen can heal wounds by consuming plasma.",
+			SPECIES_PERK_NAME = LANG("datum.a8b2fe1a2a1c4392", null),
+			SPECIES_PERK_DESC = LANG("datum.4070d660b6ea1cdc", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "hard-hat",
-			SPECIES_PERK_NAME = "Protective Helmet",
-			SPECIES_PERK_DESC = "Plasmamen's helmets provide them shielding from the flashes of welding, as well as an inbuilt flashlight.",
+			SPECIES_PERK_NAME = LANG("datum.ebbfbac27238a6c8", null),
+			SPECIES_PERK_DESC = LANG("datum.7d20d97ecd1b2f17", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "fire",
-			SPECIES_PERK_NAME = "Living Torch",
-			SPECIES_PERK_DESC = "Plasmamen instantly ignite when their body makes contact with oxygen.",
+			SPECIES_PERK_NAME = LANG("datum.e63a4b3183236220", null),
+			SPECIES_PERK_DESC = LANG("datum.278659aef281a94e", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "briefcase-medical",
-			SPECIES_PERK_NAME = "Complex Biology",
-			SPECIES_PERK_DESC = "Plasmamen take specialized medical knowledge to be \
-				treated. Do not expect speedy revival, if you are lucky enough to get \
-				one at all.",
+			SPECIES_PERK_NAME = LANG("datum.1eace78da8d5bfa7", null),
+			SPECIES_PERK_DESC = LANG("datum.f9cf02ff2fbddec3", null),
 		),
 	)
 

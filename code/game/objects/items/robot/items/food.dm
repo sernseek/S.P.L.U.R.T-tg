@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define DISPENSE_LOLLIPOP_MODE 1
 #define THROW_LOLLIPOP_MODE 2
 #define THROW_GUMBALL_MODE 3
@@ -45,7 +46,7 @@
 ///Dispenses a lollipop
 /obj/item/borg/lollipop/proc/dispense(atom/atom_dispensed_to, mob/user)
 	if(candy <= 0)
-		to_chat(user, span_warning("No treats left in storage!"))
+		to_chat(user, span_warning(LANG("obj.f6d2cd88bc157399", null)))
 		return FALSE
 	var/turf/turf_to_dispense_to = get_turf(atom_dispensed_to)
 	if(!turf_to_dispense_to || !isopenturf(turf_to_dispense_to))
@@ -72,9 +73,9 @@
 	check_amount()
 
 	if(into_hands)
-		user.visible_message(span_notice("[user] dispenses a treat into the hands of [atom_dispensed_to]."), span_notice("You dispense a treat into the hands of [atom_dispensed_to]."), span_hear("You hear a click."))
+		user.visible_message(span_notice(LANG("obj.8d6327a6decbf716", list(user, atom_dispensed_to))), span_notice(LANG("obj.5b7b0c6953468841", list(atom_dispensed_to))), span_hear(LANG("obj.0f830183df1905e6", null)))
 	else
-		user.visible_message(span_notice("[user] dispenses a treat."), span_notice("You dispense a treat."), span_hear("You hear a click."))
+		user.visible_message(span_notice(LANG("obj.724d84b8124dece2", list(user))), span_notice(LANG("obj.517990d260f2b1d9", null)), span_hear(LANG("obj.0f830183df1905e6", null)))
 
 	playsound(src.loc, 'sound/machines/click.ogg', 50, TRUE)
 	return TRUE
@@ -82,7 +83,7 @@
 /// Shoot a lollipop
 /obj/item/borg/lollipop/proc/shootL(atom/target, mob/living/user, params)
 	if(candy <= 0)
-		to_chat(user, span_warning("Not enough lollipops left!"))
+		to_chat(user, span_warning(LANG("obj.e5fcee4e8fc7f91d", null)))
 		return FALSE
 	candy--
 
@@ -95,13 +96,13 @@
 
 	playsound(src.loc, 'sound/machines/click.ogg', 50, TRUE)
 	lollipop.fire_casing(target, user, params, 0, 0, null, 0, src)
-	user.visible_message(span_warning("[user] blasts a flying lollipop at [target]!"))
+	user.visible_message(span_warning(LANG("obj.1ccfac1bc45f90af", list(user, target))))
 	check_amount()
 
 /// Shoot a gumball
 /obj/item/borg/lollipop/proc/shootG(atom/target, mob/living/user, params)
 	if(candy <= 0)
-		to_chat(user, span_warning("Not enough gumballs left!"))
+		to_chat(user, span_warning(LANG("obj.f612d9123b5e6c38", null)))
 		return FALSE
 	candy--
 	var/obj/item/ammo_casing/gumball/gumball
@@ -114,7 +115,7 @@
 	gumball.loaded_projectile.color = rgb(rand(0, 255), rand(0, 255), rand(0, 255))
 	playsound(src.loc, 'sound/items/weapons/bulletflyby3.ogg', 50, TRUE)
 	gumball.fire_casing(target, user, params, 0, 0, null, 0, src)
-	user.visible_message(span_warning("[user] shoots a high-velocity gumball at [target]!"))
+	user.visible_message(span_warning(LANG("obj.3039ca07d3066f40", list(user, target))))
 	check_amount()
 
 /obj/item/borg/lollipop/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
@@ -122,7 +123,7 @@
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/robot_user = user
 		if(!robot_user.cell?.use(0.012 * STANDARD_CELL_CHARGE))
-			to_chat(user, span_warning("Not enough power."))
+			to_chat(user, span_warning(LANG("obj.cde31c60b03a9ab1", null)))
 			return ITEM_INTERACT_BLOCKING
 
 	switch(mode)
@@ -141,7 +142,7 @@
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/robot_user = user
 		if(!robot_user.cell?.use(0.012 * STANDARD_CELL_CHARGE))
-			to_chat(user, span_warning("Not enough power."))
+			to_chat(user, span_warning(LANG("obj.cde31c60b03a9ab1", null)))
 			return ITEM_INTERACT_BLOCKING
 
 	switch(mode)
@@ -159,16 +160,16 @@
 	switch(mode)
 		if(DISPENSE_LOLLIPOP_MODE)
 			mode = THROW_LOLLIPOP_MODE
-			to_chat(user, span_notice("Module is now throwing lollipops."))
+			to_chat(user, span_notice(LANG("obj.d6f6ab2a778de797", null)))
 		if(THROW_LOLLIPOP_MODE)
 			mode = THROW_GUMBALL_MODE
-			to_chat(user, span_notice("Module is now blasting gumballs."))
+			to_chat(user, span_notice(LANG("obj.dd4ad96227841f96", null)))
 		if(THROW_GUMBALL_MODE)
 			mode = DISPENSE_ICECREAM_MODE
-			to_chat(user, span_notice("Module is now dispensing ice cream."))
+			to_chat(user, span_notice(LANG("obj.0ebb97d3935ccdbf", null)))
 		if(DISPENSE_ICECREAM_MODE)
 			mode = DISPENSE_LOLLIPOP_MODE
-			to_chat(user, span_notice("Module is now dispensing lollipops."))
+			to_chat(user, span_notice(LANG("obj.52b3c3813b8af126", null)))
 
 /obj/item/borg/lollipop/ice_cream
 	name = "ice cream fabricator"

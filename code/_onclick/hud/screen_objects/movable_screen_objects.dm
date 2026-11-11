@@ -44,28 +44,28 @@
 		offset[2] += y_off
 	return offset_to_screen_loc(offset[1], offset[2], our_client?.view)
 
-ADMIN_VERB(test_movable_UI, R_DEBUG, "Spawn Movable UI Object", "Spawn a movable UI object for testing.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(test_movable_UI, R_DEBUG, "生成可移动 UI 对象", "Spawn a movable UI object for testing.", ADMIN_CATEGORY_DEBUG)
 	var/atom/movable/screen/movable/M = new
 	M.name = "Movable UI Object"
 	M.icon_state = "block"
-	M.maptext = MAPTEXT("Movable")
+	M.maptext = MAPTEXT(GLOB.i18n_server_locale != DEFAULT_UI_LOCALE ? "可移动" : "Movable") // ZH EDIT - i18n: maptext 不过 AC，全服中文直给中文标签
 	M.maptext_width = 64
 
-	var/screen_l = input(user, "Where on the screen? (Formatted as 'X,Y' e.g: '1,1' for bottom left)","Spawn Movable UI Object") as text|null
+	var/screen_l = input(user, LANG("datum.a9622be67f9bfa5f", null),LANG("datum.df64e0c84244c1ab", null)) as text|null
 	if(!screen_l)
 		return
 
 	M.screen_loc = screen_l
 	user.screen += M
 
-ADMIN_VERB(test_snap_ui, R_DEBUG, "Spawn Snap UI Object", "Spawn a snap UI object for testing.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(test_snap_ui, R_DEBUG, "生成吸附 UI 对象", "Spawn a snap UI object for testing.", ADMIN_CATEGORY_DEBUG)
 	var/atom/movable/screen/movable/snap/S = new
 	S.name = "Snap UI Object"
 	S.icon_state = "block"
-	S.maptext = MAPTEXT("Snap")
+	S.maptext = MAPTEXT(GLOB.i18n_server_locale != DEFAULT_UI_LOCALE ? "吸附" : "Snap") // ZH EDIT - i18n: maptext 不过 AC，全服中文直给中文标签
 	S.maptext_width = 64
 
-	var/screen_l = input(user,"Where on the screen? (Formatted as 'X,Y' e.g: '1,1' for bottom left)","Spawn Snap UI Object") as text|null
+	var/screen_l = input(user,LANG("datum.a9622be67f9bfa5f", null),LANG("datum.1ad9c84d7629c227", null)) as text|null
 	if(!screen_l)
 		return
 

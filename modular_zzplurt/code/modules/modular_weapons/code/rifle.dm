@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/ballistic/automatic/bulwark
 	name = "\improper NTS-24 \"Bulwark\" Assault Rifle"
 	desc = "A rare command-grade rifle issued only to Nanotrasen Private Security Captains, seldom seen in the field. \
@@ -34,13 +35,7 @@
 /obj/item/gun/ballistic/automatic/bulwark/examine_more(mob/user)
 	. = ..()
 
-	. += "Nanotrasen deliberately modeled the Bulwark after legacy ballistic rifles like the M16 platform, \
-	citing \"combat familiarity'\" as a key factor in high-stress situations. By preserving a centuries-proven \
-	layout while integrating modern materials and smart systems, they ensured that any trained officer could \
-	instinctively operate it. Unlike experimental energy weapons, the Bulwark represents reliability over \
-	innovation, a weapon that works the same way every time, whether planetside or in vacuum. For Private \
-	Security Captains, it serves as both a practical tool and a psychological anchor: something familiar in \
-	environments where very little is."
+	. += LANG("obj.76dfe5d7250825fe", null)
 
 	return .
 
@@ -90,11 +85,11 @@
 
 /obj/item/gun/energy/taser/underbarrel/try_fire_gun(atom/target, mob/living/user, params)
 	if(!cell || cell.charge <= 0)
-		to_chat(user, span_warning("The underbarrel taser is out of charge!"))
+		to_chat(user, span_warning(LANG("obj.83dc46eb3475197e", null)))
 		return FALSE
 
 	if(active)
-		to_chat(user, span_warning("The taser is already deployed!"))
+		to_chat(user, span_warning(LANG("obj.b55d3175006168b6", null)))
 		return FALSE
 
 	active = TRUE
@@ -111,7 +106,7 @@
 
 	if(cell && cell.charge <= 0)
 		recharge_cooldown_end = world.time + 100
-		to_chat(user, span_warning("The taser battery is fully depleted!"))
+		to_chat(user, span_warning(LANG("obj.ccd4917091f5fa77", null)))
 
 	addtimer(CALLBACK(src, PROC_REF(reset_active), user), 100)
 
@@ -161,20 +156,20 @@
 
 /obj/item/gun/ballistic/automatic/bulwark/taser/proc/notify_recovered(mob/user)
 	if(user)
-		to_chat(user, span_notice("The weapon has recovered from taser discharge."))
+		to_chat(user, span_notice(LANG("obj.f0f8551143f31949", null)))
 
 /obj/item/gun/ballistic/automatic/bulwark/taser/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	if(is_tasing())
 		if(world.time > last_warning + 10)
 			last_warning = world.time
-			to_chat(user, span_warning("You can't fire the rifle while the taser is deployed!"))
+			to_chat(user, span_warning(LANG("obj.d0d13ad1af8a2fd5", null)))
 		return FALSE
 
 	if(world.time < fire_lock_until)
 		if(world.time > last_warning + 10)
 			last_warning = world.time
 			var/time_left = round((fire_lock_until - world.time) / 10)
-			to_chat(user, span_warning("Weapon recovering: [time_left]s"))
+			to_chat(user, span_warning(LANG("obj.6219b112941cf200", list(time_left))))
 		return FALSE
 
 	if(LAZYACCESS(params2list(params), RIGHT_CLICK))
@@ -205,13 +200,13 @@
 	if(underbarrel && underbarrel.cell)
 		var/percent = round((underbarrel.cell.charge / underbarrel.cell.maxcharge) * 100)
 
-		. += "The underbarrel taser is at [percent]% charge."
+		. += LANG("obj.03b9c41e875c21a8", list(percent))
 
 		if(world.time < underbarrel.recharge_cooldown_end)
 			var/time_left = round((underbarrel.recharge_cooldown_end - world.time) / 10)
-			. += " It will begin recharging in [time_left] seconds."
+			. += LANG("obj.41561a8dfc0d5992", list(time_left))
 	else
-		. += "The underbarrel taser is not responding."
+		. += LANG("obj.618675c3d32d8251", null)
 
 /obj/item/gun/ballistic/automatic/bulwark/taser/add_seclight_point()
 	return

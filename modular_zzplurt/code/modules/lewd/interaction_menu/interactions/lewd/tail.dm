@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Lewd tail interactions with dynamic intent-based messaging and fluid collection mechanics
 /datum/interaction/lewd/tail
 	user_required_parts = list(ORGAN_SLOT_TAIL = REQUIRE_GENITAL_ANY)
@@ -459,11 +460,11 @@
 		if(intent == "harm")
 			target_arousal += 10
 			target_pleasure += 6
-			to_chat(target, span_purple("You can't breathe at all! The pressure is intense... it's amazing!"))
+			to_chat(target, span_purple(LANG("datum.a1c20c380406d74a", null)))
 		else
 			target_arousal += 8
 			target_pleasure += 4
-			to_chat(target, span_purple("The pressure on your face is overwhelming... it's so tight!"))
+			to_chat(target, span_purple(LANG("datum.41aaac55806ebcc0", null)))
 
 	message = null
 	. = ..()

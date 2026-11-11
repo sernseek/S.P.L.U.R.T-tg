@@ -2,6 +2,8 @@ import { sortBy } from 'es-toolkit';
 import { useState } from 'react';
 import { Flex, Input, Section, Tabs, VirtualList } from 'tgui-core/components';
 
+// ZH EDIT ADDITION - I18N
+import { searchableText } from '../../i18n/search';
 import { useRemappedBackend } from './helpers';
 import { TechNode } from './nodes/TechNode';
 
@@ -25,10 +27,10 @@ export function TechwebOverview(props) {
     displayedNodes = displayedNodes.filter((x) => {
       const n = node_cache[x.id];
       return (
-        n.name.toLowerCase().includes(searchText) ||
-        n.description.toLowerCase().includes(searchText) ||
+        searchableText(n.name).includes(searchText) ||
+        searchableText(n.description).includes(searchText) ||
         n.design_ids.some((e) =>
-          design_cache[e].name.toLowerCase().includes(searchText),
+          searchableText(design_cache[e].name).includes(searchText),
         )
       );
     });

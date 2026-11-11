@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/chemical_reaction/mkultra
 	results = list(/datum/reagent/mkultra = 5)
 	required_reagents = list(/datum/reagent/consumable/coco = 1, /datum/reagent/silver = 1, /datum/reagent/toxin/mindbreaker = 1, /datum/reagent/medicine/psicodine = 1, /datum/reagent/drug/happiness = 1)
@@ -20,7 +21,7 @@
 	var/datum/reagent/mkultra/chemical = locate() in holder.reagent_list
 	var/mob/living/user = chemical?.data["enchanter"]
 	if(!user && !isnull(chemical))
-		holder.my_atom.visible_message(span_warning("The reaction sputters and fails to react properly!"))
+		holder.my_atom.visible_message(span_warning(LANG("datum.c2d203936687aab1", null)))
 		chemical.purity = 0
 		return
 

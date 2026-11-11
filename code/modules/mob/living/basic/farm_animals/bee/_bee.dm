@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BEE_TRAY_RECENT_VISIT 20 SECONDS //! How long in deciseconds until a tray can be visited by a bee again
 #define BEE_DEFAULT_COLOUR "#e5e500" //! the colour we make the stripes of the bee if our reagent has no colour (or we have no reagent)
 #define BEE_POLLINATE_YIELD_CHANCE 33 //! chance to increase yield of plant
@@ -81,7 +82,7 @@
 		reee[beegent.type] = 5
 	holder.AddComponentFrom(SOURCE_EDIBLE_INNATE, /datum/component/edible, reee, null, BEE_FOODGROUPS, 10, 0, list("bee"), null, 10)
 	SEND_SIGNAL(src, COMSIG_LIVING_SCOOPED_UP, picker, holder)
-	picker.visible_message(span_warning("[picker] scoops up [src]!"))
+	picker.visible_message(span_warning(LANG("mob.20aafc4f91ce14a7", list(picker, src))))
 	picker.put_in_hands(holder)
 
 /mob/living/basic/bee/will_escape_storage()
@@ -91,7 +92,7 @@
 	. = ..()
 
 	if(isnull(beehome))
-		. += span_warning("This bee is homeless!")
+		. += span_warning(LANG("mob.e2161eeb6eb7681e", null))
 
 /mob/living/basic/bee/Destroy()
 	if(beehome)
@@ -192,7 +193,7 @@
 	if(beegent) //clear the old since this one is going to have some new value
 		RemoveElement(/datum/element/venomous, beegent.type, injection_range, thrown_effect = TRUE)
 	beegent = toxin
-	name = "[initial(name)] ([toxin.name])"
+	name = "[lang_reverse_text(initial(name))] ([toxin.name])"  // ZH EDIT CHANGE - i18n: initial(name) 是编译期英文原值，会覆盖掉 /atom/Initialize 反查好的中文名 - ORIGINAL: name = "[initial(name)] ([toxin.name])"
 	real_name = name
 	AddElement(/datum/element/venomous, beegent.type, injection_range, thrown_effect = TRUE)
 	generate_bee_visuals()
@@ -279,29 +280,29 @@
 		if(queen?.beegent)
 			new_bee.queen.assign_reagent(queen.beegent) //Bees use the global singleton instances of reagents, so we don't need to worry about one bee being deleted and her copies losing their reagents.
 		user.put_in_active_hand(new_bee)
-		user.visible_message(span_notice("[user] injects [src] with royal bee jelly, causing it to split into two bees, MORE BEES!"),span_warning("You inject [src] with royal bee jelly, causing it to split into two bees, MORE BEES!"))
+		user.visible_message(span_notice(LANG("obj.a27d411b409d5669", list(user, src))),span_warning(LANG("obj.f574bfaa6c89217a", list(src))))
 		return
 	var/datum/reagent/chemical = needle.reagents.get_master_reagent()
 	if(isnull(chemical))
 		return
 	if(!(chemical.chemical_flags & REAGENT_CAN_BE_SYNTHESIZED))
-		to_chat(user, span_warning("[chemical.name] cannot be inserted into a bee's genome!"))
+		to_chat(user, span_warning(LANG("obj.e97732a9a6f8ad60", list(chemical.name))))
 		return
 	if(chemical.type == queen.beegent?.type)
-		to_chat(user, span_warning("[queen] already has this chemical!"))
+		to_chat(user, span_warning(LANG("obj.c30aa93657f8f754", list(queen))))
 		return
 	if(!(needle.reagents.has_reagent(chemical.type, 5)))
-		to_chat(user, span_warning("You don't have enough units of that chemical to modify the bee's DNA!"))
+		to_chat(user, span_warning(LANG("obj.4903aa0cbb536812", null)))
 		return
 	needle.reagents.remove_reagent(chemical.type, 5)
 	var/datum/reagent/bee_chem = GLOB.chemical_reagents_list[chemical.type]
 	queen.assign_reagent(bee_chem)
-	user.visible_message(span_warning("[user] injects [src]'s genome with [chemical.name], mutating its DNA!"),span_warning("You inject [src]'s genome with [chemical.name], mutating its DNA!"))
+	user.visible_message(span_warning(LANG("obj.c46345f758d0d269", list(user, src, chemical.name))),span_warning(LANG("obj.0b8c01df46056002", list(src, chemical.name))))
 	name = queen.name
 
 /obj/item/queen_bee/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] eats [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
-	user.say("IT'S HIP TO EAT BEES!")
+	user.visible_message(span_suicide(LANG("obj.8b748f42417d9981", list(user, src, user.p_theyre()))))
+	user.say(LANG("obj.6eb038816fd29ce5", null))
 	qdel(src)
 	return TOXLOSS
 
@@ -351,7 +352,7 @@
 /obj/item/trash/bee/proc/use_lazarus(datum/source, obj/item/lazarus_injector/injector, mob/user)
 	SIGNAL_HANDLER
 	if(injector.revive_type != SENTIENCE_ORGANIC)
-		balloon_alert(user, "invalid creature!")
+		balloon_alert(user, LANG("obj.1c85036c03c3d01e", null))
 		return
 	var/mob/living/basic/bee/revived_bee = new bee_type (drop_location())
 	if(beegent)

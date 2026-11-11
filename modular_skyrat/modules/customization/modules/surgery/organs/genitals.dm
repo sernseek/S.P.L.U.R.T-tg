@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/genital
 	color = "#fcccb3"
 	organ_flags = ORGAN_ORGANIC | ORGAN_UNREMOVABLE | ORGAN_EXTERNAL
@@ -641,7 +642,7 @@
 /obj/item/organ/genital/butt/get_sprite_size_string()
 	. = "[genital_type]_[floor(genital_size)]"
 	if(uses_skintones)
-		. += "_s"
+		. += LANG("obj.1b7c729d6f75ef28", null)
 
 /obj/item/organ/genital/butt/build_from_dna(datum/dna/DNA, associated_key)
 	uses_skin_color = DNA.features["butt_uses_skincolor"]
@@ -679,9 +680,9 @@
 	. = ..()
 	var/mob/living/carbon/human/wearer = limb?.owner
 	if(istype(wearer?.wear_suit, /obj/item/clothing/suit/mod))
-		. += "above_modsuit"
+		. += LANG("datum.cfa853e373cd0376", null)
 	else if(wearer?.w_uniform)
-		. += "above_uniform"
+		. += LANG("datum.61fbc717d9e5b4f2", null)
 
 /obj/item/organ/genital/belly
 	name = "belly"
@@ -701,15 +702,15 @@
 /obj/item/organ/genital/belly/get_sprite_size_string()
 	. = "[genital_type]_[floor(genital_size)]"
 	if(uses_skintones)
-		. += "_s"
+		. += LANG("obj.1b7c729d6f75ef28", null)
 
 /obj/item/organ/genital/belly/set_size(size)
 	var/old_size = genital_size
 	. = ..()
 	if(size > old_size)
-		to_chat(owner, span_warning("Your guts [pick("swell up to", "gurgle into", "expand into", "plump up into", "grow eagerly into", "fatten up into", "distend into")] a larger midsection."))
+		to_chat(owner, span_warning(LANG("obj.b63774564a7ca52e", list(pick("swell up to", "gurgle into", "expand into", "plump up into", "grow eagerly into", "fatten up into", "distend into")))))
 	else
-		to_chat(owner, span_warning("Your guts [pick("shrink down to", "decrease into", "wobble down into", "diminish into", "deflate into", "contracts into")] a smaller midsection."))
+		to_chat(owner, span_warning(LANG("obj.7baf5733244e6acc", list(pick("shrink down to", "decrease into", "wobble down into", "diminish into", "deflate into", "contracts into")))))
 
 /obj/item/organ/genital/belly/build_from_dna(datum/dna/DNA, associated_key)
 	uses_skin_color = DNA.features["belly_uses_skincolor"]
@@ -742,7 +743,7 @@
 		else
 			size_name = "nonexistent"
 
-	desc = "You see a [size_name] [round(genital_size) >= 4 ? "belly, it bounces around as [owner] walks" : "belly in [owner?.p_their() ? owner?.p_their() : "their"] midsection"]."
+	desc = LANG("obj.881462d92ab2a5d3", list(size_name, round(genital_size) >= 4 ? "belly, it bounces around as [owner] walks" : "belly in [owner?.p_their() ? owner?.p_their() : "their"] midsection"))
 
 
 /datum/bodypart_overlay/mutant/genital/belly
@@ -754,9 +755,9 @@
 /datum/bodypart_overlay/mutant/genital/belly/get_global_feature_list()
 	return SSaccessories.sprite_accessories[ORGAN_SLOT_BELLY]
 
-GAME_VERB_DESC(/mob/living/carbon/human, toggle_genitals, "Expose/Hide genitals", "Change which genitals show through clothes and how they layer.", "IC")
+GAME_VERB_DESC(/mob/living/carbon/human, toggle_genitals, "显示/隐藏生殖器", "Change which genitals show through clothes and how they layer.", "IC")
 	if(IS_UNCONSCIOUS_OR_CRIT(src))
-		to_chat(usr, span_warning("You can't toggle genitals visibility right now..."))
+		to_chat(usr, span_warning(LANG("mob.9d652d0e52355ad4", null)))
 		return
 
 	var/list/genital_list = list("all")
@@ -767,13 +768,13 @@ GAME_VERB_DESC(/mob/living/carbon/human, toggle_genitals, "Expose/Hide genitals"
 		return
 	//Full list of exposable genitals created
 	var/obj/item/organ/genital/picked_organ
-	picked_organ = input(src, "Choose which genitalia to expose/hide", "Expose/Hide genitals") as null|anything in genital_list
+	picked_organ = input(src, LANG("mob.1291c087f26497ec", null), LANG("mob.dfba591a401b68f1", null)) as null|anything in genital_list
 	if(picked_organ && ((picked_organ in organs) || picked_organ == "all"))
 		var/list/gen_vis_trans = list("Never show" = GENITAL_NEVER_SHOW,
 												"Hidden by clothes" = GENITAL_HIDDEN_BY_CLOTHES,
 												"Always show" = GENITAL_ALWAYS_SHOW
 												)
-		var/picked_visibility = input(src, "Choose visibility setting", "Expose/Hide genitals") as null|anything in gen_vis_trans
+		var/picked_visibility = input(src, LANG("mob.8c64f99ef4ee8711", null), LANG("mob.dfba591a401b68f1", null)) as null|anything in gen_vis_trans
 		if(picked_visibility && picked_organ && (picked_organ in organs))
 			picked_organ.visibility_preference = gen_vis_trans[picked_visibility]
 			update_body()
@@ -793,12 +794,12 @@ GAME_VERB_DESC(/mob/living/carbon/human, toggle_genitals, "Expose/Hide genitals"
 		UNASSIGN_GAME_VERB(src, /mob/living/carbon/human, toggle_genitals)
 		UNASSIGN_GAME_VERB(src, /mob/living/carbon/human, toggle_arousal)
 
-GAME_VERB_DESC(/mob/living/carbon/human, toggle_arousal, "Toggle Arousal", "Allows you to toggle how aroused your private parts are.", "IC")
+GAME_VERB_DESC(/mob/living/carbon/human, toggle_arousal, "切换性唤起", "Allows you to toggle how aroused your private parts are.", "IC")
 	if(IS_UNCONSCIOUS_OR_CRIT(usr))
-		to_chat(usr, span_warning("You can't toggle arousal right now..."))
+		to_chat(usr, span_warning(LANG("mob.320c55f3804481a7", null)))
 		return
 
-	var/arousal_target = tgui_input_number(src, "[AROUSAL_NONE]= No arousal, <[AROUSAL_LOW] Low/partial Arousal, [AROUSAL_LOW] - [AROUSAL_HIGH] Medium/full Arousal, >[AROUSAL_HIGH] Strong/full Arousal", "Set Arousal Amount", arousal, AROUSAL_LIMIT, AROUSAL_MINIMUM, 0)
+	var/arousal_target = tgui_input_number(src, LANG("mob.9e12ee979bcb8897", list(AROUSAL_NONE, AROUSAL_LOW, AROUSAL_LOW, AROUSAL_HIGH, AROUSAL_HIGH)), LANG("mob.6f39a0a7416ebc51", null), arousal, AROUSAL_LIMIT, AROUSAL_MINIMUM, 0)
 	if (!isnull(arousal_target))
 		var/datum/component/change_arousal_on_life/to_del = GetComponent(/datum/component/change_arousal_on_life/)
 		if (!isnull(to_del))

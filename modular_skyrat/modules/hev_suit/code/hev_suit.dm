@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 #define HEV_COLOR_GREEN "#00ff00"
 #define HEV_COLOR_RED "#ff0000"
@@ -230,12 +231,12 @@
 	if(!..())
 		return FALSE
 	var/obj/item/clothing/suit/space/hev_suit/my_suit = target
-	var/new_setting = tgui_input_list(my_suit.current_user, "Please select your notification settings.", "HEV Notification Settings", HEV_NOTIFICATIONS)
+	var/new_setting = tgui_input_list(my_suit.current_user, LANG("datum.c3331a03a0597fa4", null), LANG("datum.1f643e50c6bfab80", null), HEV_NOTIFICATIONS)
 
 	if(!new_setting)
 		new_setting = HEV_NOTIFICATION_TEXT_AND_VOICE
 
-	to_chat(my_suit.current_user, span_notice("[my_suit] notification mode is now [new_setting]."))
+	to_chat(my_suit.current_user, span_notice(LANG("datum.969d2ce3cab26b3a", list(my_suit, new_setting))))
 
 	my_suit.send_notifications = new_setting
 
@@ -270,7 +271,7 @@
 		return
 	if(!current_user)
 		return
-	to_chat(current_user, "[suit_name]: <span style='color: [color];'>[message]</span>")
+	to_chat(current_user, LANG("obj.fa002d297d7581a5", list(suit_name, color, lang_localize_hev_notification(message)))) // ZH EDIT CHANGE - ORIGINAL: list(suit_name, color, message)
 
 /obj/item/clothing/suit/space/hev_suit/proc/send_hev_sound(sound_in, priority, volume = 50)
 	if(send_notifications != HEV_NOTIFICATION_TEXT_AND_VOICE && send_notifications != HEV_NOTIFICATION_VOICE)
@@ -481,7 +482,7 @@
 		return
 	current_internals_tank = tank
 	ADD_TRAIT(current_internals_tank, TRAIT_NODROP, "hev_trait")
-	to_chat(current_user, span_notice("You hear a click as [current_internals_tank] is secured to your suit."))
+	to_chat(current_user, span_notice(LANG("obj.648095dec597f129", list(current_internals_tank))))
 	playsound(src, atmospherics_sound, 50)
 	send_message("...CALIBRATED", HEV_COLOR_GREEN)
 	send_message("CALIBRATING VITALSIGN MONITORING SYSTEMS...")
@@ -505,7 +506,7 @@
 	SIGNAL_HANDLER
 	if(new_stat == DEAD)
 		playsound(src, 'modular_skyrat/modules/hev_suit/sound/hev/flatline.ogg', 40)
-		internal_radio.talk_into(src, "WARNING! USER [uppertext(current_user.real_name)] VITALSIGNS HAVE FLATLINED, CURRENT POSITION: [loc.x], [loc.y], [loc.z]!", radio_channel)
+		internal_radio.talk_into(src, LANG("obj.654157d70f5f0629", list(uppertext(current_user.real_name), loc.x, loc.y, loc.z)), radio_channel)
 		deactivate()
 
 /obj/item/clothing/suit/space/hev_suit/proc/medical_systems()
@@ -665,7 +666,7 @@
 	timer_id = addtimer(CALLBACK(src, PROC_REF(finished)), 4 SECONDS, TIMER_STOPPABLE)
 
 /obj/item/clothing/suit/space/hev_suit/proc/finished()
-	to_chat(current_user, span_notice("You feel [src] seal around your body, locking it in place!"))
+	to_chat(current_user, span_notice(LANG("obj.d320892ecf02b6da", list(src))))
 	ADD_TRAIT(src, TRAIT_NODROP, "hev_trait")
 	send_message("ALL SYSTEMS ONLINE, WELCOME [uppertext(current_user.real_name)]", HEV_COLOR_GREEN)
 	playsound(src, safe_day_sound, 50)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Cargoborg specific items
  *
@@ -18,7 +19,7 @@
 
 	// Not enough charge
 	if(user?.cell.charge < charge_cost)
-		balloon_alert(user, "low charge!")
+		balloon_alert(user, LANG("obj.82bfe4ff644c18b6", null))
 		return
 
 	user.cell.use(charge_cost)
@@ -34,7 +35,7 @@
 	selected_item_index = 0
 
 	if (unloading_time > 0.5 SECONDS) // Chat spam reduction
-		balloon_alert(user, "unloading")
+		balloon_alert(user, LANG("obj.2744e7d0ec059517", null))
 	playsound(src, clamp_sound, clamp_sound_volume, FALSE, -5)
 	COOLDOWN_START(src, clamp_cooldown, cooldown_duration)
 
@@ -43,7 +44,7 @@
 		return
 
 	chute.place_item_in_disposal(extracted_item)
-	visible_message(span_notice("[src.loc] unloads [extracted_item] from [src]."))
+	visible_message(span_notice(LANG("obj.0bf89355f5ded9df", list(src.loc, extracted_item, src))))
 	log_silicon("[user] unloaded [extracted_item] onto [chute] ([AREACOORD(chute)]).")
 	in_use = FALSE
 	return
@@ -67,7 +68,7 @@
 
 	// Not enough charge
 	if(user?.cell.charge < charge_cost)
-		balloon_alert(user, "low charge!")
+		balloon_alert(user, LANG("obj.82bfe4ff644c18b6", null))
 		return
 
 	user.cell.use(charge_cost)
@@ -83,7 +84,7 @@
 	selected_item_index = 0
 
 	if (unloading_time > 0.5 SECONDS) // Chat spam reduction
-		balloon_alert(user, "unloading")
+		balloon_alert(user, LANG("obj.2744e7d0ec059517", null))
 	playsound(src, clamp_sound, clamp_sound_volume, FALSE, -5)
 	COOLDOWN_START(src, clamp_cooldown, cooldown_duration)
 
@@ -92,7 +93,7 @@
 		return
 
 	chute.place_item_in_disposal(extracted_item)
-	visible_message(span_notice("[src.loc] unloads [extracted_item] from [src]."))
+	visible_message(span_notice(LANG("obj.0bf89355f5ded9df", list(src.loc, extracted_item, src))))
 	log_silicon("[user] unloaded [extracted_item] onto [chute] ([AREACOORD(chute)]).")
 	in_use = FALSE
 	return
@@ -134,7 +135,7 @@
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return ITEM_INTERACT_SUCCESS
 	if(cyborg.cell.charge <= charge_cost)//Prevents usage when charge is low
-		user.balloon_alert(user, "low charge!")
+		user.balloon_alert(user, LANG("obj.82bfe4ff644c18b6", null))
 		return ITEM_INTERACT_SUCCESS
 	if(!interacting_with.density && jaunt?.teleport(user, interacting_with))
 		cyborg?.cell?.use(charge_cost)

@@ -535,6 +535,8 @@
 /// Helper to easily add a personality by a typepath
 /mob/living/proc/add_personality(personality_type)
 	var/datum/personality/personality = SSpersonalities.personalities_by_type[personality_type]
+	if(!istype(personality) || personalities?[personality_type]) // ZH EDIT - PERSONALITY_CLEANUP: do not register a singleton's signals twice
+		return // ZH EDIT ADDITION - PERSONALITY_CLEANUP
 	personality.apply_to_mob(src)
 
 /// Helper to easily add multiple personalities by a list of typepaths
@@ -549,7 +551,10 @@
 
 /// Helper to clear all personalities from a mob
 /mob/living/proc/clear_personalities()
-	for(var/personality_type in personalities)
+	// ZH EDIT CHANGE - PERSONALITY_CLEANUP: removal mutates personalities, so iterate a copy.
+	if(!length(personalities))
+		return
+	for(var/personality_type in personalities.Copy()) // ORIGINAL: for(var/personality_type in personalities)
 		remove_personality(personality_type)
 
 /// Returns a string with the names of the personalities of this mob, and their description as tooltip

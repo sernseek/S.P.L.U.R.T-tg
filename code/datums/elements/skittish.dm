@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
  * An element that makes mobs run into lockers when they bump into them.
  */
@@ -46,7 +47,7 @@
 	scooby.forceMove(closet_turf)
 
 	if(!closet.close(scooby))
-		to_chat(scooby, span_warning("You can't get [closet] to close!"))
+		to_chat(scooby, span_warning(LANG("datum.e3d5dde2e71f7e24", list(closet))))
 		if(closet.horizontal)
 			scooby.set_resting(FALSE, silent = TRUE)
 		return
@@ -56,7 +57,7 @@
 	if(closet.horizontal)
 		scooby.set_resting(FALSE, silent = TRUE)
 
-	closet_turf.visible_message(span_warning("[scooby] dives into [closet]!"))
+	closet_turf.visible_message(span_warning(LANG("datum.b85c37ba09d25378", list(scooby, closet))))
 	// If you run into a locker, you don't want to run out immediately
 	scooby.Immobilize(0.5 SECONDS)
 

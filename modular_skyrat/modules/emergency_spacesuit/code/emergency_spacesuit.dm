@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define EMERGENCY_SUIT_MIN_TEMP_PROTECT 237
 #define EMERGENCY_SUIT_MAX_TEMP_PROTECT 100
 #define EMERGENCY_HELMET_MIN_TEMP_PROTECT 2.0
@@ -35,7 +36,7 @@
 /obj/item/clothing/suit/space/emergency/proc/user_damaged(datum/source, damage, damagetype, def_zone)
 	SIGNAL_HANDLER
 	if(damage && !torn && prob(50))
-		balloon_alert_to_viewers("[src] tears!")
+		balloon_alert_to_viewers(LANG("obj.18b8009076bb572c", list(src)))
 		clothing_flags &= ~STOPSPRESSUREDAMAGE
 		torn = TRUE
 		playsound(src, 'sound/items/weapons/slashmiss.ogg', 50, TRUE)
@@ -51,7 +52,7 @@
 /obj/item/clothing/suit/space/emergency/examine(mob/user)
 	. = ..()
 	if(torn)
-		. += span_danger("It looks torn and useless!")
+		. += span_danger(LANG("obj.65bc5c837d7a5144", null))
 
 
 // The helmet

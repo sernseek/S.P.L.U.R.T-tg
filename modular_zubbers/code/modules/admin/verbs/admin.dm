@@ -1,5 +1,6 @@
-ADMIN_VERB(ping_deadmins, R_ADMIN, "Ping De-adminned Admins", "Send a notification and message to all currently de-adminned admins.", ADMIN_CATEGORY_MAIN)
-	var/message = tgui_input_text(user, "Enter message to send with ping", "Notify Deadmins", "Need help with tickets...", max_length = 256)
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+ADMIN_VERB(ping_deadmins, R_ADMIN, "提醒已卸任的管理员", "Send a notification and message to all currently de-adminned admins.", ADMIN_CATEGORY_MAIN)
+	var/message = tgui_input_text(user, LANG("datum.dd6283964a217696", null), LANG("datum.88e41915e909dbae", null), "Need help with tickets...", max_length = 256)
 	if(!message)
 		return
 

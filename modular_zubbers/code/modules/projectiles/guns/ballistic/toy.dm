@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/ballistic/toy/foamforce_implant
 	name = "Pop-up Donksoft Blaster"
 	desc = "A spring primed Donksoft blaster that pops out of a panel on your arm. You wonder if having a high tension spring installed in your arm was a good idea."
@@ -21,7 +22,7 @@
 			jammed = FALSE
 			unjam_chance = initial(unjam_chance)
 		else
-			balloon_alert(user, "jammed!")
+			balloon_alert(user, LANG("obj.b1dace67a621a04c", null))
 			playsound(user,'sound/items/weapons/jammed.ogg', 75, TRUE)
 			return FALSE
 	return ..()
@@ -40,7 +41,7 @@
 	if (bolt_locked)
 		drop_bolt(user)
 		return
-	balloon_alert(user, "plunger deprimed")
+	balloon_alert(user, LANG("obj.a8f3625b6dc439ac", null))
 	playsound(src, rack_sound, rack_sound_volume, rack_sound_vary)
 	handle_chamber(empty_chamber =  FALSE, from_firing = FALSE, chamber_next_round = FALSE)
 	bolt_locked = TRUE
@@ -50,7 +51,7 @@
 	if(!do_after(user, draw_time, target = src))
 		return
 	playsound(src, bolt_drop_sound, bolt_drop_sound_volume, FALSE)
-	balloon_alert(user, "plunger drawn")
+	balloon_alert(user, LANG("obj.3f74d60b3382381a", null))
 	chamber_round()
 	bolt_locked = FALSE
 	update_appearance()
@@ -71,7 +72,7 @@
 
 /obj/item/gun/ballistic/toy/foamforce_implant/examine(mob/user)
 	. = ..()
-	. += "The blaster is [bolt_locked ? "not ready" : "ready"] to fire."
+	. += LANG("obj.a5f729a6fb75ebf4", list(bolt_locked ? "not ready" : "ready"))
 
 /obj/item/gun/ballistic/toy/foamforce_implant/update_overlays()
 	. = ..()

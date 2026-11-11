@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define DIRTY_TILE_CHANCE 0.25
 #define REDIRTY_CHANCE 30
 
@@ -78,8 +79,7 @@
 	dirty_text = quirk_holder.client.prefs.read_preference(/datum/preference/text/dirty_text)
 	dirt_color = quirk_holder.client.prefs.read_preference(/datum/preference/color/dirty_color)
 
-	to_chat(quirk_holder, span_notice("You're dirty! You'll spread dirt when you walk. \
-	Being cleaned will remove your filth - rummage through a trash pile to get it back."))
+	to_chat(quirk_holder, span_notice(LANG("datum.853b61de1fe1b0ec", null)))
 
 	return ..()
 
@@ -92,14 +92,14 @@
 	SIGNAL_HANDLER
 
 	if (!cloud_charged)
-		to_chat(quirk_holder, span_notice("You find yourself covered in a thick layer of grime - a solid impact might knock it off in a cloud."))
+		to_chat(quirk_holder, span_notice(LANG("datum.aaf39d57fc69053b", null)))
 		cloud_charged = TRUE
 
 	if (!cleaned)
 		return
 
 	if (!prob(REDIRTY_CHANCE))
-		to_chat(quirk_holder, span_warning("You didn't manage to scrounge enough filth to right this wrong. Try again."))
+		to_chat(quirk_holder, span_warning(LANG("datum.778d9d6ff2f480e7", null)))
 		return
 
 	set_cleaned(FALSE)
@@ -121,7 +121,7 @@
 	var/turf/new_turf = get_turf(quirk_holder)
 
 	if (prob(DIRTY_TILE_CHANCE))
-		quirk_holder.balloon_alert_to_viewers("spreads dirt...")
+		quirk_holder.balloon_alert_to_viewers(LANG("datum.a89a76a97474d863", null))
 		new_turf.spawn_unique_cleanable(/obj/effect/decal/cleanable/dirt)
 
 	var/mob/living/carbon/human/human_holder = quirk_holder
@@ -165,8 +165,8 @@
 	if (!cloud_charged || cleaned)
 		return
 	quirk_holder.visible_message(
-		span_warning("The impact knocks a cloud of grime and dust off [quirk_holder]!"),
-		span_notice("The impact knocks a cloud of grime and dust off you!")
+		span_warning(LANG("datum.ccede421d5560262", list(quirk_holder))),
+		span_notice(LANG("datum.fc1e4a41caac3b79", null))
 	)
 
 	do_smoke(0, quirk_holder, get_turf(quirk_holder), smoke_type = /datum/effect_system/fluid_spread/smoke/dirty)
@@ -196,15 +196,15 @@
 
 	if (cleaned && !new_cleaned)
 		quirk_holder.visible_message(
-			span_warning("[quirk_holder] is once again covered in filth, [quirk_holder.p_their()] hygiene forever accursed."),
-			span_notice("Your find yourself lathered in filth once again. A sense of relief washes over you.")
+			span_warning(LANG("datum.18e9fd19aa9d97c2", list(quirk_holder, quirk_holder.p_their()))),
+			span_notice(LANG("datum.60e4b3d40a860ffe", null))
 		)
 		quirk_holder.clear_mood_event("dirty_quirk_washed")
 		ADD_TRAIT(quirk_holder, TRAIT_DIRTY, QUIRK_TRAIT)
 	else if (!cleaned && new_cleaned)
 		quirk_holder.visible_message(
-			span_warning("[quirk_holder] squirms and writhes, fighting against the cleansing!"),
-			span_userdanger("No! NO! Your filth! It's gone!")
+			span_warning(LANG("datum.96e083b08fbc8559", list(quirk_holder))),
+			span_userdanger(LANG("datum.5e94d8210777d808", null))
 		)
 		quirk_holder.add_mood_event("dirty_quirk_washed", /datum/mood_event/dirty_washed)
 		REMOVE_TRAIT(quirk_holder, TRAIT_DIRTY, QUIRK_TRAIT)

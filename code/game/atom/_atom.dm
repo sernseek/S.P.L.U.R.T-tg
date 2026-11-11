@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * The base type for nearly all physical objects in SS13
 
@@ -505,7 +506,7 @@
 		return
 	if(buckle_message_cooldown <= world.time)
 		buckle_message_cooldown = world.time + 25
-		balloon_alert(user, "can't move while buckled!")
+		balloon_alert(user, LANG("atom.22c89fbccef4e19d", null))
 	return
 
 /**
@@ -681,7 +682,7 @@
 /atom/proc/StartProcessingAtom(mob/living/user, obj/item/process_item, list/chosen_option)
 	var/processing_time = chosen_option[TOOL_PROCESSING_TIME]
 	var/sound_to_play = chosen_option[TOOL_PROCESSING_SOUND]
-	to_chat(user, span_notice("You start working on [src]."))
+	to_chat(user, span_notice(LANG("atom.6d07c8c13173c7e4", list(src))))
 	if(sound_to_play)
 		playsound(src, sound_to_play, 50, TRUE)
 	if(!process_item.use_tool(src, user, processing_time, volume=50))
@@ -700,7 +701,7 @@
 			created_atom.pixel_x += rand(-8,8)
 			created_atom.pixel_y += rand(-8,8)
 		created_atoms.Add(created_atom)
-	to_chat(user, span_notice("You manage to create [amount_to_create] [initial(atom_to_create.gender) == PLURAL ? "[initial(atom_to_create.name)]" : "[initial(atom_to_create.name)][plural_s(initial(atom_to_create.name))]"] from [src]."))
+	to_chat(user, span_notice(LANG("atom.6e139a25dd29b0e7", list(amount_to_create, initial(atom_to_create.gender) == PLURAL ? "[initial(atom_to_create.name)]" : "[initial(atom_to_create.name)][plural_s(initial(atom_to_create.name))]", src))))
 	SEND_SIGNAL(src, COMSIG_ATOM_PROCESSED, user, process_item, created_atoms)
 	UsedforProcessing(user, process_item, chosen_option, created_atoms)
 
@@ -971,6 +972,10 @@
 				if(extra_lines)
 					extra_context = "<br><span class='subcontext'>[lmb_rmb_line][ctrl_lmb_ctrl_rmb_line][alt_lmb_alt_rmb_line][shift_lmb_ctrl_shift_lmb_line]</span>"
 
+	// ZH EDIT ADDITION START - I18N: atom.name 保持 canonical English，不在 Initialize 时改写 appearance。
+	// maptext 不经过聊天兜底，因此在 hover 显示边界翻译静态类型名；运行时身份名和玩家改名保留原文。
+	used_name = lang_localize_name_for_display(used_name)
+	// ZH EDIT ADDITION END
 	var/new_maptext
 	if (screentips_enabled == SCREENTIP_PREFERENCE_CONTEXT_ONLY && extra_context == "")
 		new_maptext = ""

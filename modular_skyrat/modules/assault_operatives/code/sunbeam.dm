@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define SUNBEAM_OBLITERATION_RANGE_FIRE 2
 #define SUNBEAM_OBLITERATION_RANGE_FLATTEN 1
 #define SUNBEAM_OBLITERATION_COOLDOWN (0.2 SECONDS)
@@ -57,7 +58,7 @@
 		var/matrix/our_matrix = matrix()
 		our_matrix.Scale(scale_x, scale_y)
 		transform = our_matrix
-	notify_ghosts("An ICARUS sunbeam has been launched! [target_atom ? "Towards: [target_atom.name]" : ""]",
+	notify_ghosts(LANG("obj.8046357f7e3a5ce1", list(target_atom ? "Towards: [target_atom.name]" : "")),
 		source = src,
 		header = "Somethings burning!",
 	)
@@ -125,21 +126,21 @@
 	volume = 100
 	extra_range = 25
 
-ADMIN_VERB(spawn_sunbeam, R_FUN, "Spawn Sunbeam", "Spawns an ICARUS sunbeam at your location and sends it towards a target.", ADMIN_CATEGORY_FUN)
-	var/mob/living/target_mob = tgui_input_list(usr, "Select a mob", "Mob", GLOB.mob_living_list)
+ADMIN_VERB(spawn_sunbeam, R_FUN, "生成日光束", "Spawns an ICARUS sunbeam at your location and sends it towards a target.", ADMIN_CATEGORY_FUN)
+	var/mob/living/target_mob = tgui_input_list(usr, LANG("datum.2bb1946836f7aab8", null), LANG("datum.070474a2712bc1e5", null), GLOB.mob_living_list)
 
 	if(!target_mob)
 		return
 
-	var/edit_ranges = tgui_alert(usr, "Change beam specifications?", "Beam Specifications", list("Yes", "No"))
+	var/edit_ranges = tgui_alert(usr, LANG("datum.9ce2a310108dd474", null), LANG("datum.1ec7fc6d36aeb67e", null), list("Yes", "No"))
 
 	if(edit_ranges == "Yes")
-		var/edit_range_fire = tgui_input_number(usr, "Fire range in tiles", "Fire Range", SUNBEAM_OBLITERATION_RANGE_FIRE, 20, 0)
-		var/edit_range_flatten = tgui_input_number(usr, "Flatten range in tiles", "Flatten Range", SUNBEAM_OBLITERATION_RANGE_FLATTEN, 20, 0)
-		var/edit_cooldown = tgui_input_number(usr, "Cooldown in seconds", "Cooldown", SUNBEAM_OBLITERATION_COOLDOWN, 20, 0)
-		var/edit_movement_cooldown = tgui_input_number(usr, "Movement cooldown in seconds", "Movement Cooldown", SUNBEAM_MOVEMENT_COOLDOWN, 20, 0)
-		var/edit_scale_x = tgui_input_number(usr, "Scale X", "Scale X", SUNBEAM_DEFAULT_SCALE_X, 20, 0)
-		var/edit_scale_y = tgui_input_number(usr, "Scale Y", "Scale Y", SUNBEAM_DEFAULT_SCALE_Y, 20, 0)
+		var/edit_range_fire = tgui_input_number(usr, LANG("datum.7956ea7dcfe18cbb", null), LANG("datum.0f3d220b802384a7", null), SUNBEAM_OBLITERATION_RANGE_FIRE, 20, 0)
+		var/edit_range_flatten = tgui_input_number(usr, LANG("datum.d77b956fe3b21902", null), LANG("datum.be583090b4145b03", null), SUNBEAM_OBLITERATION_RANGE_FLATTEN, 20, 0)
+		var/edit_cooldown = tgui_input_number(usr, LANG("datum.96a296dd4b6428f6", null), LANG("datum.2c528a4fe853b525", null), SUNBEAM_OBLITERATION_COOLDOWN, 20, 0)
+		var/edit_movement_cooldown = tgui_input_number(usr, LANG("datum.471eb15afe37aa09", null), LANG("datum.dc179b362e306ad5", null), SUNBEAM_MOVEMENT_COOLDOWN, 20, 0)
+		var/edit_scale_x = tgui_input_number(usr, LANG("datum.2e6940c3e4b8b10a", null), LANG("datum.2e6940c3e4b8b10a", null), SUNBEAM_DEFAULT_SCALE_X, 20, 0)
+		var/edit_scale_y = tgui_input_number(usr, LANG("datum.17e8d85909e35b59", null), LANG("datum.17e8d85909e35b59", null), SUNBEAM_DEFAULT_SCALE_Y, 20, 0)
 
 		new /obj/effect/sunbeam(usr, target_mob, edit_movement_cooldown, edit_cooldown, edit_range_fire, edit_range_flatten, edit_scale_x, edit_scale_y)
 		return

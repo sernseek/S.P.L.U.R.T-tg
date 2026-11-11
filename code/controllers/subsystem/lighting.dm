@@ -36,7 +36,7 @@ SUBSYSTEM_DEF(lighting)
 			continue
 		for (var/list/zlevel_turfs as anything in area.get_zlevel_turf_lists())
 			for(var/turf/area_turf as anything in zlevel_turfs)
-				if(area_turf.space_lit)
+				if(area_turf.space_lit || area_turf.lighting_object) // ZH EDIT CHANGE - ORIGINAL: if(area_turf.space_lit)
 					continue
 				new /atom/movable/lighting_object(null, area_turf)
 			CHECK_TICK

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Maximum number of custom emotes that can be saved per character
  */
@@ -33,7 +34,7 @@
  */
 /datum/tgui_panel/proc/emotes_create(emote_key, emote_name)
 	if (length(client.prefs.custom_emote_panel) > TGUI_PANEL_MAX_EMOTES)
-		to_chat(client, span_warning("Maximum number of emotes reached: [TGUI_PANEL_MAX_EMOTES]"))
+		to_chat(client, span_warning(LANG("datum.24285d1f8119f90b", list(TGUI_PANEL_MAX_EMOTES))))
 		return FALSE
 
 	client.prefs.custom_emote_panel[emote_key] = emote_name
@@ -50,7 +51,7 @@
  * Returns TRUE on success, FALSE on cancellation
  */
 /datum/tgui_panel/proc/emotes_remove(emote_key, old_emote_name)
-	var/confirmation = tgui_alert(client.mob, "Are you sure you want to remove emote \"[old_emote_name]\" ([emote_key])?", "Confirmation", list("Remove", "Cancel"))
+	var/confirmation = tgui_alert(client.mob, LANG("datum.d6c471ebcee0cc5a", list(old_emote_name, emote_key)), LANG("datum.15bc27b6fe454546", null), list("Remove", "Cancel"))
 	if (confirmation != "Remove")
 		return FALSE
 
@@ -68,7 +69,7 @@
  * Returns TRUE on success, FALSE on cancellation
  */
 /datum/tgui_panel/proc/emotes_rename(emote_key, old_emote_name)
-	var/emote_name = tgui_input_text(client.mob, "Choose new name for emote [emote_key]:", "Emote Name", old_emote_name, 32)
+	var/emote_name = tgui_input_text(client.mob, LANG("datum.4e3c60202b74781a", list(emote_key)), LANG("datum.b087757b66cb68b4", null), old_emote_name, 32)
 	if (!emote_name)
 		return FALSE
 
@@ -111,7 +112,7 @@
 
 			// Validate emote exists in user's panel to prevent JS injection
 			if (isnull(client.prefs.custom_emote_panel[emote_key]))
-				to_chat(client, span_warning("Emote [emote_key] not found in your panel!"))
+				to_chat(client, span_warning(LANG("datum.57eab54530cfd399", list(emote_key))))
 				return FALSE
 
 			if (isliving(client?.mob))
@@ -122,21 +123,21 @@
 
 		if ("emotes/create")
 			if (length(client.prefs.custom_emote_panel) > TGUI_PANEL_MAX_EMOTES)
-				to_chat(client, span_warning("Maximum number of emotes reached: [TGUI_PANEL_MAX_EMOTES]"))
+				to_chat(client, span_warning(LANG("datum.24285d1f8119f90b", list(TGUI_PANEL_MAX_EMOTES))))
 				return FALSE
 
-			var/emote_key = tgui_input_list(client.mob, "Which emote to add to panel?", "Choose Emote", all_emotes - client.prefs.custom_emote_panel)
+			var/emote_key = tgui_input_list(client.mob, LANG("datum.3bbcae7595bc7745", null), LANG("datum.28dbf2bb2e491d8f", null), all_emotes - client.prefs.custom_emote_panel)
 			if (!emote_key)
-				to_chat(client, span_warning("Emote addition cancelled."))
+				to_chat(client, span_warning(LANG("datum.c77edf1c10f573d6", null)))
 				return
 
 			if (!(emote_key in all_emotes))
-				to_chat(client, span_warning("Emote [emote_key] doesn't exist!"))
+				to_chat(client, span_warning(LANG("datum.50c7df4fd9a5a5a0", list(emote_key))))
 				return
 
-			var/emote_name = tgui_input_text(client.mob, "What name should emote [emote_key] have in panel?", "Emote Name", emote_key, 32)
+			var/emote_name = tgui_input_text(client.mob, LANG("datum.25f3cba88bf50f7d", list(emote_key)), LANG("datum.b087757b66cb68b4", null), emote_key, 32)
 			if (!emote_name)
-				to_chat(client, span_warning("Invalid emote name!"))
+				to_chat(client, span_warning(LANG("datum.2b98120aa0efdb57", null)))
 				return
 
 			if(emotes_create(emote_key, emote_name))
@@ -153,10 +154,10 @@
 
 			var/old_emote_name = client.prefs.custom_emote_panel[emote_key]
 			if (isnull(old_emote_name))
-				to_chat(client, span_warning("Emote [emote_key] not found in your panel!"))
+				to_chat(client, span_warning(LANG("datum.57eab54530cfd399", list(emote_key))))
 				return FALSE
 
-			var/action = tgui_alert(client.mob, "What would you like to do with emote \"[old_emote_name]\" ([emote_key])?", "Choose Action", list("Edit", "Remove"))
+			var/action = tgui_alert(client.mob, LANG("datum.8113671784342409", list(old_emote_name, emote_key)), LANG("datum.dbbefb2b070136a8", null), list("Edit", "Remove"))
 
 			switch (action)
 				if ("Remove")

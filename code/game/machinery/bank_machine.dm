@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/computer/bank_machine
 	name = "bank machine"
 	desc = "A machine used to deposit and withdraw station funds."
@@ -62,7 +63,7 @@
 		return NONE
 	if(synced_bank_account)
 		synced_bank_account.adjust_money(value)
-		say("[MONEY_NAME_CAPITALIZED] deposited! The [synced_bank_account.account_holder] is now [synced_bank_account.account_balance] [MONEY_SYMBOL].")
+		say(LANG("obj.2bf7e5e6bc98c3f3", list(MONEY_NAME_CAPITALIZED, synced_bank_account.account_holder, synced_bank_account.account_balance, MONEY_SYMBOL)))
 	qdel(tool)
 	return ITEM_INTERACT_SUCCESS
 
@@ -72,12 +73,12 @@
 	if(!siphoning || !synced_bank_account)
 		return
 	if (machine_stat & (BROKEN | NOPOWER))
-		say("Insufficient power. Halting siphon.")
+		say(LANG("obj.05d4cfd50cc6ad71", null))
 		end_siphon()
 		return
 	var/siphon_am = 100 * seconds_per_tick
 	if(!synced_bank_account.has_money(siphon_am))
-		say("[synced_bank_account.account_holder] depleted. Halting siphon.")
+		say(LANG("obj.36dbf810e79012f5", list(synced_bank_account.account_holder)))
 		end_siphon()
 		return
 
@@ -114,20 +115,20 @@
 	switch(action)
 		if("siphon")
 			if(is_station_level(src.z) || is_centcom_level(src.z))
-				say("Siphon of station [MONEY_NAME] has begun!")
+				say(LANG("obj.bd6f0c769aa26d97", list(MONEY_NAME)))
 				start_siphon(ui.user)
 			else
-				say("Error: Console not in reach of station, withdrawal cannot begin.")
+				say(LANG("obj.8aeb705ef136ae9c", null))
 			. = TRUE
 		if("halt")
-			say("Station [MONEY_NAME_SINGULAR] withdrawal halted.")
+			say(LANG("obj.3bbcdc775504a80a", list(MONEY_NAME_SINGULAR)))
 			end_siphon()
 			. = TRUE
 
 /obj/machinery/computer/bank_machine/on_changed_z_level()
 	. = ..()
 	if(siphoning && !(is_station_level(src.z) || is_centcom_level(src.z)))
-		say("Error: Console not in reach of station. Siphon halted.")
+		say(LANG("obj.14c20d8b5b81bb61", null))
 		end_siphon()
 
 /obj/machinery/computer/bank_machine/proc/end_siphon()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Scout and assassin who can appear and disappear from glass surfaces. Damaged by being examined.
 /mob/living/basic/heretic_summon/maid_in_the_mirror
 	name = "\improper Maid in the Mirror"
@@ -65,8 +66,8 @@
 	// If we have health, we take some damage
 	if(health > (maxHealth * 0.02))
 		visible_message(
-				span_warning("[src] seems to fade in and out slightly."),
-				span_userdanger("[user]'s gaze pierces your every being!"),
+				span_warning(LANG("mob.6670aa05bc26d808", list(src))),
+				span_userdanger(LANG("mob.d2708bb80f5fbe9c", list(user))),
 		)
 
 		recent_examiner_refs += user_ref
@@ -79,8 +80,8 @@
 	// If we're examined on low enough health we die straight up
 	else
 		visible_message(
-				span_danger("[src] vanishes from existence!"),
-				span_userdanger("[user]'s gaze shatters your form, destroying you!"),
+				span_danger(LANG("mob.5698ffc8b11142a2", list(src))),
+				span_userdanger(LANG("mob.56bd9fd4e9e50bcb", list(user))),
 		)
 
 		death()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_LIST_EMPTY(polarization_controllers)
 
 /**
@@ -91,7 +92,7 @@ GLOBAL_LIST_EMPTY(polarization_controllers)
 	var/atom/parent_atom = parent
 
 	if(!polarizer.id)
-		parent_atom.balloon_alert(user, "set id on controller first!")
+		parent_atom.balloon_alert(user, LANG("datum.f047cc0f8bb7032a", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(id)
@@ -100,7 +101,7 @@ GLOBAL_LIST_EMPTY(polarization_controllers)
 	id = "[polarizer.id]"
 
 	LAZYADDASSOC(GLOB.polarization_controllers, id, list(src))
-	parent_atom.balloon_alert(user, "linked polarizer!")
+	parent_atom.balloon_alert(user, LANG("datum.a6cc070162307d81", null))
 
 	return ITEM_INTERACT_SUCCESS
 
@@ -112,9 +113,9 @@ GLOBAL_LIST_EMPTY(polarization_controllers)
 /datum/component/polarization_controller/proc/on_window_examine(datum/source, mob/user, list/examine_strings)
 	SIGNAL_HANDLER
 
-	examine_strings += span_notice("It has a polarization controller installed.")
-	examine_strings += span_notice("Use a <b>window polarizing controller</b> on it to link it to that controller's current ID.")
-	examine_strings += span_notice("Use a <b>multitool</b> on it to remove the polarization controller.")
+	examine_strings += span_notice(LANG("datum.300f20e594f5a11d", null))
+	examine_strings += span_notice(LANG("datum.39dfbdcf3cab6b16", null))
+	examine_strings += span_notice(LANG("datum.1be226fe27d10242", null))
 
 
 /**
@@ -139,10 +140,10 @@ GLOBAL_LIST_EMPTY(polarization_controllers)
 
 	var/obj/managed_window = parent
 
-	managed_window.balloon_alert(user, "removing polarization controller")
+	managed_window.balloon_alert(user, LANG("datum.dced60e574150cfe", null))
 
 	if(!do_after(user, 1 SECONDS, managed_window))
-		managed_window.balloon_alert(user, "cancelled removal")
+		managed_window.balloon_alert(user, LANG("datum.751daea17ee7da55", null))
 		return
 
 	toggle(FALSE)
@@ -158,6 +159,6 @@ GLOBAL_LIST_EMPTY(polarization_controllers)
 	UnregisterSignal(parent, COMSIG_ATOM_EXAMINE)
 	UnregisterSignal(parent, COMSIG_ATOM_TOOL_ACT(TOOL_MULTITOOL))
 
-	managed_window.balloon_alert(user, "removed polarization controller")
+	managed_window.balloon_alert(user, LANG("datum.d4f3c68eabaf4e85", null))
 
 	qdel(src)

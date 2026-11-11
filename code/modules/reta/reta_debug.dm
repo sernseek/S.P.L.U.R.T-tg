@@ -1,11 +1,12 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Request Emergency Temporary Access - Admin Verbs
  */
 
 /// Admin command to manually trigger RETA access grant for admins
-ADMIN_VERB(reta_manual_trigger, R_ADMIN, "RETA Door Access", "Manually trigger RETA access for testing", ADMIN_CATEGORY_EVENTS)
+ADMIN_VERB(reta_manual_trigger, R_ADMIN, "RETA 门禁权限", "Manually trigger RETA access for testing", ADMIN_CATEGORY_EVENTS)
 
-	var/calling_dept = tgui_input_list(user, "RETA - Which department is CALLING for help?", "Calling Department", list("Security", "Engineering", "Medical", "Science", "Service", "Command", "Cargo", "Mining"))
+	var/calling_dept = tgui_input_list(user, LANG("datum.5f6a3c6879049c40", null), LANG("datum.57dd1cc55bc66435", null), list("Security", "Engineering", "Medical", "Science", "Service", "Command", "Cargo", "Mining"))
 	if(!calling_dept)
 		return
 
@@ -18,7 +19,7 @@ ADMIN_VERB(reta_manual_trigger, R_ADMIN, "RETA Door Access", "Manually trigger R
 
 	while(length(remaining_depts))
 		remaining_depts += "DONE - Finish selection"
-		var/choice = tgui_input_list(user, "RETA - Select departments to RESPOND to [calling_dept]\nCurrently selected: [english_list(selected_depts)]\n\nSelect another department or DONE:", "Responding Departments", remaining_depts)
+		var/choice = tgui_input_list(user, LANG("datum.f76a1f2a192c2f7c", list(calling_dept, lang_english_list(selected_depts))), LANG("datum.c2a93820e43c0d2e", null), remaining_depts)
 
 		if(!choice || choice == "DONE - Finish selection")
 			break
@@ -31,7 +32,7 @@ ADMIN_VERB(reta_manual_trigger, R_ADMIN, "RETA Door Access", "Manually trigger R
 		message_admins("No departments selected for RETA response.")
 		return
 
-	var/duration = tgui_input_number(user, "Duration in minutes:", "RETA Duration", 5, 60, 1)
+	var/duration = tgui_input_number(user, LANG("datum.0095f73780dd3d7e", null), LANG("datum.ca0e94f045f5a37a", null), 5, 60, 1)
 	if(!duration)
 		return
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/bouldertech
 	name = "bouldertech brand refining machine"
 	desc = "You shouldn't be seeing this! And bouldertech isn't even a real company!"
@@ -69,7 +70,7 @@
 	else if(istype(held_item, /obj/item/card/id) && points_held > 0)
 		context[SCREENTIP_CONTEXT_LMB] = "Claim mining points"
 	else if(held_item.tool_behaviour == TOOL_SCREWDRIVER)
-		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] panel"
+		context[SCREENTIP_CONTEXT_LMB] = LANG("obj.45725a89b7fc8d2e", list(panel_open ? "Close" : "Open"))
 	else if(held_item.tool_behaviour == TOOL_WRENCH)
 		context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Unan" : "An"]chor"
 	else if(panel_open && held_item.tool_behaviour == TOOL_CROWBAR)
@@ -78,37 +79,37 @@
 /obj/machinery/bouldertech/examine(mob/user)
 	. = ..()
 
-	. += span_suppradio("The machine reads that it has [EXAMINE_HINT("[points_held] mining points")] stored. Swipe an ID to claim them.")
+	. += span_suppradio(LANG("obj.72d0ba03d57cb3fa", list(EXAMINE_HINT(LANG("obj.71bcb2134dca7b52", list(points_held)))))) // ZH EDIT CHANGE - I18N - ORIGINAL: EXAMINE_HINT("[points_held] mining points")
 
 	var/boulder_count = 0
 	for(var/obj/item/boulder/potential_boulder in contents)
 		boulder_count += 1
 
 	if(boulder_count >= 1)
-		. += span_notice("[EXAMINE_HINT("Right Click")] to manually remove a stored boulder.<br />")
+		. += span_notice(LANG("obj.92f61f8af3334654", list(EXAMINE_HINT("Right Click"))))
 
-	. += span_info("Storage capacity = <b>[boulder_count]/[boulders_held_max] boulders</b>.")
-	. += span_info("This machine can process up to [EXAMINE_HINT("[boulders_processing_count] boulders")] at a time.")
+	. += span_info(LANG("obj.80870b1a49881ec9", list(boulder_count, boulders_held_max)))
+	. += span_info(LANG("obj.236dccea18025022", list(EXAMINE_HINT("[boulders_processing_count] boulders"))))
 
 	if(anchored)
-		. += span_notice("It's [EXAMINE_HINT("anchored")] in place.")
+		. += span_notice(LANG("obj.7641f909d43c346d", list(EXAMINE_HINT("anchored"))))
 	else
-		. += span_warning("It needs to be [EXAMINE_HINT("anchored")] to start operations.")
+		. += span_warning(LANG("obj.cea02383436f1ad3", list(EXAMINE_HINT("anchored"))))
 
-	. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "closed" : "open"].")
+	. += span_notice(LANG("obj.f3fabb12d30acb3c", list(EXAMINE_HINT("screwed"), panel_open ? "closed" : "open")))
 
 	if(panel_open)
-		. += span_notice("The whole machine can be [EXAMINE_HINT("pried")] apart.")
+		. += span_notice(LANG("obj.3a115ecaeb354764", list(EXAMINE_HINT("pried"))))
 
 /obj/machinery/bouldertech/examine_more(mob/user)
 	. = ..()
 
 	var/list/datum/reagents/booster_list = get_booster_reagents()
 	if(length(booster_list))
-		. += span_notice("This machine's output is boosted by <b>chemical intake:</b><br>")
+		. += span_notice(LANG("obj.eeee6107adc93aa8", null))
 		for(var/datum/reagent/increment as anything in booster_list)
-			. += span_info("&bull; [increment::name]: Provides [booster_list[increment] * 10]% Boost")
-		. += span_notice("<br>Upon being boosted successfully, \the [src] will produce [EXAMINE_HINT("[waste_chemical.name]")].")
+			. += span_info(LANG("obj.a67ce4a71f1a3c1b", list(increment::name, booster_list[increment] * 10)))
+		. += span_notice(LANG("obj.bcb905eb5489ac96", list(src, EXAMINE_HINT("[waste_chemical.name]"))))
 
 /obj/machinery/bouldertech/update_icon_state()
 	. = ..()
@@ -229,7 +230,7 @@
 		return
 
 	if(!use_energy(active_power_usage * 1.5, force = FALSE))
-		say("Not enough energy!")
+		say(LANG("obj.baec13b63b1a85c5", null))
 		return
 
 	maim_mob(rockman)
@@ -259,14 +260,14 @@
 		if(!gibbing && length(deleted_part_names))
 			var/parts_text = english_list(deleted_part_names)
 			rockman.investigate_log("had [rockman.p_their()] [parts_text] which all had BIO_STONE biological state) destroyed by a [src]", INVESTIGATE_CARGO)
-			rockman.visible_message(span_warning("[rockman] is processed by [src]!"), span_userdanger("Your [parts_text] are shred into bits by [src]!"))
+			rockman.visible_message(span_warning(LANG("obj.6107e3a2b88c7bea", list(rockman, src))), span_userdanger(LANG("obj.fc868f5a8d8405d7", list(parts_text, src))))
 
 	if(gibbing)
 		gib_mob(rockman)
 
 ///Called at the end of main_mob() if they were a bodyparts-less mob or their chest was made of stone...
 /obj/machinery/bouldertech/proc/gib_mob(mob/living/rockman)
-	rockman.visible_message(span_warning("[rockman] is processed by [src]!"), span_userdanger("You get processed into bits by [src]!"))
+	rockman.visible_message(span_warning(LANG("obj.6107e3a2b88c7bea", list(rockman, src))), span_userdanger(LANG("obj.9a29a339486cef92", list(src))))
 	rockman.investigate_log("was gibbed by [src] for having the MOB_MINERAL mob biotype", INVESTIGATE_DEATHS)
 	rockman.gib(DROP_ALL_REMAINS)
 
@@ -314,14 +315,14 @@
 	if(istype(tool, /obj/item/boulder))
 		var/obj/item/boulder/my_boulder = tool
 		if(!accept_boulder(my_boulder))
-			balloon_alert_to_viewers("cannot accept!")
+			balloon_alert_to_viewers(LANG("obj.8c149ce21e3bbca8", null))
 			return ITEM_INTERACT_BLOCKING
-		balloon_alert_to_viewers("accepted")
+		balloon_alert_to_viewers(LANG("obj.1a4938717ccdf8e2", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(istype(tool, /obj/item/card/id))
 		if(points_held <= 0)
-			balloon_alert_to_viewers("no points to claim!")
+			balloon_alert_to_viewers(LANG("obj.1f7e9c7a6683e126", null))
 			if(!COOLDOWN_FINISHED(src, sound_cooldown))
 				return ITEM_INTERACT_BLOCKING
 			COOLDOWN_START(src, sound_cooldown, 1.5 SECONDS)
@@ -329,14 +330,14 @@
 			return ITEM_INTERACT_BLOCKING
 
 		var/obj/item/card/id/id_card = tool
-		var/amount = tgui_input_number(user, "How many mining points do you wish to claim? ID Balance: [id_card.registered_account.mining_points], stored mining points: [points_held]", "Transfer Points", max_value = points_held, min_value = 0, round_value = 1)
+		var/amount = tgui_input_number(user, LANG("obj.10aab1fbfeda0913", list(id_card.registered_account.mining_points, points_held)), LANG("obj.bfebd14087fd650b", null), max_value = points_held, min_value = 0, round_value = 1)
 		if(!amount)
 			return ITEM_INTERACT_BLOCKING
 		if(amount > points_held)
 			amount = points_held
 		id_card.registered_account.mining_points += amount
 		points_held = round(points_held - amount)
-		to_chat(user, span_notice("You claim [amount] mining points from \the [src] to [id_card]."))
+		to_chat(user, span_notice(LANG("obj.b53d5cdf27d78cd5", list(amount, src, id_card))))
 		return ITEM_INTERACT_SUCCESS
 
 	return NONE
@@ -362,18 +363,18 @@
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || panel_open)
 		return
 	if(!anchored)
-		balloon_alert(user, "anchor it first!")
+		balloon_alert(user, LANG("obj.c16d48e2e8f5ec29", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	if(panel_open)
-		balloon_alert(user, "close panel!")
+		balloon_alert(user, LANG("obj.4337ae3ee9e4930a", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	var/obj/item/boulder/boulder = locate(/obj/item/boulder) in src
 	if(!boulder)
-		balloon_alert_to_viewers("no boulders to remove!")
+		balloon_alert_to_viewers(LANG("obj.fb9ba53aa0031ce8", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	if(!remove_boulder(boulder))
-		balloon_alert_to_viewers("no space to remove!")
+		balloon_alert_to_viewers(LANG("obj.649310e4748bc097", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -394,7 +395,7 @@
 	if(chosen_boulder.loc != src)
 		return
 	if(!use_energy(active_power_usage, force = FALSE))
-		say("Not enough energy!")
+		say(LANG("obj.baec13b63b1a85c5", null))
 		return
 
 	//if boulders are kept inside because there is no space to eject them, then they could be reprocessed, lets avoid that

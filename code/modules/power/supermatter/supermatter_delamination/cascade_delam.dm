@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/sm_delam/cascade
 	name = "resonance cascade"
 
@@ -22,7 +23,7 @@
 
 	sm.radio.talk_into(
 		sm,
-		"DANGER: HYPERSTRUCTURE OSCILLATION FREQUENCY OUT OF BOUNDS.",
+		LANG("datum.f69e5ce818b1cb64", null),
 		sm.damage >= sm.emergency_point ? sm.emergency_channel : sm.warning_channel
 	)
 	var/list/messages = list(
@@ -87,8 +88,7 @@
 	if(!sm.should_alert_common())
 		return FALSE
 
-	priority_announce("Attention: Long range anomaly scans indicate abnormal quantities of harmonic flux originating from \
-	a subject within [station_name()], a resonance collapse may occur.",
+	priority_announce(LANG("datum.3e55b37ce12bb2c9", list(station_name())),
 	"Nanotrasen Star Observation Association", 'sound/announcer/alarm/airraid.ogg')
 	announcement_triggered = TRUE
 	return TRUE

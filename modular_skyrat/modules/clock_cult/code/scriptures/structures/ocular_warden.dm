@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define OCULAR_WARDEN_PLACE_RANGE 3
 
 /datum/scripture/create_structure/ocular_warden
@@ -18,7 +19,7 @@
 		return FALSE
 
 	if(locate(/obj/structure/destructible/clockwork/gear_base/powered/ocular_warden) in range(OCULAR_WARDEN_PLACE_RANGE))
-		user.balloon_alert(user, "too close to another warden!")
+		user.balloon_alert(user, LANG("datum.d54a256493f4049b", null))
 		return FALSE
 
 	return TRUE

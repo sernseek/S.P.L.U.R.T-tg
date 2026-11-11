@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Posters//
 
 //Custom Posters Below//
@@ -81,11 +82,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/killingjoke, 3
 
 /obj/structure/sign/poster/contraband/nri_text/examine_more(mob/user)
 	. = ..()
-	. += span_notice("<i>You browse some of the poster's information...</i>")
-	. += "\t[span_info("The First Congress of People's Senators of the NRI...")]"
-	. += "\t[span_info("...Testifying respect for the sovereign rights of all peoples belonging to the...")]"
-	. += "\t[span_info("...Solemnly proclaims the State sovereignty of the Novaya Rossiyskaya Imperiya over its entire territory and declares its determination to create a monarchic State governed by the rule of law...")]"
-	. += "\t[span_info("...This Declaration is the basis for the development of a new Constitution of the NRI, the conclusion of the Imperial Treaty and the improvement of royal legislation.")]"
+	. += span_notice(LANG("obj.651bbda56f722ed1", null))
+	. += LANG("obj.294efb1fdb8925bb", list(span_info("The First Congress of People's Senators of the NRI...")))
+	. += LANG("obj.294efb1fdb8925bb", list(span_info("...Testifying respect for the sovereign rights of all peoples belonging to the...")))
+	. += LANG("obj.294efb1fdb8925bb", list(span_info("...Solemnly proclaims the State sovereignty of the Novaya Rossiyskaya Imperiya over its entire territory and declares its determination to create a monarchic State governed by the rule of law...")))
+	. += LANG("obj.294efb1fdb8925bb", list(span_info("...This Declaration is the basis for the development of a new Constitution of the NRI, the conclusion of the Imperial Treaty and the improvement of royal legislation.")))
 	return .
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/nri_text, 32)

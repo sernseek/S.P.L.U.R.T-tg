@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/interaction/lewd/breastfeed
 	name = "Breastfeed"
 	description = "Breastfeed them."
@@ -314,11 +315,11 @@
 		if(intent == "harm")
 			target_arousal += 10
 			target_pleasure += 6
-			to_chat(target, span_purple("You can't breathe with their breasts crushing your face... it's amazing!"))
+			to_chat(target, span_purple(LANG("datum.3fdc7d92f00c22e9", null)))
 		else
 			target_arousal += 8
 			target_pleasure += 4
-			to_chat(target, span_purple("You can barely breathe with their breasts on your face... it's incredible!"))
+			to_chat(target, span_purple(LANG("datum.9ca9c054a8c6b73f", null)))
 
 	. = ..()
 

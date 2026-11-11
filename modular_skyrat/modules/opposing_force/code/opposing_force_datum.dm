@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/opposing_force_selected_equipment
 	/// Reference to the selected equipment datum.
 	var/datum/opposing_force_equipment/opposing_force_equipment
@@ -319,7 +320,7 @@
 		if("deny")
 			if(!check_rights(R_ADMIN))
 				return
-			var/denied_reason = tgui_input_text(usr, "Denial Reason", "Enter a reason for denying this application:")
+			var/denied_reason = tgui_input_text(usr, LANG("datum.f13631504f8ec907", null), LANG("datum.345314bc6ed6c881", null))
 			// Checking to see if the user is spamming the button, async and all.
 			if((status == OPFOR_STATUS_DENIED) || !denied_reason)
 				return
@@ -339,7 +340,7 @@
 		if("deny_objective")
 			if(!check_rights(R_ADMIN))
 				return
-			var/denied_reason = tgui_input_text(usr, "Denial Reason", "Enter a reason for denying this objective:")
+			var/denied_reason = tgui_input_text(usr, LANG("datum.f13631504f8ec907", null), LANG("datum.c9accefd37563a41", null))
 			if(!denied_reason)
 				return
 			deny_objective(usr, edited_objective, denied_reason)
@@ -356,7 +357,7 @@
 				return
 			if(!check_rights(R_ADMIN))
 				return
-			var/denied_reason = tgui_input_text(usr, "Denial Reason", "Enter a reason for denying this objective:")
+			var/denied_reason = tgui_input_text(usr, LANG("datum.f13631504f8ec907", null), LANG("datum.c9accefd37563a41", null))
 			if(!denied_reason)
 				return
 			deny_equipment(usr, equipment, denied_reason)
@@ -375,7 +376,7 @@
 
 /datum/opposing_force/proc/handle(mob/user)
 	if(handling_admin)
-		var/choice = tgui_alert(user, "Another admin is currently handling this application, do you want to override them?", "Admin Handling", list("Yes", "No"))
+		var/choice = tgui_alert(user, LANG("datum.70ea9c74189e63e3", null), LANG("datum.0ab73cbb93736ec6", null), list("Yes", "No"))
 		if(choice == "No")
 			return
 	handling_admin = get_admin_ckey(user)
@@ -441,7 +442,7 @@
 	if(!can_edit)
 		return
 	if(LAZYLEN(selected_equipment) >= OPFOR_EQUIPMENT_LIMIT)
-		to_chat(user, span_warning("You have too many items, please remove one!"))
+		to_chat(user, span_warning(LANG("datum.7f2001303cd91fd9", null)))
 		return
 	var/datum/opposing_force_selected_equipment/new_selected = new(incoming_equipment)
 	selected_equipment += new_selected
@@ -470,7 +471,7 @@
 
 /datum/opposing_force/proc/request_update(mob/user)
 	if(request_updates_muted)
-		to_chat(user, span_warning("You are currently blocked from requesting updates!"))
+		to_chat(user, span_warning(LANG("datum.a0b960400396bce9", null)))
 		return
 	if(status != OPFOR_STATUS_AWAITING_APPROVAL || !COOLDOWN_FINISHED(src, request_update_cooldown))
 		return
@@ -487,14 +488,14 @@
 
 /datum/opposing_force/proc/submit_to_subsystem(mob/user)
 	if(blocked)
-		to_chat(user, span_warning("You are currently blocked from submitting new requests!"))
+		to_chat(user, span_warning(LANG("datum.5028844ca2747d04", null)))
 		return
 	if(status != OPFOR_STATUS_NOT_SUBMITTED && status != OPFOR_STATUS_CHANGES_REQUESTED)
 		return FALSE
 	// Subsystem checks, no point in bloating the system if it's not accepting more.
 	var/availability = SSopposing_force.check_availability()
 	if(availability != OPFOR_SUBSYSTEM_READY)
-		to_chat(usr, span_warning("Error, the OPFOR subsystem rejected your request. Reason: <b>[availability]</b>"))
+		to_chat(usr, span_warning(LANG("datum.729169e6bd39dc20", list(availability))))
 		return FALSE
 
 	var/queue_position = SSopposing_force.add_to_queue(src)
@@ -515,7 +516,7 @@
 /datum/opposing_force/proc/modify_request(mob/user)
 	if(status == OPFOR_STATUS_CHANGES_REQUESTED)
 		return
-	var/choice = tgui_alert(user, "Are you sure you want to request changes? This will unapprove all objectives.", "Confirm", list("Yes", "No"))
+	var/choice = tgui_alert(user, LANG("datum.b1634c02c7db0277", null), LANG("datum.3c1da715a16e1d9e", null), list("Yes", "No"))
 	if(choice != "Yes")
 		return
 	if(status == OPFOR_STATUS_CHANGES_REQUESTED) // The alert is not async, so this could change, thus being spammed.
@@ -570,7 +571,7 @@
 /datum/opposing_force/proc/close_application(mob/user)
 	if(status == OPFOR_STATUS_NOT_SUBMITTED)
 		return
-	var/choice = tgui_alert(user, "Are you sure you want withdraw your application?", "Confirm", list("Yes", "No"))
+	var/choice = tgui_alert(user, LANG("datum.26c2d033c822699e", null), LANG("datum.3c1da715a16e1d9e", null), list("Yes", "No"))
 	if(choice != "Yes")
 		return
 	if(status == OPFOR_STATUS_NOT_SUBMITTED) // The alert is not async, so this could change, thus being spammed.
@@ -664,7 +665,7 @@
 	if(!can_edit)
 		return
 	if(LAZYLEN(objectives) >= OPFOR_MAX_OBJECTIVES)
-		to_chat(user, span_warning("You have too many objectives, please remove one!"))
+		to_chat(user, span_warning(LANG("datum.ef389da10ef6eebe", null)))
 		return
 	var/datum/opposing_force_objective/opfor_objective = new
 	objectives += opfor_objective
@@ -686,13 +687,13 @@
 	opposing_force_objective.denied_reason = deny_reason
 	add_log(user.ckey, "Denied objective([opposing_force_objective.title]) WITH REASON: [deny_reason]")
 	send_system_message("[user ? get_admin_ckey(user) : "The OPFOR subsystem"] has denied objective '[opposing_force_objective.title]' with the reason '[deny_reason]'")
-	to_chat(mind_reference?.current, span_warning("Your OPFOR objective [span_bold("[opposing_force_objective.title]")] has been denied."))
+	to_chat(mind_reference?.current, span_warning(LANG("datum.4ffaf4c6f7080799", list(span_bold("[opposing_force_objective.title]")))))
 
 /datum/opposing_force/proc/approve_objective(mob/user, datum/opposing_force_objective/opposing_force_objective)
 	opposing_force_objective.status = OPFOR_OBJECTIVE_STATUS_APPROVED
 	add_log(user.ckey, "Approved objective([opposing_force_objective.title])")
 	send_system_message("[user ? get_admin_ckey(user) : "The OPFOR subsystem"] has approved objective '[opposing_force_objective.title]'")
-	to_chat(mind_reference?.current, span_warning("Your OPFOR objective [span_bold("[opposing_force_objective.title]")] has been approved."))
+	to_chat(mind_reference?.current, span_warning(LANG("datum.8e51376584c2717d", list(span_bold("[opposing_force_objective.title]")))))
 
 /**
  * System procs
@@ -838,7 +839,7 @@
 		send_system_message("ERROR: You are muted.")
 		return
 	if(user.ckey != handling_admin && GLOB.directory[handling_admin])
-		to_chat(GLOB.directory[handling_admin], span_pink("OPFOR: [user] has pinged their OPFOR admin chat! (<a href='byond://?src=[REF(src)];admin_pref=show_panel'>Show Panel</a>)"))
+		to_chat(GLOB.directory[handling_admin], span_pink(LANG("datum.14ce816a864756cd", list(user, REF(src)))))
 		SEND_SOUND(GLOB.directory[handling_admin], sound('sound/misc/bloop.ogg'))
 		send_system_message("Handling admin pinged.")
 		COOLDOWN_START(src, ping_cooldown, OPFOR_PING_COOLDOWN)
@@ -850,7 +851,7 @@
 		send_system_message("ERROR: You do not have permission to do that.")
 		return
 	send_system_message("User pinged.")
-	to_chat(mind_reference.current, span_pink("OPFOR: [get_admin_ckey(user)] has pinged your OPFOR chat, check it!"))
+	to_chat(mind_reference.current, span_pink(LANG("datum.7401ff4ec090ea5c", list(get_admin_ckey(user)))))
 	SEND_SOUND(mind_reference.current, sound('sound/misc/bloop.ogg'))
 
 /datum/opposing_force/proc/roundend_report()
@@ -888,11 +889,11 @@
 
 /// Allows a user to import an OPFOR from json
 /datum/opposing_force/proc/json_import(mob/importer)
-	var/file_uploaded = input(importer, "Choose a .json file to upload. (This WILL override your inputted data)", "Upload JSON template") as null|file
+	var/file_uploaded = input(importer, LANG("datum.6a099157fa956aac", null), LANG("datum.03676ccbd2008a59", null)) as null|file
 	if(!file_uploaded)
 		return
 	if(copytext("[file_uploaded]", -5) != ".json") //5 == length(".json")
-		to_chat(importer, span_warning("Filename must end in '.json': [file_uploaded]"))
+		to_chat(importer, span_warning(LANG("datum.93cb4c73ba470007", list(file_uploaded))))
 		return
 
 	QDEL_LIST(objectives)
@@ -945,7 +946,7 @@
 		QDEL_LIST(objectives)
 		QDEL_LIST(selected_equipment)
 		set_backstory = null
-		to_chat(importer, span_warning("JSON file is corrupted in some form. Please correct and reupload."))
+		to_chat(importer, span_warning(LANG("datum.f23c777715efef2c", null)))
 		add_log(importer.ckey, "Attempted to upload a corrupted JSON, purging leftover data...")
 
 

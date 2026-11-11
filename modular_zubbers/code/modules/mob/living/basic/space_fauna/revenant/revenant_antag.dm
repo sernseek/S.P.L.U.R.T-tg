@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // revenant antag datum is given on login, so this should be fine
 /datum/antagonist/revenant/on_gain()
 	. = ..()
@@ -7,15 +8,15 @@
 	if(!istype(revenant))
 		CRASH("Somehow a non-revenant got a revenant antag datum?")
 	while(revenant?.client)
-		var/new_name = reject_bad_text(tgui_input_text(revenant, "Would you like to change your ghostly name to something else?", "Spooky Identity", revenant.name, MAX_NAME_LEN, encode = FALSE))
+		var/new_name = reject_bad_text(tgui_input_text(revenant, LANG("datum.0f258ce68e6b8739", null), LANG("datum.56e37694314cc43a", null), revenant.name, MAX_NAME_LEN, encode = FALSE))
 		if(!new_name || new_name == revenant.name)
-			if(tgui_alert(revenant, "Are you sure you would like to keep your default name of \"[revenant.name]\"?", "Spooky Identity", list("Yes", "No")) == "Yes")
+			if(tgui_alert(revenant, LANG("datum.f2f206a7831df176", list(revenant.name)), LANG("datum.56e37694314cc43a", null), list("Yes", "No")) == "Yes")
 				return
 			else
 				continue
 		new_name = sanitize_name(new_name, allow_numbers = TRUE)
 		if(!new_name)
-			if(tgui_alert(revenant, "Invalid name, please pick another!", "Spooky Identity", list("Try Again", "Keep Default Name")) == "Try Again")
+			if(tgui_alert(revenant, LANG("datum.652e090184dbcf54", null), LANG("datum.56e37694314cc43a", null), list("Try Again", "Keep Default Name")) == "Try Again")
 				continue
 			else
 				return
@@ -23,5 +24,5 @@
 		revenant.log_message("set their revenant name to [new_name]", LOG_OWNERSHIP)
 		message_admins("[ADMIN_LOOKUPFLW(revenant)] has changed their revenant name to \"[span_name(new_name)]\"")
 		revenant.fully_replace_character_name(null, new_name)
-		to_chat(revenant, span_revennotice("Your name is now \"[span_name(new_name)]\"."), type = MESSAGE_TYPE_INFO)
+		to_chat(revenant, span_revennotice(LANG("datum.6038a64d9969bcfe", list(span_name(new_name)))), type = MESSAGE_TYPE_INFO)
 		return

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/spell/pointed/rust_construction
 	name = "Rust Formation"
 	desc = "Transforms a rusted floor into a full wall of rust. Creating a wall underneath a mob will harm it."
@@ -30,12 +31,12 @@
 
 /datum/action/cooldown/spell/pointed/rust_construction/is_valid_target(atom/cast_on)
 	if(!isturf(cast_on))
-		cast_on.balloon_alert(owner, "not a wall or floor!")
+		cast_on.balloon_alert(owner, LANG("datum.ad6a45467b5b3d2d", null))
 		return FALSE
 
 	if(!HAS_TRAIT(cast_on, TRAIT_RUSTY))
 		if(owner)
-			cast_on.balloon_alert(owner, "not rusted!")
+			cast_on.balloon_alert(owner, LANG("datum.485da0fb25ce3f41", null))
 		return FALSE
 
 	return TRUE
@@ -55,7 +56,7 @@
 
 	// If we casted at a wall we'll try to rust it. In the case of an enchanted wall it'll deconstruct it
 	if(isclosedturf(cast_on))
-		cast_on.visible_message(span_warning("\The [cast_on] quakes as the rust causes it to crumble!"))
+		cast_on.visible_message(span_warning(LANG("datum.d79451d6bc48e3b1", list(cast_on))))
 		var/mob/living/living_owner = owner
 		living_owner?.do_rust_heretic_act(cast_on)
 		// ref transfers to floor
@@ -89,13 +90,13 @@
 		message_shown = TRUE
 		if(IS_HERETIC_OR_MONSTER(living_mob) || living_mob == owner)
 			living_mob.visible_message(
-				span_warning("\A [new_wall] [rises_message] and pushes along [living_mob]!"),
-				span_notice("\A [new_wall] [rises_message] beneath your feet and pushes you along!"),
+				span_warning(LANG("datum.ae71175b8c105fd7", list(new_wall, rises_message, living_mob))),
+				span_notice(LANG("datum.d34234ba94d7891b", list(new_wall, rises_message))),
 			)
 		else
 			living_mob.visible_message(
-				span_warning("\A [new_wall] [rises_message] and slams into [living_mob]!"),
-				span_userdanger("\A [new_wall] [rises_message] beneath your feet and slams into you!"),
+				span_warning(LANG("datum.a92c9281d54dfa5b", list(new_wall, rises_message, living_mob))),
+				span_userdanger(LANG("datum.b0cab291e1bc48d2", list(new_wall, rises_message))),
 			)
 			living_mob.apply_damage(10, BRUTE, wound_bonus = 10)
 			living_mob.Knockdown(5 SECONDS)
@@ -118,7 +119,7 @@
 		living_mob.throw_at(pick(turfs_by_us), 1, 3, thrower = owner, spin = FALSE)
 
 	if(!message_shown)
-		new_wall.visible_message(span_warning("\A [new_wall] [rises_message]!"))
+		new_wall.visible_message(span_warning(LANG("datum.76f3f903b9b65da3", list(new_wall, rises_message))))
 
 /datum/action/cooldown/spell/pointed/rust_construction/proc/fade_wall_filter(turf/closed/wall)
 	if(QDELETED(wall))

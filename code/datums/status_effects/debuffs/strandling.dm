@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// A multiplier to the time it takes to remove durathread strangling when using a tool instead of your hands
 #define STRANGLING_TOOL_MULTIPLIER 0.4
 
@@ -61,8 +62,8 @@
 		return
 
 	user.visible_message(
-		span_notice("[user] attempts to [tool ? "cut":"remove"] the strand from around [owner == user ? "[owner.p_their()]":"[owner]'s"] neck..."),
-		span_notice("You attempt to [tool ? "cut":"remove"] the strand from around [owner == user ? "your":"[owner]'s"] neck..."),
+		span_notice(LANG("datum.ffe92e65f35fd7e9", list(user, tool ? "cut":"remove", owner == user ? "[owner.p_their()]":"[owner]'s"))),
+		span_notice(LANG("datum.0646f3261c5eb443", list(tool ? "cut":"remove", owner == user ? "your":"[owner]'s"))),
 	)
 
 	// Play a sound if we have a tool
@@ -70,15 +71,15 @@
 
 	// Now try to remove the effect with a doafter. If we have a tool, we'll even remove it 60% faster.
 	if(!do_after(user, time_to_remove * (tool ? STRANGLING_TOOL_MULTIPLIER : 1), owner, interaction_key = REF(src)))
-		to_chat(user, span_warning("You fail to [tool ? "cut":"remove"] the strand from around [owner == user ? "your":"[owner]'s"] neck!"))
+		to_chat(user, span_warning(LANG("datum.07227edd27cf39a8", list(tool ? "cut":"remove", owner == user ? "your":"[owner]'s"))))
 		return FALSE
 
 	// Play another sound after we're done
 	tool?.play_tool_sound(owner)
 
 	user.visible_message(
-		span_notice("[user] successfully [tool ? "cut":"remove"] the strand from around [owner == user ? "[owner.p_their()]":"[owner]'s"] neck."),
-		span_notice("You successfully [tool ? "cut":"remove"] the strand from around [owner == user ? "your":"[owner]'s"] neck."),
+		span_notice(LANG("datum.81f5f7ea6c4c0861", list(user, tool ? "cut":"remove", owner == user ? "[owner.p_their()]":"[owner]'s"))),
+		span_notice(LANG("datum.425337c1c5fbc79f", list(tool ? "cut":"remove", owner == user ? "your":"[owner]'s"))),
 	)
 	qdel(src)
 	return TRUE

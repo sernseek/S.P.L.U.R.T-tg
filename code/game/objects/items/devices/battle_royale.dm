@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Global list of areas which are considered to be inside the same department for our purposes
 GLOBAL_LIST_INIT(battle_royale_regions, list(
 	"Medical Bay" = list(
@@ -43,21 +44,21 @@ GLOBAL_LIST_INIT(battle_royale_regions, list(
 		remote.link_implanter(src, user)
 		return ITEM_INTERACT_SUCCESS
 	if (!linked)
-		balloon_alert(user, "no linked remote!")
+		balloon_alert(user, LANG("obj.6662913cb5a05b38", null))
 		return ITEM_INTERACT_BLOCKING
 	if (DOING_INTERACTION_WITH_TARGET(user, interacting_with))
-		balloon_alert(user, "busy!")
+		balloon_alert(user, LANG("obj.8df72942c63f9092", null))
 		return ITEM_INTERACT_BLOCKING
 	var/mob/living/potential_winner = interacting_with
 	if (IS_UNCONSCIOUS_OR_CRIT(potential_winner))
-		balloon_alert(user, "target unconscious!")
+		balloon_alert(user, LANG("obj.8ff7f235062f56a9", null))
 		return ITEM_INTERACT_BLOCKING
 	if (!potential_winner.mind)
-		balloon_alert(user, "target too boring!")
+		balloon_alert(user, LANG("obj.61e50ca64151ca5c", null))
 		return ITEM_INTERACT_BLOCKING
 	log_combat(user, potential_winner, "tried to implant a battle royale implant into")
 	if (!do_after(user, 1.5 SECONDS, potential_winner))
-		balloon_alert(user, "interrupted!")
+		balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 		return ITEM_INTERACT_BLOCKING
 
 	var/obj/item/implant/explosive/battle_royale/encouragement_implant = new
@@ -65,7 +66,7 @@ GLOBAL_LIST_INIT(battle_royale_regions, list(
 		qdel(encouragement_implant) // no balloon alert - feedback is usually provided by the implant
 		return ITEM_INTERACT_BLOCKING
 
-	potential_winner.balloon_alert(user, "implanted")
+	potential_winner.balloon_alert(user, LANG("obj.5d6674738e7271d4", null))
 	SEND_SIGNAL(src, COMSIG_ROYALE_IMPLANTED, encouragement_implant)
 	return ITEM_INTERACT_SUCCESS
 
@@ -100,7 +101,7 @@ GLOBAL_LIST_INIT(battle_royale_regions, list(
 		return
 	var/contestant_count = length(implanted_implants)
 	if (contestant_count < required_contestants)
-		balloon_alert(user, "[required_contestants - contestant_count] contestants needed!")
+		balloon_alert(user, LANG("obj.f321db601834493a", list(required_contestants - contestant_count)))
 		return
 
 	GLOB.battle_royale_master.start_battle(implanted_implants)
@@ -115,11 +116,11 @@ GLOBAL_LIST_INIT(battle_royale_regions, list(
 /obj/item/royale_remote/proc/link_implanter(obj/item/royale_implanter/implanter, mob/user)
 	if (implanter in linked_implanters)
 		if (user)
-			balloon_alert(user, "already linked!")
+			balloon_alert(user, LANG("obj.cc32a1c7c966a07a", null))
 		return
 
 	if (user)
-		balloon_alert(user, "link established")
+		balloon_alert(user, LANG("obj.06b2390f153d0463", null))
 
 	implanter.linked = TRUE
 	linked_implanters += implanter
@@ -232,11 +233,7 @@ GLOBAL_DATUM_INIT(battle_royale_master, /datum/battle_royale_master, new)
 		return FALSE // Well there's not much point is there
 
 	priority_announce(
-		text = "Congratulations [station_name()], you have been chosen as the next site of the Rumble Royale! \n\
-			Viewers across the sector will watch our [convert_integer_to_words(length(contestant_implants))] lucky contestants battle their way into your [chosen_area] and fight until only one is left standing! \n\
-			If they don't make it in five minutes, they'll be disqualified. If you see one of our players struggling to get in, do lend them a hand... or don't, if you can live with the consequences!  \n\
-			As a gesture of gratitude, we will be providing our premium broadcast to your entertainment monitors at no cost so that you can watch the excitement. \n\
-			Bystanders are advised not to intervene... but if you do, make it look good for the camera!",
+		text = LANG("datum.19e62bc6f5f2981c", list(station_name(), convert_integer_to_words(length(contestant_implants)), chosen_area)),
 		title = "Rumble Royale Beginning",
 		sound = 'sound/announcer/alarm/nuke_alarm.ogg',
 		has_important_message = TRUE,
@@ -315,7 +312,7 @@ GLOBAL_DATUM_INIT(battle_royale_master, /datum/battle_royale_master, new)
 /// Called halfway through the battle, if you've not made it to the designated battle zone we kill you
 /datum/battle_royale_controller/proc/limit_area()
 	priority_announce(
-		text = "We're halfway done folks! And bad news to anyone who hasn't made it to the [chosen_area]... you're out!",
+		text = LANG("datum.561fbdf8abfa8895", list(chosen_area)),
 		title = "Rumble Royale Update",
 		sound = 'sound/announcer/notice/notice1.ogg',
 		has_important_message = TRUE,

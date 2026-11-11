@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/spell/cosmic_rune
 	name = "Cosmic Rune"
 	desc = "Creates a cosmic rune at your position, only two can exist at a time. Invoking one rune transports you to the other. \
@@ -86,15 +87,15 @@
 	if(.)
 		return
 	if(!linked_rune)
-		balloon_alert(user, "no linked rune!")
+		balloon_alert(user, LANG("obj.28396b672d25d698", null))
 		fail_invoke()
 		return
 	if(!(user in get_turf(src)))
-		balloon_alert(user, "not close enough!")
+		balloon_alert(user, LANG("obj.1fd9967e4712608a", null))
 		fail_invoke()
 		return
 	if(user.has_status_effect(/datum/status_effect/star_mark))
-		balloon_alert(user, "blocked by star mark!")
+		balloon_alert(user, LANG("obj.faf1dc09ea3f6b06", null))
 		fail_invoke()
 		return
 	invoke(user)
@@ -144,7 +145,7 @@
 
 /// For if someone failed to invoke the rune
 /obj/effect/cosmic_rune/proc/fail_invoke()
-	visible_message(span_warning("The rune pulses with a small flash of purple light, then returns to normal."))
+	visible_message(span_warning(LANG("obj.92d2576b36b9ee63", null)))
 	var/oldcolor = rgb(255, 255, 255)
 	color = rgb(150, 50, 200)
 	animate(src, color = oldcolor, time = 5)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/element/mob_holder/micro
 
 /datum/element/mob_holder/micro/Attach(datum/target, worn_state, alt_worn, right_hand, left_hand, inv_slots = NONE, proctype, escape_on_find)
@@ -16,15 +17,15 @@
 	if(istype(holder))
 		var/mob/living/living = get_atom_on_turf(micro.loc, /mob/living)
 		if(living && (COMPARE_SIZES_WITH_LIMBLOSS(living, micro)) < 2.0)
-			living.visible_message(span_warning("\The [living] drops [micro] as [micro.p_they()] grow\s too big to carry."),
-								span_warning("You drop \The [living] as [living.p_they()] grow\s too big to carry."))
+			living.visible_message(span_warning(LANG("datum.d4ea72a1c709590e", list(living, micro, micro.p_they()))),
+								span_warning(LANG("datum.d24fd6dec20e545e", list(living, living.p_they()))))
 			holder.release()
 		else if(!istype(living)) // Somehow a inside a mob_holder and the mob_holder isn't inside any livings? release.
 			holder.release()
 
 /datum/element/mob_holder/micro/on_examine(mob/living/source, mob/user, list/examine_list)
 	if(ishuman(user) && !istype(source.loc, /obj/item/mob_holder) && (COMPARE_SIZES_WITH_LIMBLOSS(user, source)) >= 2.0)
-		examine_list += span_notice("Looks like [source.p_they(FALSE)] can be picked up using <b>Alt+Click and grab intent</b>!")
+		examine_list += span_notice(LANG("datum.1eee54ce2e929de7", list(source.p_they(FALSE))))
 
 /// Do not inherit from /mob_holder, interactions are different.
 /datum/element/mob_holder/micro/on_requesting_context_from_item(
@@ -59,39 +60,39 @@
 	if(!(resolve_intent_name(user) == "grab"))
 		return FALSE
 	if(source == user)
-		to_chat(user, span_warning("You can't pick yourself up."))
-		source.balloon_alert(user, "cannot pick yourself!")
+		to_chat(user, span_warning(LANG("datum.4d8b681893d5fd03", null)))
+		source.balloon_alert(user, LANG("datum.369180ccf02029ea", null))
 		return FALSE
 	if(COMPARE_SIZES_WITH_LIMBLOSS(user, source) < 2.0)
-		to_chat(user, span_warning("They're too big to pick up!"))
-		source.balloon_alert(user, "too big to pick up!")
+		to_chat(user, span_warning(LANG("datum.b2551b4503d1f440", null)))
+		source.balloon_alert(user, LANG("datum.61304af5c216da73", null))
 		return FALSE
 	if(user.get_active_held_item())
-		to_chat(user, span_warning("Your hands are full!"))
-		source.balloon_alert(user, "hands are full!")
+		to_chat(user, span_warning(LANG("datum.86b9ca924a677805", null)))
+		source.balloon_alert(user, LANG("datum.9706f865a7d0ec0e", null))
 		return FALSE
 	if(source.buckled)
-		to_chat(user, span_warning("[source] is buckled to something!"))
-		source.balloon_alert(user, "buckled to something!")
+		to_chat(user, span_warning(LANG("datum.65a86c2bb81ec41e", list(source))))
+		source.balloon_alert(user, LANG("datum.e3e5c1bbc7f129b4", null))
 		return FALSE
-	source.visible_message(span_warning("[user] starts picking up [source]."), \
-					span_userdanger("[user] starts picking you up!"))
-	source.balloon_alert(user, "picking up")
+	source.visible_message(span_warning(LANG("datum.18956a90cc32caec", list(user, source))), \
+					span_userdanger(LANG("datum.888a29e85f0b019e", list(user))))
+	source.balloon_alert(user, LANG("datum.b2070feb5414ff7d", null))
 	var/time_required = COMPARE_SIZES_WITH_LIMBLOSS(source, user) * 4 SECONDS //Scale how fast the pickup will be depending on size difference
 	if(!do_after(user, time_required, source))
 		return FALSE
 
 	if(user.get_active_held_item())
-		to_chat(user, span_warning("Your hands are full!"))
-		source.balloon_alert(user, "hands full!")
+		to_chat(user, span_warning(LANG("datum.86b9ca924a677805", null)))
+		source.balloon_alert(user, LANG("datum.bbe07969987bc043", null))
 		return FALSE
 	if(source.buckled)
-		to_chat(user, span_warning("[source] is buckled to something!"))
-		source.balloon_alert(user, "buckled!")
+		to_chat(user, span_warning(LANG("datum.65a86c2bb81ec41e", list(source))))
+		source.balloon_alert(user, LANG("datum.087b0ddb157f3e2a", null))
 		return FALSE
 
-	source.visible_message(span_warning("[user] picks up [source]!"),
-					span_userdanger("[user] picks you up!"))
+	source.visible_message(span_warning(LANG("datum.c2e065881f530597", list(user, source))),
+					span_userdanger(LANG("datum.9e73efeb39769da9", list(user))))
 	source.drop_all_held_items()
 	mob_pickup_micro(source, user)
 	return TRUE
@@ -126,7 +127,7 @@
 	if(isliving(loc))
 		var/mob/living/captor = loc
 		if(display_messages)
-			to_chat(captor, span_warning("[released_mob] wriggles free!"))
+			to_chat(captor, span_warning(LANG("obj.9eb18c65843ff813", list(released_mob))))
 		captor.dropItemToGround(src)
 		release_turf = get_turf(src) || get_turf(captor)
 
@@ -144,7 +145,7 @@
 	released_mob.reset_perspective()
 	released_mob.setDir(SOUTH)
 	if(display_messages)
-		released_mob.visible_message(span_warning("[released_mob] uncurls!"))
+		released_mob.visible_message(span_warning(LANG("obj.25d2d428894d454c", list(released_mob))))
 	if(!QDELETED(src))
 		qdel(src)
 	return TRUE
@@ -158,17 +159,17 @@
 
 /obj/item/mob_holder/micro/container_resist_act(mob/living/resisting)
 	if(resisting.incapacitated)
-		to_chat(resisting, span_warning("You can't escape while you're restrained like this!"))
+		to_chat(resisting, span_warning(LANG("obj.1cee50d0b26f94bc", null)))
 		return
 	var/mob/living/carrier = get_atom_on_turf(src, /mob/living)
-	visible_message(span_warning("[resisting] begins to squirm in [carrier]'s grasp!"))
+	visible_message(span_warning(LANG("obj.4a3991d53a3eeca3", list(resisting, carrier))))
 	var/time_required = COMPARE_SIZES(carrier, resisting) / 4 SECONDS //Scale how fast the resisting will be depending on size difference
 	if(!do_after(resisting, time_required, carrier, IGNORE_TARGET_LOC_CHANGE | IGNORE_HELD_ITEM))
 		if(!resisting || resisting.stat != STABLE || resisting.loc != src)
 			return
-		visible_message(span_warning("[src] stops resisting."))
+		visible_message(span_warning(LANG("obj.de38840965ca7ae3", list(src))))
 		return
-	visible_message(span_warning("[src] escapes [carrier]!"))
+	visible_message(span_warning(LANG("obj.4d099317b5c894a8", list(src, carrier))))
 	release()
 
 /obj/item/mob_holder/micro/relaymove(mob/living/mover, direction)
@@ -211,34 +212,34 @@
 	if(istype(M))
 		switch(resolve_intent_name(user))
 			if("harm") //TO:DO, rework all of these interactions to be a lot more in depth
-				user.visible_message(span_danger("[user] slams their fist down on [M]!"),
-								span_danger("You slam your fist down on [M]!"),
+				user.visible_message(span_danger(LANG("obj.0409d7a5642570f9", list(user, M))),
+								span_danger(LANG("obj.62f897f672abee6f", list(M))),
 								null,
 								null,
 								list(M)
 				)
-				to_chat(M, span_userdanger("[user] slams their fist down on you!"))
+				to_chat(M, span_userdanger(LANG("obj.05a4f26a5ba2570d", list(user))))
 				playsound(loc, 'sound/items/weapons/punch1.ogg', 50, 1)
 				M.adjust_brute_loss(5)
 			if("disarm")
 
-				user.visible_message(span_danger("[user] pins [M] down with a finger!"),
-								span_danger("You pin [M] down with a finger!"),
+				user.visible_message(span_danger(LANG("obj.53aad83d266bf0a9", list(user, M))),
+								span_danger(LANG("obj.ab93d4dca42912fb", list(M))),
 								null,
 								null,
 								list(M)
 				)
-				to_chat(M, span_userdanger("[user] pins you down with a finger!"))
+				to_chat(M, span_userdanger(LANG("obj.6e8faea3b5be0561", list(user))))
 				playsound(loc, 'sound/effects/bodyfall/bodyfall1.ogg', 50, 1)
 				M.adjust_stamina_loss(10)
 			if("grab")
-				user.visible_message(span_danger("[user] squeezes their fist around [M]!"),
-								span_danger("You squeeze your fist around [M]!"),
+				user.visible_message(span_danger(LANG("obj.038f6f791c5ba618", list(user, M))),
+								span_danger(LANG("obj.cfae203acb6253f7", list(M))),
 								null,
 								null,
 								list(M)
 				)
-				to_chat(M, span_userdanger("[user] squeezes their fist around you!"))
+				to_chat(M, span_userdanger(LANG("obj.820ad56921d8fc21", list(user))))
 				playsound(loc, 'sound/items/weapons/thudswoosh.ogg', 50, 1)
 				M.adjust_oxy_loss(5)
 			else
@@ -307,14 +308,14 @@
 )
 	return null
 
-GAME_VERB_SRC_DESC(/obj/item/mob_holder/micro, interact_with_held, view(), "Interact With Held", "Perform an interaction with the held mob.", "IC")
+GAME_VERB_SRC_DESC(/obj/item/mob_holder/micro, interact_with_held, view(), "与手持对象互动", "Perform an interaction with the held mob.", "IC")
 	if(!held_mob)
-		to_chat(usr, span_warning("You're not holding anyone!"))
+		to_chat(usr, span_warning(LANG("obj.1e83e0bf89dd63ad", null)))
 		return
 
 	var/datum/component/interactable/menu = held_mob.GetComponent(/datum/component/interactable)
 	if(!menu)
-		to_chat(usr, span_warning("[held_mob] cannot be interacted with!"))
+		to_chat(usr, span_warning(LANG("obj.35bd446abe3458c2", list(held_mob))))
 		return
 
 	menu.open_interaction_menu(held_mob, usr)

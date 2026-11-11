@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/ballistic/rifle
 	name = "Bolt Rifle"
 	desc = "Some kind of bolt action rifle. You get the feeling you shouldn't have this."
@@ -21,7 +22,7 @@
 
 /obj/item/gun/ballistic/rifle/rack(mob/user = null)
 	if (bolt_locked == FALSE)
-		balloon_alert(user, "bolt opened")
+		balloon_alert(user, LANG("obj.2017107ac5cdc957", null))
 		playsound(src, rack_sound, rack_sound_volume, rack_sound_vary)
 		process_chamber(FALSE, FALSE, FALSE)
 		bolt_locked = TRUE
@@ -32,7 +33,7 @@
 
 /obj/item/gun/ballistic/rifle/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(need_bolt_lock_to_interact && !bolt_locked && !istype(tool, /obj/item/knife))
-		balloon_alert(user, "bolt closed!")
+		balloon_alert(user, LANG("obj.4ad02b290d937fed", null))
 		return
 
 	return ..()
@@ -44,7 +45,7 @@
 
 /obj/item/gun/ballistic/rifle/examine(mob/user)
 	. = ..()
-	. += "The bolt is [bolt_locked ? "open" : "closed"]."
+	. += LANG("obj.d938d8243a9756a8", list(bolt_locked ? "open" : "closed"))
 
 ///////////////////////
 // BOLT ACTION RIFLE //
@@ -109,7 +110,7 @@
 			unjam_chance = initial(unjam_chance)
 		else
 			unjam_chance += 10
-			balloon_alert(user, "jammed!")
+			balloon_alert(user, LANG("obj.b1dace67a621a04c", null))
 			playsound(user,'sound/items/weapons/jammed.ogg', 75, TRUE)
 			return FALSE
 	return ..()
@@ -272,7 +273,7 @@
 	if (bolt_locked)
 		drop_bolt(user)
 		return
-	balloon_alert(user, "bowstring loosened")
+	balloon_alert(user, LANG("obj.dd1c7cd508ad32ce", null))
 	playsound(src, rack_sound, rack_sound_volume, rack_sound_vary)
 	handle_chamber(empty_chamber =  FALSE, from_firing = FALSE, chamber_next_round = FALSE)
 	bolt_locked = TRUE
@@ -282,7 +283,7 @@
 	if(!do_after(user, draw_time, target = src,timed_action_flags = src.doafter_flags))
 		return
 	playsound(src, bolt_drop_sound, bolt_drop_sound_volume, FALSE)
-	balloon_alert(user, "bowstring drawn")
+	balloon_alert(user, LANG("obj.4ccd1034b1facd54", null))
 	chamber_round()
 	bolt_locked = FALSE
 	update_appearance()
@@ -303,7 +304,7 @@
 
 /obj/item/gun/ballistic/rifle/rebarxbow/examine(mob/user)
 	. = ..()
-	. += "The crossbow is [bolt_locked ? "not ready" : "ready"] to fire."
+	. += LANG("obj.e56dbb2e7f584f32", list(bolt_locked ? "not ready" : "ready"))
 
 /obj/item/gun/ballistic/rifle/rebarxbow/update_overlays()
 	. = ..()
@@ -520,7 +521,7 @@
 
 /obj/item/gun/ballistic/rifle/sniper_rifle/examine(mob/user)
 	. = ..()
-	. += span_warning("<b>It seems to have a warning label:</b> Do NOT, under any circumstances, attempt to 'quickscope' with this rifle.")
+	. += span_warning(LANG("obj.93512085095fafaa", null))
 
 /obj/item/gun/ballistic/rifle/sniper_rifle/Initialize(mapload)
 	. = ..()

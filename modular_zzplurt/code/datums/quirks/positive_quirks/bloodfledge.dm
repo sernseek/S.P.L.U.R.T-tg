@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Amount of blood taken from a target on bite
 #define BLOODFLEDGE_DRAIN_AMT 50
 /// Base amount of time to bite a target before adjustments
@@ -135,7 +136,7 @@
 
 	// Add a memory and inform them of their blood type
 	quirk_mob.mind.add_memory(/datum/memory/key/quirk_bloodfledge, blood_type = quirk_mob.dna.blood_type)
-	to_chat(quirk_mob, "You remember that your blood type is [quirk_mob.dna.blood_type]")
+	to_chat(quirk_mob, LANG("datum.a7a05de0cace42aa", list(quirk_mob.dna.blood_type)))
 
 	// Add profane penalties
 	quirk_holder.AddElementTrait(TRAIT_CHAPEL_WEAKNESS, TRAIT_BLOODFLEDGE, /datum/element/chapel_weakness)
@@ -246,7 +247,7 @@
 	// Check if the current area is a coffin
 	if(!istype(quirk_coffin, /obj/structure/closet/crate/coffin))
 		// Warn user
-		to_chat(quirk_holder, span_warning("Your connection to the Geometer is broken upon leaving the coffin!"))
+		to_chat(quirk_holder, span_warning(LANG("datum.d4555834c018ba41", null)))
 
 		// Stop processing and return
 		STOP_PROCESSING(SSquirks, src)
@@ -258,7 +259,7 @@
 	// Quirk mob must be injured
 	if(quirk_mob.health >= quirk_mob.maxHealth)
 		// Warn user
-		to_chat(quirk_mob, span_notice("[quirk_coffin] does nothing more to help you, as your body is fully mended."))
+		to_chat(quirk_mob, span_notice(LANG("datum.cb63053befaae312", list(quirk_coffin))))
 
 		// Stop processing and return
 		STOP_PROCESSING(SSquirks, src)
@@ -267,7 +268,7 @@
 	// Check if blood volume is high enough
 	if(quirk_mob.blood_volume <= BLOODFLEDGE_DESPERATE_THRESHOLD_START)
 		// Warn user
-		to_chat(quirk_mob, span_warning("[quirk_coffin] requires blood to operate, which you are currently lacking. Your connection to the Geometer fades once again."))
+		to_chat(quirk_mob, span_warning(LANG("datum.0d5e35cd01888e9a", list(quirk_coffin))))
 
 		// Stop processing and return
 		STOP_PROCESSING(SSquirks, src)
@@ -293,7 +294,7 @@
 	// No healing will occur
 	else
 		// Warn user
-		to_chat(quirk_mob, span_warning("[quirk_coffin] cannot mend any more damage to your body."))
+		to_chat(quirk_mob, span_warning(LANG("datum.2869a816b8534d8e", list(quirk_coffin))))
 
 		// Stop processing and return
 		STOP_PROCESSING(SSquirks, src)
@@ -454,7 +455,7 @@
 		// This is not a comprehensive check of conditions
 		if(quirk_holder.can_be_revived())
 			// Add potential revival text
-			examine_list += span_info("[holder_their] body radiates an unnatural energy, as though [quirk_holder.p_they()] could spring to life at any moment...")
+			examine_list += span_info(LANG("datum.22309e6bc5d1ca19", list(holder_their, quirk_holder.p_they())))
 
 	// Define hunger texts
 	var/examine_hunger_public
@@ -500,7 +501,7 @@
 	// Check if examiner shares the quirk
 	if(isbloodfledge(examiner))
 		// Add detection text
-		examine_list += span_info("[holder_their] hunger makes it easy to identify [quirk_holder.p_them()] as a fellow sanguine!")
+		examine_list += span_info(LANG("datum.6081c9666b5ad9f6", list(holder_their, quirk_holder.p_them())))
 
 		// Add hunger text
 		examine_list += span_cult(examine_hunger_secret)
@@ -508,7 +509,7 @@
 		// Check if currently desperate
 		if(is_desperate)
 			// Add desperation text
-			examine_list += span_warning("[holder_they] radiate[quirk_holder.p_s()] an aura of bloodthirsty desperation.")
+			examine_list += span_warning(LANG("datum.7032fb5856355ad6", list(holder_they, quirk_holder.p_s())))
 
 	// Check if public hunger text exists
 	else
@@ -530,31 +531,31 @@
 	// Check for organic user
 	if(!(user.mob_biotypes & MOB_ORGANIC))
 		// Warn user and return
-		to_chat(quirk_holder, span_warning("Your body don't respond to [coffin]'s sanguine connection! Regeneration will not be possible."))
+		to_chat(quirk_holder, span_warning(LANG("datum.f76ad8c6a6c46d67", list(coffin))))
 		return
 
 	// Check for holy anti-magic
 	if(user.can_block_magic(MAGIC_RESISTANCE_HOLY))
 		// Warn user and return
-		to_chat(quirk_holder, span_warning("[coffin] fails to form a connection with your body amidst the strong magical interference!!"))
+		to_chat(quirk_holder, span_warning(LANG("datum.7e567fb878d6ef19", list(coffin))))
 		return
 
 	// Check for garlic
 	if(user.has_reagent(/datum/reagent/consumable/garlic, 5))
 		// Warn user and return
-		to_chat(quirk_holder, span_warning("The Allium Sativum in your system interferes with your regeneration!"))
+		to_chat(quirk_holder, span_warning(LANG("datum.4b358434f304ae47", null)))
 		return
 
 	// Check for stake
 	if(user.am_staked())
 		// Warn user and return
-		to_chat(quirk_holder, span_warning("Your body cannot regenerate while impaled with a stake!"))
+		to_chat(quirk_holder, span_warning(LANG("datum.b517209f6f808f39", null)))
 		return
 
 	// User is allowed to heal!
 
 	// Alert user
-	to_chat(quirk_holder, span_good("[coffin] begins to mend your body!"))
+	to_chat(quirk_holder, span_good(LANG("datum.a91f6179c5ef1df4", list(coffin))))
 
 	// Start processing
 	START_PROCESSING(SSquirks, src)
@@ -570,7 +571,7 @@
 	// Check if unconscious
 	if(quirk_holder.IsSleeping() || quirk_holder.stat >= HARD_CRIT)
 		// Warn the user
-		to_chat(target, span_userdanger("You have been staked while unconscious!"))
+		to_chat(target, span_userdanger(LANG("datum.01ab0efec4e44a2c", null)))
 
 		// Kill the user
 		quirk_holder.death()
@@ -583,8 +584,8 @@
 
 	// User is conscious
 	// Warn the user of staking
-	to_chat(target, span_userdanger("You have been staked! Your powers are useless while it remains in place."))
-	target.balloon_alert(target, "you have been staked!")
+	to_chat(target, span_userdanger(LANG("datum.268f3f86d6293725", null)))
+	target.balloon_alert(target, LANG("datum.01deb996d9c57752", null))
 
 /**
  * Blood nourishment for Bloodfledges
@@ -606,7 +607,7 @@
 	// Check for valid DNA
 	if(!blood_DNA)
 		// Warn user
-		to_chat(quirk_holder, span_warning("Something about that blood tasted terribly wrong..."))
+		to_chat(quirk_holder, span_warning(LANG("datum.9cbf330ec26c196a", null)))
 
 		// Add mood penalty
 		quirk_holder.add_mood_event(QMOOD_BFLED_DRANK_BLOOD_FAKE, /datum/mood_event/bloodfledge/drankblood/blood_fake)
@@ -633,7 +634,7 @@
 	// Check for own blood
 	if(blood_DNA == quirk_mob_dna)
 		// Warn user
-		to_chat(quirk_holder, span_warning("You should know better than to drink your own blood..."))
+		to_chat(quirk_holder, span_warning(LANG("datum.2e5c569a338a3eb0", null)))
 
 		// Add mood penalty
 		quirk_holder.add_mood_event(QMOOD_BFLED_DRANK_BLOOD_SELF, /datum/mood_event/bloodfledge/drankblood/blood_self)
@@ -663,7 +664,7 @@
 	// Check if bloodloss is low enough
 	if(!bloodloss_amount)
 		// Alert user
-		to_chat(quirk_holder, span_boldnicegreen("The Geomancer recognizes you as a devoted follower. The blood tithe is no longer required!"))
+		to_chat(quirk_holder, span_boldnicegreen(LANG("datum.b48b0b2869c95f57", null)))
 
 		// Stop handling blood
 		UnregisterSignal(quirk_holder, COMSIG_HUMAN_ON_HANDLE_BLOOD)  // May conflict with Blood Deficiency
@@ -758,7 +759,7 @@
 		// Bonus 1: Enable revive ability
 		if(BLOODFLEDGE_DNA_BONUS_1)
 			// Alert user
-			to_chat(quirk_holder, span_boldnicegreen("Your connection to the Geomancer grows stronger. Self-revival is now possible."))
+			to_chat(quirk_holder, span_boldnicegreen(LANG("datum.68585a81cd4f414f", null)))
 
 			// Enable self-revive ability
 			var/datum/action/cooldown/bloodfledge/revive/act_revive = locate() in quirk_holder.actions
@@ -773,7 +774,7 @@
 		// Bonus 2: Remove coffin requirement for revives
 		if(BLOODFLEDGE_DNA_BONUS_2)
 			// Alert user
-			to_chat(quirk_holder, span_boldnicegreen("You become aware of the station's leylines. A closed coffin is no longer required to self-revive!"))
+			to_chat(quirk_holder, span_boldnicegreen(LANG("datum.6f2ed1868bc32ba9", null)))
 
 			// Remove coffin requirement from self-revive
 			var/datum/action/cooldown/bloodfledge/revive/act_revive = locate() in quirk_holder.actions
@@ -820,27 +821,27 @@
 	// Check for holiness
 	if(owner.can_block_magic(MAGIC_RESISTANCE_HOLY))
 		// Warn user and return
-		to_chat(owner, span_warning("A holy force prevents you from using your powers!"))
-		owner.balloon_alert(owner, "holy interference!")
+		to_chat(owner, span_warning(LANG("datum.c3bbc254c6e0ddd7", null)))
+		owner.balloon_alert(owner, LANG("datum.e822472580c41b30", null))
 		return FALSE
 
 	// Check for garlic
 	if(action_owner.has_reagent(/datum/reagent/consumable/garlic, 5))
 		// Warn user and return
-		to_chat(owner, span_warning("The Allium Sativum in your system is stifling your powers!"))
-		owner.balloon_alert(owner, "garlic interference!")
+		to_chat(owner, span_warning(LANG("datum.1a048c4cdd79893c", null)))
+		owner.balloon_alert(owner, LANG("datum.8c39f45e1cbe9a68", null))
 		return FALSE
 
 	// Check for stake
 	if(action_owner.am_staked())
-		to_chat(owner, span_warning("Your powers are useless while you have a stake in your chest!"))
-		owner.balloon_alert(owner, "staked!")
+		to_chat(owner, span_warning(LANG("datum.401bddb896f90023", null)))
+		owner.balloon_alert(owner, LANG("datum.c1514723d3e793cc", null))
 		return FALSE
 
 	// Check if just a brain
 	if(isbrain(owner))
-		to_chat(owner, span_warning("You think extra hard about how you can't do this right now!"))
-		owner.balloon_alert(owner, "just a brain!")
+		to_chat(owner, span_warning(LANG("datum.60a14463cd154ca2", null)))
+		owner.balloon_alert(owner, LANG("datum.928a99724a23b522", null))
 		return FALSE
 
 	// Action can be used
@@ -887,7 +888,7 @@
 	if(!action_owner.pulling)
 		// Warn the user, then return
 		//to_chat(action_owner, span_warning("You need a victim first!"))
-		action_owner.balloon_alert(action_owner, "need a victim!")
+		action_owner.balloon_alert(action_owner, LANG("datum.c35b4f8c8d953b3d", null))
 		return FALSE
 
 	// Check for muzzle
@@ -903,22 +904,22 @@
 	// Check for covered mouth
 	if(action_owner.is_mouth_covered())
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("You can't bite things with your mouth covered!"))
-		owner.balloon_alert(owner, "mouth covered!")
+		to_chat(action_owner, span_warning(LANG("datum.4195f056d647f11a", null)))
+		owner.balloon_alert(owner, LANG("datum.8b7fe4a7666bda72", null))
 		return FALSE
 
 	// Limit maximum blood volume
 	if(action_owner.blood_volume >= BLOOD_VOLUME_MAXIMUM)
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("Your body contains too much blood to drain any more."))
-		owner.balloon_alert(owner, "too full!")
+		to_chat(action_owner, span_warning(LANG("datum.320aff626bea7198", null)))
+		owner.balloon_alert(owner, LANG("datum.e4a4403c9b5cdb60", null))
 		return
 
 	// Limit maximum potential blood volume
 	if(action_owner.blood_volume + BLOODFLEDGE_DRAIN_AMT >= BLOOD_VOLUME_MAXIMUM)
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("You body would become overwhelmed by draining any more blood."))
-		owner.balloon_alert(owner, "too full!")
+		to_chat(action_owner, span_warning(LANG("datum.52d8e618eedfd259", null)))
+		owner.balloon_alert(owner, LANG("datum.e4a4403c9b5cdb60", null))
 		return
 
 	// Define pulled target
@@ -957,7 +958,7 @@
 		// Set message based on dumbness
 		var/message_tomato_suffix = (action_owner_dumb ? ", and absorb it\'s delicious vegan-friendly blood!" : "! It's not very nutritious.")
 		// Warn the user, then return
-		to_chat(action_owner, span_danger("You plunge your fangs into [pull_target][message_tomato_suffix]"))
+		to_chat(action_owner, span_danger(LANG("datum.8414223335a66bc2", list(pull_target, message_tomato_suffix))))
 		return
 
 		// This doesn't actually interact with the item
@@ -977,7 +978,7 @@
 	// Bypass pierce immunity so feedback can be provided later
 	if(!bite_target.can_inject(action_owner, target_zone))
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("There\'s no exposed flesh or thin material in that region of [bite_target]'s body. You're unable to bite them!"))
+		to_chat(action_owner, span_warning(LANG("datum.5c8fce153207764e", list(bite_target))))
 		return
 
 	// Check targeted body part
@@ -1021,8 +1022,8 @@
 			// Check if eyes exist and are exposed
 			if(!bite_target.has_eyes() == REQUIRE_GENITAL_EXPOSED)
 				// Warn user and return
-				to_chat(action_owner, span_warning("You can't find [bite_target]'s eyes to bite them!"))
-				owner.balloon_alert(owner, "no eyes?")
+				to_chat(action_owner, span_warning(LANG("datum.c1cb78ae73731ef8", list(bite_target))))
+				owner.balloon_alert(owner, LANG("datum.30fb9bccfe695a9c", null))
 				return
 
 			// Set region data normally
@@ -1033,8 +1034,8 @@
 		if(BODY_ZONE_PRECISE_MOUTH)
 			// Check if mouth is covered
 			if(bite_target.is_mouth_covered())
-				to_chat(action_owner, span_warning("You can't reach [bite_target]'s lips to bite them!"))
-				owner.balloon_alert(owner, "no lips?")
+				to_chat(action_owner, span_warning(LANG("datum.8166ae9225ae2ae5", list(bite_target))))
+				owner.balloon_alert(owner, LANG("datum.6fde61cb86ce8415", null))
 				return
 
 			// Set region data normally
@@ -1063,17 +1064,17 @@
 		// Check if bodypart exists
 		if(!bite_bodypart)
 			// Warn user and return
-			to_chat(action_owner, span_warning("[bite_target] doesn't have a [target_zone_name] for you to bite!"))
-			owner.balloon_alert(owner, "no [target_zone_name]?")
+			to_chat(action_owner, span_warning(LANG("datum.afd3d23ccb821791", list(bite_target, target_zone_name))))
+			owner.balloon_alert(owner, LANG("datum.ebb065420ac63039", list(target_zone_name)))
 			return
 
 		// Check if bodypart is organic
 		if(!IS_ORGANIC_LIMB(bite_bodypart))
 			// Display local message
-			action_owner.visible_message(span_danger("[action_owner] tries to bite [bite_target]'s [target_zone_name], but is unable to penetrate the mechanical prosthetic!"), span_warning("You attempt to bite [bite_target]'s [target_zone_name], but can't penetrate the mechanical prosthetic!"), ignored_mobs=bite_target)
+			action_owner.visible_message(span_danger(LANG("datum.f7f6c4f695857e59", list(action_owner, bite_target, target_zone_name))), span_warning(LANG("datum.323f0386baca2869", list(bite_target, target_zone_name))), ignored_mobs=bite_target)
 
 			// Warn user
-			to_chat(bite_target, span_warning("[action_owner] tries to bite your [target_zone_name], but is unable to penetrate the mechanical prosthetic!"))
+			to_chat(bite_target, span_warning(LANG("datum.f295ed3f3968c84d", list(action_owner, target_zone_name))))
 
 			// Play metal hit sound
 			playsound(bite_target, "sound/effects/clang.ogg", 30, 1, -2)
@@ -1089,10 +1090,10 @@
 		// Check for a dumb user
 		if(action_owner_dumb)
 			// Display local message
-			action_owner.visible_message(span_danger("[action_owner] tries to bite [bite_target]'s [target_zone_name], but bursts into flames just as [action_owner.p_they()] come[action_owner.p_s()] into contact with [bite_target.p_them()]!"), span_userdanger("Surges of pain course through your body as you attempt to bite [bite_target]! What were you thinking?"), ignored_mobs=bite_target)
+			action_owner.visible_message(span_danger(LANG("datum.f201cc88b6e6f9b7", list(action_owner, bite_target, target_zone_name, action_owner.p_they(), action_owner.p_s(), bite_target.p_them()))), span_userdanger(LANG("datum.e42f8a7538baad32", list(bite_target))), ignored_mobs=bite_target)
 
 			// Warn target
-			to_chat(bite_target, span_warning("[action_owner] tries to bite you, but bursts into flames just as [action_owner.p_they()] come[action_owner.p_s()] into contact with you!"))
+			to_chat(bite_target, span_warning(LANG("datum.a4b55094b2ffc531", list(action_owner, action_owner.p_they(), action_owner.p_s()))))
 
 			// Stop grabbing
 			action_owner.stop_pulling()
@@ -1105,8 +1106,8 @@
 			return
 
 		// Warn the user and target, then return
-		to_chat(bite_target, span_warning("[action_owner] tries to bite your [target_zone_name], but stops before touching you!"))
-		to_chat(action_owner, span_warning("[bite_target] is blessed! You stop just in time to avoid catching fire."))
+		to_chat(bite_target, span_warning(LANG("datum.a32c5aa2dc570706", list(action_owner, target_zone_name))))
+		to_chat(action_owner, span_warning(LANG("datum.135f1a2f23cab109", list(bite_target))))
 		return
 
 	// Check for SSD player using indicator
@@ -1114,11 +1115,11 @@
 	if(bite_target.ssd_indicator)
 		// Check if evil for unique message
 		if(action_owner_evil)
-			to_chat(action_owner, span_warning("Feeding from [bite_target] while [bite_target.p_theyre()] suffering from Space Sleep Disorder is beneath you. Find a victim more worthy of your embrace."))
+			to_chat(action_owner, span_warning(LANG("datum.4b208e9c44e7e46c", list(bite_target, bite_target.p_theyre()))))
 
 		// Non-evil holder
 		else
-			to_chat(action_owner, span_warning("You can't bring yourself to bite [bite_target] while [bite_target.p_theyre()] suffering from Space Sleep Disorder."))
+			to_chat(action_owner, span_warning(LANG("datum.043074d4d6be5fbb", list(bite_target, bite_target.p_theyre()))))
 
 		// Abort action
 		return
@@ -1129,11 +1130,11 @@
 	if(HAS_TRAIT(bite_target, TRAIT_MIND_TEMPORARILY_GONE))
 		// Check if evil for unique message
 		if(action_owner_evil)
-			to_chat(action_owner, span_warning("[bite_target] is currently unworthy of serving your thirst! Try again later."))
+			to_chat(action_owner, span_warning(LANG("datum.e5f412442e0c3b30", list(bite_target))))
 
 		// Non-evil holder
 		else
-			to_chat(action_owner, span_warning("Something feels off about [bite_target]. You decide not to bite [bite_target.p_them()] right now."))
+			to_chat(action_owner, span_warning(LANG("datum.3c866357b8dbe72b", list(bite_target, bite_target.p_them()))))
 
 		// Abort action
 		return
@@ -1143,10 +1144,10 @@
 		// Check for a dumb user
 		if(action_owner_dumb)
 			// Display local message
-			action_owner.visible_message(span_danger("[action_owner] tries to bite [bite_target]'s [target_zone_name], but immediately recoils in disgust upon touching [bite_target.p_them()]!"), span_userdanger("An intense wave of disgust washes over your body as you attempt to bite [bite_target]! What were you thinking?"), ignored_mobs=bite_target)
+			action_owner.visible_message(span_danger(LANG("datum.c87866296361e103", list(action_owner, bite_target, target_zone_name, bite_target.p_them()))), span_userdanger(LANG("datum.4ca20c4941aa4f21", list(bite_target))), ignored_mobs=bite_target)
 
 			// Warn target
-			to_chat(bite_target, span_warning("[action_owner] tries to bite your [target_zone_name], but recoils in disgust just as [action_owner.p_they()] come[action_owner.p_s()] into contact with you!"))
+			to_chat(bite_target, span_warning(LANG("datum.1857d4c9ce699bfc", list(action_owner, target_zone_name, action_owner.p_they(), action_owner.p_s()))))
 
 			// Stop grabbing
 			action_owner.stop_pulling()
@@ -1161,8 +1162,8 @@
 			return
 
 		// Warn the user and target, then return
-		to_chat(bite_target, span_warning("[action_owner] leans in to bite your [target_zone_name], but is warded off by your Allium Sativum!"))
-		to_chat(action_owner, span_warning("You sense that [bite_target] is protected by Allium Sativum, and refrain from biting [bite_target.p_them()]."))
+		to_chat(bite_target, span_warning(LANG("datum.49504db377c223ca", list(action_owner, target_zone_name))))
+		to_chat(action_owner, span_warning(LANG("datum.8ab13a802785af1e", list(bite_target, bite_target.p_them()))))
 		return
 
 	// Define bite target's blood volume
@@ -1171,7 +1172,7 @@
 	// Check for sufficient blood volume
 	if(target_blood_volume < BLOODFLEDGE_DRAIN_AMT)
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("There's not enough blood in [bite_target]!"))
+		to_chat(action_owner, span_warning(LANG("datum.463242bf61b86f33", list(bite_target))))
 		return
 
 	// Check if total blood would become too low
@@ -1179,32 +1180,32 @@
 		// Check for a dumb user
 		if(action_owner_dumb)
 			// Warn the user, but allow
-			to_chat(action_owner, span_warning("You pay no attention to [bite_target]'s blood volume, and bite [bite_target.p_their()] [target_zone_name] without hesitation."))
+			to_chat(action_owner, span_warning(LANG("datum.e761d3ad31622956", list(bite_target, bite_target.p_their(), target_zone_name))))
 
 		// Check for an evil user
 		else if(action_owner_evil)
 			// Warn the user, but allow
-			to_chat(action_owner, span_warning("You sense that [bite_target] is running low on blood, but bite into [bite_target.p_their()] [target_zone_name] regardless."))
+			to_chat(action_owner, span_warning(LANG("datum.d020740536ea3a12", list(bite_target, bite_target.p_their(), target_zone_name))))
 
 		// Check for aggressive grab
 		else if(action_owner.grab_state < GRAB_AGGRESSIVE)
 			// Warn the user, then return
-			to_chat(action_owner, span_warning("You sense that [bite_target] is running low on blood. You'll need a tighter grip on [bite_target.p_them()] to continue."))
+			to_chat(action_owner, span_warning(LANG("datum.d253bd8d14980db4", list(bite_target, bite_target.p_them()))))
 			return
 
 		// Check for pacifist
 		else if(HAS_TRAIT(action_owner, TRAIT_PACIFISM))
 			// Warn the user, then return
-			to_chat(action_owner, span_warning("You can't drain any more blood from [bite_target] without hurting [bite_target.p_them()]!"))
+			to_chat(action_owner, span_warning(LANG("datum.1939ac81d490199b", list(bite_target, bite_target.p_them()))))
 			return
 
 	// Check for pierce immunity
 	if(HAS_TRAIT(bite_target, TRAIT_PIERCEIMMUNE))
 		// Display local chat message
-		action_owner.visible_message(span_danger("[action_owner] tries to bite down on [bite_target]'s [target_zone_name], but can't seem to pierce [bite_target.p_them()]!"), span_danger("You try to bite down on [bite_target]'s [target_zone_name], but are completely unable to pierce [bite_target.p_them()]!"), ignored_mobs=bite_target)
+		action_owner.visible_message(span_danger(LANG("datum.b0a39ead57a46116", list(action_owner, bite_target, target_zone_name, bite_target.p_them()))), span_danger(LANG("datum.461273614f22e807", list(bite_target, target_zone_name, bite_target.p_them()))), ignored_mobs=bite_target)
 
 		// Warn bite target
-		to_chat(bite_target, span_userdanger("[action_owner] tries to bite your [target_zone_name], but is unable to piece you!"))
+		to_chat(bite_target, span_userdanger(LANG("datum.1f6d71cabb687054", list(action_owner, target_zone_name))))
 
 		// Return without further effects
 		return
@@ -1217,10 +1218,10 @@
 			// Snout type is a string that cannot use subtype search
 			if(findtext(bite_target.dna?.features["snout"], "Synthetic Lizard"))
 				// Display local chat message
-				action_owner.visible_message(span_notice("[action_owner]'s fangs clank harmlessly against [bite_target]'s face-screen!"), span_notice("Your fangs clank harmlessly against [bite_target]'s face-screen!"), ignored_mobs=bite_target)
+				action_owner.visible_message(span_notice(LANG("datum.bbeebbfd85fda4fd", list(action_owner, bite_target))), span_notice(LANG("datum.c2a0526869f6c1fb", list(bite_target))), ignored_mobs=bite_target)
 
 				// Alert bite target
-				to_chat(bite_target, span_notice("[action_owner]'s fangs clank harmlessly against your face-screen"))
+				to_chat(bite_target, span_notice(LANG("datum.fe847e01d04a1af5", list(action_owner))))
 
 				// Play glass tap sound
 				playsound(bite_target, 'sound/effects/glass/glasshit.ogg', 50, 1, -2)
@@ -1242,18 +1243,18 @@
 				// This should always be the case since eyes exposed was checked above
 				if(!target_eyes)
 					// Warn user and return
-					to_chat(bite_target, span_userdanger("Something has gone terribly wrong with [bite_target]'s eyes! Please report this to a coder!"))
+					to_chat(bite_target, span_userdanger(LANG("datum.b0d015ff58535b34", list(bite_target))))
 					return
 
 				// Check for cybernetic eyes
 				if(IS_ROBOTIC_ORGAN(target_eyes))
 					// Warn users and return
-					to_chat(action_owner, span_danger("Your fangs aren't powerful enough to penetrate robotic eyes!"))
-					to_chat(bite_target, span_danger("[action_owner] tries to bite into your [target_eyes], but can't break through!"))
+					to_chat(action_owner, span_danger(LANG("datum.eee795824f5ea05a", null)))
+					to_chat(bite_target, span_danger(LANG("datum.509e0cc1238efb29", list(action_owner, target_eyes))))
 					return
 
 				// Display warning
-				to_chat(bite_target, span_userdanger("Your [target_eyes] rupture in pain as [action_owner]'s fangs pierce their surface!"))
+				to_chat(bite_target, span_userdanger(LANG("datum.0b93597175065c1b", list(target_eyes, action_owner))))
 
 				// Blur vision equal to drunkenness
 				bite_target.adjust_eye_blur_up_to(4 SECONDS, 20 SECONDS)
@@ -1267,22 +1268,22 @@
 				bite_target.set_stutter_if_lower(10 SECONDS)
 
 	// Display local chat message
-	action_owner.visible_message(span_danger("[action_owner] bites down on [bite_target]'s [target_zone_name]!"), span_danger("You bite down on [bite_target]'s [target_zone_name]!"), ignored_mobs=bite_target)
+	action_owner.visible_message(span_danger(LANG("datum.94698f988829deaa", list(action_owner, bite_target, target_zone_name))), span_danger(LANG("datum.b5729b2013498e54", list(bite_target, target_zone_name))), ignored_mobs=bite_target)
 
 	// Play a bite sound effect
 	playsound(action_owner, 'sound/items/weapons/bite.ogg', 30, 1, -2)
 
 	// Warn bite target
-	to_chat(bite_target, span_userdanger("[action_owner] has bitten your [target_zone_name], and is trying to drain your blood!"))
+	to_chat(bite_target, span_userdanger(LANG("datum.4f73a72b99020c7d", list(action_owner, target_zone_name))))
 
 	// Try to perform action timer
 	if(!do_after(action_owner, time_interact, target = bite_target))
 		// When failing
 		// Display a local chat message
-		action_owner.visible_message(span_danger("[action_owner]'s fangs are prematurely torn from [bite_target]'s [target_zone_name], spilling some of [bite_target.p_their()] blood!"), span_danger("Your fangs are prematurely torn from [bite_target]'s [target_zone_name], spilling some of [bite_target.p_their()] blood!"), ignored_mobs=bite_target)
+		action_owner.visible_message(span_danger(LANG("datum.4b32f48e5d439249", list(action_owner, bite_target, target_zone_name, bite_target.p_their()))), span_danger(LANG("datum.5c8b6f67182cf632", list(bite_target, target_zone_name, bite_target.p_their()))), ignored_mobs=bite_target)
 
 		// Warn bite target
-		to_chat(bite_target, span_userdanger("[action_owner]\'s fangs are prematurely torn from your [target_zone_name], spilling some of your blood!"))
+		to_chat(bite_target, span_userdanger(LANG("datum.02ed14b7be21f661", list(action_owner, target_zone_name))))
 
 		// Bite target "drops" 20% of the blood
 		// This creates large blood splatter
@@ -1414,8 +1415,8 @@
 		// Checked later since some species have NOBLOOD and exotic blood type
 		else if(HAS_TRAIT(bite_target, TRAIT_NOBLOOD))
 			// Warn the user and target
-			to_chat(bite_target, span_warning("[action_owner] bit your [target_zone_name] in an attempt to drain your blood, but couldn't find any!"))
-			to_chat(action_owner, span_warning("[bite_target] doesn't have any blood to drink!"))
+			to_chat(bite_target, span_warning(LANG("datum.5fc84881f65ae77d", list(action_owner, target_zone_name))))
+			to_chat(action_owner, span_warning(LANG("datum.92b5f75066057df5", list(bite_target))))
 
 			// Start cooldown early to prevent sound spam
 			StartCooldown()
@@ -1435,8 +1436,8 @@
 
 		// Alert the bite target and local user of success
 		// Yes, this is AFTER the message for non-valid blood
-		to_chat(bite_target, span_danger(span_warning("[action_owner] has taken some of your blood!")))
-		to_chat(action_owner, span_notice(span_good("You've drained some of [bite_target]'s [blood_name] blood!")))
+		to_chat(bite_target, span_danger(span_warning(LANG("datum.363cc5eae48dbf26", list(action_owner)))))
+		to_chat(action_owner, span_notice(span_good(LANG("datum.e90071d58157f5ee", list(bite_target, blood_name)))))
 
 		// Check if action owner received valid blood
 		if(blood_valid)
@@ -1454,12 +1455,12 @@
 			// Check if action holder's blood volume limit was exceeded
 			if(action_owner.blood_volume >= BLOOD_VOLUME_MAXIMUM)
 				// Warn user
-				to_chat(action_owner, span_warning("You body cannot integrate any more [blood_name] blood. The remainder will be lost."))
+				to_chat(action_owner, span_warning(LANG("datum.a4d0a3565f1284db", list(blood_name))))
 
 			// Blood volume limit was not exceeded
 			else
 				// Alert user
-				to_chat(action_owner, span_notice("You body integrates the [blood_name] blood directly, instead of processing it normally."))
+				to_chat(action_owner, span_notice(LANG("datum.7b6a52b0b3a2bba5", list(blood_name))))
 
 			// Transfer blood directly
 			bite_target.transfer_blood_to(action_owner, drained_blood, TRUE)
@@ -1472,7 +1473,7 @@
 		// No direct blood transfer occurred
 		else
 			// Warn user of failure
-			to_chat(action_owner, span_warning("Your body cannot process the [blood_name]!"))
+			to_chat(action_owner, span_warning(LANG("datum.00f9c4c89a45ad10", list(blood_name))))
 
 		// Remove blood from bite target
 		bite_target.blood_volume = clamp(target_blood_volume - drained_blood, 0, BLOOD_VOLUME_MAXIMUM)
@@ -1488,7 +1489,7 @@
 		// Check if bite target is dead or undead
 		if((bite_target.stat >= DEAD) || (bite_target.mob_biotypes & MOB_UNDEAD))
 			// Warn the user
-			to_chat(action_owner, span_warning("The rotten [blood_name] blood tasted foul."))
+			to_chat(action_owner, span_warning(LANG("datum.c46d2c8115d94fa7", list(blood_name))))
 
 			// Add disgust
 			action_owner.adjust_disgust(10)
@@ -1499,7 +1500,7 @@
 		// Check if bite target's blood has been depleted
 		if(!bite_target.blood_volume)
 			// Warn the user
-			to_chat(action_owner, span_warning("You've depleted [bite_target]'s [blood_name] supply!"))
+			to_chat(action_owner, span_warning(LANG("datum.1f9cfd50f6949e59", list(bite_target, blood_name))))
 
 			// Check if not evil
 			if(!action_owner_evil)
@@ -1586,7 +1587,7 @@
 	if(owner.stat != DEAD)
 		// Warn user and return
 		//to_chat(action_owner, "You can't use this ability while alive!")
-		owner.balloon_alert(owner, "not dead!")
+		owner.balloon_alert(owner, LANG("datum.f5271c5dfec0a80a", null))
 		return
 
 	/// Define failure messages. Will not revive if any failure message is set.
@@ -1652,12 +1653,12 @@
 	playsound(action_owner, 'sound/effects/singlebeat.ogg', 30, 1, -2)
 
 	// Display local chat message
-	action_owner.visible_message(span_notice("[action_owner]'s body begins to twitch and radiate an ominous aura."), span_warning("You begin gathering the strength to revive."))
+	action_owner.visible_message(span_notice(LANG("datum.da296f8bf36b7b1c", list(action_owner))), span_warning(LANG("datum.3ad1dc54e4f67260", null)))
 
 	// Attempt to revive after a timer
 	if(!do_after(action_owner, BLOODFLEDGE_REVIVE_DELAY, action_owner, list(IGNORE_USER_LOC_CHANGE, IGNORE_TARGET_LOC_CHANGE, IGNORE_SLOWDOWNS, IGNORE_INCAPACITATED)))
 		// Alert user in chat and return
-		to_chat(action_owner, span_warning("Something has interrupted your revival!"))
+		to_chat(action_owner, span_warning(LANG("datum.ae3369f2ff198549", null)))
 		return FALSE
 
 	// Recheck if ability should be usable
@@ -1718,7 +1719,7 @@
 	//action_owner.revive()
 
 	// Alert the user in chat of success
-	action_owner.visible_message(span_notice("An ominous energy radiates from the [action_owner.loc]..."), span_warning("You've expended most of your blood to bring your body back to life!"))
+	action_owner.visible_message(span_notice(LANG("datum.10c02a2919c6e493", list(action_owner.loc))), span_warning(LANG("datum.cf3fa1028c15d275", null)))
 
 	// Warn user about revive policy
 	to_chat(action_owner, span_userdanger("[CONFIG_GET(string/blackoutpolicy)]"))
@@ -1763,7 +1764,7 @@
 		return
 
 	// Alert user in chat
-	to_chat(on_who, span_notice("Your mind reaches into the higher planes, preparing to sense more about others."))
+	to_chat(on_who, span_notice(LANG("datum.15702fb8cc8de5f3", null)))
 
 	// Put code for updating icon here
 
@@ -1778,7 +1779,7 @@
 	// Check if cooldown should be refunded
 	if(refund_cooldown)
 		// Alert user in chat
-		to_chat(on_who, span_notice("You decide not to sense anything about blood for now."))
+		to_chat(on_who, span_notice(LANG("datum.3bd72d2886528e74", null)))
 
 	// Put code for updating icon here
 
@@ -1795,7 +1796,7 @@
 	// Check if owner and target are valid
 	if(!ishuman(human_target) || !human_caster || human_target == human_caster)
 		// Alert user in chat and return
-		to_chat(owner, span_warning("That isn't a valid analyze target!"))
+		to_chat(owner, span_warning(LANG("datum.7c4339ebfcfbb9b2", null)))
 		return FALSE
 
 	// Check for holiness

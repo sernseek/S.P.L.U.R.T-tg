@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/mouse
 	name = "mouse"
 	desc = "This cute little guy just loves the taste of insulated electrical cables. Isn't he adorable?"
@@ -98,15 +99,15 @@
 	var/sameside = user.faction_check_atom(src, exact_match = TRUE)
 	if(isregalrat(user))
 		if(sameside)
-			. += span_notice("This rat serves under you.")
+			. += span_notice(LANG("mob.363d4897780bad04", null))
 		else
-			. += span_warning("This peasant serves a different king! Strike [p_them()] down!")
+			. += span_warning(LANG("mob.e4d451c1d6f67ae2", list(p_them())))
 
 	else if(user != src && ismouse(user))
 		if(sameside)
-			. += span_notice("You both serve the same king.")
+			. += span_notice(LANG("mob.a1923a2539325223", null))
 		else
-			. += span_warning("This fool serves a different king!")
+			. += span_warning(LANG("mob.81765dd79fd15293", null))
 
 /// Kills the rat and changes its icon state to be splatted (bloody).
 /mob/living/basic/mouse/proc/splat()
@@ -121,8 +122,7 @@
 	var/aheal_included = full_heal_flags & HEAL_ADMIN
 	var/cap = CONFIG_GET(number/ratcap)
 	if(!aheal_included && !ckey && length(SSmobs.cheeserats) >= cap)
-		visible_message(span_warning("[src] twitches, but does not continue moving \
-			due to the overwhelming rodent population on the station!"))
+		visible_message(span_warning(LANG("mob.fd945595fd732b50", list(src))))
 		return
 
 	. = ..()
@@ -191,7 +191,7 @@
 	SIGNAL_HANDLER
 
 	if(ishuman(entered) && !IS_UNCONSCIOUS_OR_CRIT(src))
-		to_chat(entered, span_notice("[icon2html(src, entered)] Squeak!"))
+		to_chat(entered, span_notice(LANG("mob.d5ec22f9505fae8b", list(icon2html(src, entered)))))
 
 /// Called when a mouse is hand-fed some cheese, it will stop being afraid of humans
 /mob/living/basic/mouse/tamed(mob/living/tamer, obj/item/food/cheese/cheese)
@@ -206,8 +206,8 @@
 	// Royal cheese will evolve us into a regal rat
 	if(istype(cheese, /obj/item/food/cheese/royal))
 		visible_message(
-			span_warning("[src] devours [cheese]! They morph into something... greater!"),
-			span_notice("You devour [cheese], and start morphing into something... greater!"),
+			span_warning(LANG("mob.5053436df1647f74", list(src, cheese))),
+			span_notice(LANG("mob.49a5e2d83c7ad5bd", list(cheese))),
 		)
 		evolve_into_regal_rat()
 		qdel(cheese)
@@ -217,8 +217,8 @@
 	// Normal cheese will either heal us
 	if(prob(90) || health < maxHealth)
 		visible_message(
-			span_notice("[src] nibbles [cheese]."),
-			span_notice("You nibble [cheese][health < maxHealth ? ", restoring your health" : ""].")
+			span_notice(LANG("mob.1d80a1fcdc62d1ea", list(src, cheese))),
+			span_notice(LANG("mob.59847589ea1bf69a", list(cheese, health < maxHealth ? ", restoring your health" : "")))
 		)
 		adjust_health(-maxHealth)
 
@@ -226,13 +226,13 @@
 	// ...if the rat cap allows us, that is
 	else if(length(SSmobs.cheeserats) >= cap)
 		visible_message(
-			span_warning("[src] carefully eats [cheese], hiding it from the [cap] mice on the station!"),
-			span_notice("You carefully nibble [cheese], hiding it from the [cap] other mice on board the station.")
+			span_warning(LANG("mob.55d15327c49811c5", list(src, cheese, cap))),
+			span_notice(LANG("mob.e42460dd69ed3678", list(cheese, cap)))
 		)
 	else
 		visible_message(
-			span_notice("[src] nibbles through [cheese], attracting another mouse!"),
-			span_notice("You nibble through [cheese], attracting another mouse!")
+			span_notice(LANG("mob.d9acbf4902d844d5", list(src, cheese))),
+			span_notice(LANG("mob.f59d729a3de959fd", list(cheese)))
 		)
 		create_a_new_rat()
 
@@ -242,7 +242,7 @@
 /mob/living/basic/mouse/proc/evolve_into_regal_rat()
 	var/mob/living/basic/regal_rat/controlled/regalrat = new(loc)
 	mind?.transfer_to(regalrat)
-	INVOKE_ASYNC(regalrat, TYPE_PROC_REF(/atom/movable, say), "RISE, MY SUBJECTS! SCREEEEEEE!")
+	INVOKE_ASYNC(regalrat, TYPE_PROC_REF(/atom/movable, say), LANG("mob.c62f578928996a02", null))
 	qdel(src)
 
 /// Creates a new mouse based on this mouse's subtype.
@@ -253,9 +253,9 @@
 /mob/living/basic/mouse/proc/try_bite_cable(obj/structure/cable/cable)
 	if(cable.avail() && !HAS_TRAIT(src, TRAIT_SHOCKIMMUNE) && prob(cable_zap_prob))
 		visible_message(
-			span_warning("[src] chews through \the [cable]. It's toast!"),
-			span_userdanger("As you bite deeply into [cable], you suddenly realize this may have been a bad idea."),
-			span_hear("You hear electricity crack."),
+			span_warning(LANG("mob.82786ff95a0ac88c", list(src, cable))),
+			span_userdanger(LANG("mob.bef9236c107667f1", list(cable))),
+			span_hear(LANG("mob.a1b757b932963fd7", null)),
 		)
 		// Finely toasted
 		ADD_TRAIT(src, TRAIT_BEING_SHOCKED, TRAIT_GENERIC)
@@ -266,8 +266,8 @@
 
 	else
 		visible_message(
-			span_warning("[src] chews through \the [cable]."),
-			span_notice("You chew through \the [cable]."),
+			span_warning(LANG("mob.02b2e21a8446b432", list(src, cable))),
+			span_notice(LANG("mob.ed9e712760127f84", list(cable))),
 		)
 
 	playsound(cable, 'sound/effects/sparks/sparks2.ogg', 100, TRUE)
@@ -366,13 +366,13 @@
 /obj/item/food/deadmouse/examine(mob/user)
 	. = ..()
 	if (reagents?.has_reagent(/datum/reagent/yuck) || reagents?.has_reagent(/datum/reagent/fuel))
-		. += span_warning("[p_Theyre()] dripping with fuel and smells terrible.")
+		. += span_warning(LANG("obj.ff0cf2a86f0553e5", list(p_Theyre())))
 
 ///Spawn a new mouse from this dead mouse item when hit by a lazarus injector and conditions are met.
 /obj/item/food/deadmouse/proc/use_lazarus(datum/source, obj/item/lazarus_injector/injector, mob/user)
 	SIGNAL_HANDLER
 	if(injector.revive_type != SENTIENCE_ORGANIC)
-		balloon_alert(user, "invalid creature!")
+		balloon_alert(user, LANG("obj.1c85036c03c3d01e", null))
 		return
 	var/mob/living/basic/mouse/revived_critter = new critter_type (drop_location(), FALSE, body_color)
 	revived_critter.name = name
@@ -385,15 +385,15 @@
 	if(!tool.get_sharpness() || !user.combat_mode)
 		return NONE
 	if(!isturf(loc))
-		balloon_alert(user, "can't butcher here!")
+		balloon_alert(user, LANG("obj.4a10807f4552b989", null))
 		return ITEM_INTERACT_BLOCKING
 
-	balloon_alert(user, "butchering...")
+	balloon_alert(user, LANG("obj.9e9eb694367a2bdc", null))
 	if(!do_after(user, 0.75 SECONDS, src))
-		balloon_alert(user, "interrupted!")
+		balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 		return ITEM_INTERACT_BLOCKING
 
-	loc.balloon_alert(user, "butchered")
+	loc.balloon_alert(user, LANG("obj.6fa9faa17c6b82f8", null))
 	new /obj/item/food/meat/slab/mouse(loc)
 	qdel(src)
 	return ITEM_INTERACT_SUCCESS
@@ -406,7 +406,7 @@
 	var/datum/reagents/target_reagents = interacting_with.reagents
 	var/trans_amount = reagents.maximum_volume - reagents.total_volume * (4 / 3)
 	if(target_reagents.has_reagent(/datum/reagent/fuel) && target_reagents.trans_to(src, trans_amount))
-		to_chat(user, span_notice("You dip [src] into [interacting_with]."))
+		to_chat(user, span_notice(LANG("obj.e5de8a2fc3a6febd", list(src, interacting_with))))
 		return ITEM_INTERACT_SUCCESS
 
 /obj/item/food/deadmouse/moldy

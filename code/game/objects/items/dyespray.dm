@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/dyespray
 	name = "hair dye spray"
 	desc = "A spray to dye your hair any gradients you'd like."
@@ -87,7 +88,7 @@
 			choices += choice_name
 	if(!length(choices))
 		return
-	var/what_to_dye = tgui_alert(user, "What do you want to dye?", "Character Preference", choices)
+	var/what_to_dye = tgui_alert(user, LANG("obj.104fcb0c9eff7027", null), LANG("obj.78f80c295b6adf9f", null), choices)
 	if(!what_to_dye || !user.can_perform_action(src, NEED_DEXTERITY))
 		return
 
@@ -97,7 +98,7 @@
 
 	var/datum/bodypart_overlay/mutant/overlay = selected.bodypart_overlay
 	if(overlay.dye_color)
-		var/remove_dye = tgui_alert(user, "Do you want to un-dye [selected]?", "Character Preference", list("Yes", "No"))
+		var/remove_dye = tgui_alert(user, LANG("obj.7627c90d34d87bd7", list(selected)), LANG("obj.78f80c295b6adf9f", null), list("Yes", "No"))
 		if(isnull(remove_dye) || !user.can_perform_action(src, NEED_DEXTERITY))
 			return
 		if(QDELETED(selected) || !(selected in target.organs))
@@ -107,7 +108,7 @@
 			return
 
 	var/default_color = overlay.dye_color || overlay.draw_color
-	var/new_color = tgui_color_picker(user, "Choose a color for [selected]:", "Character Preference", default_color)
+	var/new_color = tgui_color_picker(user, LANG("obj.484957bb62d48032", list(selected)), LANG("obj.78f80c295b6adf9f", null), default_color)
 	if(isnull(new_color) || new_color == default_color || !user.can_perform_action(src, NEED_DEXTERITY))
 		return
 	if(QDELETED(selected) || !(selected in target.organs))

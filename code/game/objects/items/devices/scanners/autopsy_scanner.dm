@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/autopsy_scanner
 	name = "autopsy scanner"
 	desc = "Used in surgery to extract information from a cadaver. Can also scan the health of cadavers like an advanced health analyzer!"
@@ -26,23 +27,20 @@
 	var/mob/living/scanned = interacting_with
 
 	if(!IS_DEAD_OR_FAKING(scanned)) // good job, you found a loophole
-		to_chat(user, span_deadsay("[icon2html(src, user)] ERROR! CANNOT SCAN LIVE CADAVERS. PROCURE HEALTH ANALYZER OR TERMINATE PATIENT."))
+		to_chat(user, span_deadsay(LANG("obj.2965ff93eb6bfa62", list(icon2html(src, user)))))
 		return ITEM_INTERACT_BLOCKING
 
 	. = ITEM_INTERACT_SUCCESS
 
 	// Clumsiness/brain damage check
 	if ((HAS_TRAIT(user, TRAIT_CLUMSY) || HAS_TRAIT(user, TRAIT_DUMB)) && prob(50))
-		user.visible_message(span_warning("[user] analyzes the floor's vitals!"), \
-							span_notice("You stupidly try to analyze the floor's vitals!"))
-		to_chat(user, "[span_info("Analyzing results for The floor:\n\tOverall status: <b>Healthy</b>")]\
-				\n[span_info("Key: <font color='#00cccc'>Suffocation</font>/<font color='#00cc66'>Toxin</font>/<font color='#ffcc33'>Burn</font>/<font color='#ff3333'>Brute</font>")]\
-				\n[span_info("\tDamage specifics: <font color='#66cccc'>0</font>-<font color='#00cc66'>0</font>-<font color='#ff9933'>0</font>-<font color='#ff3333'>0</font>")]\
-				\n[span_info("Body temperature: ???")]")
+		user.visible_message(span_warning(LANG("obj.248424c2caac2d7b", list(user))), \
+							span_notice(LANG("obj.6f2bddff34b91911", null)))
+		to_chat(user, LANG("obj.cf456ff6bfcc62c4", list(span_info("Analyzing results for The floor:\n\tOverall status: <b>Healthy</b>"), span_info("Key: <font color='#00cccc'>Suffocation</font>/<font color='#00cc66'>Toxin</font>/<font color='#ffcc33'>Burn</font>/<font color='#ff3333'>Brute</font>"), span_info("\tDamage specifics: <font color='#66cccc'>0</font>-<font color='#00cc66'>0</font>-<font color='#ff9933'>0</font>-<font color='#ff3333'>0</font>"), span_info("Body temperature: ???"))))
 		return
 
-	user.visible_message(span_notice("[user] scans [scanned]'s cadaver."))
-	to_chat(user, span_deadsay("[icon2html(src, user)] ANALYZING CADAVER."))
+	user.visible_message(span_notice(LANG("obj.82a06b4d712a306f", list(user, scanned))))
+	to_chat(user, span_deadsay(LANG("obj.0c812736059cb18c", list(icon2html(src, user)))))
 
 	healthscan(user, scanned, scanpower = SCANPOWER_ADVANCED)
 
@@ -181,7 +179,7 @@
 		var/datum/species/targetspecies = humantarget.dna.species
 		var/disguised = !ishumanbasic(humantarget) && istype(humantarget.head, /obj/item/clothing/head/hooded/human_head) && istype(humantarget.wear_suit, /obj/item/clothing/suit/hooded/bloated_human)
 		var/species_name = "[disguised ? "\"[/datum/species/human::name]\"" : targetspecies.name][mutant ? "-derived mutant" : ""]"
-		autopsy_information += "<b>Species:</b> [species_name]</br>"
+		autopsy_information += "<b>Species:</b> [lang_reverse_text(species_name)]</br>" // ZH EDIT - display only
 		autopsy_information += "<b>Core temperature:</b> [round(humantarget.coretemperature-T0C, 0.1)] &deg;C ([round(humantarget.coretemperature*1.8-459.67,0.1)] &deg;F)</br>"
 	// (End of humanoid-only information)
 	autopsy_information += "<b>Body temperature:</b> [round(scanned.bodytemperature-T0C, 0.1)] &deg;C ([round(scanned.bodytemperature*1.8-459.67,0.1)] &deg;F)</br>"
@@ -242,9 +240,9 @@
 
 	autopsy_information += "<b>Coroner's Notes:</b>" //Bottom of the page, anything past here is player-written
 
-	final_report_text += jointext(autopsy_information, "")
+	final_report_text += lang_localize_autopsy(jointext(autopsy_information, "")) // ZH EDIT CHANGE - i18n: localize composed report structural labels (bypasses sink/P1; same as health_analyzer) - ORIGINAL: final_report_text += jointext(autopsy_information, "")
 	autopsy_report.add_raw_text(final_report_text, advanced_html = TRUE)
 	autopsy_report.update_appearance()
 	user.put_in_hands(autopsy_report)
-	user.balloon_alert(user, "report printed")
+	user.balloon_alert(user, LANG("obj.e8f5d34f53c7130e", null))
 	return TRUE

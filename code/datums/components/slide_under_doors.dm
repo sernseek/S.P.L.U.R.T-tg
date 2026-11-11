@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // A component for basic mobs that makes them able to slide under doors by right-clicking on them.
 // Sliding under doors has a configurable initial delay, and allows the mob to remain under the door indefinitely.
 // If the door is opened while the mob is under it, then the mob will be ejected from their hiding spot.
@@ -42,7 +43,7 @@
 	notify_user()
 
 /datum/component/slide_under_doors/proc/notify_user()
-	to_chat(parent, span_notice("You can slide under doors! <b>Right-click on a door to slide under it.</b>"))
+	to_chat(parent, span_notice(LANG("datum.de7e362de9dea9e2", null)))
 
 /datum/component/slide_under_doors/proc/on_user_unarmed_attack(mob/living/user, atom/target, is_adjacent, modifiers)
 	SIGNAL_HANDLER
@@ -59,9 +60,9 @@
 		return
 
 	user.visible_message(
-		message = span_danger("\The [user] start[user.p_s()] sliding under \the [door]!"),
-		self_message = span_notice("You start sliding under \the [door]."),
-		blind_message = span_hear("You hear squeezing."),
+		message = span_danger(LANG("datum.3276f89ac8922728", list(user, user.p_s(), door))),
+		self_message = span_notice(LANG("datum.6365202c66d7d628", list(door))),
+		blind_message = span_hear(LANG("datum.da94412caa1d6e52", null)),
 	)
 
 	playsound(user, 'sound/effects/footstep/gib_step.ogg', vol = 50, vary = TRUE, ignore_walls = FALSE)
@@ -77,27 +78,27 @@
 	if (user.loc == door)
 		return FALSE
 	if (!isturf(user.loc))
-		user.balloon_alert(user, "not on the ground!")
+		user.balloon_alert(user, LANG("datum.29adf317e1072511", null))
 		return FALSE
 	if (!door.IsReachableBy(user))
-		user.balloon_alert(user, "can't reach!")
+		user.balloon_alert(user, LANG("datum.fba9228dcadf2006", null))
 		return FALSE
 	if (HAS_TRAIT(user, TRAIT_INCAPACITATED))
-		user.balloon_alert(user, "incapacitated!")
+		user.balloon_alert(user, LANG("datum.7ac2788bbe3be4b1", null))
 		return FALSE
 	if (!(door.pass_flags_self & PASSDOORS))
-		door.balloon_alert(user, "impassable!")
+		door.balloon_alert(user, LANG("datum.3bbd67b1a15ef727", null))
 		return FALSE
 	if (!door.density)
-		door.balloon_alert(user, "already open!")
+		door.balloon_alert(user, LANG("datum.5f82ab6ecf88af5e", null))
 		return FALSE
 	return TRUE
 
 /datum/component/slide_under_doors/proc/slide_under_door(mob/living/user, obj/machinery/door/door)
 	user.visible_message(
-		message = span_danger("\The [user] slide[user.p_s()] under \the [door] with a pop!"),
-		self_message = span_notice("You slide under \the [door] with a pop!"),
-		blind_message = span_hear("You hear a pop."),
+		message = span_danger(LANG("datum.fc1e7bf4b17858f4", list(user, user.p_s(), door))),
+		self_message = span_notice(LANG("datum.3a1d7d387cadd778", list(door))),
+		blind_message = span_hear(LANG("datum.445a50eaf2333efb", null)),
 	)
 
 	playsound(user, 'sound/effects/meatslap.ogg', vol = 50, vary = TRUE, ignore_walls = FALSE)
@@ -114,14 +115,14 @@
 
 	if (visible_turf)
 		visible_turf.visible_message(
-			message = span_danger("Something starts sliding out from under \the [current_door]!"),
-			blind_message = span_hear("You hear squeezing."),
+			message = span_danger(LANG("datum.ccf90ca4092bfd07", list(current_door))),
+			blind_message = span_hear(LANG("datum.da94412caa1d6e52", null)),
 			ignored_mobs = current_user,
 		)
 
 		playsound(visible_turf, 'sound/effects/footstep/gib_step.ogg', vol = 50, vary = TRUE, ignore_walls = FALSE)
 
-	to_chat(current_user, span_notice("You start sliding out from under \the [current_door]."))
+	to_chat(current_user, span_notice(LANG("datum.c76a3c6238c53395", list(current_door))))
 
 	if (!do_after(current_user, slide_out_delay, current_door, timed_action_flags = IGNORE_INCAPACITATED))
 		return
@@ -141,9 +142,9 @@
 		user.Move(get_step(user, move_dir), move_dir)
 
 	user.visible_message(
-		message = span_danger("\The [user] slide[user.p_s()] out from under \the [door] with a pop!"),
-		self_message = span_notice("You slide out from under \the [door] with a pop!"),
-		blind_message = span_hear("You hear a pop."),
+		message = span_danger(LANG("datum.68295efce20d6294", list(user, user.p_s(), door))),
+		self_message = span_notice(LANG("datum.1499402ca8668411", list(door))),
+		blind_message = span_hear(LANG("datum.445a50eaf2333efb", null)),
 	)
 
 	playsound(user, 'sound/effects/meatslap.ogg', vol = 50, vary = TRUE, ignore_walls = FALSE)

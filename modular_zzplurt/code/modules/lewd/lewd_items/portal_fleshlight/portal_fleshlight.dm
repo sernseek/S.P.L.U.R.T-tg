@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define URETHRA_TOP "urethra_top"
 #define URETHRA_BOTTOM "urethra_bottom"
 
@@ -103,11 +104,11 @@
 /obj/item/clothing/sextoy/portal_fleshlight/examine(mob/user)
 	. = ..()
 	if(!linked_panties)
-		. += span_notice("The status light is off. The device needs to be paired with portal panties.")
+		. += span_notice(LANG("obj.74d7b866a8b29b3e", null))
 		return
 
-	. += span_notice("The status light is [useable ? "on" : "off"]. The portal is [useable ? "open" : "closed"].")
-	. += span_notice("The current target is set to: [current_target]")
+	. += span_notice(LANG("obj.9eafd5fbe5336184", list(useable ? "on" : "off", useable ? "open" : "closed")))
+	. += span_notice(LANG("obj.6acea5a583e67911", list(current_target)))
 
 /obj/item/clothing/sextoy/portal_fleshlight/attack_self(mob/user)
 	. = ..()
@@ -124,12 +125,12 @@
 			current_target = BODY_ZONE_PRECISE_MOUTH
 		if(BODY_ZONE_PRECISE_MOUTH)
 			current_target = ORGAN_SLOT_PENIS
-	to_chat(user, span_notice("Now targeting: [current_target]"))
+	to_chat(user, span_notice(LANG("obj.3939843bd0a44cd7", list(current_target))))
 
 /obj/item/clothing/sextoy/portal_fleshlight/attack(mob/living/target, mob/living/user, params)
 	. = ..()
 	if(!istype(linked_panties?.loc, /mob/living/carbon/human))
-		to_chat(user, span_warning("The portal fleshlight isn't linked to any worn portal panties!"))
+		to_chat(user, span_warning(LANG("obj.e5a0dae8ea2720a2", null)))
 		return
 
 	var/mob/living/carbon/human/target_wearer = linked_panties.loc
@@ -155,12 +156,12 @@
 
 		// Check if both fleshlights have linked panties
 		if(!linked_panties || !other_fleshlight.linked_panties)
-			to_chat(user, span_warning("Both portal fleshlights need to be linked to portal panties!"))
+			to_chat(user, span_warning(LANG("obj.7fbaa0e7d2c1dd51", null)))
 			return
 
 		// Check if both panties are being worn
 		if(!istype(linked_panties.loc, /mob/living/carbon/human) || !istype(other_fleshlight.linked_panties.loc, /mob/living/carbon/human))
-			to_chat(user, span_warning("Both portal panties need to be worn by someone!"))
+			to_chat(user, span_warning(LANG("obj.09b236cbd9fac75c", null)))
 			return
 
 		var/mob/living/carbon/human/target = linked_panties.loc
@@ -188,14 +189,14 @@
 	// Get the interaction name from the map
 	var/interaction_name = interaction_map[panty_target]?[fleshlight_target]
 	if(!interaction_name)
-		to_chat(user, span_warning("You can't use the portal fleshlight like this!"))
+		to_chat(user, span_warning(LANG("obj.68a2d9fda314406f", null)))
 		return
 
 	// Find the interaction in SSinteractions
 	var/datum/interaction/lewd/portal/interaction_to_try = SSinteractions.interactions[interaction_name]
 
 	if(!interaction_to_try?.allow_act(target, wearer))
-		to_chat(user, span_warning("You can't use the portal fleshlight like this!"))
+		to_chat(user, span_warning(LANG("obj.68a2d9fda314406f", null)))
 		return
 
 	interaction_to_try.act(target, wearer)
@@ -206,11 +207,11 @@
 		return FALSE
 
 	if(panties.linked_fleshlight)
-		to_chat(user, span_warning("[panties] is already linked to another portal fleshlight!"))
+		to_chat(user, span_warning(LANG("obj.373fdbfa64e22706", list(panties))))
 		return FALSE
 
 	if(linked_panties)
-		to_chat(user, span_warning("[src] is already linked to another pair of portal panties!"))
+		to_chat(user, span_warning(LANG("obj.fd615cbdd3952938", list(src))))
 		return FALSE
 
 	linked_panties = panties
@@ -219,34 +220,34 @@
 	icon_state = "paired"
 
 	playsound(src, 'sound/machines/ping.ogg', 50, FALSE)
-	to_chat(user, span_notice("You link [src] to [panties]."))
+	to_chat(user, span_notice(LANG("obj.8d7c3dc4e50105d6", list(src, panties))))
 
 	update_appearance()
 	return TRUE
 
 /obj/item/clothing/sextoy/portal_fleshlight/click_alt(mob/user)
 	if(!linked_panties)
-		to_chat(user, span_warning("[src] isn't linked to any portal panties!"))
+		to_chat(user, span_warning(LANG("obj.197d1d053960e406", list(src))))
 		return CLICK_ACTION_BLOCKING
 
-	var/choice = tgui_alert(user, "Are you sure you want to unlink the portal panties?", "Unlink Portal Panties", list("Yes", "No"))
+	var/choice = tgui_alert(user, LANG("obj.d11c173302a0c005", null), LANG("obj.b89d6c890a67b0f7", null), list("Yes", "No"))
 	if(choice != "Yes")
 		return CLICK_ACTION_BLOCKING
 
-	to_chat(user, span_notice("You unlink the portal panties from [src]."))
+	to_chat(user, span_notice(LANG("obj.f5df80fc05deee84", list(src))))
 	unlink_panties()
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/clothing/sextoy/portal_fleshlight/proc/unlink_panties()
 	if(isliving(loc))
-		audible_message("[icon2html(src, hearers(linked_panties))] *beep* *beep* *beep*")
+		audible_message(LANG("obj.a31e23785cc68a0a", list(icon2html(src, hearers(linked_panties)))))
 		playsound(linked_panties, 'sound/machines/beep/triple_beep.ogg', ASSEMBLY_BEEP_VOLUME, TRUE)
-		to_chat(loc, span_notice("The panties beep as the link to the [src] is lost."))
+		to_chat(loc, span_notice(LANG("obj.bb19f475f5ecc817", list(src))))
 
 	if(isliving(linked_panties?.loc))
-		linked_panties.audible_message("[icon2html(linked_panties, hearers(linked_panties))] *beep* *beep* *beep*")
+		linked_panties.audible_message(LANG("obj.a31e23785cc68a0a", list(icon2html(linked_panties, hearers(linked_panties)))))
 		playsound(linked_panties, 'sound/machines/beep/triple_beep.ogg', ASSEMBLY_BEEP_VOLUME, TRUE)
-		to_chat(linked_panties.loc, span_notice("The panties beep as the link to the [src] is lost."))
+		to_chat(linked_panties.loc, span_notice(LANG("obj.bb19f475f5ecc817", list(src))))
 
 	linked_panties.linked_fleshlight = null
 	linked_panties = null
@@ -400,7 +401,7 @@
 
 	anonymous = !anonymous
 	playsound(src, 'sound/machines/ping.ogg', 50, FALSE)
-	balloon_alert(user, "anonymous mode: [anonymous ? "ON" : "OFF"]")
+	balloon_alert(user, LANG("obj.8ef36c07ada1b62e", list(anonymous ? "ON" : "OFF")))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 #undef URETHRA_TOP

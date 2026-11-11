@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Adds rat fashion system
 /mob/living/basic/regal_rat
 	/// What kind of fashion are we rocking
@@ -51,7 +52,7 @@
 /datum/action/cooldown/rat_fashion/Activate(atom/target)
 	var/mob/living/basic/regal_rat/rat_owner = owner
 	if (!istype(rat_owner))
-		owner.balloon_alert(owner, "not a rat!")
+		owner.balloon_alert(owner, LANG("datum.0eed83ddeb019ebe", null))
 		qdel(src)
 		return
 
@@ -70,14 +71,14 @@
 
 	var/datum/rat_fashion/chosen = picks_to_instances[pick]
 	if (rat_owner.current_look.name == chosen.name)
-		owner.balloon_alert(owner, "nothing to change!")
+		owner.balloon_alert(owner, LANG("datum.1b008a22f6f6d539", null))
 		return
 
 	var/turf/origin = get_turf(owner)
-	owner.balloon_alert_to_viewers("shudders...")
+	owner.balloon_alert_to_viewers(LANG("datum.8559ce79aebc8f31", null))
 
 	if (!do_after(owner, 3 SECONDS, target = origin))
-		owner.balloon_alert(owner, "interrupted!")
+		owner.balloon_alert(owner, LANG("datum.c67b5d274d6e724b", null))
 		return
 
 	rat_owner.current_look = chosen

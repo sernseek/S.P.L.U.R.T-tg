@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/nudist
 	name = "Nudist"
 	desc = "Wearing any clothing that covers your torso unnerves you. Bring a gear harness!"
@@ -65,7 +66,7 @@
 			return
 
 		// Alert user in chat
-		to_chat(quirk_mob, span_nicegreen("You begin to feel better without the restraint of clothing!"))
+		to_chat(quirk_mob, span_nicegreen(LANG("datum.4fe9225c8814b344", null)))
 
 		// Set nude status
 		is_nude = TRUE
@@ -86,7 +87,7 @@
 			return
 
 		// Alert user in chat
-		to_chat(quirk_mob, span_warning("The clothes feel wrong on your body..."))
+		to_chat(quirk_mob, span_warning(LANG("datum.76feddbaea071b56", null)))
 
 		// Set nude status
 		is_nude = FALSE

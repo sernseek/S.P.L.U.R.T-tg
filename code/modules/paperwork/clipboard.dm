@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Clipboard skins
 /datum/atom_skin/clipboard
 	abstract_type = /datum/atom_skin/clipboard
@@ -45,7 +46,7 @@
 	var/obj/item/paper/top_paper
 
 /obj/item/clipboard/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] begins putting [user.p_their()] head into the clip of \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.d944a01b9bf6ccf8", list(user, user.p_their(), src, user.p_theyre()))))
 	return BRUTELOSS //The clipboard's clip is very strong. Industrial duty. Can kill a man easily.
 
 /obj/item/clipboard/Initialize(mapload)
@@ -62,9 +63,9 @@
 /obj/item/clipboard/examine()
 	. = ..()
 	if(!integrated_pen && pen)
-		. += span_notice("Right-click to remove [pen].")
+		. += span_notice(LANG("obj.cf363a9730af07f2", list(pen)))
 	else if(top_paper)
-		. += span_notice("Right-click to remove [top_paper].")
+		. += span_notice(LANG("obj.cf363a9730af07f2", list(top_paper)))
 
 /// Take out the topmost paper
 /obj/item/clipboard/proc/remove_paper(obj/item/paper/paper, mob/user)
@@ -72,13 +73,13 @@
 		return
 	paper.forceMove(user.loc)
 	user.put_in_hands(paper)
-	to_chat(user, span_notice("You remove [paper] from [src]."))
+	to_chat(user, span_notice(LANG("obj.cbed32661d4c054a", list(paper, src))))
 
 /obj/item/clipboard/proc/remove_pen(mob/user)
 	var/obj/item/pen/pen = src.pen
 	pen.forceMove(user.loc)
 	user.put_in_hands(pen)
-	to_chat(user, span_notice("You remove [pen] from [src]."))
+	to_chat(user, span_notice(LANG("obj.cbed32661d4c054a", list(pen, src))))
 
 /obj/item/clipboard/Exited(atom/movable/gone, direction)
 	. = ..()
@@ -130,7 +131,7 @@
 			UnregisterSignal(top_paper, COMSIG_ATOM_UPDATED_ICON)
 		RegisterSignal(tool, COMSIG_ATOM_UPDATED_ICON, PROC_REF(on_top_paper_change))
 		top_paper = tool
-		to_chat(user, span_notice("You clip [tool] onto [src]."))
+		to_chat(user, span_notice(LANG("obj.5d5208adef9d8d1e", list(tool, src))))
 		update_appearance()
 		return ITEM_INTERACT_SUCCESS
 
@@ -139,7 +140,7 @@
 		if(!user.transferItemToLoc(tool, src))
 			return ITEM_INTERACT_BLOCKING
 		pen = tool
-		to_chat(user, span_notice("You slot [tool] into [src]."))
+		to_chat(user, span_notice(LANG("obj.ed1a28f3ecd8242e", list(tool, src))))
 		update_appearance()
 		return ITEM_INTERACT_SUCCESS
 
@@ -200,7 +201,7 @@
 				if(!integrated_pen)
 					remove_pen(usr)
 				else
-					to_chat(usr, span_warning("You can't seem to find a way to remove [src]'s [pen]."))
+					to_chat(usr, span_warning(LANG("obj.6babffe5750c681c", list(src, pen))))
 				. = TRUE
 		// Take paper out
 		if("remove_paper")
@@ -220,7 +221,7 @@
 			var/obj/item/paper/paper = locate(params["ref"]) in src
 			if(istype(paper))
 				top_paper = paper
-				to_chat(usr, span_notice("You move [paper] to the top."))
+				to_chat(usr, span_notice(LANG("obj.24e3e6b15dd7a5e4", list(paper))))
 				update_icon()
 				. = TRUE
 		// Rename the paper (it's a verb)

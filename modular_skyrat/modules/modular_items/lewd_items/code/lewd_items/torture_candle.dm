@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CANDLE_LUMINOSITY 2
 #define PAIN_DEFAULT 9
 
@@ -111,9 +112,9 @@
 /obj/item/bdsm_candle/examine(mob/user)
 	. = ..()
 	if(!color_changed && !lit)
-		. += span_notice("Alt-click to change it's color.")
+		. += span_notice(LANG("obj.ffa2b27c6831e98e", null))
 	else if(lit)
-		. += span_notice("Alt-click to snuff the flame out.")
+		. += span_notice(LANG("obj.9387678cb7acb778", null))
 
 /obj/item/bdsm_candle/click_alt(mob/user)
 	if(!lit && !color_changed)
@@ -129,7 +130,7 @@
 	else
 		if(!put_out_candle())
 			return CLICK_ACTION_BLOCKING
-		user.visible_message(span_notice("[user] snuffs [src]."))
+		user.visible_message(span_notice(LANG("obj.cacf9c166393520c", list(user, src))))
 		return CLICK_ACTION_SUCCESS
 
 /*
@@ -145,10 +146,10 @@
 
 	var/message = ""
 	if(!attacked.check_erp_prefs(/datum/preference/toggle/erp/sex_toy, user, src))
-		to_chat(user, span_danger("It looks like [attacked] don't want you to do that."))
+		to_chat(user, span_danger(LANG("obj.e1b7b03935d11d36", list(attacked))))
 		return
 	if(!lit)
-		to_chat(user, span_danger("[src] needs to be lit to produce wax!"))
+		to_chat(user, span_danger(LANG("obj.2b98273b7ba3360e", list(src))))
 		return
 	switch(user.zone_selected) //to let code know what part of body we gonna wax
 		if(BODY_ZONE_PRECISE_GROIN)
@@ -179,7 +180,7 @@
 						"tilts the candle as the wax slowly drops down, reaching [attacked]'s tummy.",
 						"tilts the candle. Drops of wax, dripping from [src] onto [attacked]'s groin, made [attacked.p_them()] moan.")
 			else
-				to_chat(user, span_danger("Looks like [attacked]'s groin is covered!"))
+				to_chat(user, span_danger(LANG("obj.c5b0317d58c50f81", list(attacked))))
 				return
 			attacked.adjust_pain(PAIN_DEFAULT)
 			attacked.client?.plug13.send_emote(PLUG13_EMOTE_MASOCHISM, PAIN_DEFAULT, PLUG13_DURATION_SHORT) // SPLURT EDIT - Plug13 - Torture Candle
@@ -197,7 +198,7 @@
 				attacked.client?.plug13.send_emote(PLUG13_EMOTE_MASOCHISM, PAIN_DEFAULT * 0.66, PLUG13_DURATION_SHORT) // SPLURT EDIT - Plug13 - Torture Candle
 
 			else
-				to_chat(user, span_danger("Looks like [attacked]'s chest is covered!"))
+				to_chat(user, span_danger(LANG("obj.b0aede841acb5a5f", list(attacked))))
 				return
 		else
 			return

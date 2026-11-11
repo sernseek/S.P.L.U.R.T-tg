@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/uplink_category/role_restricted
 	name = "Role-Restricted"
 	weight = 1
@@ -303,7 +304,7 @@
 	var/obj/vehicle/sealed/car/clowncar/car = ..()
 	car.enforce_clown_role = FALSE
 	var/obj/item/key = new car.key_type(user.loc)
-	car.visible_message(span_notice("[key] drops out of [car] onto the floor."))
+	car.visible_message(span_notice(LANG("datum.b774e223d20011a1", list(key, car))))
 	return car
 
 /datum/uplink_item/role_restricted/his_grace

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/mecha_ammo
 	name = "generic ammo box"
 	desc = "A box of ammo for an unknown weapon."
@@ -28,10 +29,10 @@
 /obj/item/mecha_ammo/attack_self(mob/user)
 	..()
 	if(rounds)
-		to_chat(user, span_warning("You cannot flatten the ammo box until it's empty!"))
+		to_chat(user, span_warning(LANG("obj.5a7938b09d79bb4a", null)))
 		return
 
-	to_chat(user, span_notice("You fold [src] flat."))
+	to_chat(user, span_notice(LANG("obj.8534e1be59e09f15", list(src))))
 	var/trash = new /obj/item/stack/sheet/iron(user.loc)
 	qdel(src)
 	user.put_in_hands(trash)
@@ -39,9 +40,9 @@
 /obj/item/mecha_ammo/examine(mob/user)
 	. = ..()
 	if(rounds)
-		. += "There [rounds > 1?"are":"is"] [rounds] [ammo_type][rounds > 1?"s":""] left."
+		. += LANG("obj.3205e5c3501d660e", list(rounds > 1?"are":"is", rounds, ammo_type, rounds > 1?"s":""))
 	else
-		. += span_notice("Use in-hand to fold it into a sheet of iron.")
+		. += span_notice(LANG("obj.d4be4f0c622685e8", null))
 
 /obj/item/mecha_ammo/incendiary
 	name = "incendiary ammo box"

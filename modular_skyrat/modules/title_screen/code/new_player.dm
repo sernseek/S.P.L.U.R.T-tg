@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// BYOND timestamp corresponding to deadline (Jun. 16, 2025)
 #define DEADLINE_TIMESTAMP 8033472000
 
@@ -109,17 +110,17 @@
 		play_lobby_button_sound()
 		// Prevent readying up after the round has begun setting up or is already playing
 		if(SSticker.current_state >= GAME_STATE_SETTING_UP)
-			to_chat(src, span_notice("The round is starting. You cannot ready up at this time."))
+			to_chat(src, span_notice(LANG("mob.6f5c20d8a416529b", null)))
 			return FALSE
 		if(CONFIG_GET(flag/min_flavor_text))
 			var/datum/preferences/preferences = client.prefs
 			var/uses_silicon_flavortext = (is_silicon_job(preferences?.get_highest_priority_job()) && length_char(client?.prefs?.read_preference(/datum/preference/text/silicon_flavor_text)) < CONFIG_GET(number/silicon_flavor_text_character_requirement))
 			var/uses_normal_flavortext = (!is_silicon_job(preferences?.get_highest_priority_job()) && length_char(client?.prefs?.read_preference(/datum/preference/text/flavor_text)) < CONFIG_GET(number/flavor_text_character_requirement))
 			if(uses_silicon_flavortext)
-				to_chat(src, span_notice("You need at least [CONFIG_GET(number/silicon_flavor_text_character_requirement)] characters of Silicon Flavor Text to ready up for the round. You have [length_char(client.prefs.read_preference(/datum/preference/text/silicon_flavor_text))] characters."))
+				to_chat(src, span_notice(LANG("mob.a72f0e0a0595528b", list(CONFIG_GET(number/silicon_flavor_text_character_requirement), length_char(client.prefs.read_preference(/datum/preference/text/silicon_flavor_text))))))
 				return
 			if(uses_normal_flavortext)
-				to_chat(src, span_notice("You need at least [CONFIG_GET(number/flavor_text_character_requirement)] characters of Flavor Text to ready up for the round. You have [length_char(client.prefs.read_preference(/datum/preference/text/flavor_text))] characters."))
+				to_chat(src, span_notice(LANG("mob.f663b075e26d4ad2", list(CONFIG_GET(number/flavor_text_character_requirement), length_char(client.prefs.read_preference(/datum/preference/text/flavor_text))))))
 				return
 
 		if(!unvetted_notified && !trigger_unvetted_warning())
@@ -204,16 +205,16 @@
 	if(LAZYLEN(servers) == 1)
 		var/server_name = servers[1]
 		var/server_ip = servers[server_name]
-		var/confirm = tgui_alert(src, "Are you sure you want to swap to [server_name] ([server_ip])?", "Swapping server!", list("Connect me!", "Stay here"))
+		var/confirm = tgui_alert(src, LANG("mob.a04f30dea86e55d7", list(server_name, server_ip)), LANG("mob.632a24f22bf94944", null), list("Connect me!", "Stay here"))
 		if(confirm == "Connect me!")
 			to_chat_immediate(src, "So long, spaceman.")
 			client << link(server_ip)
 		return
-	var/server_name = tgui_input_list(src, "Please select the server you wish to swap to:", "Swap servers!", servers)
+	var/server_name = tgui_input_list(src, LANG("mob.fb214cc7952a08e6", null), LANG("mob.993e96ea3f0ea689", null), servers)
 	if(!server_name)
 		return
 	var/server_ip = servers[server_name]
-	var/confirm = tgui_alert(src, "Are you sure you want to swap to [server_name] ([server_ip])?", "Swapping server!", list("Connect me!", "Stay here!"))
+	var/confirm = tgui_alert(src, LANG("mob.a04f30dea86e55d7", list(server_name, server_ip)), LANG("mob.632a24f22bf94944", null), list("Connect me!", "Stay here!"))
 	if(confirm == "Connect me!")
 		to_chat_immediate(src, "So long, spaceman.")
 		src.client << link(server_ip)
@@ -225,7 +226,7 @@
 	if (!client || client.interviewee)
 		return
 	if(!length(GLOB.lobby_station_traits))
-		to_chat(src, span_warning("There are currently no job traits available!"))
+		to_chat(src, span_warning(LANG("mob.a57a4e307692abba", null)))
 		return
 	var/list/available_lobby_station_traits = list()
 	for (var/datum/station_trait/trait as anything in GLOB.lobby_station_traits)
@@ -234,10 +235,10 @@
 		available_lobby_station_traits += trait
 
 	if(!LAZYLEN(available_lobby_station_traits))
-		to_chat(src, span_warning("There are currently no job traits available!"))
+		to_chat(src, span_warning(LANG("mob.a57a4e307692abba", null)))
 		return
 
-	var/datum/station_trait/clicked_trait = tgui_input_list(src, "Select a job trait to sign up for:", "Job Traits", available_lobby_station_traits)
+	var/datum/station_trait/clicked_trait = tgui_input_list(src, LANG("mob.591de72d4a924776", null), LANG("mob.fd21be1c0b9c315b", null), available_lobby_station_traits)
 
 	if(!clicked_trait)
 		return

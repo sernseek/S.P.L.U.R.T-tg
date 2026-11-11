@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///How many ticks to try to find a target before giving up.
 #define CAMERA_TICK_LIMIT 10
 
@@ -112,11 +113,11 @@
 
 	if(cameraticks < CAMERA_TICK_LIMIT)
 		if(!cameraticks)
-			to_chat(tracking_holder, span_warning("Target is not near any active cameras. Attempting to reacquire..."))
+			to_chat(tracking_holder, span_warning(LANG("datum.772203cce1cf7ef5", null)))
 		cameraticks++
 		return
 
-	to_chat(tracking_holder, span_warning("Unable to reacquire, cancelling track..."))
+	to_chat(tracking_holder, span_warning(LANG("datum.ca1dee7533f02911", null)))
 	reset_tracking()
 
 /// Tries to track onto our target mob. Returns true if it succeeds, false otherwise
@@ -155,12 +156,12 @@
 	if(!tracker || tracker.stat == DEAD)
 		return
 
-	var/target_name = tgui_input_list(tracker, "Select a target", "Tracking", find_trackable_mobs())
+	var/target_name = tgui_input_list(tracker, LANG("datum.28009fc9bda2618d", null), LANG("datum.e0f914fff91b66c8", null), find_trackable_mobs())
 	if(!target_name || isnull(target_name))
 		return
 	var/datum/weakref/mob_ref = isnull(humans[target_name]) ? others[target_name] : humans[target_name]
 	if(isnull(mob_ref))
-		to_chat(tracker, span_notice("Target is not on or near any active cameras. Tracking failed."))
+		to_chat(tracker, span_notice(LANG("datum.cf66c0460910afcc", null)))
 		return
 	set_tracked_mob(mob_ref.resolve())
 
@@ -179,9 +180,9 @@
 	find_trackable_mobs() //this is in case the tracked mob is newly/no-longer in camera field of view.
 	var/datum/weakref/mob_ref = isnull(humans[tracked_mob_name]) ? others[tracked_mob_name] : humans[tracked_mob_name]
 	if(isnull(mob_ref))
-		to_chat(tracker, span_notice("Target is not on or near any active cameras. Tracking failed."))
+		to_chat(tracker, span_notice(LANG("datum.cf66c0460910afcc", null)))
 		return
-	to_chat(tracker, span_notice("Now tracking [tracked_mob_name] on camera."))
+	to_chat(tracker, span_notice(LANG("datum.9d0448f5768d3319", list(tracked_mob_name))))
 	set_tracked_mob(mob_ref.resolve())
 
 /**

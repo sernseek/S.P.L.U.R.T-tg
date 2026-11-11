@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/borg/apparatus/update_appearance()
 	. = ..()
 	vis_contents = list()
@@ -57,8 +58,8 @@
 /obj/item/borg/apparatus/examine(mob/user)
 	. = ..()
 	if(stored)
-		. += "<span class='notice'>It is holding [icon2html(stored, user)] [stored].</span>"
-	. += span_notice("<i>Alt-click</i> will drop the currently held item. ")
+		. += LANG("obj.561ba4e6aab2e820", list(icon2html(stored, user), stored))
+	. += span_notice(LANG("obj.3372c42922927fb1", null))
 
 /obj/item/robot_model/engineering/New()
 	basic_modules += list(

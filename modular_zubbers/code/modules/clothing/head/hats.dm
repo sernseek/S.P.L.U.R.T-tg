@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/head/soft/allamerican
 	name = "all-american diner employee cap"
 	desc = "It's a salmon colored baseball cap that All-American Diner employees wear, you see the name of the diner on the front of the cap, just to tell you where you are."
@@ -122,7 +123,7 @@
 	update_greyscale_component_icons()
 
 /obj/item/clothing/head/soft/sec/recolorable/flip(mob/user)
-	balloon_alert(user, "can't be flipped!")
+	balloon_alert(user, LANG("obj.37cbcff896186a3a", null))
 
 /obj/item/clothing/head/sec/viro/beanie
 	name = "security beanie"

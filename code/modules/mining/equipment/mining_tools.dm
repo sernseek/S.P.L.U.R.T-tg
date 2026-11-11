@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*****************Pickaxes & Drills & Shovels****************/
 /obj/item/pickaxe
 	name = "pickaxe"
@@ -21,10 +22,10 @@
 	attack_verb_simple = list("hit", "pierce", "slice", "attack")
 
 /obj/item/pickaxe/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] begins digging into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.8f4dbf4910e1659d", list(user, user.p_their(), user.p_theyre()))))
 	if(use_tool(user, user, 30, volume=50))
 		return BRUTELOSS
-	user.visible_message(span_suicide("[user] couldn't do it!"))
+	user.visible_message(span_suicide(LANG("obj.fa7da766dd24fc84", list(user))))
 	return SHAME
 
 /obj/item/pickaxe/rusted
@@ -142,10 +143,10 @@
 	AddElement(/datum/element/gravedigger)
 
 /obj/item/shovel/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] begins digging their own grave! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.8345228a55f88e62", list(user, user.p_theyre()))))
 	if(use_tool(user, user, 30, volume=50))
 		return BRUTELOSS
-	user.visible_message(span_suicide("[user] couldn't do it!"))
+	user.visible_message(span_suicide(LANG("obj.fa7da766dd24fc84", list(user))))
 	return SHAME
 
 /obj/item/shovel/spade
@@ -196,7 +197,7 @@
 	. = ..()
 	if( !(user.mind && HAS_TRAIT(user.mind, TRAIT_MORBID)) )
 		return
-	. += span_deadsay("You feel an intense, strange craving to 'dig' straight through living flesh with this shovel. Why else would it be serrated? The thought is mesmerizing...")
+	. += span_deadsay(LANG("obj.387d26d6c9d9b71d", null))
 
 // Coroner mail version
 /obj/item/shovel/serrated/dull
@@ -236,9 +237,9 @@
 
 /obj/item/trench_tool/examine(mob/user)
 	. = ..()
-	. += span_notice("Use in hand to switch configuration.")
-	. += span_notice("It functions as a [tool_behaviour] tool.")
-	. += span_danger("<i>This weapon has no random critical hits.</i>")
+	. += span_notice(LANG("obj.2d2749ac2988531e", null))
+	. += span_notice(LANG("obj.bb377a4c7e8289e2", list(tool_behaviour)))
+	. += span_danger(LANG("obj.04e00f27dc1e8380", null))
 
 /obj/item/trench_tool/update_icon_state()
 	. = ..()
@@ -372,7 +373,7 @@
 	tool_behaviour = (active ? TOOL_WRENCH : initial(tool_behaviour))
 	armour_penetration = (active ? 30 : initial(armour_penetration))
 	if(user)
-		balloon_alert(user, "folded Big Slappy [active ? "open" : "closed"]")
+		balloon_alert(user, LANG("obj.2e12a304a979e811", list(active ? "open" : "closed")))
 	playsound(src, 'sound/items/tools/ratchet.ogg', 50, TRUE)
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
@@ -386,5 +387,5 @@
 		target_mob.Knockdown(2 SECONDS)
 	var/body_zone = pick(user.get_all_limbs())
 	user.apply_damage(force / recoil_factor, BRUTE, body_zone, user.run_armor_check(body_zone, MELEE))
-	to_chat(user, span_danger("The weight of the Big Slappy recoils!"))
+	to_chat(user, span_danger(LANG("obj.cad1dc76977c3233", null)))
 	log_combat(user, user, "recoiled Big Slappy into")

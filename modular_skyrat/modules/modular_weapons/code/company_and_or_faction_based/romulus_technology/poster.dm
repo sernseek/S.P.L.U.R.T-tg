@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/sign/poster/official/idmarecruit
 	name = "Romulus Federation Marine Corp - Enlist Today"
 	desc = "This poster depicts a RomFed Marine in their full gear. It is printed on some sort of space resistant paper."
@@ -7,10 +8,7 @@
 /obj/structure/sign/poster/official/idmarecruit/examine_more(mob/user)
 	. = ..()
 
-	. += "Join the Romulus Federation Marine Corp Today! \
-		Service will ensure welfare, long term position as security consultant in many company \
-		And even opportunity to join Sol Galactic Peacekeeping Program \
-		What are you waiting for!?"
+	. += LANG("obj.96787dd6644deb82", null)
 
 	return .
 
@@ -26,10 +24,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/official/idmarecruit, 32)
 /obj/structure/sign/poster/official/flech_rifle/examine_more(mob/user)
 	. = ..()
 
-	. += "Small text details that certain types of magazines may not be available in your \
-		region depending on local weapons regulations. Suspiciously, however, if you squint at \
-		it a bit, the background colors of the image come together vaguely in the shape of \
-		a computer board and a multitool. What did they mean by this?"
+	. += LANG("obj.90a3e1c22099692c", null)
 
 	return .
 

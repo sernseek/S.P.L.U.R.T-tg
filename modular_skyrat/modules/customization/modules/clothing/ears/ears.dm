@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/ears/headphones
 	name = "headphones"
 	desc = "Unce unce unce unce. Boop!"
@@ -23,7 +24,7 @@
 /obj/item/clothing/ears/headphones/proc/toggle(owner)
 	headphones_on = !headphones_on
 	update_icon()
-	to_chat(owner, span_notice("You turn the music [headphones_on? "on. Untz Untz Untz!" : "off."]"))
+	to_chat(owner, span_notice(LANG("obj.66066e77f2ef1053", list(headphones_on? "on. Untz Untz Untz!" : "off."))))
 
 /datum/action/item_action/toggle_headphones
 	name = "Toggle Headphones"

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 #define LUNGE_INSTANT_LEVEL 4
 #define LUNGE_INSTANT_RANGE 6
@@ -15,14 +16,14 @@
 
 /datum/action/cooldown/bloodsucker/targeted/lunge/get_power_explanation_extended()
 	. = list()
-	. += "Click any player to start spinning wildly and, after a short delay, dash at them."
-	. += "When lunging at someone, you will grab them, immediately starting off at aggressive."
-	. += "Riot gear and Monster Hunters are protected and will only be passively grabbed."
-	. += "You cannot use the Power if you are already grabbing someone, or are being grabbed."
-	. += "If you grab from behind, or while using cloak of darkness, you will knock the target down."
-	. += "If used on a dead body, will tear out a random organ from the zone you are targeting."
-	. += "Higher levels increase how long enemies are knocked down."
-	. += "At level [LUNGE_INSTANT_LEVEL], you will no longer spin, but you will be limited to tackling from only [LUNGE_INSTANT_RANGE] tiles away."
+	. += LANG("datum.d41b34d888991884", null)
+	. += LANG("datum.0854a2f7c6c2437b", null)
+	. += LANG("datum.ac55a052ca5bba8b", null)
+	. += LANG("datum.28e887ba4ffbf837", null)
+	. += LANG("datum.c11634724bc38b50", null)
+	. += LANG("datum.361f125714c5d443", null)
+	. += LANG("datum.07322eaf7a1ea88a", null)
+	. += LANG("datum.6df3ea425eb53a07", list(LUNGE_INSTANT_LEVEL, LUNGE_INSTANT_RANGE))
 
 /datum/action/cooldown/bloodsucker/targeted/lunge/on_power_upgrade()
 	. = ..()
@@ -36,10 +37,10 @@
 		return FALSE
 	// Are we being grabbed?
 	if(user.pulledby && user.pulledby.grab_state >= GRAB_AGGRESSIVE)
-		owner.balloon_alert(user, "grabbed!")
+		owner.balloon_alert(user, LANG("datum.76e41b58b898abcb", null))
 		return FALSE
 	if(user.pulling)
-		owner.balloon_alert(user, "grabbing someone!")
+		owner.balloon_alert(user, LANG("datum.a98e82c00dfaebf9", null))
 		return FALSE
 	return TRUE
 
@@ -77,7 +78,7 @@
 ///Starts processing the power and prepares the lunge by spinning, calls lunge at the end of it.
 /datum/action/cooldown/bloodsucker/targeted/lunge/proc/prepare_target_lunge(atom/target_atom)
 	START_PROCESSING(SSprocessing, src)
-	owner.balloon_alert(owner, "lunge started!")
+	owner.balloon_alert(owner, LANG("datum.c7ff0f9cdef6977c", null))
 	//animate them shake
 	var/base_x = owner.base_pixel_x
 	var/base_y = owner.base_pixel_y
@@ -106,7 +107,7 @@
 		return ..() //Manage our cooldown timers
 	if(prob(75))
 		owner.spin(8, 1)
-		owner.balloon_alert_to_viewers("spins wildly!", "you spin!")
+		owner.balloon_alert_to_viewers(LANG("datum.88ef0aba4fbc3486", null), LANG("datum.bca285b165d5cb6e", null))
 		return
 	do_smoke(0, owner.loc, smoke_type = /obj/effect/particle_effect/fluid/smoke/transparent)
 
@@ -140,23 +141,23 @@
 		return
 	// Is my target a Monster hunter?
 	if(HAS_TRAIT(target, TRAIT_BRAWLING_KNOCKDOWN_BLOCKED))
-		user.balloon_alert(user, "pushed away!")
+		user.balloon_alert(user, LANG("datum.b8634d616d950cb3", null))
 		target.grabbedby(user)
 		return
 
-	user.balloon_alert(user, "you lunge at [target]!")
+	user.balloon_alert(user, LANG("datum.66c4f922cb1e7303", list(target)))
 	user.changeNext_move(CLICK_CD_MELEE)
 	if(target.stat == DEAD)
 		var/obj/item/bodypart/bodypart = target.get_bodypart(check_zone(user.zone_selected))
 		if(!bodypart)
-			target.balloon_alert(user, "bodypart missing!")
+			target.balloon_alert(user, LANG("datum.11c1d284aa279d2a", null))
 			return
 		var/datum/wound/slash/flesh/moderate/crit_wound = new
 		crit_wound.sound_effect = null
 		crit_wound.apply_wound(bodypart)
 		user.visible_message(
-			span_warning("[user] tears into [target]'s [bodypart]!"),
-			span_warning("You tear into [target]'s [bodypart]!"))
+			span_warning(LANG("datum.330a3ed619c7bac9", list(user, target, bodypart))),
+			span_warning(LANG("datum.0baa162f58bac9a4", list(target, bodypart))))
 		playsound(target, 'sound/effects/wounds/crackandbleed.ogg', 100, TRUE, 5)
 		var/obj/item/organ/myheart_now
 		if(bodypart.body_zone == BODY_ZONE_CHEST)
@@ -164,8 +165,8 @@
 		if(!myheart_now)
 			var/list/organs = target.get_organs_for_zone(bodypart.body_zone)
 			if(!length(organs))
-				to_chat(user, span_warning("[target] has no organs in [bodypart]!"))
-				target.balloon_alert(user, "no organs!")
+				to_chat(user, span_warning(LANG("datum.c103c11a1a81f069", list(target, bodypart))))
+				target.balloon_alert(user, LANG("datum.2c3783652d79e64f", null))
 				return
 			myheart_now = pick(organs)
 

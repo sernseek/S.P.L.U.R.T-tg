@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // COMSIG_ATOM_WAS_ATTACKED check out this signal's implementation
 
 /obj/item/gun/ballistic/revolver/handcrafted_single_action
@@ -117,7 +118,7 @@
 
 	if(!hammer_is_primed)
 		set_hammer_cock(TRUE)
-		balloon_alert(user, "cocked the hammer")
+		balloon_alert(user, LANG("obj.5ee2c075c61adee3", null))
 		playsound(src, 'sound/items/weapons/gun_mode_switch1.ogg', vol = 35, vary = TRUE, frequency = 1.8, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 		if(!istype(magazine,/obj/item/ammo_box/magazine/internal/cylinder))
 			stack_trace("[usr] has a magazine that isn't a revolver cylinder!")
@@ -126,7 +127,7 @@
 		chamber_round()
 	else
 		set_hammer_cock(FALSE)
-		balloon_alert(user, "decocked the hammer")
+		balloon_alert(user, LANG("obj.f012447f8c7abae5", null))
 		playsound(src, 'sound/items/weapons/gun_mode_switch1.ogg', vol = 35, vary = TRUE, frequency = 1.6, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 
 /obj/item/gun/ballistic/revolver/handcrafted_single_action/proc/set_hammer_cock(cock)
@@ -137,7 +138,7 @@
 	if(hammer_is_primed)
 		return ..()
 	else
-		balloon_alert(user, "hammer isn't cocked!")
+		balloon_alert(user, LANG("obj.fbc44a6ad06a093f", null))
 		return FALSE
 
 ////////////////////////// MISFIRE WHEN SHOVED OR ATTACKED ///////////////////////////////////////
@@ -164,8 +165,8 @@
 /obj/item/gun/ballistic/revolver/handcrafted_single_action/proc/try_attack_misfire(mob/victim, mob/attacker, attack_flags)
 	if(attack_flags & ATTACKER_SHOVING && prob(50))
 		if(holster_misfire(victim, attacker) == TRUE)
-			victim.visible_message(span_warning("[victim]'s [src] goes off from [attacker]'s attack!"),
-				span_danger("Your primed [src] triggers from [attacker]'s strike! "), ignored_mobs = victim)
+			victim.visible_message(span_warning(LANG("obj.d1bcf85be4d45662", list(victim, src, attacker))),
+				span_danger(LANG("obj.9a7bc782c953aac7", list(src, attacker))), ignored_mobs = victim)
 
 /*
 /obj/item/gun/ballistic/revolver/handcrafted_single_action/proc/try_hug_misfire(mob/living/source)

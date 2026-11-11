@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // DAT FUKKEN DISK.
 /obj/item/disk/nuclear
 	name = "nuclear authentication disk"
@@ -58,7 +59,7 @@
 			loneop.weight += 1
 			if(loneop.weight % 5 == 0 && SSticker.totalPlayers > 1)
 				if(disk_comfort_level >= 2)
-					visible_message(span_notice("[src] sleeps soundly. Sleep tight, disky."))
+					visible_message(span_notice(LANG("obj.3a557a66b47d1d92", list(src))))
 				message_admins("[src] is unsecured in [ADMIN_VERBOSEJMP(new_turf)]. The weight of Lone Operative is now [loneop.weight].")
 			log_game("[src] was left unsecured in [loc_name(new_turf)]. Weight of the Lone Operative event increased to [loneop.weight].")
 
@@ -68,14 +69,14 @@
 		return
 
 	if(isobserver(user) || HAS_MIND_TRAIT(user, TRAIT_DISK_VERIFIER))
-		. += span_warning("The serial numbers on [src] are incorrect.")
+		. += span_warning(LANG("obj.7915f2c773886438", list(src)))
 
 /*
  * You can't accidentally eat the nuke disk, bro
  */
 /obj/item/disk/nuclear/on_accidental_consumption(mob/living/carbon/M, mob/living/carbon/user, obj/item/source_item, discover_after = TRUE)
-	M.visible_message(span_warning("[M] looks like [M.p_theyve()] just bitten into something important."), \
-						span_warning("Wait, is this the nuke disk?"))
+	M.visible_message(span_warning(LANG("obj.2d2a48809f410765", list(M, M.p_theyve()))), \
+						span_warning(LANG("obj.c054326f6c2af8dd", null)))
 
 	return discover_after
 
@@ -85,21 +86,21 @@
 
 	var/obj/item/claymore/highlander/claymore = tool
 	if(claymore.nuke_disk)
-		to_chat(user, span_notice("Wait... what?"))
+		to_chat(user, span_notice(LANG("obj.ffa4945b58786897", null)))
 		qdel(claymore.nuke_disk)
 		claymore.nuke_disk = null
 		return ITEM_INTERACT_BLOCKING
 
 	user.visible_message(
-		span_warning("[user] captures [src]!"),
-		span_userdanger("You've got the disk! Defend it with your life!"),
+		span_warning(LANG("obj.368736708f60af2e", list(user, src))),
+		span_userdanger(LANG("obj.5561b4c44f28d8ff", null)),
 	)
 	forceMove(claymore)
 	claymore.nuke_disk = src
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/disk/nuclear/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] is going delta! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.22d912d058a15ef5", list(user, user.p_theyre()))))
 	playsound(src, 'sound/announcer/alarm/nuke_alarm.ogg', 50, -1, TRUE)
 	for(var/i in 1 to 100)
 		addtimer(CALLBACK(user, TYPE_PROC_REF(/atom, add_atom_colour), (i % 2)? COLOR_VIBRANT_LIME : COLOR_RED, ADMIN_COLOUR_PRIORITY), i)
@@ -108,7 +109,7 @@
 
 /obj/item/disk/nuclear/proc/manual_suicide(mob/living/user)
 	user.remove_atom_colour(ADMIN_COLOUR_PRIORITY)
-	user.visible_message(span_suicide("[user] is destroyed by the nuclear blast!"))
+	user.visible_message(span_suicide(LANG("obj.4958528d38cfe90f", list(user))))
 	user.adjust_oxy_loss(200)
 	user.death(FALSE)
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Base Sol rifle
 
 /obj/item/gun/ballistic/automatic/sol_rifle
@@ -54,19 +55,12 @@
 
 /obj/item/gun/ballistic/automatic/sol_rifle/examine(mob/user)
 	. = ..()
-	. += span_notice("You can <b>examine closer</b> to learn a little more about this weapon.")
+	. += span_notice(LANG("obj.b663717df67087e6", null))
 
 /obj/item/gun/ballistic/automatic/sol_rifle/examine_more(mob/user)
 	. = ..()
 
-	. += "The Carwo-Cawil rifles are built by Carwo for \
-		use by TerraGov's various infantry branches. Following the rather reasonable \
-		military requirements of using the same few cartridges and magazines, \
-		the lifespans of logistics coordinators and quartermasters everywhere \
-		were lengthened by several years. While typically only for military sale \
-		in the past, the recent collapse of certain unnamed weapons manufacturers \
-		has caused Carwo to open many of its military weapons to civilian sale, \
-		which includes this one."
+	. += LANG("obj.0f8687cd71a1fc78", null)
 
 	return .
 
@@ -102,11 +96,7 @@
 /obj/item/gun/ballistic/automatic/sol_rifle/marksman/examine_more(mob/user)
 	. = ..()
 
-	. += "This particlar variant is a marksman rifle. \
-		Automatic fire was forsaken for a semi-automatic setup, a more fitting \
-		stock, and more often than not a scope. Typically also seen with smaller \
-		magazines for convenience for the shooter, but as with any other Sol \
-		rifle, all standard magazine types will work."
+	. += LANG("obj.07782f096915862e", null)
 
 	return .
 
@@ -136,13 +126,7 @@
 /obj/item/gun/ballistic/automatic/sol_rifle/machinegun/examine_more(mob/user)
 	. = ..()
 
-	. += "The 'Qarad' variant of the rifle, what you are looking at now, \
-		is a modification to turn the weapon into a passable, if sub-optimal \
-		light machinegun. To support the machinegun role, the internals were \
-		converted to make the gun into an open bolt, faster firing machine. These \
-		additions, combined with a battle rifle not meant to be used fully auto \
-		much to begin with, made for a relatively unwieldy weapon. A machinegun, \
-		however, is still a machinegun, no matter how hard it is to keep on target."
+	. += LANG("obj.26d325a93aded7cf", null)
 
 	return .
 

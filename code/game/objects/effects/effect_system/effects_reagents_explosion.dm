@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 
 //Reagent-based explosion effect
@@ -26,5 +27,5 @@
 	if(!explosion_source)
 		stack_trace("Reagent explosion triggered without a source atom. This explosion may have incomplete logging.")
 	if(explosion_message)
-		location.visible_message(span_danger("The solution violently explodes!"), span_hear("You hear an explosion!"))
+		location.visible_message(span_danger(LANG("datum.3378a74b7cde8a89", null)), span_hear(LANG("datum.2de58a380d5e4e09", null)))
 	dyn_explosion(location, amount, flash_range = flashing_factor, flame_range = flaming_factor, explosion_cause = explosion_source)

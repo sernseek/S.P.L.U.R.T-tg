@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/duct
 	name = "fluid duct"
 	icon = 'icons/obj/pipes_n_cables/hydrochem/fluid_ducts.dmi'
@@ -222,8 +223,8 @@
 
 /obj/machinery/duct/examine(mob/user)
 	. = ..()
-	. += span_notice("Its current color and layer are [GLOB.pipe_color_name[duct_color]] and [GLOB.plumbing_layer_names["[duct_layer]"]]. Use in-hand to change.")
-	. += span_notice("It can be [EXAMINE_HINT("wrenched")] apart.")
+	. += span_notice(LANG("obj.b4a82b23d6d8f0a6", list(GLOB.pipe_color_name[duct_color], GLOB.plumbing_layer_names["[duct_layer]"])))
+	. += span_notice(LANG("obj.fa5fc7965e12e9d0", list(EXAMINE_HINT("wrenched"))))
 
 /obj/machinery/duct/update_icon_state()
 	var/temp_icon = initial(icon_state)
@@ -250,9 +251,9 @@
 	wrench.play_tool_sound(src)
 
 	user.visible_message( \
-	"[user] ununfastens \the [src].", \
-	span_notice("You unfasten \the [src]."), \
-	span_hear("You hear ratcheting."))
+	LANG("obj.ebca8c91ce99ba2d", list(user, src)), \
+	span_notice(LANG("obj.5cb7678601675b99", list(src))), \
+	span_hear(LANG("obj.706a8c3e44c4464e", null)))
 
 	deconstruct()
 	return ITEM_INTERACT_SUCCESS
@@ -298,16 +299,16 @@
 
 /obj/item/stack/ducts/examine(mob/user)
 	. = ..()
-	. += span_notice("Its current color and layer are [GLOB.pipe_color_name[duct_color]] and [GLOB.plumbing_layer_names["[duct_layer]"]]. Use in-hand to change.")
-	. += span_notice("Place on ground & [EXAMINE_HINT("wrench")] to create duct.")
+	. += span_notice(LANG("obj.b4a82b23d6d8f0a6", list(GLOB.pipe_color_name[duct_color], GLOB.plumbing_layer_names["[duct_layer]"])))
+	. += span_notice(LANG("obj.8c6bde29123c3e7a", list(EXAMINE_HINT("wrench"))))
 
 /obj/item/stack/ducts/attack_self(mob/user)
-	var/new_layer = tgui_input_list(user, "Select a layer", "Layer", GLOB.plumbing_layers, GLOB.plumbing_layer_names["[duct_layer]"])
+	var/new_layer = tgui_input_list(user, LANG("obj.0d8e05e232e584ae", null), LANG("obj.6a7ee8f6d0b6ef94", null), GLOB.plumbing_layers, GLOB.plumbing_layer_names["[duct_layer]"])
 	if(!user.is_holding(src))
 		return
 	if(new_layer)
 		duct_layer = GLOB.plumbing_layers[new_layer]
-	var/new_color = tgui_input_list(user, "Select a color", "Color", GLOB.pipe_paint_colors, GLOB.pipe_color_name[duct_color])
+	var/new_color = tgui_input_list(user, LANG("obj.c374a22461a7957f", null), LANG("obj.0e20b7b5489dda80", null), GLOB.pipe_paint_colors, GLOB.pipe_color_name[duct_color])
 	if(!user.is_holding(src))
 		return
 	if(new_color)
@@ -321,7 +322,7 @@
 	// Turn into a duct stack and then merge to the in-hand stack.
 	if(istype(interacting_with, /obj/machinery/duct))
 		if(amount == max_amount)
-			balloon_alert(user, "stack full!")
+			balloon_alert(user, LANG("obj.c9dadc90c064973b", null))
 			return ITEM_INTERACT_FAILURE
 		qdel(interacting_with)
 		add(1)
@@ -335,7 +336,7 @@
 		var/datum/overlap = ducting_layer_check(open_turf, duct_layer)
 		if(!isnull(overlap))
 			if(user)
-				open_turf.balloon_alert(user, "overlapping [istype(overlap, /obj/machinery/duct) ? "duct" : "machine"] detected!")
+				open_turf.balloon_alert(user, LANG("obj.bda812114e9941a5", list(istype(overlap, /obj/machinery/duct) ? "duct" : "machine")))
 			return ITEM_INTERACT_FAILURE
 
 		new /obj/machinery/duct(open_turf, duct_color, duct_layer)

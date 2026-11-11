@@ -1,31 +1,32 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/silicon/ai/examine(mob/user)
 	. = list("<span class='info'>This is [icon2html(src, user)] <EM>[src]</EM>!", EXAMINE_SECTION_BREAK) //SKYRAT EDIT CHANGE
 	if(stat == DEAD)
-		. += span_warning("[p_They()] appear[p_s()] to be non functional.")
-	. += span_notice("[p_Their()] floor <b>bolts</b> are [is_anchored ? "tightened" : "loose"].")
+		. += span_warning(LANG("mob.8ca0f7fccb643eb0", list(p_They(), p_s())))
+	. += span_notice(LANG("mob.2e9e1c08ef2a7c4c", list(p_Their(), is_anchored ? "tightened" : "loose")))
 	if(is_anchored)
 		if(!opened)
 			if(!emagged)
-				. += span_notice("[p_Their()] access panel is [stat == DEAD ? "damaged" : "closed and locked"], but could be <b>pried</b> open.")
+				. += span_notice(LANG("mob.2299454bf1e4e9b3", list(p_Their(), stat == DEAD ? "damaged" : "closed and locked")))
 			else
-				. += span_warning("[p_Their()] access panel lock is sparking, the cover can be <b>pried</b> open.")
+				. += span_warning(LANG("mob.2a26588f16ce03f0", list(p_Their())))
 		else
-			. += span_notice("[p_Their()] neural network connection could be <b>cut</b>, the access panel cover can be <b>pried</b> back into place.")
+			. += span_notice(LANG("mob.b0adf1fea9a09141", list(p_Their())))
 	if(stat != DEAD)
 		if (get_brute_loss())
 			if (get_brute_loss() < 30)
-				. += span_warning("[p_They()] look[p_s()] slightly dented.")
+				. += span_warning(LANG("mob.c487477b1d7f722c", list(p_They(), p_s())))
 			else
-				. += span_warning("<B>[p_They()] look[p_s()] severely dented!</B>")
+				. += span_warning(LANG("mob.5f081d0a68ed8c98", list(p_They(), p_s())))
 		if (get_fire_loss())
 			if (get_fire_loss() < 30)
-				. += span_warning("[p_They()] look[p_s()] slightly charred.")
+				. += span_warning(LANG("mob.822ee81430e55a34", list(p_They(), p_s())))
 			else
-				. += span_warning("<B>[p_Their()] casing is melted and heat-warped!</B>")
+				. += span_warning(LANG("mob.40f30327c292b6c6", list(p_Their())))
 		if(deployed_shell)
-			. += "The wireless networking light is blinking."
+			. += LANG("mob.c0556282f3ad2df9", null)
 		else if (!shunted && !client)
-			. += "[src]Core.exe has stopped responding! NTOS is searching for a solution to the problem..."
+			. += LANG("mob.dbbd0a6016a76729", list(src))
 	//SKYRAT EDIT ADDITION BEGIN - CUSTOMIZATION
 	. += get_silicon_flavortext()
 	//SKYRAT EDIT ADDITION END

@@ -1,0 +1,499 @@
+// NovaSector 全量汉化 (i18n) —— 边界层「模板逆匹配」引擎。
+//
+// 问题：反查表只收无占位符纯串——目录里上万条**已译插值模板**
+// （"{0} is already filled to capacity." 等）对边界层完全不可见：运行期实参填进占位符后，
+// 整串既不是反查键、含占位符的模板又被 AC 守卫排除 → 凡「拼进变量再输出」「改写器够不着的
+// 调用形状」一律漏翻，只能逐点打补丁（AGENTS.md 排查规律节的大半条目即此类）。
+//
+// 本引擎把这些模板变成运行时可匹配的「逆模板」，流程：
+//   1. setup（惰性、每 locale 一次）：取每条已译 en 模板的字面段序列，选「最长多词段」做
+//      AC 锚（rustg Aho-Corasick），锚 → 候选模板 id 集。
+//   2. apply：输出文本先过锚检测（一次 acreplace 把锚换成 sentinel；无锚命中即近零成本返回，
+//      绝大多数行走此快路径）。
+//   3. 命中后按字面段序列在**原文**上验证完整模板（findtext 逐段；段间文本=捕获的实参）。
+//   4. 捕获实参递归本地化：整串反查 → 状态词表（名字/状态词都能翻）。
+//   5. 按 zh 模板填充（{N} 可按中文语序重排）并替换原文里的命中区间。
+//
+// 挂接：lang_fallback_apply（fallback.dm）内、整串精确反查之后——聊天/browse/状态栏/公告/maptext/
+// 职业描述等全部边界一次获得插值句翻译能力。locale==en 零开销；已译中文不再匹配英文锚，天然幂等。
+//
+// 安全性：要求模板全部字面段按序命中 + 锚为多词长段（≥10 字符含空格）+ 捕获不跨行，误匹配
+// 概率极低；相邻占位符（捕获边界不可定）与短锚模板在 setup 期剔除，交还给 LANG/反查路径。
+
+/// 锚段最低长度（字节）。短于此或不含空格的模板不进引擎（误匹配风险高，留给 LANG 改写）。
+#define I18N_TPL_MIN_ANCHOR 10
+/// 单次 apply 最多替换次数 / 单模板最多重复匹配次数 / 捕获最大长度（防病态输入）。
+#define I18N_TPL_MAX_REPLACE 8
+#define I18N_TPL_MAX_REPEAT 4
+#define I18N_TPL_MAX_CAPTURE 300
+
+// 模板记录字段下标（GLOB.i18n_tpl_records[locale] 的每条 = list(segs, order, zh, lit_len, article_slots)）。
+#define I18N_TPL_SEGS 1
+#define I18N_TPL_ORDER 2
+#define I18N_TPL_ZH 3
+#define I18N_TPL_LITLEN 4
+#define I18N_TPL_ARTICLES 5
+
+/// locale -> "ready" | "none"。
+GLOBAL_LIST_EMPTY(i18n_tpl_state)
+/// locale -> 模板记录列表（id = 下标）。
+GLOBAL_LIST_EMPTY(i18n_tpl_records)
+/// locale -> 锚序号 -> 候选模板 id 列表（与 AC sentinel 编号对应）。
+GLOBAL_LIST_EMPTY(i18n_tpl_anchor_ids)
+/// sentinel 定界符。不能用控制字节（STX/ETX）：JSON 规范禁止字符串里出现未转义控制符，
+/// BYOND json_encode 的产物会让 rust 端 setup_acreplace 静默失败（acreplace 此后返回空串）。
+/// 改用罕见的可打印数学括号 ⟦⟧（U+27E6/27E7）；即使游戏文本撞上，候选 id 只是提示，
+/// 验证阶段仍以原文逐字面段校验，最多多一次无效尝试、不会错翻。
+GLOBAL_VAR_INIT(i18n_tpl_stx, "⟦")
+GLOBAL_VAR_INIT(i18n_tpl_etx, "⟧")
+
+/// 目录模板「字面形态」→「运行时形态」归一：JSON 目录里保留着 dreammaker 源码转义
+/// （字面 \n / \" / \improper），运行时字符串里是真换行/裸引号/无宏——不归一则永远匹配不上。
+/proc/lang_tpl_normalize(text)
+	if(findtext(text, "\\"))
+		// 文法宏（`\improper` `\proper` 与冠词 `\the` `\a` …）连同后面那个空格一起剥，而且**必须最先做**：
+		// 下面的 `\t` → 制表符会把 `\the` 吃成「制表符 + he」，宏就再也认不出来了。
+		// 冠词宏在运行期变成 "the "/"a "（专名则什么都不剩），留在字面段里的话 `Protect \the `
+		// 永远对不上 `Protect the …`，全目录约 1300 条插值模板因此在反查路径上整类失效（反派目标
+		// `Protect \the {0} at all costs.` 即此）。剥掉之后冠词落进捕获值，由 lang_localize_arg
+		// 的剥冠词步骤处理（中文不需要冠词）。
+		var/regex/article_re = GLOB.i18n_article_macro_regex
+		text = article_re.Replace(text, "")
+		text = replacetext(text, "\\\"", "\"")
+		text = replacetext(text, "\\n", "\n")
+		text = replacetext(text, "\\t", "\t")
+		// DM 源码里 `\[` / `\]` 是「字面方括号」的转义（否则会被当成内插）。目录照抄源码形态，
+		// 运行时字符串里却是裸括号 —— 不归一则整条模板的字面段永远对不上
+		// （正电子脑的 `Personality requested: \[{0}\]` 即此）。与 lang_unescape_source 同一处理。
+		text = replacetext(text, "\\\[", "\[")
+		text = replacetext(text, "\\\]", "\]")
+	return text
+
+/// 把模板拆为「字面段序列 + 占位符序号序列」：segs 比 order 多 1（首段/末段可为空 =
+/// 模板以占位符开头/结尾）。非 {数字} 的花括号按字面处理。
+/proc/lang_tpl_parse(template)
+	var/list/segs = list()
+	var/list/order = list()
+	var/seg_start = 1
+	var/pos = 1
+	var/len = length(template)
+	while(pos <= len)
+		var/brace = findtext(template, "{", pos)
+		if(!brace)
+			break
+		var/close = findtext(template, "}", brace + 1)
+		if(!close || close - brace > 3) // 只认 {N}/{NN}
+			pos = brace + 1
+			continue
+		var/numtext = copytext(template, brace + 1, close)
+		if(!lang_tpl_all_digits(numtext))
+			pos = brace + 1
+			continue
+		segs += copytext(template, seg_start, brace)
+		order += text2num(numtext)
+		seg_start = close + 1
+		pos = seg_start
+	segs += copytext(template, seg_start) // 末段（可为空串）
+	return list(segs, order)
+
+/// PERF：native 的 spantext 一次算出「开头有多少个连续数字」，顶掉逐字节的 text2ascii 循环。
+/// 本 proc 现在也在 lang_interpolate 的热路径上（每个 LANG 占位符都过一次）。
+/proc/lang_tpl_all_digits(text)
+	var/len = length(text)
+	return len && spantext(text, "0123456789") == len
+
+/// 字面段里是否**只有排版类** HTML 标签（至少有一个标签，且没有 `<a>`）。
+/// `<a>` 携带的是功能（`<a href='byond://…'>here</a>` 是投票入口），剥掉就把功能弄没了，
+/// 这类模板宁可整条保持英文，也不登记剥标签变体。
+/proc/lang_tpl_formatting_tags_only(list/segs)
+	var/saw_tag = FALSE
+	for(var/seg in segs)
+		if(!findtext(seg, "<"))
+			continue
+		saw_tag = TRUE
+		var/lowered = LOWER_TEXT(seg)
+		if(findtext(lowered, "<a ") || findtext(lowered, "<a>") || findtext(lowered, "</a"))
+			return FALSE
+	return saw_tag
+
+/// 只删标签、**不 trim 也不折叠空白**。字面段是靠 findtext 精确定位的，
+/// 段首/段尾那个把占位符和词分开的空格一旦被 trim 掉，整条模板就再也匹配不上。
+/proc/lang_strip_html_tags_raw(text)
+	if(!istext(text))
+		return text
+	var/static/regex/html_tag_raw = regex(@"<[^>]*>", "g")
+	return html_tag_raw.Replace(text, "")
+
+/// 把一条逆模板登记进 records/anchors（相邻占位符、锚长门槛、半翻译自匹配三道校验在此）。
+/proc/lang_tpl_register(list/records, list/anchors, list/segs, list/order, zh_runtime, list/article_slots)
+	var/nsegs = length(segs)
+	var/lit_len = 0
+	var/anchor = ""
+	var/second = "" // 次长的合格字面段，见下面「第二锚」
+	for(var/i in 1 to nsegs)
+		var/seg = segs[i]
+		var/seg_len = length(seg)
+		lit_len += seg_len
+		if(!seg_len && i != 1 && i != nsegs) // 相邻占位符：捕获边界不可定
+			return
+		if(!findtext(seg, " "))
+			continue
+		if(seg_len > length(anchor))
+			second = anchor
+			anchor = seg
+		else if(seg_len > length(second) && seg != anchor)
+			second = seg
+	if(length(anchor) < I18N_TPL_MIN_ANCHOR)
+		return
+	if(findtext(zh_runtime, anchor)) // 半翻译（zh 仍含英文锚段，bad-MT 类）：替换无意义且会自匹配
+		return
+	records += list(list(segs, order, zh_runtime, lit_len, article_slots))
+	var/id = length(records)
+	lang_tpl_add_anchor(anchors, anchor, id)
+	// **第二锚**：AC 自动机只给不重叠的匹配，别的模板的锚只要压住这条唯一锚的一个字符，这条就永远
+	// 进不了候选。实测售货机线路面板「The speaker light is on. The language is set to …」：另一条模板的锚
+	// ` light is on.` 吃掉了句号，而本模板唯一的锚 `. The language is set to ` 正从那个句号开始 ——
+	// 整条模板目录里有、译文也在，就是匹配不上。再登记次长的合格字面段，两个锚同时被压住的概率小得多；
+	// 候选最终仍由 lang_tpl_match 逐段验证，多一个锚只多一点候选开销、不改变正确性。
+	if(length(second) >= I18N_TPL_MIN_ANCHOR && !findtext(zh_runtime, second))
+		lang_tpl_add_anchor(anchors, second, id)
+
+/proc/lang_tpl_add_anchor(list/anchors, anchor, id)
+	var/list/ids = anchors[anchor]
+	if(ids)
+		ids += id // 同一条模板的两个锚必然不同，不会重复登记；`|=` 是线性扫描，启动期十几万次就是秒级
+	else
+		anchors[anchor] = list(id)
+
+/// 把一对 en/locale 目录里的插值模板登记进 records/anchors。
+/proc/lang_tpl_register_catalog(list/records, list/anchors, list/english, list/localized)
+	if(!islist(english) || !islist(localized))
+		return
+	for(var/key in english)
+		var/en_t = english[key]
+		if(!findtext(en_t, "{"))
+			continue // 纯串走整串精确反查
+		var/zh_t = localized[key]
+		if(!zh_t || zh_t == en_t)
+			continue
+		// The normalized matcher removes DM article macros. Remember which capture follows one,
+		// so its generated English article can be removed even when the item name is unknown.
+		var/list/article_slots
+		if(findtext(en_t, "\\"))
+			var/list/raw_parsed = lang_tpl_parse(en_t)
+			var/list/raw_segs = raw_parsed[1]
+			var/list/raw_order = raw_parsed[2]
+			var/static/regex/article_at_end = regex(@"\\(the|The|an|An|a|A)\s*$")
+			for(var/i = 1, i <= length(raw_order), i++)
+				if(!article_at_end.Find(raw_segs[i]))
+					continue
+				if(!article_slots)
+					article_slots = list()
+					article_slots.len = length(raw_order)
+				article_slots[i] = TRUE
+		en_t = lang_tpl_normalize(en_t)
+		var/list/parsed = lang_tpl_parse(en_t)
+		var/list/segs = parsed[1]
+		var/list/order = parsed[2]
+		if(!length(order))
+			continue
+		var/zh_runtime = zh_t
+		if(findtext(zh_runtime, "\\"))
+			zh_runtime = lang_process_text_escapes(zh_runtime)
+		lang_tpl_register(records, anchors, segs, order, zh_runtime, article_slots)
+		// **字面段里嵌着 HTML 标签的模板，在聊天路径上永远验证不过**：`lang_fallback_apply_html`
+		// 先按标签切块，送进来的是**纯文本块**，而模板要求逐段 findtext 命中带标签的字面段。
+		// 全仓 15906 条已译插值模板里有 859 条（5.4%）是这形状——高级健康扫描仪整页
+		// （`<span class='info ml-1'>Genetic Stability: {0}%.</span><br>`）、回合总结经济行
+		// （`There were {0} {1} collected by crew this shift.<br>`）都在其中，**译文早就有**，
+		// 只是这条通道根本走不通。
+		// 解法：再登记一条**剥标签变体**记录，让它去匹配切块后的纯文本；外层标签由切块器自己
+		// 原样保留，排版不丢。
+		// **含 `<a>` 的一律不登记**（71 条）：剥掉链接会把「点击此处投票」这类**功能**弄没，
+		// 宁可整条保持英文。
+		if(lang_tpl_formatting_tags_only(segs))
+			var/list/stripped_segs = list()
+			for(var/seg in segs)
+				stripped_segs += lang_strip_html_tags_raw(seg)
+			lang_tpl_register(records, anchors, stripped_segs, order, lang_strip_html_tags_raw(zh_runtime), article_slots)
+
+/// Builds one locale's reverse-template index. Bootstrap calls return without recording state.
+/proc/lang_tpl_setup(locale)
+	if(locale == DEFAULT_UI_LOCALE)
+		return FALSE
+	var/state = GLOB.i18n_tpl_state[locale]
+	if(state)
+		return state == "ready"
+	if(!lang_runtime_can_build_indexes() || !lang_catalog_locale_is_loaded(locale))
+		return FALSE
+	var/list/forward_by_locale = GLOB.i18n_catalogs[I18N_CATALOG_FORWARD_BUCKET]
+	var/list/english = forward_by_locale[DEFAULT_UI_LOCALE]
+	var/list/localized = forward_by_locale[locale]
+	if(!islist(english) || !islist(localized) || !length(english))
+		return FALSE
+	var/list/records = list()
+	var/list/anchors = list() // 锚文本 -> 候选 id 列表
+	lang_tpl_register_catalog(records, anchors, english, localized)
+	// 手维护的 global_reverse 目录（`_templates.json` 等）里的模板同样要进引擎：运行期在类型名两侧
+	// 拼缀的实例名（`"[电路名] (Machine Board)"`、`"poster - [海报名]"`）源码里只有插值赋值，抽取器
+	// 按设计不收（收了是一大片运行期合成名噪音），这些骨架只能手写。它们从前只在 paired 桶里，
+	// 而模板引擎只扫 forward 桶 —— 写了也从来没生效。
+	var/list/paired_by_locale = GLOB.i18n_catalogs[I18N_CATALOG_PAIRED_BUCKET]
+	lang_tpl_register_catalog(records, anchors, paired_by_locale?[DEFAULT_UI_LOCALE]?[I18N_DOMAIN_GLOBAL_REVERSE], paired_by_locale?[locale]?[I18N_DOMAIN_GLOBAL_REVERSE])
+	if(!length(anchors))
+		GLOB.i18n_tpl_state[locale] = "none"
+		return FALSE
+	var/list/patterns = list()
+	var/list/replacements = list()
+	var/list/anchor_ids = list()
+	var/stx = GLOB.i18n_tpl_stx
+	var/etx = GLOB.i18n_tpl_etx
+	var/idx = 0
+	for(var/anchor in anchors)
+		idx++
+		patterns += anchor
+		replacements += "[stx][idx][etx]"
+		anchor_ids += list(anchors[anchor])
+	GLOB.i18n_tpl_records[locale] = records
+	GLOB.i18n_tpl_anchor_ids[locale] = anchor_ids
+	// **必须 LeftmostLongest**。默认的 Standard 在同一起点取**最短**匹配，而锚之间大量互为前缀：
+	// "{0} begins to make an incision in {1}." 的锚 " begins to make an incision in " 会把
+	// "{0} begins to make an incision in the organs within {1}." 那条更长的锚整个遮住，甚至更短的
+	// 通用锚（" begins to "…）会把两条都遮住。被遮住的锚**不进候选**，于是唯一能匹配的那条模板
+	// 根本不会被尝试，整句原样留英文——手术台上每一步的可见消息就是这么全程没翻（i18n_real_catalog
+	// 守这条）。原注释说「只是少收一个候选、不影响正确性」，不成立：少收的正是对的那个。
+	// 这条对模板锚同样是硬约束：目录里大量锚互为前缀，最短匹配会让「对的那个」被遮住。
+	var/static/list/tpl_ac_options = list("match_kind" = "LeftmostLongest")
+	rustg_setup_acreplace_with_options("i18n_tpl_[locale]", tpl_ac_options, patterns, replacements)
+	GLOB.i18n_tpl_state[locale] = "ready"
+	return TRUE
+
+/// 对一段输出文本应用模板逆匹配。locale 为 null 用全服 locale；en/未就绪原样返回。
+/proc/lang_template_apply(text, locale)
+	if(isnull(locale))
+		locale = GLOB.i18n_server_locale || DEFAULT_UI_LOCALE
+	if(locale == DEFAULT_UI_LOCALE || !istext(text) || !length(text))
+		return text
+	if(!lang_tpl_setup(locale))
+		return text
+	var/marked = rustg_acreplace("i18n_tpl_[locale]", text)
+	if(marked == text)
+		return text // 无锚命中：快路径
+	// 解析 sentinel，按出现顺序收集去重候选 id。
+	var/list/anchor_ids = GLOB.i18n_tpl_anchor_ids[locale]
+	var/list/records = GLOB.i18n_tpl_records[locale]
+	var/stx = GLOB.i18n_tpl_stx
+	var/etx = GLOB.i18n_tpl_etx
+	var/list/candidates = list()
+	var/stx_len = length(stx) // 多字节 UTF-8 定界符：必须按字节长推进，s+1 会切进字符中间
+	var/etx_len = length(etx)
+	var/pos = 1
+	while(TRUE)
+		var/s = findtext(marked, stx, pos)
+		if(!s)
+			break
+		var/e = findtext(marked, etx, s + stx_len)
+		if(!e)
+			break
+		var/aidx = text2num(copytext(marked, s + stx_len, e))
+		pos = e + etx_len
+		if(!aidx || aidx > length(anchor_ids))
+			continue
+		for(var/id in anchor_ids[aidx])
+			candidates |= id
+	if(!length(candidates))
+		return text
+	// 字面量总长降序：防短模板抢走长模板的一段。
+	if(length(candidates) > 1)
+		var/list/sorted = list()
+		for(var/id in candidates)
+			var/list/record = records[id]
+			var/inserted = FALSE
+			for(var/i in 1 to length(sorted))
+				var/list/other = records[sorted[i]]
+				if(record[I18N_TPL_LITLEN] > other[I18N_TPL_LITLEN])
+					sorted.Insert(i, id)
+					inserted = TRUE
+					break
+			if(!inserted)
+				sorted += id
+		candidates = sorted
+	var/replaced = 0
+	for(var/id in candidates)
+		var/list/record = records[id]
+		var/guard = 0
+		while(guard++ < I18N_TPL_MAX_REPEAT)
+			var/list/m = lang_tpl_match(text, record[I18N_TPL_SEGS], record[I18N_TPL_ORDER], record[I18N_TPL_ZH], locale, record[I18N_TPL_ARTICLES])
+			if(!m)
+				break
+			text = copytext(text, 1, m[1]) + m[3] + copytext(text, m[2])
+			lang_count_layer_hit(I18N_LAYER_TEMPLATE)
+			if(++replaced >= I18N_TPL_MAX_REPLACE)
+				return text
+	return text
+
+/// 在 text 上验证一条逆模板。命中返回 list(起点, 终点(开区间), 替换文本)；否则 null。
+/proc/lang_tpl_match(text, list/segs, list/order, zh_template, locale, list/article_slots)
+	var/nsegs = length(segs)
+	var/leading_ph = (segs[1] == "")
+	var/trailing_ph = (segs[nsegs] == "")
+	var/first_lit_idx = leading_ph ? 2 : 1
+	var/first_lit = segs[first_lit_idx]
+	var/p = findtext(text, first_lit)
+	if(!p)
+		return null
+	var/list/captures = list()
+	var/match_start
+	var/cursor = p + length(first_lit)
+	if(leading_ph)
+		// 前导占位符：捕获从最近的行首/句界开始，再把打头的完整 HTML 标签与空白留在替换区外。
+		var/cap_start = 1
+		var/best = 0
+		for(var/boundary in list("\n", ". ", "! ", "? "))
+			var/b = findlasttext(text, boundary, p)
+			if(b && b + length(boundary) > best)
+				best = b + length(boundary)
+		if(best)
+			cap_start = best
+		var/lead = copytext(text, cap_start, p)
+		var/skip = lang_tpl_leading_skip(lead)
+		match_start = cap_start + skip
+		var/capture = copytext(lead, skip + 1)
+		if(length(capture) > I18N_TPL_MAX_CAPTURE || lang_tpl_capture_splits_tag(capture))
+			return null
+		captures += capture
+	else
+		match_start = p
+	// 中间段：依序定位，段间即捕获。
+	for(var/i in (first_lit_idx + 1) to (trailing_ph ? nsegs - 1 : nsegs))
+		var/seg = segs[i]
+		var/q = findtext(text, seg, cursor)
+		var/capture = q ? copytext(text, cursor, q) : null
+		// A separator found inside a tag (the space in `<span class=…>`) is not the one between the placeholders: try the next.
+		while(q && lang_tpl_capture_splits_tag(capture) && length(capture) <= I18N_TPL_MAX_CAPTURE)
+			q = findtext(text, seg, q + 1)
+			capture = q ? copytext(text, cursor, q) : null
+		if(!q)
+			return null
+		if(length(capture) > I18N_TPL_MAX_CAPTURE || findtext(capture, "\n") || lang_tpl_capture_splits_tag(capture))
+			return null
+		captures += capture
+		cursor = q + length(seg)
+	var/match_end = cursor
+	if(trailing_ph)
+		// 尾随占位符：捕获到最近的行尾/句界，再把结尾的闭合标签与空白留在替换区外。
+		var/cap_end = length(text) + 1
+		for(var/boundary in list("\n", ". ", "! ", "? "))
+			var/b = findtext(text, boundary, cursor)
+			if(b && b < cap_end)
+				cap_end = b
+		var/capture = copytext(text, cursor, cap_end)
+		var/trail_skip = lang_tpl_trailing_skip(capture)
+		capture = copytext(capture, 1, length(capture) - trail_skip + 1)
+		if(length(capture) > I18N_TPL_MAX_CAPTURE || lang_tpl_capture_splits_tag(capture))
+			return null
+		captures += capture
+		match_end = cursor + length(capture)
+	// 填充 zh 模板：captures 按 en 占位符出现顺序，对应 order[i] 号。
+	var/result = zh_template
+	for(var/i in 1 to length(order))
+		// 被引号直接包住的占位符（`says, "{2}"`、`has messaged {0}, "{1}"`）按惯例是**引述的原话**——
+		// 多半是玩家自己打的字。原样填回，绝不拿去反查（玩家说 "Yes" 不能变成「是」）。
+		var/capture_value = captures[i]
+		if(!lang_tpl_quoted_slot(segs, i))
+			if(article_slots?[i] && !GLOB.i18n_identity_names?[capture_value])
+				capture_value = lang_strip_article(capture_value) || capture_value
+			capture_value = lang_tpl_localize_arg(capture_value, locale)
+		result = replacetext(result, "{[order[i]]}", capture_value)
+	if(findtext(result, "\\"))
+		result = lang_process_text_escapes(result)
+	return list(match_start, match_end, result)
+
+/// 前导捕获里打头的「完整 HTML 标签 + 空白」长度（这部分不属于实参，留在替换区外）。
+/// A capture that starts or ends inside an HTML tag means the literal matched inside the markup
+/// (`Do you want to play as {0} {1}?` taking the space in `<span class=…>`). Filling the zh template
+/// with the two halves glues the tag back without its space (`<spanclass='notice'>`).
+/proc/lang_tpl_capture_splits_tag(capture)
+	var/last_open = findlasttext(capture, "<")
+	if(last_open && !findtext(capture, ">", last_open))
+		return TRUE
+	var/first_close = findtext(capture, ">")
+	if(first_close)
+		var/first_open = findtext(capture, "<")
+		if(!first_open || first_open > first_close)
+			return TRUE
+	return FALSE
+
+/proc/lang_tpl_leading_skip(text)
+	var/len = length(text)
+	var/i = 1
+	while(i <= len)
+		var/ch = text2ascii(text, i)
+		if(ch == 32 || ch == 9) // 空格/制表符
+			i++
+			continue
+		if(ch == 60) // "<"
+			var/close = findtext(text, ">", i + 1)
+			if(!close)
+				break
+			i = close + 1
+			continue
+		break
+	return i - 1
+
+/// 尾随捕获里结尾的「完整闭合标签 + 空白」长度（同上，从尾部数）。
+/proc/lang_tpl_trailing_skip(text)
+	var/len = length(text)
+	var/i = len
+	while(i >= 1)
+		var/ch = text2ascii(text, i)
+		if(ch == 32 || ch == 9)
+			i--
+			continue
+		if(ch == 62) // ">"
+			var/open = findlasttext(text, "<", i)
+			if(!open)
+				break
+			i = open - 1
+			continue
+		break
+	return len - i
+
+/// 捕获实参本地化：统一链（状态词→代词→整串反查→冠词剥离，见 runtime.dm 的 lang_localize_arg）。
+/// 查不到原样保留（数字/已中文/玩家名）。这里曾经还有一层「多词捕获退字面 AC」，随 AC 整层删除
+/// —— 子串替换在一个捕获值上只会产出「中文碎片嵌在英文里」，而那正是漏翻采集要记下来的形态。
+/// 第 i 个捕获（位于字面段 segs[i] 与 segs[i + 1] 之间）是否被引号直接包住。
+/proc/lang_tpl_quoted_slot(list/segs, i)
+	if(i < 1 || i + 1 > length(segs))
+		return FALSE
+	var/before = segs[i]
+	var/after = segs[i + 1]
+	if(!length(before) || !length(after))
+		return FALSE
+	// 只认双引号类：单引号在这个仓库里多是标签名/模式名（`Mode: '{0}'`），那些照常翻。
+	var/static/list/quote_pairs = list("\"" = "\"", "“" = "”", "「" = "」")
+	for(var/open in quote_pairs)
+		if(copytext(before, -length(open)) == open && findtext(after, quote_pairs[open]) == 1)
+			return TRUE
+	return FALSE
+
+/proc/lang_tpl_localize_arg(capture, locale)
+	if(!istext(capture) || !length(capture))
+		return capture
+	var/zh = lang_localize_arg(capture)
+	if(zh != capture)
+		return zh
+	// 漏翻采集：模板命中了、捕获值却没翻 —— 表现为「中文句式里嵌着英文词」，和 LANG 实参漏出
+	// 同形，但成因在另一条链上（模板逆匹配捕获 vs 调用点实参），所以要分开记。
+	lang_log_miss_value(capture, "capture")
+	return capture
+
+#undef I18N_TPL_MIN_ANCHOR
+#undef I18N_TPL_MAX_REPLACE
+#undef I18N_TPL_MAX_REPEAT
+#undef I18N_TPL_MAX_CAPTURE
+#undef I18N_TPL_SEGS
+#undef I18N_TPL_ORDER
+#undef I18N_TPL_ZH
+#undef I18N_TPL_LITLEN
+#undef I18N_TPL_ARTICLES

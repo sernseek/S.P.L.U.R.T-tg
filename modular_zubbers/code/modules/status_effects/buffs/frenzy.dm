@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /**
  * # Status effect
@@ -34,9 +35,9 @@
 
 	// Disable ALL Powers and notify their entry
 	bloodsuckerdatum.DisableAllPowers(forced = TRUE)
-	to_chat(owner, span_userdanger("<FONT size = 3>Blood! You need Blood, now! You enter a total Frenzy! You will DIE if you do not get BLOOD."))
-	to_chat(owner, span_announce("* Bloodsucker Tip: While in Frenzy, you instantly Aggresively grab, have stun resistance, cannot speak, hear, or use any powers outside of Feed, Trespass, Lunge, Brawn and Haste (If you have them)."))
-	owner.balloon_alert(owner, "you enter a frenzy! Drink blood, or you will die!")
+	to_chat(owner, span_userdanger(LANG("datum.3fbe04bec46a1362", null)))
+	to_chat(owner, span_announce(LANG("datum.910163746a4ca38f", null)))
+	owner.balloon_alert(owner, LANG("datum.426073d2084bdf49", null))
 	SEND_SIGNAL(bloodsuckerdatum, COMSIG_BLOODSUCKER_ENTERS_FRENZY)
 
 	// Give the other Frenzy effects
@@ -56,7 +57,7 @@
 	return ..()
 
 /datum/status_effect/frenzy/on_remove()
-	owner.balloon_alert(owner, "you come back to your senses.")
+	owner.balloon_alert(owner, LANG("datum.dbd290164a41cce4", null))
 	UnregisterSignal(owner, list(COMSIG_LIVING_DEATH, COMSIG_MOB_REMOVING_CUFFS))
 	owner.remove_traits(trait_list, FRENZY_TRAIT)
 	if(was_tooluser)

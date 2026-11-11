@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Become the official Captain of the station
 /datum/grand_finale/usurp
 	name = "Usurpation"
@@ -17,13 +18,7 @@
 		crewmate.Unconscious(3 SECONDS) // Everyone falls unconscious but not everyone gets told about a new captain
 		if (crewmate == invoker || IS_HUMAN_INVADER(crewmate))
 			continue
-		to_chat(crewmate, span_notice("The world spins and dissolves. Your past flashes before your eyes, backwards.\n\
-			Life strolls back into the ocean and shrinks into nothingness, planets explode into storms of solar dust, \
-			the stars rush back to greet each other at the beginning of things and then... you snap back to the present. \n\
-			Everything is just as it was and always has been. \n\n\
-			A stray thought sticks in the forefront of your mind. \n\
-			[span_hypnophrase("I'm so glad that [invoker.real_name] is our legally appointed Captain!")] \n\
-			Is... that right?"))
+		to_chat(crewmate, span_notice(LANG("datum.175f0f209ec3dae7", list(span_hypnophrase("I'm so glad that [invoker.real_name] is our legally appointed Captain!")))))
 		if (is_captain_job(crewmate.mind.assigned_role))
 			former_captains += crewmate
 			demote_to_assistant(crewmate)
@@ -33,7 +28,7 @@
 
 	dress_candidate(invoker)
 	GLOB.manifest.modify(invoker.real_name, JOB_CAPTAIN, JOB_CAPTAIN)
-	minor_announce("Captain [invoker.real_name] on deck!")
+	minor_announce(LANG("datum.dec8c76d1a6e3362", list(invoker.real_name)))
 
 	// Enlist some crew to try and restore the natural order
 	for (var/mob/living/carbon/human/former_captain as anything in former_captains)

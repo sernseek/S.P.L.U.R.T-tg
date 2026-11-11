@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/reagent_containers/cup
 	var/beingChugged = FALSE // For checking
 
@@ -20,8 +21,8 @@
 
 	if(target_mob == user && user.zone_selected == BODY_ZONE_PRECISE_MOUTH && !beingChugged)
 		beingChugged = TRUE
-		user.visible_message(span_notice("[user] starts chugging [src]."), \
-			span_notice("You start chugging [src]."))
+		user.visible_message(span_notice(LANG("obj.f29cf96269ccfbb3", list(user, src))), \
+			span_notice(LANG("obj.98635752f317d07b", list(src))))
 		if(!do_after(user, 3 SECONDS, target_mob))
 			beingChugged = FALSE
 			return
@@ -29,8 +30,8 @@
 			beingChugged = FALSE
 			return
 		gulp_size = 50
-		user.visible_message(span_notice("[user] chugs [src]."), \
-			span_notice("You chug [src]."))
+		user.visible_message(span_notice(LANG("obj.5b2c376e9b0e2a4c", list(user, src))), \
+			span_notice(LANG("obj.a40bbec97a2552b9", list(src))))
 		beingChugged = FALSE
 
 	. = ..()

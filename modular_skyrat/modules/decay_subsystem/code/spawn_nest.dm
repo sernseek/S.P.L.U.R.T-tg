@@ -1,4 +1,5 @@
-ADMIN_VERB(spawn_mob_spawner, R_ADMIN, "Spawn mob spawner", "Spawns a mob spawner structure at your location.", ADMIN_CATEGORY_FUN)
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+ADMIN_VERB(spawn_mob_spawner, R_ADMIN, "生成生物生成器", "Spawns a mob spawner structure at your location.", ADMIN_CATEGORY_FUN)
 	user.holder?.spawn_mob_spawner()
 
 /datum/admins/proc/spawn_mob_spawner(chosen_mob as text)

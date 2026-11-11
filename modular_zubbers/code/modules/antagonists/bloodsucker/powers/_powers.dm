@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/bloodsucker
 	name = "Vampiric Gift"
 	background_icon = 'modular_zubbers/icons/mob/actions/bloodsucker.dmi'
@@ -104,12 +105,12 @@
 		return FALSE
 	// Cooldown?
 	if(!COOLDOWN_FINISHED(src, next_use_time))
-		owner.balloon_alert(owner, "power unavailable!")
+		owner.balloon_alert(owner, LANG("datum.790edbb4a7886ee4", null))
 		return FALSE
 	if(!bloodsuckerdatum_power)
 		var/mob/living/living_owner = owner
 		if(!HAS_TRAIT(living_owner, TRAIT_NOBLOOD) && living_owner.blood_volume <= bloodcost)
-			to_chat(owner, span_warning("You need at least [bloodcost] blood to activate [name]"))
+			to_chat(owner, span_warning(LANG("datum.a7af8f27f97511b8", list(bloodcost, name))))
 			return FALSE
 		return TRUE
 
@@ -117,7 +118,7 @@
 	if(bloodsuckerdatum_power.is_frenzied())
 		return TRUE
 	if(bloodsuckerdatum_power.GetBloodVolume() < bloodcost)
-		to_chat(owner, span_warning("You need at least [bloodcost] blood to activate [name]"))
+		to_chat(owner, span_warning(LANG("datum.a7af8f27f97511b8", list(bloodcost, name))))
 		return FALSE
 	return TRUE
 
@@ -148,7 +149,7 @@
 		return FALSE
 	// Constant Cost (out of blood)
 	if(constant_bloodcost > 0 && !can_pay_blood(user))
-		to_chat(user, span_warning("You don't have the blood to upkeep [src]."))
+		to_chat(user, span_warning(LANG("datum.77ac6e04023c2718", list(src))))
 		return FALSE
 	return TRUE
 
@@ -157,30 +158,30 @@
 		return FALSE
 	if(!(bloodsucker_check_flags & BP_CAN_USE_HEARTLESS) && bloodsuckerdatum_power && !user.get_organ_slot(ORGAN_SLOT_HEART))
 		if(feedback)
-			to_chat(user, span_warning("To channel your powers you need a heart!"))
+			to_chat(user, span_warning(LANG("datum.9b813324e35d95e6", null)))
 		return FALSE
 	if(isbrain(user))
 		if(feedback)
-			to_chat(user, span_warning("What are you going to do, jump on someone and suck their blood? You're just a head."))
+			to_chat(user, span_warning(LANG("datum.39fe3528ea697412", null)))
 		return FALSE
 	// Torpor?
 	if((bloodsucker_check_flags & BP_CANT_USE_IN_TORPOR) && bloodsuckerdatum_power?.is_in_torpor())
 		if(feedback)
-			to_chat(user, span_warning("Not while you're in Torpor."))
+			to_chat(user, span_warning(LANG("datum.32c481fa0de80f4d", null)))
 		return FALSE
 	if(!(bloodsucker_check_flags & BP_CAN_USE_TRANSFORMED) && (user.has_status_effect(/datum/status_effect/shapechange_mob/from_spell) || user.has_status_effect(/datum/status_effect/shapechange_mob)))
 		if(feedback)
-			to_chat(user, span_warning("You can't do this while transformed!"))
+			to_chat(user, span_warning(LANG("datum.933e0cfead443c87", null)))
 		return FALSE
 	// Frenzy?
 	if((bloodsucker_check_flags & BP_CANT_USE_IN_FRENZY) && (bloodsuckerdatum_power?.is_frenzied()))
 		if(feedback)
-			to_chat(user, span_warning("You cannot use powers while in a Frenzy!"))
+			to_chat(user, span_warning(LANG("datum.ee71556c7e4e4457", null)))
 		return FALSE
 	// Stake?
 	if(!(bloodsucker_check_flags & BP_CAN_USE_WHILE_STAKED) && user.am_staked())
 		if(feedback)
-			to_chat(user, span_warning("You have a stake in your chest! Your powers are useless."))
+			to_chat(user, span_warning(LANG("datum.ea4c199263197d89", null)))
 		return FALSE
 	return TRUE
 
@@ -291,9 +292,9 @@
 	SHOULD_CALL_PARENT(TRUE)
 	. = list()
 	if(level_current != -1)
-		. += "LEVEL: [level_current] [name]:"
+		. += LANG("datum.fe735024dc225cac", list(level_current, name))
 	else
-		. += "(Inherent Power) [name]:"
+		. += LANG("datum.5b349131a6d8d2b1", list(name))
 
 	. += get_power_explanation_extended()
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/folder/biscuit
 	name = "biscuit card"
 	desc = "A biscuit card. On the back, <b>DO NOT DIGEST</b> is printed in large lettering."
@@ -37,7 +38,7 @@
 		contained_slip = arrived
 
 /obj/item/folder/biscuit/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] tries to eat [src]! [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.e0ba9e06371eb6c8", list(user, src, user.p_theyre()))))
 	playsound(get_turf(user), 'sound/effects/wounds/crackandbleed.ogg', 40, TRUE) //Don't eat plastic cards kids, they get really sharp if you chew on them.
 	return BRUTELOSS
 
@@ -50,17 +51,17 @@
 /obj/item/folder/biscuit/proc/crack_check(mob/user)
 	if (cracked)
 		return TRUE
-	balloon_alert(user, "open first!")
+	balloon_alert(user, LANG("obj.c3fdd0858199d5fc", null))
 	return FALSE
 
 /obj/item/folder/biscuit/examine()
 	. = ..()
 	if(cracked)
-		. += span_notice("It's been cracked open.")
+		. += span_notice(LANG("obj.1578ef9c7d266b20", null))
 	else
-		. += span_notice("You'll need to crack it open to access its contents.")
+		. += span_notice(LANG("obj.d721f55096b78d16", null))
 		if(contained_slip)
-			. += "This one contains [contained_slip.name]."
+			. += LANG("obj.4d91809e7038e8d9", list(contained_slip.name))
 
 /obj/item/folder/biscuit/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
 	. = ..()
@@ -89,7 +90,7 @@
 /obj/item/folder/biscuit/attack_self(mob/user)
 	add_fingerprint(user)
 	if (!cracked)
-		if (tgui_alert(user, "Do you want to crack it open?", "Biscuit Cracking", list("Yes", "No")) != "Yes")
+		if (tgui_alert(user, LANG("obj.41734e8fafb5276a", null), LANG("obj.e70d9bb9eabec2fa", null), list("Yes", "No")) != "Yes")
 			return
 		cracked = TRUE
 		contents_hidden = FALSE
@@ -131,7 +132,7 @@
 /obj/item/folder/biscuit/unsealed/examine()
 	. = ..()
 	if(!has_been_sealed)
-		. += span_notice("This one could be sealed <b>in hand</b>. Once sealed, the contents are inaccessible until cracked open again - but once opened this is irreversible.")
+		. += span_notice(LANG("obj.a4573a5721d4ea00", null))
 
 /obj/item/folder/biscuit/unsealed/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
 	. = ..()
@@ -146,7 +147,7 @@
 		return ..()
 	if(has_been_sealed)
 		return
-	if(tgui_alert(user, "Do you want to seal it? This can only be done once.", "Biscuit Sealing", list("Yes", "No")) != "Yes")
+	if(tgui_alert(user, LANG("obj.2489506110fcf6d1", null), LANG("obj.c91fe9714839e15b", null), list("Yes", "No")) != "Yes")
 		return
 	cracked = FALSE
 	has_been_sealed = TRUE

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The max amount of options someone can have in a custom vote.
 #define MAX_CUSTOM_VOTE_OPTIONS 10
 
@@ -29,8 +30,8 @@
 /datum/vote/custom_vote/create_vote(mob/vote_creator)
 	var/custom_count_method = tgui_input_list(
 		user = vote_creator,
-		message = "Single, multiple, or ranked choice?", // BUBBER EDIT CHANGE - Ranked Choice Voting - Original: "Single or multiple choice?"
-		title = "Choice Method",
+		message = LANG("datum.0f60ce16a01ce940", null), // BUBBER EDIT CHANGE - Ranked Choice Voting - Original: LANG("datum.84e9a377ea157578", null)
+		title = LANG("datum.84e9a377ea157578", null),
 		items = list("Single", "Multiple", "Ranked"), // BUBBER EDIT CHANGE - Ranked Choice Voting - Original: ("Single", "Multiple")
 		default = "Single",
 	)
@@ -45,8 +46,8 @@
 			// Ask for the threshold if it's ranked voting
 			var/threshold = tgui_input_number(
 				user = vote_creator,
-				message = "Set the victory threshold percentage (1-100)",
-				title = "Ranked Choice Threshold",
+				message = LANG("datum.e153ba9f37aba5db", null),
+				title = LANG("datum.b1a990ffedf99960", null),
 				default = 50,
 				min_value = 1,
 				max_value = 100
@@ -59,13 +60,13 @@
 			return FALSE
 		else
 			stack_trace("Got '[custom_count_method]' in create_vote() for custom voting.")
-			to_chat(vote_creator, span_boldwarning("Unknown choice method. Contact a coder."))
+			to_chat(vote_creator, span_boldwarning(LANG("datum.af39741091b78e82", null)))
 			return FALSE
 
 	var/custom_win_method = tgui_input_list(
 		user = vote_creator,
-		message = "How should the vote winner be determined?",
-		title = "Winner Method",
+		message = LANG("datum.607a30ba21af44a8", null),
+		title = LANG("datum.5553562d2fd6336a", null),
 		items = list("Simple", "Weighted Random", "Ranked", "No Winner"), // BUBBER EDIT CHANGE - Ranked Choice Voting - Original: ("Simple", "Weighted Random", "No Winner")
 		default = "Simple",
 	)
@@ -84,13 +85,13 @@
 			return FALSE
 		else
 			stack_trace("Got '[custom_win_method]' in create_vote() for custom voting.")
-			to_chat(vote_creator, span_boldwarning("Unknown winner method. Contact a coder."))
+			to_chat(vote_creator, span_boldwarning(LANG("datum.52bffd7fcbfdd95c", null)))
 			return FALSE
 
 	var/display_stats = tgui_alert(
 		vote_creator,
-		"Should voting statistics be public?",
-		"Show voting stats?",
+		LANG("datum.7998d1d2c53dba24", null),
+		LANG("datum.8c4cf8fef3b2b93c", null),
 		list("Yes", "No"),
 	)
 
@@ -101,8 +102,8 @@
 	if (!display_statistics)
 		var/set_print_result = tgui_alert(
 			vote_creator,
-			"Should the vote tally be public after the vote is concluded?",
-			"Print vote tally after vote?",
+			LANG("datum.52aba783adabfc19", null),
+			LANG("datum.136c1bae7036305c", null),
 			list("Yes", "No"),
 		)
 
@@ -111,13 +112,13 @@
 
 		print_results = set_print_result == "Yes"
 
-	override_question = tgui_input_text(vote_creator, "What is the vote for?", "Custom Vote")
+	override_question = tgui_input_text(vote_creator, LANG("datum.499af3807ef2b8c8", null), LANG("datum.43aff5cd95e8d9aa", null))
 	if(!override_question)
 		return FALSE
 
 	default_choices = list()
 	for(var/i in 1 to MAX_CUSTOM_VOTE_OPTIONS)
-		var/option = tgui_input_text(vote_creator, "Please enter an option, or hit cancel to finish. [MAX_CUSTOM_VOTE_OPTIONS] max.", "Options", max_length = MAX_NAME_LEN)
+		var/option = tgui_input_text(vote_creator, LANG("datum.f2cced25a446e307", list(MAX_CUSTOM_VOTE_OPTIONS)), LANG("datum.9cb8b82064c9e7e8", null), max_length = MAX_NAME_LEN)
 		if(!vote_creator?.client)
 			return FALSE
 		if(!option)
@@ -135,6 +136,6 @@
 
 /datum/vote/custom_vote/initiate_vote(initiator, duration)
 	. = ..()
-	. += "\n[override_question]"
+	. += LANG("datum.65aac1b5abce675a", list(override_question))
 
 #undef MAX_CUSTOM_VOTE_OPTIONS

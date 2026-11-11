@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/carrier/soulcatcher
 	able_to_transfer_to_another_carrier = TRUE
 	/// Are ghosts currently able to join this soulcatcher?
@@ -43,13 +44,13 @@
 
 	var/signal_result = SEND_SIGNAL(parent_body, COMSIG_SOULCATCHER_SCAN_BODY, parent_body)
 	if(!signal_result)
-		to_chat(user, span_warning("[parent_body] has already been scanned!"))
+		to_chat(user, span_warning(LANG("datum.f1a321a6f7add667", list(parent_body))))
 		return FALSE
 
 	if(istype(parent, /obj/item/handheld_soulcatcher))
 		var/obj/item/handheld_soulcatcher/parent_device = parent
 		playsound(parent_device, 'modular_skyrat/modules/modular_implants/sounds/default_good.ogg', 50, FALSE, ignore_walls = FALSE)
-		parent_device.visible_message(span_notice("[parent_device] beeps: [parent_body] is now scanned."))
+		parent_device.visible_message(span_notice(LANG("datum.1f4444cd4b27c35e", list(parent_device, parent_body))))
 
 	return TRUE
 
@@ -105,11 +106,11 @@
 	current_mobs += new_soul
 	soul_component.current_room = WEAKREF(src)
 
-	to_chat(new_soul, span_cyan("You find yourself now inside of: [name]"))
+	to_chat(new_soul, span_cyan(LANG("datum.c58d3494aa234e65", list(name))))
 	to_chat(new_soul, span_notice(room_description))
-	to_chat(new_soul, span_doyourjobidiot("You have entered a soulcatcher, do not share any information you have received while a ghost. If you have died within the round, you do not know your identity until your body has been scanned, standard blackout policy also applies."))
-	to_chat(new_soul, span_notice("While inside of [src], you are able to speak and emote by using the normal hotkeys and verbs, unless disabled by the owner."))
-	to_chat(new_soul, span_notice("You may use the leave soulcatcher verb to leave the soulcatcher and return to your body at any time."))
+	to_chat(new_soul, span_doyourjobidiot(LANG("datum.3cf794d261870fe3", null)))
+	to_chat(new_soul, span_notice(LANG("datum.701d7054f0133e5f", list(src))))
+	to_chat(new_soul, span_notice(LANG("datum.30f996e621854f39", null)))
 
 	var/atom/parent_atom = parent_object
 	if(istype(parent_atom))

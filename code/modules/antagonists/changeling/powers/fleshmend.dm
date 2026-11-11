@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/changeling/fleshmend
 	name = "Fleshmend"
 	desc = "Our flesh rapidly regenerates, healing our burns, bruises, and shortness of breath, as well as hiding all of our scars. Costs 20 chemicals."
@@ -12,10 +13,10 @@
 //Can be used whilst unconscious.
 /datum/action/changeling/fleshmend/sting_action(mob/living/user)
 	if(user.has_status_effect(/datum/status_effect/fleshmend))
-		user.balloon_alert(user, "already fleshmending!")
+		user.balloon_alert(user, LANG("datum.67856bf3d2e75891", null))
 		return
 	..()
-	to_chat(user, span_notice("We begin to heal rapidly."))
+	to_chat(user, span_notice(LANG("datum.e108028e6e3e30d7", null)))
 	user.apply_status_effect(/datum/status_effect/fleshmend)
 	return TRUE
 

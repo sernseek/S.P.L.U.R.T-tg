@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/reagent_containers/vapecart
 	name = "vape cart"
 	desc = "A vape cart filled with nicotine."
@@ -16,12 +17,12 @@
 		return NONE
 	if(target_vape.screw == TRUE && !target_vape.reagents.total_volume)
 		src.reagents.trans_to(target_vape, src.volume, transferred_by = user)
-		to_chat(user, span_notice("You plug the [src.name] into the vape."))
+		to_chat(user, span_notice(LANG("obj.f644f3ddf4e98313", list(src.name))))
 		qdel(src)
 	else if(!target_vape.screw)
-		to_chat(user, span_warning("You need to open the cap to do that!"))
+		to_chat(user, span_warning(LANG("obj.d55ac35860724a16", null)))
 	else
-		to_chat(user, span_warning("[target_vape] is already full!"))
+		to_chat(user, span_warning(LANG("obj.947fe303bb786182", list(target_vape))))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/vapecart/empty
@@ -33,15 +34,15 @@
 
 /obj/item/reagent_containers/vapecart/empty/attack_self(mob/user)
 	if(reagents.total_volume > 0)
-		to_chat(user, span_notice("You empty [src] of all reagents."))
+		to_chat(user, span_notice(LANG("obj.44e03ef830341105", list(src))))
 		reagents.clear_reagents()
 
 /obj/item/reagent_containers/vapecart/empty/attackby(obj/item/attacked_item, mob/user, params)
 	if (istype(attacked_item, /obj/item/pen) || istype(attacked_item, /obj/item/toy/crayon))
 		if(!user.is_literate())
-			to_chat(user, span_notice("You scribble illegibly on the label of the vape cart!"))
+			to_chat(user, span_notice(LANG("obj.1035c5d6fd03f4fb", null)))
 			return
-		var/new_title = stripped_input(user, "What would you like to label the vape cart?", name, null, 53)
+		var/new_title = stripped_input(user, LANG("obj.e0a84e4143d49614", null), name, null, 53)
 		if(!user.can_perform_action(src))
 			return
 		if(user.get_active_held_item() != attacked_item)

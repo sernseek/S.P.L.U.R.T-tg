@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/head/wig
 	var/obj/item/clothing/head/head_accessory
 	var/mutable_appearance/head_accessory_MA
@@ -18,7 +19,7 @@
 	if(item_path && !head_accessory)
 		add_head_accessory(attachment)
 	else
-		to_chat(user, span_notice("You can't put \the [attachment.name] on the head of \the [holder.name]"))
+		to_chat(user, span_notice(LANG("obj.8b39dbdf4490ad5e", list(attachment.name, holder.name))))
 		return
 
 /obj/item/clothing/head/wig/proc/add_head_accessory(obj/item/clothing/attachment)

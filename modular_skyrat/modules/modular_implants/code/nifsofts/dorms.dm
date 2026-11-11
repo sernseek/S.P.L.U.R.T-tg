@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/disk/nifsoft_uploader/dorms
 	name = "Grimoire Libidine"
 	loaded_nifsoft = /datum/nifsoft/summoner/dorms
@@ -85,7 +86,7 @@
 	target_nifsoft.fake_laws = laws_to_assign
 
 /obj/item/disk/nifsoft_uploader/dorms/contract/attack_self(mob/user, list/modifiers)
-	var/new_law = tgui_input_text(user, "Input a new law to add", src, laws_to_assign)
+	var/new_law = tgui_input_text(user, LANG("obj.79d270be2792034a", null), src, laws_to_assign)
 	if(!new_law)
 		return FALSE
 

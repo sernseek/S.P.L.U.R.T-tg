@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///defined truthy result for `handle_unique_ai()`, which makes initialize return INITIALIZE_HINT_QDEL
 #define SHOULD_QDEL_MODULE 1
 
@@ -90,7 +91,7 @@
 /obj/item/ai_module/law/examine(mob/user)
 	. = ..()
 	if(ioned)
-		. += "This module has been damaged and should be repaired with a [EXAMINE_HINT("multitool")]."
+		. += LANG("obj.b488f6c80704a83c", list(EXAMINE_HINT("multitool")))
 
 	var/examine_laws = display_laws()
 	if(examine_laws)
@@ -99,10 +100,10 @@
 /obj/item/ai_module/law/multitool_act(mob/living/user, obj/item/tool)
 	if(!ioned)
 		return NONE
-	balloon_alert(user, "repairing ion damage...")
+	balloon_alert(user, LANG("obj.a6d19be6514028fd", null))
 	if(!tool.use_tool(ismachinery(loc) ? loc : src, user, 4 SECONDS, volume = 25, extra_checks = CALLBACK(src, PROC_REF(multitool_cb), loc, user, tool)))
 		return ITEM_INTERACT_BLOCKING
-	balloon_alert(user, "module repaired")
+	balloon_alert(user, LANG("obj.ad5198a8a5980245", null))
 	set_ioned(FALSE)
 	set_laws(saved_laws)
 	saved_laws = null
@@ -182,9 +183,12 @@
 /// Returns a text display of the laws for the module.
 /obj/item/ai_module/law/proc/display_laws()
 	var/assembled_laws = ""
+	var/translate = (GLOB.i18n_server_locale != DEFAULT_UI_LOCALE) // ZH EDIT - i18n
 
+	// ZH EDIT - i18n: 表头 "Programmed Laws:" 进 _fallback（examine→to_chat 经 AC 翻）；各法则文本反查（lawset 法则已抽进目录）。
 	for(var/law in laws)
-		assembled_laws += "\"[law]\"<br>"
+		var/show_law = translate ? lang_reverse_text(law) : law // ZH EDIT - i18n: ORIGINAL used [law]
+		assembled_laws += "\"[show_law]\"<br>"
 
 	if(assembled_laws)
 		return "<b>Programmed Law[(length(laws) > 1) ? "s" : ""]:</b><br>[assembled_laws]"
@@ -215,7 +219,7 @@
 		// removing core laws temporarily stuns the silicon to let people swap cores without immediately getting blasted
 		if(!parent_rack.rack_stun(bot))
 			continue
-		to_chat(bot, span_userdanger("Core module removed. Recalculating directives..."))
+		to_chat(bot, span_userdanger(LANG("obj.76556ff2ad766f3a", null)))
 
 /obj/item/ai_module/law/core/full
 	var/law_id // if non-null, loads the laws from the ai_laws datums

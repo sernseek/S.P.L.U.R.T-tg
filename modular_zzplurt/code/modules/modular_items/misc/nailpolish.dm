@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Nail polish
 /obj/item/nailpolish
 	name = "nail polish"
@@ -56,22 +57,22 @@
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(H.nail_style) //to stop stacking bugs
-			to_chat(user, span_warning("Remove the old nail polish first!"))
+			to_chat(user, span_warning(LANG("obj.3e2fef09434771f4", null)))
 
 		if(H == user)
-			user.visible_message(span_notice("[user] does [user.p_their()] nails with \the [src]."), \
-								span_notice("You take a moment to apply \the [src]. Perfect!"))
+			user.visible_message(span_notice(LANG("obj.3e36c833e72e0413", list(user, user.p_their(), src))), \
+								span_notice(LANG("obj.49bba65b9ba5ce6f", list(src))))
 			H.nail_style = "nails"
 			H.nail_color = paint
 			H.update_body()
 		else
-			user.visible_message(span_warning("[user] begins to do [H]'s nails with \the [src]."), \
-								span_notice("You begin to apply \the [src] on [H]'s nails..."))
+			user.visible_message(span_warning(LANG("obj.c8bc97bfcca9a0c3", list(user, H, src))), \
+								span_notice(LANG("obj.5f28ff1407f3bc29", list(src, H))))
 			if(do_after(user, 20, target = H))
-				user.visible_message("[user] does [H]'s nails with \the [src].", \
-									span_notice("You apply \the [src] on [H]'s nails."))
+				user.visible_message(LANG("obj.c40bce62d412455e", list(user, H, src)), \
+									span_notice(LANG("obj.db729c58573a5874", list(src, H))))
 				H.nail_style = "nails"
 				H.nail_color = paint
 				H.update_body()
 	else
-		to_chat(user, span_warning("Where are the nail on that?"))
+		to_chat(user, span_warning(LANG("obj.3dd4baee3577fd00", null)))

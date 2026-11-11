@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/computer_file/program/robotact
 	filename = "robotact"
 	filedesc = "RoboTact"
@@ -14,7 +15,7 @@
 
 /datum/computer_file/program/robotact/on_start(mob/living/user)
 	if(!istype(computer, /obj/item/modular_computer/pda/silicon))
-		to_chat(user, span_warning("A warning flashes across \the [computer]: Device Incompatible."))
+		to_chat(user, span_warning(LANG("datum.020eb627200ad2a2", list(computer))))
 		return FALSE
 	. = ..()
 	if(.)
@@ -153,8 +154,8 @@
 		if("alertPower")
 			if(!IS_UNCONSCIOUS_OR_CRIT(cyborg))
 				if(!cyborg.cell || !cyborg.cell.charge)
-					cyborg.visible_message(span_notice("The power warning light on [span_name("[cyborg]")] flashes urgently."), \
-						"You announce you are operating in low power mode.")
+					cyborg.visible_message(span_notice(LANG("datum.1e4dd38122559bdf", list(span_name("[cyborg]")))), \
+						LANG("datum.3e1fe44ab0e7be90", null))
 					playsound(cyborg, 'sound/machines/buzz/buzz-two.ogg', 50, FALSE)
 
 		if("toggleSensors")

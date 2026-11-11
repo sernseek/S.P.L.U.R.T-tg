@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/chemical_reaction/mutationtoxin
 	reaction_tags = REACTION_TAG_CHEMICAL | REACTION_TAG_HARD | REACTION_TAG_OTHER
 
@@ -207,5 +208,5 @@
 		new /obj/effect/spawner/random/entertainment/plushie_delux(get_turf(my_atom))
 	else
 		new /obj/item/toy/plush/plushling(get_turf(my_atom))
-	my_atom.visible_message(span_boldwarning("The reaction suddenly zaps, creating a plushie!"))
+	my_atom.visible_message(span_boldwarning(LANG("datum.a676650a64c312c4", null)))
 	holder.clear_reagents()

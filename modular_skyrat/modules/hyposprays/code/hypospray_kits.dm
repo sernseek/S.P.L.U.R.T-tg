@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/storage/hypospraykit
 	name = "hypospray kit"
 	desc = "A hypospray kit with foam insets for hypovials and a mounting point on the bottom."
@@ -27,11 +28,11 @@
 //Code to give hypospray kits selectable paterns.
 /obj/item/storage/hypospraykit/examine(mob/living/user)
 	. = ..()
-	. += span_notice("Ctrl-Shift-Click to reskin this")
+	. += span_notice(LANG("obj.5890bc5194eab721", null))
 	if(attached_hypo)
-		. += span_notice("[attached_hypo] is mounted on the bottom. Alt-Right-Click to take it off.")
+		. += span_notice(LANG("obj.e2f95eef40dc2969", list(attached_hypo)))
 	else
-		. += span_notice("Right-Click with a hypospray to mount it.")
+		. += span_notice(LANG("obj.a7670a22748a0b9a", null))
 
 /obj/item/storage/hypospraykit/Initialize(mapload)
 	. = ..()
@@ -108,25 +109,25 @@
 	if(!istype(tool, /obj/item/hypospray/mkii) || !LAZYACCESS(modifiers, RIGHT_CLICK))
 		return ..()
 	if(!isnull(attached_hypo))
-		balloon_alert(user, "mount point full!  Remove [attached_hypo] first!")
+		balloon_alert(user, LANG("obj.0e885caa4acccff5", list(attached_hypo)))
 		return ITEM_INTERACT_BLOCKING
 	tool.moveToNullspace()
 	attached_hypo = tool
 	RegisterSignal(tool, COMSIG_QDELETING, PROC_REF(on_attached_hypo_qdel))
-	balloon_alert(user, "attached [attached_hypo].")
+	balloon_alert(user, LANG("obj.d471ef5f5ce1f254", list(attached_hypo)))
 	update_appearance()
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/storage/hypospraykit/click_alt_secondary(mob/user)
 	if(attached_hypo != null)
 		if(user.put_in_hands(attached_hypo))
-			balloon_alert(user, "removed [attached_hypo].")
+			balloon_alert(user, LANG("obj.26274302ea25fcf5", list(attached_hypo)))
 			UnregisterSignal(attached_hypo, COMSIG_QDELETING)
 			attached_hypo = null
 			update_appearance()
 			// Ditto here.
 		else
-			balloon_alert(user, "couldn't pull the hypo!")
+			balloon_alert(user, LANG("obj.522de7a917fe8933", null))
 
 /obj/item/storage/hypospraykit/proc/on_attached_hypo_qdel()
 	if(attached_hypo)

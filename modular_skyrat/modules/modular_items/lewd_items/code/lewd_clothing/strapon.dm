@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/strapon
 	name = "strapon"
 	desc = "Sometimes you need a special way to humiliate someone."
@@ -119,7 +120,7 @@
 	if(src == user.belt)
 		toggle(user)
 	else
-		to_chat(user, span_warning("You need to put the strapon around your waist before you can use it!"))
+		to_chat(user, span_warning(LANG("obj.2c6aaa2fcf61f3c1", null)))
 
 /obj/item/clothing/strapon/proc/toggle(mob/living/carbon/human/user)
 	conditional_pref_sound(user, 'modular_skyrat/modules/modular_items/lewd_items/sounds/latex.ogg', 40, TRUE)
@@ -129,13 +130,13 @@
 	if(in_hands == TRUE)
 		if(istype(held, /obj/item/strapon_dildo))
 			qdel(held)
-			user.visible_message(span_notice("[user] puts the strapon back."))
+			user.visible_message(span_notice(LANG("obj.b538aec7ca1ec605", list(user))))
 			in_hands = FALSE
 			return
 
 		else if(istype(unheld, /obj/item/strapon_dildo))
 			qdel(unheld)
-			user.visible_message(span_notice("[user] puts the strapon back."))
+			user.visible_message(span_notice(LANG("obj.b538aec7ca1ec605", list(user))))
 			in_hands = FALSE
 			return
 
@@ -149,11 +150,11 @@
 					strapon_item.strapon_type = strapon_type
 					strapon_item.update_icon_state()
 					strapon_item.update_icon()
-					user.visible_message(span_notice("[user] holds the strapon in their hand menacingly."))
+					user.visible_message(span_notice(LANG("obj.29ea8d1904eabd2e", list(user))))
 					in_hands = TRUE
 					return
 		else
-			user.visible_message(span_notice("[user] tries to hold the strapon in their hand, but their hand isn't empty!"))
+			user.visible_message(span_notice(LANG("obj.7b8ed03d7600f6c7", list(user))))
 			return
 	else
 		strapon_item = new()
@@ -161,7 +162,7 @@
 		strapon_item.strapon_type = strapon_type
 		strapon_item.update_icon_state()
 		strapon_item.update_icon()
-		user.visible_message(span_notice("[user] holds the strapon in their hand menacingly."))
+		user.visible_message(span_notice(LANG("obj.29ea8d1904eabd2e", list(user))))
 		in_hands = TRUE
 		return
 
@@ -214,10 +215,10 @@
 											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang5.ogg',
 											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 60, TRUE)
 					else
-						to_chat(user, span_danger("[hit_mob]'s groin is covered!"))
+						to_chat(user, span_danger(LANG("obj.27926522fd6429b1", list(hit_mob))))
 						return
 				else
-					to_chat(user, span_danger("[hit_mob] doesn't have suitable genitalia for that!"))
+					to_chat(user, span_danger(LANG("obj.1e01aa7740db0c55", list(hit_mob))))
 					return
 
 			if(BODY_ZONE_HEAD, BODY_ZONE_PRECISE_MOUTH, BODY_ZONE_PRECISE_EYES) //Mouth only. Sorry, perverts. No eye/ear penetration for you today.
@@ -237,7 +238,7 @@
 										'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 40, TRUE)
 
 				else
-					to_chat(user, span_danger("[hit_mob]'s mouth is covered!"))
+					to_chat(user, span_danger(LANG("obj.64a8a5e2314e81fe", list(hit_mob))))
 					return
 
 			else
@@ -256,8 +257,8 @@
 										'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 100, TRUE)
 
 				else
-					to_chat(user, span_danger("[hit_mob]'s anus is covered!"))
+					to_chat(user, span_danger(LANG("obj.577ff0eecbce7a03", list(hit_mob))))
 					return
 	else
-		to_chat(user, span_danger("[hit_mob] doesn't want you to do that."))
+		to_chat(user, span_danger(LANG("obj.8d0a01828f0e2a19", list(hit_mob))))
 		return

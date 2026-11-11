@@ -16,12 +16,14 @@
 		"sass-loader": "^16.0.6",
 		"typescript": "^5.8.3"
 	},
-	"packageManager": "bun@1.2.16",
+	"packageManager": "bun@1.3.5",
 	"private": true,
 	"scripts": {
 		"tgui:analyze": "rspack --analyze",
-		"tgui:build": "rspack build",
+		"tgui:build": "bun ../tools/i18n/tgui-catalog.mjs extract && rspack build",
 		"tgui:dev": "bun --smol packages/tgui-dev-server/index.ts",
+		"tgui:i18n": "bun ../tools/i18n/tgui-catalog.mjs sync",
+		"tgui:i18n:extract": "bun ../tools/i18n/tgui-catalog.mjs extract",
 		"tgui:test": "bun test",
 		"tgui:tsc": "tsc"
 	},

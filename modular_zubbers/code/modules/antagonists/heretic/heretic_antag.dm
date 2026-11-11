@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define OBJECTIVES_TO_WIN 2
 #define MAX_INFLUENCE_DRAIN 8
 
@@ -42,7 +43,7 @@
 		var/obj/item/organ/heart/our_heart = owner_carbon.get_organ_slot(ORGAN_SLOT_HEART)
 		our_heart.AddComponent(/datum/component/living_heart) // even synths get one free go
 
-	to_chat(owner_carbon, span_doyourjobidiot("Acolyte is significnatly different from heretic. If you are a veteran, re-read everything."))
+	to_chat(owner_carbon, span_doyourjobidiot(LANG("datum.5f13dc88b44b8c3f", null)))
 
 /datum/antagonist/heretic/forge_primary_objectives(heretic_research_tree)
 	// total override
@@ -68,8 +69,8 @@
 		adjust_knowledge_points(HERETIC_POINTS_PER_INFLUENCE) // TODO - consider if codex should give more. proooobably not. codex needs a new identity...
 	if (drained_num >= MAX_INFLUENCE_DRAIN && !met_drained_num)
 		met_drained_num = TRUE
-		to_chat(owner, span_hypnophrase("The SEAMS of the WORLD have REVEALED THEMSELVES TO YOU. You have risen HIGH! AND you SEE!!"))
-		to_chat(owner, span_warning("You can no longer obtain knowledge points from influences."))
+		to_chat(owner, span_hypnophrase(LANG("datum.729cc754eb07def7", null)))
+		to_chat(owner, span_warning(LANG("datum.bd197d587d73c789", null)))
 		SEND_SOUND(owner.current, sound('sound/effects/magic/knock.ogg'))
 
 /datum/antagonist/heretic/proc/adjust_ways_opened(adjustment)
@@ -81,8 +82,8 @@
 	if (ways_opened >= way_obj.target_amount && !met_ways_num)
 		met_ways_num = TRUE
 		way_obj.completed = TRUE
-		to_chat(owner, span_hypnophrase("Your mind DAZZLES with the LIGHT! You have seen MORE of the MANSUS with your OWN EYES than ANY MORTAL could ever DREAM!!"))
-		to_chat(owner, span_warning("You can no longer obtain knowledge points from ways, as your objective has been completed."))
+		to_chat(owner, span_hypnophrase(LANG("datum.2e25d69c97b1cd4b", null)))
+		to_chat(owner, span_warning(LANG("datum.ae27646cd096a26e", null)))
 		SEND_SOUND(owner.current, sound('sound/effects/magic/knock.ogg'))
 		// its important we only give heretics very limtied progression. while progression is nice, unchecked progression ruins the way nonantags interact with them
 

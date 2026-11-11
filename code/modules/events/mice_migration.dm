@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/mice_migration
 	name = "Mice Migration"
 	typepath = /datum/round_event/mice_migration
@@ -21,8 +22,7 @@
 	var/location = pick("maintenance tunnels", "maintenance areas",
 		"\[REDACTED\]", "place with all those juicy wires")
 
-	priority_announce("Due to [cause], [plural] [name] have [movement] \
-		into the [location].", "Migration Alert",
+	priority_announce(LANG("datum.700472a1a163e4a6", list(cause, plural, name, movement, location)), "Migration Alert",
 		SSstation.announcer.event_sounds[ANNOUNCER_MOUSE_MIGRATION] || 'sound/mobs/non-humanoids/mouse/mousesqueek.ogg') // SPLURT EDIT - ORIGINAL: 'sound/mobs/non-humanoids/mouse/mousesqueek.ogg'
 
 /datum/round_event/mice_migration/start()

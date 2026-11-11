@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define STAGE_PROCESS_TIME_LOWER (30 SECONDS)
 #define STAGE_PROCESS_TIME_UPPER (1 MINUTES)
 #define ALERT_CREW_TIME (1 MINUTES)
@@ -34,7 +35,7 @@
 
 /obj/machinery/interrogator/examine(mob/user)
 	. = ..()
-	. += "It requies a direct link to a Nanotrasen defence network, stay near a Nanotrasen comms sat!"
+	. += LANG("obj.4151465e9e2f5f7e", null)
 
 /obj/machinery/interrogator/click_alt(mob/user)
 	. = ..()
@@ -84,7 +85,7 @@
 	locked = FALSE
 	human_occupant = null
 	playsound(src, 'sound/machines/buzz/buzz-two.ogg', 100)
-	balloon_alert_to_viewers("process aborted!")
+	balloon_alert_to_viewers(LANG("obj.6282cd23dac27d85", null))
 	if(timer_id)
 		deltimer(timer_id)
 		timer_id = null
@@ -103,73 +104,73 @@
 
 /obj/machinery/interrogator/proc/attempt_extract(mob/user)
 	if(!occupant)
-		balloon_alert_to_viewers("no occupant!")
+		balloon_alert_to_viewers(LANG("obj.85412561c0538a3a", null))
 		return
 	if(state_open)
-		balloon_alert_to_viewers("door open!")
+		balloon_alert_to_viewers(LANG("obj.4a54c73058ac578f", null))
 		return
 	if(!is_station_level(z))
-		balloon_alert_to_viewers("no comms link!")
+		balloon_alert_to_viewers(LANG("obj.195bfe1ec4885136", null))
 		return
 	if(!ishuman(occupant))
-		balloon_alert_to_viewers("invalid target DNA!")
+		balloon_alert_to_viewers(LANG("obj.aa3877621e8bd109", null))
 		return
 	human_occupant = occupant
 	if(human_occupant.stat == DEAD)
-		balloon_alert_to_viewers("occupant is dead!")
+		balloon_alert_to_viewers(LANG("obj.7da64beef4399c23", null))
 		return
 	if(!SSgoldeneye.check_goldeneye_target(human_occupant.mind)) // Preventing abuse by method of duplication.
-		balloon_alert_to_viewers("no GoldenEye data!")
+		balloon_alert_to_viewers(LANG("obj.61da2888bd250d2f", null))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 100)
 		return
 
 	start_extract()
 
 /obj/machinery/interrogator/proc/start_extract()
-	to_chat(human_occupant, span_userdanger("You feel dread wash over you as you hear the door on [src] lock!"))
+	to_chat(human_occupant, span_userdanger(LANG("obj.f02a3c069cd3ea25", list(src))))
 	locked = TRUE
 	processing = TRUE
-	say("Starting DNA data extraction!")
+	say(LANG("obj.765fb7a6c3d04620", null))
 	timer_id = addtimer(CALLBACK(src, PROC_REF(stage_one)), rand(STAGE_PROCESS_TIME_LOWER, STAGE_PROCESS_TIME_UPPER), TIMER_STOPPABLE|TIMER_UNIQUE) //Random times so crew can't anticipate exactly when it will drop.
 	update_appearance()
 
 /obj/machinery/interrogator/proc/stage_one()
 	if(!check_requirements())
-		say("Critical error! Aborting.")
+		say(LANG("obj.faf04954c03442cd", null))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 100)
 		return
-	to_chat(human_occupant, span_danger("As [src] whirrs to life you feel some cold metal restraints deploy around you, you can't move!"))
+	to_chat(human_occupant, span_danger(LANG("obj.33cfcfb62456bf8f", list(src))))
 	playsound(loc, 'sound/items/tools/rped.ogg', 60)
-	say("Stage one complete!")
+	say(LANG("obj.ba84b09c021fe8a9", null))
 	minor_announce("SECURITY BREACH DETECTED, NETWORK COMPROMISED! LOCATION UNTRACEABLE.", "GoldenEye Defence Network")
 	timer_id = addtimer(CALLBACK(src, PROC_REF(stage_two)), rand(STAGE_PROCESS_TIME_LOWER, STAGE_PROCESS_TIME_UPPER), TIMER_STOPPABLE|TIMER_UNIQUE)
 
 /obj/machinery/interrogator/proc/stage_two()
 	if(!check_requirements())
-		say("Critical error! Aborting.")
+		say(LANG("obj.faf04954c03442cd", null))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 100)
 		return
-	to_chat(human_occupant, span_userdanger("You feel a sharp pain as a drill penetrates your skull, it's unbearable!"))
+	to_chat(human_occupant, span_userdanger(LANG("obj.1430cff13a858d66", null)))
 	human_occupant.emote("scream")
 	human_occupant.apply_damage(30, BRUTE, BODY_ZONE_HEAD)
 	playsound(src, 'sound/effects/wounds/blood1.ogg', 100)
 	playsound(src, 'sound/items/tools/drill_use.ogg', 100)
-	say("Stage two complete!")
+	say(LANG("obj.7f0c8cf17ab644dd", null))
 	timer_id = addtimer(CALLBACK(src, PROC_REF(stage_three)), rand(STAGE_PROCESS_TIME_LOWER, STAGE_PROCESS_TIME_UPPER), TIMER_STOPPABLE|TIMER_UNIQUE)
 
 /obj/machinery/interrogator/proc/stage_three()
 	if(!check_requirements())
-		say("Critical error! Aborting.")
+		say(LANG("obj.faf04954c03442cd", null))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 100)
 		return
-	to_chat(human_occupant, span_userdanger("You feel something penetrating your brain, it feels as though your childhood memories are fading! Please, make it stop! After a moment of silence, you realize you can't remember what happened to you!"))
+	to_chat(human_occupant, span_userdanger(LANG("obj.d8795fb070f26eae", null)))
 	human_occupant.emote("scream")
 	human_occupant.apply_damage(20, BRUTE, BODY_ZONE_HEAD)
 	human_occupant.set_jitter_if_lower(3 MINUTES)
 	human_occupant.Unconscious(1 MINUTES)
 	playsound(src, 'sound/effects/dismember.ogg', 100)
 	playsound(src, 'sound/machines/ping.ogg', 100)
-	say("Process complete! A key is being sent aboard! Crew will shortly detect the keycard!")
+	say(LANG("obj.8b5797b7d2c4d907", null))
 	send_keycard()
 	processing = FALSE
 	locked = FALSE
@@ -196,7 +197,7 @@
 	for(var/datum/status_effect/goldeneye_pinpointer/iterating_pinpointer in GLOB.goldeneye_pinpointers)
 		iterating_pinpointer.set_target(new_key)
 
-	notify_ghosts("GoldenEye key launched!",
+	notify_ghosts(LANG("obj.9bdf697e10076996", null),
 		source = new_key,
 		header = "Something's Interesting!",
 	)

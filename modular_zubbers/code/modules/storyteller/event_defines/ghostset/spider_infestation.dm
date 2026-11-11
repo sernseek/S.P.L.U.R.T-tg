@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/spider_infestation
 	name = "Spider Infestation"
 	typepath = /datum/round_event/spider_infestation
@@ -19,7 +20,7 @@
 	announce_when = rand(announce_when, announce_when + 50)
 
 /datum/round_event/spider_infestation/announce(fake)
-	priority_announce("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert", ANNOUNCER_ALIENS)
+	priority_announce(LANG("datum.9d5038a31b818751", list(station_name())), "Lifesign Alert", ANNOUNCER_ALIENS)
 
 /datum/round_event/spider_infestation/start()
 	create_midwife_eggs(spawncount)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/rbmk2_sniffer
 	name = "\improper RB-MK2 \"Boombox\" reactor sniffer"
 	desc = "A modified air alarm designed to detect stray ionization particles, also known as a meltdown. Can be linked to nearby RB-MK2 machines by interacting with the wires."
@@ -75,7 +76,7 @@
 /obj/machinery/rbmk2_sniffer/proc/link_reactor(mob/user,obj/machinery/power/rbmk2/desired_reactor)
 
 	if(linked_reactors[desired_reactor])
-		if(user) balloon_alert(user, "already linked!")
+		if(user) balloon_alert(user, LANG("obj.cc32a1c7c966a07a", null))
 		return FALSE
 
 	linked_reactors[desired_reactor] = TRUE
@@ -97,12 +98,12 @@
 
 	. = ..()
 
-	. += "It is linked to [length(linked_reactors)] reactor(s)."
+	. += LANG("obj.69586ccd72276771", list(length(linked_reactors)))
 
 	if(last_meltdown)
-		. += span_danger("It is flashing red!")
+		. += span_danger(LANG("obj.a782784313ceacc8", null))
 	else
-		. += span_notice("It is glowing a steady green.")
+		. += span_notice(LANG("obj.75e23bb924b180ac", null))
 
 
 /obj/machinery/rbmk2_sniffer/proc/alert_radio(alert_text,bypass_cooldown=FALSE,alert_emergency_channel=FALSE,criticality=TRUE)

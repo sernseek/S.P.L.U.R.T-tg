@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Researcher, Scanner, Recoverer, and Digger
 
 /obj/machinery/xenoarch
@@ -26,7 +27,7 @@
 			context[SCREENTIP_CONTEXT_LMB] = "[src.anchored ? "Unanchor" : "Anchor"]"
 			return CONTEXTUAL_SCREENTIP_SET
 		if(TOOL_SCREWDRIVER)
-			context[SCREENTIP_CONTEXT_LMB] = "[src.panel_open ? "Close" : "Open"] panel"
+			context[SCREENTIP_CONTEXT_LMB] = LANG("obj.45725a89b7fc8d2e", list(src.panel_open ? "Close" : "Open"))
 			return CONTEXTUAL_SCREENTIP_SET
 		if(TOOL_CROWBAR)
 			if(panel_open)
@@ -65,7 +66,7 @@
 	. = ..()
 
 	toggle_panel_open()
-	to_chat(user, span_notice("You [panel_open ? "open":"close"] the maintenance panel of [src]."))
+	to_chat(user, span_notice(LANG("obj.79c0c90b4e57b4c7", list(panel_open ? "open":"close", src))))
 	tool.play_tool_sound(src)
 	return ITEM_INTERACT_SUCCESS
 
@@ -107,7 +108,7 @@
 
 /obj/machinery/xenoarch/researcher/examine(mob/user)
 	. = ..()
-	. += span_notice("[current_research]/[max_research] research available.")
+	. += span_notice(LANG("obj.5d28e022585094e7", list(current_research, max_research)))
 
 /obj/machinery/xenoarch/researcher/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(user.combat_mode)
@@ -120,20 +121,20 @@
 			strange_rocks.forceMove(src)
 			xenoarch_contents += strange_rocks
 
-		balloon_alert(user, "items inserted!")
+		balloon_alert(user, LANG("obj.1a58c10cce9497b0", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(is_type_in_list(tool, accepted_types))
 		tool.forceMove(src)
 		xenoarch_contents += tool
-		balloon_alert(user, "item inserted!")
+		balloon_alert(user, LANG("obj.cfd83b9e8f147a91", null))
 		return ITEM_INTERACT_SUCCESS
 
 	return NONE
 
 /obj/machinery/xenoarch/researcher/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
-	var/choice = tgui_input_list(user, "Remove the rocks from [src]?", "Rock Removal", list("Yes", "No"))
+	var/choice = tgui_input_list(user, LANG("obj.b097b2e9b05a449d", list(src)), LANG("obj.0dc643ee0c0f0e3d", null), list("Yes", "No"))
 	if(choice != "Yes")
 		return
 
@@ -142,21 +143,21 @@
 		removed_item.forceMove(src_turf)
 		xenoarch_contents -= removed_item
 
-	balloon_alert(user, "items removed!")
+	balloon_alert(user, LANG("obj.be8e985068e19d76", null))
 
 /obj/machinery/xenoarch/researcher/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
 	var/turf/src_turf = get_turf(src)
-	var/choice = tgui_input_list(user, "Choose which reward you would like!", "Reward Choice", list("Lavaland Chest (150)", "Anomalous Crystal (150)", "Bepis Tech (100)"))
+	var/choice = tgui_input_list(user, LANG("obj.ca9d41494d12237e", null), LANG("obj.96c1a202948d1607", null), list("Lavaland Chest (150)", "Anomalous Crystal (150)", "Bepis Tech (100)"))
 	if(!choice)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	switch(choice)
 		if("Lavaland Chest (150)")
 			if(current_research < 150)
-				balloon_alert(user, "insufficient research!")
+				balloon_alert(user, LANG("obj.8aef966b7b73778d", null))
 				return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 			current_research -= 150
@@ -164,7 +165,7 @@
 
 		if("Anomalous Crystal (150)")
 			if(current_research < 150)
-				balloon_alert(user, "insufficient research!")
+				balloon_alert(user, LANG("obj.8aef966b7b73778d", null))
 				return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 			current_research -= 150
@@ -174,7 +175,7 @@
 
 		if("Bepis Tech (100)")
 			if(current_research < 100)
-				balloon_alert(user, "insufficient research!")
+				balloon_alert(user, LANG("obj.8aef966b7b73778d", null))
 				return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 			current_research -= 100
@@ -219,16 +220,16 @@
 		for(var/obj/item/xenoarch/strange_rock/chosen_rocks in tool.contents)
 			chosen_rocks.get_scanned()
 
-		balloon_alert(user, "scan complete!")
+		balloon_alert(user, LANG("obj.d4915572f139d893", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(istype(tool, /obj/item/xenoarch/strange_rock))
 		var/obj/item/xenoarch/strange_rock/chosen_rock = tool
 		if(chosen_rock.get_scanned())
-			balloon_alert(user, "scan complete!")
+			balloon_alert(user, LANG("obj.d4915572f139d893", null))
 			return ITEM_INTERACT_SUCCESS
 		else
-			to_chat(user, span_warning("[chosen_rock] was unable to be scanned, perhaps it was already scanned?"))
+			to_chat(user, span_warning(LANG("obj.d83c8e94c1d4b53f", list(chosen_rock))))
 			return ITEM_INTERACT_BLOCKING
 
 	return ..()
@@ -270,19 +271,19 @@
 			current_item.forceMove(src)
 			xenoarch_contents += current_item
 
-		balloon_alert(user, "items inserted!")
+		balloon_alert(user, LANG("obj.1a58c10cce9497b0", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(istype(tool, /obj/item/xenoarch/broken_item))
 		tool.forceMove(src)
 		xenoarch_contents += tool
-		balloon_alert(user, "item inserted!")
+		balloon_alert(user, LANG("obj.cfd83b9e8f147a91", null))
 		return ITEM_INTERACT_SUCCESS
 
 	return ..()
 
 /obj/machinery/xenoarch/recoverer/attack_hand(mob/living/user, list/modifiers)
-	var/choice = tgui_input_list(user, "Remove the broken items from [src]?", "Item Removal", list("Yes", "No"))
+	var/choice = tgui_input_list(user, LANG("obj.e3cd66b9d3d26b0a", list(src)), LANG("obj.5d644c43e48c977c", null), list("Yes", "No"))
 	if(choice != "Yes")
 		return
 
@@ -291,7 +292,7 @@
 		removed_item.forceMove(src_turf)
 		xenoarch_contents -= removed_item
 
-	balloon_alert(user, "items removed!")
+	balloon_alert(user, LANG("obj.be8e985068e19d76", null))
 
 /obj/machinery/xenoarch/recoverer/xenoarch_process()
 	var/turf/src_turf = get_turf(src)
@@ -346,19 +347,19 @@
 			strange_rocks.forceMove(src)
 			xenoarch_contents += strange_rocks
 
-		balloon_alert(user, "rocks inserted!")
+		balloon_alert(user, LANG("obj.a8aaa85e459297d4", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(istype(tool, /obj/item/xenoarch/strange_rock))
 		tool.forceMove(src)
 		xenoarch_contents += tool
-		balloon_alert(user, "rock inserted!")
+		balloon_alert(user, LANG("obj.f107278f48dbdc8f", null))
 		return ITEM_INTERACT_SUCCESS
 
 	return ..()
 
 /obj/machinery/xenoarch/digger/attack_hand(mob/living/user, list/modifiers)
-	var/choice = tgui_input_list(user, "Remove the rocks from [src]?", "Rock Removal", list("Yes", "No"))
+	var/choice = tgui_input_list(user, LANG("obj.b097b2e9b05a449d", list(src)), LANG("obj.0dc643ee0c0f0e3d", null), list("Yes", "No"))
 	if(choice != "Yes")
 		return
 
@@ -367,7 +368,7 @@
 		removed_item.forceMove(src_turf)
 		xenoarch_contents -= removed_item
 
-	balloon_alert(user, "items removed!")
+	balloon_alert(user, LANG("obj.be8e985068e19d76", null))
 
 /obj/machinery/xenoarch/digger/xenoarch_process()
 	var/turf/src_turf = get_turf(src)

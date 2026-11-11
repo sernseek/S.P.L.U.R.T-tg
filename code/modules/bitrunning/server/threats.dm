@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Adds threats to the list and notifies players
 /obj/machinery/quantum_server/proc/add_threats(mob/living/threat)
 	spawned_threat_refs.Add(WEAKREF(threat))
@@ -53,7 +54,7 @@
 		alert.name = "Queue Deletion"
 		alert.desc = "The server is resetting. Oblivion awaits."
 
-		to_chat(baddie, span_userdanger("You have been flagged for deletion! Thank you for your service."))
+		to_chat(baddie, span_userdanger(LANG("obj.9648d43c72651f4a", null)))
 
 
 /// Removes a specific threat - used when station spawning
@@ -76,8 +77,8 @@
 	var/datum/antagonist/bitrunning_glitch/chosen_role = forced_role || get_antagonist_role()
 	var/role_name = initial(chosen_role.name)
 	var/mob/chosen_one = SSpolling.poll_ghosts_for_target(
-		question = "<span class='ooc'>A temporary antagonist role is spawning in the virtual domain.</span>\
-		\n<span class='boldnotice'>You will return to your previous body on conclusion.</span>",
+		// ZH EDIT CHANGE - I18N - ORIGINAL: question = "<span class='ooc'>A temporary antagonist role is spawning in the virtual domain.</span>\n<span class='boldnotice'>You will return to your previous body on conclusion.</span>",
+		question = LANG("obj.693ab6d0b404871c", null),
 		check_jobban = ROLE_GLITCH,
 		poll_time = 20 SECONDS,
 		checked_target = mutation_target,
@@ -129,7 +130,7 @@
 
 /// Oh boy - transports the antag station side
 /obj/machinery/quantum_server/proc/station_spawn(mob/living/antag, obj/machinery/byteforge/chosen_forge)
-	antag.balloon_alert(antag, "scanning...")
+	antag.balloon_alert(antag, LANG("obj.9ef11a33f0292426", null))
 	chosen_forge.setup_particles(angry = TRUE)
 	var/obj/machinery/announcement_system/aas = get_announcement_system(null, src, list(RADIO_CHANNEL_SUPPLY))
 	if (aas)
@@ -156,7 +157,7 @@
 		bitrunners_alive++
 		timeout *= 5
 	if(bitrunners_alive)
-		to_chat(antag, span_warning("[bitrunners_alive] criminals still remain here, pilfering your domain. It will be more difficult to leave until they are handled."))
+		to_chat(antag, span_warning(LANG("obj.d276702a388b3b1c", list(bitrunners_alive))))
 
 	if(!do_after(antag, timeout) || QDELETED(chosen_forge) || QDELETED(antag) || QDELETED(src) || !is_ready || !is_operational)
 		chosen_forge.setup_particles()

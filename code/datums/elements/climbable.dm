@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/element/climbable
 	element_flags = ELEMENT_BESPOKE | ELEMENT_DETACH_ON_HOST_DESTROY // Detach for turfs
 	argument_hash_start_idx = 2
@@ -55,15 +56,15 @@
 		user.changeNext_move(CLICK_CD_MELEE)
 		user.do_attack_animation(climbed_thing)
 		structure_climber.Paralyze(40)
-		structure_climber.visible_message(span_warning("[structure_climber] is knocked off [climbed_thing]."), span_warning("You're knocked off [climbed_thing]!"), span_hear("You hear a cry from [structure_climber], followed by a slam."))
+		structure_climber.visible_message(span_warning(LANG("datum.e1072e0852faee94", list(structure_climber, climbed_thing))), span_warning(LANG("datum.a148e446bebf8093", list(climbed_thing))), span_hear(LANG("datum.1a82c789ad4786da", list(structure_climber))))
 
 
 /datum/element/climbable/proc/climb_structure(atom/climbed_thing, mob/living/user, params)
 	if(!can_climb(climbed_thing, user))
 		return
 	climbed_thing.add_fingerprint(user)
-	user.visible_message(span_warning("[user] starts climbing onto [climbed_thing]."), \
-								span_notice("You start climbing onto [climbed_thing]..."))
+	user.visible_message(span_warning(LANG("datum.9ee22a17c977fc6e", list(user, climbed_thing))), \
+								span_notice(LANG("datum.865c668b04fe63f2", list(climbed_thing))))
 	// Time in deciseoncds it takes to complete the climb do_after()
 	var/adjusted_climb_time = climb_time
 	// Time in deciseonds that the mob is stunned after climbing successfully.
@@ -92,8 +93,8 @@
 		if(QDELETED(climbed_thing)) //Checking if structure has been destroyed
 			return
 		if(do_climb(climbed_thing, user, params))
-			user.visible_message(span_warning("[user] climbs onto [climbed_thing]."), \
-								span_notice("You climb onto [climbed_thing]."))
+			user.visible_message(span_warning(LANG("datum.574fa0b20f9cf3f5", list(user, climbed_thing))), \
+								span_notice(LANG("datum.a92461a5b9a965cd", list(climbed_thing))))
 			log_combat(user, climbed_thing, "climbed onto")
 			if(adjusted_climb_stun)
 				user.Stun(adjusted_climb_stun)
@@ -103,7 +104,7 @@
 					buckle_target.buckle_mob(user)
 			user.mind?.adjust_experience(/datum/skill/athletics, round(ATHLETICS_SKILL_MISC_EXP/(fitness_level || 1), 1)) //Get a bit fitter with every climb. But it has diminishing returns at a certain point.
 		else
-			to_chat(user, span_warning("You fail to climb onto [climbed_thing]."))
+			to_chat(user, span_warning(LANG("datum.ce56a1d916327ed9", list(climbed_thing))))
 	LAZYREMOVEASSOC(current_climbers, climbed_thing, user)
 
 

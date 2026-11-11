@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define NUM_WAYS_PER_HERETIC 5
 #define OPENING_DURATION 60 SECONDS
 
@@ -162,17 +163,17 @@
 
 	if (opening)
 		if (IS_HERETIC(user) || isobserver(user))
-			. += span_boldnotice("This way seems to be connected to [destination.name] - [destination.desc]")
+			. += span_boldnotice(LANG("obj.69170fcd21d8d9aa", list(destination.name, destination.desc)))
 			. += span_hypnophrase(destination.glimpse_heretic)
 		else
-			. += span_hypnophrase("YOU CATCH A GLIMPSE: [destination.glimpse]---!!")
+			. += span_hypnophrase(LANG("obj.69d41ee5bfc1d2a3", list(destination.glimpse)))
 			if (isliving(user))
 				var/mob/living/living_user = user
 				living_user.adjust_organ_loss(ORGAN_SLOT_BRAIN, 50, 150)
 				living_user.add_mood_event("gates_of_mansus", /datum/mood_event/gates_of_mansus)
 	else
 		if (IS_HERETIC(user) || isobserver(user))
-			. += span_notice("You can use the [EXAMINE_HINT("Knock of the Twin-Finger")] ritual to discover this way's requirements.")
+			. += span_notice(LANG("obj.832d6b743c97067f", list(EXAMINE_HINT("Knock of the Twin-Finger"))))
 
 // arg one is nullable
 /obj/effect/unopened_way/proc/open(mob/living/opener)
@@ -185,21 +186,21 @@
 			stack_trace("way [src] opened by nonheretic, [opener]")
 		else
 			antag_datum.adjust_ways_opened(1)
-			to_chat(opener, span_boldnotice("The way revealed, you identify the way as a passage to [destination.name] - [destination.glimpse_heretic]"))
+			to_chat(opener, span_boldnotice(LANG("obj.2e243cc86ceb4521", list(destination.name, destination.glimpse_heretic))))
 
 	GLOB.reality_smash_track.ways_opened++
 
 	var/area/our_area = get_area(src)
-	visible_message(span_warning("The air shimmers as a gate to the mansus becomes clear!"))
+	visible_message(span_warning(LANG("obj.c7becdddfc792a8a", null)))
 	if (announce_opening)
 		priority_announce(
-			"Reality-shearing cross-dimensional anomaly detected in [our_area.name]. Expected excursion in [OPENING_DURATION / 10] seconds.",
+			LANG("obj.7f5ef1d6a65bb2de", list(our_area.name, OPENING_DURATION / 10)),
 			"CentCom Thaumatergy Monitor",
 			ANNOUNCER_ANOMALIES,
 			has_important_message = TRUE
 		)
 		notify_ghosts(
-			"[opener] just opened a way towards [destination.name] in [our_area.name]!",
+			LANG("obj.8eeea4b2ede687dd", list(opener, destination.name, our_area.name)),
 			opener,
 			"The Gate Is Open",
 			notify_flags = NOTIFY_CATEGORY_NOFLASH,
@@ -216,13 +217,13 @@
 	START_PROCESSING(SSobj, src)
 
 	name = "opened way"
-	desc = "A gate towards the Mansus, now yawning open. Too thin to pass through, but just wide enough to catch a *glimpse*."
+	desc = LANG("obj.11b60936aa10fc54", null)
 
 	addtimer(CALLBACK(src, PROC_REF(finish_opening), opener), OPENING_DURATION)
 
 /obj/effect/unopened_way/proc/finish_opening(mob/living/opener)
 	playsound(src, 'sound/effects/magic/repulse.ogg', 100, FALSE)
-	visible_message(span_boldwarning("The way collapses, [destination.spawn_text]"))
+	visible_message(span_boldwarning(LANG("obj.974b8792fa1e94a2", list(destination.spawn_text))))
 
 	destination.open(src, opener)
 

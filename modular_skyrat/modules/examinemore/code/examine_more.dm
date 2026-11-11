@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 EXTRA EXAMINE MODULE
 
@@ -29,7 +30,7 @@ would only be recognisable with someone that had the syndicate trait.
 /obj/item/examine(mob/user)
 	. = ..()
 	if(special_desc_requirement == EXAMINE_CHECK_NONE && special_desc)
-		. += span_notice("This item could be examined further...")
+		. += span_notice(LANG("obj.b5542b5eea7b0c2d", null))
 
 /obj/item/examine_more(mob/user)
 	. = ..()

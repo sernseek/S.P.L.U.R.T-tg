@@ -47,7 +47,21 @@
 /obj/item/clothing/glasses/meson/engine/proc/toggle_mode(mob/user, voluntary)
 	mode_index = WRAP_UP(mode_index, modes.len)
 	mode = modes[mode_index]
-	to_chat(user, "<span class='[voluntary ? "notice":"warning"]'>[voluntary ? "You turn the goggles":"The goggles turn"] [mode ? "to [mode] mode":"off"][voluntary ? ".":"!"]</span>")
+	// ZH EDIT CHANGE START - i18n: 原本是运行期拼接的条件串，整句进不了目录。拆成 4 个完整句便于
+	// LANG 化。mode 名在**显示处**反查（mode 变量本身是 switch(mode) 的比较标识符 + 定义值，保持英文），
+	// 译文见 _state_words.json。 - ORIGINAL 见 git 历史。
+	var/mode_display = lang_reverse_text(mode)
+	if(voluntary)
+		if(mode)
+			to_chat(user, span_notice(LANG("obj.969144e1616938ee", list(mode_display))))
+		else
+			to_chat(user, span_notice(LANG("obj.155a89d7845d0339", null)))
+	else
+		if(mode)
+			to_chat(user, span_warning(LANG("obj.c95f404e33f53550", list(mode_display))))
+		else
+			to_chat(user, span_warning(LANG("obj.1cbc382889bd0b4e", null)))
+	// ZH EDIT CHANGE END
 	if(connection_images.len)
 		connection_images.Cut()
 	switch(mode)

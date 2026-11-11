@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // THESE WILL (MOSTLY) SPAWN WITH A RANDOM 'CAMO' COLOR WHEN ORDERED THROUGH CARGO
 // THE STANDARD COLORS FOR USE WILL BE BELOW
 
@@ -75,14 +76,7 @@
 /obj/item/clothing/head/helmet/cin_surplus_helmet/examine_more(mob/user)
 	. = ..()
 
-	. += "The GZ-03 series of coalition armor was a collaborative project between the PSC and TransOrbital \
-		to develop a frontline soldier's armor set that could withstand attacks from the Terran Government's \
-		then relatively new pulse ballistics. The design itself is based upon a far older pattern \
-		of armor originally developed by TerraGov themselves, which was the standard pattern of armor design \
-		granted to the first colony ships leaving Sol. Armor older than any of the CIN member states, \
-		upgraded with modern technology. This helmet in particular encloses the entire head save for \
-		the face, and should come with a glass visor and relatively comfortable internal padding. Should, \
-		anyways, surplus units such as this are infamous for arriving with several missing accessories."
+	. += LANG("obj.727fd54312914b14", null)
 
 	return .
 
@@ -183,15 +177,7 @@
 /obj/item/clothing/suit/armor/vest/cin_surplus_vest/examine_more(mob/user)
 	. = ..()
 
-	. += "The GZ-03 series of coalition armor was a collaborative project between the PSC and TransOrbital \
-		to develop a frontline soldier's armor set that could withstand attacks from the Terran Government's \
-		then relatively new pulse ballistics. The design itself is based upon a far older pattern \
-		of armor originally developed by TerraGov themselves, which was the standard pattern of armor design \
-		granted to the first colony ships leaving Sol. Armor older than any of the CIN member states, \
-		upgraded with modern technology. This vest in particular is made up of several large, dense plates \
-		front and back. While vests like this were also produced with extra plating to protect the groin, many \
-		surplus vests are missing them due to the popularity of removing the plates and using them as seating \
-		during wartime."
+	. += LANG("obj.b5e6027a4160fef6", null)
 
 	return .
 

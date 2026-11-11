@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Soda Modular File for Bubber
 ////Add your custom sodas here, use this first one as a reference if you want
 
@@ -36,9 +37,9 @@
 /obj/item/reagent_containers/cup/soda_cans/bubber/attack(mob/M, mob/living/user)
 	if(istype(M, /mob/living/carbon) && !reagents.total_volume && user.combat_mode && user.zone_selected == BODY_ZONE_HEAD)
 		if(M == user)
-			user.visible_message(span_warning("[user] crushes the can of [src] on [user.p_their()] forehead!"), span_notice("You crush the can of [src] on your forehead."))
+			user.visible_message(span_warning(LANG("obj.58fd28bc8ac4d931", list(user, src, user.p_their()))), span_notice(LANG("obj.918576da5169c04d", list(src))))
 		else
-			user.visible_message(span_warning("[user] crushes the can of [src] on [M]'s forehead!"), span_notice("You crush the can of [src] on [M]'s forehead."))
+			user.visible_message(span_warning(LANG("obj.7ba56bac676b1eee", list(user, src, M))), span_notice(LANG("obj.d0fb0ba14bfb7712", list(src, M))))
 		playsound(M,'sound/items/weapons/pierce.ogg', rand(10,50), TRUE)
 		var/obj/item/trash/can/bubber/crushed_can = new /obj/item/trash/can/bubber(M.loc)
 		crushed_can.icon_state = icon_state
@@ -78,7 +79,7 @@
 		return
 
 	burst_soda(hit_atom, hide_message = TRUE)
-	visible_message(span_danger("[src]'s impact with [hit_atom] causes it to rupture, spilling everywhere!"))
+	visible_message(span_danger(LANG("obj.957f4876bfed575b", list(src, hit_atom))))
 	var/obj/item/trash/can/bubber/crushed_can = new /obj/item/trash/can/bubber(src.loc)
 	crushed_can.icon_state = icon_state
 	moveToNullspace()

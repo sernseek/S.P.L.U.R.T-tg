@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Your new favorite industrial waste magnet!
  * Accepts boulders and produces sheets of non-metallic materials.
@@ -96,7 +97,7 @@
 
 /obj/machinery/bouldertech/refinery/plunger_act(obj/item/plunger/attacking_plunger, mob/living/user, reinforced)
 	. = ..()
-	balloon_alert(user, "emptying...")
+	balloon_alert(user, LANG("obj.fe24acef7d1a6e9f", null))
 	if(do_after(user, 2 SECONDS, src))
 		reagents.expose(drop_location())
 		reagents.clear_reagents()
@@ -162,6 +163,6 @@
 	update_light_value()
 
 /obj/machinery/bouldertech/refinery/smelter/gib_mob(mob/living/rockman)
-	rockman.visible_message(span_warning("[rockman] is processed by [src]!"), span_userdanger("You get melted into rock by [src]!"))
+	rockman.visible_message(span_warning(LANG("obj.6107e3a2b88c7bea", list(rockman, src))), span_userdanger(LANG("obj.127041f8c0465abb", list(src))))
 	rockman.investigate_log("was melted by [src] for having the MOB_MINERAL mob biotype", INVESTIGATE_DEATHS)
 	rockman.dust()

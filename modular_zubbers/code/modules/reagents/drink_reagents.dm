@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/glass_style/has_foodtype/drinking_glass/eggnog          //Eggnog doesn't have a custom glass in the dm where
 	icon = 'modular_zubbers/icons/obj/drinks/mixed_drinks.dmi' //it should (mixed_alcohol.dm), so this exists to give it a glass.
 	icon_state = "eggnog"
@@ -403,7 +404,7 @@
 		affected_mob.set_jitter_if_lower(5 SECONDS * REM * reac_volume)
 		unluckyshock = rand(1, 15)
 		if(unluckyshock == 1)
-			to_chat(affected_mob, span_userdanger("You feel a sharp jolt of energy spark off your tongue!"))
+			to_chat(affected_mob, span_userdanger(LANG("datum.b853c82dfc7af521", null)))
 			affected_mob.electrocute_act(rand(1, 5), "Storm-Over-Avon shock", 1, SHOCK_NOGLOVES)
 			playsound(affected_mob, 'sound/machines/defib/defib_zap.ogg', 30, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
@@ -463,7 +464,7 @@
 		affected_mob.set_jitter_if_lower(10 SECONDS * REM * reac_volume)
 		unluckyshock = rand(1, 6)
 		if(unluckyshock == 1)
-			to_chat(affected_mob, span_userdanger("You feel a sharp jolt of energy spark off your tongue!"))
+			to_chat(affected_mob, span_userdanger(LANG("datum.b853c82dfc7af521", null)))
 			affected_mob.electrocute_act(rand(2, 8), "Coilhouse Cocktail shock", 1, SHOCK_NOGLOVES)
 			playsound(affected_mob, 'sound/machines/defib/defib_zap.ogg', 40, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
@@ -518,7 +519,7 @@
 		affected_mob.set_jitter_if_lower(10 SECONDS * REM * reac_volume)
 		unluckyshock = rand(1, 3)
 		if(unluckyshock == 1)
-			to_chat(affected_mob, span_userdanger("You feel a violent jolt of energy spark off your tongue!"))
+			to_chat(affected_mob, span_userdanger(LANG("datum.f3c51e4895757fc2", null)))
 			affected_mob.electrocute_act(rand(15, 35), "Electric avenue shock", 1, SHOCK_NOGLOVES)
 			playsound(affected_mob, 'sound/machines/defib/defib_zap.ogg', 55, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
@@ -573,7 +574,7 @@
 		affected_mob.set_jitter_if_lower(5 SECONDS * REM * reac_volume)
 		unluckyshock = rand(1, 8)
 		if(unluckyshock == 1)
-			to_chat(affected_mob, span_userdanger("You feel a violent jolt of energy spark off your tongue!"))
+			to_chat(affected_mob, span_userdanger(LANG("datum.f3c51e4895757fc2", null)))
 			affected_mob.electrocute_act(rand(10, 25), "Ira de Zeus shock", 1, SHOCK_NOGLOVES)
 			playsound(affected_mob, 'sound/machines/defib/defib_zap.ogg', 40, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 

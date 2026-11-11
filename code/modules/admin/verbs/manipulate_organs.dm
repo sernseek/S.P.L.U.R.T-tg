@@ -1,8 +1,9 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ADMIN_VERB_VISIBILITY(manipulate_organs, ADMIN_VERB_VISIBLITY_FLAG_MAPPING_DEBUG)
 
-ADMIN_VERB(manipulate_organs, R_DEBUG, "Manipulate Organs", "Manipulate the organs of a living carbon.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(manipulate_organs, R_DEBUG, "操作器官", "Manipulate the organs of a living carbon.", ADMIN_CATEGORY_DEBUG)
 	VERB_ARG_TYPED(carbon_victim, VERB_ARG_TYPE_MOB, VERB_ARG_SOURCE_WORLD, /mob/living/carbon)
-	var/operation = tgui_input_list(user, "Select organ operation", "Organ Manipulation", list("Add organ", "Add implant", "Drop organ/implant", "Remove organ/implant"))
+	var/operation = tgui_input_list(user, LANG("datum.08de2f6e6628fffa", null), LANG("datum.c883f12643e17a3f", null), list("Add organ", "Add implant", "Drop organ/implant", "Remove organ/implant"))
 	if (isnull(operation))
 		return
 
@@ -14,7 +15,7 @@ ADMIN_VERB(manipulate_organs, R_DEBUG, "Manipulate Organs", "Manipulate the orga
 				var/dat = replacetext("[path]", "/obj/item/organ/", ":")
 				organs[dat] = path
 
-			var/obj/item/organ/organ_to_grant = tgui_input_list(user, "Select organ type", "Organ Manipulation", organs)
+			var/obj/item/organ/organ_to_grant = tgui_input_list(user, LANG("datum.e25f24ad9e38b44d", null), LANG("datum.c883f12643e17a3f", null), organs)
 			if(isnull(organ_to_grant))
 				return
 			if(isnull(organs[organ_to_grant]))
@@ -30,7 +31,7 @@ ADMIN_VERB(manipulate_organs, R_DEBUG, "Manipulate Organs", "Manipulate the orga
 				var/dat = replacetext("[path]", "/obj/item/implant/", ":")
 				organs[dat] = path
 
-			var/obj/item/implant/implant_to_grant = tgui_input_list(user, "Select implant type", "Organ Manipulation", organs)
+			var/obj/item/implant/implant_to_grant = tgui_input_list(user, LANG("datum.998c43250f088cec", null), LANG("datum.c883f12643e17a3f", null), organs)
 			if(isnull(implant_to_grant))
 				return
 			if(isnull(organs[implant_to_grant]))
@@ -38,7 +39,7 @@ ADMIN_VERB(manipulate_organs, R_DEBUG, "Manipulate Organs", "Manipulate the orga
 			implant_to_grant = organs[implant_to_grant]
 			implant_to_grant = new implant_to_grant
 			if(!implant_to_grant.implant(carbon_victim))
-				to_chat(user, span_notice("[carbon_victim] is unable to hold this implant!"))
+				to_chat(user, span_notice(LANG("datum.caa1518557d9906f", list(carbon_victim))))
 				qdel(implant_to_grant)
 				return
 			log_admin("[key_name(user)] has added implant [implant_to_grant.type] to [key_name(carbon_victim)]")
@@ -51,7 +52,7 @@ ADMIN_VERB(manipulate_organs, R_DEBUG, "Manipulate Organs", "Manipulate the orga
 			for(var/obj/item/implant/user_implants as anything in carbon_victim.implants)
 				organs["[user_implants.name] ([user_implants.type])"] = user_implants
 
-			var/obj/item/organ_to_modify = tgui_input_list(user, "Select organ/implant", "Organ Manipulation", organs)
+			var/obj/item/organ_to_modify = tgui_input_list(user, LANG("datum.6f2db0b229e1db3e", null), LANG("datum.c883f12643e17a3f", null), organs)
 			if(isnull(organ_to_modify))
 				return
 			if(isnull(organs[organ_to_modify]))

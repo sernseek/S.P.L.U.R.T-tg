@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/carrier/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(usr, src, ui)
 
@@ -122,7 +123,7 @@
 			return TRUE
 
 		if("rename_room")
-			var/new_room_name = tgui_input_text(usr,"Choose a new name for the room", name, target_room.name)
+			var/new_room_name = tgui_input_text(usr,LANG("datum.11efcdbe9e6e3732", null), name, target_room.name)
 			if(!new_room_name)
 				return FALSE
 
@@ -130,7 +131,7 @@
 			return TRUE
 
 		if("redescribe_room")
-			var/new_room_desc = tgui_input_text(usr,"Choose a new description for the room", name, target_room.room_description, multiline = TRUE)
+			var/new_room_desc = tgui_input_text(usr,LANG("datum.b4f25abae59fe8a8", null), name, target_room.room_description, multiline = TRUE)
 			if(!new_room_desc)
 				return FALSE
 
@@ -156,7 +157,7 @@
 			return TRUE
 
 		if("modify_name")
-			var/new_name = tgui_input_text(usr,"Choose a new name to send messages as", name, target_room.outside_voice)
+			var/new_name = tgui_input_text(usr,LANG("datum.83c57758feccf36d", null), name, target_room.outside_voice)
 			if(!new_name)
 				return FALSE
 
@@ -192,7 +193,7 @@
 
 					available_rooms += carrier_component.get_open_rooms()
 
-			var/datum/carrier_room/transfer_room = tgui_input_list(usr, "Choose a room to transfer to", name, available_rooms)
+			var/datum/carrier_room/transfer_room = tgui_input_list(usr, LANG("datum.ffdb0710bf487056", null), name, available_rooms)
 			if(!(transfer_room in available_rooms))
 				return FALSE
 
@@ -200,14 +201,14 @@
 			return TRUE
 
 		if("change_room_color")
-			var/new_room_color = tgui_color_picker(usr, "", "Choose Color", SOULCATCHER_DEFAULT_COLOR) // BUBBERSTATION EDIT: TGUI COLOR PICKER
+			var/new_room_color = tgui_color_picker(usr, "", LANG("datum.d472a9f2c270f157", null), SOULCATCHER_DEFAULT_COLOR) // BUBBERSTATION EDIT: TGUI COLOR PICKER
 			if(!new_room_color)
 				return FALSE
 
 			target_room.room_color = new_room_color
 
 		if("change_overlay_color")
-			var/new_overlay_color = tgui_color_picker(usr, "", "Choose Color", SOULCATCHER_DEFAULT_COLOR) // BUBBERSTATION EDIT: TGUI COLOR PICKER
+			var/new_overlay_color = tgui_color_picker(usr, "", LANG("datum.d472a9f2c270f157", null), SOULCATCHER_DEFAULT_COLOR) // BUBBERSTATION EDIT: TGUI COLOR PICKER
 			// It's okay for us not to have an overlay color
 
 			target_room.overlay_color = new_overlay_color
@@ -230,7 +231,7 @@
 				available_overlays[atom_name] = path
 
 			available_overlays += "None"
-			var/target_overlay = tgui_input_list(usr, "Choose a overlay to use", name, available_overlays)
+			var/target_overlay = tgui_input_list(usr, LANG("datum.c20f88c07247eac1", null), name, available_overlays)
 			if(target_overlay != "None")
 				target_overlay = available_overlays[target_overlay]
 
@@ -261,14 +262,14 @@
 			return TRUE
 
 		if("change_name")
-			var/new_name = tgui_input_text(usr, "Enter a new name for [target_mob]", "Soulcatcher", target_mob)
+			var/new_name = tgui_input_text(usr, LANG("datum.ea2e0724c61d3259", list(target_mob)), LANG("datum.49410bda6648d9c5", null), target_mob)
 			if(!new_name)
 				return FALSE
 
 			return SEND_SIGNAL(target_mob, COMSIG_CARRIER_MOB_RENAME, new_name)
 
 		if("reset_name")
-			if(tgui_alert(usr, "Do you wish to reset [target_mob]'s name to default?", "Soulcatcher", list("Yes", "No")) != "Yes")
+			if(tgui_alert(usr, LANG("datum.8d8271c121187ac7", list(target_mob)), LANG("datum.49410bda6648d9c5", null), list("Yes", "No")) != "Yes")
 				return FALSE
 
 			return SEND_SIGNAL(target_mob, COMSIG_CARRIER_MOB_RESET_NAME)
@@ -280,7 +281,7 @@
 			if(params["narration"])
 				message_sender = null
 
-			message_to_send = tgui_input_text(usr, "Input the message you want to send", name, multiline = TRUE)
+			message_to_send = tgui_input_text(usr, LANG("datum.e2196c58f2802f77", null), name, multiline = TRUE)
 
 			if(!message_to_send)
 				return FALSE
@@ -293,7 +294,7 @@
 			if(!istype(soulcatcher_carrier))
 				return FALSE
 
-			if(tgui_alert(usr, "Are you sure you want to detach the soulcatcher?", parent, list("Yes", "No")) != "Yes")
+			if(tgui_alert(usr, LANG("datum.97bfc2ae4c12fdd8", null), parent, list("Yes", "No")) != "Yes")
 				return FALSE
 
 			soulcatcher_carrier.remove_self()
@@ -391,7 +392,7 @@
 
 	switch(action)
 		if("change_name")
-			var/new_name = tgui_input_text(usr, "Enter a new name", "Soulcatcher", name)
+			var/new_name = tgui_input_text(usr, LANG("datum.2bd1c76b1f62157e", null), LANG("datum.49410bda6648d9c5", null), name)
 			if(!new_name)
 				return FALSE
 
@@ -399,7 +400,7 @@
 			return TRUE
 
 		if("reset_name")
-			if(tgui_alert(usr, "Do you wish to reset your name to default?", "Soulcatcher", list("Yes", "No")) != "Yes")
+			if(tgui_alert(usr, LANG("datum.9a30553f9fb0085a", null), LANG("datum.49410bda6648d9c5", null), list("Yes", "No")) != "Yes")
 				return FALSE
 
 			reset_name()

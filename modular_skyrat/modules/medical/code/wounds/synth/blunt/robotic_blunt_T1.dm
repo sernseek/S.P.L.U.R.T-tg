@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/wound/blunt/robotic/moderate
 	name = "Loosened Screws"
 	desc = "Various semi-external fastening instruments have loosened, causing components to jostle, inhibiting limb control."
@@ -54,13 +55,13 @@
 
 	var/their_or_other = (user == victim ? "[user.p_their()]" : "[victim]'s")
 	var/your_or_other = (user == victim ? "your" : "[victim]'s")
-	victim.visible_message(span_notice("[user] begins fastening the screws of [their_or_other] [limb.plaintext_zone]..."), \
-		span_notice("You begin fastening the screws of [your_or_other] [limb.plaintext_zone]..."))
+	victim.visible_message(span_notice(LANG("datum.7f837c440806a932", list(user, their_or_other, limb.plaintext_zone))), \
+		span_notice(LANG("datum.195b328432e27bc4", list(your_or_other, limb.plaintext_zone))))
 
 	if (!screwdriver_tool.use_tool(target = victim, user = user, delay = (6 SECONDS * delay_mult), volume = 50, extra_checks = CALLBACK(src, PROC_REF(still_exists))))
 		return
 
-	victim.visible_message(span_green("[user] finishes fastening [their_or_other] [limb.plaintext_zone]!"), \
-		span_green("You finish fastening [your_or_other] [limb.plaintext_zone]!"))
+	victim.visible_message(span_green(LANG("datum.2e4a1325a6d45228", list(user, their_or_other, limb.plaintext_zone))), \
+		span_green(LANG("datum.612c84f1f7ebd630", list(your_or_other, limb.plaintext_zone))))
 
 	remove_wound()

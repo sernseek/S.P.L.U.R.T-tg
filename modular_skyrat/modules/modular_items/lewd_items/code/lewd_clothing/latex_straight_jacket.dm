@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/suit/straight_jacket/latex_straight_jacket
 	name = "latex straight jacket"
 	desc = "A toy that is unable to actually restrain anyone. Still fun to wear!"
@@ -24,7 +25,7 @@
 	var/obj/item/clothing/suit/straight_jacket/latex_straight_jacket/reinforced/reinforced_jacket = new()
 	remove_item_from_storage(user)
 	user.put_in_hands(reinforced_jacket)
-	to_chat(user, span_notice("You reinforce the belts on [src] with [attacking_item]."))
+	to_chat(user, span_notice(LANG("obj.ed25d3f332246c53", list(src, attacking_item))))
 	qdel(attacking_item)
 	qdel(src)
 

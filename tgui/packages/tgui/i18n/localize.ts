@@ -1,0 +1,686 @@
+// THIS IS A NOVA SECTOR UI FILE
+// Legacy/upstream JSX compatibility adapter. New code uses explicit contextual messages.
+
+import { Button, Dropdown } from 'tgui-core/components';
+
+import {
+  getCatalogRevision,
+  getCurrentLocale,
+  substituteOverlay,
+  translateCurrent,
+} from './catalog';
+import { isLocalizedOption } from './messages';
+import { recordMiss } from './missLog';
+import policy from './policy.json';
+import propTemplateKeys from './prop-templates.json';
+
+// 可翻 prop 名来自三端策略单一来源 strings/i18n/policy.json（`tgui-catalog.mjs sync` 复制到本
+// 目录）。抽取器读同一份 —— 两边各存一份清单时，新增 prop 只改一边会出现「目录里有键但界面不
+// 翻」或「界面翻了但目录没键、MT 永远漏译」的静默半覆盖。
+const TRANSLATABLE_PROPS = new Set<string>(policy.translatable_props);
+
+const OPTION_TEXT_PROPS = new Set<string>(policy.option_text_props);
+
+// 例外清单：这些英文串**绝不**自动翻译。
+//
+// 自动本地化按「英文原文」查表，无法在运行时区分「字面量 UI 文案」与「正好等于某常见词的
+// 动态数据」。绝大多数命中都是期望的（On→开启、None→无…），但偶尔会把本该保持英文的专有
+// 名词 / 代码标识符也翻了（典型：admin VV 里显示的变量名 "Type"、ckey 等）。
+// 清单来自三端策略单一来源 strings/i18n/policy.json 的 `no_auto_translate`
+// （`tgui-catalog.mjs sync` 复制到本目录供打包）。新增豁免改 policy.json 后跑 sync。
+const NO_AUTO_TRANSLATE = new Set<string>(policy.no_auto_translate);
+
+// 运行期在 TS 里拼出来的 prop 值（`` title={`Reading: ${data.title}`} ``）的落地层。
+//
+// 整串是运行期产物、永远不是目录键，所以精确查表必然 miss，框架词（`Reading:` / `Mutant` /
+// `Food Left:`）永远英文。抽取器已按 `Reading: {0}` 的模板把它们收进目录（见 tgui-catalog.mjs
+// propTemplate），这里做**逆匹配**：按字面段还原出模板 → 查译文 → 把捕获值填回中文语序。
+//
+// 三条安全线，每一条 DM 侧都栽过：
+//  ① 准入面只有 sidecar 里那批 prop 模板。目录里另有 590+ 条 children 模板，它们运行时按整条
+//     精确查表；把 `- {0}, the {1}` / `{0} of 12 total` 这种泛化骨架放进逆匹配面，会把任意
+//     同形状的整句劫持成「中文脚手架裹着英文」——比不翻更难看。
+//  ② **整串精确查表永远排在逆匹配之前**（见 translateText 的调用顺序）：最具体的证据优先，
+//     命中就直接返回，不给骨架模板抢先的机会。
+//  ③ 逆匹配是**整串**匹配（`^…$`），不是子串替换；多条同时匹配时取字面段最长的那条（最具体）。
+type PropTemplate = {
+  key: string;
+  pattern: RegExp;
+  anchor: string; // 最长字面段，用作 includes() 预筛
+  literalLength: number;
+  slots: number[]; // 按出现顺序的占位符编号
+  trailingLiteral: boolean[]; // 第 i 个占位符后面是否还有字面段
+};
+
+let propTemplateIndex: PropTemplate[] | null = null;
+const propTemplateCache = new Map<string, string | null>();
+
+function escapeRegExp(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function buildPropTemplateIndex(): PropTemplate[] {
+  const out: PropTemplate[] = [];
+  for (const key of propTemplateKeys as string[]) {
+    const pieces = key.split(/\{(\d+)\}/);
+    if (pieces.length < 3) continue;
+    let pattern = '^';
+    let anchor = '';
+    let literalLength = 0;
+    const slots: number[] = [];
+    const trailingLiteral: boolean[] = [];
+    for (let i = 0; i < pieces.length; i++) {
+      if (i % 2 === 0) {
+        pattern += escapeRegExp(pieces[i]);
+        literalLength += pieces[i].length;
+        if (pieces[i].length > anchor.length) anchor = pieces[i];
+        if (pieces[i] && trailingLiteral.length) {
+          trailingLiteral[trailingLiteral.length - 1] = true;
+        }
+      } else {
+        slots.push(Number.parseInt(pieces[i], 10));
+        trailingLiteral.push(false);
+        pattern += '([\\s\\S]*?)';
+      }
+    }
+    pattern += '$';
+    if (!anchor) continue;
+    out.push({
+      key,
+      pattern: new RegExp(pattern),
+      anchor,
+      literalLength,
+      slots,
+      trailingLiteral,
+    });
+  }
+  // 最具体的先试。
+  out.sort((a, b) => b.literalLength - a.literalLength);
+  return out;
+}
+
+/**
+ * 占位符代表的是一个**值**（名字、数量、状态词），不是一段散文。
+ *
+ * 这是逆匹配最关键的一道闸门，而且只能设在运行期：抽取期看不出 `Select {0}` 的 `{0}` 将来会
+ * 被喂进什么。`Select {0}` 的锚 "Select " 是正经实词，却是极常见的句子开头 —— 目录里就有 17 条
+ * 「Select a policy to view. These policies are…」这样的整句能匹配上，一旦放行就会被改写成
+ * 「选择a policy to view.…」这种中文脚手架裹英文的东西，比不翻更难看。
+ *
+ * 判据按「值 vs 散文」分：值不长、不跨句、不以小写词开头（名字/数字/状态词都是大写或数字），
+ * 也不会自带句末标点（除非模板本身在它后面还有字面段）。
+ */
+function capturesLookLikeValues(
+  match: RegExpExecArray,
+  tpl: PropTemplate,
+): boolean {
+  for (let i = 0; i < tpl.slots.length; i++) {
+    const captured = (match[i + 1] ?? '').trim();
+    if (!captured) {
+      continue;
+    }
+    if (captured.length > 60) {
+      return false;
+    }
+    if (/[.!?][\s ]/.test(captured)) {
+      return false; // 跨句
+    }
+    const words = captured.split(/\s+/);
+    if (words.length > 1 && /^\p{Ll}/u.test(captured)) {
+      return false; // 小写开头的多词 = 半句散文
+    }
+    if (words.length > 8) {
+      return false;
+    }
+    if (/[.!?]$/.test(captured) && !tpl.trailingLiteral[i]) {
+      return false; // 模板末尾直接吞掉了一句带句号的话
+    }
+  }
+  return true;
+}
+
+function matchPropTemplate(text: string): string | null {
+  const cacheKey = `${getCatalogRevision()}\u0004${getCurrentLocale()}\u0004${text}`;
+  const cached = propTemplateCache.get(cacheKey);
+  if (cached !== undefined) {
+    return cached;
+  }
+  propTemplateIndex ??= buildPropTemplateIndex();
+  let result: string | null = null;
+  for (const tpl of propTemplateIndex) {
+    if (!text.includes(tpl.anchor)) {
+      continue;
+    }
+    const match = tpl.pattern.exec(text);
+    if (!match) {
+      continue;
+    }
+    const translated = translateCurrent(tpl.key);
+    if (translated === tpl.key) {
+      continue; // 未译：还原出模板也没有收益，继续找更长的（或放弃）。
+    }
+    // 译文丢了占位符就会丢内容（人名、数量…），宁可整条保持英文。
+    if (tpl.slots.some((slot) => !translated.includes(`{${slot}}`))) {
+      continue;
+    }
+    if (!capturesLookLikeValues(match, tpl)) {
+      continue;
+    }
+    let filled = translated;
+    for (let i = 0; i < tpl.slots.length; i++) {
+      // 捕获值本身也可能是目录条目（物品名/语言名/部门名…）——只做**整串精确**查表，
+      // 未命中就原样填回（玩家名、数字之类本就不该翻）。
+      const captured = match[i + 1] ?? '';
+      const localized = captured ? translateCurrent(captured) : captured;
+      filled = filled.split(`{${tpl.slots[i]}}`).join(localized);
+    }
+    result = filled;
+    break;
+  }
+  // 逆匹配跑在每次「精确查表 miss」上（多为逐帧重渲染的同一批串），缓存必要；但键是任意
+  // 运行期串（含变动的数量/名字），不设上限会随界面刷新无限长。
+  if (propTemplateCache.size > 2000) {
+    propTemplateCache.clear();
+  }
+  propTemplateCache.set(cacheKey, result);
+  return result;
+}
+
+function translateText(text: string): string {
+  return resolveDisplayText(text, true);
+}
+
+/**
+ * 运行期串在界面上实际显示成什么（与渲染走同一条链），但**不记漏翻**。
+ * 给搜索用：过滤时要对大量未显示的值求译文，记进漏翻采集会把报告淹掉。
+ */
+export function displayTextOf(text: string): string {
+  return resolveDisplayText(text, false);
+}
+
+function resolveDisplayText(text: string, logMiss: boolean): string {
+  const match = text.match(/^(\s*)([\s\S]*\S)(\s*)$/);
+  if (!match) {
+    return text;
+  }
+  const [, leading, body, trailing] = match;
+  // 抽取期 (tgui-catalog.mjs normalizeText) 把内部空白折叠成单空格再算 key，
+  // 所以运行时也要先折叠才能命中（否则换行/多空格的静态 JSX 文本永远查不到）。
+  const lookup = body.replace(/\s+/g, ' ');
+  if (NO_AUTO_TRANSLATE.has(lookup)) {
+    return text;
+  }
+  const translated = translateCurrent(lookup);
+  if (translated !== lookup) {
+    return `${leading}${translated}${trailing}`;
+  }
+  // 未命中:精灵配件「备用版」名(生殖器/发型/尾巴/胸罩…)运行期由 `parent_type::name + " (Alt)"`
+  // 编译期拼成("Human (Alt)"/"Pair (Alt)"/"Knotted (Alt)"…)，整串永不是字面量、无法抽取(抽出的是
+  // 含占位符的模板 "{0} (Alt)"、反查跳过) → 译**基础名**、保留 " (Alt)" 后缀标记。
+  const altMatch = lookup.match(/^(.+) \(Alt\)$/);
+  if (altMatch) {
+    const baseTranslated = translateCurrent(altMatch[1]);
+    if (baseTranslated !== altMatch[1]) {
+      return `${leading}${baseTranslated} (Alt)${trailing}`;
+    }
+  }
+  // 精确查表 miss 之后才轮到 prop 模板逆匹配（顺序见 matchPropTemplate 的安全线 ②）。
+  const templated = matchPropTemplate(lookup);
+  if (templated !== null) {
+    return `${leading}${templated}${trailing}`;
+  }
+  // 最后一道：负载 overlay 的子串替换。整串查不到、模板也不匹配的，多半是界面把运行期值**拼进**了
+  // 一个更大的串（`` `${x.name} - ${x.desc}` ``、`` `${name} (${n})` ``）。overlay 的键全是多词短语
+  // （P1 的多词门槛所致）、匹配面只有本次负载，再加词边界检查，见 catalog.ts substituteOverlay。
+  const substituted = substituteOverlay(body);
+  if (substituted !== null) {
+    return `${leading}${substituted}${trailing}`;
+  }
+  // 漏翻采集：整条链（精确 → Alt 后缀 → prop 模板逆匹配 → overlay 子串）都没命中。
+  // 这是 DM 侧看不到的那一面 —— 界面文本查表失败在浏览器里，服务端毫无痕迹。默认关闭。
+  if (logMiss) {
+    recordMiss(body);
+  }
+  // 未命中时保留原始 body（含原排版），不改动。
+  return `${leading}${body}${trailing}`;
+}
+
+// 混合 children 的占位符模板。
+//
+// `<Box>Reduced by {n}% when infected with viruses.</Box>` 的 children 是
+// ["Reduced by ", n, "% when infected with viruses."]。逐段查表会按**英文语序**把中文碎片
+// 拼回去（「减少了 2 感染病毒时的%。」）——中文语序与英文不同，碎片翻译必错，比不翻更糟。
+// 抽取期（tgui-catalog.mjs childrenTemplate）已把整条存成
+// `Reduced by {0}% when infected with viruses.`，这里整条查、再把占位符换回原来的非字符串
+// children，语序由译文决定。
+//
+// 查不到就**整条保持英文**，绝不回退到逐段翻译——那正是要根除的乱序来源。
+// React 对 null/undefined/boolean 型 children **什么都不渲染**。它们几乎都来自
+// `{cond && <X/>}` 在 cond 为假时的求值结果，在 children 数组里只是个空位。
+//
+// 把它们当成占位符建模板，是整类「目录里有译文、界面却永远英文」的根因：反派介绍 tooltip
+// 的 `<div>{text}{index !== last && <Divider/>}</div>`，最后一段（多数反派只有一段）的
+// children 是 `[介绍原文, false]` → 模板变成 `…station.{0}`，目录里当然没有 → 整条回退
+// 英文；连带下面「混排就整条保持英文」的保守分支也一起把它焊死。渲染不出东西的空位必须
+// 在建模板前就剔除，剩下的才是真正参与语序的片段。
+function isIgnorableChild(child: unknown): boolean {
+  return child === null || child === undefined || typeof child === 'boolean';
+}
+
+function localizeChildrenTemplate(children: unknown[]): unknown[] | null {
+  let slots = 0;
+  let hasText = false;
+  let template = '';
+  for (const child of children) {
+    if (typeof child === 'string') {
+      hasText = true;
+      template += child;
+    } else {
+      template += `{${slots++}}`;
+    }
+  }
+  if (!hasText || slots === 0) {
+    return null;
+  }
+  const lookup = template.replace(/\s+/g, ' ').trim();
+  if (NO_AUTO_TRANSLATE.has(lookup)) {
+    return null;
+  }
+  const translated = translateCurrent(lookup);
+  if (translated === lookup) {
+    // 漏翻采集：整条 children 模板查不到 —— 这一类的症状是「整段英文、但段落里的 <b>/<span>
+    // 词是中文」（那些是独立 jsx 节点、各自命中）。记的是**模板形态**（`The {0} neutral quirk`），
+    // 那正好是该去目录里补的键，比记渲染后的整句有用得多。
+    recordMiss(lookup);
+    return null;
+  }
+  // 占位符必须一一对上，否则说明目录条目与这处 children 形状不符（例如 `{cond && <X/>}`
+  // 运行期塌成 false、少了一个位）——宁可整条不翻，也不能错位重组。
+  const seen = new Set<number>();
+  const pieces = translated.split(/\{(\d+)\}/);
+  const rebuilt: unknown[] = [];
+  for (let i = 0; i < pieces.length; i++) {
+    if (i % 2 === 0) {
+      if (pieces[i]) rebuilt.push(pieces[i]);
+      continue;
+    }
+    const index = Number.parseInt(pieces[i], 10);
+    const slotChildren = children.filter((c) => typeof c !== 'string');
+    if (!Number.isInteger(index) || index < 0 || index >= slotChildren.length) {
+      return null;
+    }
+    seen.add(index);
+    rebuilt.push(slotChildren[index]);
+  }
+  if (seen.size !== slots) {
+    return null;
+  }
+  return rebuilt;
+}
+
+// 混排 children 里，「整条模板查不到就整条保持英文」这条保守分支挡住的是**拼句碎片**
+// （"Reduced by " / "% when infected."）——它们各自只是半句，单独翻会按英文语序拼回去。
+//
+// 但同样形状里还有一类**完整独立文本**：它不是静态 JSX 拼句的一半，而是运行期塞进来的一整条
+// 文案，兄弟节点只是图标/分隔线之类的非文本装饰：
+//   `<Box>{icon && <Icon/>}{tab.name}</Box>`      配装页分类页签（"Head"）
+//   `<div>{desc}{notLast && <Divider/>}</div>`    反派介绍 tooltip（非末段）
+//   `<>{name}<span>{n} slots available</span></>` 中途加入菜单的部门标题
+// 这些整条模板永远不会在目录里（字符串是运行期数据、不是抽取得到的字面量），于是全部被保守
+// 分支焊死成英文——而它们各自的英文原文**本来就是独立目录键**、译文一直躺在目录里。
+//
+// 判据用「每个非空白字符串 child 都能整条精确命中目录」：碎片按定义不是独立键（抽取器只存整条
+// 模板），命中不了 → 仍走保守分支。再加一道形态闸门挡掉「碰巧也是键」的续接碎片：以小写字母
+// 或标点开头的片段一律视为半句。
+function isSelfContainedText(text: string): boolean {
+  const body = text.trim();
+  if (!body) {
+    return true; // 纯空白（prettier 换行插的 `{' '}` 等）不参与判定，原样保留。
+  }
+  // 纯装饰（`[ {text} ]` 的方括号、` - ` 这类不含字母数字的段）同样不参与：它们没有可翻的词，
+  // 也不可能是拼句碎片；拿它们否决整条，会把旁边本来能独立命中的整句一起焊成英文。
+  if (!/[\p{L}\p{N}]/u.test(body)) {
+    return true;
+  }
+  // 续接碎片形态：", and "、"% when infected." —— 首字符是小写字母或标点。
+  return !/^[\p{Ll}\p{P}\p{S}]/u.test(body);
+}
+
+// children 全是字符串时，React 运行期把它们当一整段文本渲染，但它们在数组里仍是分开的元素：
+//   `Swipe {accessText} to {locked ? 'unlock' : 'lock'} this interface.`
+//   → ["Swipe ", "an ID card", " to ", "unlock", " this interface."]
+// 从前这里逐个元素各自查表，碎片按英文语序拼回去：「刷卡 an ID card 到 解锁 此界面。」——正是
+// 「混排 children 必须整条抽成模板」要挡的形态。抽取器对这种写法收的是 `Swipe {0} to {1} this
+// interface.`（插值是槽），而整段合并后永远对不上它。顺序：
+//   ① 整段合并精确查表（`{' '}` 那类字符串字面量插值，抽取器按文本合并收键）；
+//   ② JSX 交替形态：编译产物里文本与 `{表达式}` 交替出现，按「奇数位是槽」再查一次模板；
+//   ③ 每个非空白片段都是完整独立文本（isSelfContainedText）时才逐段翻；
+//   都不满足 → 保持英文。
+function localizeStringChildren(children: unknown[]): unknown[] | null {
+  const strings = children as string[];
+  const merged = strings.join('');
+  const whole = translateText(merged);
+  if (whole !== merged) {
+    return [whole];
+  }
+  const alternating = localizeAlternatingStrings(strings);
+  if (alternating) {
+    return alternating;
+  }
+  if (strings.every(isSelfContainedText)) {
+    const localized = localizeNode(strings);
+    return localized === strings ? null : (localized as unknown[]);
+  }
+  return null;
+}
+
+function localizeAlternatingStrings(strings: string[]): unknown[] | null {
+  if (strings.length < 3 || strings.length % 2 === 0) {
+    return null;
+  }
+  const slotValues: string[] = [];
+  let template = '';
+  strings.forEach((piece, index) => {
+    if (index % 2 === 1) {
+      template += `{${slotValues.length}}`;
+      slotValues.push(piece);
+    } else {
+      template += piece;
+    }
+  });
+  const lookup = template.replace(/\s+/g, ' ').trim();
+  if (NO_AUTO_TRANSLATE.has(lookup)) {
+    return null;
+  }
+  const translated = translateCurrent(lookup);
+  if (translated === lookup) {
+    return null;
+  }
+  const pieces = translated.split(/\{(\d+)\}/);
+  const seen = new Set<number>();
+  let rebuilt = '';
+  for (let i = 0; i < pieces.length; i++) {
+    if (i % 2 === 0) {
+      rebuilt += pieces[i];
+      continue;
+    }
+    const index = Number.parseInt(pieces[i], 10);
+    if (!Number.isInteger(index) || index < 0 || index >= slotValues.length) {
+      return null;
+    }
+    seen.add(index);
+    rebuilt += translateText(slotValues[index]);
+  }
+  if (seen.size !== slotValues.length) {
+    return null;
+  }
+  return [rebuilt];
+}
+
+function localizeChildrenSegments(children: unknown[]): unknown[] | null {
+  // 两遍，因为两件事的安全性不同：
+  //   ① overlay 替换：只把本次负载里那几十条已确认的显示值就地换成译文，不动语序，永远安全；
+  //   ② 逐段查表：受碎片闸门约束，全有或全无（半句碎片按英文语序拼回去比不翻更糟）。
+  // 关键是闸门中止时**不能把 ① 的成果一起丢掉** —— 从前 P1 就地改写负载时，混排 children 里的
+  // 名字本来就已经是中文（周围碎片是英文）。一个查不到的静态碎片把整条打回英文，就是把那份覆盖赔掉。
+  const substituted: unknown[] = [];
+  const substitutedIndices = new Set<number>();
+  children.forEach((child, index) => {
+    if (typeof child === 'string') {
+      const next = substituteOverlay(child);
+      if (next !== null) {
+        substitutedIndices.add(index);
+        substituted.push(next);
+        return;
+      }
+    }
+    substituted.push(child);
+  });
+
+  let changed = substitutedIndices.size > 0;
+  const fallback = changed ? substituted : null;
+  const localized: unknown[] = [];
+  for (let index = 0; index < substituted.length; index++) {
+    const child = substituted[index];
+    if (typeof child !== 'string' || substitutedIndices.has(index)) {
+      localized.push(child);
+      continue;
+    }
+    if (!isSelfContainedText(child)) {
+      return fallback;
+    }
+    const next = translateText(child);
+    if (next === child) {
+      // 空白 child 翻不动是正常的；有实义却查不到，说明它是碎片 → 逐段翻整条放弃。
+      if (child.trim()) {
+        return fallback;
+      }
+    } else {
+      changed = true;
+    }
+    localized.push(next);
+  }
+  return changed ? localized : null;
+}
+
+export function localizeNode(value: unknown): unknown {
+  if (typeof value === 'string') {
+    return translateText(value);
+  }
+  if (Array.isArray(value)) {
+    let changed = false;
+    const localized = value.map((entry) => {
+      const nextEntry = localizeNode(entry);
+      changed ||= nextEntry !== entry;
+      return nextEntry;
+    });
+    return changed ? localized : value;
+  }
+  return value;
+}
+
+function localizeOption(option: unknown): unknown {
+  // 裸字符串选项**一律不翻**：在 tgui-core Dropdown 里「字符串选项的值===显示文本」(m(o)=o)，
+  // onSelected 回传的就是这个字符串。若翻成中文，回传中文、而调用方几乎都按英文原文匹配
+  // (`aug_options.find(a => displayName(a) === 回传)`、`value === style.name`、或把回传直接当
+  // `style_name`/标识符发回服务端) → 匹配失败、选择静默失效（「强化+ 身体部位下拉点了没反应」即此）。
+  // 这是只为上游裸字符串调用点保留的兼容行为。新代码必须用 typed localizedOption /
+  // localizedDropdownOption，让 canonical value 与 LocalizedText 在类型层分开。
+  if (typeof option === 'string') {
+    return option;
+  }
+  if (!option || typeof option !== 'object' || Array.isArray(option)) {
+    return localizeNode(option);
+  }
+  if (isLocalizedOption(option)) {
+    return option;
+  }
+
+  let nextOption = option as Record<string, unknown>;
+  for (const propName of OPTION_TEXT_PROPS) {
+    const propValue = nextOption[propName];
+    if (typeof propValue !== 'string') {
+      continue;
+    }
+
+    const localized = translateText(propValue);
+    if (localized === propValue) {
+      continue;
+    }
+
+    if (nextOption === option) {
+      nextOption = { ...nextOption };
+    }
+    nextOption[propName] = localized;
+  }
+  return nextOption;
+}
+
+function localizeOptions(value: unknown): unknown {
+  if (!Array.isArray(value)) {
+    return value;
+  }
+
+  let changed = false;
+  const localized = value.map((option) => {
+    const nextOption = localizeOption(option);
+    changed ||= nextOption !== option;
+    return nextOption;
+  });
+  return changed ? localized : value;
+}
+
+// Legacy Dropdown adapter: **裸字符串选项**既是显示又是回传值（`m(o) = o`），所以
+// localizeOption 一律不翻它们——翻了 onSelected 就回传中文，调用方/服务端按英文匹配全部失效。
+// 但整个界面里下拉往往是唯一还在显示英文的控件（ID 饰边压印机的饰边表、管道分配器的管件表…）。
+//
+// Dropdown 自己支持对象选项 `{value, displayText}`：菜单渲染 displayText、onSelected 回传 value。
+// 所以这里在**运行时**把裸字符串升级成对象——value 保留原英文标识符，只有显示换成译文。调用方
+// 代码一行不用改，整类「下拉不翻」一次解决。识别靠**组件标识**（`type === Dropdown`）而不是
+// 「有 options prop」：界面里自定义组件也叫 options（AdminFax/LogViewer 的 `string[]`），
+// 按 prop 名猜会把对象塞给只会渲染字符串的组件。
+//
+// 另一半是**收起时的按钮文字**：Dropdown 显示 `displayText || selected`，而 selected 由调用方
+// 传的是 value（英文标识符）→ 菜单已是中文、按钮仍是英文。调用方没显式给 displayText 时，
+// 这里按 selected 补一个译文；selected 本身不动，findIndex/高亮/回传全部照旧按英文匹配。
+function localizeDropdownProps(
+  props: Record<string, unknown>,
+): Record<string, unknown> {
+  let next = props;
+
+  const options = props.options;
+  if (Array.isArray(options)) {
+    let changed = false;
+    const localized = options.map((option) => {
+      if (typeof option !== 'string') {
+        return option;
+      }
+      const translated = translateText(option);
+      if (translated === option) {
+        return option;
+      }
+      changed = true;
+      return { value: option, displayText: translated };
+    });
+    if (changed) {
+      next = { ...next, options: localized };
+    }
+  }
+
+  if (next.displayText === undefined || next.displayText === null) {
+    const selected = props.selected;
+    let selectedText: string | null = null;
+    if (typeof selected === 'string') {
+      const translated = translateText(selected);
+      if (translated !== selected) {
+        selectedText = translated;
+      }
+    } else if (selected && typeof selected === 'object') {
+      // 对象选项的 selected：Dropdown 收起时显示的是 value 而非 displayText，同样要补。
+      const display = (selected as Record<string, unknown>).displayText;
+      if (typeof display === 'string') {
+        selectedText = translateText(display);
+      }
+    }
+    if (selectedText !== null) {
+      next = next === props ? { ...next } : next;
+      next.displayText = selectedText;
+    }
+  }
+
+  return next;
+}
+
+/**
+ * tgui-core 预编译包走 `react/jsx-runtime`，默认文案（Button.Confirm 的 confirmContent、
+ * Dropdown 的 placeholder）从不经过本仓库的 jsxImportSource。调用方没传这些 prop 时，在进入
+ * 现有 localizeProps 循环**之前**补上 canonical English 源串，让 TRANSLATABLE_PROPS 按目录翻。
+ *
+ * 只认导入的函数身份（与 Dropdown 裸字符串升级同一条）：不能按「有 confirmContent」猜。
+ * Dialog 的 Close tooltip、Dropdown 空列表的 "No options" 写在 core 内部 JSX 里，不是调用方
+ * prop，这条路够不着——两者都已在 tgui.json，不新造单词键、不 vendor。
+ */
+/**
+ * tgui-core 自己的默认值，抄写一份。**改动前先看 coreDefaults.test.tsx** —— 那条测试渲染
+ * 真组件、读它渲染出来的文本，保证这两个常量与上游一致；上游一改这里立刻红。
+ * 抄错的后果不是「没翻译」而是「用一个过期英文覆盖掉 core 的默认文案」，界面上看不出来。
+ */
+export const CORE_DEFAULT_CONFIRM_CONTENT = 'Confirm?';
+export const CORE_DEFAULT_DROPDOWN_PLACEHOLDER = 'Select...';
+
+function withCoreDefaultProps(
+  type: unknown,
+  props: Record<string, unknown>,
+): Record<string, unknown> {
+  if (type === Button.Confirm && props.confirmContent === undefined) {
+    return { ...props, confirmContent: CORE_DEFAULT_CONFIRM_CONTENT };
+  }
+  if (type === Dropdown && props.placeholder === undefined) {
+    return { ...props, placeholder: CORE_DEFAULT_DROPDOWN_PLACEHOLDER };
+  }
+  return props;
+}
+
+/**
+ * 给 dangerouslySetInnerHTML 用的 overlay 子串替换。自动层看不到 innerHTML。
+ *
+ * 只走 `substituteOverlay`（多词键 + 词边界 + 最长优先），**不对静态目录跑无边界 AC**。
+ * 纸张/新闻/终端/玩家正文不要接；只接已确认是服务器目录散文的负载。
+ */
+export function localizeHtml(html: string | undefined | null): string {
+  if (typeof html !== 'string' || !html) {
+    return html ?? '';
+  }
+  return substituteOverlay(html) ?? html;
+}
+
+export function localizeProps(props: unknown, type?: unknown): unknown {
+  if (!props || typeof props !== 'object' || Array.isArray(props)) {
+    return props;
+  }
+
+  let nextProps = withCoreDefaultProps(type, props as Record<string, unknown>);
+  for (const [propName, propValue] of Object.entries(nextProps)) {
+    let localized: unknown = propValue;
+    if (propName === 'children') {
+      if (Array.isArray(propValue)) {
+        // 先剔除渲染不出东西的空位（`{cond && <X/>}` 为假时的 false 等），它们既不参与语序、
+        // 也不该占占位符——否则整条模板必然查不到、整段回退英文。
+        const rendered = propValue.filter((c) => !isIgnorableChild(c));
+        // 文本与表达式混排：先试整条模板；成功即用，失败则整条保持英文（不逐段翻）。
+        const templated = localizeChildrenTemplate(rendered);
+        if (templated) {
+          localized = templated;
+        } else if (rendered.some((c) => typeof c !== 'string')) {
+          // 整条模板未命中：只有在每个字符串 child 都是**完整独立目录条目**时才逐段翻
+          // （运行期文案 + 图标/分隔线的形状），否则整条保持英文。
+          const segments = localizeChildrenSegments(rendered);
+          localized = segments ?? propValue;
+        } else {
+          localized = localizeStringChildren(rendered) ?? propValue;
+        }
+      } else {
+        localized = localizeNode(propValue);
+      }
+    } else if (propName === 'options') {
+      localized = localizeOptions(propValue);
+    } else if (TRANSLATABLE_PROPS.has(propName)) {
+      localized = localizeNode(propValue);
+    }
+
+    if (localized === propValue) {
+      continue;
+    }
+
+    if (nextProps === props) {
+      nextProps = { ...nextProps };
+    }
+    nextProps[propName] = localized;
+  }
+
+  if (type === Dropdown) {
+    return localizeDropdownProps(nextProps);
+  }
+
+  return nextProps;
+}

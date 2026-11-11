@@ -1,9 +1,10 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/surgery_operation/on_preop(atom/movable/operating_on, mob/living/surgeon, tool, list/operation_args)
 	. = ..()
 	// warning for unanesthetized surgery
 	var/mob/living/patient = get_patient(operating_on)
 	if(!(HAS_TRAIT(patient, TRAIT_ANALGESIA) || !IS_UNCONSCIOUS_OR_CRIT(patient)))
-		patient.balloon_alert(surgeon, "not numbed!")
+		patient.balloon_alert(surgeon, LANG("datum.197444b25dbb0e0a", null))
 
 /// Makes the organ operable again
 /datum/surgery_operation/organ/proc/make_operable(obj/item/organ/organ)

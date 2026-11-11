@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/destructible/clockwork/gear_base/powered/tinkerers_cache
 	name = "tinkerer's cache"
 	desc = "A bronze store filled with parts and components."
@@ -26,19 +27,19 @@
 		return
 
 	if(!IS_CLOCK(user))
-		to_chat(user, span_warning("You try to put your hand into [src], but almost burn yourself!"))
+		to_chat(user, span_warning(LANG("obj.5159ea8b1bf2675d", list(src))))
 		return
 
 	if(!anchored)
-		to_chat(user, span_brass("[src] needs to be anchored to the floor first."))
+		to_chat(user, span_brass(LANG("obj.6c1d001198971a97", list(src))))
 		return
 
 	if(depowered)
-		to_chat(user, span_brass("[src] isn't connected to power!"))
+		to_chat(user, span_brass(LANG("obj.7cfefb36a86b73a6", list(src))))
 		return
 
 	if(!COOLDOWN_FINISHED(src, use_cooldown))
-		to_chat(user, span_brass("[src] is still warming up, it will be ready in [DisplayTimeText(COOLDOWN_TIMELEFT(src, use_cooldown))]."))
+		to_chat(user, span_brass(LANG("obj.979b1355286dbf40", list(src, DisplayTimeText(COOLDOWN_TIMELEFT(src, use_cooldown))))))
 		return
 
 	var/list/real_possibilities = craft_possibilities.Copy()
@@ -48,7 +49,7 @@
 		if(initial(path.research_locked) && !(path in GLOB.clockwork_research_unlocked_recipes))
 			real_possibilities -= name
 
-	var/selection = tgui_input_list(user, "Select an item to create at the forge.", "Forging", real_possibilities)
+	var/selection = tgui_input_list(user, LANG("obj.4eb138e4d4dba334", null), LANG("obj.2f97697f7c9b3f1a", null), real_possibilities)
 
 	if(!selection)
 		return
@@ -59,11 +60,11 @@
 		return
 
 	if(!LAZYLEN(transmission_sigils))
-		to_chat(user, span_brass("This needs to be connected to a transmission sigil!"))
+		to_chat(user, span_brass(LANG("obj.7d58aae3163b5ff4", null)))
 		return
 
 	if(!use_power(initial(chosen_item.power_use)))
-		to_chat(user, span_brass("You need more power to forge this item."))
+		to_chat(user, span_brass(LANG("obj.59c49bccbbcef45a", null)))
 		return
 
 	COOLDOWN_START(src, use_cooldown, 4 MINUTES * initial(chosen_item.time_delay_mult))
@@ -72,7 +73,7 @@
 	new crafting_item(get_turf(src))
 	playsound(src, 'sound/machines/clockcult/steam_whoosh.ogg', 50)
 
-	to_chat(user, span_brass("You craft [initial(chosen_item.name)] to near perfection, [src] cooling down. [initial(chosen_item.time_delay_mult) ? "It will be available in [DisplayTimeText(COOLDOWN_TIMELEFT(src, use_cooldown))]." : "It is ready to use again."]"))
+	to_chat(user, span_brass(LANG("obj.addd012bf33b5228", list(initial(chosen_item.name), src, initial(chosen_item.time_delay_mult) ? "It will be available in [DisplayTimeText(COOLDOWN_TIMELEFT(src, use_cooldown))]." : "It is ready to use again."))))
 
 
 // Assemble a list of subtype tinker cache datums

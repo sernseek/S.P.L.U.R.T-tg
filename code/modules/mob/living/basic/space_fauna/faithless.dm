@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/faithless
 	name = "The Faithless"
 	desc = "The Wish Granter's faith in humanity, incarnate."
@@ -51,8 +52,8 @@
 	var/mob/living/living_target = target
 	if (prob(paralyze_chance))
 		living_target.Paralyze(paralyze_duration)
-		living_target.visible_message(span_danger("\The [src] knocks \the [target] down!"), \
-			span_userdanger("\The [src] knocks you down!"))
+		living_target.visible_message(span_danger(LANG("mob.0366de36bb029e70", list(src, target))), \
+			span_userdanger(LANG("mob.3d2fe2704bb6a233", list(src))))
 
 /datum/ai_controller/basic_controller/faithless
 	behavior_tree_json = "code/modules/mob/living/basic/space_fauna/faithless.bt.json"

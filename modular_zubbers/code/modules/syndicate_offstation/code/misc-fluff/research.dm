@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///// Bubber added Syndicate Tech /////
 
 ///// First we enstate a techweb so we can add the node. /////
@@ -90,7 +91,7 @@
 	. = ..()
 	if(!in_range(user, src) && !isobserver(user))
 		return
-	. += span_notice("Insert [EXAMINE_HINT("Research Notes")] to generate points.")
+	. += span_notice(LANG("obj.9f940620bde43844", list(EXAMINE_HINT("Research Notes"))))
 
 /obj/machinery/rnd/server/interdyne/attackby(obj/item/attacking_item, mob/user, params)
 	if(istype(attacking_item, /obj/item/research_notes) && stored_research)

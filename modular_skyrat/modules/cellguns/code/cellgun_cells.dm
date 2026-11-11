@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/weaponcell
 	name = "default weaponcell"
 	desc = "used to add ammo types to guns"
@@ -36,16 +37,16 @@
 /obj/item/weaponcell/examine(mob/user)
 	. = ..()
 	if(shot_name)
-		. += span_noticealien("Using this on a cell based gun will unlock the [shot_name] firing mode")
+		. += span_noticealien(LANG("obj.23a5ea3851b48ea0", list(shot_name)))
 
 	if(!toggle_modes) //Doesn't show a description if it can't be toggled in the first place.
 		return
 
 	if(medicell_examine)
-		. += span_notice("The safety measures on the Medicell, preventing clone damage, are [is_toggled ? "enabled" : "disabled"]")
+		. += span_notice(LANG("obj.fd8f821f701c0768", list(is_toggled ? "enabled" : "disabled")))
 		return
 	else
-		. += span_notice("[src] is using the [is_toggled ? "primary" : "secondary"] mode.")
+		. += span_notice(LANG("obj.5357a3e921232d2f", list(src, is_toggled ? "primary" : "secondary")))
 
 	return .
 
@@ -58,10 +59,10 @@
 	playsound(loc,is_toggled ? 'sound/machines/defib/defib_SaftyOn.ogg' : 'sound/machines/defib/defib_SaftyOff.ogg', 50)
 
 	if(medicell_examine)
-		balloon_alert(user, "safety [is_toggled ? "enabled" : "disabled"]")
+		balloon_alert(user, LANG("obj.10fa174cf01e7d3e", list(is_toggled ? "enabled" : "disabled")))
 		return
 	else if(refresh_shot_name())
-		balloon_alert(user, "set to [shot_name]")
+		balloon_alert(user, LANG("obj.28f94138c1669b1d", list(shot_name)))
 
 	return
 

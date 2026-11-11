@@ -1,20 +1,22 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/Login()
 	. = ..()
 	if(ckey)
 		if(is_banned_from(ckey, BAN_PACIFICATION))
 			ADD_TRAIT(src, TRAIT_PACIFISM, ROUNDSTART_TRAIT)
+	newbie_guard_on_login(src) // ZH EDIT ADDITION - REGION_NEWBIE_GUARD
 
 /mob/dead/observer/Login()
 	. = ..()
 	if(ckey)
 		if(is_banned_from(ckey, BAN_DONOTREVIVE))
-			to_chat(src, span_notice("As you are revival banned, you cannot reenter your body."))
+			to_chat(src, span_notice(LANG("mob.24feb8f441510f8c", null)))
 			can_reenter_corpse = FALSE
 
 /proc/process_eorg_bans()
 	for(var/mob/iterating_player in GLOB.mob_list)
 		if(iterating_player.ckey && is_banned_from(iterating_player.ckey, BAN_EORG))
 			new /obj/effect/particle_effect/sparks/quantum (get_turf(iterating_player))
-			iterating_player.visible_message(span_notice("[iterating_player] is teleported back home, hopefully to an everloving family!"), span_userdanger("As you are end of round banned, you will now be deleted."))
+			iterating_player.visible_message(span_notice(LANG("_root.4606a28dec736219", list(iterating_player))), span_userdanger(LANG("_root.ce6ef300454c7146", null)))
 			qdel(iterating_player)
 

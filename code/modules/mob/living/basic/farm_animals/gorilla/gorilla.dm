@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Where do we draw gorilla held overlays?
 #define GORILLA_HANDS_LAYER 1
 
@@ -81,8 +82,7 @@ GLOBAL_LIST_INIT(strippable_gorilla_items, create_strippable_list(list(
 	. = ..()
 	if (!HAS_MIND_TRAIT(user, TRAIT_EXAMINE_FITNESS))
 		return
-	. += span_notice("This animal appears to be in peak physical condition and yet it has probably never worked out a day in its life. \
-		The untapped potential is almost frightening.")
+	. += span_notice(LANG("mob.7df22c35109357ac", null))
 
 /mob/living/basic/gorilla/update_overlays()
 	. = ..()
@@ -110,7 +110,7 @@ GLOBAL_LIST_INIT(strippable_gorilla_items, create_strippable_list(list(
 	ooga_ooga()
 	if (prob(paralyze_chance))
 		target.Paralyze(2 SECONDS)
-		visible_message(span_danger("[src] knocks [target] down!"))
+		visible_message(span_danger(LANG("mob.b28257ff017a2b6e", list(src, target))))
 	else
 		target.throw_at(get_edge_target_turf(target, dir), range = rand(1, 2), speed = 7, thrower = src)
 
@@ -124,7 +124,7 @@ GLOBAL_LIST_INIT(strippable_gorilla_items, create_strippable_list(list(
 	return ..()
 
 /mob/living/basic/gorilla/can_use_guns(obj/item/gun)
-	to_chat(src, span_warning("Your meaty finger is much too large for the trigger guard!"))
+	to_chat(src, span_warning(LANG("mob.f7045ed3b2d1dd02", null)))
 	return FALSE
 
 /// Assert your dominance with audio cues

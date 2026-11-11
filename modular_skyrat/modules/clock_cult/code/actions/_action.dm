@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/innate/clockcult
 	button_icon = 'modular_skyrat/modules/clock_cult/icons/actions_clock.dmi'
 	background_icon = 'modular_skyrat/modules/clock_cult/icons/background_clock.dmi'
@@ -53,7 +54,7 @@
 		scripture.begin_invoke(owner, activation_slab)
 
 	else
-		to_chat(owner, span_brass("You fail to invoke [name]."))
+		to_chat(owner, span_brass(LANG("datum.f26b86d6660cbbc1", list(name))))
 
 /datum/action/item_action/toggle/clock
 	button_icon = 'modular_skyrat/modules/clock_cult/icons/background_clock.dmi'

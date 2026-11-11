@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // 7.62x38mmR (Nagant Revolver)
 
 /obj/projectile/bullet/n762
@@ -185,7 +186,7 @@
 			reagents.trans_to(target, reagents.total_volume, methods = INJECT)
 			return BULLET_ACT_HIT
 		blocked = 100
-		target.visible_message(span_danger("\The [src] is deflected!"), span_userdanger("You are protected against \the [src]!"))
+		target.visible_message(span_danger(LANG("obj.a02a8043e36fbcbc", list(src))), span_userdanger(LANG("obj.5d4d8bcd6d25d666", list(src))))
 	. = ..()
 	if(reagents.flags & NO_REACT) //first impact on a noncarbon
 		reagents.flags &= ~(NO_REACT)

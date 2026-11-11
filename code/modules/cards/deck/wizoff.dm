@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //It's Wiz-Off, the wizard themed card game! It's modular too, in case you might want to make it Syndie, Sec and Clown themed or something stupid like that.
 /obj/item/toy/cards/deck/wizoff
 	name = "\improper Wiz-Off deck"
@@ -21,12 +22,12 @@
 
 /obj/item/toy/singlecard/wizoff_ruleset/examine(mob/living/carbon/human/user)
 	. = ..()
-	. += span_notice("Remember the rules of Wiz-Off!")
-	. += span_info("Each player draws 5 cards.")
-	. += span_info("There are five rounds. Each round, a player selects a card to play, and the winner is selected based on the following rules:")
-	. += span_info("Defensive beats Offensive!")
-	. += span_info("Offensive beats Utility!")
-	. += span_info("Utility beats Defensive!")
-	. += span_info("If both players play the same type of spell, the higher number wins!")
-	. += span_info("The player who wins the most of the 5 rounds wins the game!")
-	. += span_notice("Now get ready to battle for the fate of the universe: Wiz-Off!")
+	. += span_notice(LANG("obj.c4985b6316d44fa4", null))
+	. += span_info(LANG("obj.6bfbf46cd772c45a", null))
+	. += span_info(LANG("obj.99e041eb646b49d9", null))
+	. += span_info(LANG("obj.61a5a69efe109008", null))
+	. += span_info(LANG("obj.04f065fbaea69bc5", null))
+	. += span_info(LANG("obj.d92fdd8ada0fed1b", null))
+	. += span_info(LANG("obj.dfb1ebeeb3187ed8", null))
+	. += span_info(LANG("obj.7b2547b7680c3c6a", null))
+	. += span_notice(LANG("obj.9a77353b9ce103a3", null))

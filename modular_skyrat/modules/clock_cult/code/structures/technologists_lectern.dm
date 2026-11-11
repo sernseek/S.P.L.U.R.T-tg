@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BOOK_OPEN_RANGE 2
 
 /obj/structure/destructible/clockwork/gear_base/technologists_lectern
@@ -65,7 +66,7 @@
 		primary_researcher = FALSE
 		log_game("A research ritual of [selected_research] was cancelled by deconstruction of [src].")
 		send_clock_message(null, "A research ritual has been disrupted in [get_area(src)]! All research data has been lost.", msg_ghosts = FALSE)
-		notify_ghosts("A research ritual was disrupted in [get_area(src)]",
+		notify_ghosts(LANG("obj.fbf7c0f0e6a25c17", list(get_area(src))),
 			source = get_turf(src),
 			notify_flags = NOTIFY_CATEGORY_NOFLASH,
 			header = "Research ritual cancelled",
@@ -77,7 +78,7 @@
 /obj/structure/destructible/clockwork/gear_base/technologists_lectern/examine(mob/user)
 	. = ..()
 	if(researching && IS_CLOCK(user))
-		. += span_brass("The researching of [selected_research.name] will take another [DisplayTimeText(timeleft(research_timer_id))].")
+		. += span_brass(LANG("obj.2add19a68f85f766", list(selected_research.name, DisplayTimeText(timeleft(research_timer_id)))))
 
 
 /obj/structure/destructible/clockwork/gear_base/technologists_lectern/process(seconds_per_tick)
@@ -109,7 +110,7 @@
 		return
 
 	if(!anchored)
-		balloon_alert(user, "not fastened!")
+		balloon_alert(user, LANG("obj.7c2f76c2bd88e3dc", null))
 		return
 
 	ui_interact(user)
@@ -131,7 +132,7 @@
 	var/list/data = list()
 
 	data["focused_research"] = list(
-		"name" = selected_research.name,
+		"name" = lang_localize_display_name(selected_research.name), // i18n: 纯显示，act 走 path
 		"desc" = selected_research.desc,
 		"lore" = selected_research.lore,
 		"researched" = selected_research.researched,
@@ -160,7 +161,7 @@
 
 		if(research.starting)
 			data["starting_research"] = list(
-				"name" = research.name,
+				"name" = lang_localize_display_name(research.name), // i18n: 纯显示，act 走 path
 				"desc" = research.desc,
 				"lore" = research.lore,
 				"researched" = research.researched,
@@ -180,7 +181,7 @@
 			continue
 
 		data["research_tiers"][research.tier] += list(list(
-			"name" = research.name,
+			"name" = lang_localize_display_name(research.name), // i18n: 纯显示，act 走 path
 			"desc" = research.desc,
 			"lore" = research.lore,
 			"researched" = research.researched,
@@ -275,11 +276,11 @@
 		if(istype(nearby_turf, /turf/open/floor))
 			continue
 
-		owner.balloon_alert(owner, "not enough room!")
+		owner.balloon_alert(owner, LANG("obj.0289e33dac4a2405", null))
 		return
 
 	if(researching)
-		owner.balloon_alert(owner, "already researching!")
+		owner.balloon_alert(owner, LANG("obj.9da8b6dbe9068812", null))
 		return
 
 	INVOKE_ASYNC(src, PROC_REF(begin_research), owner, target_turf)
@@ -298,7 +299,7 @@
 	playsound(target_turf, 'sound/machines/clockcult/ark_deathrattle.ogg', 80, FALSE, pressure_affected = FALSE)
 	research_sigil = new(target_turf)
 	send_clock_message(null, "A research ritual has begun in [get_area(src)], ensure nobody stops it until it is completed in [DisplayTimeText(selected_research.time_to_research)]!", msg_ghosts = FALSE)
-	notify_ghosts("[owner] has begun a research ritual in [get_area(src)]",
+	notify_ghosts(LANG("obj.17a69d3089e70106", list(owner, get_area(src))),
 		source = src,
 		notify_flags = NOTIFY_CATEGORY_NOFLASH,
 		header = "Research ritual"
@@ -344,7 +345,7 @@
 		return
 
 	send_clock_message(null, "The research ritual in [get_area(src)] has completed, rejoice!", msg_ghosts = FALSE)
-	notify_ghosts("A research ritual in [get_area(src)] has been completed",
+	notify_ghosts(LANG("obj.b901443307e749b2", list(get_area(src))),
 		source = src,
 		notify_flags = NOTIFY_CATEGORY_NOFLASH,
 		header = "Research ritual completed",
@@ -368,7 +369,7 @@
 
 	research_sigil.finish_research()
 
-	priority_announce("An outburst of anomalous energy has been detected at [get_area(src)]. Please ensure the safety of any nearby crew.")
+	priority_announce(LANG("obj.ebe59e504e508a45", list(get_area(src))))
 
 	addtimer(CALLBACK(src, PROC_REF(side_effect)), 10 SECONDS)
 
@@ -412,7 +413,7 @@
 					qdel(nearby_atom)
 
 		if(11 to 20) // Spawn 4 ai-controlled marauders to fuck shit up
-			visible_message(span_warning("A group of clockwork marauders appear, before being obscured by a cloud of smoke!"))
+			visible_message(span_warning(LANG("obj.fcdc92fa8224b423", null)))
 
 			for(var/direction in list(NORTH, SOUTH, EAST, WEST))
 				var/turf/tile = get_step(src, direction)
@@ -445,9 +446,9 @@
 					continue
 
 				if(IS_CLOCK(living_mob))
-					to_chat(living_mob, span_brass("You feel as if something powerful is watching over you, as you feel the power in your Clockwork Slab increase."))
+					to_chat(living_mob, span_brass(LANG("obj.b24d7c0a5f265c1e", null)))
 				else
-					to_chat(living_mob, span_brass("You feel as if something powerful is watching over you as a low hum of machinery fills your mind."))
+					to_chat(living_mob, span_brass(LANG("obj.92ffe424c8411b8a", null)))
 
 /obj/effect/lectern_light
 	icon = 'modular_skyrat/modules/clock_cult/icons/clockwork_objects.dmi'

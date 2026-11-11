@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Speech verbs.
 
 ///what clients use to speak. when you type a message into the chat bar in say mode, this is the first thing that goes off serverside.
@@ -5,7 +6,7 @@ GAME_VERB(/mob, say_verb, VERB_SAY, null)
 	VERB_ARG(message, VERB_ARG_TYPE_TEXT, VERB_ARG_SOURCE_INPUT)
 
 	if(GLOB.say_disabled) //This is here to try to identify lag problems
-		to_chat(usr, span_danger("Speech is currently admin-disabled."))
+		to_chat(usr, span_danger(LANG("mob.b79ad8a388d1b3a4", null)))
 		return
 
 	//queue this message because verbs are scheduled to process after SendMaps in the tick and speech is pretty expensive when it happens.
@@ -18,7 +19,7 @@ GAME_VERB(/mob, whisper_verb, VERB_WHISPER, null)
 	VERB_ARG(message, VERB_ARG_TYPE_TEXT, VERB_ARG_SOURCE_INPUT)
 
 	if(GLOB.say_disabled) //This is here to try to identify lag problems
-		to_chat(usr, span_danger("Speech is currently admin-disabled."))
+		to_chat(usr, span_danger(LANG("mob.b79ad8a388d1b3a4", null)))
 		return
 
 	if(message)
@@ -39,7 +40,7 @@ GAME_VERB(/mob, me_verb, VERB_ME, null)
 	VERB_ARG(message, VERB_ARG_TYPE_TEXT, VERB_ARG_SOURCE_INPUT)
 
 	if(GLOB.say_disabled) //This is here to try to identify lag problems
-		to_chat(usr, span_danger("Speech is currently admin-disabled."))
+		to_chat(usr, span_danger(LANG("mob.b79ad8a388d1b3a4", null)))
 		return
 
 	message = trim(copytext_char(html_encode(message), 1, MAX_MESSAGE_LEN)) // SPLURT EDIT - Original: message = trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN))
@@ -57,7 +58,7 @@ GAME_VERB(/mob, me_verb, VERB_ME, null)
 
 	if(filter_result && !filterproof)
 		//The filter warning message shows the sanitized message though.
-		to_chat(src, span_warning("That message contained a word prohibited in IC chat! Consider reviewing the server rules."))
+		to_chat(src, span_warning(LANG("mob.c5ad5b2b0b97c637", null)))
 		to_chat(src, span_warning("\"[message]\""))
 		REPORT_CHAT_FILTER_TO_USER(src, filter_result)
 		log_filter("IC", message, filter_result)
@@ -65,7 +66,7 @@ GAME_VERB(/mob, me_verb, VERB_ME, null)
 		return FALSE
 
 	if(soft_filter_result && !filterproof)
-		if(tgui_alert(usr,"Your message contains \"[soft_filter_result[CHAT_FILTER_INDEX_WORD]]\". \"[soft_filter_result[CHAT_FILTER_INDEX_REASON]]\", Are you sure you want to say it?", "Soft Blocked Word", list("Yes", "No")) != "Yes")
+		if(tgui_alert(usr,LANG("mob.6308a68e8adba21f", list(soft_filter_result[CHAT_FILTER_INDEX_WORD], soft_filter_result[CHAT_FILTER_INDEX_REASON])), LANG("mob.b0fe106c90796ca4", null), list("Yes", "No")) != "Yes")
 			SSblackbox.record_feedback("tally", "soft_ic_blocked_words", 1, LOWER_TEXT(config.soft_ic_filter_regex.match))
 			log_filter("Soft IC", message, filter_result)
 			return FALSE
@@ -76,7 +77,7 @@ GAME_VERB(/mob, me_verb, VERB_ME, null)
 
 	if(client && !(ignore_spam || forced))
 		if(client.prefs.muted & MUTE_IC)
-			to_chat(src, span_danger("You cannot speak IC (muted)."))
+			to_chat(src, span_danger(LANG("mob.09db91bf24f769f0", null)))
 			return FALSE
 		if(client.handle_spam_prevention(message, MUTE_IC))
 			return FALSE
@@ -89,9 +90,9 @@ GAME_VERB(/mob, me_verb, VERB_ME, null)
 
 	if(!..()) // the can_speak check
 		if(HAS_MIND_TRAIT(src, TRAIT_MIMING))
-			to_chat(src, span_green("Your vow of silence prevents you from speaking!"))
+			to_chat(src, span_green(LANG("mob.7d205da286210f47", null)))
 		else
-			to_chat(src, span_warning("You find yourself unable to speak!"))
+			to_chat(src, span_warning(LANG("mob.d94d29050f3f2ba1", null)))
 		return FALSE
 
 	return TRUE
@@ -114,12 +115,12 @@ GAME_VERB(/mob, me_verb, VERB_ME, null)
 	var/alt_name = ""
 
 	if(GLOB.say_disabled) //This is here to try to identify lag problems
-		to_chat(usr, span_danger("Speech is currently admin-disabled."))
+		to_chat(usr, span_danger(LANG("mob.b79ad8a388d1b3a4", null)))
 		return
 
 	//SKYRAT EDIT ADDITION
 	if(!GLOB.dchat_allowed && !check_rights(R_ADMIN, FALSE))
-		to_chat(src, "<span class='danger'>Dead chat is currently muted.</span>")
+		to_chat(src, LANG("mob.789f6b361784edc9", null))
 		return
 	//SKYRAT EDIT END
 
@@ -128,17 +129,17 @@ GAME_VERB(/mob, me_verb, VERB_ME, null)
 		return
 
 	if(jb)
-		to_chat(src, span_danger("You have been banned from deadchat."))
+		to_chat(src, span_danger(LANG("mob.fe1bd167cd942ea3", null)))
 		return
 
 	if (src.client)
 		if(src.client.prefs.muted & MUTE_DEADCHAT)
-			to_chat(src, span_danger("You cannot talk in deadchat (muted)."))
+			to_chat(src, span_danger(LANG("mob.df8e58918cf70516", null)))
 			return
 
 		if(SSlag_switch.measures[SLOWMODE_SAY] && !HAS_TRAIT(src, TRAIT_BYPASS_MEASURES) && src == usr)
 			if(!COOLDOWN_FINISHED(client, say_slowmode))
-				to_chat(src, span_warning("Message not sent due to slowmode. Please wait [SSlag_switch.slowmode_cooldown/10] seconds between messages.\n\"[message]\""))
+				to_chat(src, span_warning(LANG("mob.033682b474988f17", list(SSlag_switch.slowmode_cooldown/10, message))))
 				return
 			COOLDOWN_START(client, say_slowmode, SSlag_switch.slowmode_cooldown)
 

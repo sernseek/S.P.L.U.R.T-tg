@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * ASSAULT OPERATIVE ANTAG DATUM
  */
@@ -44,7 +45,7 @@
 
 /datum/antagonist/assault_operative/greet()
 	owner.current.playsound_local(get_turf(owner.current), 'modular_skyrat/modules/assault_operatives/sound/assault_operatives_greet.ogg', 30, 0, use_reverb = FALSE)
-	to_chat(owner, span_big("You are an assault operative!"))
+	to_chat(owner, span_big(LANG("datum.3d3c24a1e45fba00", null)))
 	to_chat(owner, span_red(spawn_text))
 	owner.announce_objectives()
 
@@ -141,7 +142,7 @@
 		objectives |= assault_team.objectives
 
 /datum/antagonist/assault_operative/proc/give_alias()
-	var/chosen_name = sanitize_text(tgui_input_text(owner.current, "Please input your desired name!", "Name", "Randy Random"))
+	var/chosen_name = sanitize_text(tgui_input_text(owner.current, LANG("datum.8110d85ba03a179c", null), LANG("datum.e81360eaaea292c0", null), "Randy Random"))
 	if(!chosen_name)
 		owner.current.real_name = owner.current.generate_random_mob_name(TRUE)
 		return
@@ -155,7 +156,7 @@
 
 	if(human_target.dna.species.id == "plasmaman" )
 		human_target.set_species(/datum/species/human)
-		to_chat(human_target, span_userdanger("You are now a human!"))
+		to_chat(human_target, span_userdanger(LANG("datum.84ca20b12376d716", null)))
 
 	for(var/obj/item/item in human_target.get_equipped_items(TRUE))
 		qdel(item)

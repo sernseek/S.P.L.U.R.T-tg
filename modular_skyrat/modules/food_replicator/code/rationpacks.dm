@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/food/colonial_course
 	name = "undefined colonial course"
 	desc = "Something you shouldn't see. But it's edible."
@@ -14,12 +15,12 @@
 	if(preserved_food)
 		preserved_food = FALSE
 		icon_state = "[base_icon_state]_unwrapped"
-		to_chat(user, span_notice("You unpackage \the [src]."))
+		to_chat(user, span_notice(LANG("obj.3ced1b5379bc4435", list(src))))
 		playsound(user.loc, 'sound/items/foodcanopen.ogg', 50)
 
 /obj/item/food/colonial_course/attack(mob/living/target, mob/user, def_zone)
 	if(preserved_food)
-		to_chat(user, span_warning("[src] is still packaged!"))
+		to_chat(user, span_warning(LANG("obj.eff096f4bfe17bfc", list(src))))
 		return FALSE
 
 	return ..()
@@ -174,13 +175,13 @@
 		if(atom_storage.locked == TRUE)
 			atom_storage.locked = FALSE
 			icon_state = "mre_package_open"
-			balloon_alert(user, "unsealed!")
+			balloon_alert(user, LANG("obj.dfe936bd4b86ece1", null))
 			return ..()
 		else
 			atom_storage.locked = TRUE
 			atom_storage.close_all()
 			icon_state = "mre_package"
-			balloon_alert(user, "resealed!")
+			balloon_alert(user, LANG("obj.fc6252eb20d135fb", null))
 			return
 
 /obj/item/storage/box/colonial_rations/PopulateContents()

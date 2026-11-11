@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 // Light Replacer (LR)
 //
@@ -79,16 +80,16 @@
 
 /obj/item/lightreplacer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(uses >= max_uses)
-		user.balloon_alert(user, "already full!")
+		user.balloon_alert(user, LANG("obj.e28c7f55e1d974b1", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(istype(tool, /obj/item/stack/sheet/glass))
 		var/obj/item/stack/sheet/glass/glass_to_insert = tool
 		if(!glass_to_insert.use(LIGHTBULB_COST))
-			user.balloon_alert(user, "need [LIGHTBULB_COST] glass sheets!")
+			user.balloon_alert(user, LANG("obj.291e657f871b682d", list(LIGHTBULB_COST)))
 			return ITEM_INTERACT_BLOCKING
 		add_uses(GLASS_SHEET_USES)
-		user.balloon_alert(user, "glass inserted")
+		user.balloon_alert(user, LANG("obj.a245d8da97f1623c", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(istype(tool, /obj/item/shard))
@@ -98,7 +99,7 @@
 		var/obj/item/light/light_to_insert = tool
 		//remove from player's hand
 		if(!user.temporarilyRemoveItemFromInventory(light_to_insert))
-			user.balloon_alert(user, "stuck in your hand!")
+			user.balloon_alert(user, LANG("obj.ca570e32d371ccf2", null))
 			return ITEM_INTERACT_BLOCKING
 
 		//insert light. display message only if adding a shard did not create a new bulb else the messages will conflict
@@ -108,7 +109,7 @@
 		else if(add_shard(user))
 			display_msg = FALSE
 		if(display_msg)
-			user.balloon_alert(user, "light inserted")
+			user.balloon_alert(user, LANG("obj.5b35806eef25682e", null))
 		qdel(light_to_insert)
 
 		return ITEM_INTERACT_SUCCESS
@@ -146,25 +147,25 @@
 				replaced_something = TRUE
 
 		if(!replaced_something)
-			user.balloon_alert(user, "nothing usable in [tool]!")
+			user.balloon_alert(user, LANG("obj.fc61f7033a42fc02", list(tool)))
 			return ITEM_INTERACT_BLOCKING
 
-		user.balloon_alert(user, "lights inserted")
+		user.balloon_alert(user, LANG("obj.0a27ae15796e5ef4", null))
 		return ITEM_INTERACT_SUCCESS
 
 	return NONE
 
 /obj/item/lightreplacer/proc/attempt_insert_shard(mob/living/user, obj/item/shard/tool)
 	if(tool.type != /obj/item/shard) //we don't want to insert plasma, titanium or other types of shards
-		user.balloon_alert(user, "too impure!")
+		user.balloon_alert(user, LANG("obj.fb0cdc593b755d76", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!user.temporarilyRemoveItemFromInventory(tool))
-		user.balloon_alert(user, "stuck in your hand!")
+		user.balloon_alert(user, LANG("obj.ca570e32d371ccf2", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!add_shard(user)) //add_shard will display a message if it created a bulb from the shard so only display message when that does not happen
-		user.balloon_alert(user, "shard inserted")
+		user.balloon_alert(user, LANG("obj.033309e008100840", null))
 	qdel(tool)
 	return ITEM_INTERACT_SUCCESS
 
@@ -174,7 +175,7 @@
 	obj_flags |= EMAGGED
 	playsound(loc, SFX_SPARKS, 100, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	update_appearance()
-	to_chat(user, span_warning("[src]'s lights are now filled with plasma! Be careful to only install them in disabled light fixtures, lest they explode!"))
+	to_chat(user, span_warning(LANG("obj.32172bfc61c427e6", list(src))))
 	return FALSE
 
 /obj/item/lightreplacer/update_name(updates)
@@ -211,7 +212,7 @@
 		replace_light(target, user)
 		on_a_light = TRUE
 	if(!on_a_light) //So we don't give a balloon alert when we just used replace_light
-		user.balloon_alert(user, "[uses] lights, [bulb_shards]/[BULB_SHARDS_REQUIRED] fragments")
+		user.balloon_alert(user, LANG("obj.88a5325b5adbe6f0", list(uses, bulb_shards, BULB_SHARDS_REQUIRED)))
 
 /**
  * attempts to fix lights, flood lights & lights on a turf
@@ -236,7 +237,7 @@
 			if(bluespace_toggle)
 				user.Beam(target, icon_state = "rped_upgrade", time = 0.5 SECONDS)
 				playsound(src, 'sound/items/pshoom/pshoom.ogg', 40, 1)
-			to_chat(user, span_notice("You finish \the [frame] with a light tube."))
+			to_chat(user, span_notice(LANG("obj.d9cf9df0e3834bb2", list(frame))))
 			qdel(frame)
 		return TRUE
 
@@ -275,7 +276,7 @@
 	if(bulb_shards >= BULB_SHARDS_REQUIRED)
 		bulb_shards = 0
 		add_uses(1)
-		to_chat(user, span_notice("\The [src] fabricates a new bulb from the broken glass it has stored. [status_string()]"))
+		to_chat(user, span_notice(LANG("obj.39dd65b907d15cdb", list(src, status_string()))))
 		playsound(src.loc, 'sound/machines/ding.ogg', 50, TRUE)
 		return TRUE
 	return FALSE
@@ -295,12 +296,12 @@
 		return FALSE
 	//If the light source is ok then what are we doing here
 	if(target.status == LIGHT_OK)
-		user.balloon_alert(user, "light already installed!")
+		user.balloon_alert(user, LANG("obj.d5a0b843a3c361e7", null))
 		return FALSE
 	//Were all out
 	if(!Use(user))
 		//This balloon alert text is a little redundant, but I want to avoid a new player "yeah i know the light is empty" moment
-		user.balloon_alert(user, "light replacer empty!")
+		user.balloon_alert(user, LANG("obj.5674cf86886d7364", null))
 		return FALSE
 
 	//remove any broken light on the fixture & add it as a shard
@@ -348,7 +349,7 @@
 
 /obj/item/lightreplacer/blue/ui_action_click(mob/user, actiontype)
 	if(!COOLDOWN_FINISHED(src, lightreplacer_spot_cooldown))
-		balloon_alert(user, "on cooldown!")
+		balloon_alert(user, LANG("obj.d4ae5d4dded19efe", null))
 		return
 	COOLDOWN_START(src, lightreplacer_spot_cooldown, BLIGHTREPLACER_SPOT_COOLDOWN)
 	lightreplacer_scan()

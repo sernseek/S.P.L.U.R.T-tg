@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/mutant_hand/lycan_claw
 	name = "extended claws"
 	desc = "An extended set of claws, slower but more powerful, and capable of striking structures. Worse for actual combat."
@@ -30,7 +31,7 @@
 	if (!.)
 		return FALSE
 	if (HAS_TRAIT(owner, TRAIT_PACIFISM))
-		to_chat(owner, span_warning("You're scared of hurting someone with your elongated claws!"))
+		to_chat(owner, span_warning(LANG("datum.f3a72a905c64ec35", null)))
 		return FALSE
 	if (!ishuman(owner))
 		return FALSE
@@ -40,19 +41,19 @@
 		return FALSE
 
 	if (claw)
-		human_owner.balloon_alert_to_viewers("claws retracted")
+		human_owner.balloon_alert_to_viewers(LANG("datum.42256e0b24bb19b2", null))
 		QDEL_NULL(claw)
 		playsound(get_turf(human_owner), 'sound/items/tools/change_drill.ogg', 50, TRUE)
 		return TRUE
 
 	var/obj/item/existing = human_owner.get_active_held_item()
 	if (!isnull(existing))
-		human_owner.balloon_alert(human_owner, "hand occupied!")
+		human_owner.balloon_alert(human_owner, LANG("datum.3c7d1ba91124b8a8", null))
 		return FALSE
 
 	claw = new /obj/item/mutant_hand/lycan_claw()
 	claw.force = active_arm.unarmed_damage_high * 1.25
 	claw.sharpness = active_arm.unarmed_sharpness
 	human_owner.put_in_active_hand(claw, ignore_animation = TRUE)
-	human_owner.balloon_alert_to_viewers("claws extended")
+	human_owner.balloon_alert_to_viewers(LANG("datum.73f4f0209d6f6536", null))
 	playsound(get_turf(human_owner), 'sound/items/tools/change_drill.ogg', 50, TRUE)

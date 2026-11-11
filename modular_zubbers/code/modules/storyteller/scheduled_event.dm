@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///Scheduled event datum for SSgamemode to put events into.
 /datum/scheduled_event
 	/// What event are scheduling.
@@ -79,7 +80,7 @@
 			log_admin_private("[key_name(usr)] refunded scheduled event [src.event.name].")
 			SSgamemode.refund_scheduled_event(src)
 		if("reschedule")
-			var/new_schedule = tgui_input_number(usr, "Set time in seconds in which to fire event", "Rescheduling event", 0, 3600, 0)
+			var/new_schedule = tgui_input_number(usr, LANG("datum.01cab908a07bef55", null), LANG("datum.70de4d8b4ad847c7", null), 0, 3600, 0)
 			if(isnull(new_schedule) || QDELETED(src))
 				return
 			src.start_time = world.time + (new_schedule SECONDS)

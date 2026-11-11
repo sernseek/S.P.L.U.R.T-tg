@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/nanite_chamber
 	name = "nanite chamber"
 	desc = "A device that can scan, reprogram, and inject nanites."
@@ -33,7 +34,7 @@
 /obj/machinery/nanite_chamber/examine(mob/user)
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("The status display reads: Scanning module has been upgraded to level <b>[scan_level]</b>.")
+		. += span_notice(LANG("obj.21ba9fdf06241564", list(scan_level)))
 
 /obj/machinery/nanite_chamber/proc/set_busy(status, message, working_icon)
 	busy = status
@@ -134,7 +135,7 @@
 
 /obj/machinery/nanite_chamber/proc/toggle_open(mob/user)
 	if(panel_open)
-		to_chat(user, span_notice("Close the maintenance panel first."))
+		to_chat(user, span_notice(LANG("obj.0358adf39518d281", null)))
 		return
 
 	if(state_open)
@@ -142,7 +143,7 @@
 		return
 
 	else if(locked)
-		to_chat(user, span_notice("The bolts are locked down, securing the door shut."))
+		to_chat(user, span_notice(LANG("obj.3d9ccd003f8df7c4", null)))
 		return
 
 	open_machine()
@@ -155,15 +156,15 @@
 		return
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
-	user.visible_message(span_notice("You see [user] kicking against the door of [src]!"), \
-		span_notice("You lean on the back of [src] and start pushing the door open... (this will take about [DisplayTimeText(breakout_time)].)"), \
-		span_hear("You hear a metallic creaking from [src]."))
+	user.visible_message(span_notice(LANG("obj.485787b2b8d67ec7", list(user, src))), \
+		span_notice(LANG("obj.43ad33b141e25411", list(src, DisplayTimeText(breakout_time)))), \
+		span_hear(LANG("obj.a1d9c5733c600b1c", list(src))))
 	if(do_after(user,(breakout_time), target = src))
 		if(!user || !IS_UNCONSCIOUS_OR_CRIT(user) || user.loc != src || state_open || !locked || busy)
 			return
 		locked = FALSE
-		user.visible_message(span_warning("[user] successfully broke out of [src]!"), \
-			span_notice("You successfully break out of [src]!"))
+		user.visible_message(span_warning(LANG("obj.37696909131e91b5", list(user, src))), \
+			span_notice(LANG("obj.81c31f6b9b00625a", list(src))))
 		open_machine()
 
 /obj/machinery/nanite_chamber/close_machine(mob/living/carbon/user, density_to_set = TRUE)
@@ -185,14 +186,14 @@
 	if(user.stat || locked)
 		if(message_cooldown <= world.time)
 			message_cooldown = world.time + 50
-			to_chat(user, span_warning("[src]'s door won't budge!"))
+			to_chat(user, span_warning(LANG("obj.c4e897cb78099448", list(src))))
 		return
 	open_machine()
 
 /obj/machinery/nanite_chamber/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ..()
 	if(occupant)
-		balloon_alert(user, "occupied!")
+		balloon_alert(user, LANG("obj.e2478aef43510749", null))
 		return ITEM_INTERACT_BLOCKING
 	return default_deconstruction_screwdriver(user, tool)
 

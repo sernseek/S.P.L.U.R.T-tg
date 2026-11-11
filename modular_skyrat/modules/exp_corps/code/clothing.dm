@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/under/rank/expeditionary_corps
 	name = "expeditionary corps uniform"
 	desc = "A rugged uniform for those who see the worst at the edges of the galaxy."
@@ -222,10 +223,10 @@
 		return
 	my_helmet.nightvision = !my_helmet.nightvision
 	if(my_helmet.nightvision)
-		to_chat(owner, span_notice("You flip the NV goggles down."))
+		to_chat(owner, span_notice(LANG("datum.832036d4468e5f5f", null)))
 		my_helmet.enable_nv()
 	else
-		to_chat(owner, span_notice("You flip the NV goggles up."))
+		to_chat(owner, span_notice(LANG("datum.3b3cae90e6946fbf", null)))
 		my_helmet.disable_nv()
 	my_helmet.update_appearance()
 
@@ -256,10 +257,10 @@
 
 	nightvision = !nightvision
 	if(nightvision)
-		to_chat(user, span_notice("You flip the NV goggles down."))
+		to_chat(user, span_notice(LANG("obj.832036d4468e5f5f", null)))
 		enable_nv()
 	else
-		to_chat(user, span_notice("You flip the NV goggles up."))
+		to_chat(user, span_notice(LANG("obj.3b3cae90e6946fbf", null)))
 		disable_nv()
 	update_appearance()
 	return CLICK_ACTION_SUCCESS

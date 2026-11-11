@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // ====================
 // ANT FARM OVERRIDES
 // ====================
@@ -27,7 +28,7 @@
 	if(!mapload)
 		var/turf/src_turf = get_turf(src)
 		if(!src_turf.GetComponent(/datum/component/simple_farm))
-			src_turf.balloon_alert_to_viewers("must be on farmable surface")
+			src_turf.balloon_alert_to_viewers(LANG("obj.18694f10a5214b78", null))
 			return INITIALIZE_HINT_QDEL
 
 		// Modified range
@@ -35,7 +36,7 @@
 			if(found_farm == src)
 				continue
 
-			src_turf.balloon_alert_to_viewers("Cannot build on top of another farm")
+			src_turf.balloon_alert_to_viewers(LANG("obj.33b772b4bb55d7d0", null))
 			return INITIALIZE_HINT_QDEL
 
 	START_PROCESSING(SSobj, src)

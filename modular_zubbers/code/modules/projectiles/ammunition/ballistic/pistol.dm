@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/ammo_casing/caseless/c22hl
 	caliber = ENERGY
 	projectile_type = /obj/projectile/bullet/c22hl
@@ -58,7 +59,7 @@
 
 /obj/item/ammo_box/magazine/recharge/ntusp/attackby(obj/item/A, mob/user)
 	if(istype(A, /obj/item/ntusp_conversion_kit))
-		to_chat(user, span_danger("[A] makes a whirring sound as it modifies \the [src]'s lens to fabricate more lethal rounds."))
+		to_chat(user, span_danger(LANG("obj.0601d64ec82fa914", list(A, src))))
 		new /obj/item/ammo_box/magazine/recharge/ntusp/laser/empty(get_turf(src)) // you thought you were getting free bullets?
 		qdel(src)
 	else
@@ -66,7 +67,7 @@
 
 /obj/item/ammo_box/magazine/recharge/ntusp/laser/attackby(obj/item/A, mob/user)
 	if(istype(A, /obj/item/ntusp_conversion_kit))
-		to_chat(user, span_notice("[A] makes a whirring sound as it modifies \the [src]'s lens to fabricate less lethal rounds."))
+		to_chat(user, span_notice(LANG("obj.5b11c938c6c53812", list(A, src))))
 		new /obj/item/ammo_box/magazine/recharge/ntusp/empty(get_turf(src))
 		qdel(src)
 	else

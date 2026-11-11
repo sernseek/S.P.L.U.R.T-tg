@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/robot_model
 	var/icon/cyborg_icon_override
 	var/sleeper_overlay
@@ -580,4 +581,4 @@
 
 /obj/item/robot_model/ninja_saboteur/do_transform_animation()
 	. = ..()
-	to_chat(loc, span_userdanger("While you have picked the saboteur model, that doesn't mean you are allowed to sabotage the station by delaminating the supermatter or opening all the doors to the armory, you should still ahelp to ask the permission to do that and the reason for it."))
+	to_chat(loc, span_userdanger(LANG("obj.a4f9d43c9955c8ca", null)))

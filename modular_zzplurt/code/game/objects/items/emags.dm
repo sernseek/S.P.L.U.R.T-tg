@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BLOODMAG_USE_COST (BLOOD_VOLUME_NORMAL * 0.10) // 10% of standard blood
 #define BLOODMAG_USE_COST_FAKE (BLOOD_VOLUME_NORMAL * 0.01) // 1% of standard blood
 #define BLOODMAG_CD_TIME 3 SECONDS
@@ -46,19 +47,19 @@
 	// Check if already unlocked
 	if(unlocked)
 		// Alert user and return
-		balloon_alert(user, "already upgraded!")
+		balloon_alert(user, LANG("obj.7d09f139044f50ff", null))
 		return FALSE
 
 	// Unlock full functionality
 	unlocked = TRUE
 
 	// Alert user
-	balloon_alert(user, "sanguinizer upgraded!")
+	balloon_alert(user, LANG("obj.6f18f822965ee7e8", null))
 
 	// Alert in chat with reduced range
 	user.visible_message(\
-		span_notice("[user] taps the [emag_card] against the [src]."),\
-		span_notice("You tap the [emag_card] against the [src], causing it to unlock <b>sequencer mode</b>."),\
+		span_notice(LANG("obj.e854de070d2e6797", list(user, emag_card, src))),\
+		span_notice(LANG("obj.078ac60ad39a9fb9", list(emag_card, src))),\
 		vision_distance = COMBAT_MESSAGE_RANGE
 	)
 
@@ -74,12 +75,12 @@
 		// Check if unlocked
 		if(unlocked)
 			// Add unlocked text
-			. += span_notice("It's been switched to hemorrhagic sequencing mode.")
+			. += span_notice(LANG("obj.1d62998a3e871ac2", null))
 
 		// Item is not unlocked
 		else
 			// Add fake usage text
-			. += span_notice("You know exactly how to sanguinize things with this!")
+			. += span_notice(LANG("obj.79a589becf70b5b8", null))
 
 // Can use check
 /obj/item/card/emag/bloodfledge/can_emag(atom/target, mob/user)
@@ -92,26 +93,26 @@
 	// Check for bloodfledge
 	if(!HAS_TRAIT(user, TRAIT_BLOODFLEDGE))
 		// Warn user and return
-		to_chat(user, span_warning("You can't figure out what to do with [src]. Maybe you should ask someone more qualified."))
+		to_chat(user, span_warning(LANG("obj.d455bafb7f7a692c", list(src))))
 		return FALSE
 
 	// Check for bloodless
 	if(HAS_TRAIT(user, TRAIT_NOBLOOD))
 		// Warn user and return
-		to_chat(user, span_warning("Your body is incapable of utilizing [src]!"))
+		to_chat(user, span_warning(LANG("obj.dec2251c4806ba9d", list(src))))
 		return FALSE
 
 	// Check cooldown
 	if(!COOLDOWN_FINISHED(src, bloodmag_cooldown))
 		// Warn user and return
-		balloon_alert(user, "still recharging!")
+		balloon_alert(user, LANG("obj.26defd6f9b56ea97", null))
 		return FALSE
 
 	// Check for unlocked state
 	if(!unlocked)
 		// Give false alerts
-		user.visible_message(span_danger("[user] sanguinizes [target] with [user.p_their()] [src]! Never before has [target] been more sanguine!"), span_warning("You sanguinize [target]! Never before has [target] been more sanguine!"))
-		balloon_alert(user, "target sanguinized!")
+		user.visible_message(span_danger(LANG("obj.8a814f0324491944", list(user, target, user.p_their(), src, target))), span_warning(LANG("obj.1083f87d5bc2de57", list(target, target))))
+		balloon_alert(user, LANG("obj.eeb2cb364a88f225", null))
 
 		// Start cooldown to prevent spam
 		COOLDOWN_START(src, bloodmag_cooldown, BLOODMAG_CD_TIME)
@@ -173,12 +174,12 @@
 		interacting_with.add_mob_blood(item_mob)
 
 		// Warn user
-		to_chat(user, span_boldwarning("You can feel [src] draining your life force."))
+		to_chat(user, span_boldwarning(LANG("obj.c4f135cb47962e34", list(src))))
 
 // Suicide action
 /obj/item/card/emag/bloodfledge/suicide_act(mob/living/carbon/user)
 	// Alert in chat
-	user.visible_message(span_suicide("[user] hacks themselves with [src], unlocking ultra gore mode!"))
+	user.visible_message(span_suicide(LANG("obj.03211443525f904f", list(user, src))))
 
 	// Gib the user
 	user.gib(DROP_ALL_REMAINS)

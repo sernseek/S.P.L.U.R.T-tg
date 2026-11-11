@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/plumbing/grinder_chemical
 	name = "chemical grinder"
 	desc = "Chemical grinder. Can either grind or juice stuff you put in."
@@ -21,7 +22,7 @@
 /obj/machinery/plumbing/grinder_chemical/examine(mob/user)
 	. = ..()
 
-	. += span_notice("Use empty hand to change operation mode. Currently [grinding ? "Grinding" : "Juicing"]")
+	. += span_notice(LANG("obj.1773765d845f6e9e", list(grinding ? "Grinding" : "Juicing")))
 
 /**
  * Check if the user can interact with the grinder
@@ -69,20 +70,20 @@
 		return
 	else if(istype(tool, /obj/item/storage/bag))
 		if(!anchored)
-			to_chat(user, span_warning("Anchor first to start [grinding ? "grind" : "juice"]."))
+			to_chat(user, span_warning(LANG("obj.dd8a1c91d594d295", list(grinding ? "grind" : "juice"))))
 			return ITEM_INTERACT_BLOCKING
 
-		to_chat(user, span_notice("You dump items from [tool] into the grinder."))
+		to_chat(user, span_notice(LANG("obj.db4815e24a037320", list(tool))))
 		for(var/obj/item/obj_item in tool.contents)
 			blend(obj_item)
 		return ITEM_INTERACT_SUCCESS
 	else if(!tool.tool_behaviour)
 		var/action = "[grinding ? "grind" : "juice"]"
 		if(!anchored)
-			to_chat(user, span_warning("Anchor first to star [action]."))
+			to_chat(user, span_warning(LANG("obj.c27125f7a217d27e", list(action))))
 			return ITEM_INTERACT_BLOCKING
 
-		to_chat(user, span_notice("You attempt to [action] [tool]."))
+		to_chat(user, span_notice(LANG("obj.032a97aa7eb29c49", list(action, tool))))
 		blend(tool)
 		return ITEM_INTERACT_SUCCESS
 

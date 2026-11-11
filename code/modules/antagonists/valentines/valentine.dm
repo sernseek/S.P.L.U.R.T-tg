@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/antagonist/valentine
 	name = "\improper Valentine"
 	roundend_category = "valentines" //there's going to be a ton of them so put them in separate category
@@ -46,8 +47,7 @@
 	lover.remove_status_effect(/datum/status_effect/in_love)
 
 /datum/antagonist/valentine/greet()
-	to_chat(owner, span_boldwarning("You're on a date with [date.name]! Protect [date.p_them()] at all costs. \
-		This takes priority over all other loyalties."))
+	to_chat(owner, span_boldwarning(LANG("datum.ea4ca6bee5e61333", list(date.name, date.p_them()))))
 
 //Squashed up a bit
 /datum/antagonist/valentine/roundend_report()

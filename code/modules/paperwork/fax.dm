@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_VAR_INIT(nt_fax_department, pick("NT HR Department", "NT Legal Department", "NT Complaint Department", "NT Customer Relations", "Nanotrasen Tech Support", "NT Internal Affairs Dept"))
 GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 
@@ -154,7 +155,7 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 /obj/machinery/fax/examine()
 	. = ..()
 	if(jammed)
-		. += span_notice("Its output port is jammed and needs cleaning.")
+		. += span_notice(LANG("obj.20cc52f767375b15", null))
 
 
 /obj/machinery/fax/on_set_is_operational(old_value)
@@ -179,13 +180,13 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
  */
 /obj/machinery/fax/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if (!panel_open && !allow_exotic_faxes)
-		balloon_alert(user, "open panel first!")
+		balloon_alert(user, LANG("obj.a59b2c79dd1c6362", null))
 		return FALSE
 	if (!(obj_flags & EMAGGED))
 		obj_flags |= EMAGGED
 		playsound(src, 'sound/mobs/non-humanoids/dog/growl2.ogg', 50, FALSE)
-		balloon_alert(user, "migrated to syndienet 2.0")
-		to_chat(user, span_warning("An image appears on [src] screen for a moment with Ian in the cap of a Syndicate officer."))
+		balloon_alert(user, LANG("obj.f0747bd1350814fb", null))
+		to_chat(user, span_warning(LANG("obj.a3b792e76eb2ee9d", list(src))))
 		return TRUE
 	return FALSE
 
@@ -206,14 +207,14 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 /obj/machinery/fax/multitool_act(mob/living/user, obj/item/I)
 	if (panel_open)
 		return
-	var/new_fax_name = tgui_input_text(user, "Enter a new name for the fax machine.", "New Fax Name", max_length = 128)
+	var/new_fax_name = tgui_input_text(user, LANG("obj.ab6918e5d9f3d7e4", null), LANG("obj.d66c9d748f9d6458", null), max_length = 128)
 	if (!new_fax_name)
 		return ITEM_INTERACT_SUCCESS
 	if (new_fax_name != fax_name)
 		if (fax_name_exist(new_fax_name))
 			// Being able to set the same name as another fax machine will give a lot of gimmicks for the traitor.
 			if (syndicate_network != TRUE && !(obj_flags & EMAGGED))
-				to_chat(user, span_warning("There is already a fax machine with this name on the network."))
+				to_chat(user, span_warning(LANG("obj.c4364d388036f348", null)))
 				return ITEM_INTERACT_SUCCESS
 		user.log_message("renamed [fax_name] (fax machine) to [new_fax_name].", LOG_GAME)
 		fax_name = new_fax_name
@@ -229,7 +230,7 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 		return ITEM_INTERACT_SUCCESS
 	if(can_load_item(tool))
 		if(loaded_item_ref?.resolve())
-			balloon_alert(user, "item already loaded!")
+			balloon_alert(user, LANG("obj.2bbb23a6131a85d7", null))
 			return ITEM_INTERACT_BLOCKING
 		loaded_item_ref = WEAKREF(tool)
 		tool.forceMove(src)
@@ -248,7 +249,7 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 			return FALSE
 		clean_spray.reagents.remove_reagent(/datum/reagent/space_cleaner, clean_spray.amount_per_transfer_from_this)
 		playsound(loc, 'sound/effects/spray3.ogg', 50, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
-		user.visible_message(span_notice("[user] cleans \the [src]."), span_notice("You clean \the [src]."))
+		user.visible_message(span_notice(LANG("obj.64300ac60297b948", list(user, src))), span_notice(LANG("obj.c0ca4fbc08311dd3", list(src))))
 		jammed = FALSE
 		return TRUE
 	if (istype(item, /obj/item/soap) || istype(item, /obj/item/rag))
@@ -256,9 +257,9 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 		if (istype(item, /obj/item/soap))
 			var/obj/item/soap/used_soap = item
 			cleanspeed = used_soap.cleanspeed
-		user.visible_message(span_notice("[user] starts to clean \the [src]."), span_notice("You start to clean \the [src]..."))
+		user.visible_message(span_notice(LANG("obj.8501abcc60232bf3", list(user, src))), span_notice(LANG("obj.68d2bfbad08a8b0a", list(src))))
 		if (do_after(user, cleanspeed, target = src))
-			user.visible_message(span_notice("[user] cleans \the [src]."), span_notice("You clean \the [src]."))
+			user.visible_message(span_notice(LANG("obj.64300ac60297b948", list(user, src))), span_notice(LANG("obj.c0ca4fbc08311dd3", list(src))))
 			jammed = FALSE
 		return TRUE
 	return FALSE
@@ -298,7 +299,7 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 		if(FAX.fax_id == fax_id) //skip yourself
 			continue
 		var/list/fax_data = list()
-		fax_data["fax_name"] = FAX.fax_name
+		fax_data["fax_name"] = lang_localize_display_name(FAX.fax_name) // ZH EDIT - I18N - 显示名反查（act 用 fax_id，译名安全）
 		fax_data["fax_id"] = FAX.fax_id
 		fax_data["visible"] = FAX.visible_to_network
 		fax_data["has_paper"] = !!FAX.loaded_item_ref?.resolve()
@@ -308,7 +309,7 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 
 	// Own data
 	data["fax_id"] = fax_id
-	data["fax_name"] = fax_name
+	data["fax_name"] = lang_localize_display_name(fax_name) // ZH EDIT - I18N - 显示名反查
 	data["visible"] = visible_to_network
 	// In this case, we don't care if the fax is hacked or in the syndicate's network. The main thing is to check the visibility of other faxes.
 	data["syndicate_network"] = (syndicate_network || (obj_flags & EMAGGED))
@@ -318,7 +319,13 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 	for(var/key in special_networks)
 		if(special_networks[key]["fax_id"] == fax_id)
 			continue
-		special_networks_data += list(special_networks[key])
+		// ZH EDIT START - I18N - Copy + 显示名反查（payload 与持久 special_networks 共享引用，
+		// 直接改会被 P1 连带污染原表；故复制内层 dict 再反查 fax_name 显示名，act 用 fax_id 不受影响）
+		var/list/network_entry = special_networks[key] // 显式 /list 变量，避免在无类型下标上直接 .Copy()（DreamChecker static type 警告）
+		var/list/net = network_entry.Copy()
+		net["fax_name"] = lang_localize_display_name(net["fax_name"])
+		special_networks_data += list(net)
+		// ZH EDIT END
 	data["special_faxes"] = special_networks_data
 	return data
 
@@ -366,7 +373,7 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 
 			GLOB.requests.fax_request(usr.client, "sent a fax message from [fax_name]/[fax_id] to [params["name"]]", list("paper" = fax_paper, "destination_id" = params["id"], "sender_name" = fax_name))
 			to_chat(GLOB.admins,
-				span_adminnotice("[icon2html(src.icon, GLOB.admins)]<b><font color=green>FAX REQUEST: </font>[ADMIN_FULLMONTY(usr)]:</b> [span_linkify("sent a fax message from [fax_name]/[fax_id][ADMIN_FLW(src)] to [html_encode(params["name"])]")] [ADMIN_SHOW_PAPER(fax_paper)] [ADMIN_PRINT_FAX(fax_paper, fax_name, params["id"])]"),
+				span_adminnotice(LANG("obj.025b382f35c03b37", list(icon2html(src.icon, GLOB.admins), ADMIN_FULLMONTY(usr), span_linkify("sent a fax message from [fax_name]/[fax_id][ADMIN_FLW(src)] to [html_encode(params["name"])]"), ADMIN_SHOW_PAPER(fax_paper), ADMIN_PRINT_FAX(fax_paper, fax_name, params["id"])))),
 				type = MESSAGE_TYPE_PRAYER,
 				confidential = TRUE)
 			for(var/client/staff as anything in GLOB.admins)
@@ -432,7 +439,7 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 			continue
 		if (FAX.jammed)
 			do_sparks(5, TRUE, src)
-			balloon_alert(usr, "destination port jammed")
+			balloon_alert(usr, LANG("obj.ff556f3a8839b4ba", null))
 			playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 			return FALSE
 		FAX.receive(loaded, fax_name)
@@ -453,7 +460,7 @@ GLOBAL_VAR_INIT(fax_autoprinting, FALSE)
 /obj/machinery/fax/proc/receive(obj/item/loaded, sender_name)
 	playsound(src, 'sound/machines/printer.ogg', 50, FALSE)
 	INVOKE_ASYNC(src, PROC_REF(animate_object_travel), loaded, "fax_receive", find_overlay_state(loaded, "receive"))
-	say("Received correspondence from [sender_name].")
+	say(LANG("obj.5f9fabf5ecb34f94", list(sender_name)))
 	history_add("Receive", sender_name)
 	addtimer(CALLBACK(src, PROC_REF(vend_item), loaded), 1.9 SECONDS)
 	SEND_SIGNAL(src, COMSIG_FAX_MESSAGE_RECEIVED, sender_name)

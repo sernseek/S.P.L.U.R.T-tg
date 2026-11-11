@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/decal/cleanable/generic
 	name = "clutter"
 	desc = "Someone should clean that up."
@@ -200,7 +201,7 @@
 	if(. || !HAS_TRAIT(user, TRAIT_VOMIT_SLURPER))
 		return
 	playsound(get_turf(src), 'sound/items/drink.ogg', 50, TRUE) //slurp
-	user.visible_message(span_alert("[user] extends a small proboscis into the vomit pool, sucking it with a slurping sound."))
+	user.visible_message(span_alert(LANG("obj.5bfdb82855ef48fb", list(user))))
 	lazy_init_reagents()?.trans_to(user, reagents.total_volume, transferred_by = user, methods = INGEST)
 	qdel(src)
 
@@ -297,7 +298,7 @@ GLOBAL_LIST_EMPTY(nebula_vomits)
 	pixel_x = rand(-10, 10)
 	pixel_y = rand(-10, 10)
 	if(!isnull(oldname))
-		desc = "The sad remains of what used to be \a [oldname]."
+		desc = LANG("obj.8095bd93f9ad92d5", list(oldname))
 	. = ..()
 
 /obj/effect/decal/cleanable/glitter

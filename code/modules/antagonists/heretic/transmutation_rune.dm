@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The heretic's rune, which they use to complete transmutation rituals.
 /obj/effect/heretic_rune
 	name = "transmutation rune"
@@ -24,8 +25,8 @@
 	if(!IS_HERETIC(user))
 		return
 
-	. += span_notice("Allows you to transmute objects by invoking the rune after collecting the prerequisites overhead.")
-	. += span_notice("You can use your <i>Mansus Grasp</i> on the rune to remove it.")
+	. += span_notice(LANG("obj.5f188debe1ab9089", null))
+	. += span_notice(LANG("obj.d447cf5e3ca92f83", null))
 
 /obj/effect/heretic_rune/attack_paw(mob/living/user, list/modifiers)
 	return attack_hand(user, modifiers)
@@ -55,7 +56,7 @@
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
 	var/list/rituals = heretic_datum.get_rituals()
 	if(!length(rituals))
-		loc.balloon_alert(user, "no rituals available!")
+		loc.balloon_alert(user, LANG("obj.bc2aa0811713def9", null))
 		is_in_use = FALSE
 		return
 
@@ -158,7 +159,7 @@
 			if (istype(nearby_atom, /obj/item/organ))
 				var/obj/item/organ/organ = nearby_atom
 				if (organ.organ_flags & ORGAN_ROBOTIC)
-					to_chat(user, span_warning("Cannot transmute robotic organs!"))
+					to_chat(user, span_warning(LANG("obj.0eb014b99af0ee9e", null)))
 					continue
 			// BUBBER EDIT ADDITION END
 			// if list has items, check if the strict type is banned.
@@ -201,9 +202,9 @@
 
 	if(length(what_are_we_missing))
 		// Let them know it screwed up
-		loc.balloon_alert(user, "ritual failed, missing components!")
+		loc.balloon_alert(user, LANG("obj.1a08c859d700b410", null))
 		// Then let them know what they're missing
-		to_chat(user, span_mansus("You are missing [english_list(what_are_we_missing)] in order to complete the ritual \"[ritual.name]\"."))
+		to_chat(user, span_mansus(LANG("obj.4a4e2a45af83ff7b", list(lang_english_list(what_are_we_missing), ritual.name))))
 		return FALSE
 
 	//Everything's good, proceed and collect from the available stacks what's needed if needed.
@@ -257,7 +258,7 @@
 	// No feedback is given on failure here -
 	// the ritual itself should handle it (providing specifics as to why it failed)
 	if(ritual_result)
-		loc.balloon_alert(user, "ritual complete")
+		loc.balloon_alert(user, LANG("obj.3c6f6a53d408524c", null))
 
 	return ritual_result
 

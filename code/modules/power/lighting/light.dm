@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define NIGHTSHIFT_COLOR_MODIFIER 0.15 // BUBBER EDIT ADDITION - LIGHTING
 
 // the standard tube light fixture
@@ -242,7 +243,9 @@
 		var/brightness_set = brightness
 		var/power_set = bulb_power
 		var/color_set = bulb_colour
-		if(color)
+		// atom 的 color 可以是颜色矩阵（冻结效果套的 freon_color_matrix 就是 4 元素列表），那不是灯光颜色：
+		// 原样传进 set_light 会让 rgb2num 报 bad color、光源构造失败，被冻住的灯直接不亮（生产 8-9 月 391 次）。
+		if(istext(color)) // ZH EDIT CHANGE - ORIGINAL: if(color)
 			color_set = color
 		if(reagents || !is_full_charge())
 			START_PROCESSING(SSmachines, src)
@@ -394,15 +397,15 @@
 	. = ..()
 	switch(status)
 		if(LIGHT_OK)
-			. += span_notice("It is turned [on? "on" : "off"].")
+			. += span_notice(LANG("obj.278e13c0390b4914", list(on? "on" : "off")))
 		if(LIGHT_EMPTY)
-			. +=  span_notice("The [fitting] has been removed.")
+			. +=  span_notice(LANG("obj.8a14aaddc3fea49e", list(fitting)))
 		if(LIGHT_BURNED)
-			. +=  span_danger("The [fitting] is burnt out.")
+			. +=  span_danger(LANG("obj.3d178c781fac5013", list(fitting)))
 		if(LIGHT_BROKEN)
-			. += span_danger("The [fitting] has been smashed.")
+			. += span_danger(LANG("obj.0c6384639cd78b7d", list(fitting)))
 	if(cell || has_mock_cell)
-		. +=  span_notice("Its backup power charge meter reads [has_mock_cell ? 100 : round((cell.charge / cell.maxcharge) * 100, 0.1)]%.")
+		. +=  span_notice(LANG("obj.a9f55cfa858c2a56", list(has_mock_cell ? 100 : round((cell.charge / cell.maxcharge) * 100, 0.1))))
 
 
 
@@ -411,12 +414,12 @@
 	// attempt to insert light
 	if(istype(tool, /obj/item/light))
 		if(status == LIGHT_OK)
-			to_chat(user, span_warning("There is a [fitting] already inserted!"))
+			to_chat(user, span_warning(LANG("obj.ee33e3a5ad198050", list(fitting))))
 			return ITEM_INTERACT_BLOCKING
 		add_fingerprint(user)
 		var/obj/item/light/light_object = tool
 		if(!istype(light_object, light_type))
-			to_chat(user, span_warning("This type of light requires a [fitting]!"))
+			to_chat(user, span_warning(LANG("obj.e65138876e2674ca", list(fitting))))
 			return ITEM_INTERACT_BLOCKING
 		if(!user.temporarilyRemoveItemFromInventory(light_object))
 			return ITEM_INTERACT_BLOCKING
@@ -424,9 +427,9 @@
 		add_fingerprint(user)
 		if(status != LIGHT_EMPTY)
 			drop_light_tube(user)
-			to_chat(user, span_notice("You replace [light_object]."))
+			to_chat(user, span_notice(LANG("obj.6bfeb16aeb41728f", list(light_object))))
 		else
-			to_chat(user, span_notice("You insert [light_object]."))
+			to_chat(user, span_notice(LANG("obj.a134b5ec6da36f3e", list(light_object))))
 		if(length(light_object.reagents.reagent_list))
 			create_reagents(LIGHT_REAGENT_CAPACITY, SEALED_CONTAINER | TRANSPARENT)
 			light_object.reagents.trans_to(reagents, LIGHT_REAGENT_CAPACITY)
@@ -447,7 +450,7 @@
 	if(tool.item_flags & ABSTRACT)
 		return NONE
 
-	to_chat(user, span_userdanger("You stick \the [tool] into the light socket!"))
+	to_chat(user, span_userdanger(LANG("obj.c096c669d26d86e4", list(tool))))
 	if(has_power() && (tool.obj_flags & CONDUCTS_ELECTRICITY))
 		do_sparks(3, TRUE, src)
 		if (prob(75))
@@ -458,9 +461,9 @@
 	if(status != LIGHT_EMPTY || user.combat_mode)
 		return NONE
 	tool.play_tool_sound(src, 75)
-	user.visible_message(span_notice("[user.name] opens [src]'s casing."), \
-						span_notice("You open [src]'s casing."), \
-						span_hear("You hear unscrewing."))
+	user.visible_message(span_notice(LANG("obj.4f36580fec05c851", list(user.name, src))), \
+						span_notice(LANG("obj.7e79dc6e7363ab70", list(src))), \
+						span_hear(LANG("obj.7ef4c6cba62330ae", null)))
 	deconstruct(disassembled = TRUE)
 	return ITEM_INTERACT_SUCCESS
 
@@ -552,7 +555,7 @@
 		return FALSE
 	var/obj/item/stock_parts/power_store/real_cell = get_cell()
 	if(real_cell.charge > 2.5 * /obj/item/stock_parts/power_store/cell/emergency_light::maxcharge) //it's meant to handle 120 W, ya doofus
-		visible_message(span_warning("[src] short-circuits from too powerful of a power cell!"))
+		visible_message(span_warning(LANG("obj.b7152cdda819ad7c", list(src))))
 		burn_out()
 		return FALSE
 	real_cell.use(power_usage_amount)
@@ -598,7 +601,7 @@
 
 /obj/machinery/light/attack_ai(mob/user)
 	no_low_power = !no_low_power
-	to_chat(user, span_notice("Emergency lights for this fixture have been [no_low_power ? "disabled" : "enabled"]."))
+	to_chat(user, span_notice(LANG("obj.8e1699bee81f4840", list(no_low_power ? "disabled" : "enabled"))))
 	update(trigger = FALSE, play_sound = FALSE) // BUBBER EDIT CHANGE - LIGHTING - Original: update(FALSE)
 	return
 
@@ -613,12 +616,12 @@
 	add_fingerprint(user)
 
 	if(status == LIGHT_EMPTY)
-		to_chat(user, span_warning("There is no [fitting] in this light!"))
+		to_chat(user, span_warning(LANG("obj.f4e50c08628549dd", list(fitting))))
 		return
 
 	// make it burn hands unless you're wearing heat insulated gloves or have the RESISTHEAT/RESISTHEATHANDS traits
 	if(!on)
-		to_chat(user, span_notice("You remove the light [fitting]."))
+		to_chat(user, span_notice(LANG("obj.24ac47c71841b377", list(fitting))))
 		// create a light tube/bulb item and put it in the user's hand
 		drop_light_tube(user)
 		return
@@ -631,15 +634,15 @@
 			var/obj/item/organ/stomach/ethereal/stomach = maybe_stomach
 			if(stomach.drain_time > world.time)
 				return
-			to_chat(user, span_notice("You start channeling some power through the [fitting] into your body."))
+			to_chat(user, span_notice(LANG("obj.59dd25ca6daec956", list(fitting))))
 			stomach.drain_time = world.time + LIGHT_DRAIN_TIME
 			while(do_after(user, LIGHT_DRAIN_TIME, target = src))
 				stomach.drain_time = world.time + LIGHT_DRAIN_TIME
 				if(istype(stomach))
-					to_chat(user, span_notice("You receive some charge from the [fitting]."))
+					to_chat(user, span_notice(LANG("obj.ac1083bfcb4659a8", list(fitting))))
 					stomach.adjust_charge(LIGHT_POWER_GAIN)
 				else
-					to_chat(user, span_warning("You can't receive charge from the [fitting]!"))
+					to_chat(user, span_warning(LANG("obj.97c3ba9aa0e52d7e", list(fitting))))
 			return
 
 		if(user.gloves)
@@ -650,21 +653,21 @@
 		protected = TRUE
 
 	if(protected || HAS_TRAIT(user, TRAIT_RESISTHEAT) || HAS_TRAIT(user, TRAIT_RESISTHEATHANDS))
-		to_chat(user, span_notice("You remove the light [fitting]."))
+		to_chat(user, span_notice(LANG("obj.24ac47c71841b377", list(fitting))))
 	else if(istype(user) && user.dna.check_mutation(/datum/mutation/telekinesis))
-		to_chat(user, span_notice("You telekinetically remove the light [fitting]."))
+		to_chat(user, span_notice(LANG("obj.dd9d651bb842ba02", list(fitting))))
 	else
 		var/obj/item/bodypart/affecting = user.get_active_hand()
 		user.apply_damage(5, BURN, affecting, wound_bonus = CANT_WOUND)
 		if(HAS_TRAIT(user, TRAIT_LIGHTBULB_REMOVER))
-			to_chat(user, span_notice("You feel your [affecting.plaintext_zone] burning, but the light begins to budge..."))
+			to_chat(user, span_notice(LANG("obj.086b24bd464573a4", list(affecting.plaintext_zone))))
 			if(!do_after(user, 5 SECONDS, target = src))
 				return
 			user.apply_damage(10, BURN, user.get_active_hand(), wound_bonus = CANT_WOUND)
-			to_chat(user, span_notice("You manage to remove the light [fitting], shattering it in process."))
+			to_chat(user, span_notice(LANG("obj.3e61375d4ac1809c", list(fitting))))
 			break_light_tube()
 		else
-			to_chat(user, span_warning("You try to remove the light [fitting], but you burn your hand on it!"))
+			to_chat(user, span_warning(LANG("obj.38f022f355c9571e", list(fitting))))
 			return
 	// create a light tube/bulb item and put it in the user's hand
 	drop_light_tube(user)
@@ -702,10 +705,10 @@
 
 /obj/machinery/light/attack_tk(mob/user)
 	if(status == LIGHT_EMPTY)
-		to_chat(user, span_warning("There is no [fitting] in this light!"))
+		to_chat(user, span_warning(LANG("obj.f4e50c08628549dd", list(fitting))))
 		return
 
-	to_chat(user, span_notice("You telekinetically remove the light [fitting]."))
+	to_chat(user, span_notice(LANG("obj.dd9d651bb842ba02", list(fitting))))
 	// create a light tube/bulb item and put it in the user's hand
 	var/obj/item/light/light_tube = drop_light_tube()
 	return light_tube.attack_tk(user)

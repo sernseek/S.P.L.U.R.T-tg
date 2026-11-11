@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/spawner/random/vending/snackvend
 	loot = list(
 		/obj/machinery/vending/imported,
@@ -117,7 +118,7 @@
 
 /obj/machinery/vending/imported/yangyu/examine_more(mob/user)
 	. = ..()
-	. += span_notice("Someone appears to have written <i>\"Don't trust the sushi!\"</i> in marker on the side of the vendor.")
+	. += span_notice(LANG("obj.c9c5e613a508d7d4", null))
 	return .
 
 /obj/item/vending_refill/snack/imported/yangyu

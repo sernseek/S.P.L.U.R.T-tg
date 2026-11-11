@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/equipping/lungs
 	abstract_type = /datum/quirk/equipping/lungs
 	icon = FA_ICON_LUNGS
@@ -50,7 +51,7 @@
 
 /obj/item/clothing/accessory/breathing/examine(mob/user)
 	. = ..()
-	. += "The dogtag reads: I breathe [breath_type]."
+	. += LANG("obj.d01780c98a2ad8d3", list(breath_type))
 
 /obj/item/clothing/accessory/breathing/accessory_equipped(obj/item/clothing/under/uniform, user)
 	. = ..()
@@ -62,7 +63,7 @@
 
 /obj/item/clothing/accessory/breathing/proc/on_examine(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
-	examine_list += "The dogtag reads: I breathe [breath_type]."
+	examine_list += LANG("obj.d01780c98a2ad8d3", list(breath_type))
 
 /datum/quirk/equipping/lungs/nitrogen
 	name = "Nitrogen Breather"

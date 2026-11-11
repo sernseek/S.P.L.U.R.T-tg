@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Active power use of a regular default camera
 #define CAMERA_POWER_CONSUMPTION (BASE_MACHINE_ACTIVE_CONSUMPTION * 0.02)
 /// Active power multiplier of the xray camera upgrade
@@ -201,29 +202,29 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	. = ..()
 
 	if(isEmpProof(TRUE)) //don't reveal it's upgraded if was done via MALF AI Upgrade Camera Network ability
-		. += span_info("It has electromagnetic interference shielding installed.")
+		. += span_info(LANG("obj.9eefe1949ca1c82e", null))
 	else
-		. += span_info("It can be shielded against electromagnetic interference with some <b>plasma</b>.")
+		. += span_info(LANG("obj.bd6aeaa5dacfb70e", null))
 
 	if(isXRay(TRUE)) //don't reveal it's upgraded if was done via MALF AI Upgrade Camera Network ability
-		. += span_info("It has an X-ray photodiode installed.")
+		. += span_info(LANG("obj.375dcdc1c8117a20", null))
 	else
-		. += span_info("It can be upgraded with an X-ray photodiode with an <b>analyzer</b>.")
+		. += span_info(LANG("obj.47da969f8e2fcd15", null))
 
 	if(isMotion())
-		. += span_info("It has a proximity sensor installed.")
+		. += span_info(LANG("obj.a0586da22179542a", null))
 	else
-		. += span_info("It can be upgraded with a <b>proximity sensor</b>.")
+		. += span_info(LANG("obj.25242bb3ab66147e", null))
 
 	if(!camera_enabled)
-		. += span_info("It's currently deactivated.")
+		. += span_info(LANG("obj.65d21f683aebb446", null))
 		if(!panel_open && powered())
-			. += span_notice("You'll need to open its maintenance panel with a <b>screwdriver</b> to turn it back on.")
+			. += span_notice(LANG("obj.ccaf15addb262f9e", null))
 
 	if(panel_open)
-		. += span_info("Its maintenance panel is currently open.")
+		. += span_info(LANG("obj.bc1287f7e072039e", null))
 		if(!camera_enabled && powered())
-			. += span_info("It can reactivated with <b>wirecutters</b>.")
+			. += span_info(LANG("obj.9718ecc5f5d21959", null))
 
 /obj/machinery/camera/emp_act(severity, reset_time = 90 SECONDS)
 	. = ..()
@@ -244,7 +245,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	for(var/mob/M as anything in GLOB.player_list)
 		if (M.client?.eye == src)
 			M.reset_perspective(null)
-			to_chat(M, span_warning("The screen bursts into static!"))
+			to_chat(M, span_warning(LANG("obj.f627b67467eb041e", null)))
 
 /obj/machinery/camera/on_saboteur(datum/source, disrupt_duration)
 	. = ..()
@@ -379,10 +380,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 			addtimer(CALLBACK(src, PROC_REF(cancelCameraAlarm)), 10 SECONDS)
 	if(displaymessage)
 		if(user)
-			visible_message(span_danger("[user] [change_msg] [src]!"))
+			visible_message(span_danger(LANG("obj.dd02d8c90a5dee7a", list(user, change_msg, src))))
 			add_hiddenprint(user)
 		else
-			visible_message(span_danger("\The [src] [change_msg]!"))
+			visible_message(span_danger(LANG("obj.b0e4d953a47f96c7", list(src, change_msg))))
 
 		playsound(src, 'sound/items/tools/wirecutter.ogg', 100, TRUE)
 	update_appearance() //update Initialize() if you remove this.
@@ -394,7 +395,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	for(var/mob/O as anything in GLOB.player_list)
 		if (O.client?.eye == src)
 			O.reset_perspective(null)
-			to_chat(O, span_warning("The screen bursts into static!"))
+			to_chat(O, span_warning(LANG("obj.f627b67467eb041e", null)))
 
 /obj/machinery/camera/proc/triggerCameraAlarm()
 	alarm_on = TRUE

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Semi-automatic rifle firing .310 with reduced damage compared to a Sakhno
 
 /obj/item/gun/ballistic/automatic/lanca
@@ -65,21 +66,12 @@
 
 /obj/item/gun/ballistic/automatic/lanca/examine(mob/user)
 	. = ..()
-	. += span_notice("You can <b>examine closer</b> to learn a little more about this weapon.")
+	. += span_notice(LANG("obj.b663717df67087e6", null))
 
 /obj/item/gun/ballistic/automatic/lanca/examine_more(mob/user)
 	. = ..()
 
-	. += "The Lanca is a now relatively dated replacement for Kalashnikov-pattern rifles \
-		adopted by states now combining to form the CIN. While the rifle that came before them \
-		had its benefits, leadership of many armies started to realize that the Kalashnikov-based \
-		rifles were really showing their age once the variants began reaching the thousands in serial. \
-		The solution was presented by a then-new company, Szot Dynamica. This new rifle, not too \
-		unlike the one you are seeing now, adopted all of the latest technology of the time: lightweight \
-		caseless ammunition, well known for its use in Sakhno rifles, as well as various electronics and \
-		other incredible technological advancements. These advancements may have already been around since \
-		before the creation of even the Sakhno, but the fact you're seeing this now fifty-year-old design \
-		must mean something, right?"
+	. += LANG("obj.613e9ee575b18576", null)
 
 	return .
 
@@ -138,19 +130,11 @@
 
 /obj/item/gun/ballistic/automatic/wylom/examine(mob/user)
 	. = ..()
-	. += span_notice("You can <b>examine closer</b> to learn a little more about this weapon.")
+	. += span_notice(LANG("obj.b663717df67087e6", null))
 
 /obj/item/gun/ballistic/automatic/wylom/examine_more(mob/user)
 	. = ..()
 
-	. += "The 'Wyłom' AMR was a weapon not originally made for unaided human hands. \
-		The original rifle had mounting points for a specialized suit attachment system, \
-		not too much unlike heavy smartguns that can be seen across the galaxy. CIN military \
-		command, however, deemed that expensive exoskeletons and rigs for carrying an organic \
-		anti-materiel system were not needed, and that soldiers should simply 'deal with it'. \
-		Unsurprisingly, soldiers assigned this weapon tend not to be massive fans of that fact, \
-		and smekalka within CIN ranks is common with troops finding novel ways to carry and use \
-		their large rifles with as little effort as possible. Most of these novel methods, of course, \
-		tend to shatter when the rifle is actually fired."
+	. += LANG("obj.5d4e8cd7f86e11af", null)
 
 	return .

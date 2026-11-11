@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Sleeper, Medical Beam, and Syringe gun
 
 /obj/item/mecha_parts/mecha_equipment/medical
@@ -19,7 +20,10 @@
 	var/list/contained_reagents = list()
 	if(length(reagent_list))
 		for(var/datum/reagent/reagent as anything in reagent_list)
-			contained_reagents += list(list("name" = reagent.name, "volume" = round(reagent.volume, 0.01))) // list in a list because Byond merges the first list...
+			// ZH EDIT CHANGE - I18N - ORIGINAL: contained_reagents += list(list("name" = reagent.name, "volume" = round(reagent.volume, 0.01)))
+			// "id" 是 policy.json payload_skip_keys 成员，P1 不反查 → 保持英文标识符供 gear_action 回传；
+			// "name" 照旧本地化，只做显示。
+			contained_reagents += list(list("id" = reagent.name, "name" = lang_localize_display_name(reagent.name), "volume" = round(reagent.volume, 0.01))) // list in a list because Byond merges the first list... // ZH EDIT - I18N: id 保英文供 gear_action 拼串，name 只做显示
 	return contained_reagents
 
 //---- Mecha sleeper, medical subtype has the chemical functionality
@@ -51,7 +55,7 @@
 	if(!patient_insertion_check(target, source))
 		return
 	to_chat(source, "[icon2html(src, source)][span_notice("You start putting [target] into [src]...")]")
-	chassis.visible_message(span_warning("[chassis] starts putting [target] into \the [src]."))
+	chassis.visible_message(span_warning(LANG("obj.795199ecf086fc9d", list(chassis, target, src))))
 	if(!do_after(source, get_equip_cooldown(atomtarget), target, extra_checks=CALLBACK(src, PROC_REF(patient_insertion_check), target, source)))
 		return
 	if(!chassis || !(get_dir(chassis, target) & chassis.dir))
@@ -60,7 +64,7 @@
 	patient = target
 	START_PROCESSING(SSobj, src)
 	to_chat(source, "[icon2html(src, source)][span_notice("[target] successfully loaded into [src]. Life support functions engaged.")]")
-	chassis.visible_message(span_warning("[chassis] loads [target] into [src]."))
+	chassis.visible_message(span_warning(LANG("obj.f703f7ec37a0230a", list(chassis, target, src))))
 	log_message("[target] loaded. Life support functions engaged.", LOG_MECHA)
 	return ..()
 
@@ -247,7 +251,8 @@
 		var/enabled = FALSE
 		if(known_reagents[i] in processed_reagents)
 			enabled = TRUE
-		analyzed_reagents += list((list("name" = known_reagents[i].name, "enabled" = enabled)))
+		// ZH EDIT CHANGE - I18N - ORIGINAL: analyzed_reagents += list((list("name" = known_reagents[i].name, "enabled" = enabled)))
+		analyzed_reagents += list((list("id" = known_reagents[i].name, "name" = known_reagents[i].name, "enabled" = enabled)))
 	var/list/data = list(
 		"snowflake_id" = MECHA_SNOWFLAKE_ID_SYRINGE,
 		"mode" = mode == FIRE_SYRINGE_MODE ? "Launch" : "Analyze",
@@ -303,13 +308,13 @@
 		return analyze_reagents(target, source)
 	//we're in syringe mode so lets do syringe stuff
 	if(!LAZYLEN(syringes))
-		to_chat(source, "[icon2html(src, source)]<span class='alert'>No syringes loaded.</span>")
+		to_chat(source, LANG("obj.d876a8f7704826e7", list(icon2html(src, source))))
 		return
 	if(reagents.total_volume <= 0)
-		to_chat(source, "[icon2html(src, source)]<span class='alert'>No available reagents to load syringe with.</span>")
+		to_chat(source, LANG("obj.74526e2717e4cf8e", list(icon2html(src, source))))
 		return
 	if(HAS_TRAIT(source, TRAIT_PACIFISM))
-		to_chat(source, span_alert("The [src] might be lethally chambered! You don't want to risk harming anyone..."))
+		to_chat(source, span_alert(LANG("obj.02b957d79160e62a", list(src))))
 		return
 	var/obj/item/ammo_casing/syringegun/chambered = new /obj/item/ammo_casing/syringegun(src)
 	log_message("Fired [chambered] from [src] by [source], targeting [target].", LOG_MECHA)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // GENERIC PROJECTILE
 
 /obj/projectile/beam/ctf
@@ -186,7 +187,7 @@
 	. = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/target_mob = target
-		target_mob.visible_message(span_danger("[target_mob] explodes into a shower of gibs!"))
+		target_mob.visible_message(span_danger(LANG("obj.8cc3c08ae9885028", list(target_mob))))
 		target_mob.gib()
 
 // SHIELDED VEST

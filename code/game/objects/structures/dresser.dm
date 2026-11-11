@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //THIS FILE HAS BEEN EDITED BY SKYRAT EDIT
 
 /obj/structure/dresser//SKYRAT EDIT - ICON OVERRIDDEN BY AESTHETICS - SEE MODULE
@@ -11,11 +12,11 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 10)
 
 /obj/structure/dresser/wrench_act(mob/living/user, obj/item/tool)
-	to_chat(user, span_notice("You begin to [anchored ? "unwrench" : "wrench"] [src]."))
+	to_chat(user, span_notice(LANG("obj.8b820c989748b0b7", list(anchored ? "unwrench" : "wrench", src))))
 	if(!tool.use_tool(src, user, 20, volume=50))
 		return ITEM_INTERACT_BLOCKING
 
-	to_chat(user, span_notice("You successfully [anchored ? "unwrench" : "wrench"] [src]."))
+	to_chat(user, span_notice(LANG("obj.5e680a27fb6982c5", list(anchored ? "unwrench" : "wrench", src))))
 	set_anchored(!anchored)
 	return ITEM_INTERACT_SUCCESS
 
@@ -32,10 +33,10 @@
 		return
 	var/mob/living/carbon/human/dressing_human = user
 	if(HAS_TRAIT(dressing_human, TRAIT_NO_UNDERWEAR))
-		to_chat(dressing_human, span_warning("You are not capable of wearing underwear."))
+		to_chat(dressing_human, span_warning(LANG("obj.46fd52b3e6237981", null)))
 		return
 
-	var/choice = tgui_input_list(user, "Underwear, Bra, Undershirt, or Socks?", "Changing", list("Underwear", "Underwear Color", "Bra", "Bra Color", "Undershirt", "Undershirt Color", "Socks", "Socks Color")) //SKYRAT EDIT ADDITION - Colorable Undershirt/Socks/Bra
+	var/choice = tgui_input_list(user, LANG("obj.e9f42888e0042be0", null), LANG("obj.e27ef6c68c6873f5", null), list("Underwear", "Underwear Color", "Bra", "Bra Color", "Undershirt", "Undershirt Color", "Socks", "Socks Color")) //SKYRAT EDIT ADDITION - Colorable Undershirt/Socks/Bra
 	if(isnull(choice))
 		return
 
@@ -43,7 +44,7 @@
 		return
 	switch(choice)
 		if("Underwear")
-			var/new_undies = tgui_input_list(user, "Select your underwear", "Changing", SSaccessories.underwear_list)
+			var/new_undies = tgui_input_list(user, LANG("obj.c22948feef15725e", null), LANG("obj.e27ef6c68c6873f5", null), SSaccessories.underwear_list)
 			if(new_undies)
 				dressing_human.underwear = new_undies
 				// SPLURT EDIT ADDITION - Extra Inventory
@@ -52,7 +53,7 @@
 				dressing_human.equip_to_slot_or_del(new sprite.briefs_obj(dressing_human), ITEM_SLOT_UNDERWEAR)
 				// SPLURT EDIT END
 		if("Underwear Color")
-			var/new_underwear_color = tgui_color_picker(dressing_human, "Choose your underwear color", "Underwear Color", dressing_human.underwear_color)
+			var/new_underwear_color = tgui_color_picker(dressing_human, LANG("obj.9cb60df215066361", null), LANG("obj.be1e52a67f41595d", null), dressing_human.underwear_color)
 			if(new_underwear_color)
 				dressing_human.underwear_color = sanitize_hexcolor(new_underwear_color)
 				// SPLURT EDIT ADDITION - Extra Inventory
@@ -61,7 +62,7 @@
 				dressing_human.equip_to_slot_or_del(briefs, ITEM_SLOT_UNDERWEAR)
 				// SPLURT EDIT END
 		if("Undershirt")
-			var/new_undershirt = tgui_input_list(user, "Select your undershirt", "Changing", SSaccessories.undershirt_list)
+			var/new_undershirt = tgui_input_list(user, LANG("obj.af3cd6d57d8d4f67", null), LANG("obj.e27ef6c68c6873f5", null), SSaccessories.undershirt_list)
 			if(new_undershirt)
 				dressing_human.undershirt = new_undershirt
 				// SPLURT EDIT ADDITION - Extra Inventory
@@ -70,7 +71,7 @@
 				dressing_human.equip_to_slot_or_del(new sprite.shirt_obj(dressing_human), ITEM_SLOT_SHIRT)
 				// SPLURT EDIT END
 		if("Undershirt Color")
-			var/new_undershirt_color = tgui_color_picker(dressing_human, "Choose your undershirt color", "Undershirt Color", dressing_human.undershirt_color) // BUBBERSTATION EDIT: TGUI COLOR PICKER
+			var/new_undershirt_color = tgui_color_picker(dressing_human, LANG("obj.e125c60a8fcd42d1", null), LANG("obj.b278947bbb9b5d81", null), dressing_human.undershirt_color) // BUBBERSTATION EDIT: TGUI COLOR PICKER
 			if(new_undershirt_color)
 				dressing_human.undershirt_color = sanitize_hexcolor(new_undershirt_color)
 				// SPLURT EDIT ADDITION - Extra Inventory
@@ -79,7 +80,7 @@
 				dressing_human.equip_to_slot_or_del(shirt, ITEM_SLOT_SHIRT)
 				// SPLURT EDIT END
 		if("Socks")
-			var/new_socks = tgui_input_list(user, "Select your socks", "Changing", SSaccessories.socks_list)
+			var/new_socks = tgui_input_list(user, LANG("obj.0931151191970d02", null), LANG("obj.e27ef6c68c6873f5", null), SSaccessories.socks_list)
 			if(new_socks)
 				dressing_human.socks = new_socks
 				// SPLURT EDIT ADDITION - Extra Inventory
@@ -88,7 +89,7 @@
 				dressing_human.equip_to_slot_or_del(new sprite.socks_obj(dressing_human), ITEM_SLOT_SOCKS)
 				// SPLURT EDIT END
 		if("Socks Color")
-			var/new_socks_color = tgui_color_picker(dressing_human, "Choose your socks color", "Socks Color", dressing_human.socks_color) // BUBBERSTATION EDIT: TGUI COLOR PICKER
+			var/new_socks_color = tgui_color_picker(dressing_human, LANG("obj.6cdfd13ff82783ed", null), LANG("obj.4a63991d4af4d061", null), dressing_human.socks_color) // BUBBERSTATION EDIT: TGUI COLOR PICKER
 			if(new_socks_color)
 				dressing_human.socks_color = sanitize_hexcolor(new_socks_color)
 				// SPLURT EDIT ADDITION - Extra Inventory
@@ -97,7 +98,7 @@
 				dressing_human.equip_to_slot_or_del(socks, ITEM_SLOT_SOCKS)
 				// SPLURT EDIT END
 		if("Bra")
-			var/new_bra = tgui_input_list(user, "Select your Bra", "Changing", SSaccessories.bra_list)
+			var/new_bra = tgui_input_list(user, LANG("obj.a52637d72683479b", null), LANG("obj.e27ef6c68c6873f5", null), SSaccessories.bra_list)
 			if(new_bra)
 				dressing_human.bra = new_bra
 				// SPLURT EDIT ADDITION - Extra Inventory
@@ -106,7 +107,7 @@
 				dressing_human.equip_to_slot_or_del(new sprite.bra_obj(dressing_human), ITEM_SLOT_BRA)
 				// SPLURT EDIT END
 		if("Bra Color")
-			var/new_bra_color = tgui_color_picker(dressing_human, "Choose your Bra color", "Bra Color", dressing_human.bra_color) // BUBBERSTATION EDIT: TGUI COLOR PICKER
+			var/new_bra_color = tgui_color_picker(dressing_human, LANG("obj.6faf0ab51fc14c37", null), LANG("obj.dac9888452328a63", null), dressing_human.bra_color) // BUBBERSTATION EDIT: TGUI COLOR PICKER
 			if(new_bra_color)
 				dressing_human.bra_color = sanitize_hexcolor(new_bra_color)
 				// SPLURT EDIT ADDITION - Extra Inventory

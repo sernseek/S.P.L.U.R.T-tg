@@ -1,7 +1,8 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/heretic_labyrinth_handbook/examine(mob/user)
 	. = ..()
 
-	. += span_notice("Can be used to generate impenetrable barriers. Lasts for 8 seconds, 5 charges at a time.")
+	. += span_notice(LANG("obj.087e4bf6484ecc94", null))
 
 /datum/heretic_knowledge_tree_column/lock
 	description = list(
@@ -17,13 +18,13 @@
 /obj/effect/lock_portal/examine(mob/user)
 	. = ..()
 
-	. += span_notice("If a non-acolyte walks through the door, they will be teleported somewhere random. Acolytes, however, will be teleported to a second portal somewhere else.")
-	. += span_notice("Can be removed with antimagic weaponry (holymelons/nullrods) or by removing the airlock.")
+	. += span_notice(LANG("obj.05286e79d7aecd1f", null))
+	. += span_notice(LANG("obj.b04e3baaaca93af4", null))
 
 /obj/effect/lock_portal/proc/on_holy_attack(datum/source, obj/item/weapon)
 	SIGNAL_HANDLER
 
-	visible_message(span_warning("[weapon] dispels [src]!"))
+	visible_message(span_warning(LANG("obj.c29e161464d42695", list(weapon, src))))
 	qdel(src)
 
 /datum/status_effect/caretaker_refuge
@@ -44,5 +45,5 @@
 
 	var/turf/in_LOS = get_hearers_in_LOS(cast_range, owner)
 	if (!(cast_on in in_LOS))
-		owner.balloon_alert(owner, "need line of sight!")
+		owner.balloon_alert(owner, LANG("datum.bb5a69ab6a6cc3b0", null))
 		return SPELL_CANCEL_CAST

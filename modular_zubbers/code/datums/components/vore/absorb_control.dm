@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/innate/absorb_control
 	name = "Take Back Control"
 	desc = "Take control of your body back."
@@ -62,7 +63,7 @@
 	PRIVATE_PROC(TRUE)
 
 	var/mob/living/puppet = parent
-	to_chat(puppet, span_userdanger("You feel your control being taken away..."))
+	to_chat(puppet, span_userdanger(LANG("datum.001737fbf2c142d2", null)))
 
 	var/mob/living/puppetmaster
 	var/mob/living/backseat
@@ -74,7 +75,7 @@
 		backseat = pred_backseat
 		backseat.name = "[puppet.real_name] (Backseat)"
 
-	to_chat(puppetmaster, span_userdanger("You take control of [puppet]!"))
+	to_chat(puppetmaster, span_userdanger(LANG("datum.bc97dbb0b6e8fc3e", list(puppet))))
 
 	// Swap puppet to backseat
 	var/puppet_id = puppet.computer_id

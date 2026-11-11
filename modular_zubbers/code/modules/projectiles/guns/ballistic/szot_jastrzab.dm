@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Szot Dynamica's Smart Drift Control prototype: a Lanca with a very expensive targeting package.
 
 /// Maximum degrees a designated shot may turn per tick. Not a strength dial: a close target needs
@@ -111,19 +112,14 @@
 
 /obj/item/gun/ballistic/automatic/lanca/jastrzab/examine(mob/user)
 	. = ..()
-	. += span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src].")
+	. += span_notice(LANG("obj.443782c7961051dd", list(EXAMINE_HINT("look closer"), src)))
 
 /obj/item/gun/ballistic/automatic/lanca/jastrzab/examine_more(mob/user)
 	. = ..()
 
-	. += "Smart Drift Control worked. That was never the difficulty. Trials returned hit rates that embarrassed \
-		every other rifle Szot Dynamica had ever fielded, and the evaluation board's report is remembered chiefly for \
-		the sentence in which it observed that the targeting package cost rather more than the rifle, the magazines, \
-		the ammunition, and a considerable portion of the soldier carrying them."
+	. += LANG("obj.7932079af53a51b4", null)
 
-	. += "The procurement program died of arithmetic rather than of failure. Surviving examples come from evaluation \
-		units, specialist issue, and the collections of procurement officers who were unusually well connected and \
-		unusually relaxed about paperwork."
+	. += LANG("obj.fbcf3e9a08370005", null)
 
 	return .
 

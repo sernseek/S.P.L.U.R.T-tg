@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/reagent_containers/hash
 	name = "hash"
 	desc = "Concentrated cannabis extract. Delivers a much better high when used in a bong."
@@ -27,9 +28,9 @@
 
 
 /obj/item/reagent_containers/hashbrick/attack_self(mob/user)
-	user.visible_message(span_notice("[user] starts breaking up the [src]."))
+	user.visible_message(span_notice(LANG("obj.2c94b9cac2485db3", list(user, src))))
 	if(do_after(user,10))
-		to_chat(user, span_notice("You finish breaking up the [src]."))
+		to_chat(user, span_notice(LANG("obj.eb1bbccb3849e180", list(src))))
 		for(var/i = 1 to 4)
 			new /obj/item/reagent_containers/hash(user.loc)
 		qdel(src)

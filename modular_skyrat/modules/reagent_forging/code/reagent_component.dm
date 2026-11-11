@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 
 ///Parent component that stores shared info
@@ -40,13 +41,13 @@
 /datum/component/reagent_imbued/proc/on_examine(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 	if(USER_CAN_REAGENT_IMBUE(user))
-		examine_list += span_notice("[parent_item] is able to be imbued by dipping it into a container such as a quenching trough, or pouring chemicals into it and then tempering it at a forge!")
+		examine_list += span_notice(LANG("datum.c517d35996a287b0", list(parent_item)))
 	else
-		examine_list += span_notice("If you knew a certain smithing trick, you could imbue special chemicals into this...")
+		examine_list += span_notice(LANG("datum.bd5a7ca23c0ae1b7", null))
 	if(parent_item.get_integrity_percentage() < integrity_required)
-		examine_list += span_notice("It must be repaired before its imbued reagent effects can work...")
+		examine_list += span_notice(LANG("datum.f6750f7c926c39a9", null))
 	if(imbued_reagent.reagent_list.len >= 1 && (USER_CAN_REAGENT_IMBUE(user) || HAS_TRAIT(user, TRAIT_REAGENT_SCANNER)))
-		examine_list += span_notice("You could inspect this closer to see what is imbued into it, and what smithing oil does...")
+		examine_list += span_notice(LANG("datum.3b468f301ee45c1b", null))
 
 
 /datum/component/reagent_imbued/proc/on_examine_more(obj/item/source, mob/examiner, list/examine_list)
@@ -58,7 +59,7 @@
 /datum/component/reagent_imbued/proc/add_reagent_imbue_description(list/examine_list)
 	examine_list += span_notice(examine_imbued_description)
 	for (var/datum/reagent/reagent in imbued_reagent.reagent_list)
-		examine_list += span_notice("[reagent.volume] units of [reagent.name]")
+		examine_list += span_notice(LANG("datum.bcff57a8c88babaf", list(reagent.volume, reagent.name)))
 
 /datum/component/reagent_imbued/proc/add_oil_imbue_effect_description(list/examine_list)
 	if(smithing_oil_effects.len > 0)
@@ -80,9 +81,9 @@
 				if(FORGE_EFFECT_TOOLSPEED)
 					effects_list += "work more efficiently in its intended use"
 
-		examine_list += span_notice("Smithing oil will make it [english_list(effects_list)].")
+		examine_list += span_notice(LANG("datum.0a4a1f0f5a0a6fd4", list(english_list(effects_list))))
 	else
-		examine_list += span_notice("Smithing oil has no effect on [parent_item], but may affect things crafted with it.")
+		examine_list += span_notice(LANG("datum.ecf3adc988fb660e", list(parent_item)))
 
 ///Replaces the imbued_reagent with the given new_reagents.
 /datum/component/reagent_imbued/proc/set_reagent_imbue(datum/reagents/new_reagents, clear_source_reagents = TRUE)
@@ -135,8 +136,8 @@
 	parent_item.take_damage((integrity_loss_per_inject + random_integ) * new_amount_to_inject, sound_effect = FALSE)
 
 	if(parent_item.get_integrity_percentage() < integrity_required)
-		user.balloon_alert(user, "[parent_item] dulls")
-		to_chat(user, span_warning("[parent_item] loses the reagent gleam imbued into it."))
+		user.balloon_alert(user, LANG("datum.56577bd9f2f90b5b", list(parent_item)))
+		to_chat(user, span_warning(LANG("datum.874dcc17bb29fb75", list(parent_item))))
 	return TRUE
 
 //the component that is attached to clothes that allows them to be imbued

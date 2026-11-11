@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define COMP_RADIO_PUBLIC "public"
 #define COMP_RADIO_PRIVATE "private"
 
@@ -37,7 +38,7 @@
 /obj/item/circuit_component/radio/Initialize(mapload)
 	. = ..()
 	if(signal_cooldown_time > 0)
-		desc = "[desc] It has a [signal_cooldown_time * 0.1] second cooldown between sending signals."
+		desc = LANG("obj.0fcf2eb7c3395b11", list(desc, signal_cooldown_time * 0.1))
 
 /obj/item/circuit_component/radio/register_shell(atom/movable/shell)
 	parent_shell = shell

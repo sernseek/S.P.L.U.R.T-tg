@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/mutant_infestation //Admin only
 	name = "HNZ-1 Pathogen Outbreak"
 	typepath = /datum/round_event/mutant_infestation
@@ -23,7 +24,7 @@
 			break
 		if(try_to_mutant_infect(iterating_human, TRUE))
 			infectees++
-			notify_ghosts("[iterating_human] has been infected by the HNZ-1 pathogen!",
+			notify_ghosts(LANG("datum.3550299eb735b588", list(iterating_human)),
 				source = iterating_human,
 			)
 

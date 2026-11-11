@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/closet/crate
 	name = "crate"
 	desc = "A rectangular steel crate."
@@ -153,7 +154,7 @@
 		manifest = null
 		return FALSE
 	if(user)
-		to_chat(user, span_notice("You tear the manifest off of [src]."))
+		to_chat(user, span_notice(LANG("obj.0af197bf0b8b1b82", list(src))))
 	playsound(src, 'sound/items/poster/poster_ripped.ogg', 75, TRUE)
 
 	our_manifest.forceMove(drop_location(src))
@@ -518,7 +519,7 @@
 
 /obj/structure/closet/crate/market/after_open(mob/living/user, force)
 	. = ..()
-	visible_message(span_notice("[src] pops as [user] touches it!"))
+	visible_message(span_notice(LANG("obj.9edf2c1246738aeb", list(src, user))))
 	pop_crate()
 
 /obj/structure/closet/crate/market/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)

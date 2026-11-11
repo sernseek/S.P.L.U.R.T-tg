@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define COSGLOW_OPACITY_MIN 32
 #define COSGLOW_OPACITY_MAX 128
 #define COSGLOW_OPACITY_DEFAULT 30
@@ -146,7 +147,7 @@
 	var/mob/living/carbon/human/action_mob = owner
 
 	// Ask user for color input
-	var/input_color = input(action_mob, "Select a color to use for your glow outline.", "Select Glow Color", glow_color) as color|null
+	var/input_color = input(action_mob, LANG("datum.189c47eb39b0dcea", null), LANG("datum.f6b3791496a4204a", null), glow_color) as color|null
 
 	// Check if color input was given
 	// Reset to stored color when not given input
@@ -163,7 +164,7 @@
 	*/
 
 	// Ask user for thickness input
-	switch(tgui_alert(action_mob, message = "How thick is your glow outline?", buttons = list("Light", "Regular", "Bold")))
+	switch(tgui_alert(action_mob, message = LANG("datum.cfbe34ba6acf60f3", null), buttons = list("Light", "Regular", "Bold")))
 		// Set based on input
 		if ("Light")
 			glow_thickness = COSGLOW_THICKNESS_MIN

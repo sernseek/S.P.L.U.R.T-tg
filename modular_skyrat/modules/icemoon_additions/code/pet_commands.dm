@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/obeys_commands/RegisterWithParent()
 	. = ..()
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE_MORE, PROC_REF(on_examine_more))
@@ -8,8 +9,8 @@
 
 /datum/component/obeys_commands/on_examine(mob/living/source, mob/user, list/examine_list)
 	. = ..()
-	examine_list += span_notice("You can alt+click [source.p_them()] when adjacent to see available commands.")
-	examine_list += span_notice("You can also examine [source.p_them()] closely to check on [source.p_their()] wounds. Many companions can be healed with sutures or creams!")
+	examine_list += span_notice(LANG("datum.32b38af52775b766", list(source.p_them())))
+	examine_list += span_notice(LANG("datum.cd3277e6a0b974c8", list(source.p_them(), source.p_their())))
 
 /datum/component/obeys_commands/proc/on_examine_more(mob/living/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
@@ -20,10 +21,10 @@
 		return
 
 	if (source.health < source.maxHealth*0.2)
-		examine_list += span_bolddanger("[source.p_They()] look[source.p_s()] severely injured.")
+		examine_list += span_bolddanger(LANG("datum.505c9252c03a26cf", list(source.p_They(), source.p_s())))
 	else if (source.health < source.maxHealth*0.5)
-		examine_list += span_danger("[source.p_They()] look[source.p_s()] moderately injured.")
+		examine_list += span_danger(LANG("datum.3c0c0ffcea5c0fd3", list(source.p_They(), source.p_s())))
 	else if (source.health < source.maxHealth*0.8)
-		examine_list += span_warning("[source.p_They()] look[source.p_s()] slightly injured.")
+		examine_list += span_warning(LANG("datum.3a2cddb9d8aef668", list(source.p_They(), source.p_s())))
 	else
-		examine_list += span_notice("[source.p_They()] look[source.p_s()] to be in good condition.")
+		examine_list += span_notice(LANG("datum.f1bd5dc855f5fb61", list(source.p_They(), source.p_s())))

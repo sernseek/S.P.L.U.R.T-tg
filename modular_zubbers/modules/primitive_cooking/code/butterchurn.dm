@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CHURN_CREAM_RATIO 3 //3:1 milk:cream
 #define CHURN_BUTTER_RATIO 10 // 10:1 cream:butter. Slightly worse than using technology.
 #define CHURN_STAMINA_MINIMUM 51 //Can use it twice before you really gotta rest.
@@ -36,8 +37,8 @@
 
 /obj/structure/butterchurn/examine(mob/user)
 	. = ..()
-	. += span_notice("You can [anchored ? "un" : ""]secure [src] with <b>CTRL-Shift-Click</b>.")
-	. += span_notice("With a <b>prying tool</b> of some sort, you could take [src] apart.")
+	. += span_notice(LANG("obj.191eddbb72b2d1f6", list(anchored ? "un" : "", src)))
+	. += span_notice(LANG("obj.0f938112ac0f3c41", list(src)))
 
 /obj/structure/butterchurn/atom_deconstruct(disassembled)
 	var/obj/item/stack/sheet/mineral/wood/plank = new (drop_location())
@@ -48,7 +49,7 @@
 
 /obj/structure/butterchurn/crowbar_act(mob/living/user, obj/item/tool)
 	. = ..()
-	balloon_alert_to_viewers("disassembling...")
+	balloon_alert_to_viewers(LANG("obj.b5ba987161d1a2e3", null))
 	if(!do_after(user, 2 SECONDS, src))
 		return
 	deconstruct(TRUE)
@@ -62,22 +63,22 @@
 		return
 
 	if(busy)
-		to_chat(user, span_warning("Someone's already using \the [src]!"))
+		to_chat(user, span_warning(LANG("obj.9a19fd59c9b8b5bf", list(src))))
 		return
 
 	if(user.get_stamina_loss() > CHURN_STAMINA_MINIMUM)
-		balloon_alert(user, "too tired")
+		balloon_alert(user, LANG("obj.1401aa77e25596dd", null))
 		return
 
 	if(!reagents.has_reagent(/datum/reagent/consumable/milk) && !reagents.has_reagent(/datum/reagent/consumable/cream))
-		balloon_alert(user, "nothing to churn")
+		balloon_alert(user, LANG("obj.54d87b0982b2b9da", null))
 		return
 
 	if(!reagents.has_reagent(/datum/reagent/consumable/milk) && reagents.has_reagent(/datum/reagent/consumable/cream) && reagents.get_reagent_amount(/datum/reagent/consumable/cream) < CHURN_BUTTER_RATIO)
-		balloon_alert(user, "not enough cream")
+		balloon_alert(user, LANG("obj.756c102b17c94951", null))
 		return
 
-	balloon_alert_to_viewers("churning...")
+	balloon_alert_to_viewers(LANG("obj.b6e29d643c1a8348", null))
 	playsound(src, 'sound/items/tools/crowbar_prying.ogg', 50, TRUE)
 	flick("churning", src)
 
@@ -86,7 +87,7 @@
 	busy = TRUE
 	if(!do_after(user, 5 SECONDS * skill_modifier, src))
 		busy = FALSE
-		balloon_alert_to_viewers("stopped churning")
+		balloon_alert_to_viewers(LANG("obj.a704f316c45fa0db", null))
 		return
 
 	var/stamina_use = CHURN_STAMINA_USE
@@ -94,7 +95,7 @@
 		stamina_use *= 0.5 //so it uses half the amount of stamina (25 instead of 50)
 	user.adjust_stamina_loss(stamina_use) // Prevents spamming it
 	busy = FALSE
-	user.visible_message(span_notice("[user] churns \the [src]."), span_notice("You finish churning \the [src]."))
+	user.visible_message(span_notice(LANG("obj.896b38a37960e134", list(user, src))), span_notice(LANG("obj.00084daf0f918b96", list(src))))
 	var/cream_amt = reagents.get_reagent_amount(/datum/reagent/consumable/milk) / CHURN_CREAM_RATIO
 	var/cream_purity = reagents.get_reagent_purity(/datum/reagent/consumable/milk)
 	var/butter_amt = FLOOR(reagents.get_reagent_amount(/datum/reagent/consumable/cream) / CHURN_BUTTER_RATIO, 1)

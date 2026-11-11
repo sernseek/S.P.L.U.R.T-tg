@@ -1,13 +1,14 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/antagonist/bloodsucker/proc/can_claim_coffin(obj/structure/closet/crate/claimed, area/current_area)
 	if(coffin)
 		return FALSE
 	// ALREADY CLAIMED
 	if(claimed.resident)
 		if(claimed.resident != owner.current)
-			claimed.balloon_alert(owner.current, "already claimed by another!")
+			claimed.balloon_alert(owner.current, LANG("datum.0a9e538756315212", null))
 		return FALSE
 	if(!(GLOB.the_station_areas.Find(current_area.type)))
-		claimed.balloon_alert(owner.current, "not part of station!")
+		claimed.balloon_alert(owner.current, LANG("datum.6825482388a254bb", null))
 		return
 	return TRUE
 
@@ -17,8 +18,8 @@
 	// This is my Haven
 	coffin = claimed
 	bloodsucker_haven_area = current_area
-	to_chat(owner, span_userdanger("You have claimed the [claimed] as your place of immortal rest! Your haven is now [bloodsucker_haven_area]."))
-	to_chat(owner, span_announce("Bloodsucker Tip: Find new haven recipes in the Structures tab of the <i>Crafting Menu</i>, including the <i>Persuasion Rack</i> for converting crew into Ghouls."))
+	to_chat(owner, span_userdanger(LANG("datum.8a4b9e2f4cb591c1", list(claimed, bloodsucker_haven_area))))
+	to_chat(owner, span_announce(LANG("datum.deef0cc631cb02fa", null)))
 	return TRUE
 
 /// From crate.dm
@@ -32,11 +33,11 @@
 /obj/structure/closet/crate/coffin/examine(mob/user)
 	. = ..()
 	if(user == resident)
-		. += span_cult("This is your Claimed Coffin.")
-		. += span_cult("Rest in it while injured to enter Torpor. Entering it with unspent Ranks will allow you to spend one.")
-		. += span_cult("Going inside while it contains a heart will put it in your chest, letting you regain your might.")
-		. += span_cult("Alt-Click while inside the Coffin to Lock/Unlock. This also fixes the lock if it's broken.")
-		. += span_cult("Alt-Click while outside of your Coffin to Unclaim it, unwrenching it and all your other structures as a result.")
+		. += span_cult(LANG("obj.579e2629c843e5ea", null))
+		. += span_cult(LANG("obj.a10789a3f55b3834", null))
+		. += span_cult(LANG("obj.815030028a9dd9fa", null))
+		. += span_cult(LANG("obj.dca160715a82106a", null))
+		. += span_cult(LANG("obj.3f259aa1a5fba907", null))
 
 /obj/structure/closet/crate/coffin/blackcoffin
 	name = "black coffin"
@@ -196,9 +197,9 @@
 			bloodsucker_structure.unbolt()
 	if(!silent)
 		if(manual)
-			to_chat(resident, span_cult_italic("You have unclaimed your coffin! This also unclaims all your other Bloodsucker structures!"))
+			to_chat(resident, span_cult_italic(LANG("obj.ec8bf708c49d5811", null)))
 		else
-			to_chat(resident, span_cult_italic("You sense that the link with your coffin and your sacred haven has been broken! You will need to seek another."))
+			to_chat(resident, span_cult_italic(LANG("obj.8cb096bc1b9ec7ee", null)))
 	// Remove resident. Because this object isnt removed from the game immediately (GC?) we need to give them a way to see they don't have a home anymore.
 	resident = null
 	if(interaction_flags_click & ALLOW_RESTING)
@@ -215,7 +216,7 @@
 		locked = FALSE
 		return TRUE
 	playsound(get_turf(src), 'modular_zubbers/sound/machines/coffin_locked.ogg', 20, 1)
-	to_chat(user, span_notice("[src] appears to be locked tight from the inside."))
+	to_chat(user, span_notice(LANG("obj.8d091e470c67a22c", list(src))))
 
 /obj/structure/closet/crate/coffin/close(mob/living/user)
 	var/datum/antagonist/bloodsucker/bloodsuckerdatum = IS_BLOODSUCKER(user)
@@ -224,7 +225,7 @@
 			if(prompt_coffin_claim(bloodsuckerdatum))
 				enlarge(user)
 			else
-				user.balloon_alert(user, "already claimed by another!")
+				user.balloon_alert(user, LANG("obj.0a9e538756315212", null))
 	. = ..()
 	if(!.)
 		return FALSE
@@ -245,7 +246,7 @@
 
 /obj/structure/closet/crate/coffin/proc/prompt_coffin_claim(datum/antagonist/bloodsucker/dracula)
 	var/area/current_area = get_area(src)
-	switch(tgui_alert(dracula.owner.current, "Do you wish to claim this as your coffin? [current_area] will be your haven.", "Claim Haven", list("Yes", "No")))
+	switch(tgui_alert(dracula.owner.current, LANG("obj.c70f2612c760add3", list(current_area)), LANG("obj.5d11672262003783", null), list("Yes", "No")))
 		if("Yes")
 			return claim_coffin(dracula.owner.current, current_area)
 	return FALSE
@@ -253,7 +254,7 @@
 // some fatass bloodsucker is trying to fit in a too-small coffin, how about we make some room?
 /obj/structure/closet/crate/proc/enlarge(mob/living/user)
 	ADD_TRAIT(src, TRAIT_COFFIN_ENLARGED, "bloodsucker_coffin")
-	to_chat(user, span_warning("The coffin creaks and squeaks as you try to squeeze into it. It's a tight fit but you manage it make it fit you."))
+	to_chat(user, span_warning(LANG("obj.271ab668603b43a5", null)))
 	playsound(src, 'modular_skyrat/modules/aesthetics/airlock/sound/creaking.ogg')
 	animate(src, 1 SECONDS, FALSE, BOUNCE_EASING, transform = transform.Scale(1.5))
 
@@ -269,7 +270,7 @@
 /// You cannot weld or deconstruct an owned coffin. Only the owner can destroy their own coffin.
 /obj/structure/closet/crate/coffin/wrench_act_secondary(mob/living/user, obj/item/tool)
 	if(resident && anchored)
-		to_chat(user, span_danger("The coffin won't come unanchored from the floor.[user == resident ? " You can Alt-Click to unclaim and unwrench your Coffin." : ""]"))
+		to_chat(user, span_danger(LANG("obj.ca785180c7c8b083", list(user == resident ? " You can Alt-Click to unclaim and unwrench your Coffin." : ""))))
 		return TRUE
 	. = ..()
 
@@ -277,15 +278,15 @@
 	if(locked)
 		var/pry_time = pry_lid_timer * tool.toolspeed // Pry speed must be affected by the speed of the tool.
 		user.visible_message(
-			span_notice("[user] tries to pry the lid off of [src] with [tool]."),
-			span_notice("You begin prying the lid off of [src] with [tool]. This should take about [DisplayTimeText(pry_time)].")
+			span_notice(LANG("obj.58393b532dd78b9b", list(user, src, tool))),
+			span_notice(LANG("obj.47fe818b086e8836", list(src, tool, DisplayTimeText(pry_time))))
 		)
 		if(!do_after(user, pry_time, src))
 			return TRUE
 		bust_open()
 		user.visible_message(
-			span_notice("[user] snaps the door of [src] wide open."),
-			span_notice("The door of [src] snaps open.")
+			span_notice(LANG("obj.b5f0884d7eeb7ac4", list(user, src))),
+			span_notice(LANG("obj.cae0ba3f07b59c14", list(src)))
 		)
 		return TRUE
 	if(!resident)
@@ -294,7 +295,7 @@
 /obj/structure/closet/crate/coffin/welder_act(mob/living/user, obj/item/tool)
 	if(user != resident)
 		if(istype(tool, cutting_tool))
-			to_chat(user, span_notice("This is a much more complex mechanical structure than you thought. You don't know where to begin cutting [src]."))
+			to_chat(user, span_notice(LANG("obj.5e78b6dfd66aa75b", list(src))))
 			return TRUE
 	. = ..()
 
@@ -320,7 +321,7 @@
 		return CLICK_ACTION_SUCCESS
 
 	if(user == resident && user.Adjacent(src))
-		balloon_alert(user, "unclaim coffin?")
+		balloon_alert(user, LANG("obj.ef63d7d41b8fd8c7", null))
 		var/static/list/unclaim_options = list(
 			"Yes" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_yes"),
 			"No" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_no"))
@@ -335,16 +336,16 @@
 		if(!broken)
 			locked = inLocked
 			if(locked)
-				to_chat(user, span_notice("You flip a secret latch and lock yourself inside [src]."))
+				to_chat(user, span_notice(LANG("obj.fbd41ae314d5a76c", list(src))))
 			else
-				to_chat(user, span_notice("You flip a secret latch and unlock [src]."))
+				to_chat(user, span_notice(LANG("obj.e07149fec5ccd1af", list(src))))
 			return TRUE
 		// Broken? Let's fix it.
-		to_chat(resident, span_notice("The secret latch that would lock [src] from the inside is broken. You set it back into place..."))
+		to_chat(resident, span_notice(LANG("obj.4e8322239ed1235e", list(src))))
 		if(!do_after(resident, 5 SECONDS, src))
-			to_chat(resident, span_notice("You fail to fix [src]'s mechanism."))
+			to_chat(resident, span_notice(LANG("obj.3eb645e119d6be38", list(src))))
 			return FALSE
-		to_chat(resident, span_notice("You fix the mechanism and lock it."))
+		to_chat(resident, span_notice(LANG("obj.8256519e13e43032", null)))
 		broken = FALSE
 		locked = TRUE
 		return TRUE

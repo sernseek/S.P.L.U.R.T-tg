@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// An element for girders, wall barricades, etc. that makes them use wall construction recipes.
 /// Only really meant for recipes where you click on the girder with a stack of materials to make a wall.
 /datum/element/uses_girder_wall_recipes
@@ -17,7 +18,7 @@
 	if (!isstack(stack))
 		return NONE
 	if (!stack.usable_for_construction)
-		structure.balloon_alert(user, "unusable material!")
+		structure.balloon_alert(user, LANG("datum.012c8b5884d971bb", null))
 		return ITEM_INTERACT_BLOCKING
 
 	var/datum/girder_wall_recipe/main_recipe = get_main_recipe(structure, stack)
@@ -27,7 +28,7 @@
 		return ITEM_INTERACT_BLOCKING
 
 	if (stack.has_unique_girder)
-		structure.balloon_alert(user, "needs a different girder!")
+		structure.balloon_alert(user, LANG("datum.4204fe505626ad61", null))
 		return ITEM_INTERACT_BLOCKING
 
 	// Plasteel is used for reinforcing girders.
@@ -74,9 +75,9 @@
 		return
 
 	user.visible_message(
-		message = span_notice("\The [user] start[user.p_s()] building a wall on \the [structure]."),
-		self_message = span_notice("You start building a wall on \the [structure]."),
-		blind_message = span_hear("You hear a series of clangs."),
+		message = span_notice(LANG("datum.38aa75d0fd95c390", list(user, user.p_s(), structure))),
+		self_message = span_notice(LANG("datum.f48237e6adf180f5", list(structure))),
+		blind_message = span_hear(LANG("datum.6bba0e339bd3ce46", null)),
 	)
 
 	structure.add_fingerprint(user)
@@ -104,8 +105,8 @@
 		griderholder.girder_type = structure.type
 
 	user.visible_message(
-		message = span_notice("\The [user] finish[user.p_es()] building \a [wall] on \the [structure]."),
-		self_message = span_notice("You finish building \a [wall] on \the [structure]."),
+		message = span_notice(LANG("datum.b4810c15f1d9789d", list(user, user.p_es(), wall, structure))),
+		self_message = span_notice(LANG("datum.2fcdbcf525c89221", list(wall, structure))),
 	)
 
 	structure.transfer_fingerprints_to(wall)
@@ -117,14 +118,14 @@
 /// Checks if the user can do the wall recipe.
 /datum/element/uses_girder_wall_recipes/proc/check_recipe(obj/structure/structure, mob/living/user, datum/girder_wall_recipe/recipe)
 	if(iswallturf(structure.loc) || (locate(/obj/structure/falsewall) in structure.loc.contents))
-		structure.balloon_alert(user, "wall already present!")
+		structure.balloon_alert(user, LANG("datum.6694fb22a351d5c6", null))
 		return FALSE
 	if (!ispath(recipe.wall_type, /obj/structure/tram))
 		if (!isfloorturf(structure.loc))
-			structure.balloon_alert(user, "need floor!")
+			structure.balloon_alert(user, LANG("datum.eb230c3c9103d8fc", null))
 			return FALSE
 	else if (!(locate(/obj/structure/transport/linear/tram) in structure.loc.contents))
-		structure.balloon_alert(user, "need tram floor!")
+		structure.balloon_alert(user, LANG("datum.be3eac18abdd96ff", null))
 		return FALSE
 	if (!check_girder_state(structure, recipe))
 		return FALSE

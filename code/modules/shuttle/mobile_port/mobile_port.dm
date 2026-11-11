@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/docking_port/mobile
 	name = "shuttle"
 	icon_state = "mobile"
@@ -638,9 +639,9 @@
 				dst = previous
 			else
 				dst = destination
-			. = "transit towards [dst?.name || "unknown location"] ([getTimerStr()])"
+			. = "[lang_reverse_text("transit towards")] [dst?.name || "unknown location"] ([getTimerStr()])" // ZH EDIT - I18N: 反查状态前缀（en locale no-op；dst.name 已由 atom 名反查）
 	else if(mode == SHUTTLE_RECHARGING)
-		return "[docked_at], recharging [getTimerStr()]"
+		return "[docked_at], [lang_reverse_text("recharging")] [getTimerStr()]" // ZH EDIT - I18N
 	else
 		return docked_at
 
@@ -776,7 +777,7 @@
 ///Let people know shits about to go down
 /obj/docking_port/mobile/proc/announce_shuttle_events()
 	for(var/datum/shuttle_event/event as anything in event_list)
-		notify_ghosts("\The [src] has selected: [event.name]")
+		notify_ghosts(LANG("obj.78efd9d455b66cb5", list(src, event.name)))
 
 /obj/docking_port/mobile/emergency/on_emergency_launch()
 	return

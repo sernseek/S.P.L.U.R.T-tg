@@ -162,3 +162,9 @@ LOWPOP_THRESHOLD_ENABLE 9
 
 ## The lowpop subsystem fire rate. It does actions each time it fires.(default is 10 minutes)
 LOWPOP_SUBSYSTEM_FIRE 3000
+
+## ZH EDIT ADDITION - DEFERRED_OFFSTATION
+## Load lavaland, lava/space ruins and the roundstart away mission in the lobby after initialization,
+## instead of during it. The lobby opens much sooner; the round start waits for the load if needed.
+## Not yet verified against Bubberstation-only maps (moonstation, loopstation); enable after testing.
+#DEFER_OFFSTATION_LOAD

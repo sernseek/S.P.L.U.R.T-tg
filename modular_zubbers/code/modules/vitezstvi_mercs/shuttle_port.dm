@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Furthest the hull will shove debris. Past the long axis.
 #define VITEZSTVI_SHOVE_LIMIT 48
 /// Opt-out row in the admin list.
@@ -26,7 +27,7 @@
 			early_warned = TRUE
 			var/site_line = GLOB.vitezstvi_crash_area_name || "Somewhere important"
 			priority_announce(
-				text = "Station, this is VARS-7 Provodnik. Quartermaster, you old bastard, we received your tender. We are coming to get your people out. There is only small problem with approach vector. Pavel, why is station getting bigger? [site_line]? Comrades in this area, please be comrades somewhere else. Thank you for choosing Vítězství Arms.",
+				text = LANG("obj.cff393b624406436", list(site_line)),
 				title = "COLLISION WARNING",
 				sound = 'sound/machines/warning-buzzer.ogg',
 				sender_override = "VARS-7 Proximity Alarm",
@@ -227,7 +228,7 @@
 /// Deliberately unrestricted: every station area is offered.
 /obj/docking_port/mobile/emergency/vitezstvi/proc/admin_retarget(mob/user)
 	if(early_warned)
-		to_chat(user, span_warning("The shuttle is too close to alter its trajectory!"))
+		to_chat(user, span_warning(LANG("obj.140ec9aa3722dec0", null)))
 		return
 	var/list/options = list()
 	for(var/area_path in GLOB.the_station_areas)
@@ -235,17 +236,17 @@
 		if(candidate)
 			options[candidate.name] = candidate
 	if(!length(options))
-		to_chat(user, span_warning("There are no station areas to aim at."))
+		to_chat(user, span_warning(LANG("obj.2f36d3e1b08c0772", null)))
 		return
 	var/list/menu = sort_list(options)
 	menu.Insert(1, VITEZSTVI_LEAVE_IT)
-	var/choice = tgui_input_list(user, "Where we droppin'?", "Vitezstvi Arms Flight Control", menu)
+	var/choice = tgui_input_list(user, LANG("obj.f80028be0d3928b3", null), LANG("obj.6f83c4d1876242a7", null), menu)
 	if(isnull(choice) || choice == VITEZSTVI_LEAVE_IT)
 		return
 	var/area/destination = options[choice]
 	var/turf/target = vitezstvi_crash_turf(list(destination.type))
 	if(!target || !vitezstvi_place_crash_target(target))
-		to_chat(user, span_warning("Nowhere to put a shuttle in [choice]."))
+		to_chat(user, span_warning(LANG("obj.2dc38018305c68e6", list(choice))))
 		return
 	vitezstvi_announce_target(rerouted = TRUE)
 	message_admins("[key_name_admin(user)] rerouted the VARS-7 Provodnik to [choice].")

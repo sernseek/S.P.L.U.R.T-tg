@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Chance per second to print a warning text
 #define LIVING_FLESH_WARN_CHANCE 3
 /// Chance per second to perform an unwanted interaction
@@ -62,7 +63,7 @@
 		return
 	var/mob/living/carbon/human/victim = current_bodypart.owner
 	if(SPT_PROB(LIVING_FLESH_WARN_CHANCE, SSMOBS_DT))
-		to_chat(victim, span_warning("The skin on your [current_bodypart.plaintext_zone] crawls."))
+		to_chat(victim, span_warning(LANG("mob.876ba568e8c67bb0", list(current_bodypart.plaintext_zone))))
 
 	victim.adjust_nutrition(-1.5)
 
@@ -73,7 +74,7 @@
 		if(HAS_TRAIT(victim, TRAIT_IMMOBILIZED))
 			return
 		step(victim, pick(GLOB.cardinals))
-		to_chat(victim, span_warning("Your [current_bodypart.plaintext_zone] moves on its own!"))
+		to_chat(victim, span_warning(LANG("mob.46a218a8da43cf42", list(current_bodypart.plaintext_zone))))
 		return
 
 	var/list/candidates = list()
@@ -90,11 +91,11 @@
 		return
 
 	if (!prob(victim.combat_mode ? LIVING_FLESH_COMBAT_TOUCH_CHANCE : LIVING_FLESH_TOUCH_CHANCE) && candidate.can_be_pulled(user = victim, force = victim.pull_force))
-		victim.visible_message(span_warning("[victim]'s [current_bodypart.plaintext_zone] suddenly fastens around [candidate]!"))
+		victim.visible_message(span_warning(LANG("mob.245b22505976d446", list(victim, current_bodypart.plaintext_zone, candidate))))
 		INVOKE_ASYNC(victim, TYPE_PROC_REF(/atom/movable, start_pulling), candidate, supress_message = TRUE)
 		return
 
-	victim.visible_message(span_warning("[victim]'s [current_bodypart.plaintext_zone] suddenly spasms towards [candidate]!"))
+	victim.visible_message(span_warning(LANG("mob.71e330d02dff3b49", list(victim, current_bodypart.plaintext_zone, candidate))))
 	var/active_hand = victim.active_hand_index
 	var/new_index = (current_bodypart.body_zone == BODY_ZONE_L_ARM) ? LEFT_HANDS : RIGHT_HANDS
 	if (active_hand != new_index)
@@ -142,9 +143,9 @@
 			part_type = /obj/item/bodypart/leg/right/flesh
 
 	if (!isnull(target_part))
-		target.visible_message(span_danger("[src] tears off [target]'s [target_part.plaintext_zone] and attaches itself in [target_part.p_their()] place!"), span_userdanger("[src] tears off your [target_part.plaintext_zone] and attaches itself in [target_part.p_their()] place!"))
+		target.visible_message(span_danger(LANG("mob.f3dfcf63d23fce49", list(src, target, target_part.plaintext_zone, target_part.p_their()))), span_userdanger(LANG("mob.95c95cbcafa43099", list(src, target_part.plaintext_zone, target_part.p_their()))))
 	else
-		target.visible_message(span_danger("[src] attaches itself to where [target]'s [target.parse_zone_with_bodypart(target_zone)] used to be!"), span_userdanger("[src] attaches itself to where your [target.parse_zone_with_bodypart(target_zone)] used to be!"))
+		target.visible_message(span_danger(LANG("mob.748dff7ffe1f8652", list(src, target, target.parse_zone_with_bodypart(target_zone)))), span_userdanger(LANG("mob.00e513ddc4da6fa8", list(src, target.parse_zone_with_bodypart(target_zone)))))
 
 	var/obj/item/bodypart/new_bodypart = new part_type()
 	forceMove(new_bodypart)
@@ -159,7 +160,7 @@
 	if(!detach_self())
 		return
 	var/turf/our_location = get_turf(src)
-	our_location.visible_message(span_warning("[part_owner][part_owner.p_s()] [current_bodypart.plaintext_zone] begins to convulse wildly!"))
+	our_location.visible_message(span_warning(LANG("mob.c0ae11f2ce684c96", list(part_owner, part_owner.p_s(), current_bodypart.plaintext_zone))))
 
 /mob/living/basic/living_limb_flesh/proc/owner_died(datum/source, gibbed)
 	SIGNAL_HANDLER
@@ -196,7 +197,7 @@
 /mob/living/basic/living_limb_flesh/proc/wake_up(atom/limb)
 	if(QDELETED(src))
 		return
-	visible_message(span_warning("[src] begins flailing around!"))
+	visible_message(span_warning(LANG("mob.acbe287abe031782", list(src))))
 	Shake(6, 6, 0.5 SECONDS)
 	ai_controller.clear_forced_off()
 	forceMove(limb.drop_location())

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Map of names of clown mask types to clown mask icon states
 GLOBAL_LIST_INIT(clown_mask_options, list(
 	"True Form" = "clown",
@@ -73,19 +74,19 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 
 /obj/item/clothing/mask/gas/adjust_visor(mob/living/user)
 	if(!isnull(cig))
-		balloon_alert(user, "cig in the way!")
+		balloon_alert(user, LANG("obj.0249ad089985825e", null))
 		return FALSE
 	return ..()
 
 /obj/item/clothing/mask/gas/examine(mob/user)
 	. = ..()
 	if(cig)
-		. += span_notice("There is a [cig.name] jammed into the filter slot.")
+		. += span_notice(LANG("obj.34c9bc2e7ed63a76", list(cig.name)))
 	if(max_filters > 0 && !cig)
-		. += span_notice("[src] has [max_filters] slot\s for filters.")
+		. += span_notice(LANG("obj.be459435f8cafa61", list(src, max_filters)))
 	if(LAZYLEN(gas_filters) > 0)
-		. += span_notice("Currently there [LAZYLEN(gas_filters) == 1 ? "is" : "are"] [LAZYLEN(gas_filters)] filter\s with [get_filter_durability()]% durability.")
-		. += span_notice("The filters can be removed by right-clicking with an empty hand on [src].")
+		. += span_notice(LANG("obj.9546f056dfbf27ef", list(LAZYLEN(gas_filters) == 1 ? "is" : "are", LAZYLEN(gas_filters), get_filter_durability())))
+		. += span_notice(LANG("obj.45ca0924bd6f196a", list(src)))
 
 /obj/item/clothing/mask/gas/Exited(atom/movable/gone)
 	. = ..()
@@ -103,11 +104,11 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	var/mob/wearer = loc
 	if(istype(tool, /obj/item/cigarette))
 		if(max_filters <= 0 || cig)
-			balloon_alert(user, "can't hold that!")
+			balloon_alert(user, LANG("obj.233eafa244c35236", null))
 			return ..()
 
 		if(has_filter)
-			balloon_alert(user, "filters in the mask!")
+			balloon_alert(user, LANG("obj.0258da63289d160f", null))
 			return ..()
 
 		cig = tool
@@ -355,7 +356,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 		icon_state = options[choice]
 		user.update_worn_mask()
 		update_item_action_buttons()
-		to_chat(user, span_notice("Your Clown Mask has now morphed into [choice], all praise the Honkmother!"))
+		to_chat(user, span_notice(LANG("obj.b3ec1c05db7ca0c7", list(choice))))
 		return TRUE
 
 /obj/item/clothing/mask/gas/sexyclown
@@ -437,7 +438,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 		*/
 		user.update_worn_mask()
 		update_item_action_buttons()
-		to_chat(user, span_notice("Your Mime Mask has now morphed into [choice]!"))
+		to_chat(user, span_notice(LANG("obj.722fda20674e88da", list(choice))))
 		return TRUE
 
 /obj/item/clothing/mask/gas/monkeymask
@@ -530,7 +531,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 		icon_state = options[choice]
 		user.update_worn_mask()
 		update_item_action_buttons()
-		to_chat(M, span_notice("The Tiki Mask has now changed into the [choice] Mask!"))
+		to_chat(M, span_notice(LANG("obj.6e79693327cb0afe", list(choice))))
 		return 1
 
 /obj/item/clothing/mask/gas/tiki_mask/yalp_elor

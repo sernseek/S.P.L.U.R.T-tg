@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/heretic_knowledge/feast_of_owls
 	is_starting_knowledge = FALSE
 	abstract_type = /datum/heretic_knowledge/feast_of_owls
@@ -44,7 +45,7 @@
 		return FALSE
 
 	if (!heretic.can_craft_blades)
-		loc.balloon_alert(user, "haven't researched blade crafting!")
+		loc.balloon_alert(user, LANG("datum.460cdf01f968ba42", null))
 		return FALSE
 
 	return ..()

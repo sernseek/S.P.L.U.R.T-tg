@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/implant/genital_fluid
 	name = "genital fluid implant"
 	icon = 'modular_zzplurt/icons/obj/implants.dmi'
@@ -65,13 +66,13 @@
 		SEND_SOUND(genital_owner, 'sound/machines/terminal/terminal_error.ogg')
 
 		// Alert the user in chat
-		to_chat(genital_owner, span_notice("ERROR: No compatible genitals detected."))
+		to_chat(genital_owner, span_notice(LANG("obj.abbcc08a8825f8b7", null)))
 
 		// Escape
 		return
 
 	// Prompt user for which genital to use
-	var/obj/item/organ/genital/genital_input = tgui_input_list(genital_owner, "Pick a genital", "Genital Fluid Infuser", genitals_list)
+	var/obj/item/organ/genital/genital_input = tgui_input_list(genital_owner, LANG("obj.1bc4e4eb20a83b91", null), LANG("obj.cd69b01a347762cc", null), genitals_list)
 	if(!genital_input)
 		// No selection was made
 		return
@@ -80,7 +81,7 @@
 	fluid_list = list(GLOB.chemical_reagents_list[initial(genital_input.internal_fluid_datum)]) + fluid_list
 
 	// Prompt user to select a new fluid
-	var/datum/reagent/reagent_selection = tgui_input_list(genital_owner, "Choose your new reagent", "Genital Fluid Infuser", fluid_list)
+	var/datum/reagent/reagent_selection = tgui_input_list(genital_owner, LANG("obj.d9b13a523daca4a2", null), LANG("obj.cd69b01a347762cc", null), fluid_list)
 	if(!reagent_selection)
 		// No selection was made
 		return
@@ -92,7 +93,7 @@
 	SEND_SOUND(genital_owner, 'sound/effects/bubbles/bubbles.ogg')
 
 	// Display flavor text
-	to_chat(genital_owner, span_notice("You feel the fluids inside your [genital_input.name] bubble and swirl..."))
+	to_chat(genital_owner, span_notice(LANG("obj.41eb8a44eb4e88ae", list(genital_input.name))))
 
 	// Send admin notice
 	message_admins("[ADMIN_LOOKUPFLW(genital_owner)] changed the fluid of [genital_owner.p_their()] [genital_input.name] to [reagent_selection].")

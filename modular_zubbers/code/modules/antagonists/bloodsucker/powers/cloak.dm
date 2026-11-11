@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define USE_SEEN_CLOAK_LEVEL 2
 #define USE_RUN_CLOAK_LEVEL 4
 
@@ -33,7 +34,7 @@
 				continue
 			if(IS_BLOODSUCKER(watcher) || IS_GHOUL(watcher))
 				continue
-			owner.balloon_alert(owner, "you can only vanish unseen.")
+			owner.balloon_alert(owner, LANG("datum.5b7589de21556fca", null))
 			return FALSE
 	return TRUE
 
@@ -43,7 +44,7 @@
 	if(level_current < USE_RUN_CLOAK_LEVEL && was_running)
 		user.toggle_move_intent()
 	user.AddElement(/datum/element/digitalcamo)
-	user.balloon_alert(user, "cloak turned on.")
+	user.balloon_alert(user, LANG("datum.5fd5f8d6d5e5be14", null))
 	return TRUE
 
 /datum/action/cooldown/bloodsucker/cloak/process(seconds_per_tick)
@@ -57,7 +58,7 @@
 	animate(user, alpha = max(25, owner.alpha - min(75, 10 + 5 * level_current)), time = 1.5 SECONDS)
 	// Prevents running while on Cloak of Darkness
 	if(level_current < USE_RUN_CLOAK_LEVEL && user.move_intent != MOVE_INTENT_WALK)
-		owner.balloon_alert(owner, "you attempt to run, crushing yourself.")
+		owner.balloon_alert(owner, LANG("datum.8b6cebf428d0b4ec", null))
 		user.toggle_move_intent()
 		user.adjust_brute_loss(rand(5, 15))
 
@@ -67,7 +68,7 @@
 		return FALSE
 	/// Must be CONSCIOUS
 	if(IS_UNCONSCIOUS(user))
-		to_chat(owner, span_warning("Your cloak failed due to you falling unconcious!"))
+		to_chat(owner, span_warning(LANG("datum.66544f5e4860dd91", null)))
 		return FALSE
 	return TRUE
 
@@ -80,7 +81,7 @@
 	user.RemoveElement(/datum/element/digitalcamo)
 	if(level_current < USE_RUN_CLOAK_LEVEL && was_running && user.move_intent == MOVE_INTENT_WALK)
 		user.toggle_move_intent()
-	user.balloon_alert(user, "cloak turned off.")
+	user.balloon_alert(user, LANG("datum.620f8dbb507659d4", null))
 
 #undef USE_SEEN_CLOAK_LEVEL
 #undef USE_RUN_CLOAK_LEVEL

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /***************** WELCOME TO MECHA.DM, ENJOY YOUR STAY *****************/
 
 /**
@@ -315,7 +316,7 @@
 	weapons_safety = !weapons_safety
 	if(!safety_sound_custom)
 		SEND_SOUND(user, sound('sound/machines/beep/beep.ogg', volume = 25))
-	balloon_alert(user, "equipment [weapons_safety ? "safe" : "ready"]")
+	balloon_alert(user, LANG("obj.693190e86020b4b5", list(weapons_safety ? "safe" : "ready")))
 	set_mouse_pointer()
 	SEND_SIGNAL(src, COMSIG_MECH_SAFETIES_TOGGLE, user, weapons_safety)
 
@@ -449,7 +450,7 @@
 	for(var/occupant in occupants)
 		var/mob/mob_occupant = occupant
 		SEND_SOUND(mob_occupant, sound('sound/items/timer.ogg', volume=50))
-		to_chat(mob_occupant, span_notice("Equipment control unit has been rebooted successfully."))
+		to_chat(mob_occupant, span_notice(LANG("obj.b00d7f300f203a7d", null)))
 	set_mouse_pointer()
 
 /// Updates the values given by scanning module and capacitor tier, called when a part is removed or inserted.
@@ -464,36 +465,36 @@
 /obj/vehicle/sealed/mecha/examine(mob/user)
 	. = ..()
 	if(LAZYLEN(flat_equipment))
-		. += span_notice("It's equipped with:")
+		. += span_notice(LANG("obj.9afc6ff185457f48", null))
 		for(var/obj/item/mecha_parts/mecha_equipment/ME as anything in flat_equipment)
 			if(istype(ME, /obj/item/mecha_parts/mecha_equipment/concealed_weapon_bay))
 				continue
-			. += span_notice("[icon2html(ME, user)] \A [ME].")
+			. += span_notice(LANG("obj.1bbb086ac93891d0", list(icon2html(ME, user), ME)))
 	if(mecha_flags & PANEL_OPEN)
 		if(servo)
-			. += span_notice("Servo reduces movement power usage by [100 - round(100 / servo.rating)]%")
+			. += span_notice(LANG("obj.6d1f48406d068d2a", list(100 - round(100 / servo.rating))))
 		else
-			. += span_warning("It's missing a servo.")
+			. += span_warning(LANG("obj.63e034bf8817de4b", null))
 		if(capacitor)
-			. += span_notice("Capacitor increases armor against energy attacks by [capacitor.rating * 5].")
+			. += span_notice(LANG("obj.cef432fd5bd305fb", list(capacitor.rating * 5)))
 		else
-			. += span_warning("It's missing a capacitor.")
+			. += span_warning(LANG("obj.b05f2d1b942ac1ff", null))
 		if(!scanmod)
-			. += span_warning("It's missing a scanning module.")
+			. += span_warning(LANG("obj.bcb9128d5a84f12f", null))
 	if(!(mecha_flags & IS_ENCLOSED))
 		if(mecha_flags & SILICON_PILOT)
-			. += span_notice("[src] appears to be piloting itself...")
+			. += span_notice(LANG("obj.333aa9afa3ad922c", list(src)))
 		else
 			for(var/occupante in occupants)
-				. += span_notice("You can see [occupante] inside.")
+				. += span_notice(LANG("obj.0b83b9b4c5626981", list(occupante)))
 			if(ishuman(user))
 				var/mob/living/carbon/human/H = user
 				for(var/held_item in H.held_items)
 					if(!isgun(held_item))
 						continue
-					. += span_warning("It looks like you can hit the pilot directly if you target the center or above.")
+					. += span_warning(LANG("obj.0fb6832d6fa91407", null))
 					break //in case user is holding two guns
-	. += span_notice("It has a <a href='byond://?src=[REF(src)];list_armor=1'>tag</a> listing its protection classes.")
+	. += span_notice(LANG("obj.12c144f9bf29ba63", list(REF(src))))
 
 /obj/vehicle/sealed/mecha/Topic(href, href_list)
 	. = ..()
@@ -508,9 +509,9 @@
 			if(!rating)
 				continue
 			if(!added_damage_header)
-				readout += "<b><u>ARMOR (I-X)</u></b>"
+				readout += "<b><u>[lang_armor_class("ARMOR (I-X)")]</u></b>" // ZH EDIT - i18n
 				added_damage_header = TRUE
-			readout += "[armor_to_protection_name(damage_key)] [armor_to_protection_class(rating)]"
+			readout += "[lang_armor_class(armor_to_protection_name(damage_key))] [armor_to_protection_class(rating)]" // ZH EDIT - i18n
 
 		var/added_durability_header = FALSE
 		for(var/durability_key in ARMOR_LIST_DURABILITY)
@@ -518,15 +519,15 @@
 			if(!rating)
 				continue
 			if(!added_durability_header)
-				readout += "<b><u>DURABILITY (I-X)</u></b>"
+				readout += "<b><u>[lang_armor_class("DURABILITY (I-X)")]</u></b>" // ZH EDIT - i18n
 				added_durability_header = TRUE
-			readout += "[armor_to_protection_name(durability_key)] [armor_to_protection_class(rating)]"
+			readout += "[lang_armor_class(armor_to_protection_name(durability_key))] [armor_to_protection_class(rating)]" // ZH EDIT - i18n
 
-		readout += "It can withstand temperatures up to [max_temperature]K."
+		readout += LANG("obj.9b3244c77f092eba", list(max_temperature))
 		if(mecha_flags & IS_ENCLOSED)
-			readout += "It fully encloses its occupants, protecting them from the atmosphere or lack thereof."
+			readout += LANG("obj.10ef5a67bd4cab94", null)
 
-		var/formatted_readout = span_notice("<b>PROTECTION CLASSES</b><hr>[jointext(readout, "\n")]")
+		var/formatted_readout = span_notice("<b>[lang_armor_class("PROTECTION CLASSES")]</b><hr>[jointext(readout, "\n")]") // ZH EDIT - i18n
 		to_chat(usr, boxed_message(formatted_readout))
 
 /obj/vehicle/sealed/mecha/generate_integrity_message()
@@ -699,7 +700,7 @@
 		target = pick(view(3,target))
 	var/mob/living/livinguser = user
 	if(!(livinguser in return_controllers_with_flag(VEHICLE_CONTROL_EQUIPMENT)))
-		balloon_alert(user, "wrong seat for equipment!")
+		balloon_alert(user, LANG("obj.fea6d6d7a51d07d9", null))
 		return
 	var/obj/item/mecha_parts/mecha_equipment/selected
 	if(modifiers[BUTTON] == RIGHT_CLICK)
@@ -709,7 +710,7 @@
 	if(selected)
 		if(!Adjacent(target) && (selected.range & MECHA_RANGED))
 			if(HAS_TRAIT(livinguser, TRAIT_PACIFISM) && selected.harmful)
-				to_chat(livinguser, span_warning("You don't want to harm other living beings!"))
+				to_chat(livinguser, span_warning(LANG("obj.c2a13fcc69a895f5", null)))
 				return
 			if(SEND_SIGNAL(src, COMSIG_MECHA_EQUIPMENT_CLICK, livinguser, target) & COMPONENT_CANCEL_EQUIPMENT_CLICK)
 				return
@@ -717,14 +718,14 @@
 			return
 		if(Adjacent(target) && (selected.range & MECHA_MELEE))
 			if(isliving(target) && selected.harmful && HAS_TRAIT(livinguser, TRAIT_PACIFISM))
-				to_chat(livinguser, span_warning("You don't want to harm other living beings!"))
+				to_chat(livinguser, span_warning(LANG("obj.c2a13fcc69a895f5", null)))
 				return
 			if(SEND_SIGNAL(src, COMSIG_MECHA_EQUIPMENT_CLICK, livinguser, target) & COMPONENT_CANCEL_EQUIPMENT_CLICK)
 				return
 			INVOKE_ASYNC(selected, TYPE_PROC_REF(/obj/item/mecha_parts/mecha_equipment, action), user, target, modifiers)
 			return
 	if(!(livinguser in return_controllers_with_flag(VEHICLE_CONTROL_MELEE)))
-		to_chat(livinguser, span_warning("You're in the wrong seat to interact with your hands."))
+		to_chat(livinguser, span_warning(LANG("obj.3bb9692f09e97e4e", null)))
 		return
 	var/on_cooldown = TIMER_COOLDOWN_RUNNING(src, COOLDOWN_MECHA_MELEE_ATTACK)
 	var/adjacent = Adjacent(target)
@@ -765,7 +766,7 @@
 		return
 
 	if(!(user in return_controllers_with_flag(VEHICLE_CONTROL_DRIVE)))
-		to_chat(user, span_warning("You're in the wrong seat to control movement."))
+		to_chat(user, span_warning(LANG("obj.a4bccc9369e29452", null)))
 		return
 
 	toggle_strafe()
@@ -815,11 +816,11 @@
 /// Makes cabin unsealed, dumping cabin air outside or airtight filling the cabin with external air mix
 /obj/vehicle/sealed/mecha/proc/set_cabin_seal(mob/user, cabin_sealed)
 	if(!(mecha_flags & IS_ENCLOSED))
-		balloon_alert(user, "cabin can't be sealed!")
+		balloon_alert(user, LANG("obj.1535e999830bd44c", null))
 		log_message("Tried to seal cabin. This mech can't be airtight.", LOG_MECHA)
 		return
 	if(TIMER_COOLDOWN_RUNNING(src, COOLDOWN_MECHA_CABIN_SEAL))
-		balloon_alert(user, "on cooldown!")
+		balloon_alert(user, LANG("obj.d4ae5d4dded19efe", null))
 		return
 	TIMER_COOLDOWN_START(src, COOLDOWN_MECHA_CABIN_SEAL, 1 SECONDS)
 
@@ -851,7 +852,7 @@
 			action.button_icon_state = "mech_cabin_[cabin_sealed ? "closed" : "open"]"
 			action.build_all_button_icons()
 
-		balloon_alert(occupant, "cabin [cabin_sealed ? "sealed" : "unsealed"]")
+		balloon_alert(occupant, LANG("obj.4222f7629501c923", list(cabin_sealed ? "sealed" : "unsealed")))
 	log_message("Cabin [cabin_sealed ? "sealed" : "unsealed"].", LOG_MECHA)
 	playsound(src, 'sound/machines/airlock/airlock.ogg', 50, TRUE)
 
@@ -859,7 +860,7 @@
 /obj/vehicle/sealed/mecha/proc/on_light_eater(obj/vehicle/sealed/source, datum/light_eater)
 	SIGNAL_HANDLER
 	if(mecha_flags & HAS_LIGHTS)
-		visible_message(span_danger("[src]'s lights burn out!"))
+		visible_message(span_danger(LANG("obj.f9ae01722dfe2890", list(src))))
 		mecha_flags &= ~HAS_LIGHTS
 	set_light_on(FALSE)
 	for(var/occupant in occupants)
@@ -902,10 +903,10 @@
 
 	if(overclock_mode)
 		movedelay /= overclock_coeff
-		visible_message(span_notice("[src] starts heating up, making humming sounds."))
+		visible_message(span_notice(LANG("obj.c727edfb95f9c507", list(src))))
 	else
 		movedelay *= overclock_coeff
-		visible_message(span_notice("[src] cools down and the humming stops."))
+		visible_message(span_notice(LANG("obj.26b7063bc5d184d2", list(src))))
 	update_energy_drain()
 	return TRUE
 
@@ -930,11 +931,11 @@
 /obj/vehicle/sealed/mecha/proc/toggle_lights(forced_state = null, mob/user)
 	if(!(mecha_flags & HAS_LIGHTS))
 		if(user)
-			balloon_alert(user, "mech has no lights!")
+			balloon_alert(user, LANG("obj.1d425d174c7c5c45", null))
 		return
 	if((!(mecha_flags & LIGHTS_ON) && forced_state != FALSE) && get_charge() < power_to_energy(light_power_drain, scheduler = SSobj))
 		if(user)
-			balloon_alert(user, "no power for lights!")
+			balloon_alert(user, LANG("obj.0feeeb2885ca8558", null))
 		return
 	mecha_flags ^= LIGHTS_ON
 	set_light_on(mecha_flags & LIGHTS_ON)
@@ -946,7 +947,7 @@
 			act.button_icon_state = "mech_lights_on"
 		else
 			act.button_icon_state = "mech_lights_off"
-		balloon_alert(occupant, "lights [mecha_flags & LIGHTS_ON ? "on":"off"]")
+		balloon_alert(occupant, LANG("obj.099ca9f346e1aa95", list(mecha_flags & LIGHTS_ON ? "on":"off")))
 		act.build_all_button_icons()
 
 /obj/vehicle/sealed/mecha/proc/melee_attack_effect(mob/living/victim, heavy)

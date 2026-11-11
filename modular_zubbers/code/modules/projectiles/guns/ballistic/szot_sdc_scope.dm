@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // The stock scope component raises a fullscreen overlay whose artwork is red, and it is created and
 // drawn in the same tick, so tinting it afterwards always shows one red frame. This clones the zoom
 // step to raise our own overlay instead, meaning the stock red sprite is never displayed at all.
@@ -17,7 +18,7 @@
 	if(isnull(user.client))
 		return
 	if(HAS_TRAIT(user, TRAIT_USER_SCOPED))
-		user.balloon_alert(user, "already zoomed!")
+		user.balloon_alert(user, LANG("datum.0ca096fc49d43b96", null))
 		return
 	user.playsound_local(parent, 'sound/items/weapons/scope.ogg', 75, TRUE)
 	tracker = user.overlay_fullscreen("scope", /atom/movable/screen/fullscreen/cursor_catcher/scope/szot, isgun(parent))

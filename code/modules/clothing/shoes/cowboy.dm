@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/shoes/cowboy
 	name = "cowboy boots"
 	desc = "A small sticker lets you know they've been inspected for snakes, It is unclear how long ago the inspection took place..."
@@ -34,7 +35,7 @@
 			if(!target_zone) //we broke their legs right on off!
 				break
 			occupant.forceMove(user.drop_location())
-			user.visible_message(span_warning("[user] recoils as something slithers out of [src]."), span_userdanger("You feel a sudden stabbing pain in your [pick("foot", "toe", "ankle")]!"))
+			user.visible_message(span_warning(LANG("obj.05d89de95378877d", list(user, src))), span_userdanger(LANG("obj.884c980abcce5ef7", list(pick("foot", "toe", "ankle")))))
 			user.Knockdown(20) //Is one second paralyze better here? I feel you would fall on your ass in some fashion.
 			occupant.UnarmedAttack(user, proximity_flag = TRUE)
 
@@ -55,11 +56,11 @@
 	if(!(user.mobility_flags & MOBILITY_USE) || !isliving(target))
 		return
 	if(contents.len >= max_occupants)
-		to_chat(user, span_warning("[src] are full!"))
+		to_chat(user, span_warning(LANG("obj.bbd337c48b770af4", list(src))))
 		return
 	if(istype(target, /mob/living/basic/snake) || istype(target, /mob/living/basic/headslug) || islarva(target))
 		target.forceMove(src)
-		to_chat(user, span_notice("[target] slithers into [src]."))
+		to_chat(user, span_notice(LANG("obj.9ed210e540e6e604", list(target, src))))
 
 /obj/item/clothing/shoes/cowboy/container_resist_act(mob/living/user)
 	if(!do_after(user, 1 SECONDS, target = user))

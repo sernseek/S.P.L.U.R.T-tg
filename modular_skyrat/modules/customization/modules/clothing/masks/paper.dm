@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/item_action/adjust/papermask
 	name = "Adjust paper mask"
 	desc = "LMB: Change mask face. RMB: Adjust mask."
@@ -48,7 +49,7 @@
 	if(isnull(user))
 		return
 	if(!user.is_holding_item_of_type(/obj/item/pen))
-		user.balloon_alert(user, "must be holding a pen!")
+		user.balloon_alert(user, LANG("datum.5cc7fdc9cca7e037", null))
 		return
 
 	var/mob/living/carbon/carbon_user
@@ -184,10 +185,10 @@
 		wear_hair_over = !wear_hair_over
 		if(wear_hair_over)
 			alternate_worn_layer = BACK_LAYER
-			to_chat(user, "You [is_worn ? "" : "will "]sweep your hair over the mask.")
+			to_chat(user, LANG("obj.4bb16fa0c0d2491b", list(is_worn ? "" : "will ")))
 		else
 			alternate_worn_layer = initial(alternate_worn_layer)
-			to_chat(user, "You [is_worn ? "" : "will "]sweep your hair under the mask.")
+			to_chat(user, LANG("obj.94bde3330c090435", list(is_worn ? "" : "will ")))
 
 		user.update_worn_mask()
 
@@ -197,7 +198,7 @@
 	if(!user.incapacitated)
 		var/is_worn = user.wear_mask == src
 		strap_hidden = !strap_hidden
-		to_chat(user, "You [is_worn ? "" : "will "][strap_hidden ? "hide" : "show"] the mask strap.")
+		to_chat(user, LANG("obj.41026db50d038dab", list(is_worn ? "" : "will ", strap_hidden ? "hide" : "show")))
 
 		user.update_worn_mask()
 

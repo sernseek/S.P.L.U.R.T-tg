@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/flora/ocean
 	icon = 'modular_skyrat/modules/liquids/icons/obj/flora/ocean_flora.dmi'
 	var/random_variants = 0
@@ -63,11 +64,11 @@
 
 	playsound(src, 'sound/items/tools/welder2.ogg', 50, TRUE)
 	if(first)
-		to_chat(user, span_notice("You start slicing the [src]..."))
+		to_chat(user, span_notice(LANG("obj.4d07fbdab626d9f0", list(src))))
 	if(I.use_tool(src, user, 2 SECONDS))
 		welds_remaining--
 		if(welds_remaining <= 0)
-			to_chat(user, span_notice("You successfully salvage [src]."))
+			to_chat(user, span_notice(LANG("obj.a95cfee424a12ca5", list(src))))
 			new /obj/item/stack/sheet/iron(get_turf(src), rand(SCRAP_METAL_YIELD_LOW, SCRAP_METAL_YIELD_HIGH))
 			qdel(src)
 		else

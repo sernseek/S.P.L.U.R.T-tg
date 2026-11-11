@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CALIBRE_14MM "14mm"
 
 /obj/item/gun/ballistic/revolver/ocelot
@@ -125,20 +126,20 @@
 		return ITEM_INTERACT_BLOCKING
 	var/obj/item/bodypart/selected_hand = user.get_active_hand()
 	if(IS_ORGANIC_LIMB(selected_hand))
-		to_chat(user, span_warning("You can't seem to figure out how to use [src], perhaps you need to check the manual?"))
+		to_chat(user, span_warning(LANG("obj.66f3879b54756ca2", list(src))))
 		return ITEM_INTERACT_BLOCKING
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/ballistic/automatic/pistol/robohand/insert_magazine(mob/user, obj/item/ammo_box/magazine/inserted_mag, display_message)
 	if(!istype(inserted_mag, accepted_magazine_type))
-		to_chat(user, span_warning("\The [inserted_mag] doesn't seem to fit into \the [src]..."))
+		to_chat(user, span_warning(LANG("obj.7eea263033eabca0", list(inserted_mag, src))))
 		return FALSE
 	if(!user.transferItemToLoc(inserted_mag, src))
-		to_chat(user, span_warning("You cannot seem to get \the [src] out of your hands!"))
+		to_chat(user, span_warning(LANG("obj.55aefb34d05f634a", list(src))))
 		return FALSE
 	magazine = inserted_mag
 	if(display_message)
-		to_chat(user, span_notice("You load a new [magazine_wording] into \the [src]."))
+		to_chat(user, span_notice(LANG("obj.2bdc2c3515505f41", list(magazine_wording, src))))
 	playsound(src, load_empty_sound, load_sound_volume, load_sound_vary)
 	if(bolt_type == BOLT_TYPE_OPEN && !bolt_locked)
 		chamber_round(TRUE)
@@ -160,16 +161,16 @@
 	var/obj/item/ammo_box/magazine/old_mag = magazine
 	if(tac_load)
 		if (insert_magazine(user, tac_load, FALSE))
-			to_chat(user, span_notice("You perform an elite tactical reload on \the [src]."))
+			to_chat(user, span_notice(LANG("obj.ffb9be580e53379c", list(src))))
 		else
-			to_chat(user, span_warning("You dropped the old [magazine_wording], but the new one doesn't fit. How embarassing."))
+			to_chat(user, span_warning(LANG("obj.2d613976f16e91e3", list(magazine_wording))))
 			magazine = null
 	else
 		magazine = null
 	user.put_in_hands(old_mag)
 	old_mag.update_appearance()
 	if(display_message)
-		to_chat(user, span_notice("You pull the [magazine_wording] out of \the [src]."))
+		to_chat(user, span_notice(LANG("obj.9ea582557a8634ff", list(magazine_wording, src))))
 	update_appearance()
 	animate(src, transform = turn(matrix(), 120), time = 0.2 SECONDS, loop = 1) //Le johnny robohand again
 	animate(transform = turn(matrix(), 240), time = 0.2 SECONDS)

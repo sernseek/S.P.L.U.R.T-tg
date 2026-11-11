@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define REFINERY_ANOMALY_REFINEMENT_TIME (5 SECONDS)
 #define REFINERY_ANOMALY_POWER_REQUIREMENT (1.21 MEGA WATTS) //This is NOT active power use. This is the amount of power it uses for a second when a bomb is detonated. This is about the same a stable SM generates in a second.
 
@@ -9,9 +10,9 @@
 
 /obj/machinery/research/anomaly_refinery/examine(mob/user)
 	. = ..()
-	. += span_notice("Usage of the machine will increase the bomb range requirement for the next experiment.")
-	. += span_notice("Requires <b>[display_power(REFINERY_ANOMALY_POWER_REQUIREMENT)]</b> of power in the network to use.")
-	. += span_notice("Each core refinement takes <b>[DisplayTimeText(REFINERY_ANOMALY_REFINEMENT_TIME,1)]</b> to complete.")
+	. += span_notice(LANG("obj.6953c2f97df50eb2", null))
+	. += span_notice(LANG("obj.3043d8ad36a16bb9", list(display_power(REFINERY_ANOMALY_POWER_REQUIREMENT))))
+	. += span_notice(LANG("obj.2451a124e286fc41", list(DisplayTimeText(REFINERY_ANOMALY_REFINEMENT_TIME,1))))
 
 /obj/machinery/research/anomaly_refinery/get_required_radius(anomaly_type)
 	. = ..()
@@ -22,7 +23,7 @@
 /obj/machinery/research/anomaly_refinery/start_test()
 
 	if(active)
-		say("ERROR: Already running a compression test.")
+		say(LANG("obj.74bdee7d9f793c90", null))
 		return
 
 	if(!istype(inserted_core) || !istype(inserted_bomb))
@@ -34,15 +35,15 @@
 		return
 
 	if(!use_power_from_net(REFINERY_ANOMALY_POWER_REQUIREMENT))
-		say("ERROR: Not enough power in network to safely compress the core.")
+		say(LANG("obj.a7e5d1fe14cbee3f", null))
 		return
 
-	say("Beginning compression test. Opening transfer valve.")
+	say(LANG("obj.d4fb6fbe906783a0", null))
 	active = TRUE
 	test_status = null
 
 	if (obj_flags & EMAGGED)
-		say("ERROR: An firmware issue was detected while starting a process. Running autopatcher.")
+		say(LANG("obj.677703ef638667f7", null))
 		playsound(src, 'sound/machines/ding.ogg', 50, vary = TRUE)
 		addtimer(CALLBACK(src, PROC_REF(error_test)), 2 SECONDS, TIMER_STOPPABLE | TIMER_UNIQUE | TIMER_NO_HASH_WAIT) // Synced with the sound.
 		return
@@ -54,7 +55,7 @@
 	timeout_timer = addtimer(CALLBACK(src, PROC_REF(timeout_test)), REFINERY_ANOMALY_REFINEMENT_TIME, TIMER_STOPPABLE | TIMER_UNIQUE | TIMER_DELETE_ME | TIMER_NO_HASH_WAIT)
 	requirement_timer = addtimer(CALLBACK(src, PROC_REF(remove_requirement)), 5 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE | TIMER_DELETE_ME | TIMER_NO_HASH_WAIT | TIMER_LOOP)
 
-	say("Refining core. ETA [DisplayTimeText(REFINERY_ANOMALY_REFINEMENT_TIME,1)] until core refinement completion.")
+	say(LANG("obj.b34b402d618a8cfc", list(DisplayTimeText(REFINERY_ANOMALY_REFINEMENT_TIME,1))))
 
 	playsound(
 		src,
@@ -76,7 +77,7 @@
 			pick('modular_zubbers/sound/arcade/minesweeper_boardpress.ogg'),
 			50
 		)
-		say("Anomaly stability now at 100% optimization.")
+		say(LANG("obj.3e5a1528290a272e", null))
 
 /obj/machinery/research/anomaly_refinery/check_test(atom/source, list/arguments)
 

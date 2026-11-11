@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define FILL_WARNING_MIN 150
 
 /datum/buildmode_mode/fill
@@ -8,29 +9,27 @@
 
 /datum/buildmode_mode/fill/show_help(client/builder)
 	to_chat(builder, span_purple(boxed_message(
-		"[span_bold("Select corner")] -> Left Mouse Button on turf/obj/mob\n\
-		[span_bold("Delete region")] -> Left Mouse Button + Alt on turf/obj/mob\n\
-		[span_bold("Select object type")] -> Right Mouse Button on buildmode button"))
+		LANG("datum.57fc8fe766c2cf3e", list(span_bold("Select corner"), span_bold("Delete region"), span_bold("Select object type")))))
 	)
 
 /datum/buildmode_mode/fill/change_settings(client/c)
-	var/target_path = input(c, "Enter typepath:" ,"Typepath","/obj/structure/closet")
+	var/target_path = input(c, LANG("datum.d60ae892d7e29eb6", null) ,LANG("datum.1a01b0f5ae81d070", null),"/obj/structure/closet")
 	objholder = text2path(target_path)
 	if(!ispath(objholder))
 		objholder = pick_closest_path(target_path)
 		if(!objholder)
-			tgui_alert(usr,"No path has been selected.")
+			tgui_alert(usr,LANG("datum.1eb7594a88c7d4b0", null))
 			return
 		else if(ispath(objholder, /area))
 			objholder = null
-			tgui_alert(usr,"Area paths are not supported for this mode, use the area edit mode instead.")
+			tgui_alert(usr,LANG("datum.aa137c6eecbe258c", null))
 			return
 	BM.preview_selected_item(objholder)
 	deselect_region()
 
 /datum/buildmode_mode/fill/handle_click(client/c, params, obj/object)
 	if(isnull(objholder))
-		to_chat(c, span_warning("Select an object type first."))
+		to_chat(c, span_warning(LANG("datum.7c68ae630fafd7d5", null)))
 		deselect_region()
 		return
 	..()
@@ -57,7 +56,7 @@
 			var/selection_size = abs(cornerA.x - cornerB.x) * abs(cornerA.y - cornerB.y)
 
 			if(selection_size > FILL_WARNING_MIN) // Confirm fill if the number of tiles in the selection is greater than FILL_WARNING_MIN
-				var/choice = tgui_alert(usr,"Your selected area is [selection_size] tiles! Continue?", "Large Fill Confirmation", list("Yes", "No"))
+				var/choice = tgui_alert(usr,LANG("datum.ed54b6cddab3289a", list(selection_size)), LANG("datum.a1e2eebcdf49dee3", null), list("Yes", "No"))
 				if(choice != "Yes")
 					return
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Lets you graffiti on an object
 /datum/component/defaceable
 	/// Icon file from which to draw our overlay
@@ -42,7 +43,7 @@
 			context[SCREENTIP_CONTEXT_LMB] = "Clean"
 	else
 		if (istype(held_item, /obj/item/pen) || istype(held_item, /obj/item/toy/crayon))
-			context[SCREENTIP_CONTEXT_LMB] = "Draw [drawing_of ? drawing_of : "on"]"
+			context[SCREENTIP_CONTEXT_LMB] = LANG("datum.690a9c3ae6c2dc94", list(drawing_of ? drawing_of : "on"))
 	return CONTEXTUAL_SCREENTIP_SET
 
 /// See if someone can draw on us
@@ -100,4 +101,4 @@
 /// See it there
 /datum/component/defaceable/proc/on_examined(atom/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
-	examine_list += span_notice("Someone has crudely drawn [drawing_of] on [source.p_them()].")
+	examine_list += span_notice(LANG("datum.0425cf1a9111182f", list(drawing_of, source.p_them())))

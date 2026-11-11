@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 *	Whirring Convergence
 *   Communicate a message to all other clock cultists
@@ -8,7 +9,7 @@
 	button_icon_state = "linked_minds"
 
 /datum/action/innate/clockcult/comm/Activate()
-	var/input = tgui_input_text(usr, "Message to tell to the other followers.", "Voice of Cogs")
+	var/input = tgui_input_text(usr, LANG("datum.b50840abfea544a5", null), LANG("datum.b8ba27a2504e15ca", null))
 	if(!input || !IsAvailable())
 		return
 
@@ -20,7 +21,7 @@
 	var/list/soft_filter_result = CAN_BYPASS_FILTER(usr) ? null : is_soft_ic_filtered(input)
 	if(soft_filter_result)
 
-		if(tgui_alert(usr,"Your message contains \"[soft_filter_result[CHAT_FILTER_INDEX_WORD]]\". \"[soft_filter_result[CHAT_FILTER_INDEX_REASON]]\", Are you sure you want to say it?", "Soft Blocked Word", list("Yes", "No")) != "Yes")
+		if(tgui_alert(usr,LANG("datum.6308a68e8adba21f", list(soft_filter_result[CHAT_FILTER_INDEX_WORD], soft_filter_result[CHAT_FILTER_INDEX_REASON])), LANG("datum.b0fe106c90796ca4", null), list("Yes", "No")) != "Yes")
 			return
 		message_admins("[ADMIN_LOOKUPFLW(usr)] has passed the soft filter for \"[soft_filter_result[CHAT_FILTER_INDEX_WORD]]\" they may be using a disallowed term. Message: \"[html_encode(input)]\"")
 		log_admin_private("[key_name(usr)] has passed the soft filter for \"[soft_filter_result[CHAT_FILTER_INDEX_WORD]]\" they may be using a disallowed term. Message: \"[input]\"")

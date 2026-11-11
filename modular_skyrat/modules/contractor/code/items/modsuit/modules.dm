@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/mod/module/baton_holster
 	name = "MOD baton holster module"
 	desc = "A module installed into the chest of a MODSuit, this allows you \
@@ -20,7 +21,7 @@
 	. = ..()
 	if(!istype(attacking_item, /obj/item/melee/baton/telescopic/contractor_baton) || eaten_baton)
 		return
-	balloon_alert(user, "[attacking_item] inserted")
+	balloon_alert(user, LANG("obj.048c1f348d556f2c", list(attacking_item)))
 	eaten_baton = TRUE
 	for(var/obj/item/melee/baton/telescopic/contractor_baton/device_baton as anything in src)
 		for(var/obj/item/baton_upgrade/original_upgrade in attacking_item)
@@ -32,7 +33,7 @@
 
 /obj/item/mod/module/baton_holster/on_activation()
 	if(!eaten_baton)
-		balloon_alert(mod.wearer, "no baton inserted")
+		balloon_alert(mod.wearer, LANG("obj.42fbaa8a8fc10e6f", null))
 		return
 	return ..()
 

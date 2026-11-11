@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// This accessory can be pinned onto someone else
 /datum/component/pinnable_accessory
 	/// Do we let people know what we're doing?
@@ -34,7 +35,7 @@
 /datum/component/pinnable_accessory/proc/try_to_pin(obj/item/clothing/accessory/badge, mob/living/carbon/human/distinguished, mob/user)
 	var/obj/item/clothing/under/distinguished_uniform = distinguished.w_uniform
 	if(!istype(distinguished_uniform))
-		distinguished.balloon_alert(user, "no uniform to pin on!")
+		distinguished.balloon_alert(user, LANG("datum.42735d0c24ddf8fb", null))
 		return
 
 	if(!badge.can_attach_accessory(distinguished_uniform, user))
@@ -43,8 +44,8 @@
 
 	if (!silent)
 		user.visible_message(
-			span_notice("[user] tries to pin [badge] on [distinguished]'s chest."),
-			span_notice("You try to pin [badge] on [distinguished]'s chest."),
+			span_notice(LANG("datum.390eef44b16bc652", list(user, badge, distinguished))),
+			span_notice(LANG("datum.e4e75b94cc1b4519", list(badge, distinguished))),
 		)
 
 	if (on_pre_pin && !on_pre_pin.Invoke(distinguished, user))
@@ -58,13 +59,13 @@
 
 	if (pinned)
 		user.visible_message(
-			span_notice("[user] pins [badge] on [distinguished]'s chest."),
-			span_notice("You pin [badge] on [distinguished]'s chest."),
+			span_notice(LANG("datum.571feb4a83144b2d", list(user, badge, distinguished))),
+			span_notice(LANG("datum.69613c36e140a609", list(badge, distinguished))),
 		)
 	else
 		user.visible_message(
-			span_warning("[user] fails to pin [badge] on [distinguished]'s chest, seemingly unable to part with it."),
-			span_warning("You fail to pin [badge] on [distinguished]'s chest."),
+			span_warning(LANG("datum.16c87b6305d6f586", list(user, badge, distinguished))),
+			span_warning(LANG("datum.7b4cdbb118927271", list(badge, distinguished))),
 		)
 
 /// Callback for do_after to check if we can still be pinned

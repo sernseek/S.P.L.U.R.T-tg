@@ -38,7 +38,7 @@
 			movable_parent.particles.position = list(6, 12, 0)
 			movable_parent.particles.drift = generator("vector", list(0, 0.4), list(0.8, -0.2))
 
-GAME_VERB_PROC(/mob/living/silicon/robot, toggle_smoke, "Toggle smoke", "AI Commands")
+GAME_VERB_PROC(/mob/living/silicon/robot, toggle_smoke, "切换烟雾", "AI Commands")
 	if(particles)
 		dissipate()
 	else if (!stat && !robot_resting)

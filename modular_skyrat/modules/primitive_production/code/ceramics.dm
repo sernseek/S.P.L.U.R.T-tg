@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define DEFAULT_SPIN (4 SECONDS)
 
 /obj/structure/water_source/puddle/attackby(obj/item/O, mob/user, params)
@@ -44,7 +45,7 @@
 		if(!forge_item || !crayon_item.paint_color)
 			return
 		color = crayon_item.paint_color
-		to_chat(user, span_notice("You color [src] with [crayon_item]..."))
+		to_chat(user, span_notice(LANG("obj.e3dba932447ba321", list(src, crayon_item))))
 		return
 	return ..()
 
@@ -211,14 +212,14 @@
 	in_use = TRUE
 	var/spinning_speed = user.mind.get_skill_modifier(/datum/skill/production, SKILL_SPEED_MODIFIER) * DEFAULT_SPIN
 	if(!has_clay)
-		balloon_alert(user, "there is no clay!")
+		balloon_alert(user, LANG("obj.73adc92f9ef961d2", null))
 		return
-	var/user_input = tgui_alert(user, "What would you like to do?", "Choice Selection", list("Create", "Remove"))
+	var/user_input = tgui_alert(user, LANG("obj.ab3c2f647ff1b220", null), LANG("obj.bb0ac569fd1ecdeb", null), list("Create", "Remove"))
 	if(!user_input)
 		return
 	switch(user_input)
 		if("Create")
-			var/creation_choice = tgui_input_list(user, "What you like to create?", "Creation Choice", list("Cup", "Plate", "Bowl", "Tray", "Bricks"))
+			var/creation_choice = tgui_input_list(user, LANG("obj.9de6cd19c185e4ee", null), LANG("obj.8b4b963ad83c14e1", null), list("Cup", "Plate", "Bowl", "Tray", "Bricks"))
 			if(!creation_choice)
 				return
 			switch(creation_choice)

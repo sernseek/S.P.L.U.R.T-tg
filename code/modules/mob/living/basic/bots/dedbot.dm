@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///////////////Donk Exenteration Drone - DED////////////
 //A patrolling bot that cuts you up if you get close. Use ranged weapons or avoid it.
 
@@ -91,7 +92,7 @@
 	if(!COOLDOWN_FINISHED(src, cooldown_time))
 		return FALSE
 	caster.Shake(1.4, 0.8, 0.3 SECONDS)
-	caster.visible_message(span_danger("[caster] shakes violently!"))
+	caster.visible_message(span_danger(LANG("datum.2a04cd4114c8738b", list(caster))))
 	playsound(caster, 'sound/items/weapons/drill.ogg', 120 , TRUE)
 	slash_em(caster)
 	StartCooldown(cooldown_time)
@@ -100,8 +101,8 @@
 	for(var/mob/living/victim in range(ability_range, caster))
 		if(victim.has_faction(immune_factions) && victim.IsReachableBy(owner))
 			continue
-		to_chat(caster, span_warning("You slice [victim]!"))
-		to_chat(victim, span_warning("You are cut by [caster]'s blades!"))
+		to_chat(caster, span_warning(LANG("datum.554afff8fa000872", list(victim))))
+		to_chat(victim, span_warning(LANG("datum.c7b46266ff25a72c", list(caster))))
 		victim.apply_damage(damage = damage_dealt, damagetype = BRUTE, def_zone = pick(valid_targets), sharpness = SHARP_EDGED)
 
 #undef SPIN_SLASH_ABILITY_TYPEPATH

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/reagent/fuel
 	process_flags = REAGENT_ORGANIC | REAGENT_SYNTHETIC
 
@@ -80,7 +81,7 @@
 	if(scarred.stat == DEAD)
 		show_message = FALSE
 	if(show_message)
-		to_chat(scarred, span_danger("The scars on your body start to fade and disappear."))
+		to_chat(scarred, span_danger(LANG("datum.2265cb5e0f17dc12", null)))
 	if(reac_volume >= DERMAGEN_SCAR_FIX_AMOUNT)
 		for(var/i in scarred.all_scars)
 			qdel(i)

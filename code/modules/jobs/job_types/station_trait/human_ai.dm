@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/job/human_ai
 	title = JOB_HUMAN_AI
 	description = "Assist the crew, open airlocks, follow your lawset, and coordinate your cyborgs."
@@ -11,7 +12,7 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_required_type_department = EXP_TYPE_SILICON
 	exp_granted_type = EXP_TYPE_CREW
-	display_order = JOB_DISPLAY_ORDER_AI
+	display_order = 4 // ZH EDIT CHANGE - JOB_DISPLAY_ORDER: SPLURT uses 3 for security cyborg; ORIGINAL: JOB_DISPLAY_ORDER_AI
 	config_tag = "HUMAN_AI"
 
 	outfit = /datum/outfit/job/human_ai
@@ -82,7 +83,7 @@
 /datum/job/human_ai/announce_job(mob/living/joining_mob)
 	. = ..()
 	if(SSticker.HasRoundStarted())
-		minor_announce("Due to a research mishap, [joining_mob] has been sent to be your replacement AI at [AREACOORD(joining_mob)]. Please treat them with respect.")
+		minor_announce(LANG("datum.606407f802ff5148", list(joining_mob, AREACOORD(joining_mob))))
 
 /datum/job/human_ai/get_radio_information()
 	return "<b>Prefix your message with :b to speak with cyborgs.</b>"
@@ -172,9 +173,9 @@
 	var/area/current_area = get_area(user)
 	var/static/list/allowed_areas = typecacheof(list(/area/station/ai/satellite/chamber))
 	if(!is_type_in_typecache(current_area, allowed_areas))
-		user.balloon_alert(user, "not in the sat!")
+		user.balloon_alert(user, LANG("obj.c62154d4eb79bc87", null))
 		return
-	user.balloon_alert(user, "unpacking...")
+	user.balloon_alert(user, LANG("obj.55353aa3667973ef", null))
 	if(!do_after(user, 5 SECONDS, src))
 		return
 	playsound(src, 'sound/items/tools/drill_use.ogg', 40, TRUE)

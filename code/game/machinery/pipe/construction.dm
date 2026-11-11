@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*CONTENTS
 Buildable pipes
 Buildable meters
@@ -217,7 +218,7 @@ Buildable meters
 	if(ispath(pipe_type,/obj/machinery/atmospherics/pipe/heat_exchanging))
 		resistance_flags |= FIRE_PROOF | LAVA_PROOF
 
-GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
+GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "反转管道", null)
 
 	if ( usr.incapacitated )
 		return
@@ -279,7 +280,7 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 	for(var/obj/machinery/atmospherics/machine in loc)
 		// Only one dense/requires density object per tile, eg connectors/cryo/heater/coolers.
 		if(machine.pipe_flags & flags & PIPING_ONE_PER_TURF)
-			to_chat(user, span_warning("Something is hogging the tile!"))
+			to_chat(user, span_warning(LANG("obj.6801c9e639875ace", null)))
 			return TRUE
 		// skip checks if we don't overlap layers, either by being on the same layer or by something being on all layers
 		if(machine.piping_layer != piping_layer && !((machine.pipe_flags | flags) & PIPING_ALL_LAYER))
@@ -294,7 +295,7 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 			// We have a conflict!
 			if (length(potentially_conflicting_machines) != 1 || !try_smart_reconfiguration(machine, our_init_dirs, user))
 				// No solutions found
-				to_chat(user, span_warning("There is already a pipe at that location!"))
+				to_chat(user, span_warning(LANG("obj.18f032d8597b10f4", null)))
 				return TRUE
 	// no conflicts found
 
@@ -305,9 +306,9 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 
 	wrench.play_tool_sound(src)
 	user.visible_message( \
-		span_notice("[user] fastens \the [src]."), \
-		span_notice("You fasten \the [src]."), \
-		span_hear("You hear ratcheting."))
+		span_notice(LANG("obj.78b566041ef9833d", list(user, src))), \
+		span_notice(LANG("obj.09ea7751a04b5e09", list(src))), \
+		span_hear(LANG("obj.706a8c3e44c4464e", null)))
 
 	qdel(src)
 
@@ -322,9 +323,9 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 	if(welder.use_tool(src, user, 2 SECONDS, volume=2))
 		new /obj/item/sliced_pipe(drop_location())
 		user.visible_message( \
-			"[user] welds \the [src] in two.", \
-			span_notice("You weld \the [src] in two."), \
-			span_hear("You hear welding."))
+			LANG("obj.e5ff72424a24f1bb", list(user, src)), \
+			span_notice(LANG("obj.de170f333e336094", list(src))), \
+			span_hear(LANG("obj.1aa82fa3545466eb", null)))
 
 		qdel(src)
 
@@ -419,7 +420,7 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 	T.flipped = flipped
 
 /obj/item/pipe/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] shoves [src] in [user.p_their()] mouth and turns it on! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.01606d693f7b52e7", list(user, src, user.p_their(), user.p_theyre()))))
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
 		for(var/i in 1 to 20)
@@ -432,8 +433,8 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 
 /obj/item/pipe/examine(mob/user)
 	. = ..()
-	. += span_notice("The pipe layer is set to [piping_layer].")
-	. += span_notice("You can change the pipe layer by Right-Clicking the device.")
+	. += span_notice(LANG("obj.1dbff2afa6d661f7", list(piping_layer)))
+	. += span_notice(LANG("obj.4e24506d73b5d746", null))
 
 /obj/item/pipe/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()
@@ -441,20 +442,20 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 		return
 	var/layer_to_set = (piping_layer >= PIPING_LAYER_MAX) ? PIPING_LAYER_MIN : (piping_layer + 1)
 	set_piping_layer(layer_to_set)
-	balloon_alert(user, "pipe layer set to [piping_layer]")
+	balloon_alert(user, LANG("obj.6ec5da5edc55267b", list(piping_layer)))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 
 /obj/item/pipe/trinary/flippable/examine(mob/user)
 	. = ..()
-	. += span_notice("You can flip the device by Right-Clicking it.")
+	. += span_notice(LANG("obj.6cd9d12511c8752a", null))
 
 /obj/item/pipe/trinary/flippable/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
 	do_a_flip()
-	balloon_alert(user, "pipe was flipped")
+	balloon_alert(user, LANG("obj.8890f816a48aa31a", null))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/pipe_meter
@@ -474,11 +475,11 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 			pipe = P
 			break
 	if(!pipe)
-		to_chat(user, span_warning("You need to fasten it to a pipe!"))
+		to_chat(user, span_warning(LANG("obj.74479136b80cb8af", null)))
 		return TRUE
 	new /obj/machinery/meter(loc, piping_layer)
 	W.play_tool_sound(src)
-	to_chat(user, span_notice("You fasten the meter to the pipe."))
+	to_chat(user, span_notice(LANG("obj.dfb6675544e6fbda", null)))
 	qdel(src)
 
 /obj/item/pipe_meter/screwdriver_act(mob/living/user, obj/item/S)
@@ -487,12 +488,12 @@ GAME_VERB_SRC(/obj/item/pipe, flip, view(1), "Invert Pipe", null)
 		return TRUE
 
 	if(!isturf(loc))
-		to_chat(user, span_warning("You need to fasten it to the floor!"))
+		to_chat(user, span_warning(LANG("obj.063958e7db23ebd3", null)))
 		return TRUE
 
 	new /obj/machinery/meter/turf(loc, piping_layer)
 	S.play_tool_sound(src)
-	to_chat(user, span_notice("You fasten the meter to \the [loc]."))
+	to_chat(user, span_notice(LANG("obj.b62a38d9bc63ed97", list(loc))))
 	qdel(src)
 
 /obj/item/pipe_meter/dropped()

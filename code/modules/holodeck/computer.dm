@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 Map Template Holodeck
 
@@ -116,7 +117,7 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	if(my_area)
 		linked.energy_usage = my_area.energy_usage
 	else
-		linked.energy_usage = list(AREA_USAGE_LEN)
+		linked.energy_usage = new /list(AREA_USAGE_LEN) // ZH EDIT CHANGE - ORIGINAL: linked.energy_usage = list(AREA_USAGE_LEN) - list(7) 造的是「含一个元素 7」的列表而非 7 个槽，之后按电力通道 4-6 索引必然越界（生产每局约 67 条 runtime）
 
 	COOLDOWN_START(src, holodeck_cooldown, HOLODECK_CD)
 	generate_program_list()
@@ -182,7 +183,7 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 				emergency_shutdown()
 			nerf(obj_flags & EMAGGED,FALSE)
 			obj_flags ^= EMAGGED
-			say("Safeties reset. Restarting...")
+			say(LANG("obj.a0c41511c91edec9", null))
 			usr.log_message("disabled Holodeck safeties.", LOG_GAME)
 
 ///this is what makes the holodeck not spawn anything on broken tiles (space and non engine plating / non holofloors)
@@ -202,7 +203,7 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 		force = TRUE
 
 	if (!force && (!COOLDOWN_FINISHED(src, holodeck_cooldown) || spawning_simulation))
-		say("ERROR. Recalibrating projection apparatus.")
+		say(LANG("obj.24cd3fea9a0925ee", null))
 		return
 
 	if(spawning_simulation)
@@ -230,7 +231,7 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	spawned = template.created_atoms //populate the spawned list with the atoms belonging to the holodeck
 
 	if(istype(template, /datum/map_template/holodeck/thunderdome1218) && !SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_MEDISIM])
-		say("Special note from \"1218 AD\" developer: I see you too are interested in the REAL dark ages of humanity! I've made this program also unlock some interesting shuttle designs on any communication console around. Have fun!")
+		say(LANG("obj.1a320a22689f2bbd", null))
 		SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_MEDISIM] = TRUE
 
 	nerf(!(obj_flags & EMAGGED))
@@ -347,9 +348,9 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	if(istype(holo_atom, /obj/item/organ))
 		var/obj/item/organ/holo_organ = holo_atom
 		if(holo_organ.owner) // a mob has the holo organ inside them... oh dear
-			to_chat(holo_organ.owner, span_warning("\The [holo_organ] inside of you fades away!"))
+			to_chat(holo_organ.owner, span_warning(LANG("obj.a3ba65275d55459d", list(holo_organ))))
 	if(!silent)
-		visible_message(span_notice("[holo_atom] fades away!"))
+		visible_message(span_notice(LANG("obj.1b5ff63e77419eab", list(holo_atom))))
 
 	if(is_type_in_list(holo_atom.loc, special_locs))
 		qdel(holo_atom.loc)
@@ -376,7 +377,7 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	if(!floorcheck()) //if any turfs in the floor of the holodeck are broken
 		emergency_shutdown()
 		damaged = TRUE
-		visible_message("The holodeck overloads!")
+		visible_message(LANG("obj.daef0b4b5a88239a", null))
 		for(var/turf/holo_turf in linked)
 			if(prob(30))
 				do_sparks(2, 1, holo_turf)
@@ -436,17 +437,17 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	if(obj_flags & EMAGGED)
 		return FALSE
 	if(!LAZYLEN(emag_programs))
-		balloon_alert(user, "no card swipe port!")
+		balloon_alert(user, LANG("obj.e2094240491abb1c", null))
 		return FALSE
 	playsound(src, SFX_SPARKS, 75, TRUE)
 	obj_flags |= EMAGGED
 	if (user)
-		balloon_alert(user, "safety protocols destroyed") // im gonna keep this once since this perfectly describes it
-		to_chat(user, span_warning("You override the safety and security protocols."))
+		balloon_alert(user, LANG("obj.07b3e831b4cc0bc7", null)) // im gonna keep this once since this perfectly describes it
+		to_chat(user, span_warning(LANG("obj.789904c0cff07db1", null)))
 		user.log_message("emagged the Holodeck Control Console.", LOG_GAME)
 		message_admins("[ADMIN_LOOKUPFLW(user)] emagged the Holodeck Control Console.")
 
-	say("Warning. Automatic shutoff and derezzing protocols have been corrupted. Please call Nanotrasen maintenance and do not use the simulator.")
+	say(LANG("obj.1b4698a99e43dd64", null))
 	nerf(!(obj_flags & EMAGGED),FALSE)
 	return TRUE
 
@@ -464,7 +465,7 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 	reset_to_default()
 	if(linked)
 		linked.linked = null
-		linked.energy_usage = list(AREA_USAGE_LEN)
+		linked.energy_usage = new /list(AREA_USAGE_LEN) // ZH EDIT CHANGE - ORIGINAL: linked.energy_usage = list(AREA_USAGE_LEN) - list(7) 造的是「含一个元素 7」的列表而非 7 个槽，之后按电力通道 4-6 索引必然越界（生产每局约 67 条 runtime）
 	return ..()
 
 /obj/machinery/computer/holodeck/blob_act(obj/structure/blob/B)

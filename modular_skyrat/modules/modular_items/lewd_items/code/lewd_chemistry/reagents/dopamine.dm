@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Dopamine. Generates in character after orgasm.
 /datum/reagent/drug/aphrodisiac/dopamine
 	name = "dopamine...?"
@@ -34,7 +35,7 @@
 
 /datum/reagent/drug/aphrodisiac/dopamine/overdose_start(mob/living/carbon/human/exposed_mob)
 	. = ..()
-	to_chat(exposed_mob, span_purple("You feel so happy!"))
+	to_chat(exposed_mob, span_purple(LANG("datum.e7aa7be90209fd59", null)))
 	exposed_mob.add_mood_event("[type]_overdose", /datum/mood_event/overgasm, name)
 
 /datum/reagent/drug/aphrodisiac/dopamine/overdose_effects(mob/living/carbon/human/exposed_mob)

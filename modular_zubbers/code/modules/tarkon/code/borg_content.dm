@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/mob_spawn/ghost_role/robot/tarkon
 	name = "Tarkon Cyborg Storage"
 	prompt_name = "a tarkon cyborg"
@@ -366,6 +367,6 @@
 		if(istype(tarkon_upgrade, /obj/item/borg/upgrade/tarkon))
 			tarkon_upgrade_count ++
 	if(tarkon_upgrade_count >= 3)
-		to_chat(user, span_danger("Warning: The borg's components cannot handle any more upgrades."))
+		to_chat(user, span_danger(LANG("obj.251260d83388857f", null)))
 		return FALSE
 	return ..()

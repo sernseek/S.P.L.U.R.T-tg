@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/atmospherics/components/binary/temperature_gate
 	icon_state = "tgate_map-3"
 	name = "temperature gate"
@@ -23,14 +24,14 @@
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
-	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
+	context[SCREENTIP_CONTEXT_CTRL_LMB] = LANG("obj.fed2f8dfb3af5666", list(on ? "off" : "on"))
 	context[SCREENTIP_CONTEXT_ALT_LMB] = "Maximize target temperature"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/click_ctrl(mob/user)
 	if(is_operational)
 		set_on(!on)
-		balloon_alert(user, "turned [on ? "on" : "off"]")
+		balloon_alert(user, LANG("obj.8fcfde3cd8c5cffd", list(on ? "on" : "off")))
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
 		return CLICK_ACTION_SUCCESS
 	return CLICK_ACTION_BLOCKING
@@ -41,18 +42,18 @@
 
 	target_temperature = max_temperature
 	investigate_log("was set to [target_temperature] K by [key_name(user)]", INVESTIGATE_ATMOS)
-	balloon_alert(user, "target temperature set to [target_temperature] K")
+	balloon_alert(user, LANG("obj.6177b8e30ac6f2d5", list(target_temperature)))
 	update_appearance(UPDATE_ICON)
 	return CLICK_ACTION_SUCCESS
 
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/examine(mob/user)
 	. = ..()
-	. += "This device will let gas flow if the temperature of the gas in the input is [inverted ? "higher" : "lower"] than the temperature set in the interface."
+	. += LANG("obj.b15db99f55a8c79e", list(inverted ? "higher" : "lower"))
 	if(inverted)
-		. += "The device settings can be restored if a multitool is used on it."
+		. += LANG("obj.c982b509d417e81e", null)
 	else
-		. += "The sensor's settings can be changed by using a multitool on the device."
+		. += LANG("obj.66558180c956cb7f", null)
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/update_icon_nopipes()
 	if(on && is_operational && is_gas_flowing)
@@ -131,7 +132,7 @@
 /obj/machinery/atmospherics/components/binary/temperature_gate/can_unwrench(mob/user)
 	. = ..()
 	if(. && on && is_operational)
-		to_chat(user, span_warning("You cannot unwrench [src], turn it off first!"))
+		to_chat(user, span_warning(LANG("obj.a6e44f07b2cb8ca0", list(src))))
 		return FALSE
 
 /obj/machinery/atmospherics/components/binary/temperature_gate/multitool_act(mob/living/user, obj/item/multitool/I)
@@ -139,9 +140,9 @@
 	if (istype(I))
 		inverted = !inverted
 		if(inverted)
-			to_chat(user, span_notice("You set the [src]'s sensors to release gases when the temperature is higher than the setted one."))
+			to_chat(user, span_notice(LANG("obj.c02b1715e0d55eb7", list(src))))
 		else
-			to_chat(user, span_notice("You set the [src]'s sensors to the default settings."))
+			to_chat(user, span_notice(LANG("obj.1a6025a05e45b5a8", list(src))))
 	return TRUE
 
 //mapping

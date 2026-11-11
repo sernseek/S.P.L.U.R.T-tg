@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/sextoy/fleshlight
 	name = "fleshlight"
 	desc = "What a strange flashlight."
@@ -30,7 +31,7 @@
 /obj/item/clothing/sextoy/fleshlight/examine(mob/user)
 	. = ..()
 	if(!color_changed)
-		. += span_notice("Alt-click to change it's color.")
+		. += span_notice(LANG("obj.ffa2b27c6831e98e", null))
 
 /obj/item/clothing/sextoy/fleshlight/Initialize(mapload)
 	. = ..()
@@ -63,12 +64,12 @@
 		return
 
 	if(!target.check_erp_prefs(/datum/preference/toggle/erp/sex_toy, user, src))
-		to_chat(user, span_danger("[target] doesn't want you to do that!"))
+		to_chat(user, span_danger(LANG("obj.3ed3c6e281b46c42", list(target))))
 		return
 
 	var/obj/item/organ/genital/penis = target.get_organ_slot(ORGAN_SLOT_PENIS)
 	if(!penis?.is_exposed())
-		to_chat(user, span_danger("Looks like [target]'s groin is covered!"))
+		to_chat(user, span_danger(LANG("obj.c5b0317d58c50f81", list(target))))
 		return
 
 	var/message = (user == target) ? pick("moans in ecstasy as [target.p_they()] fuck the [src]",
@@ -101,10 +102,10 @@
 
 /obj/item/toy/plush/fleshlight/screws/examine(mob/user)
 	. = ..()
-	. += span_notice("Alt-click to cover her up.")
+	. += span_notice(LANG("obj.d4c1ada9b0021d64", null))
 
 /obj/item/toy/plush/fleshlight/screws/click_alt(mob/user)
-	user.visible_message(span_notice("[user] turns [src], hiding the hole underneath."), span_notice("You turn [src], covering her up with her little skirt."))
+	user.visible_message(span_notice(LANG("obj.993927db422016b6", list(user, src))), span_notice(LANG("obj.2be9232521bea513", list(src))))
 	playsound(user, 'sound/effects/blob/blobattack.ogg', 50, TRUE)
 	var/obj/item/toy/plush/cescrewsplush/plushie = new(null)
 	qdel(src)
@@ -119,12 +120,12 @@
 		return
 
 	if(!target.check_erp_prefs(/datum/preference/toggle/erp/sex_toy, user, src))
-		to_chat(user, span_danger("[target] doesn't want you to do that!"))
+		to_chat(user, span_danger(LANG("obj.3ed3c6e281b46c42", list(target))))
 		return
 
 	var/obj/item/organ/genital/penis = target.get_organ_slot(ORGAN_SLOT_PENIS)
 	if(!penis?.is_exposed())
-		to_chat(user, span_danger("Looks like [target]'s groin is covered!"))
+		to_chat(user, span_danger(LANG("obj.c5b0317d58c50f81", list(target))))
 		return
 
 	var/message = (user == target) ? pick("moans in ecstasy as [target.p_they()] fuck the [src]",
@@ -166,4 +167,4 @@
 /obj/item/clothing/sextoy/fleshlight/bluespace/proc/rod_johnson(obj/effect/immovablerod/target, mob/living/user)
 	user.throw_at(get_step(user,target.dir),12,4)
 	playsound(target, 'sound/effects/cartoon_sfx/cartoon_pop.ogg', 75, TRUE)
-	target.audible_message(span_danger("You hear a POP!"))
+	target.audible_message(span_danger(LANG("obj.256ddf2b81f71247", null)))

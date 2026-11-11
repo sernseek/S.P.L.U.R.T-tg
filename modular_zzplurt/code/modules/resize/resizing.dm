@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //handle the big steppy, except nice
 /mob/living/proc/handle_micro_bump_helping(mob/living/target)
 	if(ishuman(src))
@@ -29,9 +30,9 @@
 			//Smaller person being stepped on
 			if(iscarbon(src))
 				if(istype(user) && user.dna.features["taur"] == "Naga" || user.dna.features["taur"] == "Tentacle")
-					target.visible_message(span_notice("[src] carefully slithers around [target]."), span_notice("[src]'s huge tail slithers besides you."))
+					target.visible_message(span_notice(LANG("mob.505ed50203abf1ed", list(src, target))), span_notice(LANG("mob.c6493896582c3847", list(src))))
 				else
-					target.visible_message(span_notice("[src] carefully steps over [target]."), span_notice("[src] steps over you carefully."))
+					target.visible_message(span_notice(LANG("mob.24f383d0d43f7500", list(src, target))), span_notice(LANG("mob.f7d4be5572b80a7f", list(src))))
 				return TRUE
 
 		//Smaller person stepping under a larger person
@@ -80,9 +81,9 @@
 						addtimer(CALLBACK(user, TYPE_PROC_REF(/mob, remove_movespeed_modifier), MOVESPEED_ID_STOMP, TRUE), 3) //0.3 seconds
 						if(iscarbon(user))
 							if(istype(user) && user.dna.features["taur"] == "Naga" || user.dna.features["taur"] == "Tentacle")
-								target.visible_message(span_danger("[src] carefully rolls their tail over [target]!"), span_danger("[src]'s huge tail rolls over you!"))
+								target.visible_message(span_danger(LANG("mob.39a6aec9a398ace1", list(src, target))), span_danger(LANG("mob.f9d0d65e98c1955a", list(src))))
 							else
-								target.visible_message(span_danger("[src] carefully steps on [target]!"), span_danger("[src] steps onto you with force!"))
+								target.visible_message(span_danger(LANG("mob.ab4ef8f699cfe433", list(src, target))), span_danger(LANG("mob.279450f06655272b", list(src))))
 							return TRUE
 
 					if("harm")
@@ -96,9 +97,9 @@
 						//user.Stun(20)
 						if(iscarbon(user))
 							if(istype(user) && (user.dna.features["taur"] == "Naga" || user.dna.features["taur"] == "Tentacle"))
-								target.visible_message(span_danger("[src] mows down [target] under their tail!"), span_userdanger("[src] plows their tail over you mercilessly!"))
+								target.visible_message(span_danger(LANG("mob.371a14a3764c9719", list(src, target))), span_userdanger(LANG("mob.43228988c43533f6", list(src))))
 							else
-								target.visible_message(span_danger("[src] slams their foot down on [target], crushing them!"), span_userdanger("[src] crushes you under their foot!"))
+								target.visible_message(span_danger(LANG("mob.2801f438b29854fd", list(src, target))), span_userdanger(LANG("mob.d840c5158ff92a0a", list(src))))
 							return TRUE
 
 					if("grab")
@@ -112,17 +113,17 @@
 							var/feetCover = (user.wear_suit && (user.wear_suit.body_parts_covered & FEET)) || (user.w_uniform && (user.w_uniform.body_parts_covered & FEET) || (user.shoes && (user.shoes.body_parts_covered & FEET)))
 							if(feetCover)
 								if(user?.dna?.features["taur"] == "Naga" || user?.dna?.features["taur"] == "Tentacle")
-									target.visible_message(span_danger("[src] pins [target] under their tail!"), span_danger("[src] pins you beneath their tail!"))
+									target.visible_message(span_danger(LANG("mob.c09ae88c15cc243e", list(src, target))), span_danger(LANG("mob.31e64365730609cf", list(src))))
 								else
-									target.visible_message(span_danger("[src] pins [target] helplessly underfoot!"), span_danger("[src] pins you underfoot!"))
+									target.visible_message(span_danger(LANG("mob.2f2488e06d260c66", list(src, target))), span_danger(LANG("mob.2b973f5fe48e2459", list(src))))
 								return TRUE
 							else
 								if(user?.dna?.features["taur"] == "Naga" || user?.dna?.features["taur"] == "Tentacle")
-									target.visible_message(span_danger("[user] snatches up [target] underneath their tail!"), span_userdanger("[src]'s tail winds around you and snatches you in its coils!"))
+									target.visible_message(span_danger(LANG("mob.2fa500a6ce958bf2", list(user, target))), span_userdanger(LANG("mob.c14c5bc8e1e7442c", list(src))))
 									//target.mob_pickup_micro_feet(user)
 									SEND_SIGNAL(target, COMSIG_MICRO_PICKUP_FEET, user)
 								else
-									target.visible_message(span_danger("[user] stomps down on [target], curling their toes and picking them up!"), span_userdanger("[src]'s toes pin you down and curl around you, picking you up!"))
+									target.visible_message(span_danger(LANG("mob.5f360316c7a4ce15", list(user, target))), span_userdanger(LANG("mob.ab46c26776de1f4b", list(src))))
 									//target.mob_pickup_micro_feet(user)
 									SEND_SIGNAL(target, COMSIG_MICRO_PICKUP_FEET, user)
 								return TRUE
@@ -137,18 +138,18 @@
 	if(ishuman(src))
 		var/mob/living/carbon/human/validmob = src
 		if(validmob?.dna?.features["taur"] == "Naga" || validmob?.dna?.features["taur"] == "Tentacle")
-			visible_message(span_notice("[validmob] carefully slithers around [target]."), span_notice("You carefully slither around [target]."))
+			visible_message(span_notice(LANG("mob.505ed50203abf1ed", list(validmob, target))), span_notice(LANG("mob.0ee7592c246d24ed", list(target))))
 		else
-			visible_message(span_notice("[validmob] carefully steps around [target]."), span_notice("You carefully steps around [target]."))
+			visible_message(span_notice(LANG("mob.919ee584ba87ba12", list(validmob, target))), span_notice(LANG("mob.676ec950c863fc15", list(target))))
 
 //smaller person stepping under another person... TO DO, fix and allow special interactions with naga legs to be seen
 /mob/living/proc/micro_step_under(mob/living/target)
 	if(ishuman(src))
 		var/mob/living/carbon/human/validmob = src
 		if(validmob?.dna?.features["taur"] == "Naga" || validmob?.dna?.features["taur"] == "Tentacle")
-			visible_message(span_notice("[validmob] bounds over [validmob]'s tail."), span_notice("You jump over [target]'s thick tail."))
+			visible_message(span_notice(LANG("mob.cf4badf93a26ebf7", list(validmob, validmob))), span_notice(LANG("mob.72f5d3ac91995f32", list(target))))
 		else
-			visible_message(span_notice("[validmob] runs between [validmob]'s legs."), span_notice("You run between [target]'s legs."))
+			visible_message(span_notice(LANG("mob.6e447b0054ec2e69", list(validmob, validmob))), span_notice(LANG("mob.fb65e4d94871ac51", list(target))))
 
 //Proc for scaling stamina damage on size difference
 /mob/living/carbon/proc/sizediffStamLoss(mob/living/carbon/target)

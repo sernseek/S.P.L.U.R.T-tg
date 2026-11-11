@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// A list of all integrated circuits
 GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
@@ -119,9 +120,9 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 /obj/item/integrated_circuit/examine(mob/user)
 	. = ..()
 	if(cell)
-		. += span_notice("The charge meter reads [cell ? round(cell.percent(), 1) : 0]%.")
+		. += span_notice(LANG("obj.00f8f6f702faa55b", list(cell ? round(cell.percent(), 1) : 0)))
 	else
-		. += span_notice("There is no power cell installed.")
+		. += span_notice(LANG("obj.b21d2f5d4c232681", null))
 
 /obj/item/integrated_circuit/drop_location()
 	if(shell)
@@ -154,7 +155,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 	if(istype(tool, /obj/item/stock_parts/power_store/cell))
 		if(cell)
-			balloon_alert(user, "there already is a cell inside!")
+			balloon_alert(user, LANG("obj.b6ec48c176a71870", null))
 			return ITEM_INTERACT_BLOCKING
 
 		if(!user.transferItemToLoc(tool, src))
@@ -162,11 +163,11 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 		set_cell(tool)
 		tool.add_fingerprint(user)
-		user.visible_message(span_notice("[user] inserts a power cell into [src]."), span_notice("You insert the power cell into [src]."))
+		user.visible_message(span_notice(LANG("obj.6c5b2d751a8723fc", list(user, src))), span_notice(LANG("obj.8b86d93e1f0c7115", list(src))))
 		return ITEM_INTERACT_SUCCESS
 
 	if(isidcard(tool))
-		balloon_alert(user, "owner id set for [tool]")
+		balloon_alert(user, LANG("obj.40c92cc8d073f752", list(tool)))
 		owner_id = WEAKREF(tool)
 		return ITEM_INTERACT_SUCCESS
 
@@ -174,11 +175,11 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 /obj/item/integrated_circuit/screwdriver_act(mob/living/user, obj/item/tool)
 	if(!cell)
-		balloon_alert(user, "power cell missing!")
+		balloon_alert(user, LANG("obj.c7f56509f7147a49", null))
 		return ITEM_INTERACT_BLOCKING
 
 	tool.play_tool_sound(src)
-	user.visible_message(span_notice("[user] unscrews the power cell from [src]."), span_notice("You unscrew the power cell from [src]."))
+	user.visible_message(span_notice(LANG("obj.71d44919d2504d90", list(user, src))), span_notice(LANG("obj.ab55e82f4e6a687f", list(src))))
 	cell.forceMove(drop_location())
 	set_cell(null)
 	return ITEM_INTERACT_SUCCESS
@@ -267,13 +268,13 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 	if(to_add.circuit_flags & CIRCUIT_NO_DUPLICATES)
 		if(is_duplicate(to_add))
-			to_chat(user, span_danger("You can't insert multiple instances of this component into the same circuit!"))
+			to_chat(user, span_danger(LANG("obj.627d7962e777874d", null)))
 			return FALSE
 
 	// SKYRAT ADDITION BEGIN - This is required since we have two reagent components, and the BCI only allows one active
 	if(to_add.circuit_flags & CIRCUIT_REAGENT_CONTAINER_TYPE)
 		if(shell && shell.reagents)
-			to_chat(user, span_danger("You can't insert multiple reagent containers into the same circuit!"))
+			to_chat(user, span_danger(LANG("obj.762b914047645275", null)))
 			return FALSE
 	// SKYRAT ADDITION END
 
@@ -559,13 +560,13 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 					if(!marked_atom)
 						return TRUE
 					port.set_input(marked_atom)
-					balloon_alert(usr, "updated [port.name]'s value to marked object.")
+					balloon_alert(usr, LANG("obj.02b03386e56647b3", list(port.name)))
 					return TRUE
 				if(!marker.marked_atom)
 					port.set_input(null)
-					marker.say("Cleared port ('[port.name]')'s value.")
+					marker.say(LANG("obj.8cfbd5b88e8166c0", list(port.name)))
 					return TRUE
-				marker.say("Updated port ('[port.name]')'s value to the marked entity.")
+				marker.say(LANG("obj.b813be831c686d37", list(port.name)))
 				port.set_input(marker.marked_atom)
 				return TRUE
 
@@ -592,7 +593,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 			var/string_form = copytext("[value]", 1, PORT_MAX_STRING_DISPLAY)
 			if(length(string_form) >= PORT_MAX_STRING_DISPLAY-1)
 				string_form += "..."
-			balloon_alert(usr, "[port.name] value: [string_form]")
+			balloon_alert(usr, LANG("obj.471684d44a8f23aa", list(port.name, string_form)))
 			. = TRUE
 		if("set_display_name")
 			var/new_name = params["display_name"]
@@ -656,7 +657,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 			. = TRUE
 		if("add_setter_or_getter")
 			if(setter_and_getter_count >= max_setters_and_getters)
-				balloon_alert(usr, "setter and getter count at maximum capacity")
+				balloon_alert(usr, LANG("obj.8e5cb3eeacc75026", null))
 				return
 			var/designated_type = /obj/item/circuit_component/variable/getter
 			if(params["is_setter"])
@@ -687,11 +688,11 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 			if((!admin_only && !isAdminGhostAI(ui.user)) || !check_rights_for(ui.user.client, R_SPAWN))
 				var/obj/machinery/component_printer/printer = linked_component_printer?.resolve()
 				if(!printer)
-					balloon_alert(ui.user, "linked printer not found!")
+					balloon_alert(ui.user, LANG("obj.ced0899dd2903852", null))
 					return
 				component = printer.print_component(component_path, user_data = ID_DATA(usr))
 				if(!component)
-					balloon_alert(ui.user, "failed to make the component!")
+					balloon_alert(ui.user, LANG("obj.12ad7005a0444930", null))
 					return
 			else
 				if(!ispath(component_path, /obj/item/circuit_component))
@@ -720,7 +721,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 /obj/item/integrated_circuit/proc/on_atom_usb_cable_try_attach(datum/source, obj/item/usb_cable/usb_cable, mob/user)
 	SIGNAL_HANDLER
-	usb_cable.balloon_alert(user, "circuit needs to be in a compatible shell")
+	usb_cable.balloon_alert(user, LANG("obj.1472454e42a57b9f", null))
 	return COMSIG_CANCEL_USB_CABLE_ATTACK
 
 /// Sets the display name that appears on the shell.

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BASE_DISCONNECT_DAMAGE 40
 #define SCANNING_TOGGLE_COOLDOWN 5
 
@@ -59,54 +60,54 @@
 		context[SCREENTIP_CONTEXT_LMB] = "Select Outfit"
 	else
 		if(held_item.tool_behaviour == TOOL_SCREWDRIVER && !occupant && !state_open)
-			context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] Panel"
+			context[SCREENTIP_CONTEXT_LMB] = LANG("obj.3a1f9b9bcb4eed7a", list(panel_open ? "Close" : "Open"))
 
 		if(held_item.tool_behaviour == TOOL_CROWBAR)
 			if(isnull(occupant))
 				if(panel_open)
 					context[SCREENTIP_CONTEXT_LMB] = "Deconstruct"
 				else
-					context[SCREENTIP_CONTEXT_LMB] = "[state_open ? "Close" : "Open"] Cover"
+					context[SCREENTIP_CONTEXT_LMB] = LANG("obj.04b8e092b6a72419", list(state_open ? "Close" : "Open"))
 			else
 				context[SCREENTIP_CONTEXT_LMB] = "Break out"
 
-	context[SCREENTIP_CONTEXT_ALT_LMB] = "[copy_body ? "Disable" : "Enable"] Scan"
+	context[SCREENTIP_CONTEXT_ALT_LMB] = LANG("obj.9934ed5fc322ee22", list(copy_body ? "Disable" : "Enable"))
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/netpod/examine(mob/user)
 	. = ..()
 
-	. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "close" : "open"].")
+	. += span_notice(LANG("obj.f3fabb12d30acb3c", list(EXAMINE_HINT("screwed"), panel_open ? "close" : "open")))
 	if(isnull(occupant))
 		if(panel_open)
-			. += span_notice("It can be [EXAMINE_HINT("pried")] apart.")
+			. += span_notice(LANG("obj.fa5fc7965e12e9d0", list(EXAMINE_HINT("pried"))))
 		else
-			. += span_notice("Its hatch can be [EXAMINE_HINT("pried")] [state_open ? "closed" : "open"].")
+			. += span_notice(LANG("obj.2eaa3b1c82838440", list(EXAMINE_HINT("pried"), state_open ? "closed" : "open")))
 
 	if(isnull(server_ref?.resolve()))
-		. += span_infoplain("It's not connected to anything.")
-		. += span_infoplain("Netpods must be built within 4 tiles of a server.")
+		. += span_infoplain(LANG("obj.b8effa34c8b656fe", null))
+		. += span_infoplain(LANG("obj.1e9dcde542c9dacf", null))
 		return
 
 	if(!isobserver(user))
-		. += span_infoplain("Drag yourself into the pod to engage the link.")
-		. += span_infoplain("It has limited resuscitation capabilities. Remaining in the pod can heal some injuries.")
-		. += span_infoplain("It has a security system that will alert the occupant if it is tampered with.")
+		. += span_infoplain(LANG("obj.f1e4f04a468a965f", null))
+		. += span_infoplain(LANG("obj.0cf6d95960df10aa", null))
+		. += span_infoplain(LANG("obj.8cfba2a1605537f3", null))
 		if(copy_body)
-			. += span_infoplain("Occupant scanning is currently enabled, which will cause bit avatars to look like the occupant when first created.")
-		. += span_infoplain("Alt-click to [copy_body ? "disable" : "enable"] occupant scanning.")
+			. += span_infoplain(LANG("obj.7f6c2041fb606458", null))
+		. += span_infoplain(LANG("obj.ae4e2e732162fc49", list(copy_body ? "disable" : "enable")))
 
 	if(isnull(occupant))
-		. += span_infoplain("It's currently unoccupied.")
+		. += span_infoplain(LANG("obj.bc6aa97bf773ed56", null))
 		return
 
-	. += span_infoplain("It's currently occupied by [occupant].")
+	. += span_infoplain(LANG("obj.735641dae1f8557a", list(occupant)))
 
 	if(isobserver(user))
-		. += span_notice("As an observer, you can click this netpod to jump to its avatar.")
+		. += span_notice(LANG("obj.4d38f328dacd0e2f", null))
 		return
 
-	. += span_notice("It can be pried open with a crowbar, but its safety mechanisms will alert the occupant.")
+	. += span_notice(LANG("obj.84d74ac87b54af5f", null))
 
 
 /obj/machinery/netpod/update_icon_state()
@@ -162,7 +163,7 @@
 	copy_body = !copy_body
 	scanning_can_toggle = world.time + SCANNING_TOGGLE_COOLDOWN
 	playsound(src, 'sound/machines/click.ogg', 50, TRUE)
-	user.balloon_alert_to_viewers(user, "scanning [copy_body ? "enabled" : "disabled"]")
+	user.balloon_alert_to_viewers(user, LANG("obj.541d7ff69ad11e07", list(copy_body ? "enabled" : "disabled")))
 	return CLICK_ACTION_SUCCESS
 
 #undef BASE_DISCONNECT_DAMAGE

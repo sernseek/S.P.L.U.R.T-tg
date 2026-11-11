@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/sextoy/portal_panties
 	name = "portal panties"
 	desc = "A pair of panties with bluespace tech allowing lovers to hump at a distance. Needs to be paired with a portal fleshlight before use."
@@ -35,16 +36,16 @@
 /obj/item/clothing/sextoy/portal_panties/examine(mob/user)
 	. = ..()
 	if(!linked_fleshlight)
-		. += span_notice("The status light is off. The device needs to be paired with a portal fleshlight.")
+		. += span_notice(LANG("obj.a56752b9b87555eb", null))
 		return
 
-	. += span_notice("The status light is [equipped_slot ? "on" : "off"]. The portal is [equipped_slot ? "open" : "closed"].")
+	. += span_notice(LANG("obj.9eafd5fbe5336184", list(equipped_slot ? "on" : "off", equipped_slot ? "open" : "closed")))
 	if(equipped_slot)
-		. += span_notice("The current target is: [current_target]")
+		. += span_notice(LANG("obj.8b2a8a06643e8aab", list(current_target)))
 
-	. += span_notice("Use it as underwear to autodetect genitals")
-	. += span_notice("Use as mask to connect to the mouth")
-	. += span_notice("Use in genital slots to connect to specific genitals")
+	. += span_notice(LANG("obj.b32e6b5ade3ba402", null))
+	. += span_notice(LANG("obj.767f5d832507da08", null))
+	. += span_notice(LANG("obj.26e1029b5f8ca3a4", null))
 
 /obj/item/clothing/sextoy/portal_panties/attackby(obj/item/W, mob/user, list/modifiers, list/attack_modifiers)
 	. = ..()
@@ -95,9 +96,9 @@
 	if(linked_fleshlight)
 		linked_fleshlight.update_appearance()
 	else if(slot in list(ITEM_SLOT_UNDERWEAR, ITEM_SLOT_MASK, ORGAN_SLOT_PENIS, ORGAN_SLOT_VAGINA, ORGAN_SLOT_ANUS))
-		audible_message("[icon2html(src, hearers(src))] *beep* *beep* *beep*")
+		audible_message(LANG("obj.a31e23785cc68a0a", list(icon2html(src, hearers(src)))))
 		playsound(src, 'sound/machines/beep/triple_beep.ogg', ASSEMBLY_BEEP_VOLUME, TRUE)
-		to_chat(user, span_notice("The panties are not linked to a portal fleshlight."))
+		to_chat(user, span_notice(LANG("obj.af2d3b15299b6d43", null)))
 
 /obj/item/clothing/sextoy/portal_panties/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()
@@ -106,19 +107,19 @@
 
 	anonymous = !anonymous
 	playsound(src, 'sound/machines/ping.ogg', 50, FALSE)
-	balloon_alert(user, "anonymous mode: [anonymous ? "ON" : "OFF"]")
+	balloon_alert(user, LANG("obj.8ef36c07ada1b62e", list(anonymous ? "ON" : "OFF")))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/clothing/sextoy/portal_panties/click_alt(mob/user)
 	if(!linked_fleshlight)
-		to_chat(user, span_warning("[src] isn't linked to any portal fleshlight!"))
+		to_chat(user, span_warning(LANG("obj.b5f4a5acd325e3fd", list(src))))
 		return CLICK_ACTION_BLOCKING
 
-	var/choice = tgui_alert(user, "Are you sure you want to unlink the portal fleshlight?", "Unlink Portal Fleshlight", list("Yes", "No"))
+	var/choice = tgui_alert(user, LANG("obj.c750f19333af9580", null), LANG("obj.949d5fd81fecb420", null), list("Yes", "No"))
 	if(choice != "Yes")
 		return CLICK_ACTION_BLOCKING
 
-	to_chat(user, span_notice("You unlink the portal fleshlight from [src]."))
+	to_chat(user, span_notice(LANG("obj.7ee9ab86d9920328", list(src))))
 	linked_fleshlight.unlink_panties()
 
 /obj/item/clothing/sextoy/portal_panties/Destroy()

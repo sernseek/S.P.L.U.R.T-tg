@@ -1,0 +1,965 @@
+# nova-i18n 标识符碰撞基线（由 `nova-i18n lint --update-baseline` 生成）。
+# 每行一个「既是 DM 标识符（==/switch/下标）又是 en 目录可翻译值」的字符串。
+# CI 只对**不在此表**的新增碰撞失败。修复一个碰撞（让该串不再被翻译，或消费侧
+# 用 lang_unreverse_text）后，从此表删掉对应行。
+(new custom antag)
+:) I'm Done
+<b>But none of its eggs hatched!</b>
+AI
+AI Connection
+AI Law Synchronization
+BZ
+Absorb
+Accept Defeat.
+Activate
+Active
+Add
+Additional Notes
+Admin
+Adminhelps are also sent through TGS to services like IRC and Discord. If no admins are available in game, sending an adminhelp might still be noticed and responded to.
+Age Limit
+Airborne
+Akula
+Alarm
+Alarm Reset
+Alarm Trigger
+Alert
+Alias
+All Antags!
+Amount
+Android
+Area
+Arrest
+Artificer
+As Plasmaman...
+Asleep
+Assistant
+Atmospheric Technician
+Atoms
+Attack
+Automatic Detection
+Auxiliary Power 1
+Auxiliary Power 2
+Avoidance
+Away
+Babydoll
+Bald
+Balding Hair
+Barber
+Bartender
+Base Heat Resistance
+Base Waste Multiplier
+Base Zap Transmission
+Beaker
+Bitrunner
+Blood
+Blood Cult
+Blood Filter
+Blueshield
+Bolts
+Bonesetter
+Boom Wire
+Botanist
+Bouncer
+Bounty Fugitive Hunters
+Bowl
+Bra
+Bra Color
+Brain
+Brass Bow
+Brass Spear
+Cable restraints
+Camera
+Captain
+Cargo
+Cargo Budget
+Cargo Technician
+Cargo Technician / Customs Agent
+Cargo Technician / Customs Agent / Quartermaster
+Cat Paws
+Cautery
+CentCom
+Central Command
+Change Color
+Change Hair
+Change Name
+Changeling
+Chaplain
+Character
+Charge Damage
+Chef
+Chemist
+Chest pack
+Chief Engineer
+Chief Medical Officer
+Cigarettes
+Ckey
+Clean
+Cleaning
+Close
+Clown
+Color
+Command
+Confirm
+Connect me!
+Contents
+Continue Playing
+Contraband
+Controller
+Cook
+Coroner
+Corrections Officer
+Counterattack
+Crew Manifest
+Crimson Medallion
+Critical
+Crystallizer
+Cult
+Cultist
+Curator
+Custom
+Custom Range
+Customs Agent
+Cyborg
+DISCO INFERNO
+DONE - Finish selection
+Damage
+Death
+Deceased
+Deconstruct
+Default
+Default Bible Name
+Default Cyborg Name
+Defend
+Delay
+Delete
+Delete Shuttle
+Department Backpack
+Description
+Detective
+Digest
+Digitigrade Legs
+Disable
+Disarm
+Discharged
+Disease
+Double
+Download
+Drone
+EMP proof
+EMP resilient
+ERROR
+EVERYTHING
+East
+Eject
+Eject Disk
+Emergency Prize Vend
+Energy
+Engineer
+Engineering
+Engineering Guard
+Environment
+Equipment
+Error
+Error: No client
+Error: No message
+Error: Ticket could not be found
+Examine
+Exit
+External Damage
+External Power Gain
+External Power Trickle
+Eyes
+Failsafe
+Feed
+Feedback
+File
+Filter
+Fish
+Fix Engine
+Flip
+Flush
+Fly
+Forge
+Frontier Backpack
+Frontier Messenger Bag
+Frontier Satchel
+Full accessories
+Galactic Materials Market
+Gas Heat Power Gain
+Gas Heat Resistance
+Gas Power Decay Negation
+Gas Waste Multiplier
+Gas Zap Transmission Modifier
+Gelled Back
+General
+General Color
+Generic
+Geneticist
+Ghost
+Ghost Cafe Visitor
+Gib
+Glass
+Golem
+Green
+Hack
+Hacked
+Hair Color
+Hallucination
+Harvester
+Head of Personnel
+Head of Security
+Heal
+Health
+Heart
+Heating Damage
+Hemoglobin Iced Tea
+Hemostat
+Heretic
+High
+High Voltage Circuit
+High Voltage Circuit 1
+High Voltage Circuit 2
+High Voltage Ground
+Honey Frame
+Horizontal
+Host Scan
+Hot Ice
+I need the power!
+ID Scan
+Icon
+Incarcerated
+Inflict Damage
+Initiate Crew Transfer
+Insane
+Interact
+Interface
+Internal
+Internal GPS
+Internal Power Decay
+Janitor
+Job
+Juggernaut
+Jumpsuit
+KILL
+Key
+Korta Flour
+Kortara
+LOOC
+Launch
+Lawyer
+Leather Satchel
+Left
+Left Arm
+Light Fixture
+Light replacer
+Lights
+Limiter
+Line
+Link
+Link Account
+Load Check
+Lockdown
+Loop mode
+Low Moles Heat Resistance
+Low Temperature Healing
+MI13 Fugitive Hunters
+Machines
+Main Power 1
+Main Power 2
+Maintenance Drone
+Malkavian Clan
+Man-Machine Interface
+Mark
+Master
+Me
+Medical
+Medical Doctor
+Medical HUD
+Message
+Message Successful
+Middle
+Mime
+Miner
+Miniature Energy Gun
+Mining
+Mobs
+Mode Select
+Moderate
+Modify
+Molar Damage
+Mop
+Motor 1
+Motor 2
+Multi Z layer cable hub
+Multilayer cable hub
+Multiline Text
+Multitool
+N/A
+Naked
+Name
+Nanites
+Nanotrasen Consultant
+Navy Rum
+NetGuardian Prime
+Nightmare
+No
+NoRank
+Nominal
+None
+Normal
+North
+Not Ready
+Not submitted
+Nothing
+Nude
+Nude Only
+Nuke base
+Number
+OOC
+Obese
+Off
+On the floor
+Open
+Operative
+Orderly
+Other
+Out of resources!
+Overclock
+Oversized
+PDA
+Pair (Alt)
+Panic Siphon
+Paramedic
+Parole
+Pay
+Peacekeeper
+Ping
+Pink
+Pirates
+Plate
+Positronic Brain
+Power
+Pray
+Prisoner
+Proceed
+Psychologist
+Psychologist Heat Resistance
+Psychologist Power Decay Negation
+Psychologist Waste Multiplier
+Psyker Fugitive Hunters
+Quartermaster
+Queen Bee
+RB-MK2 Reactor
+Radiation
+Radio
+Random
+Reagent
+Reattach or replace surgically.
+Receive
+Relay
+Release
+Remove
+Rename
+Repair Electronics
+Replay mode
+Research
+Research Director
+Reset
+Reset Model
+Reset Owner
+Reskin
+Rest
+Restart
+Restore Hull
+Retractor
+Right
+Right Arm
+Roboticist
+Rotate
+Runner
+Russian Fugitive Hunters
+SDQL2
+Safe
+Safeties
+Safety
+Saltwater
+Save
+Say
+Scalpel
+Scan Fail
+Scan Success
+Science
+Science Guard
+Scientist
+Screwdriver
+Search Failed
+Security
+Security HUD
+Security Medic
+Security Officer
+Self
+Service
+Set Life
+Set Mana
+Set Mana Slots
+Settler
+Shadow
+Shaft Miner
+Shark
+Shark (No Fin)
+Shaved
+Sheathed Pair
+Shovel
+Shuffle
+Shuttle
+Signal
+Simple
+Skin Contact
+Skinhead
+Socks Color
+South
+Space
+Space Exposure Damage
+Space Ninja
+Space Ruins
+SpaceBet
+Spacepol Fugitive Hunters
+Speaker
+Special
+Species
+Specific Marking
+Spell
+Spider Clan
+Spray bottle
+Stake
+Standard
+Start Now
+Stasis
+Station
+Station Engineer
+Station Member
+Station Message
+Stock Part
+Stop
+Sun
+Supermatter Crystal
+Supply
+Supply Pod
+Suspected
+Syndicate
+Syndicate Assault Cyborg
+Syndicate Medical Cyborg
+Tamper
+Target
+Telecomms Specialist
+Teleport
+Teleporter
+Teshari
+Test
+Text
+The Law
+The Syndicate
+The Verdict
+The Wizard
+The top is <b>screwed</b> on, but the main <b>bolts</b> are also visible.
+Their sprites
+There is a sticker displaying the <b>Chief Engineer's SEAL OF APPROVAL.</b>
+Throw
+Timing
+Title
+Toggle
+Traitor
+Tramstation
+Transfer
+Transform to initial appearance.
+Transmit
+Trash bag
+Trim
+Type
+Typepath
+Unabsorb
+Unassigned
+Unbolt
+Uncategorized
+Unconscious
+Undershirt Color
+Underwear Color
+Unknown
+Unlink
+Unrestricted Exit
+Update
+Uplink
+Used by antagonists. DO NOT PUT SEXUAL THINGS IN HERE. This is where you put flaws that can be exploited in any way. This will be viewable by antagonists if you modify this string, but only if there's anything at all in this box.
+Vagina
+Vent Direction
+Vent Power
+Vertical
+Vote Available
+Warden
+Weighted Random
+Weird Sound
+Welding Tool
+West
+Whis
+Wirecutters
+Wizard
+Wound
+Wraith
+Wrench
+Yes
+Yes.
+\improper MULEbot
+abductor
+abstract
+achievements
+acid
+acid-proof
+activated
+adamantine
+add
+advanced
+aggressive
+ahelp
+air alarm
+airlock
+alarms
+alive
+amber
+anchored
+animal
+announcement
+antennae
+anus
+appendix
+area-blueprints
+arm
+atmospheric-thermal
+atmospherics
+attached
+attack
+back
+backpack
+bar
+basketball
+beacon
+beaker
+bee
+belly
+belt
+biomass
+bite
+bland
+blank
+bleed
+blessed
+block_movement
+blood
+blue
+bluespace-active
+bolt
+bolts
+bomb
+bomb-proof
+bone
+bonesetter
+book
+bot
+bottle
+box
+brain
+breasts
+broken
+bubblegum
+bucket
+bulb
+bullet
+busy
+butt
+button
+camera
+candy
+capacitor
+card
+carrier
+cat
+cautery
+charge
+chemicals
+chest
+claw
+clear
+cleave
+climbable
+close
+clothing
+coin
+cold
+component
+conductive
+config
+connectable
+controller
+cook
+core
+crab
+crafting component
+credits
+crematorium
+crowbar
+crush-proof
+cursed
+custom
+cut
+dead
+deadmin
+death
+debug
+decal
+deconstruct
+default
+delta
+dent
+design
+dirty
+disabled
+door
+drain
+drill
+drone
+drop
+dust
+ears
+efficiency
+emagged
+emissive
+emp resistant
+empty
+enabled
+energy
+engine
+engineering
+error
+escape
+exotic
+explode
+explosion
+external airlocks
+eyes
+fire
+fire alarm
+fire-proof
+fish
+flammable
+flash
+flask
+flee
+flipped
+floor
+floor placeable
+fluff
+fluid
+food
+frame
+freeze-proof
+frills
+gamma
+gateway
+gauntlets
+genetics
+ghost
+gizmo
+glass
+glasses
+gloves
+gold
+green
+greenscreen
+hacked
+handle
+hard
+head
+heal
+health
+heart
+heat
+helmet
+hemostat
+hide
+high
+hits
+holographic
+holopad
+hook
+horns
+hud
+hull
+human
+hunger
+hydroponics
+ice
+ice cream
+id
+igniting
+implant
+indestructible
+info
+inject
+insulated
+intelliCard
+interact
+intercom
+invisimin
+invoke
+item
+items
+jacks
+job
+key
+kick
+kill
+knife
+label
+languages
+laser
+lava-proof
+leave
+left
+left hand
+light
+lighting
+limb
+linked
+liver
+locked
+look up
+low
+lungs
+lustwish
+machine
+machinery
+mafia
+magic
+magic-proof
+magical
+mail
+marked
+mask
+material
+materials
+meat
+medbay
+medical
+medium
+memo
+memorizer
+meson
+metal
+mind reader
+mining
+mob
+module
+morbid
+morgue
+motion-sensitive security camera
+move
+multitool
+namecheck
+neck
+neutral
+ninja
+no damage
+none
+nonflammable
+normal
+note
+nothing
+nutrition
+object
+off
+offline
+oil
+opened
+orange
+organ
+owl
+paddle
+paper
+parent
+partially EMP blocking
+partially insulated
+patient
+pen
+penis
+pepper-proof
+photo
+pickup
+pills
+ping
+pink
+plane_masters_colorblind
+plane_masters_game
+plasma
+plating
+polaroid
+polls
+poppy
+preferences
+pressure-proof
+projectile
+prone
+protean
+prototype
+pulse
+punch
+quick_equip_suit_storage
+radio
+ram
+random
+range
+rank
+ready
+recharging
+reconnect
+red
+renameable
+repair
+requests console
+research
+reset
+reskinnable
+retractor
+rigged
+right
+right hand
+rolling pin
+rope bunny
+rules
+sad
+safe
+sales tagger
+saw
+scalpel
+science
+screen
+screwdriver
+screwed
+secure
+security
+selected
+server
+set
+shadow
+shock
+shoes
+shovel
+shred
+shuttle
+sight
+sign
+silence
+silver
+skin
+skrell_hair
+slam
+slash
+sleep
+slime
+small
+smash
+smell
+smoke
+snail
+snap
+snout
+sound-proof
+space
+space dust
+species
+spinning
+staked
+stamina
+stamps
+start
+states
+station integrity
+status
+steps
+sterile
+stomach
+stop
+storage
+string
+subtle
+success
+suicide
+suit
+surgical
+syndicate
+t-ray
+tactile
+tail
+tamed
+tank
+tarkon
+task
+tcomms
+tdome1
+tdome2
+tdomeadmin
+tdomeobserve
+teal
+telepathy-proof
+teleport
+testicles
+tgui
+thermally insulated
+thick
+threatening
+throw
+timer
+toggle
+toggle_safety
+tongue
+tools
+tourniquet
+track
+transparent
+tree
+tube
+tubes
+turf
+undeploy
+uniform
+unknown
+unlocked
+unstun
+uplink
+use
+vagina
+vending
+violet
+virology
+virus
+vote
+wait
+walking-aid
+wall
+warded
+water
+weapons
+web
+welded
+welder
+whisper
+whitelist
+window
+wings
+wire
+wires
+wizard
+womb
+wrap
+wrench
+xenobiology
+zap

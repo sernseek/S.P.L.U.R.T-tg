@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/light_construct
 	name = "light fixture frame"
 	desc = "A light fixture under construction."
@@ -50,23 +51,23 @@
 	. = ..()
 	switch(stage)
 		if(LIGHT_CONSTRUCT_EMPTY)
-			. += span_notice("It's an empty frame with no wires.")
+			. += span_notice(LANG("obj.b73d03f20c5281b9", null))
 		if(LIGHT_CONSTRUCT_WIRED)
-			. += span_notice("It is wired, but the bolts are not screwed in.")
+			. += span_notice(LANG("obj.f04ddf2d686766bc", null))
 		if(LIGHT_CONSTRUCT_CLOSED)
-			. += span_notice("The casing is closed.")
+			. += span_notice(LANG("obj.f6ba57373add19fc", null))
 	if(cell_connectors)
 		if(cell)
-			. += span_notice("You see [cell] inside the casing.")
+			. += span_notice(LANG("obj.d65bfb246ff7c506", list(cell)))
 		else
-			. += span_notice("The casing has no power cell for backup power.")
+			. += span_notice(LANG("obj.3f83d4f3c2271b25", null))
 	else
-		. += span_danger("This casing doesn't support power cells for backup power.")
+		. += span_danger(LANG("obj.1bdbd305250d9821", null))
 
 /obj/structure/light_construct/attack_hand(mob/user, list/modifiers)
 	if(!cell)
 		return
-	user.visible_message(span_notice("[user] removes [cell] from [src]!"), span_notice("You remove [cell]."))
+	user.visible_message(span_notice(LANG("obj.6eec863436b99805", list(user, cell, src))), span_notice(LANG("obj.1973523e4f545786", list(cell))))
 	user.put_in_hands(cell)
 	cell = null
 	add_fingerprint(user)
@@ -74,7 +75,7 @@
 /obj/structure/light_construct/attack_tk(mob/user)
 	if(!cell)
 		return
-	to_chat(user, span_notice("You telekinetically remove [cell]."))
+	to_chat(user, span_notice(LANG("obj.326e922415f23244", list(cell))))
 	var/obj/item/stock_parts/power_store/cell_reference = cell
 	cell = null
 	cell_reference.forceMove(drop_location())
@@ -84,19 +85,19 @@
 	add_fingerprint(user)
 	if(istype(tool, /obj/item/stock_parts/power_store/cell))
 		if(!cell_connectors)
-			to_chat(user, span_warning("This [name] can't support a power cell!"))
+			to_chat(user, span_warning(LANG("obj.3e6b5586b39eb266", list(name))))
 			return ITEM_INTERACT_BLOCKING
 
 		if(!user.temporarilyRemoveItemFromInventory(tool))
-			to_chat(user, span_warning("[tool] is stuck to your hand!"))
+			to_chat(user, span_warning(LANG("obj.1dbf8014c030d016", list(tool))))
 			return ITEM_INTERACT_BLOCKING
 
 		if(cell)
-			to_chat(user, span_warning("There is a power cell already installed!"))
+			to_chat(user, span_warning(LANG("obj.18df60619fe8f5e9", null)))
 			return ITEM_INTERACT_BLOCKING
 
-		user.visible_message(span_notice("[user] hooks up [tool] to [src]."), \
-		span_notice("You add [tool] to [src]."))
+		user.visible_message(span_notice(LANG("obj.859ffee5df42a245", list(user, tool, src))), \
+		span_notice(LANG("obj.0c27fe262b2ac3b6", list(tool, src))))
 		playsound(src, 'sound/machines/click.ogg', 50, TRUE)
 		tool.forceMove(src)
 		cell = tool
@@ -104,18 +105,18 @@
 		return ITEM_INTERACT_SUCCESS
 
 	if(istype(tool, /obj/item/light))
-		to_chat(user, span_warning("This [name] isn't finished being setup!"))
+		to_chat(user, span_warning(LANG("obj.8f9c8ea66971dfa5", list(name))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(stage == LIGHT_CONSTRUCT_EMPTY && istype(tool, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/coil = tool
 		if(!coil.use(1))
-			to_chat(user, span_warning("You need one length of cable to wire [src]!"))
+			to_chat(user, span_warning(LANG("obj.41542255dc5f9152", list(src))))
 			return ITEM_INTERACT_BLOCKING
 		icon_state = "[fixture_type]-construct-stage2"
 		stage = LIGHT_CONSTRUCT_WIRED
-		user.visible_message(span_notice("[user.name] adds wires to [src]."), \
-							span_notice("You add wires to [src]."))
+		user.visible_message(span_notice(LANG("obj.1c9350ed5e24da8d", list(user.name, src))), \
+							span_notice(LANG("obj.b1f7e13ceef66539", list(src))))
 		return ITEM_INTERACT_SUCCESS
 
 	return NONE
@@ -124,28 +125,28 @@
 	switch(stage)
 		if(LIGHT_CONSTRUCT_EMPTY)
 			if(cell)
-				to_chat(user, span_warning("You have to remove the cell first!"))
+				to_chat(user, span_warning(LANG("obj.3218f2b785887c8c", null)))
 				return ITEM_INTERACT_BLOCKING
-			to_chat(user, span_notice("You begin deconstructing [src]..."))
+			to_chat(user, span_notice(LANG("obj.2f7a5f8d2b2b54b0", list(src))))
 			if (!tool.use_tool(src, user, 30, volume=50))
 				return ITEM_INTERACT_BLOCKING
-			user.visible_message(span_notice("[user.name] deconstructs [src]."), \
-								span_notice("You deconstruct [src]."), \
-								span_hear("You hear a ratchet."))
+			user.visible_message(span_notice(LANG("obj.6d94607af53d4e95", list(user.name, src))), \
+								span_notice(LANG("obj.a33d1bb641d47707", list(src))), \
+								span_hear(LANG("obj.aa8a193f8da7c41c", null)))
 			playsound(src, 'sound/items/deconstruct.ogg', 75, TRUE)
 			deconstruct()
 			return ITEM_INTERACT_SUCCESS
 		if(LIGHT_CONSTRUCT_WIRED)
-			to_chat(usr, span_warning("You have to remove the wires first!"))
+			to_chat(usr, span_warning(LANG("obj.de6ac88cbece36aa", null)))
 			return ITEM_INTERACT_BLOCKING
 	return NONE
 
 /obj/structure/light_construct/screwdriver_act(mob/living/user, obj/item/tool)
 	if(stage != LIGHT_CONSTRUCT_WIRED)
 		return NONE
-	user.visible_message(span_notice("[user.name] closes [src]'s casing."), \
-						span_notice("You close [src]'s casing."), \
-						span_hear("You hear screwing."))
+	user.visible_message(span_notice(LANG("obj.ab5a0f0c0a1d9928", list(user.name, src))), \
+						span_notice(LANG("obj.1aba22edc3992fad", list(src))), \
+						span_hear(LANG("obj.8616c74b67f81440", null)))
 	tool.play_tool_sound(src, 75)
 	switch(fixture_type)
 		if("tube")
@@ -170,9 +171,9 @@
 	stage = LIGHT_CONSTRUCT_EMPTY
 	icon_state = "[fixture_type]-construct-stage1"
 	new /obj/item/stack/cable_coil(drop_location(), 1, "red")
-	user.visible_message(span_notice("[user.name] removes the wiring from [src]."), \
-						span_notice("You remove the wiring from [src]."), \
-						span_hear("You hear clicking."))
+	user.visible_message(span_notice(LANG("obj.e3ab888fb6330d84", list(user.name, src))), \
+						span_notice(LANG("obj.8671a81f671efacf", list(src))), \
+						span_hear(LANG("obj.dcc6c1b00318bad4", null)))
 	tool.play_tool_sound(src, 100)
 	return ITEM_INTERACT_SUCCESS
 

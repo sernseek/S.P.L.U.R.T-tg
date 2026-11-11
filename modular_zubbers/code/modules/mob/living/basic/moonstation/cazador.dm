@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/mining/cazador
 
 	name = "cazador"
@@ -68,7 +69,7 @@
 
 /datum/reagent/toxin/cazador/on_mob_add(mob/living/carbon/affected_mob)
 	. = ..()
-	to_chat(affected_mob, span_danger("You feel a little woozy..."))
+	to_chat(affected_mob, span_danger(LANG("datum.f0aa427f3c2e234e", null)))
 
 /obj/item/reagent_containers/cup/tube/cazador_venom
 	name = "cazador venom vial"

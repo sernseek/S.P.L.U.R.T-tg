@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define DEGRADATION_LEVEL_NONE "dc_level_none"
 #define DEGRADATION_LEVEL_LOW "dc_level_low"
 #define DEGRADATION_LEVEL_MEDIUM "dc_level_medium"
@@ -403,7 +404,7 @@
 
 	owner.investigate_log(log_message)
 	owner.visible_message(visible_message, ignored_mobs = self_message_target) // finally, send it
-	owner.balloon_alert_to_viewers("something terrible has happened...")
+	owner.balloon_alert_to_viewers(LANG("datum.ed315fcd1f482392", null))
 	to_chat(self_message_target, self_message)
 
 /// Returns a short-ish string containing an href to [get_specific_data].
@@ -440,7 +441,7 @@
 		if (world.time <= time_til_scan_expires[usr])
 			to_chat(usr, boxed_message(get_specific_data()), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
 		else
-			to_chat(usr, span_warning("Your scan has expired! Try scanning again!"))
+			to_chat(usr, span_warning(LANG("datum.4f10cea5c2507031", null)))
 
 /datum/brain_trauma/severe/death_consequences/proc/append_analyzer_info(datum/signal_source, list/scan_results, advanced, mob/user, mode)
 	SIGNAL_HANDLER

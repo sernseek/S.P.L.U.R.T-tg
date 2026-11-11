@@ -13,11 +13,13 @@ import {
 } from 'tgui-core/components';
 
 import { useBackend, useSharedState } from '../backend';
+import { useT } from '../i18n';
 import { Window } from '../layouts';
 import { MaterialAccessBar } from './Fabrication/MaterialAccessBar';
 
 export const AmmoWorkbench = (props) => {
   const [tab, setTab] = useSharedState('tab', 1);
+  const t = useT();
   const { data, act } = useBackend();
   const { materials = [], SHEET_MATERIAL_AMOUNT, hacked, silo_connected } =
     data;
@@ -120,6 +122,7 @@ export const AmmoWorkbench = (props) => {
 
 export const AmmunitionsTab = (props) => {
   const { act, data } = useBackend();
+  const t = useT();
   const {
     mag_loaded,
     system_busy,
@@ -158,7 +161,7 @@ export const AmmunitionsTab = (props) => {
         )}
       </Box>
 
-      <Section title="Machine Settings">
+      <Section title={t('ammo_workbench.ui.machine_settings')}>
         <Flex align="center" justify="space-between">
           <Flex.Item>
             <Flex align="center">
@@ -267,7 +270,7 @@ export const AmmunitionsTab = (props) => {
         </Box>
       </Section>
 
-      <Section title="Available Ammunition Types">
+      <Section title={t('ammo_workbench.ui.available_types')}>
         {!mag_loaded && (
           <Box color="label" italic>
             Insert a container to list compatible rounds.

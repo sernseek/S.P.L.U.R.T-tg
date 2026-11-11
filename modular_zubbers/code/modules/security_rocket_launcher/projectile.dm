@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //The projectile itself
 /obj/projectile/bullet/security_missile
 	name = "active radar HE rocket"
@@ -68,7 +69,7 @@
 
 			if(isliving(firer) && prob(5))
 				var/mob/living/firer_as_living = firer
-				firer_as_living.say("A DUD!!", forced = "rocket dud")
+				firer_as_living.say(LANG("obj.78a1d39920fa482b", null), forced = "rocket dud")
 
 		playsound(target, 'sound/items/weapons/smash.ogg', 50, TRUE, -1)
 

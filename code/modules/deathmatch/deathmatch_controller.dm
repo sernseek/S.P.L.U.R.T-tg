@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/deathmatch_controller
 	/// Assoc list of all lobbies (ckey = lobby)
 	var/list/datum/deathmatch_lobby/lobbies = list()
@@ -24,7 +25,8 @@
 
 /datum/deathmatch_controller/proc/create_new_lobby(mob/host)
 	lobbies[host.ckey] = new /datum/deathmatch_lobby(host)
-	deadchat_broadcast(" has opened a new deathmatch lobby. <a href=byond://?src=[REF(lobbies[host.ckey])];join=1>(Join)</a>", "<B>[host]</B>")
+	// ZH EDIT CHANGE - I18N - 链接经控制器转发，大厅已关/已开打时给提示（见 modular_zh/master_files/.../deathmatch_controller.dm）；模板不变，{0} 落在 href 里
+	deadchat_broadcast(LANG("datum.a5cecc89a6ed7fd6", list("[REF(src)];lobby=[REF(lobbies[host.ckey])]")), "<B>[host]</B>") // ORIGINAL: deadchat_broadcast(" has opened a new deathmatch lobby. <a href=byond://?src=[REF(lobbies[host.ckey])];join=1>(Join)</a>", "<B>[host]</B>")
 
 /datum/deathmatch_controller/proc/remove_lobby(ckey)
 	var/lobby = lobbies[ckey]
@@ -78,18 +80,18 @@
 	switch (action)
 		if ("host")
 			if(!(GLOB.ghost_role_flags & GHOSTROLE_MINIGAME))
-				tgui_alert(usr, "Deathmatch has been temporarily disabled by admins.")
+				tgui_alert(usr, LANG("datum.b11a5c4e71caf134", null))
 				return
 			if (lobbies[usr.ckey])
 				return
 			if(!SSticker.HasRoundStarted())
-				tgui_alert(usr, "The round hasn't started yet!")
+				tgui_alert(usr, LANG("datum.dc7dc65ad497d278", null))
 				return
 			ui.close()
 			create_new_lobby(usr)
 		if ("join")
 			if(!(GLOB.ghost_role_flags & GHOSTROLE_MINIGAME))
-				tgui_alert(usr, "Deathmatch has been temporarily disabled by admins.")
+				tgui_alert(usr, LANG("datum.b11a5c4e71caf134", null))
 				return
 			if (!lobbies[params["id"]])
 				return

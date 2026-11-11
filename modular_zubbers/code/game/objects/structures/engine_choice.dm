@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CHOICE_SUPERMATTER "Supermatter Crystal"
 #define CHOICE_RBMK "RB-MK2 Reactor"
 
@@ -75,7 +76,7 @@
 
 	radio.talk_into(
 		src,
-		"[user] is currently removing [src]. If this is not intentional, please contact security.",
+		LANG("obj.77387e090f3b44e1", list(user, src)),
 		RADIO_CHANNEL_ENGINEERING
 	)
 
@@ -111,7 +112,7 @@
 		playsound(src, 'sound/machines/terminal_alert_short.ogg', 50, FALSE)
 		radio.talk_into(
 			src,
-			"Deployment operation canceled by [user].",
+			LANG("obj.9dfdbb545adadb0d", list(user)),
 			RADIO_CHANNEL_ENGINEERING
 		)
 		deltimer(deployment_timer_id)
@@ -125,11 +126,11 @@
 
 	radio.talk_into(
 		src,
-		"[user] is currently selecting the engine type to use for the shift.",
+		LANG("obj.91be38ac8538ade2", list(user)),
 		RADIO_CHANNEL_ENGINEERING
 	)
 
-	var/choice = tgui_input_list(user, "Which engine would you like to order?", "Select an engine!", list(CHOICE_SUPERMATTER,CHOICE_RBMK))
+	var/choice = tgui_input_list(user, LANG("obj.5f05831314e655d8", null), LANG("obj.14a97678ebdd562e", null), list(CHOICE_SUPERMATTER,CHOICE_RBMK))
 
 	if(!choice || !can_use(user) || deployment_timer_id)
 		return FALSE
@@ -142,7 +143,7 @@
 
 	radio.talk_into(
 		src,
-		"[user] has selected option \"[choice]\" to be used for the shift! Stay clear of the deployment zone! ETA: [deployment_time/10] seconds!",
+		LANG("obj.bd020cd157f8a6e2", list(user, choice, deployment_time/10)),
 		RADIO_CHANNEL_ENGINEERING
 	)
 

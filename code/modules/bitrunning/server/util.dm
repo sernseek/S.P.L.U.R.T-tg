@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MAX_DISTANCE 4 // How far crates can spawn from the server
 
 
@@ -9,7 +10,7 @@
 	//If the dauntless map is removed, remove this hack!
 	var/area/curr = get_area(src)
 	if(istype(curr, /area/ruin/space/has_grav/bubbers/dauntless) || istype(curr, /area/ruin/space/has_grav/bubbers/dauntless_space))
-		balloon_alert_to_viewers("cooldown has completed")
+		balloon_alert_to_viewers(LANG("obj.8994c2d64eb71cc7", null))
 		return
 	//BUBBER ADDITION END
 	aas_config_announce(/datum/aas_config_entry/bitrunning_QS_ready_announcement, list(), src, list(RADIO_CHANNEL_SUPPLY))
@@ -30,7 +31,7 @@
 
 		hosted_avatars += list(list(
 			"health" = creature.health,
-			"name" = creature.name,
+			"name" = creature.lang_localize_name_for_display(creature.name), // ZH EDIT - I18N: 纯显示；mob 版只翻仍等于 initial(name) 的类型名。ORIGINAL: "name" = creature.name,
 			"pilot" = pilot,
 			"brute" = creature.get_brute_loss(),
 			"burn" = creature.get_fire_loss(),

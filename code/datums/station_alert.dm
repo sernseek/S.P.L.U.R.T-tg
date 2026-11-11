@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/station_alert
 	/// Holder of the datum
 	var/holder
@@ -27,7 +28,7 @@
 /datum/station_alert/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "StationAlertConsole", title)
+		ui = new(user, src, "StationAlertConsole", lang_reverse_text(title)) // ZH EDIT - i18n: 窗口标题反查
 		ui.open()
 
 /datum/station_alert/ui_data(mob/user)
@@ -92,12 +93,12 @@
 			if(length(named_cameras) == 1)
 				chosen_camera = named_cameras[1]
 			else
-				chosen_camera = tgui_input_list(ai, "Choose a camera to jump to", "Camera Selection", named_cameras)
+				chosen_camera = tgui_input_list(ai, LANG("datum.0154133ce8ab6a98", null), LANG("datum.b61403d24165a838", null), named_cameras)
 				if(isnull(chosen_camera))
 					return
 			var/obj/machinery/camera/selected_camera = named_cameras[chosen_camera]
 			if(!selected_camera.can_use())
-				to_chat(ai, span_warning("Camera is unavailable!"))
+				to_chat(ai, span_warning(LANG("datum.783ddddadb3471ed", null)))
 				return
 			ai.switchCamera(selected_camera)
 			return TRUE

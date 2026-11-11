@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/mob_spawn/ghost_role/robot
 	name = "Ghost Role Robot"
 	prompt_name = "a robot"
@@ -35,7 +36,7 @@
 		new_spawn.RegisterSignal(new_spawn, COMSIG_MOVABLE_USING_RADIO, TYPE_PROC_REF(/mob/living, on_using_radio))
 		ADD_TRAIT(new_spawn, TRAIT_SIXTHSENSE, TRAIT_GHOSTROLE)
 		ADD_TRAIT(new_spawn, TRAIT_FREE_GHOST, TRAIT_GHOSTROLE)
-		to_chat(new_spawn,span_warning("<b>Ghosting is free!</b>"))
+		to_chat(new_spawn,span_warning(LANG("obj.e70e28c0e46f2416", null)))
 		var/datum/action/toggle_dead_chat_mob/D = new(new_spawn)
 		D.Grant(new_spawn)
 
@@ -65,7 +66,7 @@
 		new_spawn.RegisterSignal(new_spawn, COMSIG_MOVABLE_USING_RADIO, TYPE_PROC_REF(/mob/living, on_using_radio))
 		ADD_TRAIT(new_spawn, TRAIT_SIXTHSENSE, TRAIT_GHOSTROLE)
 		ADD_TRAIT(new_spawn, TRAIT_FREE_GHOST, TRAIT_GHOSTROLE)
-		to_chat(new_spawn,span_warning("<b>Ghosting is free!</b>"))
+		to_chat(new_spawn,span_warning(LANG("obj.e70e28c0e46f2416", null)))
 		var/datum/action/toggle_dead_chat_mob/D = new(new_spawn)
 		D.Grant(new_spawn)
 
@@ -104,9 +105,9 @@
 	var/mob/M = target
 	if(HAS_TRAIT_FROM(M,TRAIT_SIXTHSENSE,TRAIT_GHOSTROLE))
 		REMOVE_TRAIT(M,TRAIT_SIXTHSENSE,TRAIT_GHOSTROLE)
-		to_chat(M,span_notice("You're no longer hearing deadchat."))
+		to_chat(M,span_notice(LANG("datum.e94a4ac78dafc7f3", null)))
 	else
 		ADD_TRAIT(M,TRAIT_SIXTHSENSE,TRAIT_GHOSTROLE)
-		to_chat(M,span_notice("You're once again hearing deadchat."))
+		to_chat(M,span_notice(LANG("datum.b025ffbefa8019d1", null)))
 
 

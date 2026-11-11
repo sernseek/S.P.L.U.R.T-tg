@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/food/egg/raptor_egg
 	name = "raptor egg"
 	desc = "An uneven egg with a rough, thick shell."
@@ -28,7 +29,7 @@
 /obj/item/food/egg/raptor_egg/examine(mob/user)
 	. = ..()
 	if (growth_progress >= RAPTOR_EGG_GROWTH_PROGRESS)
-		. += span_boldnotice("Its noticeably shaking, ready to hatch!")
+		. += span_boldnotice(LANG("obj.276edfdba3a80fc1", null))
 
 /obj/item/food/egg/raptor_egg/process(seconds_per_tick)
 	if (!isturf(loc) || length(GLOB.raptor_population) >= MAX_RAPTOR_POP)
@@ -47,7 +48,7 @@
 	if (growth_progress < RAPTOR_EGG_GROWTH_PROGRESS || islava(loc))
 		return
 
-	visible_message(span_notice("[src] hatches with a quiet cracking sound."))
+	visible_message(span_notice(LANG("obj.ad60dd61b4dfb14f", list(src))))
 	new /mob/living/basic/raptor/baby(loc, child_color, inherited_stats)
 	inherited_stats = null
 	qdel(src)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define REGEN_TIME (30 SECONDS) // () are important for order of operations. Fuck you too, byond
 /obj/item/organ/stomach/protean
 	name = "refactory"
@@ -68,7 +69,7 @@
 		return
 	owner.adjust_brute_loss(2, forced = TRUE)
 	if(COOLDOWN_FINISHED(src, starving_message))
-		to_chat(owner, span_warning("You are starving! You must find metal now!"))
+		to_chat(owner, span_warning(LANG("obj.7ad39fc6d9a14bf3", null)))
 		owner.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/protean_slowdown, multiplicative_slowdown = 2)
 		COOLDOWN_START(src, starving_message, 20 SECONDS)
 
@@ -86,7 +87,7 @@
 	if(istype(eating, /obj/item/food/golem_food))
 		var/obj/item/food/golem_food/food = eating
 		if(metal > (PROTEAN_STOMACH_FULL - 0.3) && food.owner.loc == owner)
-			balloon_alert(owner, "storage full!")
+			balloon_alert(owner, LANG("obj.1205d2c0e030ec99", null))
 			return BLOCK_EAT_ATTEMPT
 
 /// If we ate a sheet of metal, add it to storage.

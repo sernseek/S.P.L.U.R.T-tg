@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /datum/chemical_reaction/sterilizine
 	results = list(/datum/reagent/space_cleaner/sterilizine = 3)
@@ -661,10 +662,10 @@
 	if(iscarbon(maybe_monkey))
 		if(ismonkey(maybe_monkey))
 			maybe_monkey.gib(DROP_ALL_REMAINS)
-			to_chat(maybe_monkey, span_danger("You body is torn to shreds as a monkey bursts out of you!"))
+			to_chat(maybe_monkey, span_danger(LANG("datum.c49f5c95e9c85aa7", null)))
 		else
 			maybe_monkey.vomit(VOMIT_CATEGORY_BLOOD)
-			to_chat(maybe_monkey, span_danger("You vomit out blood, making you feel grossly monkeyish."))
+			to_chat(maybe_monkey, span_danger(LANG("datum.b305e5df21e2a3fd", null)))
 
 		var/monkey_cap = CONFIG_GET(number/monkeycap)
 		for(var/_ in 1 to created_volume)
@@ -682,10 +683,10 @@
 	if(iscarbon(maybe_monkey))
 		if(ismonkey(maybe_monkey))
 			maybe_monkey.gib(DROP_ALL_REMAINS)
-			to_chat(maybe_monkey, span_danger("You body is torn to shreds as a pissed off monkey bursts out of you!"))
+			to_chat(maybe_monkey, span_danger(LANG("datum.d786bafc2b9ce312", null)))
 		else
 			maybe_monkey.vomit(VOMIT_CATEGORY_BLOOD)
-			to_chat(maybe_monkey, span_danger("You vomit out blood, making you feel grossly monkeyish."))
+			to_chat(maybe_monkey, span_danger(LANG("datum.b305e5df21e2a3fd", null)))
 
 		var/monkey_cap = CONFIG_GET(number/monkeycap)
 		for(var/_ in 1 to created_volume)
@@ -1053,7 +1054,7 @@
 			clear_products(holder, step_volume_added)
 			return
 	clear_products(holder, step_volume_added)
-	holder.my_atom.audible_message(span_notice("[icon2html(holder.my_atom, viewers(DEFAULT_MESSAGE_RANGE, src))] The reaction gives out a fizz, teleporting items everywhere!"))
+	holder.my_atom.audible_message(span_notice(LANG("datum.89c474ef79d97f75", list(icon2html(holder.my_atom, viewers(DEFAULT_MESSAGE_RANGE, src))))))
 
 /datum/chemical_reaction/ants // Breeding ants together, high sugar cost makes this take a while to farm.
 	results = list(/datum/reagent/ants = 3)

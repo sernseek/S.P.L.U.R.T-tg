@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/scripture/clockwork_armaments
 	name = "Clockwork Armaments"
 	desc = "Summon clockwork armor and weapons, to be ready for battle."
@@ -11,7 +12,7 @@
 
 
 /datum/scripture/clockwork_armaments/invoke_success()
-	var/choice = tgui_input_list(invoker, "What weapon do you want to call upon?", "Clockwork Armaments", list("Brass Spear", "Brass Battlehammer", "Brass Sword", "Brass Bow"))
+	var/choice = tgui_input_list(invoker, LANG("datum.046c7982918bb75c", null), LANG("datum.288340034f411191", null), list("Brass Spear", "Brass Battlehammer", "Brass Sword", "Brass Bow"))
 
 	if(!choice)
 		return FALSE

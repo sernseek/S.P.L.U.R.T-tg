@@ -152,10 +152,10 @@
 
 /obj/item/toy/plush/cescrewsplush/examine(mob/user)
 	. = ..()
-	. += span_notice("Alt-click to take a look under her skirt.")
+	. += span_notice(LANG("obj.a32836df27915e5c", null))
 
 /obj/item/toy/plush/cescrewsplush/click_alt(mob/user)
-	user.visible_message(span_notice("[user] turns [src], revealing the hole underneath."), span_notice("You turn [src], revealing a tight, lubed hole."))
+	user.visible_message(span_notice(LANG("obj.cfe81f9f6e91a121", list(user, src))), span_notice(LANG("obj.d90510ec6990d845", list(src))))
 	playsound(user, 'sound/effects/blob/blobattack.ogg', 50, TRUE)
 	var/obj/item/toy/plush/fleshlight/screws/toy = new(null)
 	qdel(src)
@@ -208,12 +208,12 @@
 
 /obj/item/toy/plush/cat_annoying/proc/combust()
 	src.fire_act(5000)
-	src.visible_message(span_notice("The [src.name] spontaneously combusts from physical affection!"))
+	src.visible_message(span_notice(LANG("obj.b46d7a44d79e7c7f", list(src.name))))
 	addtimer(CALLBACK(src, PROC_REF(ash)), 2 SECONDS)
 
 /obj/item/toy/plush/cat_annoying/proc/ash()
 	new /obj/effect/decal/cleanable/ash(get_turf(src))
-	src.visible_message(span_warning("The [src.name] turns to ash!"))
+	src.visible_message(span_warning(LANG("obj.811493e5cac6ddb5", list(src.name))))
 	qdel(src)
 
 // Plush for Vanilla
@@ -248,22 +248,22 @@
 /obj/item/toy/plush/suspicious_protogen/examine(mob/user)
 	. = ..()
 	if(lewd)
-		. += span_purple("The zipper in her crotch is opened, exposing the secret fleshlight inside the plushie.")
+		. += span_purple(LANG("obj.ebd7ba03d3650f10", null))
 
 /obj/item/toy/plush/suspicious_protogen/update_desc()
 	..()
 	if(lewd)
-		desc = "A very suspicious pink looking protogen plushie with a well lubed tight hole underneath, perfect for fun times and stress relieving."
+		desc = LANG("obj.791194bd95f6344d", null)
 	else
-		desc = "A suspicious pink looking protogen plushie commonly seen roaming the station almost everywhere, perfect for cuddling when you feel upset at something."
+		desc = LANG("obj.1e36206178e0b35d", null)
 
 /obj/item/toy/plush/suspicious_protogen/click_ctrl_shift(mob/user)
 	lewd = !lewd
 	if(lewd)
-		user.visible_message(span_notice("[user] unzips [src]"), span_notice("You unzip [src], revealing a secret hole in the plushie."))
+		user.visible_message(span_notice(LANG("obj.647aece55e6f92c6", list(user, src))), span_notice(LANG("obj.ed4e90c9f816d1fd", list(src))))
 		playsound(user, 'sound/items/zip/zip.ogg', 50, TRUE)
 	else
-		user.visible_message(span_notice("[user] zips [src] back up."), span_notice("You zip [src]. Concealing her secret hole."))
+		user.visible_message(span_notice(LANG("obj.5e5500ded0030397", list(user, src))), span_notice(LANG("obj.a43d6970b1f08eae", list(src))))
 		playsound(user, 'sound/items/zip/zip_up.ogg', 50, TRUE)
 	update_plush_state()
 	return TRUE
@@ -394,15 +394,15 @@
 	if(!istype(fat_dart))
 		return ..()
 	if(splat)
-		to_chat(user, span_notice("[src] doesn't seem to be able to go hard right now."))
+		to_chat(user, span_notice(LANG("obj.595c09ff724c3d52", list(src))))
 		return
 	if(going_hard)
-		to_chat(user, span_notice("[src] is already going too hard!"))
+		to_chat(user, span_notice(LANG("obj.3e087cd4d2fbdb02", list(src))))
 		return
 	if(!fat_dart.lit)
-		to_chat(user, span_notice("You'll have to light that first!"))
+		to_chat(user, span_notice(LANG("obj.cb4c0c48ee166fa5", null)))
 		return
-	to_chat(user, span_notice("You put [fat_dart] into [src]'s mouth."))
+	to_chat(user, span_notice(LANG("obj.dc4f27a359035eb8", list(fat_dart, src))))
 	qdel(fat_dart)
 	going_hard = TRUE
 	update_icon(UPDATE_OVERLAYS)
@@ -416,15 +416,15 @@
 		update_icon(UPDATE_OVERLAYS)
 	icon_state = "goat_splat"
 	playsound(src, SFX_DESECRATION, 50, TRUE)
-	visible_message(span_danger("[src] gets absolutely flattened!"))
+	visible_message(span_danger(LANG("obj.ad4bfb0e140e2952", list(src))))
 	splat = TRUE
 
 /obj/item/toy/plush/goatplushie/examine()
 	. = ..()
 	if(splat)
-		. += span_notice("[src] might need medical attention.")
+		. += span_notice(LANG("obj.339f70eec626ce2d", list(src)))
 	if(going_hard)
-		. += span_notice("[src] is going so hard, feel free to take a picture.")
+		. += span_notice(LANG("obj.4ef9e86d51db3c32", list(src)))
 
 /obj/item/toy/plush/goatplushie/update_overlays()
 	. = ..()
@@ -483,12 +483,12 @@
 /obj/item/toy/plush/cello_plush/click_alt(mob/user)
 	shirt = !shirt
 	if(!shirt)
-		balloon_alert(user, "tummy shown...")
+		balloon_alert(user, LANG("obj.6234c95572d3a151", null))
 		icon_state = "celloplush-alt"
 		inhand_icon_state = "celloplush-alt"
 
 	else
-		balloon_alert(user, "tummy tucked away...")
+		balloon_alert(user, LANG("obj.fa1d2222bfc2edac", null))
 		icon_state = "celloplush"
 		inhand_icon_state = "celloplush-shirt"
 
@@ -580,7 +580,7 @@
 //Plot armour
 /obj/item/toy/plush/tian_plush/attackby(obj/item/I, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(I.get_sharpness())
-		to_chat(user, span_notice("[I] just bounces off!"))
+		to_chat(user, span_notice(LANG("obj.f3e6f608d5ed2949", list(I))))
 		return
 	return ..()
 
@@ -589,7 +589,7 @@
 	if(is_type_in_typecache(tool, folder_insertables))
 		if(!user.transferItemToLoc(tool, src, silent = FALSE))
 			return ITEM_INTERACT_BLOCKING
-		balloon_alert(user, "nom!")
+		balloon_alert(user, LANG("obj.db938992b1a35191", null))
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
@@ -604,7 +604,7 @@
 		item_to_insert.do_pickup_animation(src)
 		item_to_insert.forceMove(src)
 	playsound(src, item_to_insert.pickup_sound, PICKUP_SOUND_VOLUME, item_to_insert.sound_vary, ignore_walls = FALSE)
-	balloon_alert(user, "nom!")
+	balloon_alert(user, LANG("obj.db938992b1a35191", null))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/toy/plush/tian_plush/ui_interact(mob/user, datum/tgui/ui)
@@ -640,7 +640,7 @@
 			if(istype(Item))
 				Item.forceMove(usr.loc)
 				usr.put_in_hands(Item)
-				to_chat(usr, span_notice("You remove [Item] from [src]."))
+				to_chat(usr, span_notice(LANG("obj.cbed32661d4c054a", list(Item, src))))
 				. = TRUE
 		if("examine")
 			var/obj/item/Item = locate(params["ref"]) in src
@@ -651,11 +651,11 @@
 /obj/item/toy/plush/tian_plush/click_alt(mob/user)
 	shirt = !shirt
 	if(!shirt)
-		balloon_alert(user, "tummy shown...")
+		balloon_alert(user, LANG("obj.6234c95572d3a151", null))
 		icon_state = "tianplush-alt"
 
 	else
-		balloon_alert(user, "tummy tucked away...")
+		balloon_alert(user, LANG("obj.fa1d2222bfc2edac", null))
 		icon_state = "tianplush"
 	return ..()
 
@@ -673,7 +673,7 @@
 /obj/item/toy/plush/plushling/attack_self(mob/user)
 	if(!user)
 		return
-	to_chat(user, span_warning("You try to pet the plushie, but recoil as it bites your hand instead! OW!"))
+	to_chat(user, span_warning(LANG("obj.6739ccb5e42d947a", null)))
 	var/mob/living/carbon/human/human_user = user
 	if(!human_user)
 		return
@@ -709,7 +709,7 @@
 			if(istype(adjacent_plush, /obj/item/toy/plush/plushling)) //These do not hunt their own kind
 				continue
 			src.throw_at(adjacent_plush, 1, 2)
-			visible_message(span_danger("[src] leaps at [adjacent_plush]!"))
+			visible_message(span_danger(LANG("obj.03a8ab45923a8447", list(src, adjacent_plush))))
 			break
 		return
 	if(istype(target, /obj/item/toy/plush/plushling)) //These do not consume their own.
@@ -720,7 +720,7 @@
 /obj/item/toy/plush/plushling/proc/plushie_absorb(obj/item/toy/plush/victim)
 	if(!victim)
 		return
-	visible_message(span_warning("[src] gruesomely mutilates [victim], leaving nothing more than dust!"))
+	visible_message(span_warning(LANG("obj.b5b2fe7a7f6146b5", list(src, victim))))
 	name = victim.name
 	desc = victim.desc + " Wait, did it just move..?"
 	icon_state = victim.icon_state
@@ -755,7 +755,7 @@
 /obj/item/toy/plush/aeri/proc/update_plush_state()
 	if(clothed)
 		name = "Interdimensional Terrorist Plushie"
-		desc = "A highly controversial silicone 'plushie' modeled after its infamous namesake. Pulled from most storefronts after a spectacular public backlash, it now survives mainly through grey-market resellers. Rumor has it a few limited-run units shipped with a functional handheld railgun."
+		desc = LANG("obj.f4e37664fcbc25da", null)
 		icon_state = "aeri"
 		//probably not necessary to put the verb and squeak override once again here but it kinda bugs out if I don't
 		attack_verb_continuous = list("cuddles", "squeaks", "hugs", "caresses")
@@ -768,7 +768,7 @@
 		hitsound = initial(hitsound)
 	else
 		name = "Interdimensional terrorist Doll"
-		desc = "Without the outfit, the 'plushie' label becomes much harder to defend. Beneath the clothing is a glossy, stretchable silicone shell with ribbed orifices and breasts that experts have described as 'Fuckable'."
+		desc = LANG("obj.cde3d7bf88e1bc59", null)
 		icon_state = "aeri-alt"
 		attack_verb_continuous = list("cuddles", "squeaks", "hugs", "caresses")
 		attack_verb_simple = list("cuddle", "squeak", "hug", "caress")
@@ -785,23 +785,23 @@
 /obj/item/toy/plush/aeri/update_desc()
 	..()
 	if(clothed)
-		desc = "A highly controversial silicone 'plushie' modeled after its infamous namesake. Pulled from most storefronts after a spectacular public backlash, it now survives mainly through grey-market resellers. Rumor has it a few limited-run units shipped with a functional handheld railgun."
+		desc = LANG("obj.f4e37664fcbc25da", null)
 	else
-		desc = "Without the outfit, the 'plushie' label becomes much harder to defend. Beneath the clothing is a glossy, stretchable silicone shell with ribbed orifices and breasts that experts have described as 'Fuckable'."
+		desc = LANG("obj.cde3d7bf88e1bc59", null)
 
 /obj/item/toy/plush/aeri/examine(mob/user)
 	. = ..()
 	if(clothed)
-		. += span_purple("Alt-click to remove the plushie's clothes.")
+		. += span_purple(LANG("obj.90631d756a79fc23", null))
 	else
-		. += span_purple("Alt-click to dress the doll back up.")
+		. += span_purple(LANG("obj.59845dfac5bd7a15", null))
 
 /obj/item/toy/plush/aeri/click_alt(mob/user)
 	clothed = !clothed
 	if(clothed)
-		to_chat(user, span_notice("You dress [src] back up."))
+		to_chat(user, span_notice(LANG("obj.952f96f36a95a24d", list(src))))
 	else
-		to_chat(user, span_notice("You remove [src]'s clothes."))
+		to_chat(user, span_notice(LANG("obj.580a1e6c11f98eec", list(src))))
 	playsound(user, 'modular_zubbers/sound/lewd/rubber1.ogg', 50, TRUE)
 	update_plush_state()
 	return TRUE
@@ -819,7 +819,7 @@
 
 //If you suicide with this toy it just summons a BSA smite on you
 /obj/item/toy/plush/aeri/suicide_act(mob/living/carbon/human/user)
-	user.visible_message(span_suicide("[user] angers the plushie! Oh god, it's locking a Bluespace Artillery strike onto [user.p_them()]! It looks like [user.p_theyre()] trying to kill [user.p_them()]self!"))
+	user.visible_message(span_suicide(LANG("obj.3d5fd0b3cd2bd9e1", list(user, user.p_them(), user.p_theyre(), user.p_them()))))
 	var/datum/smite/bsa/bluespace_smite = new()
 	bluespace_smite.effect(user.client, user)
 	return BRUTELOSS
@@ -848,7 +848,7 @@
 	if(!istype(enom))
 		return ..()
 	enom.forceMove(src) // pill go into the expie stummy
-	to_chat(feeder, span_notice("You feed the [enom] to [src] and watch as it eats..."))
+	to_chat(feeder, span_notice(LANG("obj.aacd1fd30920de16", list(enom, src))))
 	playsound(src, 'modular_zubbers/sound/misc/eatcrunch.ogg', 75, TRUE)
 	addtimer(CALLBACK(src, PROC_REF(eat), feeder, enom), 3 SECONDS)
 	return ITEM_INTERACT_SUCCESS
@@ -864,7 +864,7 @@
 	SIGNAL_HANDLER
 	playsound(src, 'modular_zubbers/sound/misc/dogshake.ogg', 75)
 	spasm_animation(2 SECONDS)
-	visible_message(span_warning("[src] gets soaked and shakes itself off!"))
+	visible_message(span_warning(LANG("obj.33728eb3a68a7404", list(src))))
 
 /obj/item/toy/plush/expie/Initialize(mapload)
 	. = ..()
@@ -942,24 +942,24 @@
 /obj/item/toy/plush/noble/examine(mob/user)
 	. = ..()
 	if(clothed)
-		. += span_purple("Alt-click to undress this plushie.")
+		. += span_purple(LANG("obj.891a4c97ef115d13", null))
 	else
-		. += span_purple("Alt-click to dress this plushie back up.")
+		. += span_purple(LANG("obj.39a4ddb994fd35b0", null))
 
 /obj/item/toy/plush/noble/update_desc() // update_plush_state() doesn't update the description properly but this worked for me
 	..()
 	if(clothed)
-		desc = "A small and fluffy skulldog plushie wearing a tiny paramedic coat, he's extremely squishy."
+		desc = LANG("obj.882baed579be5098", null)
 	else
-		desc = "A small and fluffy... Good grief he's naked! A naked and squishy skulldog plushie, you notice it has been modified with a conveniently placed hole underneath."
+		desc = LANG("obj.61fa04548820dd13", null)
 
 /obj/item/toy/plush/noble/click_alt(mob/user)
 	clothed = !clothed
 	if(clothed)
-		user.visible_message(span_notice("[user] dresses the [src] back up."), span_notice("You dress the [src] back up."))
+		user.visible_message(span_notice(LANG("obj.7a6cddf6e919be50", list(user, src))), span_notice(LANG("obj.05be6a0cec606d80", list(src))))
 		playsound(user, 'sound/items/zip/zip_up.ogg', 50, TRUE)
 	else
-		user.visible_message(span_notice("[user] undresses the [src], how scandalous!"), span_notice("You undress the [src]. You notice a tight hole under the plushie..."))
+		user.visible_message(span_notice(LANG("obj.229d9ac6ff92dd80", list(user, src))), span_notice(LANG("obj.d71ca2910dbda293", list(src))))
 		playsound(user, 'sound/items/zip/zip.ogg', 50, TRUE)
 	update_plush_state()
 	return TRUE
@@ -990,7 +990,7 @@
 
 /obj/item/toy/plush/blue_synth/examine(mob/user)
 	. = ..()
-	. += span_warning("Warning label: DO NOT MICROWAVE")
+	. += span_warning(LANG("obj.97519d5f4b960275", null))
 
 /obj/item/toy/plush/blue_synth/microwave_act(obj/machinery/microwave/microwave_source, mob/microwaver, randomize_pixel_offset)
 	..()
@@ -1031,7 +1031,7 @@
 	if(!user.transferItemToLoc(tool, src))
 		return ITEM_INTERACT_BLOCKING
 	else
-		balloon_alert(user, "attached [tool]")
+		balloon_alert(user, LANG("obj.07b7e630c2be57ee", list(tool)))
 		inserted_item = tool
 		playsound(src, 'modular_zubbers/sound/lewd/rubber3.ogg', 50, TRUE)
 		update_plush_state()
@@ -1039,7 +1039,7 @@
 
 /obj/item/toy/plush/protective_protogen/proc/remove_item(mob/user)
 	if(inserted_item)
-		balloon_alert(user, "removed [inserted_item]")
+		balloon_alert(user, LANG("obj.c6b4aa687c2eb2c1", list(inserted_item)))
 		user.put_in_hands(inserted_item)
 		inserted_item = null
 		playsound(src, 'modular_zubbers/sound/lewd/rubber2.ogg', 50, TRUE)
@@ -1064,21 +1064,16 @@
 /obj/item/toy/plush/protective_protogen/examine(mob/user)
 	. = ..()
 	if(!inserted_item)
-		. += span_purple("You can attach a dildo to this plushie.")
+		. += span_purple(LANG("obj.a834d3e8bf8ffc18", null))
 	else
-		. += span_purple("Alt-click to remove the dildo.")
+		. += span_purple(LANG("obj.4f08b372367a82f5", null))
 
 /obj/item/toy/plush/protective_protogen/update_desc()
 	..()
 	if(!inserted_item)
-		desc = "A protective pink looking protogen plushie with quite the generous and defensive mindset, \
-		a critter that will most likely always be around to make one feel better and cheer them up. \
-		This is the emotional support you need when the real thing isn't around, perfect for spilling your thoughts and worries into, it's unbearably soft..."
+		desc = LANG("obj.9f9d0ef645ddc7d3", null)
 	else
-		desc = "A protective pink looking protogen plushie with quite the generous and defensive mindset, \
-		a critter that will most likely always be around to make one feel better and cheer them up. \
-		This is the emotional support you need when the real thing isn't around, perfect for spilling your thoughts and worries into, it's unbearably soft.. \
-		The attached dildo seems to have changed into a cyan-colored knotted dick, and a hefty set of nuts. It looks and feels almost too real..."
+		desc = LANG("obj.9ca110887892a57b", null)
 
 /obj/item/toy/plush/protective_protogen/attack(mob/living/carbon/human/target, mob/living/carbon/human/user)
 	if(!inserted_item)

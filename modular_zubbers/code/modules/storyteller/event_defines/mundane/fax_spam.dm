@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/fax_spam
 	name = "Fax Spam"
 	description = "Sends spam pamphlets to all station fax machines"
@@ -45,10 +46,7 @@
 	. = ..()
 	if(isnull(random_sector_number))
 		random_sector_number = rand(10000, 80000)
-	add_raw_text("To all the lost mothic kin of [GLOB.station_name]!\n\
-	Join the Grand Nomad Fleet, and rejoin with all your kin in the search for new lands. \
-	We have parked a small patrol with a civilian transport in the nearby sector [random_sector_number]. \
-	We will be leaving in approximately 3 hours, so make haste.")
+	add_raw_text(LANG("obj.4b7c75dd1c7bb14c", list(GLOB.station_name, random_sector_number)))
 
 /obj/item/paper/fluff/advertisement/toolbox
 	name = "robust pamphlet"

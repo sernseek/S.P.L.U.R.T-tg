@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Minimum amount of light for Hemophages to be considered in pure darkness, and therefore be allowed to heal just like in a closet.
 #define MINIMUM_LIGHT_THRESHOLD_FOR_REGEN 0
 
@@ -84,7 +85,7 @@
 	owner.blood_volume = (owner.blood_volume * FLOATING_POINT_ERROR_AVOIDING_FACTOR - bloodloss_rate * seconds_per_tick * FLOATING_POINT_ERROR_AVOIDING_FACTOR) / FLOATING_POINT_ERROR_AVOIDING_FACTOR
 
 	if(owner.blood_volume <= BLOOD_VOLUME_SURVIVE)
-		to_chat(owner, span_danger("You ran out of blood!"))
+		to_chat(owner, span_danger(LANG("obj.f729390ec2a338c2", null)))
 		owner.investigate_log("starved to death from lack of blood caused by [src].", INVESTIGATE_DEATHS)
 		owner.death() // Owch! Ran out of blood.
 
@@ -147,7 +148,7 @@
 /obj/item/organ/heart/hemophage/proc/get_status_tab_item(mob/living/source, list/items)
 	SIGNAL_HANDLER
 
-	items += "Current blood level: [owner.blood_volume]/[max_blood_capacity]"
+	items += LANG("_root.hemophage_blood_level", list(owner.blood_volume, max_blood_capacity)) // ZH EDIT CHANGE - I18N - ORIGINAL: items += "Current blood level: [owner.blood_volume]/[max_blood_capacity]"
 
 /obj/item/organ/heart/hemophage/proc/has_reached_max_blood(mob/living/source, mob/living/victim)
 	SIGNAL_HANDLER

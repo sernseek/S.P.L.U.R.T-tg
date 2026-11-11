@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CLOT_RATE_INTENSITY_MULT 50
 
 /datum/reagent/medicine/coagulant
@@ -9,7 +10,7 @@
 	. = ..()
 
 	if (was_working_synth)
-		to_chat(affected_mob, span_warning("The chemicals sealing your faulty wires loses its effect!"))
+		to_chat(affected_mob, span_warning(LANG("datum.0b3cb379b48b000e", null)))
 
 /datum/reagent/medicine/coagulant/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -22,7 +23,7 @@
 
 	if (zappiest_wound)
 		if (!was_working_synth)
-			to_chat(affected_mob, span_warning("Your damaged circuitry is encased in a insulative substance!"))
+			to_chat(affected_mob, span_warning(LANG("datum.c7c4569865469c46", null)))
 			was_working_synth = TRUE
 		zappiest_wound.adjust_intensity(-clot_rate * CLOT_RATE_INTENSITY_MULT * seconds_per_tick)
 	else
@@ -50,19 +51,19 @@
 	. = ..()
 
 	affected_mob.add_movespeed_modifier(/datum/movespeed_modifier/dinitrogen_plasmide)
-	to_chat(affected_mob, span_warning("Your joints suddenly feel stiff."))
+	to_chat(affected_mob, span_warning(LANG("datum.b843800d7f892a0b", null)))
 
 /datum/reagent/dinitrogen_plasmide/on_mob_end_metabolize(mob/living/affected_mob)
 	. = ..()
 
 	affected_mob.remove_movespeed_modifier(/datum/movespeed_modifier/dinitrogen_plasmide)
 	affected_mob.remove_movespeed_modifier(/datum/movespeed_modifier/dinitrogen_plasmide_overdose)
-	to_chat(affected_mob, span_warning("Your joints no longer feel stiff!"))
+	to_chat(affected_mob, span_warning(LANG("datum.2e26f424199047b8", null)))
 
 /datum/reagent/dinitrogen_plasmide/overdose_start(mob/living/affected_mob)
 	. = ..()
 
-	to_chat(affected_mob, span_danger("You feel like your joints are filling with some viscous fluid!"))
+	to_chat(affected_mob, span_danger(LANG("datum.18d022cde625001c", null)))
 	affected_mob.add_movespeed_modifier(/datum/movespeed_modifier/dinitrogen_plasmide_overdose)
 
 /datum/reagent/dinitrogen_plasmide/overdose_process(mob/living/affected_mob, seconds_per_tick, times_fired)

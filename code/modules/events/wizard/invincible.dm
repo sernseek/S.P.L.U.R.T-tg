@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/wizard/invincible //Boolet Proof
 	name = "Invincibility"
 	weight = 3
@@ -12,4 +13,4 @@
 
 	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
 		H.reagents.add_reagent(/datum/reagent/medicine/adminordrazine, 40) //100 ticks of absolute invinciblity (barring gibs)
-		to_chat(H, span_notice("You feel invincible, nothing can hurt you!"))
+		to_chat(H, span_notice(LANG("datum.7441bf3dad3b2360", null)))

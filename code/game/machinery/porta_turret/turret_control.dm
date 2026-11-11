@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/turretid
 	name = "turret control panel"
 	desc = "Used to control a room's automated defenses."
@@ -78,8 +79,8 @@
 /obj/machinery/turretid/examine(mob/user)
 	. += ..()
 	if(issilicon(user) && !(machine_stat & BROKEN))
-		. += span_notice("Ctrl-click [src] to [ enabled ? "disable" : "enable"] turrets.")
-		. += span_notice("Alt-click [src] to set turrets to [ lethal ? "stun" : "kill"].")
+		. += span_notice(LANG("obj.630b4992f3ea83af", list(src, enabled ? "disable" : "enable")))
+		. += span_notice(LANG("obj.f2bc1037f076fb33", list(src, lethal ? "stun" : "kill")))
 
 /obj/machinery/turretid/multitool_act(mob/living/user, obj/item/multitool/multi_tool)
 	. = NONE
@@ -88,7 +89,7 @@
 
 	if(multi_tool.buffer && istype(multi_tool.buffer, /obj/machinery/porta_turret))
 		turrets |= WEAKREF(multi_tool.buffer)
-		to_chat(user, span_notice("You link \the [multi_tool.buffer] with \the [src]."))
+		to_chat(user, span_notice(LANG("obj.6d42c57ef338241e", list(multi_tool.buffer, src))))
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/turretid/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
@@ -104,22 +105,22 @@
 		return NONE
 
 	if(!check_access(card))
-		to_chat(user, span_alert("Access denied."))
+		to_chat(user, span_alert(LANG("obj.077f9b52c530e7f8", null)))
 		return ITEM_INTERACT_BLOCKING
 
 	if(obj_flags & EMAGGED)
-		to_chat(user, span_warning("The turret control is unresponsive!"))
+		to_chat(user, span_warning(LANG("obj.998439f79c5313de", null)))
 		return ITEM_INTERACT_BLOCKING
 
 	locked = !locked
-	to_chat(user, span_notice("You [ locked ? "lock" : "unlock"] the panel."))
+	to_chat(user, span_notice(LANG("obj.2ee6d87602866b01", list(locked ? "lock" : "unlock"))))
 	return ITEM_INTERACT_SUCCESS
 
 
 /obj/machinery/turretid/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)
 		return FALSE
-	balloon_alert(user, "access analysis module shorted")
+	balloon_alert(user, LANG("obj.dec5a8039ed06f8a", null))
 	obj_flags |= EMAGGED
 	locked = FALSE
 	return TRUE
@@ -133,7 +134,7 @@
 
 /obj/machinery/turretid/ui_interact(mob/user, datum/tgui/ui)
 	if(is_ai_locked(user))
-		to_chat(user, span_warning("There seems to be a firewall preventing you from accessing this device!"))
+		to_chat(user, span_warning(LANG("obj.46887bb477e9a590", null)))
 		return
 
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -167,7 +168,7 @@
 			if(!HAS_SILICON_ACCESS(user))
 				return
 			if((obj_flags & EMAGGED) || (machine_stat & BROKEN))
-				to_chat(user, span_warning("The turret control is unresponsive!"))
+				to_chat(user, span_warning(LANG("obj.998439f79c5313de", null)))
 				return
 			locked = !locked
 			return TRUE
@@ -185,7 +186,7 @@
 	lethal = !lethal
 	if (user)
 		var/enabled_or_disabled = lethal ? "disabled" : "enabled"
-		balloon_alert(user, "safeties [enabled_or_disabled]")
+		balloon_alert(user, LANG("obj.2f6ed4b59d43b1ce", list(enabled_or_disabled)))
 		add_hiddenprint(user)
 		log_combat(user, src, "[enabled_or_disabled] lethals on")
 	updateTurrets()

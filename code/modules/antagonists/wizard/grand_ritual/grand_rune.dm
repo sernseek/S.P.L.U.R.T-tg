@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Number of times you need to cast on the rune to complete it
 #define GRAND_RUNE_INVOKES_TO_COMPLETE 3
 /// Base time to take to invoke one stage of the rune. This is done three times to complete the rune.
@@ -85,20 +86,20 @@
 /obj/effect/grand_rune/proc/announce_rune()
 	var/area/created_area = get_area(src)
 	if (potency >= GRAND_RITUAL_IMMINENT_FINALE_POTENCY)
-		priority_announce("Major anomalous fluctuations to local spacetime detected in: [created_area.name].", "Anomaly Alert")
+		priority_announce(LANG("obj.5f70b8ba66770322", list(created_area.name)), "Anomaly Alert")
 		return
 	if (potency >= GRAND_RITUAL_RUNES_WARNING_POTENCY)
-		priority_announce("Unusual anomalous energy fluctuations detected in: [created_area.name].", "Anomaly Alert")
+		priority_announce(LANG("obj.0bb18e8efedbff8a", list(created_area.name)), "Anomaly Alert")
 		return
 
 /obj/effect/grand_rune/examine(mob/user)
 	. = ..()
 	if (times_invoked >= GRAND_RUNE_INVOKES_TO_COMPLETE)
-		. += span_notice("Its power seems to have been expended.")
+		. += span_notice(LANG("obj.89c2690027868758", null))
 		return
 	if(!IS_WIZARD(user))
 		return
-	. += span_notice("Invoke this rune [GRAND_RUNE_INVOKES_TO_COMPLETE - times_invoked] more times to complete the ritual.")
+	. += span_notice(LANG("obj.015f221c5ec7b2a6", list(GRAND_RUNE_INVOKES_TO_COMPLETE - times_invoked)))
 
 /obj/effect/grand_rune/can_interact(mob/living/user)
 	. = ..()
@@ -121,11 +122,11 @@
 /obj/effect/grand_rune/proc/invoke_rune(mob/living/user)
 	is_in_use = TRUE
 	add_channel_effect(user)
-	user.balloon_alert(user, "invoking rune...")
+	user.balloon_alert(user, LANG("obj.49de2b469b03b919", null))
 
 	if(!do_after(user, invoke_time, src))
 		remove_channel_effect(user)
-		user.balloon_alert(user, "interrupted!")
+		user.balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 		is_in_use = FALSE
 		return
 
@@ -211,12 +212,12 @@
 		possible_events += possible_event
 
 	if (!length(possible_events))
-		visible_message(span_notice("[src] makes a sad whizzing noise."))
+		visible_message(span_notice(LANG("obj.c6decb79ee1681ee", list(src))))
 		return
 
 	var/datum/round_event_control/final_event = pick (possible_events)
 	final_event.run_event(event_cause = "a Grand Ritual Rune")
-	to_chat(user, span_notice("Your released magic afflicts the crew: [final_event.name]!"))
+	to_chat(user, span_notice(LANG("obj.6ce8d5ceb4076609", list(final_event.name))))
 
 /// Applies some local side effects to the area
 /obj/effect/grand_rune/proc/trigger_side_effects(mob/living/user)
@@ -311,7 +312,7 @@
 		return
 	var/round_time_passed = world.time - SSticker.round_start_time
 	if (chosen_effect && finale_effect.minimum_time >= round_time_passed)
-		to_chat(user, span_warning("The chosen grand finale will only be available in <b>[DisplayTimeText(finale_effect.minimum_time - round_time_passed)]</b>!"))
+		to_chat(user, span_warning(LANG("obj.9461eef66d76a7e1", list(DisplayTimeText(finale_effect.minimum_time - round_time_passed)))))
 		return
 	return ..()
 
@@ -344,8 +345,8 @@
 	if (istype(picked_finale))
 		var/round_time_passed = world.time - SSticker.round_start_time
 		if(picked_finale.minimum_time >= round_time_passed)
-			to_chat(user, span_warning("The chosen grand finale will only be available in <b>[DisplayTimeText(picked_finale.minimum_time - round_time_passed)]</b>!"))
-			to_chat(user, span_warning("Be patient, or select another option."))
+			to_chat(user, span_warning(LANG("obj.9461eef66d76a7e1", list(DisplayTimeText(picked_finale.minimum_time - round_time_passed)))))
+			to_chat(user, span_warning(LANG("obj.ec13efbcc4e096be", null)))
 			return
 	chosen_effect = TRUE
 	if (pick == PICK_NOTHING)

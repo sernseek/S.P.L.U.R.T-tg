@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define PROXIMITY_NONE ""
 #define PROXIMITY_ON_SCREEN "_red"
 #define PROXIMITY_NEAR "_yellow"
@@ -46,7 +47,7 @@
 
 /obj/item/multitool/examine(mob/user)
 	. = ..()
-	. += span_notice("Its buffer [buffer ? "contains [buffer]." : "is empty."]")
+	. += span_notice(LANG("obj.d67508d88cfda863", list(buffer ? "contains [buffer]." : "is empty.")))
 
 /obj/item/multitool/attack_self(mob/user, list/modifiers)
 	. = ..()
@@ -73,7 +74,7 @@
 	var/area/local_area = get_area(src)
 	var/obj/machinery/power/apc/power_controller = local_area.apc
 	if(!power_controller)
-		user.balloon_alert(user, "couldn't find apc!")
+		user.balloon_alert(user, LANG("obj.d6493799031c3c82", null))
 		return
 
 	var/dist = get_dist(src, power_controller)
@@ -83,7 +84,7 @@
 
 	switch(dist)
 		if (0)
-			user.balloon_alert(user, "found apc!")
+			user.balloon_alert(user, LANG("obj.9a452154ce93aa27", null))
 			return
 		if(1 to 5)
 			arrow_color = COLOR_GREEN
@@ -119,7 +120,7 @@
 		INVOKE_ASYNC(our_hud, TYPE_PROC_REF(/datum/hud, show_hud), our_hud.hud_version)
 
 /obj/item/multitool/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] puts the [src] to [user.p_their()] chest. It looks like [user.p_theyre()] trying to pulse [user.p_their()] heart off!"))
+	user.visible_message(span_suicide(LANG("obj.a409b30b0f3286e1", list(user, src, user.p_their(), user.p_theyre(), user.p_their()))))
 	return OXYLOSS//there's a reason it wasn't recommended by doctors
 
 /**
@@ -176,14 +177,14 @@
 	. = ..()
 	if(!hud_on)
 		return
-	. += span_notice("You can right-click to scan for nearby unseen spots. They will be shown for exactly 8 seconds due to battery limitations.")
+	. += span_notice(LANG("obj.d2140943fc7cca6a", null))
 	switch(detect_state)
 		if(PROXIMITY_NONE)
-			. += span_green("No AI should be currently looking at you. Keep on your clandestine activities.")
+			. += span_green(LANG("obj.f862968a7895ad43", null))
 		if(PROXIMITY_NEAR)
-			. += span_warning("An AI is getting uncomfortably close. Maybe time to drop what youre doing.")
+			. += span_warning(LANG("obj.443e242f7f94c6a8", null))
 		if(PROXIMITY_ON_SCREEN)
-			. += span_danger("An AI is (probably) looking at you. You should probably hide this.")
+			. += span_danger(LANG("obj.c29a4bf745aa80c2", null))
 
 /obj/item/multitool/ai_detect/Destroy()
 	if(hud_on && ismob(loc))
@@ -227,7 +228,7 @@
 /obj/item/multitool/ai_detect/proc/toggle_hud(mob/user)
 	hud_on = !hud_on
 	if(user)
-		to_chat(user, span_notice("You toggle the ai detection feature on [src] [hud_on ? "on" : "off"]."))
+		to_chat(user, span_notice(LANG("obj.82c2b81f8f4bda3e", list(src, hud_on ? "on" : "off"))))
 	if(hud_on)
 		START_PROCESSING(SSfastprocess, src)
 		show_hud(user)
@@ -272,7 +273,7 @@
 	if(isnull(user?.client)) // the monkey incident of 2564
 		return
 	if(!COOLDOWN_FINISHED(src, static_scan_cd))
-		balloon_alert(user, "recharging!")
+		balloon_alert(user, LANG("obj.ba1fd79a5b8c3b5c", null))
 		return
 	cleanup_static()
 	var/turf/our_turf = get_turf(src)
@@ -291,7 +292,7 @@
 			new_images += img
 	user.client.images |= new_images
 	static_viewer = WEAKREF(user.client)
-	balloon_alert(user, "nearby unseen spots shown")
+	balloon_alert(user, LANG("obj.0986b34c0539e1c0", null))
 	static_disappear_timer = addtimer(CALLBACK(src, PROC_REF(cleanup_static)), 8 SECONDS, TIMER_STOPPABLE)
 	COOLDOWN_START(src, static_scan_cd, 4 SECONDS)
 

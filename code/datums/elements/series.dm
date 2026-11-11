@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * ## series element!
  *
@@ -31,5 +32,5 @@
 	SIGNAL_HANDLER
 
 	var/series_number = subtype_list.Find(target.type)
-	examine_list += span_boldnotice("[target] is part of the \"[series_name]\" series!")
-	examine_list += span_notice("Collect them all: [series_number]/[length(subtype_list)].")
+	examine_list += span_boldnotice(LANG("datum.351228cbd0510fd1", list(target, series_name)))
+	examine_list += span_notice(LANG("datum.5ac439bc32b4b07c", list(series_number, length(subtype_list))))

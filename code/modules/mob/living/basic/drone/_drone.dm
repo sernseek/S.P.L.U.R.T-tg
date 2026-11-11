@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /**
  * Maintenance Drone
@@ -232,37 +233,37 @@
 	for(var/obj/item/held_thing in held_items)
 		if((held_thing.item_flags & (ABSTRACT|HAND_ITEM)) || HAS_TRAIT(held_thing, TRAIT_EXAMINE_SKIP))
 			continue
-		. += "It has [held_thing.examine_title(user)] in its [get_held_index_name(get_held_index_of_item(held_thing))]."
+		. += LANG("mob.7e508273d4133464", list(held_thing.examine_title(user), get_held_index_name(get_held_index_of_item(held_thing))))
 
 	//Internal storage
 	if(internal_storage && !(internal_storage.item_flags & ABSTRACT))
-		. += "It is holding [internal_storage.examine_title(user)] in its internal storage."
+		. += LANG("mob.30690125b88d448d", list(internal_storage.examine_title(user)))
 
 	//Cosmetic hat - provides no function other than looks
 	if(head && !(head.item_flags & ABSTRACT))
-		. += "It is wearing [head.examine_title(user)] on its head."
+		. += LANG("mob.499182b98679af23", list(head.examine_title(user)))
 
 	//Braindead
 	if(!client && stat != DEAD)
-		. += "Its status LED is blinking at a steady rate."
+		. += LANG("mob.a7ef884ed2defd51", null)
 
 	//Hacked
 	if(hacked)
-		. += span_warning("Its display is glowing red!")
+		. += span_warning(LANG("mob.fb95a4e0a14f8b44", null))
 
 	//Damaged
 	if(health != maxHealth)
 		if(health > maxHealth * 0.33) //Between maxHealth and about a third of maxHealth, between 30 and 10 for normal drones
-			. += span_warning("Its screws are slightly loose.")
+			. += span_warning(LANG("mob.aa0d27bf937afa09", null))
 		else //otherwise, below about 33%
-			. += span_boldwarning("Its screws are very loose!")
+			. += span_boldwarning(LANG("mob.34c83af00a7170ba", null))
 
 	//Dead
 	if(stat == DEAD)
 		if(client)
-			. += span_deadsay("A message repeatedly flashes on its display: \"REBOOT -- REQUIRED\".")
+			. += span_deadsay(LANG("mob.deee784cccf1c32f", null))
 		else
-			. += span_deadsay("A message repeatedly flashes on its display: \"ERROR -- OFFLINE\".")
+			. += span_deadsay(LANG("mob.422cef40335973e5", null))
 
 /mob/living/basic/drone/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null) //Secbots won't hunt maintenance drones.
 	return -10
@@ -272,18 +273,18 @@
 	if(. & EMP_PROTECT_SELF)
 		return
 	Stun(70)
-	to_chat(src, span_danger("<b>ER@%R: MME^RY CO#RU9T!</b> R&$b@0tin)..."))
+	to_chat(src, span_danger(LANG("mob.a1165eeaef69b889", null)))
 	if(severity == 1)
 		adjust_brute_loss(heavy_emp_damage)
-		to_chat(src, span_userdanger("HeAV% DA%^MMA+G TO I/O CIR!%UUT!"))
+		to_chat(src, span_userdanger(LANG("mob.9a31ac5b255e656e", null)))
 
 /mob/living/basic/drone/proc/alarm_triggered(datum/source, alarm_type, area/source_area)
 	SIGNAL_HANDLER
-	to_chat(src, "--- [alarm_type] alarm detected in [source_area.name]!")
+	to_chat(src, LANG("mob.fc8f672c9d705b45", list(alarm_type, source_area.name)))
 
 /mob/living/basic/drone/proc/alarm_cleared(datum/source, alarm_type, area/source_area)
 	SIGNAL_HANDLER
-	to_chat(src, "--- [alarm_type] alarm in [source_area.name] has been cleared.")
+	to_chat(src, LANG("mob.2707e92b7a9df528", list(alarm_type, source_area.name)))
 
 /mob/living/basic/drone/proc/set_shy(new_shy)
 	shy = new_shy

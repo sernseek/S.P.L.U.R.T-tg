@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/accessory/pocketwatch
 	name = "pocket watch"
 	desc = "A fancy gold pocket watch, inspired by the popular Uair brand of Carota. Open me, you fool. Open the light and summon me and receive my majesty."
@@ -15,7 +16,7 @@
 /obj/item/clothing/accessory/pocketwatch/ui_action_click(mob/living/user, action)
 	if(!isliving(user) || !can_use(user))
 		return
-	var/message = input(user, "Speak with a hypnotic whisper", "Whisper")
+	var/message = input(user, LANG("obj.e07a49a6cf3ad500", null), LANG("obj.fc9f00ae3362c705", null))
 	if(QDELETED(src) || QDELETED(user) || !message || !user.can_speak())
 		return
 	user.whisper(message, spans = spans)
@@ -23,8 +24,8 @@
 
 /obj/item/clothing/accessory/pocketwatch/examine(mob/user)
 	. = ..()
-	. += span_info("The current CST (local) time is: [round_timestamp()].")
-	. += span_info("The current TCT (galactic) time is: [time2text(world.realtime, "hh:mm:ss")].")
+	. += span_info(LANG("obj.953a9fbf0c99db4e", list(round_timestamp())))
+	. += span_info(LANG("obj.6f4389ed22a6c39d", list(time2text(world.realtime, "hh:mm:ss"))))
 
 /obj/item/storage/backpack/kanken //Donor item for LT3
 	name = "kånken backpack"
@@ -208,20 +209,20 @@ GLOBAL_LIST_EMPTY_TYPED(all_assigned_protean_match_tags, /obj/item/clothing/acce
 			assign(user)
 			// match_progress and sounds are set within assign()
 		if(IN_POOL)
-			to_chat(user, "You press the button on the tag, removing it from the Protean Match candidate pool and unclaiming it.")
+			to_chat(user, LANG("obj.25e28ec3436916a7", null))
 			playsound(src, "modular_skyrat/modules/emotes/sound/emotes/synth_no.ogg", 20, FALSE)
-			balloon_alert(user, "tag unassigned")
+			balloon_alert(user, LANG("obj.31e9f074daec2363", null))
 
 			unassign()
 			return
 		if(MATCHED)
 			var/obj/item/clothing/accessory/dogtags/protean_match/paired_tag = paired_tag_weakref?.resolve()
-			var/safety = (tgui_alert(user, "You are currently matched with [paired_tag?.assignee_name]. Are you sure you want to unclaim your tag? This will unassign both tags.", "Unclaim tag?", list("Unclaim", "Cancel")))
+			var/safety = (tgui_alert(user, LANG("obj.dc7ad1cf85c04d76", list(paired_tag?.assignee_name)), LANG("obj.48a1a681664a64a8", null), list("Unclaim", "Cancel")))
 			if(safety == "Cancel" || !in_range(src, user))
 				return
-			to_chat(user, "You press the button on the tag, unmatching with [paired_tag?.assignee_name] and exiting the Protean Match candidate pool.")
+			to_chat(user, LANG("obj.fde143c613e13851", list(paired_tag?.assignee_name)))
 			playsound(src, "modular_skyrat/modules/emotes/sound/emotes/synth_no.ogg", 20, FALSE)
-			balloon_alert(user, "unmatched tag")
+			balloon_alert(user, LANG("obj.177b6a74b1738b80", null))
 
 			paired_tag.unassign("matched tag deactivated")
 			unassign()
@@ -230,11 +231,11 @@ GLOBAL_LIST_EMPTY_TYPED(all_assigned_protean_match_tags, /obj/item/clothing/acce
 /obj/item/clothing/accessory/dogtags/protean_match/click_alt(mob/user)
 	if(length(POOL) ? (assignee_protean == POOL[1].assignee_protean) : TRUE)
 		playsound(src, "sound/machines/buzz/buzz-sigh.ogg", 20, FALSE)
-		balloon_alert(user, "no other valid matches in pool")
+		balloon_alert(user, LANG("obj.e4213d8bde0324cc", null))
 		return
 	if(match_progress == MATCHED)
 		var/obj/item/clothing/accessory/dogtags/protean_match/paired_tag = paired_tag_weakref?.resolve()
-		var/safety = (tgui_alert(user, "You are currently matched with [paired_tag?.assignee_name]. Are you sure you want to attempt to match with someone else in the pool? This will unassign the other user's tag.", "Re-match tag?", list("Re-match", "Cancel")))
+		var/safety = (tgui_alert(user, LANG("obj.a36b88a5df456b3c", list(paired_tag?.assignee_name)), LANG("obj.2b2bcafb4af54078", null), list("Re-match", "Cancel")))
 		if(safety == "Cancel" || !in_range(src, user))
 			return
 		unassign()
@@ -287,7 +288,7 @@ GLOBAL_LIST_EMPTY_TYPED(all_assigned_protean_match_tags, /obj/item/clothing/acce
 
 	if(ineligibility_reason)
 		playsound(src, "sound/machines/buzz/buzz-sigh.ogg", 20, FALSE)
-		balloon_alert(source, "ineligible: [ineligibility_reason]")
+		balloon_alert(source, LANG("obj.891cf679e4abdfff", list(ineligibility_reason)))
 		return
 
 ///From here, we assign a name and species to the tag, and try to match it. If it fails, adds it to the pool.
@@ -307,14 +308,14 @@ GLOBAL_LIST_EMPTY_TYPED(all_assigned_protean_match_tags, /obj/item/clothing/acce
 	// This should only run if the code block above fails
 	POOL += src
 	match_progress = IN_POOL
-	say("No match found, added to candidate pool! There are [(length(POOL) - 1) ? "[length(POOL) - 1]" : "no" ] other [assignee_protean ? "Proteans" : "Wearers"] in the pool.")
+	say(LANG("obj.b42b546e1886e042", list((length(POOL) - 1) ? "[length(POOL) - 1]" : "no", assignee_protean ? "Proteans" : "Wearers")))
 
 ///Handles the logistics of matching tags. Done by both sets of tags.
 /obj/item/clothing/accessory/dogtags/protean_match/proc/handle_match(obj/item/clothing/accessory/dogtags/protean_match/other_tag)
 	match_progress = MATCHED
 	POOL -= src
 	playsound(src, "modular_skyrat/modules/emotes/sound/emotes/synth_yes.ogg", 20, FALSE)
-	say("Matched with [(other_tag.assignee_protean == TRUE) ? "Protean" : "Wearer"]: [other_tag.assignee_name]!")
+	say(LANG("obj.f2452c40cb38e471", list((other_tag.assignee_protean == TRUE) ? "Protean" : "Wearer", other_tag.assignee_name)))
 	paired_tag_weakref = other_tag.create_weakref()
 
 /// Used both when unmatching with a person and when leaving the match pool.
@@ -329,22 +330,22 @@ GLOBAL_LIST_EMPTY_TYPED(all_assigned_protean_match_tags, /obj/item/clothing/acce
 	paired_tag_weakref = null
 	update_static_data_for_all_viewers()
 	if(unmatch_reason)
-		say("You have been unmatched. Reason: [unmatch_reason].")
+		say(LANG("obj.361db3297301d949", list(unmatch_reason)))
 
 /obj/item/clothing/accessory/dogtags/protean_match/examine(mob/user)
 	. = ..()
 	if(!(in_range(user, src)))
 		return
 	if(assignee_name)
-		. += span_notice("This set is assigned to [assignee_name], a [assignee_protean ? "Protean" : "Wearer"].")
+		. += span_notice(LANG("obj.557c49f31eb717ff", list(assignee_name, assignee_protean ? "Protean" : "Wearer")))
 	switch(match_progress)
 		if(UNASSIGNED)
-			. += span_notice("You can join the program by using it in-hand.")
+			. += span_notice(LANG("obj.7c525de6b46413f9", null))
 		if(IN_POOL)
-			. += span_notice("It's currently in the candidate pool, alongside [length(POOL) - 1] others. Leave the pool by using it in-hand.")
+			. += span_notice(LANG("obj.f3389211d8a16f51", list(length(POOL) - 1)))
 		if(MATCHED)
 			var/obj/item/clothing/accessory/dogtags/protean_match/paired_tag = paired_tag_weakref?.resolve()
-			. += span_notice("It's currently matched with [paired_tag.assignee_name], and can be unmatched by using it in-hand. To match with a different person in the queue, alt-click.")
+			. += span_notice(LANG("obj.9325a0980948d8bf", list(paired_tag.assignee_name)))
 
 #undef POOL
 #undef ASSIGNED_TAGS

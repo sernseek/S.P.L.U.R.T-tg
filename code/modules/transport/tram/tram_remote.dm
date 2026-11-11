@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/assembly/control/transport/remote
 	icon_state = "tramremote_nis"
 	inhand_icon_state = "electronic"
@@ -35,14 +36,14 @@
 	for(var/obj/effect/landmark/transport/nav_beacon/tram/platform/platform as anything in SStransport.nav_beacons[specific_transport_id])
 		LAZYADD(available_platforms, platform.name)
 
-	var/selected_platform = tgui_input_list(user, "Available destinations", "Where to?", available_platforms)
+	var/selected_platform = tgui_input_list(user, LANG("obj.741bc8cef321088e", null), LANG("obj.2a9ec0ea650a17d4", null), available_platforms)
 	for(var/obj/effect/landmark/transport/nav_beacon/tram/platform/potential_platform as anything in SStransport.nav_beacons[specific_transport_id])
 		if(potential_platform.name == selected_platform)
 			destination = potential_platform.platform_code
 			break
 
-	balloon_alert(user, "set [selected_platform]")
-	to_chat(user, span_notice("You change the platform ID on [src] to [selected_platform]."))
+	balloon_alert(user, LANG("obj.0b8200d79a5d0c43", list(selected_platform)))
+	to_chat(user, span_notice(LANG("obj.35a0efdd06e76f44", list(src, selected_platform))))
 
 ///set safety bypass
 /obj/item/assembly/control/transport/remote/item_ctrl_click(mob/user)
@@ -52,24 +53,24 @@
 		if(RAPID_MODE)
 			options &= ~RAPID_MODE
 	update_appearance()
-	balloon_alert(user, "mode: [options ? "fast" : "safe"]")
+	balloon_alert(user, LANG("obj.a72852bfd5dc43d4", list(options ? "fast" : "safe")))
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/assembly/control/transport/remote/examine(mob/user)
 	. = ..()
 	if(!specific_transport_id)
-		. += "There is an X showing on the display."
-		. += "Left-click to link to a tram."
+		. += LANG("obj.59acba55419ddb9b", null)
+		. += LANG("obj.4122d1733debafc4", null)
 		return
-	. += "The rapid mode light is [options ? "on" : "off"]."
+	. += LANG("obj.1758626035f48519", list(options ? "on" : "off"))
 	if(cooldown)
-		. += "The number on the display shows [DisplayTimeText(cooldown, 1)]."
+		. += LANG("obj.ea68d8fe170bffab", list(DisplayTimeText(cooldown, 1)))
 	else
-		. += "The display indicates ready."
-	. += "Left-click to dispatch tram."
-	. += "Right-click to set destination."
-	. += "Ctrl-click to toggle safety bypass."
-	. += "Alt-click to change configured tram."
+		. += LANG("obj.fcea80098baf6693", null)
+	. += LANG("obj.e4536749dbee6ef4", null)
+	. += LANG("obj.c142720818515913", null)
+	. += LANG("obj.d217f6c50b3f56cd", null)
+	. += LANG("obj.f81f3d84cc44d06d", null)
 
 /obj/item/assembly/control/transport/remote/update_icon_state()
 	. = ..()
@@ -91,7 +92,7 @@
 		return
 
 	if(cooldown)
-		balloon_alert(user, "cooldown: [DisplayTimeText(cooldown, 1)]")
+		balloon_alert(user, LANG("obj.c74548dc9a060a7b", list(DisplayTimeText(cooldown, 1))))
 		return
 
 	activate(user)
@@ -100,10 +101,10 @@
 ///send our selected commands to the tram
 /obj/item/assembly/control/transport/remote/activate(mob/user)
 	if(!specific_transport_id)
-		balloon_alert(user, "no tram linked!")
+		balloon_alert(user, LANG("obj.a4141a4878bfeb9f", null))
 		return
 	if(!destination)
-		balloon_alert(user, "no destination!")
+		balloon_alert(user, LANG("obj.4bf240e2ee98c2bf", null))
 		return
 
 	SEND_SIGNAL(src, COMSIG_TRANSPORT_REQUEST, specific_transport_id, destination, options)
@@ -118,11 +119,11 @@
 	for(var/datum/transport_controller/linear/tram/tram as anything in SStransport.transports_by_type[TRANSPORT_TYPE_TRAM])
 		LAZYADD(transports_available, tram.specific_transport_id)
 
-	specific_transport_id = tgui_input_list(user, "Available transports", "Select a transport", transports_available)
+	specific_transport_id = tgui_input_list(user, LANG("obj.022bb13891904c96", null), LANG("obj.fc3f6f1677abcf8c", null), transports_available)
 
 	if(specific_transport_id)
-		balloon_alert(user, "tram linked")
+		balloon_alert(user, LANG("obj.b69231f303a13c96", null))
 	else
-		balloon_alert(user, "link failed!")
+		balloon_alert(user, LANG("obj.b6682898b81ddfac", null))
 
 	update_appearance()

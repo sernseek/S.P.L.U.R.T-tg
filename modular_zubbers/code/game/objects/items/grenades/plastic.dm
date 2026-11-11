@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/grenade/c4/
 	var/datum/component/c4_body_tracker/body_tracker
 
@@ -7,7 +8,7 @@
 		return FALSE
 
 	if(isliving(bomb_target) && bomb_target.GetComponent(/datum/component/c4_body_tracker))
-		to_chat(user,span_warning("There is already an explosive charge planted on [bomb_target]!"))
+		to_chat(user,span_warning(LANG("obj.c027f50ada0d2b91", list(bomb_target))))
 		return FALSE
 
 	. = ..()

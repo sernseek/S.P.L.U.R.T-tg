@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/skillchip/mkiiultra
 	name = "ENT-PET Mk.II ULTRA skillchip"
 	desc = "Why bother with training will when you can install obedience directly? Transform your target into a devoted, compliant companion - no leash required!\
@@ -22,31 +23,31 @@
 	if(!istype(dna_holder))
 		return
 	if(!dna_holder.client.prefs.read_preference(/datum/preference/toggle/erp/hypnosis))
-		to_chat(dna_holder, span_warning("Preference check failed! You must enable hypnosis in your game preferences (ERP preferences) to use [src]."))
+		to_chat(dna_holder, span_warning(LANG("obj.b2104bed7ddc7446", list(src))))
 		return
 	if(!isnull(enchanter))
-		var/response = tgui_alert(dna_holder, "The display reads that [enchanter] is already imprinted. Would you like to re-imprint?", "DNA Imprint", list("Re-Imprint", "Cancel"))
+		var/response = tgui_alert(dna_holder, LANG("obj.eb97db9d712bce7b", list(enchanter)), LANG("obj.74490f80660b0f5b", null), list("Re-Imprint", "Cancel"))
 		if(response != "Re-Imprint" || isnull(response))
 			return
 		enchanter = null
-		visible_message(span_notice("The light on [src] begins to blink slowly."))
+		visible_message(span_notice(LANG("obj.302ed8cac0da869f", list(src))))
 		return
-	to_chat(dna_holder, span_notice("You press the programming button on [src]."))
-	var/selected_title = tgui_input_list(dna_holder, "What title would you like to use?", "Title Selection", list("Master", "Mistress", "Owner", "Cancel Imprinting"))
+	to_chat(dna_holder, span_notice(LANG("obj.9f0b3ed489dfc160", list(src))))
+	var/selected_title = tgui_input_list(dna_holder, LANG("obj.d9aec5b6d1bb6b5f", null), LANG("obj.336b2498a753cdd5", null), list("Master", "Mistress", "Owner", "Cancel Imprinting"))
 	if(selected_title == "Cancel Imprinting" || isnull(selected_title))
 		return
 	title = LOWER_TEXT(selected_title)
 	enchanter = dna_holder
-	to_chat(dna_holder, span_purple("[src] imprinted with DNA identifier: [selected_title] [dna_holder]."))
-	visible_message(span_notice("The light on [src] remains steadily lit."))
+	to_chat(dna_holder, span_purple(LANG("obj.a47245cf1305ceac", list(src, selected_title, dna_holder))))
+	visible_message(span_notice(LANG("obj.4b630f6e2960369b", list(src))))
 
 /obj/item/skillchip/mkiiultra/examine(mob/user)
 	. = ..()
 	if(!enchanter)
-		. += span_notice("The status light is blinking, indiciating that the skillchip is ready for DNA imprinting.")
+		. += span_notice(LANG("obj.91354e99941fb5b0", null))
 	else
-		. += span_notice("The status light is on, indicating that it is ready for use.")
-		. += span_purple("The status display reads [enchanter]")
+		. += span_notice(LANG("obj.8371d5b5cc42c13a", null))
+		. += span_purple(LANG("obj.e3190ecd0aec00fb", list(enchanter)))
 
 /obj/item/skillchip/mkiiultra/has_mob_incompatibility(mob/living/carbon/target)
 	. = ..()

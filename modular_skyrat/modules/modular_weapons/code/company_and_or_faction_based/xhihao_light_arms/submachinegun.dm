@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Evil .585 smg that blueshields spawn with that will throw your screen like hell but itll sure kill whoever threatens a head really good
 
 /obj/item/gun/ballistic/automatic/xhihao_smg
@@ -43,19 +44,12 @@
 
 /obj/item/gun/ballistic/automatic/xhihao_smg/examine(mob/user)
 	. = ..()
-	. += span_notice("You can <b>examine closer</b> to learn a little more about this weapon.")
+	. += span_notice(LANG("obj.b663717df67087e6", null))
 
 /obj/item/gun/ballistic/automatic/xhihao_smg/examine_more(mob/user)
 	. = ..()
 
-	. += "The Bogseo submachinegun is seen in highly different lights based on \
-		who you ask. Ask a Jovian, and they'll go off all day about how they \
-		love the thing so. A big weapon for shooting big targets, like the \
-		fuel-stat raiders in their large suits of armor. Ask a space pirate, however \
-		and you'll get a different story. That is thanks to many TerraGov anti-piracy \
-		units picking the Bogseo as their standard boarding weapon. What better \
-		to ruin a brigand's day than a bullet large enough to turn them into \
-		mist at full auto, after all?"
+	. += LANG("obj.604a0e81752a40a5", null)
 
 	return .
 

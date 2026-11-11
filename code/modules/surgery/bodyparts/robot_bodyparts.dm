@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 #define ROBOTIC_LIGHT_BRUTE_MSG "marred"
 #define ROBOTIC_MEDIUM_BRUTE_MSG "dented"
@@ -142,9 +143,9 @@
 		return
 	if(prob(80 / severity))
 		if(owner.body_position == LYING_DOWN) // So the message isn't duplicated. If they were stunned beforehand by something else, then the message not showing makes more sense anyways.
-			to_chat(owner, span_danger("Your [plaintext_zone] suddenly malfunctions!"))
+			to_chat(owner, span_danger(LANG("obj.873485feccddb2cd", list(plaintext_zone))))
 		else
-			to_chat(owner, span_danger("As your [plaintext_zone] suddenly malfunctions, it causes you to fall to the ground!"))
+			to_chat(owner, span_danger(LANG("obj.c38277e6250f4bd6", list(plaintext_zone))))
 		owner.Knockdown(AUGGED_LEG_EMP_KNOCKDOWN_TIME)
 	owner.adjust_staggered(STAGGERED_SLOWDOWN_LENGTH * 3 / severity)
 	owner.client?.move_delay = max(owner.client?.move_delay, world.time)
@@ -198,9 +199,9 @@
 		return
 	if(prob(80 / severity))
 		if(owner.body_position == LYING_DOWN) // So the message isn't duplicated. If they were stunned beforehand by something else, then the message not showing makes more sense anyways.
-			to_chat(owner, span_danger("Your [plaintext_zone] suddenly malfunctions!"))
+			to_chat(owner, span_danger(LANG("obj.873485feccddb2cd", list(plaintext_zone))))
 		else
-			to_chat(owner, span_danger("As your [plaintext_zone] suddenly malfunctions, it causes you to fall to the ground!"))
+			to_chat(owner, span_danger(LANG("obj.c38277e6250f4bd6", list(plaintext_zone))))
 		owner.Knockdown(AUGGED_LEG_EMP_KNOCKDOWN_TIME)
 	owner.adjust_staggered(STAGGERED_SLOWDOWN_LENGTH * 3 / severity)
 	owner.client?.move_delay = max(owner.client?.move_delay, world.time)
@@ -260,7 +261,7 @@
 		return
 	var/damage_percent_to_max = (get_damage() / max_damage)
 	if(damage_percent_to_max >= robotic_emp_paralyze_damage_percent_threshold)
-		to_chat(owner, span_danger("Your [plaintext_zone]'s logic boards temporarily become unresponsive!"))
+		to_chat(owner, span_danger(LANG("obj.2e4cb3e9fb0aabe4", list(plaintext_zone))))
 		owner.Stun(AUGGED_CHEST_EMP_STUN_TIME / severity)
 	owner.adjust_jitter(AUGGED_CHEST_EMP_SHAKE_TIME / severity)
 
@@ -321,24 +322,24 @@
 /obj/item/bodypart/chest/robot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(istype(tool, /obj/item/stock_parts/power_store/cell))
 		if(cell)
-			to_chat(user, span_warning("A cell is already present in [src]!"))
+			to_chat(user, span_warning(LANG("obj.9c3bb1a932fa3489", list(src))))
 			return ITEM_INTERACT_BLOCKING
 		if(!user.transferItemToLoc(tool, src))
 			return ITEM_INTERACT_BLOCKING
 		cell = tool
-		to_chat(user, span_notice("You insert [cell] into [src]."))
+		to_chat(user, span_notice(LANG("obj.8ce99939bf01b695", list(cell, src))))
 		return ITEM_INTERACT_SUCCESS
 
 	if(istype(tool, /obj/item/stack/cable_coil))
 		if(wired)
-			to_chat(user, span_warning("[src] is already wired up!"))
+			to_chat(user, span_warning(LANG("obj.83a9d021d53fa8cc", list(src))))
 			return ITEM_INTERACT_BLOCKING
 		var/obj/item/stack/cable_coil/coil = tool
 		if (!coil.use(1))
-			to_chat(user, span_warning("You need one length of coil to wire it!"))
+			to_chat(user, span_warning(LANG("obj.1e3c22ba93e6222c", null)))
 			return ITEM_INTERACT_BLOCKING
 		wired = TRUE
-		to_chat(user, span_notice("You wire the cell inside of [src]."))
+		to_chat(user, span_notice(LANG("obj.f656505baa803393", list(src))))
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
@@ -348,7 +349,7 @@
 		return
 	. = TRUE
 	cutter.play_tool_sound(src)
-	to_chat(user, span_notice("You cut the wires out of [src]."))
+	to_chat(user, span_notice(LANG("obj.add7195671c8e50c", list(src))))
 	new /obj/item/stack/cable_coil(drop_location(), 1)
 	wired = FALSE
 
@@ -356,24 +357,23 @@
 	..()
 	. = TRUE
 	if(!cell)
-		to_chat(user, span_warning("There's no power cell installed in [src]!"))
+		to_chat(user, span_warning(LANG("obj.83ece261c38acf4f", list(src))))
 		return
 	screwtool.play_tool_sound(src)
-	to_chat(user, span_notice("Remove [cell] from [src]."))
+	to_chat(user, span_notice(LANG("obj.ff03d7e9756cc413", list(cell, src))))
 	cell.forceMove(drop_location())
 
 /obj/item/bodypart/chest/robot/examine(mob/user)
 	. = ..()
 	if(cell)
-		. += {"It has a [cell] inserted.\n
-		[span_info("You can use a <b>screwdriver</b> to remove [cell].")]"}
+		. += LANG("obj.06ad6541e17c84d4", list(cell, span_info("You can use a <b>screwdriver</b> to remove [cell].")))
 	else
-		. += span_info("It has an empty port for a <b>power cell</b>.")
+		. += span_info(LANG("obj.5c9bc61feb25db7b", null))
 	if(wired)
 		. += "Its all wired up[cell ? " and ready for usage" : ""].\n"+\
 		span_info("You can use <b>wirecutters</b> to remove the wiring.")
 	else
-		. += span_info("It has a couple spots that still need to be <b>wired</b>.")
+		. += span_info(LANG("obj.4ee3fbfae2522559", null))
 
 /obj/item/bodypart/chest/robot/drop_organs(mob/user, violent_removal)
 	var/atom/drop_loc = drop_location()
@@ -432,7 +432,7 @@
 	. = ..()
 	if(!. || isnull(owner))
 		return
-	to_chat(owner, span_danger("Your [plaintext_zone] hurts..."))
+	to_chat(owner, span_danger(LANG("obj.8a5b62ff48f5b772", list(plaintext_zone))))
 	QDEL_IN(owner.add_client_colour(/datum/client_colour/malfunction, HEAD_TRAIT), (AUGGED_HEAD_EMP_GLITCH_DURATION / severity))
 	owner.adjust_confusion(AUGGED_HEAD_EMP_GLITCH_DURATION / severity)
 
@@ -451,16 +451,15 @@
 /obj/item/bodypart/head/robot/examine(mob/user)
 	. = ..()
 	if(!flash1 && !flash2)
-		. += span_info("It has two empty eye sockets for <b>flashes</b>.")
+		. += span_info(LANG("obj.e8404373708048dc", null))
 	else
 		var/single_flash = FALSE
 		if(!flash1 || !flash2)
 			single_flash = TRUE
-			. += {"One of its eye sockets is currently occupied by a flash.\n
-			[span_info("It has an empty eye socket for another <b>flash</b>.")]"}
+			. += LANG("obj.d4dddc8491c4a6d3", list(span_info("It has an empty eye socket for another <b>flash</b>.")))
 		else
-			. += "It has two eye sockets occupied by flashes."
-		. += span_notice("You can remove the seated flash[single_flash ? "":"es"] with a <b>crowbar</b>.")
+			. += LANG("obj.d0c0915ec0105d3a", null)
+		. += span_notice(LANG("obj.24bd0c3e8ec2d880", list(single_flash ? "":"es")))
 
 /obj/item/bodypart/head/robot/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(!istype(tool, /obj/item/assembly/flash/handheld))
@@ -468,11 +467,11 @@
 
 	var/obj/item/assembly/flash/handheld/flash = tool
 	if(flash1 && flash2)
-		to_chat(user, span_warning("[src] already has both flash-eyes present!"))
+		to_chat(user, span_warning(LANG("obj.3ea78e3ca75c6717", list(src))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(flash.burnt_out)
-		to_chat(user, span_warning("You can't use a broken flash!"))
+		to_chat(user, span_warning(LANG("obj.77657b56582bf3df", null)))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!user.transferItemToLoc(flash, src))
@@ -482,18 +481,18 @@
 		flash2 = flash
 	else
 		flash1 = flash
-	to_chat(user, span_notice("You insert the flash into the eye socket."))
+	to_chat(user, span_notice(LANG("obj.31a0104ed951d0f8", null)))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/bodypart/head/robot/crowbar_act(mob/living/user, obj/item/prytool)
 	..()
 	if(flash1 || flash2)
 		prytool.play_tool_sound(src)
-		to_chat(user, span_notice("You remove the flash from [src]."))
+		to_chat(user, span_notice(LANG("obj.d361f24c1ee431cd", list(src))))
 		flash1?.forceMove(drop_location())
 		flash2?.forceMove(drop_location())
 	else
-		to_chat(user, span_warning("There is no flash to remove from [src]."))
+		to_chat(user, span_warning(LANG("obj.75391fcd90d680a7", list(src))))
 	return TRUE
 
 /obj/item/bodypart/head/robot/drop_organs(mob/user, violent_removal)

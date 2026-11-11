@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///An item that can be used to gather information on the fish, such as but not limited to: health, hunger and traits.
 /obj/item/fish_analyzer
 	name = "fish analyzer"
@@ -50,7 +51,7 @@
 
 /obj/item/fish_analyzer/examine(mob/user)
 	. = ..()
-	. += span_notice("<b>Alt-Click</b> to access the Experiment Configuration UI")
+	. += span_notice(LANG("obj.89b193b1b39a55ea", null))
 
 /obj/item/fish_analyzer/update_icon_state()
 	. = ..()
@@ -92,10 +93,10 @@
 
 /obj/item/fish_analyzer/ui_interact(mob/living/user, datum/tgui/ui)
 	if(isnull(scanned_object))
-		balloon_alert(user, "no specimen data!")
+		balloon_alert(user, LANG("obj.20ddafce6e61ae4b", null))
 		return TRUE
 	if(istype(user) && !(scanned_object in (view(7, get_turf(src)) | user.get_equipped_items(INCLUDE_HELD))))
-		balloon_alert(user, "specimen data lost!")
+		balloon_alert(user, LANG("obj.d7f51219c7329026", null))
 		unregister_scanned()
 		return TRUE
 
@@ -108,7 +109,7 @@
 	if(!istype(user)) //observers shouldn't disrupt things.
 		return ..()
 	if(!scanned_object || !(scanned_object in (view(7, get_turf(src)) | user.get_equipped_items(INCLUDE_HELD))))
-		balloon_alert(user, "specimen data lost!")
+		balloon_alert(user, LANG("obj.d7f51219c7329026", null))
 		unregister_scanned()
 		return UI_CLOSE
 	return ..()
@@ -135,7 +136,7 @@
 		var/datum/fish_evolution/evolution = GLOB.fish_evolutions[evolution_type]
 		var/obj/item/evolution_fish = evolution.new_fish_type
 		fish_evolutions += list(list(
-			"evolution_name" = evolution.name,
+			"evolution_name" = lang_localize_display_name(evolution.name), // ZH EDIT - I18N: 纯显示。ORIGINAL: "evolution_name" = evolution.name,
 			"evolution_icon" = evolution_fish::icon,
 			"evolution_icon_state" = evolution_fish::icon_state,
 			"evolution_probability" = evolution.probability,
@@ -144,10 +145,10 @@
 
 	for(var/trait_type in fishie.fish_traits)
 		var/datum/fish_trait/trait = GLOB.fish_traits[trait_type]
-		fish_traits += list(list("trait_name" = trait.name, "trait_desc" = trait.catalog_description, "trait_inherit" = trait.inheritability))
+		fish_traits += list(list("trait_name" = lang_localize_display_name(trait.name), "trait_desc" = trait.catalog_description, "trait_inherit" = trait.inheritability)) // ZH EDIT - I18N: 特性名纯显示。ORIGINAL: "trait_name" = trait.name
 
 	data["fish_list"] += list(list(
-		"fish_name" = fishie.name,
+		"fish_name" = fishie.lang_localize_name_for_display(fishie.name), // ZH EDIT - I18N: 纯显示；atom 版守玩家给鱼起的名字。ORIGINAL: "fish_name" = fishie.name,
 		"fish_icon" = fishie.icon,
 		"fish_icon_state" = fishie.base_icon_state,
 		"fish_food" = fishie.food.name,

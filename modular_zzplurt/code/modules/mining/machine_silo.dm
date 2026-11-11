@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Makes Ore Silos fire- and acid-proof, and increases their durability. //
 /obj/machinery/ore_silo
 	desc = "An all-in-one bluespace storage and transmission system for the station's mineral distribution needs. It appears to be extremely robust."
@@ -204,12 +205,12 @@
 // OPTIONAL: DEBUG VERB
 // =========================
 
-GAME_VERB(/obj/machinery/ore_silo/away/preloaded, set_material, "Set Material", "Debug")
+GAME_VERB(/obj/machinery/ore_silo/away/preloaded, set_material, "设置材料", "Debug")
 	VERB_ARG(mat, VERB_ARG_TYPE_TEXT, VERB_ARG_SOURCE_INPUT)
 	VERB_ARG(amount, VERB_ARG_TYPE_NUM, VERB_ARG_SOURCE_INPUT)
 	var/datum/material_container/MC = materials
 	if(!MC)
-		to_chat(usr, "No material container found.")
+		to_chat(usr, LANG("obj.71986c4c2377d9a2", null))
 		return
 
 	var/path
@@ -226,7 +227,7 @@ GAME_VERB(/obj/machinery/ore_silo/away/preloaded, set_material, "Set Material", 
 		if("bluespace polycrystal")	path = /datum/material/bluespace
 		if("bananium")	path = /datum/material/bananium
 		else
-			to_chat(usr, "Unknown material.")
+			to_chat(usr, LANG("obj.a75a8a09f4ae8d22", null))
 			return
 
 	if(!MC.materials)
@@ -238,7 +239,7 @@ GAME_VERB(/obj/machinery/ore_silo/away/preloaded, set_material, "Set Material", 
 	if(hascall(MC, "on_materials_changed"))
 		call(MC, "on_materials_changed")()
 
-	to_chat(usr, "Set [mat] to [amount].")
+	to_chat(usr, LANG("obj.0d04d8c7ec55b292", list(mat, amount)))
 
 /obj/machinery/ore_silo/away/preloaded/rich
 	// Very rich amounts

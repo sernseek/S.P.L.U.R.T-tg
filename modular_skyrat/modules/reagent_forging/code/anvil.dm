@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define AUTO_SMITHING_SPEED_PENALTY 8 DECISECONDS
 
 /obj/structure/reagent_anvil
@@ -29,24 +30,24 @@
 
 /obj/structure/reagent_anvil/examine(mob/user)
 	. = ..()
-	. += span_notice("You can place <b>hot metal objects</b> on this using some <b>tongs</b>.")
-	. += span_notice("It can be (un)secured by <b>Right Clicking</b> with your bare hand.")
+	. += span_notice(LANG("obj.a4681bf1df24b0db", null))
+	. += span_notice(LANG("obj.fa147aef83883e87", null))
 
 	if(length(contents))
 		var/obj/my_contents = contents[1]
-		. += span_notice("It has [my_contents] sitting on it.")
-		. += span_notice("<b>Left Click</b> with a <b>forging mallet</b> to <b>hammer the metal with precise strikes</b>.")
+		. += span_notice(LANG("obj.130b7d3822325e9d", list(my_contents)))
+		. += span_notice(LANG("obj.41532f9aca5869ef", null))
 		if(USER_CAN_SEE_SMITHING_INFO(user) && !isnull(my_contents?.GetComponent(/datum/component/forge_smithable)))
 			var/datum/component/forge_smithable/my_component = my_contents.GetComponent(/datum/component/forge_smithable)
-			. += span_notice("You'd estimate that it's about [round(my_component.get_completion_ratio() * 100)]% complete.")
-			. += span_notice("The careful smithing makes it look about [round(my_component.get_perfect_ratio() * 100)]% perfected.")
+			. += span_notice(LANG("obj.9e6faad631d2ae0c", list(round(my_component.get_completion_ratio() * 100))))
+			. += span_notice(LANG("obj.3c6ea6d280fde311", list(round(my_component.get_perfect_ratio() * 100))))
 		if(HAS_TRAIT(user, TRAIT_KNOW_ADVANCED_SMITHING))
-			. += span_notice("If you strike precisely enough, you can get a <b>perfect hit!</b>")
+			. += span_notice(LANG("obj.b7254ed4e2b47f83", null))
 		else
-			. += span_notice("If you had the right skillchip, you could work the metal to a higher quality...")
-		. += span_notice("<b>Right Click</b> with a <b>forging mallet</b> to <b>hammer the metal with a steady tempo</b>.")
-		. += span_notice("You could remove [contents[1]] with some <b>tongs</b>, or your bare hands.")
-	. += span_notice("You could <b>cut it apart</b> with a <b>welder</b>.")
+			. += span_notice(LANG("obj.72546a2273fa6b8b", null))
+		. += span_notice(LANG("obj.7f8598d95ac45909", null))
+		. += span_notice(LANG("obj.8b19b2f384139a0a", list(contents[1])))
+	. += span_notice(LANG("obj.b6a312a70faee9a4", null))
 
 /obj/structure/reagent_anvil/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
@@ -56,7 +57,7 @@
 	if(length(contents) > 0)
 		var/obj/item/contained_item = contents[1]
 		user.put_in_hands(contained_item)
-		balloon_alert(user, "[contained_item] retrieved")
+		balloon_alert(user, LANG("obj.a5cc9afccb64ed0b", list(contained_item)))
 		update_appearance()
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
@@ -81,9 +82,9 @@
 	if(tool.use_tool(src, user, 2 SECONDS, volume=2))
 		new /obj/item/sliced_pipe(drop_location())
 		user.visible_message( \
-			"[user] welds \the [src] into base components.", \
-			span_notice("You weld \the [src] into base components."), \
-			span_hear("You hear welding."))
+			LANG("obj.04dbd13d56fc705c", list(user, src)), \
+			span_notice(LANG("obj.9430633b83d852ce", list(src))), \
+			span_hear(LANG("obj.1aa82fa3545466eb", null)))
 
 		deconstruct(TRUE)
 
@@ -143,13 +144,13 @@
 	var/datum/component/forge_smithable/smith_component = my_anvil_item.GetComponent(/datum/component/forge_smithable)
 	if(!isnull(my_anvil_item) && !isnull(smith_component))
 		if(!should_stop_autohammering())
-			balloon_alert_to_viewers("hammering steadily...")
+			balloon_alert_to_viewers(LANG("obj.6d649c22a856752a", null))
 			while(!should_stop_autohammering())
 				var/wait_between_swings = COOLDOWN_TIMELEFT(user, striking_cooldown) DECISECONDS
 				wait_between_swings += AUTO_SMITHING_SPEED_PENALTY
 
 				if(!do_after(user, wait_between_swings, target = src, interaction_key = DOAFTER_SMITHING_ANVIL))
-					balloon_alert_to_viewers("stopped hammering")
+					balloon_alert_to_viewers(LANG("obj.80efa915cb0ab722", null))
 					break
 				else
 					hammer_act(user, tool)
@@ -181,8 +182,8 @@
 
 	poor_target.AddElement(/datum/element/squish, 30 SECONDS)
 	poor_target.visible_message(
-		span_bolddanger("[src] falls on [poor_target], crushing them!"),
-		span_userdanger("You are crushed by [src]!")
+		span_bolddanger(LANG("obj.ce4a624aefe4b419", list(src, poor_target))),
+		span_userdanger(LANG("obj.872dcdba4bdb623d", list(src)))
 	)
 	poor_target.Paralyze(5 SECONDS)
 	poor_target.emote("scream")

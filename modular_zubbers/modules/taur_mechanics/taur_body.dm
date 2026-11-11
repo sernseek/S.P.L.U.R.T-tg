@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define LAYDOWN_COOLDOWN 1 SECONDS
 
 /obj/item/organ/taur_body
@@ -204,7 +205,7 @@
 		TEXT_WEST = list(round(riding_offset_side_x * scaling_mult, 1), round((riding_offset_side_y + taur_specific_clothing_y_offsets?[TEXT_WEST]) * scaling_mult, 1)),
 	)
 
-GAME_VERB_PROC(/obj/item/organ/taur_body, toggle_laying, "Toggle Laying Down", "Taur")
+GAME_VERB_PROC(/obj/item/organ/taur_body, toggle_laying, "切换躺下", "Taur")
 	var/mob/living/carbon/human/owner = src
 	if(!istype(owner))
 		return
@@ -218,10 +219,10 @@ GAME_VERB_PROC(/obj/item/organ/taur_body, toggle_laying, "Toggle Laying Down", "
 	if(!overlay.can_lay_down)
 		return
 	if(owner.resting)
-		to_chat(owner, span_notice("You have to be standing up in order to lay down properly!"))
+		to_chat(owner, span_notice(LANG("obj.4e342753cefc646d", null)))
 	if(overlay.laying_down)
 		// Rising up
-		to_chat(owner, span_notice("You start lifting your body up."))
+		to_chat(owner, span_notice(LANG("obj.37e7b54a96cdc589", null)))
 		if(!do_after(owner, LAYDOWN_COOLDOWN))
 			return
 		if(!overlay.laying_down) // Prevent multiple standups at once
@@ -233,7 +234,7 @@ GAME_VERB_PROC(/obj/item/organ/taur_body, toggle_laying, "Toggle Laying Down", "
 
 		owner.SetImmobilized(0, TRUE)
 		REMOVE_TRAIT(owner, TRAIT_UNDENSE, TRAIT_SOURCE_TAURLAY)
-		to_chat(owner, span_notice("You stand up."))
+		to_chat(owner, span_notice(LANG("obj.0f313ebe6f116ebd", null)))
 	else
 		// And laying back down
 		overlay.laying_down = TRUE
@@ -243,13 +244,13 @@ GAME_VERB_PROC(/obj/item/organ/taur_body, toggle_laying, "Toggle Laying Down", "
 
 		owner.Immobilize(INFINITY, TRUE)
 		ADD_TRAIT(owner, TRAIT_UNDENSE, TRAIT_SOURCE_TAURLAY)
-		to_chat(owner, span_notice("You lay down."))
+		to_chat(owner, span_notice(LANG("obj.69b6e0d04f2da7ec", null)))
 		if(owner.has_gravity())
 			playsound(owner, "bodyfall", 50, TRUE)
 
 #undef LAYDOWN_COOLDOWN
 
-GAME_VERB_PROC(/obj/item/organ/taur_body, toggle_cropping, "Override Taur Cropping Settings", "Taur")
+GAME_VERB_PROC(/obj/item/organ/taur_body, toggle_cropping, "覆盖陶尔裁剪设置", "Taur")
 	var/mob/living/carbon/human/owner = src
 	if(!istype(owner))
 		return

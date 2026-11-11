@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/pregnant
 	dupe_mode = COMPONENT_DUPE_UNIQUE
 
@@ -105,7 +106,7 @@
 	genetic_distribution += diff
 	thing.reagents.remove_all(/datum/reagent/consumable/cum)
 	thing.reagents.remove_all(/datum/reagent/consumable/femcum)
-	to_chat(user, span_notice("You alter the genetic distribution of [parent], it is now [genetic_distribution]%."))
+	to_chat(user, span_notice(LANG("datum.0b418d17c8bf652e", list(parent, genetic_distribution))))
 	tampering["genetic_distribution"] = genetic_distribution
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
@@ -134,7 +135,7 @@
 /datum/component/pregnant/proc/on_examine(atom/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 
-	examine_list += span_notice("[source] [source.p_have()] something hatching inside of [source.p_them()]!")
+	examine_list += span_notice(LANG("datum.6563780c25aff1e7", list(source, source.p_have(), source.p_them())))
 	var/parents
 	if(mother_name && father_name)
 		parents = "<b>[mother_name]</b> and <b>[father_name]</b>"
@@ -143,25 +144,25 @@
 	else if(father_name)
 		parents = "<b>[father_name]</b>"
 	if(parents)
-		examine_list += span_info("It is the offspring of [parents].")
+		examine_list += span_info(LANG("datum.ffdad8720d9c6fb8", list(parents)))
 	if(tampering["name"])
-		examine_list += span_info("The offspring's name will be \"[tampering["name"]]\".")
+		examine_list += span_info(LANG("datum.3c09c50d05f1c7e9", list(tampering["name"])))
 	//entrails reader can get deeper information about the baby
 	if(HAS_MIND_TRAIT(user, TRAIT_ENTRAILS_READER) || isobserver(user))
 		if(tampering["genetic_distribution"])
-			examine_list += span_info("The offspring will inherit [genetic_distribution]% of their DNA from their father, [100-genetic_distribution]% from their mother.")
+			examine_list += span_info(LANG("datum.848a5db6dc04c0c4", list(genetic_distribution, 100-genetic_distribution)))
 		else
-			examine_list += span_info("The offspring's genetic distribution is uncertain.")
+			examine_list += span_info(LANG("datum.2b1e06dd87be9c50", null))
 
 		if(tampering["physique"])
-			examine_list += span_info("The offspring will be a biological [tampering["physique"]].")
+			examine_list += span_info(LANG("datum.0b25b3524743af4b", list(tampering["physique"])))
 		else
-			examine_list += span_info("The offspring's biological sex is uncertain.")
+			examine_list += span_info(LANG("datum.3d2da8b4790ae045", null))
 
 		if(tampering["gender"])
-			examine_list += span_info("The offspring will be referred to as a [tampering["gender"]]")
+			examine_list += span_info(LANG("datum.c26ba53445600a9f", list(tampering["gender"])))
 		else
-			examine_list += span_info("The offspring's gender is uncertain.")
+			examine_list += span_info(LANG("datum.3a1ffe0995b35e04", null))
 
 /datum/component/pregnant/proc/still_birth(atom/source)
 	SIGNAL_HANDLER
@@ -193,12 +194,12 @@
 /datum/component/pregnant/proc/assumed_control_async(mob/living/carbon/human/a_living_soul)
 	//dna determination
 	if(father_dna && mother_dna && !tampering.Find("genetic_distribution"))
-		var/target_distribution = tgui_input_number(a_living_soul, "What will  be your genetic distribution? (0 - All father, 50 - Equal mix, 100 - All mother)", "The miracle of birth", src.genetic_distribution, PREGNANCY_GENETIC_DISTRIBUTION_MAXIMUM, PREGNANCY_GENETIC_DISTRIBUTION_MINIMUM)
+		var/target_distribution = tgui_input_number(a_living_soul, LANG("datum.84ecfb87f0c85a00", null), LANG("datum.6a0719f52c568d6e", null), src.genetic_distribution, PREGNANCY_GENETIC_DISTRIBUTION_MAXIMUM, PREGNANCY_GENETIC_DISTRIBUTION_MINIMUM)
 		determine_baby_dna(a_living_soul, src.mother_dna, src.father_dna, target_distribution)
 
 	//name determination
 	if(!tampering.Find("name"))
-		var/target_name = reject_bad_name(tgui_input_text(a_living_soul, "What will be your name?", "The miracle of birth", a_living_soul.real_name))
+		var/target_name = reject_bad_name(tgui_input_text(a_living_soul, LANG("datum.9f4d0a944d01ba3c", null), LANG("datum.6a0719f52c568d6e", null), a_living_soul.real_name))
 		if(target_name)
 			a_living_soul.real_name = target_name
 			a_living_soul.name = a_living_soul.real_name
@@ -212,7 +213,7 @@
 			MALE,
 			FEMALE,
 		)
-		a_living_soul.physique = tgui_input_list(a_living_soul, "What will be your biological sex? (Used for mob sprite generation)", "The miracle of birth", possible_sexes, a_living_soul.physique || MALE)
+		a_living_soul.physique = tgui_input_list(a_living_soul, LANG("datum.9bb2d06769a4746e", null), LANG("datum.6a0719f52c568d6e", null), possible_sexes, a_living_soul.physique || MALE)
 
 	//gender determination
 	if(!tampering.Find("gender"))
@@ -223,7 +224,7 @@
 			"They/Them" = PLURAL,
 			"It/It's" = NEUTER,
 		)
-		var/heelvsbabyface = tgui_input_list(a_living_soul, "What will be your pronouns? (How the game refers to your character)", "The miracle of birth", possible_genders, possible_genders[1])
+		var/heelvsbabyface = tgui_input_list(a_living_soul, LANG("datum.3ebbf0389289c06c", null), LANG("datum.6a0719f52c568d6e", null), possible_genders, possible_genders[1])
 		a_living_soul.gender = possible_genders[heelvsbabyface]
 
 	a_living_soul.updateappearance(icon_update = TRUE, mutcolor_update = TRUE, mutations_overlay_update = TRUE) //bad proc name

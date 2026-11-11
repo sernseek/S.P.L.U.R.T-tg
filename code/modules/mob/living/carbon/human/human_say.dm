@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 
 /mob/living/carbon/human/say(
@@ -44,7 +45,7 @@
 /mob/living/carbon/human/get_message_voice(visible_name)
 	. = ..()
 	if(. != name)
-		. += " (as [get_id_name("Unknown", honorifics = TRUE)])"
+		. += LANG("mob.d2009ec03106173c", list(get_id_name("Unknown", honorifics = TRUE)))
 
 /mob/living/carbon/human/binarycheck()
 	if(IS_UNCONSCIOUS_OR_CRIT(src))

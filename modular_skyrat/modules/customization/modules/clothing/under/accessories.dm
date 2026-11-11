@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/accessory/badge
 	name = "detective's badge"
 	desc = "Security Department detective's badge, made from gold."
@@ -22,26 +23,26 @@
 
 /obj/item/clothing/accessory/badge/proc/set_name(new_name)
 	stored_name = new_name
-	name = "[initial(name)] ([stored_name])"
+	name = "[lang_reverse_text(initial(name))] ([stored_name])"  // i18n: initial(name) 会覆盖掉已反查的中文名
 
 /obj/item/clothing/accessory/badge/proc/set_desc(mob/living/carbon/human/H)
 
 /obj/item/clothing/accessory/badge/attack_self(mob/user as mob)
 
 	if(!stored_name)
-		to_chat(user, "You polish your old badge fondly, shining up the surface.")
+		to_chat(user, LANG("obj.fb943151aefaf33a", null))
 		set_name(user.real_name)
 		return
 
 	if(isliving(user))
 		if(stored_name)
-			user.visible_message(span_notice("[user] displays their [src.name].\nIt reads: [stored_name], [badge_string]."),span_notice("You display your [src.name].\nIt reads: [stored_name], [badge_string]."))
+			user.visible_message(span_notice(LANG("obj.15bd911374c246cc", list(user, src.name, stored_name, badge_string))),span_notice(LANG("obj.f2be5adc7115bda6", list(src.name, stored_name, badge_string))))
 		else
-			user.visible_message(span_notice("[user] displays their [src.name].\nIt reads: [badge_string]."),span_notice("You display your [src.name]. It reads: [badge_string]."))
+			user.visible_message(span_notice(LANG("obj.29ea95093e76c281", list(user, src.name, badge_string))),span_notice(LANG("obj.d1ebdd6d2a442c37", list(src.name, badge_string))))
 
 /obj/item/clothing/accessory/badge/attack(mob/living/carbon/human/M, mob/living/user)
 	if(isliving(user))
-		user.visible_message(span_danger("[user] invades [M]'s personal space, thrusting [src] into their face insistently."),span_danger("You invade [M]'s personal space, thrusting [src] into their face insistently."))
+		user.visible_message(span_danger(LANG("obj.574f1ad77c55d0ae", list(user, M, src))),span_danger(LANG("obj.186df07a5aa2639e", list(M, src))))
 		user.do_attack_animation(M)
 
 // Sheriff Badge (toy)
@@ -53,12 +54,12 @@
 	icon_state = "sheriff"
 
 /obj/item/clothing/accessory/badge/sheriff/attack_self(mob/user as mob)
-	user.visible_message("[user] shows their sheriff badge. There's a new sheriff in town!",\
-		"You flash the sheriff badge to everyone around you!")
+	user.visible_message(LANG("obj.e4163f943b91d0cd", list(user)),\
+		LANG("obj.7ce0f99d6313ea1c", null))
 
 /obj/item/clothing/accessory/badge/sheriff/attack(mob/living/carbon/human/M, mob/living/user)
 	if(isliving(user))
-		user.visible_message(span_danger("[user] invades [M]'s personal space, the sheriff badge into their face!."),span_danger("You invade [M]'s personal space, thrusting the sheriff badge into their face insistently."))
+		user.visible_message(span_danger(LANG("obj.2684d6f84bb7b15a", list(user, M))),span_danger(LANG("obj.d128b8a93752b2b8", list(M))))
 		user.do_attack_animation(M)
 
 //.Holobadges.
@@ -76,18 +77,18 @@
 
 /obj/item/clothing/accessory/badge/holo/attack_self(mob/user as mob)
 	if(!stored_name)
-		to_chat(user, "Waving around a holobadge before swiping an ID would be pretty pointless.")
+		to_chat(user, LANG("obj.97f2822f37cb7bf0", null))
 		return
 	return ..()
 
 /obj/item/clothing/accessory/badge/holo/emag_act(remaining_charges, mob/user)
 	if(obj_flags & EMAGGED)
-		balloon_alert(user, "already cracked")
+		balloon_alert(user, LANG("obj.e609804d7a1296f4", null))
 		return FALSE
 
 	obj_flags |= EMAGGED
-	balloon_alert(user, "security checks cracked!")
-	to_chat(user, span_danger("You crack the holobadge security checks."))
+	balloon_alert(user, LANG("obj.8e75287a9f7a8cfa", null))
+	to_chat(user, span_danger(LANG("obj.9a38cfb5527e58b5", null)))
 	return TRUE
 
 /obj/item/clothing/accessory/badge/holo/attackby(obj/item/object as obj, mob/user as mob)
@@ -99,11 +100,11 @@
 			id_card = object
 
 		if((ACCESS_SECURITY in id_card.access) || (obj_flags & EMAGGED))
-			to_chat(user, "You imprint your ID details onto the badge.")
+			to_chat(user, LANG("obj.f801131d0303ba94", null))
 			set_name(user.real_name)
 			badge_string = id_card.assignment
 		else
-			to_chat(user, "[src] rejects your insufficient access rights.")
+			to_chat(user, LANG("obj.9de51e4b3d8b49b9", list(src)))
 		return
 	..()
 

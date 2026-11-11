@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /proc/generate_one_word_objects()
 
 	. = list()
@@ -81,7 +82,7 @@ GLOBAL_LIST_INIT(ashwalker_consonants,list(
 
 	return .
 
-ADMIN_VERB(generate_ashwalker_names, R_DEBUG, "Generate Ashwalker Names", "Generate a list of 50 random ashwalker names.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(generate_ashwalker_names, R_DEBUG, "生成灰烬行者名字", "Generate a list of 50 random ashwalker names.", ADMIN_CATEGORY_DEBUG)
 
 	var/list/returning_data = ""
 	for(var/i in 1 to 50)

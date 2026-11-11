@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define STUN_ATTACK "stun attack"
 
 // Damage is technically 10 by default since that's the max you get from perfect hits when crafting. Find a non-third-of-sth value for the multiplier to get to 18, I'll wait
@@ -50,11 +51,11 @@
 	var/healthpercent = round((atom_integrity/max_integrity) * 100, 1)
 	switch(healthpercent)
 		if(50 to 99)
-			. += span_info("It looks slightly damaged.")
+			. += span_info(LANG("obj.bc3c8a2327d585d1", null))
 		if(25 to 50)
-			. += span_info("It appears heavily damaged.")
+			. += span_info(LANG("obj.27d47c4b2f198d89", null))
 		if(0 to 25)
-			. += span_warning("It's falling apart!")
+			. += span_warning(LANG("obj.ad6c0cee53a99c80", null))
 
 /obj/item/melee/forged_reagent_weapon/Initialize(mapload)
 	. = ..()
@@ -103,8 +104,8 @@
 	// clumsy people redirect this attack - yes, this bypasses IWASBATONED and such
 	if(HAS_TRAIT(user, TRAIT_CLUMSY) && prob(50))
 		user.visible_message(
-			span_danger("[user] accidentally hits [user.p_them()]self over the head with [src]! What a doofus!"),
-			span_userdanger("You accidentally hit yourself over the head with [src]!"),
+			span_danger(LANG("obj.58f9879ba05e9822", list(user, user.p_them(), src))),
+			span_userdanger(LANG("obj.498c711fdc5259fa", list(src))),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
 
@@ -363,7 +364,7 @@
 
 	if(!successful_sneak_attack)
 		if(sneak_attack_fail_message)
-			user.balloon_alert(carbon_target, "sneak attack avoided!")
+			user.balloon_alert(carbon_target, LANG("obj.ff299c8f9df94b92", null))
 		return FALSE
 	return TRUE
 
@@ -372,7 +373,7 @@
 	var/armor_block = carbon_target.run_armor_check(affecting, MELEE, armour_penetration = armour_penetration)
 
 	carbon_target.apply_damage(bonus_damage, BRUTE, def_zone = affecting, blocked = armor_block, wound_bonus = exposed_wound_bonus, sharpness = SHARP_EDGED)
-	carbon_target.balloon_alert(user, "sneak attack!")
+	carbon_target.balloon_alert(user, LANG("obj.8277e5970e87fe5f", null))
 	playsound(carbon_target, 'sound/items/weapons/guillotine.ogg', 50, TRUE)
 
 /obj/item/melee/forged_reagent_weapon/rapier
@@ -521,11 +522,11 @@
 		var/mob/living/carbon/human/H = M
 		for(var/obj/item/shield/I in H.held_items)
 			if(I.breakable_by_damage)
-				user.balloon_alert(user, "devastating blow!")
+				user.balloon_alert(user, LANG("obj.a7c82d6801f61863", null))
 				playsound(src, 'sound/effects/bang.ogg', 30)
 				I.take_damage(15, BRUTE, 0, FALSE, get_dir(user, H))
 			else
-				user.balloon_alert(user, "crippling blow!")
+				user.balloon_alert(user, LANG("obj.996c09d776ba7dba", null))
 				playsound(src, 'sound/effects/tableheadsmash.ogg', 30)
 				H.apply_damage(15, STAMINA)
 
@@ -736,7 +737,7 @@
 /obj/item/melee/forged_reagent_weapon/bokken/attack(mob/living/carbon/target_mob, mob/living/user, params)
 	. = ..()
 	if(!iscarbon(target_mob))
-		user.visible_message(span_warning("The [src] seems to be ineffective against the [target_mob]!"))
+		user.visible_message(span_warning(LANG("obj.57bbc80b4b5cae1c", list(src, target_mob))))
 		playsound(src, 'sound/items/weapons/genhit.ogg', 75, TRUE)
 		return
 	playsound(src, pick('sound/items/weapons/genhit1.ogg', 'sound/items/weapons/genhit2.ogg', 'sound/items/weapons/genhit3.ogg'), 100, TRUE)

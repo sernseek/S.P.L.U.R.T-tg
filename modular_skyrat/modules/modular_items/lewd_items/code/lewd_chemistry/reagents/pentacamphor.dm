@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Pentacamphor. Used to purge crocin and hexacrocin. Can permanently disable arousal or cure bimbofication on overdose.
 /datum/reagent/drug/aphrodisiac/camphor/pentacamphor
 	name = "Pentacamphor"
@@ -21,11 +22,11 @@
 /datum/reagent/drug/aphrodisiac/camphor/pentacamphor/overdose_start(mob/living/carbon/human/exposed_mob)
 	if(HAS_TRAIT(exposed_mob, TRAIT_BIMBO))
 		exposed_mob.cure_trauma_type(/datum/brain_trauma/very_special/bimbo, TRAUMA_RESILIENCE_ABSOLUTE)
-		to_chat(exposed_mob, span_notice("Your mind is free. Your thoughts are pure and innocent once more."))
+		to_chat(exposed_mob, span_notice(LANG("datum.50b1384b756f200d", null)))
 		REMOVE_TRAIT(exposed_mob, TRAIT_BIMBO, TRAIT_LEWDCHEM)
 		return
 	if(!HAS_TRAIT(exposed_mob, TRAIT_NEVERBONER) && exposed_mob.client?.prefs?.read_preference(/datum/preference/toggle/erp/forced_neverboner)) // SPLURT EDIT - Added a preference to force neverboner
-		to_chat(exposed_mob, span_notice("You feel like you'll never feel aroused again..."))
+		to_chat(exposed_mob, span_notice(LANG("datum.bc259c1ef9bcad3b", null)))
 		ADD_TRAIT(exposed_mob, TRAIT_NEVERBONER, TRAIT_LEWDCHEM)
 
 /datum/chemical_reaction/pentacamphor

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Wooden shelves that force items placed on them to be visually placed them
 
 /obj/structure/rack/wooden
@@ -20,7 +21,7 @@
 	return NONE
 
 /obj/structure/rack/wooden/crowbar_act(mob/living/user, obj/item/tool)
-	user.balloon_alert_to_viewers("disassembling...")
+	user.balloon_alert_to_viewers(LANG("obj.b5ba987161d1a2e3", null))
 	if(!tool.use_tool(src, user, 2 SECONDS, volume = 100))
 		return
 	deconstruct(TRUE)
@@ -74,7 +75,7 @@
 	return NONE
 
 /obj/machinery/smartfridge/wooden/crowbar_act(mob/living/user, obj/item/tool)
-	user.balloon_alert_to_viewers("disassembling...")
+	user.balloon_alert_to_viewers(LANG("obj.b5ba987161d1a2e3", null))
 	if(!tool.use_tool(src, user, 2 SECONDS, volume = 100))
 		return
 	new /obj/item/stack/sheet/mineral/wood(drop_location(), 10)

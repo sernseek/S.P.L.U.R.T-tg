@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/hydra
 	name = "Hydra Heads"
 	desc = "You are a tri-headed creature. To use, format name like (Rucks-Sucks-Ducks)"
@@ -65,12 +66,12 @@
 		hydra_quirk.original_name = hydra.real_name
 
 	if(!hydra_quirk.check_heads())
-		to_chat(hydra, "Please set up all of your head names in the quirk menu to use this ability.")
+		to_chat(hydra, LANG("datum.76a89be63507a067", null))
 		return
-	var/selhead = tgui_input_list(hydra, "Who would you like to speak as?", "Head Selection", hydra_quirk.heads)
+	var/selhead = tgui_input_list(hydra, LANG("datum.ab6e0efa7693a2bc", null), LANG("datum.ca73cff9f4ad2fe4", null), hydra_quirk.heads)
 	hydra.real_name = selhead
-	hydra.visible_message(span_notice("[hydra.name] pulls the rest of their heads back; and puts [selhead]'s forward."), \
-							span_notice("You are now talking as [selhead]!"), ignored_mobs=owner)
+	hydra.visible_message(span_notice(LANG("datum.d7f4faab893c02d0", list(hydra.name, selhead))), \
+							span_notice(LANG("datum.0082db02ae2ded2d", list(selhead))), ignored_mobs=owner)
 
 /datum/quirk/hydra/proc/check_heads()
 	if(heads_checked)
@@ -98,5 +99,5 @@
 	if(!hydra_quirk.original_name) // sets the archived 'real' name if not set.
 		hydra_quirk.original_name = hydra.real_name
 	hydra.real_name = hydra_quirk.original_name
-	hydra.visible_message(span_notice("[hydra.name] pushes all three heads forwards; they seem to be talking as a collective."), \
-							span_notice("You are now talking as [hydra_quirk.original_name]!"), ignored_mobs=owner)
+	hydra.visible_message(span_notice(LANG("datum.78664ff61631e590", list(hydra.name))), \
+							span_notice(LANG("datum.0082db02ae2ded2d", list(hydra_quirk.original_name))), ignored_mobs=owner)

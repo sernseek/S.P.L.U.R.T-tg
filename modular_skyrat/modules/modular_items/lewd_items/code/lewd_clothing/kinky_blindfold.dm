@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/glasses/blindfold/kinky
 	name = "kinky blindfold"
 	desc = "Covers the eyes, preventing sight. But it looks so nice..."
@@ -58,10 +59,10 @@
 /obj/item/clothing/glasses/blindfold/kinky/equipped(mob/living/carbon/human/user, slot)
 	. = ..()
 	if(src == user.glasses)
-		to_chat(user, span_purple("The blindfold blocks your vision! You can't make out anything on the other side..."))
+		to_chat(user, span_purple(LANG("obj.60f6b0c719834e3c", null)))
 
 //message when unequipping that thing
 /obj/item/clothing/glasses/blindfold/kinky/dropped(mob/living/carbon/human/user)
 	. = ..()
 	if(src == user.glasses)
-		to_chat(user, span_purple("The blindfold no longer restricts your vision."))
+		to_chat(user, span_purple(LANG("obj.56c0721eeb8f79b6", null)))

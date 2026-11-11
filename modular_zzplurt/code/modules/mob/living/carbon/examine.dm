@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/carbon/proc/get_size_examine_info(mob/living/user)
 	. = list()
 
@@ -9,7 +10,7 @@
 	if(dispSize % 2) // returns 1 or 0. 1 meaning the height is not exact and the code below will execute, 0 meaning the height is exact and the else will trigger.
 		dispSize = dispSize - 1 //makes it even
 		dispSize = dispSize / 2 //rounds it out
-		. += "[t_He] appear\s to be around [dispSize] and a half feet ([dispSizeMetric]cm) tall."
+		. += LANG("mob.67c3c7abd2244786", list(t_He, dispSize, dispSizeMetric))
 	else
 		dispSize = dispSize / 2
-		. += "[t_He] appear\s to be around [dispSize] feet ([dispSizeMetric]cm) tall."
+		. += LANG("mob.b9b0f3fba97907e9", list(t_He, dispSize, dispSizeMetric))

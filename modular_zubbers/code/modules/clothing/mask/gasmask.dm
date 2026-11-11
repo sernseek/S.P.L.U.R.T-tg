@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/mask/gas
 	flags_inv = HIDEEYES|HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
 
@@ -24,16 +25,15 @@
 
 /obj/item/clothing/mask/gas/modulator/examine(mob/user)
 	. = ..()
-	. += span_notice("Its voice modulator is currently [modulate_voice ? "enabled" : "disabled"]. <b>Alt-click</b> to toggle it.")
+	. += span_notice(LANG("obj.80e359e73300e5d3", list(modulate_voice ? "enabled" : "disabled")))
 
 /obj/item/clothing/mask/gas/modulator/examine_more(mob/user)
 	. = ..()
-	. += span_notice("<i>You examine [src] closer, and notice a warning label on the side of the voice analyzer module.. \
-		\"Please enunciate words CLEARLY and PRECISELY for device to function.\"</i>")
+	. += span_notice(LANG("obj.1cb55235a0dba31c", list(src)))
 
 /obj/item/clothing/mask/gas/modulator/click_alt(mob/user)
 	modulate_voice = !modulate_voice
-	balloon_alert(user, "voice modulator [modulate_voice ? "enabled":"disabled"]")
+	balloon_alert(user, LANG("obj.7976e771e8046bfa", list(modulate_voice ? "enabled":"disabled")))
 	update_voice(user)
 
 	return CLICK_ACTION_SUCCESS
@@ -61,7 +61,7 @@
 
 /obj/item/clothing/mask/gas/modulator/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
-	context[SCREENTIP_CONTEXT_ALT_LMB] = "[modulate_voice ? "Disable":"Enable"] voice modulator"
+	context[SCREENTIP_CONTEXT_ALT_LMB] = LANG("obj.6202e41893709c51", list(modulate_voice ? "Disable":"Enable"))
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/clothing/mask/gas/modulator/proc/update_voice(mob/user)

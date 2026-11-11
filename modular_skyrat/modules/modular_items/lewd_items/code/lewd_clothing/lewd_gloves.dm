@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /datum/component/ball_mittens_fumble
 	dupe_mode = COMPONENT_DUPE_UNIQUE
@@ -58,7 +59,7 @@
 	var/mob/living/wearer = mittens.loc
 	if(!isliving(wearer))
 		return
-	to_chat(wearer, span_purple("You struggle furiously with [mittens], but you're not even sure if these can come off."))
+	to_chat(wearer, span_purple(LANG("datum.fa3f1d003e60bdd0", list(mittens))))
 	return COMPONENT_ITEM_BLOCK_UNEQUIP
 
 /datum/component/ball_mittens_fumble/proc/get_hand_descriptor(mob/living/wearer)
@@ -76,7 +77,7 @@
 	if(!isgun(item) && item.w_class >= max_item_size)
 		pickup_mods["delay"] = struggle_delay_min * (item.w_class - max_item_size + 2)
 		pickup_mods["fail_chance"] = min(75, (item.w_class - max_item_size) * 25)
-		to_chat(wearer, span_warning("You wrestle with [item], trying to get it between your [get_hand_descriptor(wearer)]..."))
+		to_chat(wearer, span_warning(LANG("datum.c0647e8de28626ec", list(item, get_hand_descriptor(wearer)))))
 		return
 	var/hand_desc = get_hand_descriptor(wearer)
 	var/player_msgs = list(
@@ -108,7 +109,7 @@
 /datum/component/ball_mittens_fumble/proc/on_pickup_failed(mob/living/wearer, obj/item/item)
 	SIGNAL_HANDLER
 	var/hand_desc = get_hand_descriptor(wearer)
-	to_chat(wearer, span_warning("[item] slips out of your [hand_desc]!"))
+	to_chat(wearer, span_warning(LANG("datum.b2104920271af44f", list(item, hand_desc))))
 	playsound(wearer, 'modular_skyrat/modules/modular_items/lewd_items/sounds/latex.ogg', 30, TRUE)
 
 /// Handles machinery interaction delay via COMSIG_MOB_MACHINERY_INTERACT.
@@ -142,7 +143,7 @@
 			wearer.throw_mode_off(THROW_MODE_TOGGLE)
 			return COMSIG_MOB_CANCEL_CLICKON
 		if(prob(5))
-			to_chat(wearer, span_purple("You try to grip the [held] with your [get_hand_descriptor(wearer)] to throw it, but it clatters noisily to the floor instead."))
+			to_chat(wearer, span_purple(LANG("datum.6ca6f645d0a15e9c", list(held, get_hand_descriptor(wearer)))))
 			playsound(wearer, 'modular_skyrat/modules/modular_items/lewd_items/sounds/latex.ogg', 30, TRUE)
 			wearer.dropItemToGround(held)
 			wearer.throw_mode_off(THROW_MODE_TOGGLE)
@@ -166,9 +167,9 @@
 /datum/component/ball_mittens_fumble/proc/clothing_struggle(mob/living/wearer, obj/item/clothing/cloth)
 	var/delay = 12 SECONDS
 	var/hand_desc = get_hand_descriptor(wearer)
-	to_chat(wearer, span_purple("You struggle to remove [cloth]. It's extremely difficult with your [hand_desc]... (This will take around [DisplayTimeText(delay)] and you need to stand still.)"))
+	to_chat(wearer, span_purple(LANG("datum.f0aba493052035fc", list(cloth, hand_desc, DisplayTimeText(delay)))))
 	if(!do_after(wearer, delay, cloth, timed_action_flags = IGNORE_HELD_ITEM))
-		to_chat(wearer, span_warning("You give up on [cloth]."))
+		to_chat(wearer, span_warning(LANG("datum.74ee94c4c7c1a9e0", list(cloth))))
 		return
 	if(QDELETED(src) || QDELETED(wearer) || QDELETED(cloth))
 		return
@@ -193,9 +194,9 @@
 
 /datum/component/ball_mittens_fumble/proc/delayed_drag_unequip(mob/living/wearer, obj/item/item)
 	var/hand_desc = get_hand_descriptor(wearer)
-	to_chat(wearer, span_purple("You carefully work at your [item] with your [hand_desc]..."))
+	to_chat(wearer, span_purple(LANG("datum.06f95bbe38c4c9e8", list(item, hand_desc))))
 	if(!do_after(wearer, struggle_delay_min, item, timed_action_flags = IGNORE_HELD_ITEM))
-		to_chat(wearer, span_warning("You give up on [item]."))
+		to_chat(wearer, span_warning(LANG("datum.74ee94c4c7c1a9e0", list(item))))
 		return
 	if(QDELETED(src) || QDELETED(wearer) || QDELETED(item))
 		return
@@ -217,13 +218,13 @@
 			return // Item in target's hands = equip action, not a strip
 	if(!isliving(target) || !isitem(item))
 		return COMPONENT_CANT_STRIP
-	to_chat(wearer, span_purple("You fumble awkwardly at [target]'s gear with your [get_hand_descriptor(wearer)], trying to find a grip..."))
+	to_chat(wearer, span_purple(LANG("datum.61b92dc84a11ce26", list(target, get_hand_descriptor(wearer)))))
 	INVOKE_ASYNC(src, PROC_REF(delayed_strip), wearer, target, item)
 	return COMPONENT_CANT_STRIP
 
 /datum/component/ball_mittens_fumble/proc/delayed_strip(mob/living/wearer, mob/living/target, obj/item/item)
 	if(!do_after(wearer, item.strip_delay * 2.5, target, timed_action_flags = IGNORE_HELD_ITEM))
-		to_chat(wearer, span_warning("You give up trying to remove [item] from [target]."))
+		to_chat(wearer, span_warning(LANG("datum.a6ef20f0be5ef2c9", list(item, target))))
 		return
 	if(QDELETED(src) || QDELETED(wearer) || QDELETED(target) || QDELETED(item))
 		return
@@ -261,9 +262,9 @@
 		"You awkwardly paw at [machine] with your [hand_desc]..."
 	wearer.face_atom(machine)
 	to_chat(wearer, span_purple(msg))
-	wearer.visible_message(span_warning("[wearer] awkwardly paws at [machine] with [wearer.p_their()] [hand_desc], visibly struggling to use it."))
+	wearer.visible_message(span_warning(LANG("datum.76a4152241143dc7", list(wearer, machine, wearer.p_their(), hand_desc))))
 	if(!do_after(wearer, interact_delay, machine))
-		to_chat(wearer, span_warning("You give up on [machine]."))
+		to_chat(wearer, span_warning(LANG("datum.74ee94c4c7c1a9e0", list(machine))))
 		is_interacting = FALSE
 		return
 	if(QDELETED(src) || QDELETED(wearer) || QDELETED(machine) || get_dist(wearer, machine) > 1)
@@ -354,9 +355,9 @@
 	if(slot != ITEM_SLOT_GLOVES)
 		return
 	if(is_paw_skin)
-		to_chat(user, span_purple("The [src] seal around your hands. You pull at them and find it completely impossible to remove them..."))
+		to_chat(user, span_purple(LANG("obj.8e7693ac24ed399b", list(src))))
 	else
-		to_chat(user, span_purple("Your hands sink into [src]. Soft, round, and not particularly good at anything. As soon as you put them on, you hear them self inflate. Oh shit..."))
+		to_chat(user, span_purple(LANG("obj.30bc0e017149c994", list(src))))
 	RegisterSignal(src, COMSIG_OBJ_RESKIN, PROC_REF(on_reskin))
 	var/datum/component/ball_mittens_fumble/comp = AddComponent(/datum/component/ball_mittens_fumble)
 	comp.register_wearer(user)
@@ -376,10 +377,10 @@
 		return
 	if(is_paw_skin)
 		wearer.add_mood_event("paw_mittens", /datum/mood_event/wearing_paw_mittens)
-		to_chat(wearer, span_purple("The nanite-infused rubber shifts your hands into soft, rounded paw shapes."))
+		to_chat(wearer, span_purple(LANG("obj.c639f0936482fd5d", null)))
 	else
 		wearer.clear_mood_event("paw_mittens")
-		to_chat(wearer, span_purple("The mittens ease back into their round ball shape. Still completely useless."))
+		to_chat(wearer, span_purple(LANG("obj.1619b033b55477a1", null)))
 
 /// Opens the GAGS recolor menu for spray can use on paw mittens.
 /// gags_recolorable.open_ui() uses initial() on greyscale_config which returns null
@@ -389,10 +390,10 @@
 		return NONE
 	var/obj/item/toy/crayon/spraycan/can = tool
 	if(can.is_capped)
-		user.balloon_alert(user, "take the cap off first!")
+		user.balloon_alert(user, LANG("obj.0c73c2ec9ac951ca", null))
 		return ITEM_INTERACT_BLOCKING
 	if(can.check_empty())
-		user.balloon_alert(user, "empty!")
+		user.balloon_alert(user, LANG("obj.6ef93b07027da376", null))
 		return ITEM_INTERACT_BLOCKING
 	if(!user.client)
 		return ITEM_INTERACT_BLOCKING
@@ -416,7 +417,7 @@
 		return
 	can.use_charges()
 	if(can.pre_noise)
-		audible_message(span_hear("You hear spraying."))
+		audible_message(span_hear(LANG("obj.715ca92ddd7a92b1", null)))
 		playsound(loc, 'sound/effects/spray.ogg', 50, TRUE, 5)
 	set_greyscale(menu.split_colors)
 
@@ -438,7 +439,7 @@
 /obj/item/clothing/gloves/ball_mittens/examine(mob/user)
 	. = ..()
 	if(is_paw_skin)
-		. += span_notice("There's a paw-friendly switch on the cuff. It's currently <b>[lights_on ? "ON" : "OFF"]</b>. <a href='byond://?src=[REF(src)];toggle_lights=1'>\[Toggle\]</a>")
+		. += span_notice(LANG("obj.07e7a2856e3cfb8f", list(lights_on ? "ON" : "OFF", REF(src))))
 
 /obj/item/clothing/gloves/ball_mittens/Topic(href, href_list)
 	. = ..()
@@ -450,7 +451,7 @@
 			return
 		lights_on = !lights_on
 		playsound(src, 'sound/machines/click.ogg', 30, FALSE)
-		to_chat(usr, span_notice("You turn the accent lighting [lights_on ? "on" : "off"]."))
+		to_chat(usr, span_notice(LANG("obj.3546fb8cfecaf848", list(lights_on ? "on" : "off"))))
 		update_appearance()
 
 /obj/item/clothing/gloves/ball_mittens/proc/deferred_spawn_flavor(mob/user)
@@ -471,24 +472,24 @@
 	if(!user?.client)
 		return
 	if(is_paw_skin)
-		to_chat(user, span_purple("You look down at your paws. Round and soft and utterly useless. You blush as you think about how difficult this is going to make your day at work."))
+		to_chat(user, span_purple(LANG("obj.d7380f2976aee064", null)))
 	else
-		to_chat(user, span_purple("You look down at [src]. Why did I come to work like this?"))
+		to_chat(user, span_purple(LANG("obj.52a58ef48ed35b11", list(src))))
 
 /obj/item/clothing/gloves/ball_mittens/attackby(obj/item/item, mob/living/user, params)
 	if(!istype(item, /obj/item/clothing/gloves/color/yellow))
 		return ..()
 	if(siemens_coefficient == 0)
-		to_chat(user, span_warning("[src] are already insulated."))
+		to_chat(user, span_warning(LANG("obj.47985bc138baafe5", list(src))))
 		return
 	user.visible_message(
-		span_notice("[user] holds [item] up to [src] with a look of intense concentration, then discards it with a sigh."),
-		span_notice("You press [item] against [src], attempting to combine them. Halfway through you realize latex is, in fact, already an insulator. You throw away the insulated gloves.")
+		span_notice(LANG("obj.e81f09fc527738f3", list(user, item, src))),
+		span_notice(LANG("obj.e8dc1953d6a8388c", list(item, src)))
 	)
 	siemens_coefficient = 0
 	name = "insulated [name]"
 	if(desc == initial(desc))
-		desc = "A pair of inflatable latex mittens. Someone has helpfully applied insulated gloves to them, only to realise too late that latex was already an insulator."
+		desc = LANG("obj.b3bdab8399128a37", null)
 	qdel(item)
 	update_appearance()
 	return TRUE
@@ -501,11 +502,11 @@
 			stripper.put_in_hands(src)
 		return TRUE
 	var/delay = 1 MINUTES
-	to_chat(owner, span_purple("You attempt to remove [src]... (This will take around [DisplayTimeText(delay)] and you need to stand still.)"))
-	to_chat(owner, span_purple("You struggle furiously with [src], but you're not even sure if these can come off."))
+	to_chat(owner, span_purple(LANG("obj.ace3833fdc7ebf48", list(src, DisplayTimeText(delay)))))
+	to_chat(owner, span_purple(LANG("obj.fa3f1d003e60bdd0", list(src))))
 	playsound(owner, pick('modular_zubbers/sound/lewd/rubber1.ogg', 'modular_zubbers/sound/lewd/rubber2.ogg', 'modular_zubbers/sound/lewd/rubber3.ogg'), 40, TRUE)
 	if(!do_after(owner, delay, src, timed_action_flags = IGNORE_HELD_ITEM))
-		to_chat(owner, span_purple("You give up trying to escape [src]. Maybe having [src] isn't so bad..."))
+		to_chat(owner, span_purple(LANG("obj.9cd3a3fb528905b6", list(src, src))))
 		return FALSE
 	if(QDELETED(src) || !isliving(loc))
 		return FALSE

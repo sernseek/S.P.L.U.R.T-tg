@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/item_action/zipper
 	name = "Unzip Duffel"
 	desc = "Unzip your equipped duffelbag so you can access its contents."
@@ -12,8 +13,8 @@
 	SIGNAL_HANDLER
 	if(new_zip)
 		name = "Unzip" 
-		desc = "Unzip your equipped duffelbag so you can access its contents."
+		desc = LANG("datum.508af225578e6d0e", null)
 	else
 		name = "Zip"
-		desc = "Zip your equipped duffelbag so you can move around faster."
+		desc = LANG("datum.fa82961bc9ab83c7", null)
 	build_all_button_icons(UPDATE_BUTTON_NAME)

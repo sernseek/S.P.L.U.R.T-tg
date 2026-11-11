@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/changeling/biodegrade
 	name = "Biodegrade"
 	desc = "Dissolves restraints or other objects preventing free movement. Costs 30 chemicals."
@@ -31,7 +32,7 @@
 		straitjacket = null
 
 	if(!handcuffs && !legcuffs && !straitjacket && !prisoner_shoes && !knotted_shoes && !some_manner_of_cage && !space_invader)
-		user.balloon_alert(user, "already free!")
+		user.balloon_alert(user, LANG("datum.b2d2162df687b38e", null))
 		return .
 	..()
 
@@ -50,11 +51,11 @@
 
 	for(var/obj/restraint as anything in restraints)
 		if(restraint.obj_flags & (INDESTRUCTIBLE | ACID_PROOF | UNACIDABLE))
-			to_chat(user, span_changeling("We cannot use bio-acid to destroy [restraint]!"))
+			to_chat(user, span_changeling(LANG("datum.d793256cab6b6ceb", list(restraint))))
 			continue
 
 		if(restraint == user.loc)
-			restraint.visible_message(span_warning("Bubbling acid start spewing out of [restraint]..."))
+			restraint.visible_message(span_warning(LANG("datum.c80b41548f710a8d", list(restraint))))
 			addtimer(CALLBACK(restraint, TYPE_PROC_REF(/atom, atom_destruction), ACID), 4 SECONDS)
 			for(var/beat in 1 to 3)
 				addtimer(CALLBACK(src, PROC_REF(make_puddle), restraint), beat SECONDS)
@@ -65,9 +66,9 @@
 		addtimer(CALLBACK(restraint, TYPE_PROC_REF(/atom, atom_destruction), ACID), 1.5 SECONDS)
 		log_combat(user = user, target = restraint, what_done = "melted restraining item", addition = "(biodegrade)")
 		user.visible_message(
-			span_warning("[user] spews torrents of acid onto [restraint], melting them with horrifying ease."),
-			user.balloon_alert(user, "melting restraints..."),
-			span_danger("You hear retching, then the sizzling of powerful acid, closer to the sound of hissing steam."))
+			span_warning(LANG("datum.e681e6031b69a7ef", list(user, restraint))),
+			user.balloon_alert(user, LANG("datum.55a9cd6724b09906", null)),
+			span_danger(LANG("datum.b4a2c7f687d452b6", null)))
 		playsound(user, 'sound/items/tools/welder.ogg', 50, TRUE)
 		. = TRUE
 
@@ -96,16 +97,16 @@
 	playsound(user, 'sound/mobs/non-humanoids/bileworm/bileworm_spit.ogg', 50, TRUE)
 	if(IS_CHANGELING(hapless_manhandler))
 		user.visible_message(
-			span_danger("[user] spews a mist of sizzling acid onto [hapless_manhandler]... but nothing happens!"),
-			span_changeling("We prepare our escape, spraying bio-acid on our captor... [span_danger("But nothing happened?!")]"),
-			span_danger("You hear retching, then a sizzling that terminates quite abruptly.")
+			span_danger(LANG("datum.0d9fd9aa40ca5679", list(user, hapless_manhandler))),
+			span_changeling(LANG("datum.4b694fb337908f25", list(span_danger("But nothing happened?!")))),
+			span_danger(LANG("datum.57dcc57ad040753a", null))
 			)
-		to_chat(hapless_manhandler, span_changeling("Our prey attempts to dissuade us with one of our biology's simplest adaptions. Quaint."))
+		to_chat(hapless_manhandler, span_changeling(LANG("datum.174dd70bce234991", null)))
 		return
 	user.visible_message(
-		span_danger("[user] spews a mist of sizzling acid onto [hapless_manhandler], using the opportunity to wrestle away."),
-		user.balloon_alert(user, "dissuading captor..."),
-		span_danger("You hear retching, then sizzling, quickly muffled by a loud keening of pain."))
+		span_danger(LANG("datum.b668418068ac61e3", list(user, hapless_manhandler))),
+		user.balloon_alert(user, LANG("datum.129592f0e5b6ae18", null)),
+		span_danger(LANG("datum.0ca6b9c56af7457c", null)))
 	hapless_manhandler.Stun(2 SECONDS)
 	hapless_manhandler.emote("scream")
 	hapless_manhandler.stop_pulling()

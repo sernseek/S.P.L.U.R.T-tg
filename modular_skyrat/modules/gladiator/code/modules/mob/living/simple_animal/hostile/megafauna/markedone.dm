@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MARKED_ONE_STUN_DURATION (1.5 SECONDS)
 #define MARKED_ONE_ANGER_DURATION (10 MINUTES)
 #define MARKED_ONE_FIRST_PHASE 1
@@ -107,10 +108,10 @@
 /mob/living/simple_animal/hostile/megafauna/gladiator/examine()
 	if(stat >= DEAD)
 		. = ..()
-		. += span_boldwarning("Unearthly energies bind the body to it's place of defeat. You cannot move it.")
+		. += span_boldwarning(LANG("mob.1f7e7a8b5f68f4ee", null))
 	else
 		. = ..()
-		. += span_boldwarning("They are currently in Phase [phase].")
+		. += span_boldwarning(LANG("mob.045dd466c69114c1", list(phase)))
 
 /// Gets him mad at you if you're a species he's not racist towards, and provides the 50% to block attacks in the first and fourth phases
 /mob/living/simple_animal/hostile/megafauna/gladiator/adjustHealth(amount, updating_health, forced)
@@ -193,11 +194,11 @@
 	if(isliving(A))
 		var/mob/living/living_atom = A
 		forceMove(get_turf(living_atom))
-		visible_message(span_danger("[src] knocks [living_atom] down!"))
+		visible_message(span_danger(LANG("mob.b28257ff017a2b6e", list(src, living_atom))))
 		living_atom.Paralyze(20)
 		discharge()
 	else if(istype(A, /turf/closed))
-		visible_message(span_danger("[src] crashes headfirst into [A]!"))
+		visible_message(span_danger(LANG("mob.fecb5e367d351c13", list(src, A))))
 		discharge(1.5)
 
 /// Makes the Marked One unhappy and more befitting of his "hostile" subtype status.
@@ -258,7 +259,7 @@
 			GiveTarget(target)
 	else
 		//simplemobs beware
-		INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, say), "It's berserkin' time!")
+		INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, say), LANG("mob.5c66ba3f9d3fb664", null))
 		introduced |= WEAKREF(target)
 
 /// Checks against the Marked One's current health and updates his phase accordingly. Uses variable shitcode to make sure his phase updates only ever happen *once*
@@ -347,9 +348,9 @@
 			if(!faction_check(faction, slapped.faction) && !(slapped in hit_things))
 				playsound(src, 'modular_skyrat/modules/gladiator/Clang_cut.ogg', 75, 0)
 				if(slapped.apply_damage(40, BRUTE, BODY_ZONE_CHEST, slapped.run_armor_check(BODY_ZONE_CHEST), wound_bonus = CANT_WOUND))
-					visible_message(span_danger("[src] slashes through [slapped] with his spinning blade!"))
+					visible_message(span_danger(LANG("mob.3af77145ce343b10", list(src, slapped))))
 				else
-					visible_message(span_danger("[src]'s spinning blade is stopped by [slapped]!"))
+					visible_message(span_danger(LANG("mob.ffb76b34825e8c67", list(src, slapped))))
 					spinning = FALSE
 				hit_things |= slapped
 		if(!spinning)
@@ -447,7 +448,7 @@
 			for(var/mob/living/target in stomp_turf)
 				if(target == src || target.throwing)
 					continue
-				to_chat(target, span_userdanger("[src]'s ground slam shockwave sends you flying!"))
+				to_chat(target, span_userdanger(LANG("mob.f138f919dad23792", list(src))))
 				var/turf/thrownat = get_ranged_target_turf_direct(src, target, throw_range, rand(-10, 10))
 				target.throw_at(thrownat, 8, 2, null, TRUE, force = MOVE_FORCE_OVERPOWERING, gentle = TRUE)
 				target.apply_damage(20, BRUTE, wound_bonus=CANT_WOUND)

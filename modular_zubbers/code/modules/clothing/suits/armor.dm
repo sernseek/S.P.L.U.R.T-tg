@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/suit/armor/vest/collared_vest//Sprite done by offwrldr/Bangle - same person. Recently edited sprite.
 	name = "GLP-C 'Úlfur' Vest"
 	desc = "A set of General Light Protective armor, with complimentary pauldrons and an additional armored collar, similar to a gorget. This pattern of armored vest is typically afforded to diplomats and members of the press in hostile environments, though has seen use among private security forces. The armored collar is designed to protect the neck and throat from shrapnel. All things considered, it's quite comfortable, though many unfortunate wearers are often mistaken for combatants given the militarized aesthetic."
@@ -315,7 +316,7 @@
 
 /obj/item/clothing/suit/hooded/secjuggernaut/examine(mob/user)
 	. = ..()
-	. += span_warning("Trying to buckle to anything while wearing this is impossible, whether it be a chair, cyborg, horse, or golf cart.")
+	. += span_warning(LANG("obj.a544df722686cf38", null))
 
 /obj/item/clothing/suit/hooded/secjuggernaut/Initialize(mapload)
 	. = ..()

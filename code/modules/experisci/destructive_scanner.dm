@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * # Destructive scanner
  *
@@ -34,7 +35,7 @@
 	for(var/mob/living/living_mob in pickup_zone)
 		if(!(obj_flags & EMAGGED) && ishuman(living_mob)) //Can only kill humans when emagged.
 			playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 25)
-			say("Cannot scan with humans inside.")
+			say(LANG("obj.f9e2d16744511ebe", null))
 			return
 		aggressive = TRUE
 	start_closing(aggressive)
@@ -97,7 +98,7 @@
 		return FALSE
 	obj_flags |= EMAGGED
 	playsound(src, SFX_SPARKS, 75, TRUE, SILENCED_SOUND_EXTRARANGE)
-	balloon_alert(user, "safety sensor BIOS disabled")
+	balloon_alert(user, LANG("obj.34eff806b6354706", null))
 	return TRUE
 
 /obj/machinery/destructive_scanner/update_icon_state()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/heretic_knowledge/open_way
 	name = "Knock of the Twin-Finger"
 	desc = "Allows you to open Ways towards the Mansus, breaching the thin veil between dawn and dusk and allowing you a glimpse of Light. \
@@ -34,7 +35,7 @@
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
 
 	if(heretic_datum.has_living_heart() != HERETIC_HAS_LIVING_HEART)
-		loc.balloon_alert(user, "ritual failed, no living heart!")
+		loc.balloon_alert(user, LANG("datum.dfde0ee611438868", null))
 		return FALSE
 
 	// TODO - if no ways are unopened, generate more (up to a point)
@@ -113,9 +114,9 @@
 
 	if (what_are_we_missing.len)
 		// Let them know it screwed up
-		loc.balloon_alert(user, "ritual failed, missing components!")
+		loc.balloon_alert(user, LANG("datum.1a08c859d700b410", null))
 		// Then let them know what they're missing
-		to_chat(user, span_hierophant_warning("You are missing [english_list(what_are_we_missing)] in order to open the way."))
+		to_chat(user, span_hierophant_warning(LANG("datum.fbf35f0b8ab15094", list(english_list(what_are_we_missing)))))
 		return FALSE
 
 	return TRUE
@@ -147,31 +148,31 @@
 				what_are_we_missing += formatted_thing
 
 			var/area/target_area = get_area(far_away_way)
-			to_chat(user, span_notice("There is a way in [target_area.name], and will require [english_list(what_are_we_missing)]."))
+			to_chat(user, span_notice(LANG("datum.13d952a53d9010af", list(target_area.name, english_list(what_are_we_missing)))))
 
 		return TRUE
 
 	for (var/mob/living/iter_living in get_hearers_in_range(20, user))
 		if (iter_living == user)
 			continue
-		to_chat(iter_living, span_warning("Reality shimmers around you. Someone in close proxmity is about to unleash a catastrophy...!"))
-	to_chat(user, span_warning("You begin to open the way... you can move around during this, and defend yourself!"))
+		to_chat(iter_living, span_warning(LANG("datum.5b21ce9339842fee", null)))
+	to_chat(user, span_warning(LANG("datum.f0e2a1a3fcfd4cf3", null)))
 	if (!do_after(user, 15 SECONDS, loc, IGNORE_HELD_ITEM|IGNORE_USER_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(prox_check), user, loc)))
-		to_chat(user, span_boldwarning("Failure! The way remain closed."))
+		to_chat(user, span_boldwarning(LANG("datum.beb7a172a93c62e2", null)))
 		return FALSE
 
-	to_chat(user, span_warning("Reality begins to crack. Just a bit more..."))
+	to_chat(user, span_warning(LANG("datum.038543dfccc6dff5", null)))
 	if (way.give_pre_open_announcement && COOLDOWN_FINISHED(way, open_warning_antispam))
 		var/area/target_area = get_area(way)
 		priority_announce(
-			"Reality flux values in [target_area.name] exceeding normal parameters. Please investigate with haste.",
+			LANG("datum.a54b14872f2d3500", list(target_area.name)),
 			"CentCom Thaumatergy Monitor",
 			ANNOUNCER_ANOMALIES,
 		)
 		COOLDOWN_START(way, open_warning_antispam, 300 SECONDS)
 
 	if (!do_after(user, 15 SECONDS, loc, IGNORE_HELD_ITEM|IGNORE_USER_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(prox_check), user, loc)))
-		to_chat(user, span_boldwarning("Failure! The way remain closed."))
+		to_chat(user, span_boldwarning(LANG("datum.beb7a172a93c62e2", null)))
 		return FALSE
 
 	way.open(user)

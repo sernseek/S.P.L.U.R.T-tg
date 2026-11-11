@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Looks around for a nearby adult of one of BB_FIND_MOM_TYPES (skipping BB_IGNORE_MOM_TYPES) and stores it.
 /datum/bt_node/ai_behavior/find_mom
 	time_between_perform = 2 SECONDS
@@ -45,7 +46,7 @@
 		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 	var/mob/living/baby = controller.pawn
 	if(parent.stat == DEAD)
-		baby.manual_emote("cries for their parent!")
+		baby.manual_emote(LANG("datum.b0ab12e7650c8079", null))
 	else
-		baby.manual_emote("dances around their parent!")
+		baby.manual_emote(LANG("datum.8789172535f46d3b", null))
 	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED

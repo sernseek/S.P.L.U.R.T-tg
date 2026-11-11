@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/power/manufacturing/crafter
 	name = "manufacturing assembling machine"
 	desc = "Assembles (crafts) the set recipe until it runs out of resources. Only resources on it will be used."
@@ -26,16 +27,16 @@
 
 /obj/machinery/power/manufacturing/crafter/examine(mob/user)
 	. = ..()
-	. += span_notice("It is currently manufacturing <b>[isnull(recipe) ? "nothing. Use a multitool to set it" : recipe.name]</b>.")
+	. += span_notice(LANG("obj.521e4a506c833cd3", list(isnull(recipe) ? "nothing. Use a multitool to set it" : recipe.name)))
 	if(isnull(recipe))
 		return
-	. += span_notice("It needs:")
+	. += span_notice(LANG("obj.2a2a51555bce7b17", null))
 	for(var/valid_type in recipe.reqs)
 		// Check if they're datums, specifically reagents.
 		var/datum/reagent/reagent_ingredient = valid_type
 		if(istype(reagent_ingredient))
 			var/amount = recipe.reqs[reagent_ingredient]
-			. += "[amount] unit[amount > 1 ? "s" : ""] of [initial(reagent_ingredient.name)]"
+			. += LANG("obj.d2b3cbea633c997e", list(amount, amount > 1 ? "s" : "", initial(reagent_ingredient.name)))
 
 		var/atom/ingredient = valid_type
 		var/amount = recipe.reqs[ingredient]
@@ -55,11 +56,11 @@
 		var/obj/as_obj = potential_recipe.result
 		if(ispath(as_obj, /obj) && !ispath(as_obj, /obj/effect) && !initial(as_obj.anchored))
 			available += potential_recipe
-	var/result = tgui_input_list(user, "Recipe", "Select Recipe", available)
+	var/result = tgui_input_list(user, LANG("obj.e1c04ddb93c619eb", null), LANG("obj.de7575f94c8c9c59", null), available)
 	if(isnull(result) || result == recipe || !user.can_perform_action(src))
 		return ITEM_INTERACT_FAILURE
 	recipe = result
-	balloon_alert(user, "set")
+	balloon_alert(user, LANG("obj.e672e5cd4b1892ec", null))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/manufacturing/crafter/Destroy()
@@ -76,7 +77,7 @@
 		else
 			deltimer(craft_timer)
 			craft_timer = null
-			say("Power failure!")
+			say(LANG("obj.2c02f7237340ac89", null))
 		return
 	if(isnull(recipe) || !craftsman.check_contents(src, recipe, craftsman.get_surroundings(src)))
 		return
@@ -102,7 +103,7 @@
 	var/list/prediff = get_overfloor_objects()
 	var/result = craftsman.construct_item(src, recipe)
 	if(istext(result))
-		say("Crafting failed[result]")
+		say(LANG("obj.d98d5529d3ee4219", list(result)))
 		return
 	if(isstack(result)) //it doesn't have hands to pick up stacks so let's try to merge them instead
 		var/obj/item/stack/stack = result

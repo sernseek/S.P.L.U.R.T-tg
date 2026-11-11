@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define RESKIN_CHARCOAL "Charcoal"
 #define RESKIN_NT "NT Blue"
 #define RESKIN_SYNDIE "Syndicate Red"
@@ -54,7 +55,7 @@
 /obj/item/clothing/under/syndicate/tacticool/proc/on_reskin()
 	SIGNAL_HANDLER
 	if(icon_state == "tactifool")
-		desc = "Just looking at it makes you want to buy an SKS, go into the woods, and -operate-."
+		desc = LANG("obj.3167d25d9d80e43f", null)
 		inhand_icon_state = "bl_suit"
 
 /obj/item/clothing/under/syndicate/tacticool/skirt //Overwrites the 'fake' one. Zero armor, sensors, and default blue. More Balanced to make station-available.
@@ -126,7 +127,7 @@
 /obj/item/clothing/under/syndicate/skyrat/tactical/proc/on_reskin()
 	SIGNAL_HANDLER
 	if(icon_state == "syndicate")
-		desc = "A non-descript and slightly suspicious looking turtleneck with digital camouflage cargo pants."
+		desc = LANG("obj.45a462fc6f576824", null)
 		inhand_icon_state = "bl_suit"
 
 /obj/item/clothing/under/syndicate/skyrat/tactical/skirt
@@ -156,7 +157,7 @@
 /obj/item/clothing/under/syndicate/skyrat/tactical/skirt/on_reskin()
 	. = ..()
 	if(icon_state == "syndicate_skirt")
-		desc = "A non-descript and slightly suspicious looking skirtleneck."
+		desc = LANG("obj.d87dc9ce9220352f", null)
 		inhand_icon_state = "bl_suit"
 
 /*

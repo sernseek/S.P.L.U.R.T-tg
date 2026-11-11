@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///Sound played when boulders are teleported manually by hand
 #define MANUAL_TELEPORT_SOUND 'sound/machines/mining/manual_teleport.ogg'
 ///Sound played when boulders are teleported automatically in process()
@@ -42,7 +43,7 @@
 
 	if(isnull(held_item))
 		context[SCREENTIP_CONTEXT_LMB] = "Teleport single boulder"
-		context[SCREENTIP_CONTEXT_RMB] = "Toggle [toggled_on ? "Off" : "On"] automatic boulder retrieval"
+		context[SCREENTIP_CONTEXT_RMB] = LANG("obj.9327cfbbc0f42c31", list(toggled_on ? "Off" : "On"))
 		return CONTEXTUAL_SCREENTIP_SET
 
 	if(!isnull(held_item))
@@ -50,7 +51,7 @@
 			context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Unan" : "An"]chor"
 			return CONTEXTUAL_SCREENTIP_SET
 		else if(held_item.tool_behaviour == TOOL_SCREWDRIVER)
-			context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] panel"
+			context[SCREENTIP_CONTEXT_LMB] = LANG("obj.45725a89b7fc8d2e", list(panel_open ? "Close" : "Open"))
 			return CONTEXTUAL_SCREENTIP_SET
 		else if(panel_open && held_item.tool_behaviour == TOOL_CROWBAR)
 			context[SCREENTIP_CONTEXT_LMB] = "Deconstruct"
@@ -58,19 +59,19 @@
 
 /obj/machinery/brm/examine(mob/user)
 	. = ..()
-	. += span_notice("The small screen reads there are [span_boldnotice("[SSore_generation.available_boulders.len] boulders")] available to teleport.")
-	. += span_notice("Can collect up to <b>[boulders_processing_max] boulders</b> at a time.")
-	. += span_notice("Automatic boulder retrieval can be toggled [EXAMINE_HINT("[toggled_on ? "Off" : "On"]")] with [EXAMINE_HINT("Right Click")].")
+	. += span_notice(LANG("obj.64f54f22a2317900", list(span_boldnotice("[SSore_generation.available_boulders.len] boulders"))))
+	. += span_notice(LANG("obj.42f554ba1aca1cc8", list(boulders_processing_max)))
+	. += span_notice(LANG("obj.975cb95d9ac91c9e", list(EXAMINE_HINT("[toggled_on ? "Off" : "On"]"), EXAMINE_HINT("Right Click"))))
 
 	if(anchored)
-		. += span_notice("It's [EXAMINE_HINT("anchored")] in place.")
+		. += span_notice(LANG("obj.7641f909d43c346d", list(EXAMINE_HINT("anchored"))))
 	else
-		. += span_warning("It needs to be [EXAMINE_HINT("anchored")] to start operations.")
+		. += span_warning(LANG("obj.cea02383436f1ad3", list(EXAMINE_HINT("anchored"))))
 
-	. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "closed" : "open"].")
+	. += span_notice(LANG("obj.f3fabb12d30acb3c", list(EXAMINE_HINT("screwed"), panel_open ? "closed" : "open")))
 
 	if(panel_open)
-		. += span_notice("The whole machine can be [EXAMINE_HINT("pried")] apart.")
+		. += span_notice(LANG("obj.3a115ecaeb354764", list(EXAMINE_HINT("pried"))))
 
 /obj/machinery/brm/update_icon_state()
 	icon_state = base_icon_state
@@ -123,9 +124,9 @@
 
 	var/result = pre_collect_boulder()
 	if(result == TURF_BLOCKED_BY_BOULDER)
-		balloon_alert(user, "no space!")
+		balloon_alert(user, LANG("obj.a5ca1017d69acdbb", null))
 	else if(result)
-		balloon_alert(user, "teleporting...")
+		balloon_alert(user, LANG("obj.bda2b65d8ddca1b2", null))
 	COOLDOWN_START(src, manual_teleport_cooldown, TELEPORTATION_TIME)
 
 	return TRUE
@@ -143,10 +144,10 @@
 	if(!COOLDOWN_FINISHED(src, manual_teleport_cooldown))
 		return FALSE
 	if(panel_open)
-		balloon_alert(user, "close panel first!")
+		balloon_alert(user, LANG("obj.5ddfc4f037e5eca3", null))
 		return FALSE
 	if(batch_processing)
-		balloon_alert(user, "batch still processing!")
+		balloon_alert(user, LANG("obj.ebb5e2ee55277515", null))
 		return FALSE
 	playsound(src, MANUAL_TELEPORT_SOUND, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	return TRUE
@@ -160,9 +161,9 @@
 
 	var/result = pre_collect_boulder()
 	if(result == TURF_BLOCKED_BY_BOULDER)
-		balloon_alert(user, "no space!")
+		balloon_alert(user, LANG("obj.a5ca1017d69acdbb", null))
 	else if(result)
-		balloon_alert(user, "teleporting...")
+		balloon_alert(user, LANG("obj.bda2b65d8ddca1b2", null))
 
 	COOLDOWN_START(src, manual_teleport_cooldown, TELEPORTATION_TIME)
 
@@ -177,9 +178,9 @@
 
 	var/result = pre_collect_boulder()
 	if(result == TURF_BLOCKED_BY_BOULDER)
-		balloon_alert(user, "no space!")
+		balloon_alert(user, LANG("obj.a5ca1017d69acdbb", null))
 	else if(result)
-		balloon_alert(user, "teleporting...")
+		balloon_alert(user, LANG("obj.bda2b65d8ddca1b2", null))
 
 	COOLDOWN_START(src, manual_teleport_cooldown, TELEPORTATION_TIME)
 
@@ -190,7 +191,7 @@
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || panel_open)
 		return
 	if(!anchored)
-		balloon_alert(user, "anchor it first!")
+		balloon_alert(user, LANG("obj.c16d48e2e8f5ec29", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	toggle_auto_on(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -206,10 +207,10 @@
 	PRIVATE_PROC(TRUE)
 
 	if(panel_open)
-		balloon_alert(user, "close panel first!")
+		balloon_alert(user, LANG("obj.5ddfc4f037e5eca3", null))
 		return
 	if(!anchored)
-		balloon_alert(user, "anchor it first!")
+		balloon_alert(user, LANG("obj.c16d48e2e8f5ec29", null))
 		return
 	if(!is_operational || machine_stat & (BROKEN | NOPOWER))
 		return
@@ -226,7 +227,7 @@
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || panel_open)
 		return
 	if(!anchored)
-		balloon_alert(user, "unanchored!")
+		balloon_alert(user, LANG("obj.d10c084a11db8d72", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	toggle_auto_on(user)
@@ -239,7 +240,7 @@
 	if(!user.can_perform_action(src, ALLOW_SILICON_REACH | FORBID_TELEKINESIS_REACH))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	if(!anchored)
-		balloon_alert(user, "unanchored!")
+		balloon_alert(user, LANG("obj.d10c084a11db8d72", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	toggle_auto_on(user)
@@ -283,7 +284,7 @@
 	if(!SSore_generation.available_boulders.len)
 		if(feedback)
 			playsound(loc, 'sound/machines/synth/synth_no.ogg', 30 , TRUE)
-			balloon_alert_to_viewers("no boulders to collect!")
+			balloon_alert_to_viewers(LANG("obj.2386da3574c2ea7a", null))
 		batch_processing = FALSE
 		return FALSE
 
@@ -295,7 +296,7 @@
 	random_boulder.forceMove(drop_location())
 	random_boulder.pixel_x = rand(-2, 2)
 	random_boulder.pixel_y = rand(-2, 2)
-	balloon_alert_to_viewers("boulder appears!")
+	balloon_alert_to_viewers(LANG("obj.cb9cbebc390af044", null))
 	use_energy(active_power_usage)
 
 	//try again if we have more boulders to work with

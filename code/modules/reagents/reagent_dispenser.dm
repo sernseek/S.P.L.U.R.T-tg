@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define REAGENT_SPILL_DIVISOR 200
 #define COOLER_JUG_EJECT_TIME (8 SECONDS)
 
@@ -66,17 +67,17 @@
 /obj/structure/reagent_dispensers/examine(mob/user)
 	. = ..()
 	if(can_be_tanked)
-		. += span_notice("Use a sheet of iron to convert this into a plumbing-compatible tank.")
+		. += span_notice(LANG("obj.60ea9c3a8aac4659", null))
 	if(openable)
 		if(!leaking)
-			. += span_notice("Its tap looks like it could be <b>wrenched</b> open.")
+			. += span_notice(LANG("obj.f9a1268faf43b9c4", null))
 		else
-			. += span_warning("Its tap is <b>wrenched</b> open!")
+			. += span_warning(LANG("obj.504165167b32855c", null))
 	if(accepts_rig && get_dist(user, src) <= 2)
 		if(rig)
-			. += span_warning("There is some kind of device <b>rigged</b> to the tank!")
+			. += span_warning(LANG("obj.3dcf0273c4328eee", null))
 		else
-			. += span_notice("It looks like you could <b>rig</b> a device to the tank.")
+			. += span_notice(LANG("obj.2d270189522cfecd", null))
 
 
 /obj/structure/reagent_dispensers/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
@@ -88,13 +89,13 @@
 /obj/structure/reagent_dispensers/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(istype(tool, /obj/item/assembly_holder) && accepts_rig)
 		if(rig)
-			balloon_alert(user, "another device is in the way!")
+			balloon_alert(user, LANG("obj.475b022eb0d1ca0a", null))
 			return ITEM_INTERACT_BLOCKING
 		var/obj/item/assembly_holder/holder = tool
 		if(!(locate(/obj/item/assembly/igniter) in holder.assemblies))
 			return ITEM_INTERACT_BLOCKING
 
-		user.balloon_alert_to_viewers("attaching rig...")
+		user.balloon_alert_to_viewers(LANG("obj.f28fe90a34f64ac8", null))
 		add_fingerprint(user)
 		if(!do_after(user, 2 SECONDS, target = src) || !user.transferItemToLoc(holder, src))
 			return ITEM_INTERACT_BLOCKING
@@ -108,7 +109,7 @@
 		RegisterSignal(src, COMSIG_IGNITER_ACTIVATE, PROC_REF(rig_boom))
 		log_bomber(user, "attached [holder.name] to ", src)
 		last_rigger = user
-		user.balloon_alert_to_viewers("attached rig")
+		user.balloon_alert_to_viewers(LANG("obj.9fd1e50279a98330", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(istype(tool, /obj/item/stack/sheet/iron) && can_be_tanked)
@@ -139,10 +140,10 @@
 	rig.on_found()
 	if(QDELETED(src))
 		return
-	user.balloon_alert_to_viewers("detaching rig...")
+	user.balloon_alert_to_viewers(LANG("obj.c303998ab05ca709", null))
 	if(!do_after(user, 2 SECONDS, target = src))
 		return
-	user.balloon_alert_to_viewers("detached rig")
+	user.balloon_alert_to_viewers(LANG("obj.1f75f20abde863e2", null))
 	user.log_message("detached [rig] from [src].", LOG_GAME)
 	if(!user.put_in_hands(rig))
 		rig.forceMove(get_turf(user))
@@ -173,12 +174,12 @@
 		reagents.del_reagent(/datum/reagent/fuel) // not actually used for the explosion
 	if(reagents.total_volume)
 		if(!fuel_amt)
-			visible_message(span_danger("\The [src] ruptures!"))
+			visible_message(span_danger(LANG("obj.2f07dbc28aa39c78", list(src))))
 		// Leave it up to future terrorists to figure out the best way to mix reagents with fuel for a useful boom here
 		chem_splash(loc, null, 2 + floor((reagents.total_volume + fuel_amt) / 1000), list(reagents), extra_heat=(fuel_amt / 50),adminlog=(fuel_amt<25))
 
 	if(fuel_amt) // with that done, actually explode
-		visible_message(span_danger("\The [src] explodes!"))
+		visible_message(span_danger(LANG("obj.07b96170145b4add", list(src))))
 		// old code for reference:
 		// standard fuel tank = 1000 units = heavy_impact_range = 1, light_impact_range = 5, flame_range = 5
 		// big fuel tank = 5000 units = devastation_range = 1, heavy_impact_range = 2, light_impact_range = 7, flame_range = 12
@@ -221,7 +222,7 @@
 	if(!openable)
 		return FALSE
 	leaking = !leaking
-	balloon_alert(user, "[leaking ? "opened" : "closed"] tap")
+	balloon_alert(user, LANG("obj.8356bc90cad0a95f", list(leaking ? "opened" : "closed")))
 	user.log_message("[leaking ? "opened" : "closed"] [src].", LOG_GAME)
 	tank_leak()
 	return ITEM_INTERACT_SUCCESS
@@ -304,10 +305,10 @@
 	var/obj/item/weldingtool/refilling_welder = tool
 	if(istype(refilling_welder) && !refilling_welder.welding)
 		if(refilling_welder.reagents.has_reagent(/datum/reagent/fuel, refilling_welder.max_fuel))
-			to_chat(user, span_warning("Your [refilling_welder.name] is already full!"))
+			to_chat(user, span_warning(LANG("obj.c927127059a90967", list(refilling_welder.name))))
 			return ITEM_INTERACT_BLOCKING
 		reagents.trans_to(refilling_welder, refilling_welder.max_fuel, transferred_by = user)
-		user.visible_message(span_notice("[user] refills [user.p_their()] [refilling_welder.name]."), span_notice("You refill [refilling_welder]."))
+		user.visible_message(span_notice(LANG("obj.3f21aaca699f8ff3", list(user, user.p_their(), refilling_welder.name))), span_notice(LANG("obj.e125cbe727e270a3", list(refilling_welder))))
 		playsound(src, 'sound/effects/refill.ogg', 50, TRUE)
 		refilling_welder.update_appearance()
 		return ITEM_INTERACT_SUCCESS
@@ -315,19 +316,19 @@
 	var/obj/item/lighter/refilling_lighter = tool
 	if(istype(refilling_lighter) && !refilling_lighter.lit)
 		if(refilling_lighter.reagents.has_reagent(/datum/reagent/fuel, refilling_lighter.maximum_fuel))
-			to_chat(user, span_warning("Your [refilling_lighter.name] is already full!"))
+			to_chat(user, span_warning(LANG("obj.c927127059a90967", list(refilling_lighter.name))))
 			return ITEM_INTERACT_BLOCKING
 		reagents.trans_to(refilling_lighter, refilling_lighter.maximum_fuel, transferred_by = user)
-		user.visible_message(span_notice("[user] refills [user.p_their()] [refilling_lighter.name]."), span_notice("You refill [refilling_lighter]."))
+		user.visible_message(span_notice(LANG("obj.3f21aaca699f8ff3", list(user, user.p_their(), refilling_lighter.name))), span_notice(LANG("obj.e125cbe727e270a3", list(refilling_lighter))))
 		playsound(src, 'sound/effects/refill.ogg', 25, TRUE)
 		return ITEM_INTERACT_SUCCESS
 
 	if(!reagents.has_reagent(/datum/reagent/fuel))
-		to_chat(user, span_warning("[src] is out of fuel!"))
+		to_chat(user, span_warning(LANG("obj.acd296d8b46ae0a0", list(src))))
 		return ITEM_INTERACT_BLOCKING
 	user.visible_message(
-		span_danger("[user] catastrophically fails at refilling [user.p_their()] [tool.name]!"),
-		span_userdanger("That was stupid of you."))
+		span_danger(LANG("obj.b1759db0762867c2", list(user, user.p_their(), tool.name))),
+		span_userdanger(LANG("obj.4f5987e92848df25", null)))
 	log_bomber(user, "detonated a", src, "via [tool.name]")
 	boom()
 	return ITEM_INTERACT_SUCCESS
@@ -363,7 +364,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 /obj/structure/reagent_dispensers/wall/peppertank/Initialize(mapload)
 	. = ..()
 	if(prob(1))
-		desc = "IT'S PEPPER TIME, BITCH!"
+		desc = LANG("obj.5ea2883c5b774cb3", null)
 	if(mapload)
 		find_and_mount_on_atom()
 
@@ -398,11 +399,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 /obj/structure/reagent_dispensers/water_cooler/examine(mob/user)
 	. = ..()
 	if (paper_cups > 1)
-		. += "There are [paper_cups] paper cups left."
+		. += LANG("obj.bfa9c5dd3a8cd28f", list(paper_cups))
 	else if (paper_cups == 1)
-		. += "There is one paper cup left."
+		. += LANG("obj.1abf54e4e22a150d", null)
 	else
-		. += "There are no paper cups left."
+		. += LANG("obj.8c7d5c45a5fc1137", null)
 
 /obj/structure/reagent_dispensers/water_cooler/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
@@ -411,7 +412,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 
 
 	if(tipped)
-		balloon_alert(user, "un-tipping...")
+		balloon_alert(user, LANG("obj.71b01f3c3f141435", null))
 		if(!do_after(user, 5 SECONDS, src))
 			return
 		tipped = FALSE
@@ -420,16 +421,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 
 
 	if(user.combat_mode && our_jug)
-		balloon_alert(user, "removing jug...")
+		balloon_alert(user, LANG("obj.399c4c038e4b51c2", null))
 		if(!do_after(user, COOLER_JUG_EJECT_TIME, src))
 			return
 		eject_jug(user)
 		return
 
 	if(!paper_cups)
-		to_chat(user, span_warning("There aren't any cups left!"))
+		to_chat(user, span_warning(LANG("obj.a4421a438d3849c2", null)))
 		return
-	user.visible_message(span_notice("[user] takes a cup from [src]."), span_notice("You take a paper cup from [src]."))
+	user.visible_message(span_notice(LANG("obj.20fbbf2af46dc15c", list(user, src))), span_notice(LANG("obj.556bd48fe154c863", list(src))))
 	var/obj/item/reagent_containers/cup/glass/sillycup/new_cup = new(get_turf(src))
 	user.put_in_hands(new_cup)
 	paper_cups--
@@ -499,11 +500,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 
 /obj/structure/reagent_dispensers/water_cooler/attack_hand_secondary(mob/user, modifiers)
 	if(tipped)
-		balloon_alert(user, "it's already tipped!")
+		balloon_alert(user, LANG("obj.083b6a29ef4f6d47", null))
 		return
 
 	if(anchored)
-		balloon_alert(user, "it's anchored!")
+		balloon_alert(user, LANG("obj.9a6d6ba637dae120", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	if(!do_after(user, 1.5 SECONDS, src))
@@ -516,11 +517,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 		return
 
 	if(tipped)
-		balloon_alert(user, "it's tipped!")
+		balloon_alert(user, LANG("obj.b9469a59d5e271b4", null))
 		return
 
 	var/obj/item/reagent_containers/cooler_jug/new_jug = tool
-	balloon_alert(user, "replacing jug...")
+	balloon_alert(user, LANG("obj.721b7d258b4c4971", null))
 	if(!do_after(user, COOLER_JUG_EJECT_TIME, src))
 		return
 
@@ -530,7 +531,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 	eject_jug(user, our_jug)
 	our_jug = new_jug
 	our_jug.reagents.trans_to(reagents, tank_volume)
-	balloon_alert(user, "attached")
+	balloon_alert(user, LANG("obj.b0ad167d3c297e25", null))
 	user.log_message("attached a [new_jug] to [src] at [AREACOORD(src)] containing ([new_jug.reagents.get_reagent_log_string()])", LOG_ATTACK)
 	add_fingerprint(user)
 	update_appearance()
@@ -540,7 +541,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/reagent_dispensers/wall/peppertank, 3
 	if(QDELETED(src))
 		return
 	if(reagents.total_volume)
-		visible_message(span_danger("\The [src] flips on it's side and spills everywhere!"))
+		visible_message(span_danger(LANG("obj.ca6f252f43fd30a6", list(src))))
 		chem_splash(get_turf(src), null, 2 + floor((reagents.total_volume) / 1000), list(reagents))
 	eject_jug(throw_away = TRUE)
 	playsound(src, 'sound/effects/glass/glassbash.ogg', 100)

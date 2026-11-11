@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define WEATHER_ALERT_CLEAR 0
 #define WEATHER_ALERT_INCOMING 1
 #define WEATHER_ALERT_IMMINENT_OR_ACTIVE 2
@@ -221,12 +222,12 @@
 	if(isnull(time_until_next))
 		return
 	if (time_until_next == 0)
-		examine_texts += span_warning("A storm is currently active, please seek shelter.")
+		examine_texts += span_warning(LANG("datum.b0af1abf140bd2ce", null))
 	else
-		examine_texts += span_notice("The next storm is inbound in [DisplayTimeText(time_until_next)].")
+		examine_texts += span_notice(LANG("datum.5e938eba4ee035b8", list(DisplayTimeText(time_until_next))))
 
 	if(!check_accuracy())
-		examine_texts += span_smallnoticeital("Due to insufficient radar coverage, the timing of this forecast may be inaccurate.")
+		examine_texts += span_smallnoticeital(LANG("datum.68355b83b108261e", null))
 
 /datum/component/weather_announcer/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))

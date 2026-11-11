@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/element/mob_holder
 	element_flags = ELEMENT_BESPOKE | ELEMENT_DETACH_ON_HOST_DESTROY
 	argument_hash_start_idx = 2
@@ -31,7 +32,7 @@
 
 /datum/element/mob_holder/proc/on_examine(mob/living/source, mob/user, list/examine_list)
 	if(ishuman(user) && !istype(source.loc, /obj/item/mob_holder))
-		examine_list += span_notice("Looks like [source.p_they(FALSE)] can be picked up with <b>Alt+Click</b>!")
+		examine_list += span_notice(LANG("datum.672b30b574092045", list(source.p_they(FALSE))))
 
 /datum/element/mob_holder/proc/on_requesting_context_from_item(
 	obj/source,
@@ -49,22 +50,22 @@
 	if(!ishuman(user) || !user.Adjacent(source) || user.incapacitated)
 		return FALSE
 	if(user.get_active_held_item())
-		to_chat(user, span_warning("Your hands are full!"))
+		to_chat(user, span_warning(LANG("datum.86b9ca924a677805", null)))
 		return FALSE
 	if(source.buckled)
-		to_chat(user, span_warning("[source] is buckled to something!"))
+		to_chat(user, span_warning(LANG("datum.65a86c2bb81ec41e", list(source))))
 		return FALSE
 	if(source == user)
-		to_chat(user, span_warning("You can't pick yourself up."))
+		to_chat(user, span_warning(LANG("datum.4d8b681893d5fd03", null)))
 		return FALSE
-	source.visible_message(span_warning("[user] starts picking up [source]."), \
-					span_userdanger("[user] starts picking you up!"))
+	source.visible_message(span_warning(LANG("datum.18956a90cc32caec", list(user, source))), \
+					span_userdanger(LANG("datum.888a29e85f0b019e", list(user))))
 	if(!do_after(user, 2 SECONDS, target = source) || source.buckled)
 		return FALSE
 
-	source.visible_message(span_warning("[user] picks up [source]!"), \
-					span_userdanger("[user] picks you up!"))
-	to_chat(user, span_notice("You pick [source] up."))
+	source.visible_message(span_warning(LANG("datum.c2e065881f530597", list(user, source))), \
+					span_userdanger(LANG("datum.9e73efeb39769da9", list(user))))
+	to_chat(user, span_notice(LANG("datum.fe2aa993e0f37139", list(source))))
 	source.drop_all_held_items()
 	var/obj/item/mob_holder/holder = new(get_turf(source), source, worn_state, alt_worn, right_hand, left_hand, inv_slots)
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/chemical_reaction/heroin
 	results = list(/datum/reagent/drug/opium/heroin = 4)
 	required_reagents = list(/datum/reagent/drug/opium = 2, /datum/reagent/acetone = 2)
@@ -40,11 +41,20 @@
 	else if(user.is_mouth_covered(ITEM_SLOT_MASK))
 		covered = "mask"
 	if(covered)
-		to_chat(user, span_warning("You have to remove your [covered] first!"))
+		// ZH EDIT CHANGE START - i18n: 拆成两条整句模板。原写法把 "headgear"/"mask" 当 LANG 实参，
+		// 而它们是**单 token 局部量** —— LANG 实参的多词闸门按设计不收（单 token 实参里 act/黑板键
+		// 浓度极高），于是模板译好了、槽里漏出英文（玩家看到「你必须先取下你的headgear！」）。
+		// 整条走模板既绕开那道闸门，也让中文语序自己排。所有格代词经 lang_pronoun 走语法表。
+		// ORIGINAL: to_chat(user, span_warning(LANG("obj.9f5fad6f715a086d", list(covered))))
+		if(covered == "headgear")
+			to_chat(user, span_warning(LANG("obj.892b7338f1a82533", list(lang_pronoun("your")))))
+		else
+			to_chat(user, span_warning(LANG("obj.725be70e424818d6", list(lang_pronoun("your")))))
+		// ZH EDIT CHANGE END
 		return
-	user.visible_message(span_notice("'[user] starts snorting the [src]."))
+	user.visible_message(span_notice(LANG("obj.b9527ba8243b7661", list(user, src))))
 	if(do_after(user, 30))
-		to_chat(user, span_notice("You finish snorting the [src]."))
+		to_chat(user, span_notice(LANG("obj.88742f4661dfff78", list(src))))
 		if(reagents.total_volume)
 			reagents.trans_to(user, reagents.total_volume, transferred_by = user, methods = INGEST)
 		qdel(src)
@@ -78,9 +88,9 @@
 
 
 /obj/item/reagent_containers/heroinbrick/attack_self(mob/user)
-	user.visible_message(span_notice("[user] starts breaking up the [src]."))
+	user.visible_message(span_notice(LANG("obj.2c94b9cac2485db3", list(user, src))))
 	if(do_after(user,10))
-		to_chat(user, span_notice("You finish breaking up the [src]."))
+		to_chat(user, span_notice(LANG("obj.eb1bbccb3849e180", list(src))))
 		for(var/i = 1 to 5)
 			new /obj/item/reagent_containers/heroin(user.loc)
 		qdel(src)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Generic description for the corrupted organs that don't have one.
 #define GENERIC_CORRUPTED_ORGAN_DESC "This shares the shape of a normal organ, but it's been covered and filled with some sort of midnight-black pulsing tissue, engorged with some sort of infectious mass."
 
@@ -61,7 +62,7 @@
 		if(feedback_delivered || !helped)
 			continue
 
-		to_chat(affected_mob, span_notice("A euphoric feeling hits you as blood's warmth washes through your insides. Your body feels more alive, your wounds healthier."))
+		to_chat(affected_mob, span_notice(LANG("obj.8bd5bbf047a64d23", null)))
 		feedback_delivered = TRUE
 
 

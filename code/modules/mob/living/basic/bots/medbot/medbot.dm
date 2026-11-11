@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define TEND_DAMAGE_INTERACTION "tend_damage_interaction"
 
 /mob/living/basic/bot/medbot
@@ -269,8 +270,8 @@
 
 /mob/living/basic/bot/medbot/emag_effects(mob/user)
 	medical_mode_flags &= ~MEDBOT_DECLARE_CRIT
-	balloon_alert(user, "reagent synthesis circuits shorted")
-	audible_message(span_danger("[src] buzzes oddly!"))
+	balloon_alert(user, LANG("mob.61ba94f3a664a049", null))
+	audible_message(span_danger(LANG("mob.1798b7cd2aeb74d1", list(src))))
 	flick_overlay_view(mutable_appearance(icon, "[base_icon_state]_spark"), 1 SECONDS)
 	playsound(src, SFX_SPARKS, 75, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	return TRUE
@@ -305,7 +306,7 @@
 	tipper = WEAKREF(user)
 	playsound(src, 'sound/machines/warning-buzzer.ogg', 50)
 	if(prob(10))
-		speak("PSYCH ALERT: Crewmember [user.name] recorded displaying antisocial tendencies torturing bots in [get_area(src)]. Please schedule psych evaluation.", radio_channel)
+		speak(LANG("mob.1a6c9fc954567703", list(user.name, get_area(src))), radio_channel)
 
 /mob/living/basic/bot/medbot/explode()
 	var/atom/our_loc = drop_location()
@@ -351,11 +352,11 @@
 
 	if (!(bot_access_flags & BOT_COVER_EMAGGED))
 		if((damage_type_healer == HEAL_ALL_DAMAGE && patient.get_total_damage() <= heal_threshold) || (!(damage_type_healer == HEAL_ALL_DAMAGE) && patient.get_current_damage_of_type(damage_type_healer) <= heal_threshold))
-			to_chat(src, "[patient] is healthy! Your programming prevents you from tending the wounds of anyone with less than [heal_threshold + 1] [damage_type_healer == HEAL_ALL_DAMAGE ? "total" : damage_type_healer] damage.")
+			to_chat(src, LANG("mob.197bd1a31ed5c854", list(patient, heal_threshold + 1, damage_type_healer == HEAL_ALL_DAMAGE ? "total" : damage_type_healer)))
 			return
 
 	update_bot_mode(new_mode = BOT_HEALING, update_hud = FALSE)
-	patient.visible_message("[src] is trying to tend the wounds of [patient]", span_userdanger("[src] is trying to tend your wounds!"))
+	patient.visible_message(LANG("mob.f192d16e0584fbff", list(src, patient)), span_userdanger(LANG("mob.d27dca1b8475b5de", list(src))))
 	if(!do_after(src, delay = 2 SECONDS, target = patient, interaction_key = TEND_DAMAGE_INTERACTION))
 		update_bot_mode(new_mode = BOT_IDLE)
 		return
@@ -377,11 +378,11 @@
 		if(patient.get_current_damage_of_type(damage_type_healer) <= heal_threshold)
 			done_healing = TRUE
 
-	patient.visible_message(span_notice("[src] tends the wounds of [patient]!"), "[span_infoplain(span_green("[src] tends your wounds!"))]")
+	patient.visible_message(span_notice(LANG("mob.40476fec5fdd3fc0", list(src, patient))), "[span_infoplain(span_green("[src] tends your wounds!"))]")
 
 	if(done_healing)
-		visible_message(span_infoplain("[src] places [p_their()] tools back into [p_themselves()]."))
-		to_chat(src, "[patient] is now healthy!")
+		visible_message(span_infoplain(LANG("mob.6051de99404396e3", list(src, p_their(), p_themselves()))))
+		to_chat(src, LANG("mob.e1412700a0bec67d", list(patient)))
 		update_bot_mode(new_mode = BOT_IDLE)
 		return
 
@@ -395,7 +396,7 @@
 		return
 
 	heal_multiplier += design.additive_multiplier
-	INVOKE_ASYNC(src, PROC_REF(speak), "New knowledge found! Surgical efficacy improved to [round(heal_multiplier * 100)]%!")
+	INVOKE_ASYNC(src, PROC_REF(speak), LANG("mob.552d324d5ceb5068", list(round(heal_multiplier * 100))))
 
 /mob/living/basic/bot/medbot/proc/on_techweb_unresearch(datum/source, datum/design/medibot_upgrade/design)
 	SIGNAL_HANDLER
@@ -404,7 +405,7 @@
 		return
 
 	heal_multiplier -= design.additive_multiplier
-	INVOKE_ASYNC(src, PROC_REF(speak), "Error! Surgical efficacy decreased to [round(heal_multiplier * 100)]%!")
+	INVOKE_ASYNC(src, PROC_REF(speak), LANG("mob.f921b1a50fe93586", list(round(heal_multiplier * 100))))
 
 /datum/id_trim/medibot
 	assignment = JOB_MEDIBOT

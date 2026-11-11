@@ -1,7 +1,8 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/closet/examine(mob/user)
 	. = ..()
 	if(isobserver(user))
-		. += span_info("It contains: [english_list(contents)].")
+		. += span_info(LANG("obj.6818eaf58fa33aa0", list(english_list(contents))))
 
 // Funny little closet for Lizard Gas.
 /obj/structure/closet/lizardgas

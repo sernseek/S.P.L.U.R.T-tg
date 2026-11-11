@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //pig
 /mob/living/basic/pig
 	name = "pig"
@@ -56,7 +57,7 @@
 /mob/living/basic/pig/tamed(mob/living/tamer, atom/food)
 	. = ..()
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/pig)
-	visible_message(span_notice("[src] snorts respectfully."))
+	visible_message(span_notice(LANG("mob.f81af3b5129a9bb0", list(src))))
 
 /datum/ai_controller/basic_controller/pig
 	behavior_tree_json = "code/modules/mob/living/basic/farm_animals/pig.bt.json"

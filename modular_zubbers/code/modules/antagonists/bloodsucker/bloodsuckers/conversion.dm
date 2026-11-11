@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Checks if the target has antag datums and, if so,
  * are they allowed to be Ghouled, or not, or banned.
@@ -29,10 +30,10 @@
 		return FALSE
 	// No Mind!
 	if(!conversion_target.mind)
-		to_chat(owner.current, span_danger("[conversion_target] isn't self-aware enough to be made into a Ghoul."))
+		to_chat(owner.current, span_danger(LANG("datum.c3beca727760cd95", list(conversion_target))))
 		return FALSE
 	if(AmValidAntag(conversion_target) == GHOULING_BANNED)
-		to_chat(owner.current, span_danger("[conversion_target] resists the power of your blood to dominate their mind!"))
+		to_chat(owner.current, span_danger(LANG("datum.65037ce3c9408290", list(conversion_target))))
 		return FALSE
 	var/mob/living/master = conversion_target.mind.enslaved_to?.resolve()
 	if(!master || (master == owner.current))
@@ -41,7 +42,7 @@
 	if(bloodsuckerdatum && bloodsuckerdatum.broke_masquerade)
 		//ghoul stealing
 		return TRUE
-	to_chat(owner.current, span_danger("[conversion_target]'s mind is overwhelmed with too much external force to put your own!"))
+	to_chat(owner.current, span_danger(LANG("datum.a363b0c32edc4606", list(conversion_target))))
 	return FALSE
 
 /**

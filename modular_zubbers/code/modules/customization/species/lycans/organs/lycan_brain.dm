@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/brain/lycan
 	name = "lupine brain"
 	desc = "A larger than average, albeit slightly smoother brain. The hypothalamus seems larger than normal." // I read in a random medical artical that the hypothalamus controls aggression.
@@ -29,7 +30,7 @@
 	owner.remove_status_effect(/datum/status_effect/beast_form)
 
 //GAME_VERB_PROC_DESC(/obj/item/organ/brain/lycan, toggle_beast_form, "Enter/Leave Lycan Form", "Succumb to the rage and turn into a lycan.", "Lycan", mob/user)
-GAME_VERB_PROC_DESC(/obj/item/organ/brain/lycan, toggle_beast_form, "Enter/Leave Lycan Form", "Succumb to the rage and turn into a lycan.", "Lycan")
+GAME_VERB_PROC_DESC(/obj/item/organ/brain/lycan, toggle_beast_form, "进入/退出狼人形态", "Succumb to the rage and turn into a lycan.", "Lycan")
 	VERB_ARG_TYPED(user, VERB_ARG_TYPE_MOB, VERB_ARG_SOURCE_WORLD, /mob)
 	if(!user)
 		return
@@ -37,6 +38,6 @@ GAME_VERB_PROC_DESC(/obj/item/organ/brain/lycan, toggle_beast_form, "Enter/Leave
 		leave_beast_form()
 	else
 		if (HAS_TRAIT(user, TRAIT_MANSUS_INHIBITION))
-			user.balloon_alert(user, "can't transform while inhibited!")
+			user.balloon_alert(user, LANG("obj.cdfd7de6cc7ed90a", null))
 			return
 		enter_beast_form()

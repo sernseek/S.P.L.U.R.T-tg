@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/heretic_knowledge_tree_column/void
 	route = PATH_VOID
 	ui_bgr = "node_void"
@@ -64,12 +65,12 @@
 
 /datum/heretic_knowledge/limited_amount/starting/base_void/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
 	if(!isopenturf(loc))
-		loc.balloon_alert(user, "ritual failed, invalid location!")
+		loc.balloon_alert(user, LANG("datum.0bb4efa2e61dbc1a", null))
 		return FALSE
 
 	var/turf/open/our_turf = loc
 	if(our_turf.GetTemperature() > T0C)
-		loc.balloon_alert(user, "ritual failed, not cold enough!")
+		loc.balloon_alert(user, LANG("datum.8d7dd62af46273a9", null))
 		return FALSE
 
 	return ..()
@@ -155,12 +156,12 @@
 
 /datum/heretic_knowledge/armor/void/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
 	if(!isopenturf(loc))
-		loc.balloon_alert(user, "ritual failed, invalid location!")
+		loc.balloon_alert(user, LANG("datum.0bb4efa2e61dbc1a", null))
 		return FALSE
 
 	var/turf/open/our_turf = loc
 	if(our_turf.GetTemperature() > T0C)
-		loc.balloon_alert(user, "ritual failed, not cold enough!")
+		loc.balloon_alert(user, LANG("datum.8d7dd62af46273a9", null))
 		return FALSE
 
 	return ..()
@@ -264,15 +265,14 @@
 		INVOKE_ASYNC(src, PROC_REF(create_conduit), affected_turf, source, sword)
 		return COMPONENT_CANCEL_ATTACK_CHAIN
 
-	to_chat(source, span_mansus("[sword] hums with power, but [target] is not cold enough to create a conduit!"))
+	to_chat(source, span_mansus(LANG("datum.ec934de4ac40a761", list(sword, target))))
 	return NONE
 
 /datum/heretic_knowledge/void_conduit/proc/create_conduit(turf/open/affected_turf, mob/living/source, obj/item/sword)
 	playsound(source, 'sound/effects/cloth_rip.ogg', 50, TRUE) // funny thing is, can't hear sound in a vacuum
-	to_chat(source, span_mansus("You plunge [sword] deep into [affected_turf], trying to rip open a conduit to the void!"))
+	to_chat(source, span_mansus(LANG("datum.e9bf0f46b0d74760", list(sword, affected_turf))))
 	source.visible_message(
-		span_hypnophrase("[source] plunges [source.p_their()] [sword.name] into [affected_turf] - \
-			[isspaceturf(affected_turf) ? "but instead of nothing happening" : "contrary to what you expected"], a dark energy begins to flow from the site!"),
+		span_hypnophrase(LANG("datum.a20adfbc10a66433", list(source, source.p_their(), sword.name, affected_turf, isspaceturf(affected_turf) ? "but instead of nothing happening" : "contrary to what you expected"))),
 		ignored_mobs = source,
 	)
 	var/obj/effect/temp_visual/void_conduit_opening/animation = new(affected_turf)
@@ -280,9 +280,9 @@
 		animate(animation, alpha = 0, time = 1 SECONDS)
 		QDEL_IN(animation, 1 SECONDS)
 		return
-	to_chat(source, span_mansus("The conduit opens, releasing a storm of void energy! [sword] shatters into a million tiny shards!"))
+	to_chat(source, span_mansus(LANG("datum.afd0f2269ce6f6e6", list(sword))))
 	source.visible_message(
-		span_hypnophrase("A conduit to the void opens, releasing a storm of void energy!"),
+		span_hypnophrase(LANG("datum.6408b72d26d35d7a", null)),
 		ignored_mobs = source,
 	)
 	new /obj/structure/void_conduit(affected_turf)
@@ -313,12 +313,12 @@
 
 /datum/heretic_knowledge/ultimate/void_final/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
 	if(!isopenturf(loc))
-		loc.balloon_alert(user, "ritual failed, invalid location!")
+		loc.balloon_alert(user, LANG("datum.0bb4efa2e61dbc1a", null))
 		return FALSE
 
 	var/turf/open/our_turf = loc
 	if(our_turf.GetTemperature() > T0C)
-		loc.balloon_alert(user, "ritual failed, not cold enough!")
+		loc.balloon_alert(user, LANG("datum.8d7dd62af46273a9", null))
 		return FALSE
 
 	return ..()
@@ -417,8 +417,8 @@
 		return NONE
 
 	ascended_heretic.visible_message(
-		span_danger("The void storm surrounding [ascended_heretic] deflects [hitting_projectile]!"),
-		span_userdanger("The void storm protects you from [hitting_projectile]!"),
+		span_danger(LANG("datum.6a451a02d77eeb4e", list(ascended_heretic, hitting_projectile))),
+		span_userdanger(LANG("datum.48528162d18f1c48", list(hitting_projectile))),
 	)
 	playsound(ascended_heretic, SFX_VOID_DEFLECT, 75, TRUE)
 	hitting_projectile.firer = ascended_heretic

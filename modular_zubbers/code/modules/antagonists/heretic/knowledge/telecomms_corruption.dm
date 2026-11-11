@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_VAR_INIT(processors_cursed, FALSE)
 
 /datum/heretic_knowledge/telecomms_corruption
@@ -31,7 +32,7 @@ GLOBAL_VAR_INIT(processors_cursed, FALSE)
 		return FALSE
 
 	if (uses_left <= 0)
-		user.balloon_alert(user, "out of uses!")
+		user.balloon_alert(user, LANG("datum.38056827f3d64042", null))
 		return FALSE
 
 /datum/heretic_knowledge/telecomms_corruption/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)

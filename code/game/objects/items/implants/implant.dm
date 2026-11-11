@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Parent class for all implants
  */
@@ -77,7 +78,7 @@
 		if(!force && (other_implant.implant_flags & IMPLANT_TYPE_SECURITY))
 			security_implants++
 			if(security_implants >= SECURITY_IMPLANT_CAP) //We've found too many security implants in this mob, and will reject implantation by normal means
-				balloon_alert(user, "too many security implants!")
+				balloon_alert(user, LANG("obj.e7ce95838962b553", null))
 				return FALSE
 		if(flags & COMPONENT_DELETE_NEW_IMPLANT)
 			UNSETEMPTY(target.implants)
@@ -214,13 +215,13 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(params["implant_action"] == "self_destruct")
-		var/warning = tgui_alert(user, "Activation will harmlessly self-destruct this implant. Proceed?", "You sure?", list("Yes", "No"))
+		var/warning = tgui_alert(user, LANG("obj.a926878caf7210de", null), LANG("obj.be968efe0737cd01", null), list("Yes", "No"))
 		if(warning != "Yes" || QDELETED(src) || QDELETED(user) || QDELETED(console) || isnull(imp_in))
 			return TRUE
 		if(!console.is_operational || !user.can_perform_action(console, NEED_DEXTERITY|ALLOW_SILICON_REACH))
 			return TRUE
 
-		to_chat(imp_in, span_hear("You feel a tiny jolt from inside of you as one of your implants fizzles out."))
+		to_chat(imp_in, span_hear(LANG("obj.2c2b66fe9a7b484b", null)))
 		do_sparks(number = 2, cardinal_only = FALSE, source = imp_in)
 		deconstruct()
 		return TRUE

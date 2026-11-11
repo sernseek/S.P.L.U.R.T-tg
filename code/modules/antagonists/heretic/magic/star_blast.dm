@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/spell/pointed/projectile/star_blast
 	name = "Star Blast"
 	desc = "This spell fires an unstoppable disk with cosmic energies at a target, spreading the star mark. \
@@ -46,7 +47,7 @@
 		return ..()
 	// BUBBER EDIT ADDITION BEGIN - you need LOS to jaunt to your ball
 	if (!(active_ball in view(cast_range, owner)))
-		owner.balloon_alert(owner, "need line of sight on the ball!")
+		owner.balloon_alert(owner, LANG("datum.f1b80f19b8ad4797", null))
 		return // abort entirely
 	// BUBBER EDIT ADDITION ENDs
 

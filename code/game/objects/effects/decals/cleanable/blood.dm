@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/decal/cleanable/blood
 	name = "pool of blood"
 	desc = "It's slippery and gooey. Perhaps it's the chef's cooking?"
@@ -487,7 +488,7 @@
 
 /obj/effect/decal/cleanable/blood/trail/update_desc(updates)
 	. = ..()
-	desc = "A [dried ? "dried " : ""]trail of [get_blood_string()]."
+	desc = LANG("obj.13163becfd5101f1", list(dried ? "dried " : "", get_blood_string()))
 
 /obj/effect/decal/cleanable/blood/trail/lazy_init_reagents()
 	if(!istype(loc, /obj/effect/decal/cleanable/blood/trail_holder))
@@ -768,7 +769,7 @@
 	if(LAZYLEN(species_types) + LAZYLEN(shoe_types) == 0)
 		return
 
-	. += "You recognise the footprints as belonging to:"
+	. += LANG("obj.bfd46e14a4c5a954", null)
 	for(var/obj/item/clothing/shoes/sole as anything in shoe_types)
 		var/article = initial(sole.article) || (initial(sole.gender) == PLURAL ? "Some" : "A")
 		. += "[icon2html(initial(sole.icon), user, initial(sole.icon_state))] [article] <B>[initial(sole.name)]</B>."
@@ -776,13 +777,13 @@
 	for(var/species in species_types)
 		switch(species)
 			if("unknown")
-				. += "&bull; Some <B>creature's feet</B>."
+				. += LANG("obj.eb53a644479b68f4", null)
 			if(SPECIES_MONKEY)
-				. += "&bull; Some <B>monkey feet</B>."
+				. += LANG("obj.8b05c8939d92fd92", null)
 			if(SPECIES_HUMAN)
-				. += "&bull; Some <B>human feet</B>."
+				. += LANG("obj.a0d92689df3bd26f", null)
 			else
-				. += "&bull; Some <B>[species] feet</B>."
+				. += LANG("obj.41a63db0356d2257", list(species))
 
 /obj/effect/decal/cleanable/blood/hitsplatter
 	name = "blood splatter"

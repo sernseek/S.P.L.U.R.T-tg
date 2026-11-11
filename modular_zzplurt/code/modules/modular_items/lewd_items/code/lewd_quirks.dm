@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /datum/brain_trauma/very_special/bimbo
 
@@ -45,7 +46,7 @@
 
 	to_chat(human_owner, span_purple(lust_message))
 	if(!in_company())
-		to_chat(human_owner, span_purple("You find yourself groping your genitals, seeking any kind of relief"))
+		to_chat(human_owner, span_purple(LANG("datum.2e55703942285e0f", null)))
 		human_owner.adjust_pleasure(5)
 
 	var/overflow = 0

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/card/id/faction_guest
 	name = "guest card"
 	access = list(ACCESS_FACTION_PUBLIC)
@@ -25,7 +26,7 @@
 	if(extra_access)
 		for(var/acs in extra_access)
 			id.access |= acs
-	to_chat(user, span_notice("You upgrade [id] with extra access."))
+	to_chat(user, span_notice(LANG("obj.ab394a137342edd3", list(id))))
 	qdel(src)
 	return ITEM_INTERACT_SUCCESS
 

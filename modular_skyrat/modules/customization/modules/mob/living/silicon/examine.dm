@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  *  Returns a list of lines containing silicon flavourtext, temporary flavourtext, ERP preferences and a link to "look closer" and open the examine panel.
  *  Intended to be appended at the end of examine() result.
@@ -17,15 +18,15 @@
 		var/erp_status_pref = client.prefs.read_preference(/datum/preference/choiced/erp_status)
 		var/free_use_pref = client.prefs.read_preference(/datum/preference/toggle/erp_free_use)
 		if(erp_status_pref && !CONFIG_GET(flag/disable_erp_preferences))
-			. += span_info("ERP Status: [span_revenboldnotice(erp_status_pref)][free_use_pref ? "[span_revenboldnotice(" - Free Use")]" : ""]")
+			. += span_info(LANG("mob.f8f349e80c16a293", list(span_revenboldnotice(erp_status_pref), free_use_pref ? "[span_revenboldnotice(" - Free Use")]" : "")))
 		var/line = get_gender_attraction_string(client.prefs.read_preference(/datum/preference/choiced/display_gender), client.prefs.read_preference(/datum/preference/choiced/attraction))
 		if(line)
 			. += span_info(line)
 	if(temporary_flavor_text)
 		if(length_char(temporary_flavor_text) <= 40)
-			. += span_notice("<b>They look different than usual:</b> [temporary_flavor_text]")
+			. += span_notice(LANG("mob.68c90e8e5565e33d", list(temporary_flavor_text)))
 		else
-			. += span_notice("<b>They look different than usual:</b> [copytext_char(temporary_flavor_text, 1, 37)]... <a href='byond://?src=[REF(src)];temporary_flavor=1'>More...</a>")
+			. += span_notice(LANG("mob.be452a5005618b47", list(copytext_char(temporary_flavor_text, 1, 37), REF(src))))
 
 /mob/living/silicon/get_chat_examine_headshot(mob/user)
 	if(!client?.prefs || !user?.client?.prefs)

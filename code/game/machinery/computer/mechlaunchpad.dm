@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/computer/mechpad
 	name = "orbital mech pad console"
 	desc = "A computer designed to handle the calculations and routing required for sending and receiving mechs from orbit. Requires a link to a nearby Orbital Mech Pad to function."
@@ -52,10 +53,10 @@
 	if(user.combat_mode || machine_stat & (NOPOWER|BROKEN) || DOING_INTERACTION_WITH_TARGET(user, src))
 		return ..()
 	var/mech_dir = mecha_attacker.dir
-	balloon_alert(user, "carefully starting launch process...")
+	balloon_alert(user, LANG("obj.4e7f56aa9c8b9b95", null))
 	INVOKE_ASYNC(src, PROC_REF(random_beeps), user, MECH_LAUNCH_TIME, 0.5 SECONDS, 1.5 SECONDS)
 	if(!do_after(user, MECH_LAUNCH_TIME, src, extra_checks = CALLBACK(src, PROC_REF(do_after_checks), mecha_attacker, mech_dir)))
-		balloon_alert(user, "interrupted!")
+		balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 		return
 	var/obj/machinery/mechpad/current_pad = mechpads[selected_id]
 	try_launch(user, current_pad)
@@ -94,11 +95,11 @@
 
 	var/obj/machinery/mechpad/buffered_pad = multitool.buffer
 	if(!(mechpads.len < maximum_pads))
-		to_chat(user, span_warning("[src] cannot handle any more connections!"))
+		to_chat(user, span_warning(LANG("obj.6f163721040bf99c", list(src))))
 		return ITEM_INTERACT_SUCCESS
 
 	if(buffered_pad == connected_mechpad)
-		to_chat(user, span_warning("[src] cannot connect to its own mechpad!"))
+		to_chat(user, span_warning(LANG("obj.53ea5c7a8555a05c", list(src))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!connected_mechpad && buffered_pad == find_pad())
@@ -106,12 +107,12 @@
 			remove_pad(buffered_pad)
 		connect_launchpad(buffered_pad)
 		multitool.set_buffer(null)
-		to_chat(user, span_notice("You connect the console to the pad with data from \the [multitool]'s buffer."))
+		to_chat(user, span_notice(LANG("obj.10f08e0a9e04d2c0", list(multitool))))
 		return ITEM_INTERACT_SUCCESS
 
 	add_pad(buffered_pad)
 	multitool.set_buffer(null)
-	to_chat(user, span_notice("You upload the data from \the [multitool]'s buffer."))
+	to_chat(user, span_notice(LANG("obj.1eaf63fb1fd7d7f0", list(multitool))))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/mechpad/proc/add_pad(obj/machinery/mechpad/pad)
@@ -146,28 +147,28 @@
 /obj/machinery/computer/mechpad/proc/can_launch(mob/user, obj/machinery/mechpad/where, silent = FALSE)
 	if(QDELETED(where))
 		if(!silent)
-			to_chat(user, span_warning("No destination!"))
+			to_chat(user, span_warning(LANG("obj.80b6b367e1005066", null)))
 		return FALSE
 	if(!connected_mechpad)
 		if(!silent)
-			to_chat(user, span_warning("[src] has no connected pad!"))
+			to_chat(user, span_warning(LANG("obj.dd7700269657aa70", list(src))))
 		return FALSE
 	if(connected_mechpad.machine_stat & (BROKEN|NOPOWER) || where.machine_stat & (BROKEN|NOPOWER))
 		if(!silent)
-			to_chat(user, span_warning("Pads are nonfunctional!"))
+			to_chat(user, span_warning(LANG("obj.4c0f42eb45bfd833", null)))
 		return FALSE
 	if(connected_mechpad.panel_open || where.panel_open)
 		if(!silent)
-			to_chat(user, span_warning("Pads have open panels!"))
+			to_chat(user, span_warning(LANG("obj.6b9a4c191d53b946", null)))
 		return FALSE
 	var/obj/vehicle/sealed/mecha/mech = locate() in get_turf(connected_mechpad)
 	if(!mech)
 		if(!silent)
-			to_chat(user, span_warning("[src] detects no mecha on the pad!"))
+			to_chat(user, span_warning(LANG("obj.2973cfa139e4d868", list(src))))
 		return FALSE
 	if(where.mech_only && (locate(/mob/living) in mech.get_all_contents()))
 		if(!silent)
-			to_chat(user, span_warning("The target pad does not allow lifeforms!"))
+			to_chat(user, span_warning(LANG("obj.8a1b66edd37f177c", null)))
 		return FALSE
 	return TRUE
 
@@ -220,7 +221,7 @@
 				return
 			current_pad.display_name = new_name
 		if("remove")
-			if(usr && tgui_alert(usr, "Are you sure?", "Unlink Orbital Pad", list("I'm Sure", "Abort")) == "I'm Sure")
+			if(usr && tgui_alert(usr, LANG("obj.773441628de640b4", null), LANG("obj.d6d07aba083cc39b", null), list("I'm Sure", "Abort")) == "I'm Sure")
 				remove_pad(current_pad)
 				selected_id = null
 		if("launch")

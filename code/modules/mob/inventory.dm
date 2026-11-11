@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //These procs handle putting stuff in your hands
 //as they handle all relevant stuff like adding it to the player's screen and updating their overlays.
 
@@ -242,13 +243,13 @@
 		if (merge_stacks)
 			if (istype(active_stack) && active_stack.can_merge(item_stack, inhand = TRUE))
 				if (item_stack.merge(active_stack))
-					to_chat(usr, span_notice("Your [active_stack.name] stack now contains [active_stack.get_amount()] [active_stack.singular_name]\s."))
+					to_chat(usr, span_notice(LANG("mob.447269be3028f176", list(active_stack.name, active_stack.get_amount(), active_stack.singular_name))))
 					return TRUE
 			else
 				var/obj/item/stack/inactive_stack = get_inactive_held_item()
 				if (istype(inactive_stack) && inactive_stack.can_merge(item_stack, inhand = TRUE))
 					if (item_stack.merge(inactive_stack))
-						to_chat(usr, span_notice("Your [inactive_stack.name] stack now contains [inactive_stack.get_amount()] [inactive_stack.singular_name]\s."))
+						to_chat(usr, span_notice(LANG("mob.447269be3028f176", list(inactive_stack.name, inactive_stack.get_amount(), inactive_stack.singular_name))))
 						return TRUE
 
 	if(put_in_active_hand(I, forced, ignore_animation, visuals_only))
@@ -520,7 +521,7 @@
 		if(qdel_on_fail)
 			qdel(W)
 		else if(!disable_warning)
-			to_chat(src, span_warning("You are unable to equip that!"))
+			to_chat(src, span_warning(LANG("mob.57b408dca50ad3f0", null)))
 		return FALSE
 	equip_to_slot(W, slot, initial, redraw_mob, indirect_action = indirect_action) //This proc should not ever fail.
 	SEND_SIGNAL(src, COMSIG_MOB_POST_EQUIP, W, slot) //BUBBER EDIT ADDITION
@@ -643,7 +644,7 @@
 		if(gear?.atom_storage?.attempt_insert(src, user, messages = FALSE))
 			return TRUE
 
-	to_chat(user, span_warning("You are unable to equip that!"))
+	to_chat(user, span_warning(LANG("obj.57b408dca50ad3f0", null)))
 	return FALSE
 
 /// Attempts to put an item into storage located in a given slot
@@ -666,7 +667,7 @@ GAME_VERB_HIDDEN(/mob, quick_equip, "quick-equip")
 /mob/proc/execute_quick_equip()
 	var/obj/item/I = get_active_held_item()
 	if(!I)
-		to_chat(src, span_warning("You are not holding anything to equip!"))
+		to_chat(src, span_warning(LANG("mob.b25bff0175de9a5e", null)))
 		return
 	if(!QDELETED(I))
 		I.equip_to_best_slot(src)

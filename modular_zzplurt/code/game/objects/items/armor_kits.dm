@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/armorkit
 	name = "rampart armor kit"
 	desc = "A standard Nanotrasen security nanite armoring kit, for reinforcing outerwear."
@@ -37,17 +38,17 @@
 		return NONE
 
 	if(istype(C, /obj/item/clothing/suit/mod) || istype(C, /obj/item/clothing/head/mod))
-		to_chat(user, "<span class = 'notice'>You can't reinforce MODsuit parts with [src].</span>")
+		to_chat(user, LANG("obj.c5ce02abae2d07e8", list(src)))
 		return NONE
 
 	if(!(target.slot_flags & target_slot))
-		to_chat(user, "<span class = 'notice'>You can't reinforce [target] with [src].</span>")
+		to_chat(user, LANG("obj.4149a6a5eb10b12e", list(target, src)))
 		return NONE
 
 	var/datum/armor/curr_armor = C.get_armor()
 
 	if(istype(curr_armor, /datum/armor/mod_theme))
-		to_chat(user, "<span class = 'notice'>You can't reinforce MODsuit parts with [src].</span>")
+		to_chat(user, LANG("obj.c5ce02abae2d07e8", list(src)))
 		return NONE
 
 	for(var/curr_stat in ARMOR_LIST_DAMAGE)
@@ -65,13 +66,13 @@
 		C.max_heat_protection_temperature = target_armor::max_heat_protection_temperature
 		C.max_integrity = target_armor::max_integrity
 		C.resistance_flags = target_armor::resistance_flags
-		user.visible_message("<span class = 'notice'>[user] reinforces [C] with [src].</span>", \
-		"<span class = 'notice'>You reinforce [C] with [src], making it as protective as \a [armor_text].</span>")
+		user.visible_message(LANG("obj.9a1f1ee23e215c21", list(user, C, src)), \
+		LANG("obj.03ba3eadc78d92b4", list(C, src, armor_text)))
 		C.name = "[target_prefix] [C.name]"
 		qdel(src)
 		return ITEM_INTERACT_SUCCESS
 
-	to_chat(user, "<span class = 'notice'>You don't need to reinforce [C] any further.")
+	to_chat(user, LANG("obj.5796409cd6a3067d", list(C)))
 	return NONE
 
 /obj/item/armorkit/helmet

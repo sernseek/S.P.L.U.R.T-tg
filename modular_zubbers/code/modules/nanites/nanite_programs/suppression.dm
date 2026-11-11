@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Programs that are generally useful for population control and non-harmful suppression.
 
 /datum/nanite_program/sleepy
@@ -9,7 +10,7 @@
 	rogue_types = list(/datum/nanite_program/brain_misfire, /datum/nanite_program/brain_decay)
 
 /datum/nanite_program/sleepy/on_trigger(comm_message)
-	to_chat(host_mob, span_warning("You start to feel very sleepy..."))
+	to_chat(host_mob, span_warning(LANG("datum.b99069113c481438", null)))
 	host_mob.adjust_drowsiness(20)
 	addtimer(CALLBACK(host_mob, TYPE_PROC_REF(/mob/living, Sleeping), 200), rand(60,200))
 
@@ -24,11 +25,11 @@
 
 /datum/nanite_program/paralyzing/enable_passive_effect()
 	. = ..()
-	to_chat(host_mob, span_warning("Your muscles seize! You can't move!"))
+	to_chat(host_mob, span_warning(LANG("datum.c5e211c3bab62e6b", null)))
 
 /datum/nanite_program/paralyzing/disable_passive_effect()
 	. = ..()
-	to_chat(host_mob, span_notice("Your muscles relax, and you can move again."))
+	to_chat(host_mob, span_notice(LANG("datum.c7241bbe7bfb9105", null)))
 
 /datum/nanite_program/shocking
 	name = "Electric Shock"
@@ -153,7 +154,7 @@
 		return
 	if(host_mob.stat == DEAD)
 		return
-	to_chat(host_mob, span_warning("You feel compelled to speak..."))
+	to_chat(host_mob, span_warning(LANG("datum.bbf838f58a126d42", null)))
 	host_mob.say(sent_message, forced = "nanite speech")
 
 /datum/nanite_program/comm/voice

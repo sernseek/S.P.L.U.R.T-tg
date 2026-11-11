@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 *	QM Sporter Rifle
 */
@@ -26,16 +27,12 @@
 
 /obj/item/gun/ballistic/rifle/boltaction/sporterized/examine(mob/user)
 	. = ..()
-	. += span_notice("You can <b>examine closer</b> to learn a little more about this weapon.")
+	. += span_notice(LANG("obj.b663717df67087e6", null))
 
 /obj/item/gun/ballistic/rifle/boltaction/sporterized/examine_more(mob/user)
 	. = ..()
 
-	. += "The Xhihao 'Rengo' conversion rifle. Came as parts sold in a single kit by Xhihao Light Arms, \
-		which can be swapped out with many of the outdated or simply old parts on a typical Sakhno rifle. \
-		While not necessarily increasing performance in any way, the magazine is slightly longer. The weapon \
-		is also overall a bit shorter, making it easier to handle for some people. Cannot be sawn off, cutting \
-		really any part of this weapon off would make it non-functional."
+	. += LANG("obj.9356f87f12892799", null)
 
 	return .
 

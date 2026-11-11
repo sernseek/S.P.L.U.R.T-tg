@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/preference/toggle/erp/vore_enable
 	savefile_key = "vore_enable_pref"
 
@@ -114,9 +115,9 @@
 
 /datum/vore_preferences/proc/load_slot()
 	var/list/choices = generate_slot_choice_list()
-	var/choice = tgui_input_list(usr, "Choose a slot to load", "Belly Slot", choices, get_slot_name())
+	var/choice = tgui_input_list(usr, LANG("datum.665f1816a84279c0", null), LANG("datum.f21ca8084bafbd2f", null), choices, get_slot_name())
 	if(choice)
-		if(tgui_alert(usr, "Are you SURE you want to delete all current bellies and replace them with the slot '[choice]'?", "Slot Loading", list("No", "Yes")) != "Yes")
+		if(tgui_alert(usr, LANG("datum.16eeab07bf96596c", list(choice)), LANG("datum.6fbccabfe4664af7", null), list("No", "Yes")) != "Yes")
 			return FALSE
 		belly_layout_slot = choices[choice]
 		return TRUE
@@ -124,9 +125,9 @@
 
 /datum/vore_preferences/proc/copy_to_slot()
 	var/list/choices = generate_slot_choice_list()
-	var/choice = tgui_input_list(usr, "Choose a slot to copy over", "Belly Slot", choices)
+	var/choice = tgui_input_list(usr, LANG("datum.89de55c535e8c8e8", null), LANG("datum.f21ca8084bafbd2f", null), choices)
 	if(choice)
-		if(tgui_alert(usr, "Are you SURE you want to overwrite '[choice]' with current bellies?", "Slot Copying", list("No", "Yes")) != "Yes")
+		if(tgui_alert(usr, LANG("datum.6a51d4a06dd68760", list(choice)), LANG("datum.13d1a25dce7cd3b0", null), list("No", "Yes")) != "Yes")
 			return null
 
 		set_slot_name("[get_slot_name()] (Copy)", choices[choice])
@@ -135,13 +136,13 @@
 
 /datum/vore_preferences/proc/export_slot()
 	var/list/choices = generate_slot_choice_list()
-	var/choice = tgui_input_list(usr, "Choose a slot to export", "Belly Slot", choices)
+	var/choice = tgui_input_list(usr, LANG("datum.a9040e689ae7cea0", null), LANG("datum.f21ca8084bafbd2f", null), choices)
 	if(choice)
 		var/slot_index = choices[choice]
 		var/data = get_belly_export(slot_index)
 		var/path = "[get_player_save_folder(usr.ckey)]/vore_export.json"
 		rustg_file_write(json_encode(data, JSON_PRETTY_PRINT), path)
-		to_chat(usr, span_notice("Sending you [choice], this may take a moment..."))
+		to_chat(usr, span_notice(LANG("datum.2d34bbd74ed4ee23", list(choice))))
 		usr << ftp(file(path))
 		fdel(path)
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define POSTER_MOOD_CAT "poster_mood"
 
 /obj/item/poster/quirk
@@ -20,13 +21,13 @@
 /obj/item/poster/quirk/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(!user.is_antag() || !HAS_TRAIT(user, TRAIT_POSTERBOY) || !istype(tool, /obj/item/toy/crayon))
 		return NONE
-	balloon_alert(user, "converting poster...")
+	balloon_alert(user, LANG("obj.ba09f090cc1a31a0", null))
 	if(!do_after(user, 5 SECONDS, user))
-		balloon_alert(user, "interrupted!")
+		balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 		return ITEM_INTERACT_BLOCKING
 	var/obj/item/poster/traitor/quirkspawn = new(get_turf(src))
 	user.put_in_hands(quirkspawn)
-	to_chat(user, span_notice("You have converted one of your posters!"))
+	to_chat(user, span_notice(LANG("obj.b497caf6d459fbe1", null)))
 	qdel(src)
 	return ITEM_INTERACT_SUCCESS
 
@@ -99,7 +100,7 @@
 	var/viewer_department = viewer.mind.assigned_role.paycheck_department
 	if(department != NONE && viewer_department != department)
 		return
-	to_chat(viewer, span_notice("Wow, great poster!"))
+	to_chat(viewer, span_notice(LANG("datum.18bc94e7e7ea673a", null)))
 	viewer.add_mood_event(POSTER_MOOD_CAT, /datum/mood_event/poster_mood)
 
 /datum/mood_event/poster_mood

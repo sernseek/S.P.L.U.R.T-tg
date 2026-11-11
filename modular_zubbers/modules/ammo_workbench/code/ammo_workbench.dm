@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/ammo_workbench
 	name = "ammunitions workbench"
 	desc = "A machine, somewhat akin to a lathe, made specifically for manufacturing ammunition. It has a slot for magazines, ammo boxes, clips... anything that holds ammo."
@@ -114,7 +115,7 @@
 /obj/machinery/ammo_workbench/examine(mob/user)
 	. += ..()
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("Reclaiming <b>[recycle_percent]%</b> of materials when recycling a loaded container.")
+		. += span_notice(LANG("obj.43e2bc9d1920badb", list(recycle_percent)))
 
 /obj/machinery/ammo_workbench/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -769,7 +770,7 @@
 		if(!user.transferItemToLoc(O, src))
 			return FALSE
 		if(loaded_magazine)
-			to_chat(user, span_notice("You quickly swap [loaded_magazine] for [O]."))
+			to_chat(user, span_notice(LANG("obj.e199e5be7f942e26", list(loaded_magazine, O))))
 			loaded_magazine.forceMove(drop_location())
 			user.put_in_hands(loaded_magazine)
 			loaded_magazine = null
@@ -780,7 +781,7 @@
 				deltimer(timer_id)
 				timer_id = null
 		loaded_magazine = O
-		to_chat(user, span_notice("You insert [O] to into [src]'s reciprocal."))
+		to_chat(user, span_notice(LANG("obj.30ef11a380d5d096", list(O, src))))
 		flick("h_lathe_load", src)
 		update_appearance()
 		update_ammotypes()
@@ -790,7 +791,7 @@
 		if(!user.transferItemToLoc(O, src))
 			return FALSE
 		loaded_datadisk = O
-		to_chat(user, span_notice("You insert [O] to into [src]'s floppydisk port."))
+		to_chat(user, span_notice(LANG("obj.3ef3056f550703a2", list(O, src))))
 		flick("h_lathe_load", src)
 		update_appearance()
 		playsound(loc, 'sound/machines/terminal/terminal_insert_disc.ogg', 35, 1)
@@ -799,19 +800,19 @@
 
 /obj/machinery/ammo_workbench/proc/is_insertion_ready(mob/user, obj/item/O)
 	if(panel_open)
-		to_chat(user, span_warning("You can't load [src] while it's opened!"))
+		to_chat(user, span_warning(LANG("obj.eb073bc6e97436c6", list(src))))
 		return FALSE
 	if(disabled)
-		to_chat(user, span_warning("The insertion belts of [src] won't engage!"))
+		to_chat(user, span_warning(LANG("obj.8d2c4b131adb486e", list(src))))
 		return FALSE
 	if(machine_stat & BROKEN)
-		to_chat(user, span_warning("[src] is broken."))
+		to_chat(user, span_warning(LANG("obj.6aff4a8969cfa7a4", list(src))))
 		return FALSE
 	if(machine_stat & NOPOWER)
-		to_chat(user, span_warning("[src] has no power."))
+		to_chat(user, span_warning(LANG("obj.7617f8a939cbb162", list(src))))
 		return FALSE
 	if(istype(O, /obj/item/disk/ammo_workbench) && loaded_datadisk)
-		to_chat(user, span_warning("[src] already has a disk inserted."))
+		to_chat(user, span_warning(LANG("obj.4fc3b05a043296ec", list(src))))
 		return FALSE
 	return TRUE
 
@@ -846,16 +847,16 @@
 
 /obj/machinery/ammo_workbench/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)
-		balloon_alert(user, "already overridden!")
+		balloon_alert(user, LANG("obj.53337eaf95e9661f", null))
 		return FALSE
 	obj_flags |= EMAGGED
 	hacked = TRUE
 	allowed_harmful = TRUE
 	allowed_advanced = TRUE
 	update_ammotypes()
-	balloon_alert(user, "safety protocols overridden")
+	balloon_alert(user, LANG("obj.3280ee1e324b98b9", null))
 	if(user)
-		to_chat(user, span_warning("You short out [src]'s munition safety protocols, unlocking its full catalogue."))
+		to_chat(user, span_warning(LANG("obj.0f0adca11027ace3", list(src))))
 	playsound(src, 'sound/effects/sparks/sparks4.ogg', 60, TRUE)
 	return TRUE
 

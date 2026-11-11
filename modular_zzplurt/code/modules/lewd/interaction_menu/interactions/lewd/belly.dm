@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/interaction/lewd/bellyfuck
 	name = "Bellyfuck"
 	description = "Fuck their belly."
@@ -212,11 +213,11 @@
 		if(intent == "harm")
 			target_arousal += 10
 			target_pleasure += 6
-			to_chat(target, span_purple("Your face is trapped under their weight... you can't get enough air... but it's amazing!"))
+			to_chat(target, span_purple(LANG("datum.4335725420f47e21", null)))
 		else
 			target_arousal += 6
 			target_pleasure += 4
-			to_chat(target, span_purple("The weight on your face is overwhelming... and so hot!"))
+			to_chat(target, span_purple(LANG("datum.b8da8b56231af6cb", null)))
 
 	. = ..()
 

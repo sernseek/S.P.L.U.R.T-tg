@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define DREAMING_SOURCE "dreaming_source"
 
 /**
@@ -58,6 +59,8 @@
 		var/datum/callback/something_happens = next_message
 		next_message = something_happens.InvokeAsync(src)
 
+	if(istext(next_message)) // ZH EDIT - I18N - reverse the dream fragment (single-word adjective/verb/noun words skip the file2list multi-word threshold and AC; exact reverse catches the catalog entries)
+		next_message = lang_localize_display_name(next_message)
 	to_chat(src, span_notice("<i>... [next_message] ...</i>"))
 
 	if(LAZYLEN(dream_fragments))
@@ -109,36 +112,35 @@ GLOBAL_LIST_INIT(dreams, populate_dream_list())
 /datum/dream/random
 	weight = 1000
 
+// ZH EDIT CHANGE START - I18N - 梦境整句由五张词池拼出，整串永远不是目录键；按 locale 换整张表
+// （见 lang_word_pool）。**五张必须一起换**：只译形容词会产出「a 迷人的 admiral」，比全英文更难看。
 /datum/dream/random/GenerateDream(mob/living/carbon/dreamer)
 	var/list/custom_dream_nouns = get_dream_nouns(dreamer) || list()
 	var/fragment = ""
+	var/list/dream_strings = lang_word_pool("strings/dreamstrings.txt", GLOB.dream_strings)
+	var/list/adjectives = lang_word_pool("strings/names/adjectives.txt", GLOB.adjectives)
 
 	. = list()
-	. += "you see"
+	. += LANG("datum.efaeefa517476935", null)
 
 	//Subject
 	if(custom_dream_nouns.len && prob(90))
-		fragment += pick(custom_dream_nouns)
+		fragment += lang_dream_noun(pick(custom_dream_nouns)) // ZH EDIT CHANGE - I18N: 床单名词池走域内表（颜色词不能进全局反查）- ORIGINAL: fragment += pick(custom_dream_nouns)
 	else
-		fragment += pick(GLOB.dream_strings)
+		fragment += pick(dream_strings)
 
-	if(prob(50)) //Replace the adjective space with an adjective, or just get rid of it
-		fragment = replacetext(fragment, "%ADJECTIVE%", pick(GLOB.adjectives))
-	else
-		fragment = replacetext(fragment, "%ADJECTIVE% ", "")
-	if(findtext(fragment, "%A% "))
-		fragment = "\a [replacetext(fragment, "%A% ", "")]"
+	fragment = dream_fill_adjective(fragment, adjectives)
 	. += fragment
 
 	//Verb
 	fragment = ""
 	if(prob(50))
 		if(prob(35))
-			fragment += "[pick(GLOB.adverbs)] "
-		fragment += pick(GLOB.ing_verbs)
+			fragment += "[pick(lang_word_pool("strings/names/adverbs.txt", GLOB.adverbs))] "
+		fragment += pick(lang_word_pool("strings/names/ing_verbs.txt", GLOB.ing_verbs))
 	else
-		fragment += "will "
-		fragment += pick(GLOB.verbs)
+		fragment += LANG("datum.8356b3e0d54e153c", null)
+		fragment += pick(lang_word_pool("strings/names/verbs.txt", GLOB.verbs))
 	. += fragment
 
 	if(prob(25))
@@ -146,14 +148,26 @@ GLOBAL_LIST_INIT(dreams, populate_dream_list())
 
 	//Object
 	fragment = ""
-	fragment += pick(GLOB.dream_strings)
+	fragment += pick(dream_strings)
+	fragment = dream_fill_adjective(fragment, adjectives)
+	. += fragment
+
+/// 填 `%ADJECTIVE%` / `%A%` 两个占位符。原来这段在 GenerateDream 里出现两次、逐字重复。
+///
+/// **中文词表里 `%ADJECTIVE%` 后面没有空格**（「%ADJECTIVE%海军上将」），而英文表有
+/// （「%A% %ADJECTIVE% admiral」）——所以「不要形容词」那一支必须**先试带空格、再试不带**，
+/// 只写带空格的那条会让中文梦境里漏出字面 `%ADJECTIVE%`。
+/// `%A%`（冠词位）中文表里直接没有，findtext 落空 → 不加 `\a`，正是想要的。
+/datum/dream/random/proc/dream_fill_adjective(fragment, list/adjectives)
 	if(prob(50))
-		fragment = replacetext(fragment, "%ADJECTIVE%", pick(GLOB.adjectives))
+		fragment = replacetext(fragment, "%ADJECTIVE%", pick(adjectives))
 	else
 		fragment = replacetext(fragment, "%ADJECTIVE% ", "")
+		fragment = replacetext(fragment, "%ADJECTIVE%", "")
 	if(findtext(fragment, "%A% "))
 		fragment = "\a [replacetext(fragment, "%A% ", "")]"
-	. += fragment
+	return fragment
+// ZH EDIT CHANGE END
 
 /datum/dream/random/proc/get_dream_nouns(mob/living/carbon/dreamer)
 	var/list/custom_dream_nouns = list()
@@ -175,7 +189,7 @@ GLOBAL_LIST_INIT(dreams, populate_dream_list())
 	. = ..()
 	. += pick("you wind up a toy", "you hear something strange", "you pick out a record to play", "you hit shuffle on your music player")
 	. += CALLBACK(src, PROC_REF(PlayRandomSound))
-	. += "it reminds you of something"
+	. += LANG("datum.5e68fd6d41fdde9a", null)
 
 /datum/dream/hear_something/OnDreamEnd(mob/living/carbon/dreamer)
 	. = ..()

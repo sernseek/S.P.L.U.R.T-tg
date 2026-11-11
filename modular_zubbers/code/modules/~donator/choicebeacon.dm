@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/sbeacondrop/carrot
 	name = "carrot phone"
 	icon = 'icons/obj/antags/syndicate_tools.dmi'
@@ -8,7 +9,7 @@
 
 /obj/item/sbeacondrop/carrot/attack_self(mob/user)
 	if(user)
-		to_chat(user, span_notice("Thank you for choosing the Jab TM for your clothing purchase!"))
+		to_chat(user, span_notice(LANG("obj.806fabd56c8667a1", null)))
 		new droptype( user.loc )
 		playsound(src, 'sound/mobs/non-humanoids/mouse/mousesqueek.ogg', 100, TRUE, TRUE)
 		qdel(src)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_LIST_EMPTY(req_console_assistance)
 GLOBAL_LIST_EMPTY(req_console_supplies)
 GLOBAL_LIST_EMPTY(req_console_information)
@@ -70,12 +71,12 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 /obj/machinery/requests_console/examine(mob/user)
 	. = ..()
 	if(!open)
-		. += span_notice("It looks like you can pry open the panel with <b>a crowbar</b>.")
+		. += span_notice(LANG("obj.e3e7cdc9afe1b8d6", null))
 	else
-		. += span_warning("The panel was pried open, you can close it with <b>a crowbar</b>.")
+		. += span_warning(LANG("obj.aa6c048709791779", null))
 
 	if(hack_state)
-		. += span_warning("The console seems to have been tampered with!")
+		. += span_warning(LANG("obj.941fb5eed7de3fe3", null))
 
 /obj/machinery/requests_console/update_overlays()
 	. = ..()
@@ -192,12 +193,12 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 			// Check if user can call this emergency (prevent self-calls) RETA
 			var/user_dept = reta_get_user_department(usr)
 			if(user_dept == target_dept && !isAdminGhostAI(usr))
-				to_chat(usr, span_alert("You cannot call your own department for emergency assistance."))
+				to_chat(usr, span_alert(LANG("obj.a01640cd07f7fb6e", null)))
 				return
 
 			// Check cooldown RETA
 			if(origin_dept && target_dept && reta_on_cooldown(origin_dept, target_dept))
-				to_chat(usr, span_alert("Emergency calls to [target_dept] are on cooldown."))
+				to_chat(usr, span_alert(LANG("obj.3cd6ab48926e09df", list(target_dept))))
 				return
 
 			emergency = emergency_type
@@ -239,11 +240,11 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 
 				switch(emergency_type)
 					if(REQ_EMERGENCY_SECURITY)
-						aas_config_announce(/datum/aas_config_entry/rc_emergency, list("LOCATION" = department, "CALLER" = caller_info, "RETARESPONDERS" = granted_count), src, list(RADIO_CHANNEL_SECURITY), "Security")
+						aas_config_announce(/datum/aas_config_entry/rc_emergency, list("LOCATION" = lang_reverse_text(department), "CALLER" = caller_info, "RETARESPONDERS" = granted_count), src, list(RADIO_CHANNEL_SECURITY), "Security") // ZH EDIT CHANGE - I18N - LOCATION 只用于公告显示；console.department 的路由比较不受影响 - ORIGINAL: "LOCATION" = department
 					if(REQ_EMERGENCY_ENGINEERING)
-						aas_config_announce(/datum/aas_config_entry/rc_emergency, list("LOCATION" = department, "CALLER" = caller_info, "RETARESPONDERS" = granted_count), src, list(RADIO_CHANNEL_ENGINEERING), "Engineering")
+						aas_config_announce(/datum/aas_config_entry/rc_emergency, list("LOCATION" = lang_reverse_text(department), "CALLER" = caller_info, "RETARESPONDERS" = granted_count), src, list(RADIO_CHANNEL_ENGINEERING), "Engineering") // ZH EDIT CHANGE - I18N - LOCATION 只用于公告显示；console.department 的路由比较不受影响 - ORIGINAL: "LOCATION" = department
 					if(REQ_EMERGENCY_MEDICAL)
-						aas_config_announce(/datum/aas_config_entry/rc_emergency, list("LOCATION" = department, "CALLER" = caller_info, "RETARESPONDERS" = granted_count), src, list(RADIO_CHANNEL_MEDICAL), "Medical")
+						aas_config_announce(/datum/aas_config_entry/rc_emergency, list("LOCATION" = lang_reverse_text(department), "CALLER" = caller_info, "RETARESPONDERS" = granted_count), src, list(RADIO_CHANNEL_MEDICAL), "Medical") // ZH EDIT CHANGE - I18N - LOCATION 只用于公告显示；console.department 的路由比较不受影响 - ORIGINAL: "LOCATION" = department
 
 				// Send confirmation to the calling department about the RETA activation
 				var/list/target_channels = list()
@@ -281,18 +282,18 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 				// Normal emergency call without RETA
 				switch(emergency_type)
 					if(REQ_EMERGENCY_SECURITY)
-						aas_config_announce(/datum/aas_config_entry/rc_emergency, list("LOCATION" = department, "CALLER" = caller_info), null, list(RADIO_CHANNEL_SECURITY), "Security")
+						aas_config_announce(/datum/aas_config_entry/rc_emergency, list("LOCATION" = lang_reverse_text(department), "CALLER" = caller_info), null, list(RADIO_CHANNEL_SECURITY), "Security") // ZH EDIT CHANGE - I18N - LOCATION 只用于公告显示；console.department 的路由比较不受影响 - ORIGINAL: "LOCATION" = department
 					if(REQ_EMERGENCY_ENGINEERING)
-						aas_config_announce(/datum/aas_config_entry/rc_emergency, list("LOCATION" = department, "CALLER" = caller_info), null, list(RADIO_CHANNEL_ENGINEERING), "Engineering")
+						aas_config_announce(/datum/aas_config_entry/rc_emergency, list("LOCATION" = lang_reverse_text(department), "CALLER" = caller_info), null, list(RADIO_CHANNEL_ENGINEERING), "Engineering") // ZH EDIT CHANGE - I18N - LOCATION 只用于公告显示；console.department 的路由比较不受影响 - ORIGINAL: "LOCATION" = department
 					if(REQ_EMERGENCY_MEDICAL)
-						aas_config_announce(/datum/aas_config_entry/rc_emergency, list("LOCATION" = department, "CALLER" = caller_info), null, list(RADIO_CHANNEL_MEDICAL), "Medical")
+						aas_config_announce(/datum/aas_config_entry/rc_emergency, list("LOCATION" = lang_reverse_text(department), "CALLER" = caller_info), null, list(RADIO_CHANNEL_MEDICAL), "Medical") // ZH EDIT CHANGE - I18N - LOCATION 只用于公告显示；console.department 的路由比较不受影响 - ORIGINAL: "LOCATION" = department
 				addtimer(CALLBACK(src, PROC_REF(clear_emergency)), 5 MINUTES)
 
 			update_appearance()
 			return TRUE
 		if("send_announcement")
 			if(!COOLDOWN_FINISHED(src, announcement_cooldown))
-				to_chat(usr, span_alert("Intercomms recharging. Please stand by."))
+				to_chat(usr, span_alert(LANG("obj.201fe056c6504649", null)))
 				return
 			if(!can_send_announcements)
 				return
@@ -301,13 +302,13 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 
 			var/message = reject_bad_text(trim(html_encode(params["message"]), MAX_MESSAGE_LEN), ascii_only = FALSE)
 			if(!message)
-				to_chat(usr, span_alert("Invalid message."))
+				to_chat(usr, span_alert(LANG("obj.2b32249fb7c6b15c", null)))
 				return
 			if(isliving(usr))
 				var/mob/living/L = usr
 				message = L.treat_message(message)["message"]
 
-			minor_announce(message, "[department] Announcement:", html_encode = FALSE, sound_override = ANNOUNCER_DEPARTMENTAL) // SKYRAT EDIT CHANGE - Announcer Sounds
+			minor_announce(message, LANG("obj.559317fbfda5c290", list(department)), html_encode = FALSE, sound_override = ANNOUNCER_DEPARTMENTAL) // SKYRAT EDIT CHANGE - Announcer Sounds
 			GLOB.news_network.submit_article(message, department, NEWSCASTER_STATION_ANNOUNCEMENTS, null)
 			usr.log_talk(message, LOG_SAY, tag="station announcement from [src]")
 			message_admins("[ADMIN_LOOKUPFLW(usr)] has made a station announcement from [src] at [AREACOORD(usr)].")
@@ -319,7 +320,7 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 		if("quick_reply")
 			var/recipient = params["reply_recipient"]
 
-			var/reply_message = reject_bad_text(tgui_input_text(usr, "Write a quick reply to [recipient]", "Awaiting Input"), ascii_only = FALSE)
+			var/reply_message = reject_bad_text(tgui_input_text(usr, LANG("obj.d90b255e6ad0ca32", list(recipient)), LANG("obj.e1dec80373ac5976", null)), ascii_only = FALSE)
 			if(QDELETED(ui) || ui.status != UI_INTERACTIVE)
 				return
 			if(!reply_message)
@@ -338,7 +339,7 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 				return
 			var/message = reject_bad_text(trim(html_encode(params["message"]), MAX_MESSAGE_LEN), ascii_only = FALSE)
 			if(!message)
-				to_chat(usr, span_alert("Invalid message."))
+				to_chat(usr, span_alert(LANG("obj.2b32249fb7c6b15c", null)))
 				has_mail_send_error = TRUE
 				return TRUE
 			var/request_type = params["request_type"]
@@ -498,10 +499,10 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 /obj/machinery/requests_console/crowbar_act(mob/living/user, obj/item/tool)
 	tool.play_tool_sound(src, 50)
 	if(open)
-		to_chat(user, span_notice("You close the maintenance panel."))
+		to_chat(user, span_notice(LANG("obj.32af0d7644a6c168", null)))
 		open = FALSE
 	else
-		to_chat(user, span_notice("You open the maintenance panel."))
+		to_chat(user, span_notice(LANG("obj.c603638ce6825a53", null)))
 		open = TRUE
 	update_appearance()
 	return TRUE
@@ -510,13 +511,13 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	if(open)
 		hack_state = !hack_state
 		if(hack_state)
-			to_chat(user, span_notice("You modify the wiring."))
+			to_chat(user, span_notice(LANG("obj.b69f8494312edfe8", null)))
 		else
-			to_chat(user, span_notice("You reset the wiring."))
+			to_chat(user, span_notice(LANG("obj.62d7a383fc32cc12", null)))
 		update_appearance()
 		tool.play_tool_sound(src, 50)
 	else
-		to_chat(user, span_warning("You must open the maintenance panel first!"))
+		to_chat(user, span_warning(LANG("obj.b389f5636ff569c4", null)))
 	return TRUE
 
 /obj/machinery/requests_console/item_interaction(mob/living/user, obj/item/tool, list/modifiers)

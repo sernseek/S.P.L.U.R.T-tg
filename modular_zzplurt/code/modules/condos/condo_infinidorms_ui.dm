@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Condo teleporter override that reuses SPLURT's infinidorm check-in UI contract.
 /obj/machinery/cafe_condo_teleporter
 	/// If TRUE, this teleporter belongs to the ghost-cafe side of the network.
@@ -160,13 +161,13 @@
 
 /obj/machinery/cafe_condo_teleporter/proc/prompt_check_in(mob/user, mob/target, room_number, template_name)
 	if(!CONFIG_GET(flag/hilbertshotel_enabled))
-		to_chat(target, span_warning("Infinidorm rooms are currently disabled!"))
+		to_chat(target, span_warning(LANG("obj.e19727c01e378f86", null)))
 		return FALSE
 	if(room_number > SHORT_REAL_LIMIT)
-		to_chat(target, span_warning("This network is only hooked up to [SHORT_REAL_LIMIT] rooms!"))
+		to_chat(target, span_warning(LANG("obj.ea04451db548a24f", list(SHORT_REAL_LIMIT))))
 		return FALSE
 	if((room_number < 1) || (room_number != round(room_number)))
-		to_chat(target, span_warning("That is not a valid room number!"))
+		to_chat(target, span_warning(LANG("obj.3252b69c1716f62d", null)))
 		return FALSE
 	if(!check_target_eligibility(target))
 		return FALSE
@@ -186,17 +187,17 @@
 	if(!chosen_condo)
 		chosen_condo = SScondos.splurt_get_default_template()
 	if(!chosen_condo)
-		to_chat(target, span_warning("No condo templates are currently available."))
+		to_chat(target, span_warning(LANG("obj.43077c3183ebf7d1", null)))
 		return FALSE
 	if(chosen_condo.donator_tier > (GLOB.donator_list[target.ckey] || DONATOR_TIER_NONE))
-		to_chat(target, span_warning("Tier [chosen_condo.donator_tier] donator access required to use [chosen_condo.name]."))
+		to_chat(target, span_warning(LANG("obj.55bbe4f0bc85ca5f", list(chosen_condo.donator_tier, chosen_condo.name))))
 		return FALSE
 	if(LAZYLEN(chosen_condo.ckeywhitelist) && !(chosen_condo.ckeywhitelist.Find(target.ckey)))
-		to_chat(target, span_warning("You are not whitelisted to use [chosen_condo.name]."))
+		to_chat(target, span_warning(LANG("obj.d74c8a79d973e5d2", list(chosen_condo.name))))
 		return FALSE
 	var/max_rooms = CONFIG_GET(number/hilbertshotel_max_rooms)
 	if(!SScondos.splurt_conservated_rooms["[room_number]"] && (length(SScondos.splurt_room_data) + length(SScondos.splurt_conservated_rooms)) >= max_rooms)
-		to_chat(target, span_warning("This network is currently at maximum room capacity!"))
+		to_chat(target, span_warning(LANG("obj.35581b07c4e2ceaa", null)))
 		return FALSE
 
 	SScondos.create_and_enter_condo(room_number, chosen_condo, target, src)
@@ -237,7 +238,7 @@
 		if("depart")
 			if(!inserted_id || !can_depart(usr))
 				playsound(src, 'sound/machines/terminal/terminal_error.ogg', 50, TRUE)
-				say("Access denied.")
+				say(LANG("obj.077f9b52c530e7f8", null))
 				addtimer(CALLBACK(src, TYPE_PROC_REF(/atom/movable, say), "Please contact the hotel staff for further assistance."), 3 SECONDS)
 				return FALSE
 			depart_user(usr)
@@ -247,7 +248,7 @@
 		if(action == "modify_trusted_guests")
 			playsound(src, 'sound/machines/terminal/terminal_processing.ogg', 50, TRUE)
 			if(params["action"] == "transfer")
-				say("Room ownership transferred.")
+				say(LANG("obj.4e6867fdf1351e2a", null))
 		SStgui.update_uis(src)
 		return TRUE
 	return FALSE

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Curse brain trauma that makes someone space textured, mute, pacifist and forbids them from entering space
 /datum/brain_trauma/voided
 	name = "Voided"
@@ -85,7 +86,7 @@
 	//BUBBER EDIT START - makes nebula vomit not painful to deal with
 	if(prob(vomit_frequency))
 		new /obj/effect/decal/cleanable/vomit/nebula(owner.loc)
-		owner.visible_message(span_notice("a beautifully sparkling liquid drips off of [owner] and forms a puddle"), span_notice("The beautifully sparkling liquid dripping off of you forms a puddle"))
+		owner.visible_message(span_notice(LANG("datum.b710f1634229121a", list(owner))), span_notice(LANG("datum.ae7de89e5105a0ee", null)))
 	//BUBBER EDIT END
 
 /// Apply the space texture

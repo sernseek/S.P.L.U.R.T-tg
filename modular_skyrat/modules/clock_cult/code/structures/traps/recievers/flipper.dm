@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define FLIP_DISTANCE 6
 #define FLIP_SPEED 3
 
@@ -23,7 +24,7 @@
 	. = ..()
 
 	if(!COOLDOWN_FINISHED(src, flip_cooldown) && IS_CLOCK(user))
-		. += span_brass("It's not ready to activate again yet!")
+		. += span_brass(LANG("obj.6a82292e0061b789", null))
 
 /// Send all `atom/movable`s flying in the set direction for a decent distance
 /obj/structure/destructible/clockwork/trap/flipper/proc/flip()
@@ -44,7 +45,7 @@
 
 /// Visual update when the cooldown's finished
 /obj/structure/destructible/clockwork/trap/flipper/proc/cooldown_done()
-	visible_message(span_brass("[src] whirrs with a loud *CLANK* as it resets."))
+	visible_message(span_brass(LANG("obj.33e89066cdc5ea3c", list(src))))
 
 /datum/component/clockwork_trap/flipper
 	takes_input = TRUE

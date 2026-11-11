@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //useless relics
 /obj/item/xenoarch/useless_relic
 	name = "useless relic"
@@ -13,19 +14,19 @@
 /obj/item/xenoarch/useless_relic/attackby(obj/item/attacking_item, mob/user, params)
 	if(istype(attacking_item, /obj/item/glassblowing/magnifying_glass))
 		if(istype(src, /obj/item/xenoarch/useless_relic/magnified))
-			balloon_alert(user, "already magnified!")
+			balloon_alert(user, LANG("obj.539c8b737111c782", null))
 			return
 
 		if(!HAS_TRAIT(user, TRAIT_XENOARCH_QUALIFIED))
-			balloon_alert(user, "needs training!") // it was very tempting to replace this with "skill issue"
+			balloon_alert(user, LANG("obj.5f7a453b6d784aaf", null)) // it was very tempting to replace this with "skill issue"
 			return
 
-		balloon_alert(user, "starting analysis!")
+		balloon_alert(user, LANG("obj.e390a63aecc91f5d", null))
 		if(!do_after(user, 5 SECONDS, target = src))
-			balloon_alert(user, "stand still!")
+			balloon_alert(user, LANG("obj.64862f47a421c9e4", null))
 			return
 
-		loc.balloon_alert(user, "magnified!")
+		loc.balloon_alert(user, LANG("obj.2c3665c62d238409", null))
 		user.mind?.adjust_experience(/datum/skill/research, 5)
 		spawn_magnified(magnified_number)
 		return

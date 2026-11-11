@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_LIST_INIT(meteors_candy_halloween, list(
 	/obj/effect/meteor/candy/party_popper = 6,
 	/obj/effect/meteor/candy/pumpkin = 16,
@@ -88,7 +89,7 @@ GLOBAL_LIST_INIT(meteors_candy_halloween, list(
 
 /datum/round_event/meteor_wave/announce(fake)
 	priority_announce(
-			text = "[announce_desc] have been detected on collision course with the station. The energy field generator is disabled or missing. First collision in approximately [DisplayTimeText(start_when * 20, 10)]. [announce_fluff]",
+			text = LANG("datum.95b726565a4774c1", list(announce_desc, DisplayTimeText(start_when * 20, 10), announce_fluff)),
 			title = announce_prefix,
 			sound = ANNOUNCER_METEORWARNING,
 		)
@@ -102,7 +103,7 @@ GLOBAL_LIST_INIT(meteors_candy_halloween, list(
 /datum/round_event/meteor_wave/proc/meteor_reminder()
 	SSsecurity_level.minimum_security_level(min_level = SEC_LEVEL_ORANGE, eng_access = TRUE, maint_access = FALSE)
 	priority_announce(
-			text = "[announce_desc] approaching, brace for impact. Long range scanners indicate a high density of meteors incoming, the kind of impact that makes you rethink your life choices. So, hold on tight and try not to fly into anything too important.",
+			text = LANG("datum.4c15fd099deb3930", list(announce_desc)),
 			title = announce_prefix,
 			sound = 'sound/items/radio/radio_important.ogg', // basically silent, since the securitylevel proc will make a sound
 			sender_override = "[command_name()] Engineering Division",
@@ -294,5 +295,5 @@ GLOBAL_LIST_INIT(meteors_candy_halloween, list(
 /obj/effect/meteor/banana/ram_turf(turf/bumped)
 	for(var/mob/living/slipped in get_turf(bumped))
 		slipped.slip(100, slipped.loc,- GALOSHES_DONT_HELP|SLIDE, 0, FALSE)
-		slipped.visible_message(span_warning("[src] honks [slipped] to the floor!"), span_userdanger("[src] harmlessly passes through you, knocking you over."))
+		slipped.visible_message(span_warning(LANG("obj.16da3e4c23b4349b", list(src, slipped))), span_userdanger(LANG("obj.9b8444cfd63cc86d", list(src))))
 	get_hit()

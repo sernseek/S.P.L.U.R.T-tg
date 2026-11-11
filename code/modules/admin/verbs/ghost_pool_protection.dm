@@ -1,6 +1,7 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //very similar to centcom_podlauncher in terms of how this is coded, so i kept a lot of comments from it
 
-ADMIN_VERB(ghost_pool_protection, R_ADMIN, "Ghost Pool Protection", "Choose which ways people can get into the round, or just clear it out completely for admin events.", ADMIN_CATEGORY_EVENTS)
+ADMIN_VERB(ghost_pool_protection, R_ADMIN, "幽灵池保护", "Choose which ways people can get into the round, or just clear it out completely for admin events.", ADMIN_CATEGORY_EVENTS)
 	var/datum/ghost_pool_menu/tgui = new(user)
 	tgui.ui_interact(user.mob)
 
@@ -71,7 +72,7 @@ ADMIN_VERB(ghost_pool_protection, R_ADMIN, "Ghost Pool Protection", "Choose whic
 		if("no_roles")
 			new_role_flags = NONE
 		if("apply_settings")
-			to_chat(usr, "Settings Applied!")
+			to_chat(usr, LANG("datum.ec375f1bcfddefec", null))
 			var/msg
 			switch(new_role_flags)
 				if(ALL)

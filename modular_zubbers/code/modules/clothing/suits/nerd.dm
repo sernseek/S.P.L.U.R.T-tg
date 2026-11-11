@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 #define SOUND_BEEP(sound) add_queue(##sound, 20)
 #define MORPHINE_INJECTION_DELAY (30 SECONDS)
@@ -103,10 +104,10 @@
 
 /obj/item/clothing/suit/armor/nerd/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)
-		balloon_alert(user, "already emagged!")
+		balloon_alert(user, LANG("obj.9bab397b17f019dd", null))
 		return FALSE
 	if(owner)
-		balloon_alert(user, "take it off first!")
+		balloon_alert(user, LANG("obj.c56b86d6713249e7", null))
 		return FALSE
 	obj_flags |= EMAGGED
 	do_sparks(8, FALSE, get_turf(src))

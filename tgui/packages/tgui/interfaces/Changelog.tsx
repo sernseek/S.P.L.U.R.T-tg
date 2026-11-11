@@ -1,6 +1,6 @@
 import dateformat from 'dateformat';
 import yaml from 'js-yaml';
-import { Component, Fragment } from 'react';
+import { Component, Fragment, useState } from 'react'; // ZH EDIT CHANGE - I18N - ORIGINAL: import { Component, Fragment } from 'react';
 import {
   Box,
   Button,
@@ -9,6 +9,7 @@ import {
   Section,
   Stack,
   Table,
+  Tabs, // ZH EDIT ADDITION - I18N
 } from 'tgui-core/components';
 import { classes } from 'tgui-core/react';
 
@@ -57,7 +58,66 @@ type ChangelogState = {
 
 type ChangelogData = {
   dates: string[];
+  localization_dates?: string[]; // ZH EDIT ADDITION - I18N
+  translated_dates?: string[]; // ZH EDIT ADDITION - I18N
 };
+
+// ZH EDIT ADDITION START - I18N: the localization build's own changelog, shown as a separate tab.
+// It has its own archive (html/changelogs/localization) and asset names so upstream's never collide with it.
+type ChangelogSource = 'upstream' | 'localization';
+
+const isLocalization = (source?: ChangelogSource) => source === 'localization';
+
+const sourceDates = (data: ChangelogData, source?: ChangelogSource) =>
+  (isLocalization(source) ? data.localization_dates : data.dates) || [];
+
+// Upstream's entries are machine-translated at upstream sync into one "original text -> translation"
+// table per month. Looked up by the original text, so upstream editing a month never misaligns
+// anything; an entry without a translation, or a table that fails to load, stays in English.
+type ChangelogTranslations = Record<string, string>;
+
+const fetchTranslations = async (
+  date: string,
+  attemptNumber = 1,
+): Promise<ChangelogTranslations | undefined> => {
+  const response = await fetch(
+    resolveAsset(`changelog-translation-${date}.json`),
+  ).catch(() => undefined);
+  if (response?.ok) {
+    return response.json();
+  }
+  if (attemptNumber >= 6) {
+    return undefined;
+  }
+  await new Promise((resolve) => setTimeout(resolve, 50 + attemptNumber * 50));
+  return fetchTranslations(date, attemptNumber + 1);
+};
+
+const translateChangelog = (
+  changelog: ChangelogYaml,
+  translations: ChangelogTranslations,
+): ChangelogYaml => {
+  const translate = (text: string) =>
+    Object.hasOwn(translations, String(text))
+      ? translations[String(text)]
+      : text;
+  const result: ChangelogYaml = {};
+  for (const [date, authors] of Object.entries(changelog || {})) {
+    result[date] = {};
+    for (const [author, changes] of Object.entries(authors || {})) {
+      result[date][author] = (changes || []).map((change) =>
+        Object.fromEntries(
+          Object.entries(change || {}).map(([type, text]) => [
+            type,
+            translate(text),
+          ]),
+        ),
+      );
+    }
+  }
+  return result;
+};
+// ZH EDIT ADDITION END
 
 export class ChangelogContent extends Component<any, ChangelogState> {
   dateChoices: string[];
@@ -91,9 +151,14 @@ export class ChangelogContent extends Component<any, ChangelogState> {
       return this.setData(`Failed to load data after ${maxAttempts} attempts`);
     }
 
-    act('get_month', { date });
+    // ZH EDIT CHANGE START - I18N - ORIGINAL: act('get_month', { date }); fetch(resolveAsset(`${date}.yml`))
+    const localization = isLocalization(this.props.source);
+    act(localization ? 'get_localization_month' : 'get_month', { date });
 
-    fetch(resolveAsset(`${date}.yml`)).then(async (changelogData) => {
+    fetch(
+      resolveAsset(localization ? `localization-${date}.yml` : `${date}.yml`),
+    ).then(async (changelogData) => {
+      // ZH EDIT CHANGE END
       if (!changelogData.ok) {
         if (attemptNumber >= maxAttempts) {
           this.setData(`Failed to load after ${maxAttempts} attempts`);
@@ -109,17 +174,28 @@ export class ChangelogContent extends Component<any, ChangelogState> {
       }
 
       const result = await changelogData.text();
-      this.setData(
-        yaml.load(result, { schema: yaml.CORE_SCHEMA }) as ChangelogYaml,
-      );
+      // ZH EDIT CHANGE START - I18N - ORIGINAL: this.setData(yaml.load(result, { schema: yaml.CORE_SCHEMA }) as ChangelogYaml);
+      let changelog = yaml.load(result, {
+        schema: yaml.CORE_SCHEMA,
+      }) as ChangelogYaml;
+      const { data } = useBackend<ChangelogData>();
+      if (!localization && data.translated_dates?.includes(date)) {
+        const translations = await fetchTranslations(date);
+        if (translations) {
+          changelog = translateChangelog(changelog, translations);
+        }
+      }
+      this.setData(changelog);
+      // ZH EDIT CHANGE END
     });
   };
 
   componentDidMount() {
     const { data } = useBackend<ChangelogData>();
-    const { dates = [] } = data;
+    const dates = sourceDates(data, this.props.source); // ZH EDIT CHANGE - I18N - ORIGINAL: const { dates = [] } = data;
 
-    if (dates) {
+    if (dates.length) {
+      // ZH EDIT CHANGE - I18N - ORIGINAL: if (dates) {
       dates.forEach((date) => {
         this.dateChoices.push(dateformat(date, 'mmmm yyyy', true));
       });
@@ -130,7 +206,7 @@ export class ChangelogContent extends Component<any, ChangelogState> {
 
   render() {
     const { data } = useBackend<ChangelogData>();
-    const { dates = [] } = data;
+    const dates = sourceDates(data, this.props.source); // ZH EDIT CHANGE - I18N - ORIGINAL: const { dates = [] } = data;
     const { loaded_text, selectedIndex, selectedDate } = this
       .state as ChangelogState;
     const { dateChoices } = this;
@@ -228,6 +304,18 @@ export class ChangelogContent extends Component<any, ChangelogState> {
         {dateDropdown}
       </Section>
     );
+
+    // ZH EDIT ADDITION START - I18N
+    const localizationHeader = (
+      <Section>
+        <h1>Localization changes</h1>
+        {dateDropdown}
+      </Section>
+    );
+
+    // Upstream's footer carries the Goon credits and licence text, which belong to the upstream tab.
+    const localizationFooter = <Section>{dateDropdown}</Section>;
+    // ZH EDIT ADDITION END
 
     const footer = (
       <Section>
@@ -368,20 +456,41 @@ export class ChangelogContent extends Component<any, ChangelogState> {
 
     return (
       <>
-        {header}
+        {isLocalization(this.props.source) ? localizationHeader : header}
+        {/* ZH EDIT CHANGE - I18N - ORIGINAL: {header} */}
         {changes}
         {typeof loaded_text === 'string' && <p>{loaded_text}</p>}
-        {footer}
+        {isLocalization(this.props.source) ? localizationFooter : footer}
+        {/* ZH EDIT CHANGE - I18N - ORIGINAL: {footer} */}
       </>
     );
   }
 }
 
 export const Changelog = () => {
+  const [source, setSource] = useState<ChangelogSource>('upstream'); // ZH EDIT ADDITION - I18N
   return (
     <Window title="Changelog" width={675} height={650}>
       <Window.Content scrollable>
-        <ChangelogContent />
+        {/* ZH EDIT ADDITION START - I18N */}
+        <Tabs>
+          <Tabs.Tab
+            selected={source === 'upstream'}
+            onClick={() => setSource('upstream')}
+          >
+            Changelog
+          </Tabs.Tab>
+          <Tabs.Tab
+            selected={source === 'localization'}
+            onClick={() => setSource('localization')}
+          >
+            Localization changes
+          </Tabs.Tab>
+        </Tabs>
+        {/* ZH EDIT ADDITION END */}
+        {/* key: remount on switch so the date list and loaded month reset */}
+        <ChangelogContent key={source} source={source} />
+        {/* ZH EDIT CHANGE - I18N - ORIGINAL: <ChangelogContent /> */}
       </Window.Content>
     </Window>
   );

@@ -11,6 +11,8 @@ import {
 import type { BooleanLike } from 'tgui-core/react';
 
 import { useBackend } from '../../../backend';
+// ZH EDIT ADDITION - I18N
+import { searchableText } from '../../../i18n/search';
 
 type Interaction = {
   categories: string[];
@@ -73,8 +75,8 @@ export const InteractionsTab = (props: InteractionsTabProps) => {
   const filterInteractions = (category: string) => {
     let categoryInteractions = interactions[category] || [];
     if (searchText) {
-      categoryInteractions = categoryInteractions.filter((interaction) =>
-        interaction.toLowerCase().includes(searchLower),
+      categoryInteractions = categoryInteractions.filter(
+        (interaction) => searchableText(interaction).includes(searchLower), // ZH EDIT CHANGE - I18N: 也匹配显示译文
       );
     }
     return categoryInteractions;

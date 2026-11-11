@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/uplink_category/device_tools
 	name = "Misc. Gadgets"
 	weight = 3
@@ -166,7 +167,7 @@
 	if(!uplink)
 		return
 	if(!uplink.unlock_note) //no note means it can't be locked (typically due to being an implant.)
-		to_chat(user, span_warning("This device doesn't support code entry!"))
+		to_chat(user, span_warning(LANG("datum.27864f7088788dc7", null)))
 		return
 
 	uplink.failsafe_code = uplink.generate_code()
@@ -175,7 +176,7 @@
 	if(traitor_datum)
 		traitor_datum.antag_memory += "<b>Uplink Failsafe Code:</b> [code]" + "<br>"
 		traitor_datum.update_static_data_for_all_viewers()
-	to_chat(user, span_warning("The new failsafe code for this uplink is now: [code].[traitor_datum ? " You may check your antagonist info to recall this." : null]"))
+	to_chat(user, span_warning(LANG("datum.226f206aaa287d22", list(code, traitor_datum ? " You may check your antagonist info to recall this." : null))))
 	return source //For log icon
 
 /datum/uplink_item/device_tools/toolbox

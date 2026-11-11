@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// An element that allows objects to be right clicked and turned into another item after a delay
 /datum/element/repackable
 	element_flags = ELEMENT_BESPOKE
@@ -32,7 +33,7 @@
 /datum/element/repackable/proc/examine(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 
-	examine_list += span_notice("It can be <b>repacked</b> with <b>right click</b>.")
+	examine_list += span_notice(LANG("datum.023d022d751463df", null))
 
 /// Checks if the user can actually interact with the structures in question, then invokes the proc to make it repack
 /datum/element/repackable/proc/on_right_click(atom/source, mob/user)
@@ -46,7 +47,7 @@
 
 /// Removes the element target and spawns a new one of whatever item_to_pack_into is
 /datum/element/repackable/proc/repack(atom/source, mob/user)
-	source.balloon_alert_to_viewers("repacking...")
+	source.balloon_alert_to_viewers(LANG("datum.afdeea761aee04f2", null))
 	if(!do_after(user, 3 SECONDS, target = source))
 		return
 

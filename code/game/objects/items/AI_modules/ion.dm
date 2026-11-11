@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 CONTAINS:
 /obj/item/ai_module/law/core/full/damaged
@@ -21,10 +22,10 @@ CONTAINS:
 	gen_laws()
 
 /obj/item/ai_module/law/core/full/damaged/multitool_act(mob/living/user, obj/item/tool)
-	balloon_alert(user, "repairing ion damage..?")
+	balloon_alert(user, LANG("obj.3ede4c163a9c08c8", null))
 	if(!tool.use_tool(ismachinery(loc) ? loc : src, user, 4 SECONDS, volume = 25, extra_checks = CALLBACK(src, PROC_REF(multitool_cb), loc, user, tool)))
 		return ITEM_INTERACT_BLOCKING
-	balloon_alert(user, "module repaired..?")
+	balloon_alert(user, LANG("obj.c0b939fa6bf5f366", null))
 	if(ismachinery(loc))
 		gen_laws()
 		update_rack_laws()
@@ -44,6 +45,6 @@ CONTAINS:
 	. = TRUE
 	laws.Cut()
 	laws[generate_ion_law()] = TRUE
-	to_chat(user, span_notice("You press the button on [src]."))
+	to_chat(user, span_notice(LANG("obj.fccd964ed8c2f99b", list(src))))
 	playsound(user, 'sound/machines/click.ogg', 20, TRUE)
 	src.loc.visible_message(span_warning("[icon2html(src, viewers(loc))] [laws[1]]"))

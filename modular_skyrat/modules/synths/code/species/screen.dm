@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/innate/monitor_change
 	name = "Screen Change"
 	check_flags = AB_CHECK_CONSCIOUS
@@ -10,7 +11,7 @@
 	if(!istype(synth_species))
 		return
 
-	var/new_ipc_screen = tgui_input_list(usr, "Choose your character's screen:", "Monitor Display", SSaccessories.sprite_accessories[MUTANT_SYNTH_SCREEN])
+	var/new_ipc_screen = tgui_input_list(usr, LANG("datum.d2d447441f4c421b", null), LANG("datum.a6100a891bfa438a", null), SSaccessories.sprite_accessories[MUTANT_SYNTH_SCREEN])
 
 	if(!new_ipc_screen)
 		return

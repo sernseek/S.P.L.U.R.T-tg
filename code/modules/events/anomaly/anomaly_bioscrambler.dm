@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/anomaly/anomaly_bioscrambler
 	name = "Anomaly: Bioscrambler"
 	typepath = /datum/round_event/anomaly/anomaly_bioscrambler
@@ -17,4 +18,4 @@
 /datum/round_event/anomaly/anomaly_bioscrambler/announce(fake)
 	if(isnull(impact_area))
 		impact_area = placer.findValidArea()
-	priority_announce("Biologic limb swapping agent detected on [ANOMALY_ANNOUNCE_MEDIUM_TEXT] [impact_area.name]. Wear biosuits or other protective gear to counter the effects.", "Anomaly Alert", ANNOUNCER_SCRAMBLER_ANOMALY) // BUBBER EDIT - ANNOUNCER_ANOMALIES // SPLURT EDIT - ANNOUNCER_SCRAMBLER_ANOMALY
+	priority_announce(LANG("datum.846cff3b10265481", list(ANOMALY_ANNOUNCE_MEDIUM_TEXT, impact_area.name)), "Anomaly Alert", ANNOUNCER_SCRAMBLER_ANOMALY) // BUBBER EDIT - ANNOUNCER_ANOMALIES // SPLURT EDIT - ANNOUNCER_SCRAMBLER_ANOMALY

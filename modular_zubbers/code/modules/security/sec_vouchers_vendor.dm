@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /obj/item/security_voucher
 	name = "security voucher"
@@ -9,7 +10,7 @@
 /obj/item/security_voucher/examine(mob/user)
 	. = ..()
 
-	. += span_notice("You can redeem it at a [EXAMINE_HINT("security equipment vendor")] or [EXAMINE_HINT("any lathe")].")
+	. += span_notice(LANG("obj.3163f7d6c375b1db", list(EXAMINE_HINT("security equipment vendor"), EXAMINE_HINT("any lathe"))))
 
 /obj/item/security_voucher/primary
 	name = "security primary voucher"
@@ -35,7 +36,7 @@
 		for(var/datum/mind/owner as anything in steal_objective.get_owners())
 			if(!owner.current)
 				continue
-			to_chat(owner.current, span_notice("Your objective has been updated: [steal_objective.explanation_text]"))
+			to_chat(owner.current, span_notice(LANG("_root.22ac75ef65d05dbb", list(steal_objective.explanation_text))))
 			for(var/datum/antagonist/antag as anything in owner.antag_datums)
 				antag.update_static_data(owner.current)
 
@@ -208,7 +209,7 @@
 	var/obj/item/chosen_item = new spawn_path(drop_location())
 	redeemer.put_in_hands(chosen_item)
 	retarget_hos_primary_objectives(objective_path, objective_name)
-	balloon_alert(redeemer, "selected [LOWER_TEXT(selection)]")
+	balloon_alert(redeemer, LANG("obj.e692b9c0125a3236", list(LOWER_TEXT(selection))))
 	qdel(src)
 
 /obj/item/hos_primary_case/proc/check_redeem_menu(mob/living/redeemer)

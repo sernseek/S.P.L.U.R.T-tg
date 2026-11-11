@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Alium nests. Essentially beds with an unbuckle delay that only aliums can buckle mobs to.
 
 /obj/structure/bed/nest
@@ -28,28 +29,28 @@
 /obj/structure/bed/nest/buckle_feedback(mob/living/being_buckled, mob/buckler)
 	if(being_buckled == buckler)
 		being_buckled.visible_message(
-			span_notice("[buckler] lays down on [src], wrapping [buckler.p_them()]self in a thick, sticky resin."),
-			span_notice("You lay down on [src], wrapping yourself in a thick, sticky resin."),
+			span_notice(LANG("obj.850437aa4af74163", list(buckler, src, buckler.p_them()))),
+			span_notice(LANG("obj.de3a0f21d2084b3e", list(src))),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
 	else
 		being_buckled.visible_message(
-			span_notice("[buckler] lays [being_buckled] down on [src], wrapping [being_buckled.p_them()] in a thick, sticky resin."),
-			span_notice("[buckler] lays you down on [src], wrapping you in a thick, sticky resin."),
+			span_notice(LANG("obj.501b93dd46442b8e", list(buckler, being_buckled, src, being_buckled.p_them()))),
+			span_notice(LANG("obj.8db7d7e186686c00", list(buckler, src))),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
 
 /obj/structure/bed/nest/unbuckle_feedback(mob/living/being_unbuckled, mob/unbuckler)
 	if(being_unbuckled == unbuckler)
 		being_unbuckled.visible_message(
-			span_notice("[unbuckler] pulls [unbuckler.p_them()]self free from the sticky nest!"),
-			span_notice("You pull yourself free from the sticky nest!"),
+			span_notice(LANG("obj.3ed57b4165d9e9c0", list(unbuckler, unbuckler.p_them()))),
+			span_notice(LANG("obj.b240c437762c7ecd", null)),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
 	else
 		being_unbuckled.visible_message(
-			span_notice("[unbuckler] pulls [being_unbuckled] free from the sticky nest!"),
-			span_notice("[unbuckler] pulls you free from the sticky nest!"),
+			span_notice(LANG("obj.dd90ed93d0fe4c37", list(unbuckler, being_unbuckled))),
+			span_notice(LANG("obj.37e7fd0c4c2d9fbf", list(unbuckler))),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
 
@@ -63,25 +64,25 @@
 		return
 
 	if(captive != hero)
-		captive.visible_message(span_notice("[hero.name] pulls [captive.name] free from the sticky nest!"),
-			span_notice("[hero.name] pulls you free from the gelatinous resin."),
-			span_hear("You hear squelching..."))
+		captive.visible_message(span_notice(LANG("obj.dd90ed93d0fe4c37", list(hero.name, captive.name))),
+			span_notice(LANG("obj.4d5b023fab13b9c3", list(hero.name))),
+			span_hear(LANG("obj.8489ba564b7cea8e", null)))
 		unbuckle_mob(captive)
 		add_fingerprint(hero)
 		return
 
-	captive.visible_message(span_warning("[captive.name] struggles to break free from the gelatinous resin!"),
-		span_notice("You struggle to break free from the gelatinous resin... (Stay still for about a minute and a half.)"),
-		span_hear("You hear squelching..."))
+	captive.visible_message(span_warning(LANG("obj.d4e1e5a3d637fce7", list(captive.name))),
+		span_notice(LANG("obj.11477fc6d413dd27", null)),
+		span_hear(LANG("obj.8489ba564b7cea8e", null)))
 
 	if(!do_after(captive, 100 SECONDS, target = src, cog_icon = null))
 		if(captive.buckled)
-			to_chat(captive, span_warning("You fail to unbuckle yourself!"))
+			to_chat(captive, span_warning(LANG("obj.bca97c0d59d379d9", null)))
 		return
 
-	captive.visible_message(span_warning("[captive.name] breaks free from the gelatinous resin!"),
-		span_notice("You break free from the gelatinous resin!"),
-		span_hear("You hear squelching..."))
+	captive.visible_message(span_warning(LANG("obj.47c13f014854245f", list(captive.name))),
+		span_notice(LANG("obj.eccde3c8b90dab69", null)),
+		span_hear(LANG("obj.8489ba564b7cea8e", null)))
 
 	unbuckle_mob(captive)
 	add_fingerprint(hero)
@@ -99,9 +100,9 @@
 		unbuckle_all_mobs()
 
 	if(buckle_mob(M))
-		M.visible_message(span_notice("[user.name] secretes a thick vile goo, securing [M.name] into [src]!"),\
-			span_danger("[user.name] drenches you in a foul-smelling resin, trapping you in [src]!"),\
-			span_hear("You hear squelching..."))
+		M.visible_message(span_notice(LANG("obj.93d01e74e8b8c7f0", list(user.name, M.name, src))),\
+			span_danger(LANG("obj.d785adc43c858561", list(user.name, src))),\
+			span_hear(LANG("obj.8489ba564b7cea8e", null)))
 
 /obj/structure/bed/nest/post_buckle_mob(mob/living/M)
 	ADD_TRAIT(M, TRAIT_HANDS_BLOCKED, type)

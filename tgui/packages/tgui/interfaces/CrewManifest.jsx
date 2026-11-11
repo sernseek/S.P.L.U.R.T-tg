@@ -28,12 +28,15 @@ export const CrewManifest = (props) => {
           <Section
             className={`CrewManifest--Section`}
             key={dept}
-            style={{'--department-color': positions[dept].color}}
+            style={{ '--department-color': positions[dept].color }}
             title={
-              dept +
-              (dept !== 'Misc' && positions[dept].open >= 0 // SPLURT EDIT - Check open is >= 0
-                ? ` (${positions[dept].open} positions open)`
-                : '')
+              dept !== 'Misc' && positions[dept].open >= 0 ? (
+                <>
+                  <span>{dept}</span> ({positions[dept].open} positions open)
+                </>
+              ) : (
+                dept
+              )
             }
           >
             <Table>

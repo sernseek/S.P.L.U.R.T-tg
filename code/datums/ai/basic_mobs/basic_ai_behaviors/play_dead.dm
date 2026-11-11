@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Plays dead until a per-tick probability check (default 10%) triggers revival.
 /datum/bt_node/ai_behavior/play_dead
 	var/probability = 10
@@ -20,6 +21,6 @@
 	var/mob/living/basic/pawn = controller.pawn
 	if(QDELETED(pawn) || pawn.stat)
 		return
-	pawn.visible_message(span_notice("[pawn] miraculously springs back to life!"))
+	pawn.visible_message(span_notice(LANG("datum.387c714496b28feb", list(pawn))))
 	REMOVE_TRAIT(pawn, TRAIT_FAKEDEATH, BASIC_MOB_DEATH_TRAIT)
 	pawn.look_alive()

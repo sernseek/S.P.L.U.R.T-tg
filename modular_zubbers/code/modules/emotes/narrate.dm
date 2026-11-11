@@ -1,9 +1,10 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define NARRATE_RANGE_SAME_TILE "Same Tile"
 #define NARRATE_RANGE_ONE_TILE "1-Tile Range"
 #define NARRATE_RANGE_MAX "Max Range"
 #define NARRATE_RANGE_CUSTOM "Custom Range"
 
-GAME_VERB_DESC(/mob/living, narrate, "Narrate", "Allows you to send a narration message to a target or area", "IC")
+GAME_VERB_DESC(/mob/living, narrate, "旁白", "Allows you to send a narration message to a target or area", "IC")
 	usr.emote("narrate")
 
 /datum/emote/narrate
@@ -13,18 +14,18 @@ GAME_VERB_DESC(/mob/living, narrate, "Narrate", "Allows you to send a narration 
 
 /datum/emote/narrate/run_emote(mob/living/user, params, type_override = null, intentional = TRUE)
 	if(GLOB.say_disabled)	// This is here to try to identify lag problems
-		to_chat(user, span_danger("Speech is currently admin-disabled."))
+		to_chat(user, span_danger(LANG("datum.b79ad8a388d1b3a4", null)))
 		return
 
 	if(IS_UNCONSCIOUS_OR_CRIT(user))
-		to_chat(user, span_warning("You can't narrate right now..."))
+		to_chat(user, span_warning(LANG("datum.eca8b42e19b8e527", null)))
 		return
 
 	if(user.client.prefs?.muted & MUTE_IC)
-		to_chat(user, span_danger("You are muted from sending IC messages."))
+		to_chat(user, span_danger(LANG("datum.52d0317fd997c539", null)))
 		return
 
-	var/message = tgui_input_text(user, "Input the message you would like to send as narration", "Narrate", null, MAX_MESSAGE_LEN, TRUE)
+	var/message = tgui_input_text(user, LANG("datum.6872f43bdd6ce2b2", null), LANG("datum.7491658163f8dab0", null), null, MAX_MESSAGE_LEN, TRUE)
 	if(!message)
 		return
 
@@ -39,7 +40,7 @@ GAME_VERB_DESC(/mob/living, narrate, "Narrate", "Allows you to send a narration 
 			viewers.Remove(mob)
 
 	var/list/targets = list(NARRATE_RANGE_SAME_TILE, NARRATE_RANGE_ONE_TILE, NARRATE_RANGE_MAX, NARRATE_RANGE_CUSTOM) + viewers
-	var/target = tgui_input_list(user, "Pick a target", "Target Selection", targets)
+	var/target = tgui_input_list(user, LANG("datum.153e9cb537804b6c", null), LANG("datum.eb4c7c3f77033760", null), targets)
 
 	switch(target)
 		if(NARRATE_RANGE_SAME_TILE)
@@ -49,7 +50,7 @@ GAME_VERB_DESC(/mob/living, narrate, "Narrate", "Allows you to send a narration 
 		if(NARRATE_RANGE_MAX)
 			target = 7
 		if(NARRATE_RANGE_CUSTOM)
-			target = tgui_input_number(user, "What distance will you narrate", "Custom Range", max_value = world.view)
+			target = tgui_input_number(user, LANG("datum.843348a41bd328d8", null), LANG("datum.26ec3bb2e6c5fa35", null), max_value = world.view)
 	if(isnull(target))
 		return
 
@@ -72,7 +73,7 @@ GAME_VERB_DESC(/mob/living, narrate, "Narrate", "Allows you to send a narration 
 		if(!istype(target_mob))
 			return // Target was neither a hologram with an impersonation attached, or a mob
 		if(get_dist(user_mob_or_hologram.loc, target_mob.loc) > world.view)
-			to_chat(user, span_warning("Your narration was unable to be sent to your target: Too far away."))
+			to_chat(user, span_warning(LANG("datum.2f628ad4f4fe03c4", null)))
 			return
 		target_mob.show_message(span_narrate("[message] \n\ (Narration: [user])"), MSG_VISUAL)
 

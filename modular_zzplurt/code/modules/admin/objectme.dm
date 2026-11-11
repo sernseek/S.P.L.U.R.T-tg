@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define VV_HK_OMe "ome"
 
 /obj/vv_get_dropdown()
@@ -13,7 +14,7 @@
 
 ADMIN_VERB_AND_CONTEXT_MENU(object_me, R_FUN, "OMe", ADMIN_VERB_NO_DESCRIPTION, ADMIN_CATEGORY_HIDDEN, /obj)
 	VERB_ARG_TYPED(speaker, VERB_ARG_TYPE_OBJ, VERB_ARG_SOURCE_WORLD, /obj)
-	var/emote = tgui_input_text(user, "What do you want the emote to be?", "Do Emote", encode = FALSE)
+	var/emote = tgui_input_text(user, LANG("datum.bcaaaf0fa433c97e", null), LANG("datum.04b46ed8f12b1f2e", null), encode = FALSE)
 	if(!emote)
 		return
 	speaker.visible_message(

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/reagent_dispensers/reagent_smithing_basin
 	name = "smithing trough"
 	desc = "A basin meant to quench heated smithing equipment and cool it."
@@ -47,11 +48,11 @@
 /obj/structure/reagent_dispensers/reagent_smithing_basin/examine(mob/user)
 	. = ..()
 	if(HAS_TRAIT(user, TRAIT_KNOW_ADVANCED_SMITHING))
-		. += span_notice("Dipping smithed items in this trough will imbue it with its chemicals!")
+		. += span_notice(LANG("obj.f97d2528ff0fb55e", null))
 	else
-		. += span_notice("You could use this for imbuing reagents into equipment if you knew the right trick...")
-	. += span_notice("You could secure or unsecure it with a wrench.")
-	. += span_notice("You could pry it apart with a crowbar.")
+		. += span_notice(LANG("obj.73fb860fd41ec5af", null))
+	. += span_notice(LANG("obj.34c6c87bfaa6960b", null))
+	. += span_notice(LANG("obj.738bc856dd14d31a", null))
 
 //heat from the contained reagents need to go into the atmosphere over time
 /obj/structure/reagent_dispensers/reagent_smithing_basin/process(seconds_per_tick)
@@ -85,9 +86,9 @@
 	tool.play_tool_sound(src)
 
 	if (reagents.total_volume < 75)
-		to_chat(user, span_notice("You begin to pry apart \the [src]..."))
+		to_chat(user, span_notice(LANG("obj.92c5af2a084e1f8e", list(src))))
 	else
-		to_chat(user, span_warning("As you begin prying apart \the [src] you notice that it's full of fluid... maybe you should reconsider?"))
+		to_chat(user, span_warning(LANG("obj.c7f4a469cd74b7c2", list(src))))
 
 	if(!do_after(user, 5 SECONDS, src, interaction_key = DOAFTER_SMITHING_WATER_BASIN))
 		return FALSE
@@ -101,7 +102,7 @@
 /obj/structure/reagent_dispensers/tong_act(mob/living/user, obj/item/tool)
 	var/obj/item/tongs_contents = locate(/obj/item) in tool.contents
 	if(!tongs_contents)
-		to_chat(user, span_notice("No item to dip!"))
+		to_chat(user, span_notice(LANG("obj.e27fd61b71447f26", null)))
 		return ITEM_INTERACT_BLOCKING
 	else
 		. = attackby(tongs_contents, user)

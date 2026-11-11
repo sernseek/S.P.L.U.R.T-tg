@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/organ_corruption/stomach
 	corruptable_organ_type = /obj/item/organ/stomach
 	corrupted_icon_state = "stomach"
@@ -45,7 +46,7 @@
 
 	body.set_disgust(max(body.disgust, TUMOR_DISLIKED_FOOD_DISGUST))
 
-	to_chat(body, span_warning("That tasted awful..."))
+	to_chat(body, span_warning(LANG("datum.e235ec33e1c9c868", null)))
 
 	// We don't lose nutrition because we don't even use nutrition as hemopahges. It WILL however purge nearly all of what's in their stomach.
 	body.vomit(vomit_flags = HEMOPHAGE_VOMIT_FLAGS, lost_nutrition = 0, distance = 1, purge_ratio = HEMOPHAGE_VOMIT_PURGE_RATIO)

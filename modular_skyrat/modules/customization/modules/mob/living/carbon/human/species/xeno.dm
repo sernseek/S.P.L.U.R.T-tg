@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/xeno
 	// A cloning mistake, crossing human and xenomorph DNA
 	name = "Xenomorph Hybrid"
@@ -104,7 +105,7 @@
 
 /datum/action/cooldown/alien/make_structure/plant_weeds/Activate(atom/target)
 	if(build_duration && !do_after(owner, build_duration))
-		owner.balloon_alert(owner, "interrupted!")
+		owner.balloon_alert(owner, LANG("datum.c67b5d274d6e724b", null))
 		return
 	return ..()
 

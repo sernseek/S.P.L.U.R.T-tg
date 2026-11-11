@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/cell_charger_multi/wall_mounted
 	name = "mounted multi-cell charging rack"
 	desc = "The innovative technology of a cell charging rack, but mounted neatly on a wall out of the way!"
@@ -20,7 +21,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/cell_charger_multi/wall_mounted, 29)
 
 /obj/machinery/cell_charger_multi/wall_mounted/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
-	user.balloon_alert(user, "deconstructing...")
+	user.balloon_alert(user, LANG("obj.44f0e678d88c8044", null))
 	tool.play_tool_sound(src)
 	if(tool.use_tool(src, user, 1 SECONDS))
 		playsound(loc, 'sound/items/deconstruct.ogg', 50, TRUE)

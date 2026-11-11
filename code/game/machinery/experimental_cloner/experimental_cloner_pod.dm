@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// How likely are we to do something weird to the clone? Persists between construct/deconstruct
 GLOBAL_VAR_INIT(experimental_cloner_fuckup_chance, 50)
 
@@ -44,7 +45,7 @@ GLOBAL_VAR_INIT(experimental_cloner_fuckup_chance, 50)
 /obj/machinery/experimental_cloner/examine(mob/user)
 	. = ..()
 	if (running)
-		. += span_notice("You can see a shape forming in the murky liquid.")
+		. += span_notice(LANG("obj.bae0afeb43378a08", null))
 
 /obj/machinery/experimental_cloner/update_icon_state()
 	. = ..()
@@ -60,16 +61,16 @@ GLOBAL_VAR_INIT(experimental_cloner_fuckup_chance, 50)
 
 	if (!tool.tool_start_check(user, amount = 5))
 		return ITEM_INTERACT_BLOCKING
-	to_chat(user, span_notice("You start slicing \the [src] apart."))
+	to_chat(user, span_notice(LANG("obj.789a7181a99ade4d", list(src))))
 	if(!tool.use_tool(src, user, 6 SECONDS, amount = 5, volume = 50))
 		return ITEM_INTERACT_BLOCKING
 	deconstruct(disassembled = TRUE)
-	to_chat(user, span_notice("You slice \the [src] apart."))
+	to_chat(user, span_notice(LANG("obj.54e5a2bb7dba2176", list(src))))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/experimental_cloner/multitool_act(mob/living/user, obj/item/multitool/tool)
 	tool.set_buffer(src)
-	balloon_alert(user, "frequency stored")
+	balloon_alert(user, LANG("obj.af011f57f5e4d16b", null))
 	return ITEM_INTERACT_SUCCESS
 
 /// Start growing a guy
@@ -131,7 +132,7 @@ GLOBAL_VAR_INIT(experimental_cloner_fuckup_chance, 50)
 
 	chosen_one.log_message("took control of experimental clone of [result].", LOG_GAME)
 	result.PossessByPlayer(chosen_one.ckey)
-	to_chat(result, span_boldnotice("You are [loaded_record.name]! You aren't quite sure where you are or how you got here, though."))
+	to_chat(result, span_boldnotice(LANG("obj.d31fbab4494a1770", list(loaded_record.name))))
 	var/policy = get_policy(ROLE_EXPERIMENTAL_CLONER)
 	if (policy)
 		to_chat(result, span_notice(policy))

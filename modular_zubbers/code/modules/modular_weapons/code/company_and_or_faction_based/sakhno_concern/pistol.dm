@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define PERCENT_DMG_DROP (-0.1) //How much damage is lost per tile, as a negative percentage of damage at time of firing.
 #define LOADING_TIME (0.75 SECONDS) //How long it takes to load a cartridge, to prevent instant loading and firing again.
 
@@ -39,12 +40,7 @@
 /obj/item/gun/ballistic/derringer/examine_more(mob/user)
 	. = ..()
 
-	. += "The Yinbi Derringer was originally marketed as a companion sidearm to the Sakhno rifle, \
-		allowing the user to have a easy to carry and conceal self-defence weapon without having to \
-		keep several calibers of ammo on hand. While initial sales were promising, the poor ranged \
-		performance ultimately lead to production halting for this model. Most of the remaining stock \
-		was liquidated, and they are now found at rather affordable prices on the secondary market. \
-		Unlike the rifles they were partnered with, they have held up much better over the years."
+	. += LANG("obj.44a9d98a2d60f346", null)
 
 	return .
 
@@ -53,7 +49,7 @@
 								/obj/item/ammo_box/c310_cargo_box,
 								/obj/item/ammo_box/speedloader/strilka310)))
 		if(!do_after(user, LOADING_TIME, src, IGNORE_USER_LOC_CHANGE)) // We are allowed to move while reloading.
-			to_chat(user, span_danger("You fail to chamber a round into [src]!"))
+			to_chat(user, span_danger(LANG("obj.46764696714a3f67", list(src))))
 			return TRUE
 
 	. = ..()

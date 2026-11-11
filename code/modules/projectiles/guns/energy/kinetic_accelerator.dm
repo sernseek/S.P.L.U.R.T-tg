@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define PKA_COOLDOWN_INCREMENT 3.2
 #define STANDARD_RECHARGE_TIME 16
 
@@ -76,21 +77,21 @@
 /obj/item/gun/energy/recharge/kinetic_accelerator/examine(mob/user)
 	. = ..()
 	if(max_mod_capacity)
-		. += "<b>[get_remaining_mod_capacity()]%</b> mod capacity remaining."
-		. += span_info("You can use a <b>crowbar</b> to remove all modules or <b>right-click</b> with an empty hand to remove a specific one.")
+		. += LANG("obj.1508212031c289eb", list(get_remaining_mod_capacity()))
+		. += span_info(LANG("obj.2abed7d34fa399c7", null))
 		for(var/obj/item/borg/upgrade/modkit/modkit_upgrade as anything in modkits)
-			. += span_notice("There is \a [modkit_upgrade] installed, using <b>[modkit_upgrade.cost]%</b> capacity.")
+			. += span_notice(LANG("obj.ae0e0db4ce9fb12e", list(modkit_upgrade, modkit_upgrade.cost)))
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/crowbar_act(mob/living/user, obj/item/I)
 	. = TRUE
 	if(!disablemodification && modkits.len) // BUBBER EDIT
-		to_chat(user, span_notice("You pry all the modifications out."))
+		to_chat(user, span_notice(LANG("obj.4e48f31f1f19d856", null)))
 		I.play_tool_sound(src, 100)
 		for(var/obj/item/borg/upgrade/modkit/modkit_upgrade as anything in modkits)
 			if (modkit_upgrade.removable)
 				modkit_upgrade.forceMove(drop_location()) //uninstallation handled in Exited(), or /mob/living/silicon/robot/remove_from_upgrades() for borgs
 	else
-		to_chat(user, span_notice("There are no modifications currently installed."))
+		to_chat(user, span_notice(LANG("obj.f52d83570a4d5725", null)))
 
 /obj/item/gun/energy/recharge/kinetic_accelerator/try_fire_gun(atom/target, mob/living/user, params)
 	return fire_gun(target, user, user.Adjacent(target) && !isturf(target), params)
@@ -296,7 +297,7 @@
 			continue
 		var/armor = living_mob.run_armor_check(def_zone, armor_flag, armour_penetration = armour_penetration)
 		living_mob.apply_damage(damage, damage_type, def_zone, armor)
-		to_chat(living_mob, span_userdanger("You're struck by a [name]!"))
+		to_chat(living_mob, span_userdanger(LANG("obj.91bf91e631bd9373", list(name))))
 
 //Modkits
 /obj/item/borg/upgrade/modkit
@@ -323,7 +324,7 @@
 
 /obj/item/borg/upgrade/modkit/examine(mob/user)
 	. = ..()
-	. += span_notice("Occupies <b>[cost]%</b> of mod capacity.")
+	. += span_notice(LANG("obj.e294c88560d27d5d", list(cost)))
 
 /obj/item/borg/upgrade/modkit/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(!istype(tool, /obj/item/gun/energy/recharge/kinetic_accelerator) || issilicon(user))
@@ -342,11 +343,11 @@
 	if(minebot_upgrade)
 		if(minebot_exclusive && !istype(KA.loc, /mob/living/basic/mining_drone))
 			if (user)
-				to_chat(user, span_notice("The modkit you're trying to install is only rated for minebot use."))
+				to_chat(user, span_notice(LANG("obj.82d49a6e05ce438e", null)))
 			return FALSE
 	else if(istype(KA.loc, /mob/living/basic/mining_drone))
 		if (user)
-			to_chat(user, span_notice("The modkit you're trying to install is not rated for minebot use."))
+			to_chat(user, span_notice(LANG("obj.5abda105148f05d9", null)))
 		return FALSE
 
 	var/type_to_limit = denied_type
@@ -356,7 +357,7 @@
 
 	// BUBBER EDIT - ADDITION - If statement to check if this modkit is disabled on this PKA
 	if(is_type_in_list(src, KA.disabled_modkits))
-		to_chat(user, span_notice("The modkit cannot be installed on this model of kinetic accelerator."))
+		to_chat(user, span_notice(LANG("obj.632588aa0ae89db1", null)))
 		return FALSE
 	// BUBBER EDIT - ADDITION - END
 
@@ -367,11 +368,11 @@
 				number_of_denied++
 			if(maximum_of_type && number_of_denied >= maximum_of_type || !maximum_of_type && number_of_denied) //if we denied a type, or we have a maximum to reach, break
 				if (user)
-					to_chat(user, span_notice("The modkit you're trying to install would conflict with an already installed modkit. Remove existing modkits first."))
+					to_chat(user, span_notice(LANG("obj.b2eb340e0741fd24", null)))
 				return FALSE
 
 	if(KA.get_remaining_mod_capacity() < cost)
-		to_chat(user, span_notice("You don't have room(<b>[KA.get_remaining_mod_capacity()]%</b> remaining, [cost]% needed) to install this modkit. Use a crowbar or right click with an empty hand to remove existing modkits."))
+		to_chat(user, span_notice(LANG("obj.010f1840c638f748", list(KA.get_remaining_mod_capacity(), cost))))
 		return FALSE
 
 	if(transfer_to_loc)
@@ -381,7 +382,7 @@
 			forceMove(KA)
 
 	if (user)
-		to_chat(user, span_notice("You install the modkit."))
+		to_chat(user, span_notice(LANG("obj.9c6d753cca58411e", null)))
 		playsound(loc, 'sound/items/tools/screwdriver.ogg', 100, TRUE)
 	KA.modkits |= src
 
@@ -520,7 +521,7 @@
 			continue
 		var/armor = living_mob.run_armor_check(kinetic_blast.def_zone, kinetic_blast.armor_flag, armour_penetration = kinetic_blast.armour_penetration)
 		living_mob.apply_damage(kinetic_blast.damage * damage_modifier, kinetic_blast.damage_type, kinetic_blast.def_zone, armor)
-		to_chat(living_mob, span_userdanger("You're struck by a [kinetic_blast.name]!"))
+		to_chat(living_mob, span_userdanger(LANG("obj.91bf91e631bd9373", list(kinetic_blast.name))))
 
 /obj/item/borg/upgrade/modkit/cooldown/aoe/turfs
 	name = "mining explosion"
@@ -758,7 +759,7 @@
 /obj/item/borg/upgrade/modkit/tracer/adjustable/proc/choose_bolt_color(mob/user)
 	set waitfor = FALSE
 
-	var/new_color = tgui_color_picker(user, "", "Choose Color", bolt_color)
+	var/new_color = tgui_color_picker(user, "", LANG("obj.d472a9f2c270f157", null), bolt_color)
 	bolt_color = new_color || bolt_color
 
 #undef PKA_COOLDOWN_INCREMENT

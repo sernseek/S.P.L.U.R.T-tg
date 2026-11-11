@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/miningsuitupgradekit
 	name = "DIY explorer suit kit"
 	desc = "A kit containing necessary parts to turn your hat and jacket of your choice into a mining suit. Note: Uncovered limbs will remain unprotected"
@@ -13,16 +14,16 @@
 	if(!istype(upgraded_item))
 		return ITEM_INTERACT_BLOCKING
 	if(!istype(upgraded_item, /obj/item/clothing/suit) && !istype(upgraded_item, /obj/item/clothing/head))
-		to_chat(user, span_warning("This kit will only work for head and suit slot clothing!"))
+		to_chat(user, span_warning(LANG("obj.3a17e414df3a9d1d", null)))
 		return ITEM_INTERACT_BLOCKING
 	if(istype(upgraded_item, /obj/item/clothing/suit) && exosuit_uses <= 0)
-		to_chat(user, span_warning("Suit part already used!"))
+		to_chat(user, span_warning(LANG("obj.5f0ce19ad76756e7", null)))
 		return ITEM_INTERACT_BLOCKING
 	if(istype(upgraded_item, /obj/item/clothing/head) && helmet_uses <= 0)
-		to_chat(user, span_warning("Helmet part already used!"))
+		to_chat(user, span_warning(LANG("obj.c173e87cb4c3680c", null)))
 		return ITEM_INTERACT_BLOCKING
 	if(upgraded_item.get_armor_rating(MELEE) > 0)
-		to_chat(user, span_warning("This clothing is already armored and can't be modified!"))
+		to_chat(user, span_warning(LANG("obj.72f3259ea14c7c05", null)))
 		return ITEM_INTERACT_BLOCKING
 
 	if(istype(upgraded_item, /obj/item/clothing/suit))
@@ -47,7 +48,7 @@
 
 	upgraded_item.name = "[seva_kit ? "SEVA" : "reinforced"] [upgraded_item.name]"
 
-	balloon_alert(user, "[initial(upgraded_item.name)] upgraded!")
+	balloon_alert(user, LANG("obj.ae2a9f5ae16c2231", list(initial(upgraded_item.name))))
 
 	if(helmet_uses <= 0 && exosuit_uses <= 0)
 		qdel(src)
@@ -58,14 +59,14 @@
 		return CLICK_ACTION_BLOCKING
 	seva_kit = !seva_kit
 	name = "DIY [seva_kit ? "SEVA" : "explorer"] suit kit"
-	balloon_alert(user, "mode changed!")
+	balloon_alert(user, LANG("obj.a8b53d23ecb5d61d", null))
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/miningsuitupgradekit/examine(mob/user)
 	. = ..()
 	if(helmet_uses)
-		. += "It can be used to upgrade [helmet_uses] more hat[(helmet_uses > 1) ? "s" : ""]"
+		. += LANG("obj.98c45d06c6d1ed0f", list(helmet_uses, (helmet_uses > 1) ? "s" : ""))
 	if(exosuit_uses)
-		. += "It can be used to upgrade [exosuit_uses] more suit[(exosuit_uses > 1) ? "s" : ""]"
+		. += LANG("obj.cb4565a1ee111f83", list(exosuit_uses, (exosuit_uses > 1) ? "s" : ""))
 	if(exosuit_uses && helmet_uses)
-		. += "You can alt-click this kit to change it into [(seva_kit) ? "explorer suit" : "SEVA"] kit"
+		. += LANG("obj.96c3b5565f7f975a", list((seva_kit) ? "explorer suit" : "SEVA"))

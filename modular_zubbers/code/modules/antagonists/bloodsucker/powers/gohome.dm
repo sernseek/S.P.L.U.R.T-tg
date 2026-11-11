@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define GOHOME_START 0
 #define GOHOME_FLICKER_ONE 2
 #define GOHOME_FLICKER_TWO 4
@@ -33,11 +34,11 @@
 
 /datum/action/cooldown/bloodsucker/gohome/get_power_explanation_extended()
 	. = list()
-	. += "Vanishing Act will, after a short delay, teleport the user to their Claimed Coffin."
-	. += "The user will drop all belongings if seen by a mortal."
-	. += "The power will cancel out if the Claimed Coffin is somehow destroyed."
-	. += "Immediately after activating, lights around the user will begin to flicker."
-	. += "Once the user teleports to their coffin, in their place will be a Rat or Bat."
+	. += LANG("datum.d5c4f1f9ff947a02", null)
+	. += LANG("datum.9c2b7af553866848", null)
+	. += LANG("datum.7a311614493e9bfe", null)
+	. += LANG("datum.0f493cef9317faeb", null)
+	. += LANG("datum.a28272dffde05d54", null)
 
 /datum/action/cooldown/bloodsucker/gohome/can_use(mob/living/carbon/user, trigger_flags)
 	. = ..()
@@ -45,17 +46,17 @@
 		return FALSE
 	/// Have No Haven (NOTE: You only got this power if you had a haven, so this means it's destroyed)
 	if(!istype(bloodsuckerdatum_power) || !bloodsuckerdatum_power.coffin)
-		owner.balloon_alert(owner, "coffin was destroyed!")
+		owner.balloon_alert(owner, LANG("datum.a9d3bc659d2cc131", null))
 		return FALSE
 	return TRUE
 
 /datum/action/cooldown/bloodsucker/gohome/ActivatePower(atom/target)
-	owner.balloon_alert(owner, "preparing to teleport...")
+	owner.balloon_alert(owner, LANG("datum.bdb16db481ad198a", null))
 	return TRUE
 
 /datum/action/cooldown/bloodsucker/gohome/DeactivatePower(deactivate_flags)
 	if(active && teleporting_stage != GOHOME_TELEPORT)
-		owner.balloon_alert(owner, "teleportation cancelled.")
+		owner.balloon_alert(owner, LANG("datum.d4fb74fa8e967857", null))
 		teleporting_stage = GOHOME_START
 		return . = ..(DEACTIVATE_POWER_DO_NOT_REMOVE)
 	. = ..()
@@ -83,8 +84,8 @@
 	if(!isturf(owner.loc))
 		return FALSE
 	if(!bloodsuckerdatum_power.coffin)
-		user.balloon_alert(user, "coffin destroyed!")
-		to_chat(owner, span_warning("Your coffin has been destroyed! You no longer have a destination."))
+		user.balloon_alert(user, LANG("datum.10aae26f23fb8915", null))
+		to_chat(owner, span_warning(LANG("datum.62a84ed3f62d2aba", null)))
 		return FALSE
 	return TRUE
 

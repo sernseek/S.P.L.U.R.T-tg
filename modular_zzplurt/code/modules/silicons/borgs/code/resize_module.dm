@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Borg Resizer
  * A borg module that will let the borg player themselves pick what specific size in percentage they want to be.
@@ -32,9 +33,9 @@
 
 // Lets a roboticist pick the size for the borg itself if they know about the feature, will also let them make ai shells have a setting
 /obj/item/borg/upgrade/resize/attack_self(mob/user, modifiers)
-	resize_amount = tgui_input_number(user, "Choose the percentage size of Resizing ([CYBORG_SIZE_MIN]-[CYBORG_SIZE_MAX])","Resizer size setting")
+	resize_amount = tgui_input_number(user, LANG("obj.a8b85fb2dc3359df", list(CYBORG_SIZE_MIN, CYBORG_SIZE_MAX)),LANG("obj.22fd7e02aee0929a", null))
 	resize_amount = isnum(resize_amount) ? clamp(resize_amount, CYBORG_SIZE_MIN, CYBORG_SIZE_MAX) : CYBORG_SIZE_DEFAULT
-	to_chat(user, span_notice("Expand set to [resize_amount]%."))
+	to_chat(user, span_notice(LANG("obj.3b22d288ff5e3374", list(resize_amount))))
 
 /obj/item/borg/upgrade/resize/action(mob/living/silicon/robot/borg, mob/living/user = usr)
 	. = ..()
@@ -43,21 +44,21 @@
 
 	// All these conditions are to prevent this from being installed on borgs that either have been expanded/shrunk or have had a resizer already installed
 	if(borg.hasExpanded)
-		to_chat(usr, span_warning("This unit already has an expand module installed!"))
+		to_chat(usr, span_warning(LANG("obj.ab6576a9a4243176", null)))
 		return FALSE
 
 	if(borg.hasShrunk)
-		to_chat(usr, span_warning("This unit already has a shrink module installed!"))
+		to_chat(usr, span_warning(LANG("obj.cd8c9ce8be7848e7", null)))
 		return FALSE
 
 	if(TRAIT_R_EXPANDER_BLOCKED in borg.model.model_features)
-		to_chat(usr, span_warning("This unit is unable to equip an resize module!"))
+		to_chat(usr, span_warning(LANG("obj.edad757aaeeb1169", null)))
 		return FALSE
 
 	// Let's the borg player themselves pick what size they want to be in percentage.
-	resize_amount = tgui_input_number(borg, "Choose the percentage size of Resizing ([CYBORG_SIZE_MIN]-[CYBORG_SIZE_MAX])","Resizer size setting")
+	resize_amount = tgui_input_number(borg, LANG("obj.a8b85fb2dc3359df", list(CYBORG_SIZE_MIN, CYBORG_SIZE_MAX)),LANG("obj.22fd7e02aee0929a", null))
 	resize_amount = isnum(resize_amount) ? clamp(resize_amount, CYBORG_SIZE_MIN, CYBORG_SIZE_MAX) : CYBORG_SIZE_DEFAULT
-	to_chat(borg, span_notice("Resize set to [resize_amount]%"))
+	to_chat(borg, span_notice(LANG("obj.dafde31f72d0787d", list(resize_amount))))
 
 	ADD_TRAIT(borg, TRAIT_NO_TRANSFORM, REF(src))
 	var/prev_lockcharge = borg.lockcharge

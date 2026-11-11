@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/carrier/soulcatcher/small_device
 	max_mobs = 1
 
@@ -24,7 +25,7 @@
 /// Adds text to the examine text of the parent item, explaining that the item can be used to enable the use of NIFSoft HUDs
 /datum/component/carrier/soulcatcher/attachable/proc/on_examine(datum/source, mob/user, list/examine_text)
 	SIGNAL_HANDLER
-	examine_text += span_cyan("[source] has a soulcatcher attached to it, <b>Ctrl+Shift+Click</b> to use it.")
+	examine_text += span_cyan(LANG("datum.5750b5f638fd4c47", list(source)))
 
 /datum/component/carrier/soulcatcher/attachable/proc/bring_up_ui(datum/source, mob/user)
 	SIGNAL_HANDLER
@@ -86,11 +87,11 @@
 
 /obj/item/attachable_soulcatcher/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!isitem(interacting_with) || is_type_in_list(interacting_with, blacklisted_items))
-		balloon_alert(user, "incompatible!")
+		balloon_alert(user, LANG("obj.fbc9e3cdde5b4ae2", null))
 		return NONE
 
 	if(interacting_with.GetComponent(/datum/component/carrier/soulcatcher))
-		balloon_alert(user, "already attached!")
+		balloon_alert(user, LANG("obj.c0bc11f391990ff7", null))
 		return ITEM_INTERACT_BLOCKING
 
 	var/datum/component/carrier/soulcatcher/new_soulcatcher = interacting_with.AddComponent(/datum/component/carrier/soulcatcher/attachable)

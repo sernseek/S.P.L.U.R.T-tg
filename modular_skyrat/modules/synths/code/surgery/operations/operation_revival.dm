@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/surgery_operation/basic/revive_synth
 	name = "reboot neural network"
 	rnd_name = "Restart Neural Network (Revival)"
@@ -32,11 +33,16 @@
 		return !isnull(brain) && brain_check(brain)
 	return mob_check(patient)
 
+// 合成人复活要求「脑是机械的 / 生物型是机械的」，直接写正向条件。
+// 原来的写法是在**同一个类型**上先 `/proc/brain_check` 声明反向判据、再 `/brain_check` 覆盖成 `!..()`
+// ——上游那对 `/basic/revival` 与子类型 `/basic/revival/mechanic` 才是「父声明、子取反」，
+// 同类型自我覆盖时 `..()` 没有父实现可调，判据落到哪个版本要看编译器脾气，
+// 结果就是玩家用万用表到位却看不到「重启神经网络」选项。
 /datum/surgery_operation/basic/revive_synth/proc/brain_check(obj/item/organ/brain/brain)
-	return !IS_ROBOTIC_ORGAN(brain)
+	return IS_ROBOTIC_ORGAN(brain)
 
 /datum/surgery_operation/basic/revive_synth/proc/mob_check(mob/living/patient)
-	return !(patient.mob_biotypes & MOB_ROBOTIC)
+	return !!(patient.mob_biotypes & MOB_ROBOTIC)
 
 /datum/surgery_operation/basic/revive_synth/tool_check(obj/item/tool)
 	if(istype(tool, /obj/item/shockpaddles))
@@ -93,12 +99,12 @@
 /// Call when successfully revived
 /datum/surgery_operation/basic/revive_synth/proc/on_revived(mob/living/surgeon, mob/living/patient)
 	if (patient.stat < DEAD)
-		patient.visible_message(span_notice("...[patient] is completely unaffected! Seems like they're already active!"))
+		patient.visible_message(span_notice(LANG("datum.08e140159aa42aac", list(patient))))
 		return TRUE
 	patient.grab_ghost()
 	if(patient.revive())
 		patient.emote("chime")
-		patient.visible_message(span_notice("...[patient] reactivates, their chassis coming online!"))
+		patient.visible_message(span_notice(LANG("datum.89db2f86663d06c8", list(patient))))
 		if(HAS_MIND_TRAIT(surgeon, TRAIT_MORBID)) // Contrary to their typical hatred of resurrection, it wouldn't be very thematic if morbid people didn't love playing god
 			surgeon.add_mood_event("morbid_revival_success", /datum/mood_event/morbid_revival_success)
 		to_chat(patient, span_danger("[CONFIG_GET(string/blackoutpolicy)]"))
@@ -107,7 +113,7 @@
 /// Called when revival fails
 /datum/surgery_operation/basic/revive_synth/proc/on_no_revive(mob/living/surgeon, mob/living/patient)
 	patient.emote("buzz")
-	patient.visible_message(span_warning("...[patient.p_they()] convulses, then goes offline."))
+	patient.visible_message(span_warning(LANG("datum.234e35fd6f213811", list(patient.p_they()))))
 	patient.adjust_organ_loss(ORGAN_SLOT_BRAIN, 50, 199) // MAD SCIENCE
 
 /// Flavor for failure
@@ -122,8 +128,3 @@
 		span_warning("[surgeon] shocks [patient]'s [brain_type] with [tool], but [patient.p_they()] don't react."),
 		span_warning("[surgeon] shocks [patient]'s [brain_type] with [tool], but [patient.p_they()] don't react."),
 	)
-/datum/surgery_operation/basic/revive_synth/brain_check(obj/item/organ/brain/synth/brain)
-	return !..()
-
-/datum/surgery_operation/basic/revive_synth/mob_check(mob/living/patient)
-	return !..()

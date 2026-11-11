@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_VAR(posibrain_notify_cooldown)
 
 /obj/item/mmi/posibrain
@@ -45,7 +46,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 /obj/item/mmi/posibrain/proc/ping_ghosts(msg, newlymade)
 	if(newlymade || GLOB.posibrain_notify_cooldown <= world.time)
 		notify_ghosts(
-			"[name] [msg] in [get_area(src)]! [ask_role ? "Personality requested: \[[ask_role]\]" : ""]",
+			LANG("obj.c80b0da1b4fde256", list(name, msg, get_area(src), ask_role ? "Personality requested: \[[ask_role]\]" : "")),
 			source = src,
 			header = "Ghost in the Machine",
 			click_interact = TRUE,
@@ -61,9 +62,9 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	if(!brainmob)
 		set_brainmob(new /mob/living/brain(src))
 	if(!(GLOB.ghost_role_flags & GHOSTROLE_SILICONS))
-		to_chat(user, span_warning("Central Command has temporarily outlawed posibrain sentience in this sector..."))
+		to_chat(user, span_warning(LANG("obj.64a878ae2ef580a7", null)))
 	if(is_occupied())
-		to_chat(user, span_warning("This [name] is already active!"))
+		to_chat(user, span_warning(LANG("obj.e873e2ecda3da8cf", list(name))))
 		return
 	if(next_ask > world.time)
 		to_chat(user, recharge_message)
@@ -77,10 +78,10 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	addtimer(CALLBACK(src, PROC_REF(check_success)), ask_delay)
 
 /obj/item/mmi/posibrain/click_alt(mob/living/user)
-	var/input_seed = tgui_input_text(user, "Enter a personality seed", "Enter seed", ask_role, max_length = MAX_NAME_LEN)
+	var/input_seed = tgui_input_text(user, LANG("obj.c6826ce5b062a798", null), LANG("obj.43e772701dc8f455", null), ask_role, max_length = MAX_NAME_LEN)
 	if(isnull(input_seed) || !user.can_perform_action(src))
 		return CLICK_ACTION_BLOCKING
-	to_chat(user, span_notice("You set the personality seed to \"[input_seed]\"."))
+	to_chat(user, span_notice(LANG("obj.6af35397907b27be", list(input_seed))))
 	ask_role = input_seed
 	update_appearance()
 	return CLICK_ACTION_SUCCESS
@@ -114,17 +115,17 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	if(QDELETED(brainmob))
 		return
 	if(user.ckey in ckeys_entered)
-		to_chat(user, span_warning("You cannot re-enter [src] a second time!"))
+		to_chat(user, span_warning(LANG("obj.95bb1e5ff6957ca4", list(src))))
 		return
 	if(is_occupied() || is_banned_from(user.ckey, ROLE_POSIBRAIN) || QDELETED(src) || QDELETED(user))
 		return
 	//BUBBER EDIT BEGIN: SILICON FLAVOR TEXT
 	if(CONFIG_GET(flag/min_flavor_text))
 		if((length_char(user.client?.prefs.read_preference(/datum/preference/text/silicon_flavor_text))) <= CONFIG_GET(number/silicon_flavor_text_character_requirement))
-			to_chat(user, span_warning("Your silicon flavor text needs to be at least [CONFIG_GET(number/silicon_flavor_text_character_requirement)] characters to play this role. Head to the character creator and write more!"))
+			to_chat(user, span_warning(LANG("obj.14ec697752613eb6", list(CONFIG_GET(number/silicon_flavor_text_character_requirement)))))
 			return
 	//BUBBER EDIT END: SILICON FLAVOR TEXT
-	var/posi_ask = tgui_alert(user, "Become a [name]? (Warning, You can no longer be revived, and all past lives will be forgotten!)", "Confirm", list("Yes","No"))
+	var/posi_ask = tgui_alert(user, LANG("obj.23728653cc881ae2", list(name)), LANG("obj.3c1da715a16e1d9e", null), list("Yes","No"))
 	if(posi_ask != "Yes" || QDELETED(src))
 		return
 	if(HAS_TRAIT(brainmob, TRAIT_SUICIDED)) //clear suicide status if the old occupant suicided.
@@ -155,7 +156,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	if(QDELETED(brainmob))
 		return
 	if(is_occupied()) //Prevents hostile takeover if two ghosts get the prompt or link for the same brain.
-		to_chat(candidate, span_warning("This [name] was taken over before you could get to it! Perhaps it might be available later?"))
+		to_chat(candidate, span_warning(LANG("obj.dfca3109020617b5", list(name))))
 		return FALSE
 	if(candidate.mind && !isobserver(candidate))
 		candidate.mind.transfer_to(brainmob)
@@ -181,14 +182,14 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 		switch(brainmob.stat)
 			if(STABLE)
 				if(!brainmob.client)
-					. += "It appears to be in stand-by mode." //afk
+					. += LANG("obj.f6906ec494462db0", null) //afk
 			if(DEAD)
-				. += span_deadsay("It appears to be completely inactive.")
+				. += span_deadsay(LANG("obj.6e66cf42e58e10ea", null))
 	else
 		. += "[dead_message]"
 		if(ask_role)
-			. += span_notice("Current consciousness seed: \"[ask_role]\"")
-		. += span_boldnotice("Alt-click to set a consciousness seed, specifying what [src] will be used for. This can help generate a personality interested in that role.")
+			. += span_notice(LANG("obj.669ecac1952ebcda", list(ask_role)))
+		. += span_boldnotice(LANG("obj.a619747673e708a3", list(src)))
 
 /obj/item/mmi/posibrain/Initialize(mapload, autoping = TRUE)
 	. = ..()

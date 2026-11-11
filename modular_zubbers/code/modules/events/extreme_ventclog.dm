@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/vent_clog/extreme
 	name = "Ventilation Clog: Extreme"
 	typepath = /datum/round_event/vent_clog/extreme
@@ -22,7 +23,7 @@
 
 /datum/round_event/vent_clog/extreme/announce(fake)
 	var/area/event_area = fake ? pick(GLOB.teleportlocs) : get_area_name(vent)
-	priority_announce("Extremely dangerous lifesigns detected in the [event_area] ventilation network.", "Security Alert", color_override = "yellow")
+	priority_announce(LANG("datum.5f6081d7ad297298", list(event_area)), "Security Alert", color_override = "yellow")
 
 /datum/round_event/vent_clog/extreme/get_mob()
 	var/static/list/mob_list = list(

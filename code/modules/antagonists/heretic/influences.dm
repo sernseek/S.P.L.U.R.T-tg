@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /// The number of influences spawned per heretic
 #define NUM_INFLUENCES_PER_HERETIC 10 // BUBBER EDIT CHANGE - was 5
@@ -160,7 +161,7 @@
 	if(IS_HERETIC(user) || !ishuman(user))
 		return
 
-	. += span_userdanger("Your mind burns as you stare at the tear!")
+	. += span_userdanger(LANG("obj.360a41fd9fb3d3fe", null))
 	user.adjust_organ_loss(ORGAN_SLOT_BRAIN, 10, 190)
 	user.add_mood_event("gates_of_mansus", /datum/mood_event/gates_of_mansus)
 
@@ -204,7 +205,7 @@
 		return SECONDARY_ATTACK_CALL_NORMAL
 
 	if(being_drained)
-		loc.balloon_alert(user, "already being drained!")
+		loc.balloon_alert(user, LANG("obj.2839cef8fd110ed4", null))
 	else
 		INVOKE_ASYNC(src, PROC_REF(drain_influence), user, 1)
 
@@ -235,17 +236,17 @@
 
 	// BUBBER EDIT ADDITION - inhibition/no heart = no draining
 	if (HAS_TRAIT(user, TRAIT_MANSUS_INHIBITION))
-		user.balloon_alert(user, "inhibited! cant drain!")
+		user.balloon_alert(user, LANG("obj.87e50782ffdca12e", null))
 		return
 
 	var/datum/antagonist/heretic/our_heretic = GET_HERETIC(user)
 	if (our_heretic.has_living_heart() != HERETIC_HAS_LIVING_HEART)
-		user.balloon_alert(user, "no living heart!")
+		user.balloon_alert(user, LANG("obj.a20c0213f3c7a1ad", null))
 		return
 	// BUBBER EDIT ADDITION END
 
 	being_drained = TRUE
-	loc.balloon_alert(user, "draining influence...")
+	loc.balloon_alert(user, LANG("obj.17a05ddb0b6c9913", null))
 
 	// Only gives you the dripping eye effect if you have faster drain speed than default
 	var/mutable_appearance/draining_overlay = mutable_appearance('icons/mob/effects/heretic_aura.dmi', "heretic_eye_dripping")
@@ -255,12 +256,12 @@
 
 	if(!do_after(user, drain_speed, src, cog_icon = null))
 		being_drained = FALSE
-		loc.balloon_alert(user, "interrupted!")
+		loc.balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 		user.cut_overlay(draining_overlay)
 		return
 
 	// We don't need to set being_drained back since we delete after anyways
-	loc.balloon_alert(user, "influence drained")
+	loc.balloon_alert(user, LANG("obj.468cd548810dddef", null))
 	user.cut_overlay(draining_overlay)
 
 	var/datum/antagonist/heretic/heretic_datum = GET_HERETIC(user)
@@ -276,7 +277,7 @@
 /obj/effect/heretic_influence/proc/after_drain(mob/living/user)
 	if(user)
 		to_chat(user, span_hypnophrase(pick_list(HERETIC_INFLUENCE_FILE, "drain_message")))
-		to_chat(user, span_warning("[src] begins to fade into reality!"))
+		to_chat(user, span_warning(LANG("obj.ea0fca6ace81fc96", list(src))))
 
 	var/obj/effect/visible_heretic_influence/illusion = new /obj/effect/visible_heretic_influence(drop_location())
 	illusion.name = "\improper" + pick_list(HERETIC_INFLUENCE_FILE, "drained") + " " + format_text(name)

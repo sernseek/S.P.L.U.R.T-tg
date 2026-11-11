@@ -1,5 +1,9 @@
 GLOBAL_VAR_INIT(total_runtimes, GLOB.total_runtimes || 0)
 GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
+// ZH EDIT ADDITION START - 原始异常探针（见下方 /world/Error 内的说明）。
+/// 探针已输出条数（去重后的不同出错位置数）。**必须是整数全局量而不是列表**：出事的正是静态列表取值那一步。
+GLOBAL_VAR_INIT(nova_error_probe_logged, 0)
+// ZH EDIT ADDITION END
 
 #ifdef USE_CUSTOM_ERROR_HANDLER
 #define ERROR_USEFUL_LEN 2
@@ -48,6 +52,59 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 		. = ..()
 		Reboot(reason = 1)
 		return
+
+	// ZH EDIT ADDITION START - 原始异常探针
+	// 2026-09-04 线上 round-829：本 proc 自己在下面 `error_last_seen[erroruid]` 那行炸了（bad list），
+	// 于是**原始异常的身份被吞掉**——7578 条日志记的全是处理器的二次错误，真正抛错的
+	// /datum/light_source/New() 抛的是什么至今不明。这里在**任何静态列表访问之前**先把 E 落盘。
+	// 硬约束：
+	//   · 位置必须在「Proc calls are allowed past this point」之后（之前不许调非内置 proc，BYOND bug 2306577）；
+	//   · 用 SEND_TEXT 而非 log_world —— 后者多一层 proc 调用，正是这条路径上最先失效的东西；
+	//   · **按出错位置去重**：只按条数计的旧版在生产 62 局里有 31 局开局不久就被同一个刷屏错误
+	//     （loadout_items.dm:90 一处 5376 次）耗尽额度，真出事时反而哑了。stack_trace 那类的真实位置
+	//     编码在 name 里（WORKAROUND_IDENTIFIER），按它去重，否则全部挤在 stack_trace.dm:4 一格；
+	//   · 去重表取值放进 try —— 列表取值失败正是 round-829 的形态，那一刻宁可多写也不能漏；
+	//     整数上限只是这条 catch 路径的兜底。
+	var/probe_uid = "[E.file]:[E.line]"
+	var/probe_marker = findtext(E.name, WORKAROUND_IDENTIFIER)
+	if(probe_marker)
+		probe_uid = copytext(E.name, probe_marker)
+	var/probe_first = FALSE
+	var/probe_note = ""
+	var/static/list/probe_seen = list()
+	try
+		if(!probe_seen[probe_uid])
+			probe_seen[probe_uid] = TRUE
+			probe_first = TRUE
+	catch
+		probe_first = TRUE
+		probe_note = " | DEDUPE-LIST-BROKEN"
+	if(probe_first && GLOB.nova_error_probe_logged < 500)
+		GLOB.nova_error_probe_logged++
+		var/probe_src = "null"
+		try
+			// e_src 实测在普通 runtime 里恒为 null；出错那一帧的 src 要从 caller（/callee）上取。
+			var/probe_owner = e_src
+			if(isnull(probe_owner))
+				var/callee/probe_frame = caller
+				// stack_trace() 那类的出错帧是全局的 /proc/stack_trace 自己，src 恒空；真正的调用者在上一帧。
+				if(probe_marker && probe_frame)
+					probe_frame = probe_frame.caller
+				if(probe_frame)
+					probe_owner = probe_frame.src
+			if(istype(probe_owner, /datum/light_source))
+				// round-844 只知道是某个光源的 light_color 不合法（rgb2num 报 bad color），不知道是谁的。
+				var/datum/light_source/probe_light = probe_owner
+				probe_src = "[probe_light.type] atom=[probe_light.source_atom?.type] light_color=[probe_light.source_atom?.light_color]"
+			else if(istype(probe_owner, /datum))
+				var/datum/probe_datum = probe_owner
+				probe_src = "[probe_datum.type]"
+			else if(!isnull(probe_owner))
+				probe_src = "[probe_owner]"
+		catch
+			probe_src = "(unreadable)"
+		SEND_TEXT(world.log, "NOVA-ERROR-PROBE: name=[E.name] | file=[E.file] | line=[E.line] | src=[probe_src][probe_note]")
+	// ZH EDIT ADDITION END
 
 	var/static/regex/stack_workaround
 	if(isnull(stack_workaround))

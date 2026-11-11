@@ -1,7 +1,8 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The list of the available special player ranks
 #define SKYRAT_PLAYER_RANKS list("Donator", "Mentor")
 
-ADMIN_VERB(manage_player_ranks, R_ADMIN, "Manage Player Ranks", "Manage who has the special player ranks while the server is running.", ADMIN_CATEGORY_MAIN)
+ADMIN_VERB(manage_player_ranks, R_ADMIN, "管理玩家等级", "Manage who has the special player ranks while the server is running.", ADMIN_CATEGORY_MAIN)
 	if(!check_rights(R_ADMIN))
 		return
 
@@ -15,7 +16,7 @@ ADMIN_VERB(manage_player_ranks, R_ADMIN, "Manage Player Ranks", "Manage who has 
 	if(!check_rights(R_ADMIN))
 		return
 
-	var/choice = tgui_alert(usr, "Which rank would you like to manage?", "Manage Player Ranks", SKYRAT_PLAYER_RANKS)
+	var/choice = tgui_alert(usr, LANG("datum.37c605232db9a89f", null), LANG("datum.658a4ef0eb96e4ea", null), SKYRAT_PLAYER_RANKS)
 	if(!choice || !(choice in SKYRAT_PLAYER_RANKS))
 		return
 
@@ -39,15 +40,15 @@ ADMIN_VERB(manage_player_ranks, R_ADMIN, "Manage Player Ranks", "Manage who has 
 	var/group_title = LOWER_TEXT(group)
 
 	var/list/choices = list("Add", "Remove")
-	switch(tgui_alert(usr, "What would you like to do?", "Manage [group]s", choices))
+	switch(tgui_alert(usr, LANG("datum.ab3c2f647ff1b220", null), LANG("datum.74de5d85c84a23f0", list(group)), choices))
 		if("Add")
-			var/name = input(usr, "Please enter the CKEY (case-insensitive) of the person you would like to make a [group_title]:", "Add a [group_title]") as null|text
+			var/name = input(usr, LANG("datum.65a3b9e7c8d1cd3f", list(group_title)), LANG("datum.67e0cfc04b4fe4d3", list(group_title))) as null|text
 			if(!name)
 				return
 
 			var/player_to_be = ckey(name)
 			if(!player_to_be)
-				to_chat(usr, span_warning("\"[name]\" is not a valid CKEY."))
+				to_chat(usr, span_warning(LANG("datum.f33b2d5b9dc138f9", list(name))))
 				return
 
 			var/success = SSplayer_ranks.add_player_to_group(usr.client, player_to_be, group_title)
@@ -60,13 +61,13 @@ ADMIN_VERB(manage_player_ranks, R_ADMIN, "Manage Player Ranks", "Manage who has 
 
 
 		if("Remove")
-			var/name = input(usr, "Please enter the CKEY (case-insensitive) of the person you would like to no longer be a [group_title]:", "Remove a [group_title]") as null|text
+			var/name = input(usr, LANG("datum.64ae4ccee421b466", list(group_title)), LANG("datum.48e12e4324d81052", list(group_title))) as null|text
 			if(!name)
 				return
 
 			var/player_that_was = ckey(name)
 			if(!player_that_was)
-				to_chat(usr, span_warning("\"[name]\" is not a valid CKEY."))
+				to_chat(usr, span_warning(LANG("datum.f33b2d5b9dc138f9", list(name))))
 				return
 
 			var/success = SSplayer_ranks.remove_player_from_group(usr.client, player_that_was, group_title)
@@ -82,7 +83,7 @@ ADMIN_VERB(manage_player_ranks, R_ADMIN, "Manage Player Ranks", "Manage who has 
 
 
 
-ADMIN_VERB(migrate_player_ranks, R_ADMIN|R_DEBUG|R_SERVER, "Migrate Player Ranks", "Individually migrate the various player ranks from their legacy system to the SQL-based one.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(migrate_player_ranks, R_ADMIN|R_DEBUG|R_SERVER, "迁移玩家等级", "Individually migrate the various player ranks from their legacy system to the SQL-based one.", ADMIN_CATEGORY_DEBUG)
 	user.mob.client?.holder.migrate_player_ranks()
 
 /datum/admins/proc/migrate_player_ranks()
@@ -95,11 +96,11 @@ ADMIN_VERB(migrate_player_ranks, R_ADMIN|R_DEBUG|R_SERVER, "Migrate Player Ranks
 	if(!CONFIG_GET(flag/sql_enabled))
 		return
 
-	var/choice = tgui_alert(usr, "Which rank would you like to migrate?", "Migrate Player Ranks", SKYRAT_PLAYER_RANKS)
+	var/choice = tgui_alert(usr, LANG("datum.e91e75faf189b82f", null), LANG("datum.87963233600b1e1d", null), SKYRAT_PLAYER_RANKS)
 	if(!choice || !(choice in SKYRAT_PLAYER_RANKS))
 		return
 
-	if(tgui_alert(usr, "Are you sure that you would like to migrate [choice]s to the SQL-based system?", "Migrate Player Ranks", list("Yes", "No")) != "Yes")
+	if(tgui_alert(usr, LANG("datum.74ed3b7affd432b8", list(choice)), LANG("datum.87963233600b1e1d", null), list("Yes", "No")) != "Yes")
 		return
 
 	log_admin("[key_name(usr)] is migrating the [choice] player rank from its legacy system to the SQL-based one.")

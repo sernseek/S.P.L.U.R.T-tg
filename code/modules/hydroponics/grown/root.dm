@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/food/grown/carrotlike
 	name = "carrot?"
 	desc = "What is this? It's not a carrot, that's for sure. You should tell someone about this."
@@ -22,10 +23,10 @@
 	var/sword_chance = (max(0, seed.potency - potency_minimum) / 50)
 	if (prob(sword_chance))
 		blade = new blade_type
-		to_chat(user, span_notice("You sharpen \the [src] into a [blade_string] with [tool]."))
+		to_chat(user, span_notice(LANG("obj.926dc729048d9387", list(src, blade_string, tool))))
 	else
 		blade = new shiv_type
-		to_chat(user, span_notice("You sharpen \the [src] into a shiv with [tool]."))
+		to_chat(user, span_notice(LANG("obj.5b7306db5d1fa210", list(src, tool))))
 	remove_item_from_storage(user)
 	qdel(src)
 	user.put_in_hands(blade)

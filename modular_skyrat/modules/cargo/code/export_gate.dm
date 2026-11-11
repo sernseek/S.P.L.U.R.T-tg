@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/circuitboard/machine/export_gate
 	name = "Export Gate"
 	greyscale_colors = CIRCUIT_COLOR_SUPPLY
@@ -97,7 +98,7 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 	if(held_item?.tool_behaviour == TOOL_SCREWDRIVER)
-		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "close" : "open"] maintenance panel"
+		context[SCREENTIP_CONTEXT_LMB] = LANG("obj.7e418224a4d35f09", list(panel_open ? "close" : "open"))
 		return CONTEXTUAL_SCREENTIP_SET
 
 	if(held_item?.tool_behaviour == TOOL_SCREWDRIVER && panel_open)
@@ -110,14 +111,14 @@
 
 /obj/machinery/export_gate/examine()
 	. = ..()
-	. += span_notice("The status display reads:")
-	. += span_info("Income last cycle: <b>[income_previous] cr.</b>")
-	. += span_info("Share per account last cycle: <b>[income_share] cr.</b>")
-	. += span_info("Payment mode: <b>[display_payment_mode()].</b>")
-	. += span_info("Registered crew accounts last cycle: <b>[LAZYLEN(payment_accounts)]</b>")
-	. += span_info("Total cubes registered: <b>[cubes_registered]</b>")
-	. += span_info("Total income: <b>[income_total] cr.</b>")
-	. += span_notice("The payment mode can be changed by swiping an authorized command ID card.")
+	. += span_notice(LANG("obj.e69769dde0bfcc79", null))
+	. += span_info(LANG("obj.f2794f0824251589", list(income_previous)))
+	. += span_info(LANG("obj.21e7842adf4f236f", list(income_share)))
+	. += span_info(LANG("obj.cc30c3b32928e839", list(display_payment_mode())))
+	. += span_info(LANG("obj.5815d1e5cdd81ff9", list(LAZYLEN(payment_accounts))))
+	. += span_info(LANG("obj.eb0af74a9ea8211b", list(cubes_registered)))
+	. += span_info(LANG("obj.a40a7bb7ed2d31d4", list(income_total)))
+	. += span_notice(LANG("obj.18b4b42c17990b93", null))
 
 /obj/machinery/export_gate/wrench_act(mob/living/user, obj/item/tool)
 	default_unfasten_wrench(user, tool)
@@ -171,7 +172,7 @@
 	var/obj/item/bounty_cube/cube = package
 	if(cube.bounty_handler_account)
 		set_scanline("alarm", 1 SECONDS)
-		say("Scan rejected. Error 403: Bank account for handling tip already registered!")
+		say(LANG("obj.fa55643328b01f2d", null))
 
 	else if(cube.bounty_value)
 		set_scanline("scanning", 1 SECONDS)
@@ -179,11 +180,11 @@
 
 	else if(cube.bounty_value == 0)
 		set_scanline("alarm", 1 SECONDS)
-		say("Scan rejected. Error 404: Bounty value not found!")
+		say(LANG("obj.5f83dcffff9557c5", null))
 
 	else
 		set_scanline("alarm", 1 SECONDS)
-		say("Scan rejected. Error 500: Check cube for errors and try again.")
+		say(LANG("obj.7a828b11a525f1f0", null))
 
 	use_energy(active_power_usage)
 
@@ -208,7 +209,7 @@
 
 /obj/machinery/export_gate/proc/set_payment_mode(mob/user, obj/item/card/id/id_card)
 	var/list/payment_modes = list(MODE_CARGO_TECH, MODE_CUSTOMS_AGENT, MODE_QUARTERMASTER)
-	var/selected_mode = tgui_input_list(user, "Set bounty payment mode:", src.name, payment_modes)
+	var/selected_mode = tgui_input_list(user, LANG("obj.67496a803f3f47b5", null), src.name, payment_modes)
 	if(!selected_mode)
 		return
 
@@ -221,7 +222,7 @@
 			payment_mode = EX_CARGO_TECHNICIAN | EX_CUSTOMS_AGENT | EX_QUARTERMASTER
 
 	log_econ("[src.name] payment mode changed by [user] ([id_card.registered_name]) to [display_payment_mode()].")
-	radio.talk_into(src, "Payment mode set to [display_payment_mode()] by authorized ID [id_card.registered_name].", RADIO_CHANNEL_SUPPLY)
+	radio.talk_into(src, LANG("obj.dbe8ae4b6dce6d73", list(display_payment_mode(), id_card.registered_name)), RADIO_CHANNEL_SUPPLY)
 
 /obj/machinery/export_gate/proc/display_payment_mode()
 	if(payment_mode & EX_QUARTERMASTER)
@@ -269,7 +270,7 @@
 	if(LAZYLEN(manifest_accounts) == 0 && !retry)
 		payment_mode = EX_CARGO_TECHNICIAN | EX_CUSTOMS_AGENT | EX_QUARTERMASTER
 		log_econ("[src.name] payment mode falling back to [display_payment_mode()] due to lack of crew")
-		radio.talk_into(src, "Payment mode falling back to [display_payment_mode()] due to lack of crew.", RADIO_CHANNEL_SUPPLY)
+		radio.talk_into(src, LANG("obj.8c3dd37543044fc2", list(display_payment_mode())), RADIO_CHANNEL_SUPPLY)
 		refresh_payment_accounts(retry = TRUE)
 		return
 
@@ -286,18 +287,18 @@
 	if(!total_accounts)
 		return
 	if(holding_account.account_balance < 50)
-		radio.talk_into(src, "No export scan income processed this cycle.", RADIO_CHANNEL_SUPPLY)
+		radio.talk_into(src, LANG("obj.3eb4ca213e5fce3b", null), RADIO_CHANNEL_SUPPLY)
 		return
 
 	income_previous = 0
 	income_share = floor(holding_account.account_balance / total_accounts)
 	log_econ("[src.name] is dispersing [income_share * total_accounts] credits to associated accounts.")
-	radio.talk_into(src, "Dispersing bounty cube export scan income of [income_share * total_accounts] credits to associated accounts.", RADIO_CHANNEL_SUPPLY)
+	radio.talk_into(src, LANG("obj.8c2fa4d8ceccd5d9", list(income_share * total_accounts)), RADIO_CHANNEL_SUPPLY)
 	for(var/datum/bank_account/payout_account as anything in payment_accounts)
 		if(payout_account.transfer_money(from = holding_account, amount = income_share, transfer_reason = "Export gate: bounty cube earnings"))
 			income_previous += income_share
 			income_total += income_share
-			payout_account.bank_card_talk("Export gate payment of [income_share] cr. processed, account now holds [payout_account.account_balance] cr.")
+			payout_account.bank_card_talk(LANG("obj.c93c27a75f98b90b", list(income_share, payout_account.account_balance)))
 		else
 			stack_trace("[src.name] attempted to perform a bounty cube export payment to [payout_account.account_holder], but it failed!")
 
@@ -309,7 +310,7 @@
 			set_payment_mode(user, id_card)
 			return ITEM_INTERACT_SUCCESS
 		else
-			user.balloon_alert(user, "insufficient access!")
+			user.balloon_alert(user, LANG("obj.9b3b0da8e550b773", null))
 			return ITEM_INTERACT_BLOCKING
 
 /datum/controller/subsystem/economy/issue_paydays()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Intended to be how mining vents work but instead of ore, at the end it spawns a chest with loot
 // Implemented on Port Tarkon as standard.
 /obj/structure/wave_defence
@@ -62,7 +63,7 @@
 	animate(src, pixel_z = 0, time = 2 SECONDS, easing = QUAD_EASING|EASE_OUT, flags = ANIMATION_PARALLEL)
 
 /obj/structure/wave_defence/examine(mob/user)
-	. += span_notice("This can be repaired by calling in a drone with a [span_bold("Hack-C signaller")].")
+	. += span_notice(LANG("obj.fd40d543a379918d", list(span_bold("Hack-C signaller"))))
 
 /obj/structure/wave_defence/Destroy() // we dont want to affect the resource gen
 	reset_drone(success = FALSE)
@@ -95,13 +96,13 @@
 	if(!is_type_in_list(attacking_item, scanning_equipment))
 		return TRUE
 	if(tapped)
-		balloon_alert_to_viewers("engine repaired!")
+		balloon_alert_to_viewers(LANG("obj.4d0159938549b960", null))
 		return TRUE
 	scan_and_confirm(user)
 	return TRUE
 
 /obj/structure/wave_defence/proc/pre_wave_defense(mob/user, spawn_drone = TRUE)
-	if(tgui_alert(user, excavation_warning, "Begin defending emergency engine?", list("Yes", "No")) != "Yes")
+	if(tgui_alert(user, excavation_warning, LANG("obj.3213f8c6fa2e18c9", null), list("Yes", "No")) != "Yes")
 		return FALSE
 	if(!can_interact(user))
 		return FALSE
@@ -161,7 +162,7 @@
 
 /obj/structure/wave_defence/proc/initiate_wave_win()
 	tapped = TRUE
-	balloon_alert_to_viewers("engine started!")
+	balloon_alert_to_viewers(LANG("obj.cc60b4dbff6e834a", null))
 	icon_state = icon_state_tapped
 	update_appearance(UPDATE_ICON_STATE)
 	qdel(GetComponent(/datum/component/gps))
@@ -173,19 +174,19 @@
 
 /obj/structure/wave_defence/proc/scan_and_confirm(mob/living/user)
 	if(tapped)
-		balloon_alert_to_viewers("engine started!")
+		balloon_alert_to_viewers(LANG("obj.cc60b4dbff6e834a", null))
 		return
 	if(!COOLDOWN_FINISHED(src, wave_cooldown) || node) //We're already defending the vent, so don't scan it again.
 		return
 
 	if(DOING_INTERACTION_WITH_TARGET(user, src))
-		balloon_alert(user, "already calling!")
+		balloon_alert(user, LANG("obj.e6b1f483314596e7", null))
 		return
-	balloon_alert(user, "calling pod...")
+	balloon_alert(user, LANG("obj.393f9375fcc886b3", null))
 	playsound(src, 'sound/items/timer.ogg', 30, TRUE)
 	if(!do_after(user, 4 SECONDS, src))
 		return
-	balloon_alert(user, "engine started!")
+	balloon_alert(user, LANG("obj.cc60b4dbff6e834a", null))
 
 	if(!pre_wave_defense(user, spawn_drone_on_tap))
 		return

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/space_ninja
 	name = "Spawn Space Ninja"
 	typepath = /datum/round_event/ghost_role/space_ninja
@@ -30,11 +31,11 @@
 	ninja.mind.add_antag_datum(/datum/antagonist/ninja)
 	spawned_mobs += ninja
 	if(!isprotean(ninja))
-		var/loadme = tgui_input_list(ninja, "Do you wish to load your character slot?", "Load Character?", list("Yes!", "No, I want to be random!"), default = "No, I want to be random!", timeout = 60 SECONDS)
+		var/loadme = tgui_input_list(ninja, LANG("datum.0bb8cda50d8b5e2e", null), LANG("datum.c7b9d7b0f85aa420", null), list("Yes!", "No, I want to be random!"), default = "No, I want to be random!", timeout = 60 SECONDS)
 		var/codename
 		if(loadme == "Yes!")
 			ninja.client?.prefs?.safe_transfer_prefs_to(ninja)
-			codename = tgui_input_text(ninja.client, "What should your codename be?", "Agent Name", "[pick("Master", "Legendary", "Agent", "Shinobi", "Ninja")] [ninja.dna.species.name]", 42, FALSE, TRUE, 300 SECONDS)
+			codename = tgui_input_text(ninja.client, LANG("datum.2ffc6b51770e45d9", null), LANG("datum.ff2a8c08fa7d93a9", null), "[pick("Master", "Legendary", "Agent", "Shinobi", "Ninja")] [ninja.dna.species.name]", 42, FALSE, TRUE, 300 SECONDS)
 			codename ? codename : (codename = "[pick("Master", "Legendary", "Agent", "Shinobi", "Ninja")] [ninja.dna.species.name]")
 			ninja.name = codename
 			ninja.real_name = codename

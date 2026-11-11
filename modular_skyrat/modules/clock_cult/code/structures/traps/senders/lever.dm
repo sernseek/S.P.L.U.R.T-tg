@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/wallframe/clocktrap/lever
 	name = "switch"
 	desc = "A small switch attatched to the wall."
@@ -22,5 +23,5 @@
 
 /datum/component/clockwork_trap/lever/attack_hand(mob/user)
 	trigger_connected()
-	to_chat(user, span_notice("You activate the switch."))
+	to_chat(user, span_notice(LANG("datum.c0ef3c25dad92fd3", null)))
 	playsound(user, 'sound/machines/click.ogg', 50)

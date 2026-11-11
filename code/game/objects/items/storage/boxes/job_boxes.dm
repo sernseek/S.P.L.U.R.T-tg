@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // This contains all boxes that will be used on round-start spawning into a job.
 
 // Ordinary survival box. Every crewmember gets one of these.
@@ -25,7 +26,7 @@
 		return
 	atom_storage.max_slots += 2
 	atom_storage.max_total_storage += 4
-	desc = "An upgraded box of survival essentials, Nanotrasen must value your life a little more than usual today." // BUBBER EDIT ADDITION
+	desc = LANG("obj.c046b3ac1881d2de", null) // BUBBER EDIT ADDITION
 	name = "premium [name]" // BUBBER EDIT CHANGE
 	icon_state = "internals_large" // BUBBER EDIT CHANGE - ORIGINAL: [icon_state]_large
 
@@ -169,14 +170,14 @@
 	foldable_result = null
 
 /obj/item/storage/box/hug/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] clamps the box of hugs on [user.p_their()] jugular! Guess it wasn't such a hugbox after all.."))
+	user.visible_message(span_suicide(LANG("obj.6c9632780532c668", list(user, user.p_their()))))
 	return BRUTELOSS
 
 /obj/item/storage/box/hug/attack_self(mob/user)
 	..()
 	user.changeNext_move(CLICK_CD_MELEE)
 	playsound(loc, SFX_RUSTLE, 50, vary=TRUE, extrarange=-5)
-	user.visible_message(span_notice("[user] hugs [src]."),span_notice("You hug [src]."))
+	user.visible_message(span_notice(LANG("obj.40c08047c5f299dc", list(user, src))),span_notice(LANG("obj.1ce28c9403c58c4d", list(src))))
 
 /obj/item/storage/box/hug/black
 	icon_state = "hugbox_black"
@@ -192,12 +193,12 @@
 	if(!istype(tool, /obj/item/bodypart/arm/left/robot) && !istype(tool, /obj/item/bodypart/arm/right/robot))
 		return ..()
 	if(contents.len) //prevent accidently deleting contents
-		balloon_alert(user, "items inside!")
+		balloon_alert(user, LANG("obj.ca142d621fdf23fb", null))
 		return ITEM_INTERACT_BLOCKING
 	if(!user.temporarilyRemoveItemFromInventory(tool))
 		return ITEM_INTERACT_BLOCKING
 	qdel(tool)
-	loc.balloon_alert(user, "wheels added, honk!")
+	loc.balloon_alert(user, LANG("obj.1b4c5ce81f3b6d09", null))
 	var/obj/item/bot_assembly/honkbot/assembly = new(drop_location())
 	var/held_index = user.is_holding(src)
 	qdel(src)
@@ -206,7 +207,7 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/storage/box/clown/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] opens [src] and gets consumed by [p_them()]! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.a1df2303b5ddd7eb", list(user, src, p_them(), user.p_theyre()))))
 	playsound(user, 'sound/misc/scary_horn.ogg', 70, vary = TRUE)
 	forceMove(user.drop_location())
 	var/obj/item/mob_holder/consumed = new(src, user)
@@ -247,14 +248,14 @@
 
 //Duplicated suicide/attack self procs, since the survival boxes are a subtype of box/survival
 /obj/item/storage/box/survival/hug/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] clamps the box of hugs on [user.p_their()] jugular! Guess it wasn't such a hugbox after all.."))
+	user.visible_message(span_suicide(LANG("obj.6c9632780532c668", list(user, user.p_their()))))
 	return BRUTELOSS
 
 /obj/item/storage/box/survival/hug/attack_self(mob/user)
 	..()
 	user.changeNext_move(CLICK_CD_MELEE)
 	playsound(loc, SFX_RUSTLE, 50, vary=TRUE, extrarange=-5)
-	user.visible_message(span_notice("[user] hugs [src]."),span_notice("You hug [src]."))
+	user.visible_message(span_notice(LANG("obj.40c08047c5f299dc", list(user, src))),span_notice(LANG("obj.1ce28c9403c58c4d", list(src))))
 
 /obj/item/storage/box/hug/plushes
 	name = "tactical cuddle kit"

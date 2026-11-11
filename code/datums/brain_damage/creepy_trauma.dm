@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/brain_trauma/special/obsessed
 	name = "Psychotic Schizophrenia"
 	desc = "Patient has a subtype of delusional disorder, becoming irrationally attached to someone."
@@ -179,17 +180,17 @@
 		if(1 to 4)
 			owner.adjust_jitter_up_to(10 SECONDS, 20 SECONDS)
 			owner.adjust_dizzy_up_to(10 SECONDS, 20 SECONDS)
-			to_chat(owner, span_warning("You feel a bit nervous."))
+			to_chat(owner, span_warning(LANG("datum.0fd3596fd69107e5", null)))
 		if(5 to 8)
 			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "cough")
-			to_chat(owner, span_warning("You clear your throat."))
+			to_chat(owner, span_warning(LANG("datum.1ec72c4434e3e332", null)))
 		if(9)
 			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "laugh")
-			to_chat(owner, span_warning("You chuckle nervously."))
+			to_chat(owner, span_warning(LANG("datum.d49a67633a430fda", null)))
 		if(10)
 			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "blink")
 			owner.adjust_eye_blur_up_to(10 SECONDS, 20 SECONDS)
-			to_chat(owner, span_warning("You forget to blink for a moment."))
+			to_chat(owner, span_warning(LANG("datum.e869ffdd0aa4410f", null)))
 
 // if the creep examines first, then the obsession examines them, have a 50% chance to possibly blow their cover. wearing a mask avoids this risk
 /datum/brain_trauma/special/obsessed/proc/stare(datum/source, mob/living/examining_mob, triggering_examiner)
@@ -243,7 +244,7 @@
 		for(var/mob/living/carbon/human/H as anything in possible_targets)
 			namelist[H.real_name] = H
 
-		var/choice = tgui_input_list(owner, "You remember being obsessed with someone... It was...", "Select Someone", namelist)
+		var/choice = tgui_input_list(owner, LANG("datum.0582336b170de317", null), LANG("datum.07dcbf0231b608d5", null), namelist)
 
 		if(choice && namelist[choice])
 			return namelist[choice]

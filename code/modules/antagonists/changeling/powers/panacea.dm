@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/changeling/panacea
 	name = "Anatomic Panacea"
 	desc = "Expels impurities from our form: curing diseases, removing parasites, sobering us, purging toxins and radiation, curing traumas and brain damage, and resetting our genetic code completely. Costs 20 chemicals."
@@ -10,7 +11,7 @@
 
 //Heals the things that the other regenerative abilities don't.
 /datum/action/changeling/panacea/sting_action(mob/user)
-	to_chat(user, span_notice("We cleanse impurities from our form."))
+	to_chat(user, span_notice(LANG("datum.8dee382f8942fe46", null)))
 	..()
 	var/list/bad_organs = list(
 		user.get_organ_by_type(/obj/item/organ/body_egg),

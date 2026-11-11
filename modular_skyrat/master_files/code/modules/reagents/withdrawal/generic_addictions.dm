@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Alters nicotine withdrawal
 /datum/addiction/nicotine
 	name = "nicotine"
@@ -13,15 +14,15 @@
 			if(!HAS_TRAIT(affected_carbon, TRAIT_NOHUNGER))
 				affected_carbon.adjust_nutrition(-10 * REM * seconds_per_tick)
 		if(2)
-			to_chat(affected_carbon, span_warning("Your head hurts."))
+			to_chat(affected_carbon, span_warning(LANG("datum.60d845f35de563d2", null)))
 			affected_carbon.adjust_stamina_loss(50 * REM * seconds_per_tick)
 		if(3)
 			if(strength >= 2)
-				to_chat(affected_carbon, span_warning("You feel a little dizzy."))
+				to_chat(affected_carbon, span_warning(LANG("datum.faca08ef61a393b6", null)))
 				affected_carbon.set_dizzy(strength * 6 SECONDS)
 		if(4)
 			if(strength >= 2)
-				to_chat(affected_carbon, span_warning("You feel tired."))
+				to_chat(affected_carbon, span_warning(LANG("datum.3c3a63b3af68cf4b", null)))
 				affected_carbon.adjust_stamina_loss(75 * REM * seconds_per_tick)
 
 /datum/addiction/nicotine/withdrawal_enters_stage_1(mob/living/carbon/affected_carbon, seconds_per_tick)

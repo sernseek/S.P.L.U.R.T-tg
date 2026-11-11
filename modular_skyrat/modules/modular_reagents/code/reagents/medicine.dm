@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/reagent/medicine/lidocaine
 	name = "Lidocaine"
 	description = "A numbing agent used often for surgeries, metabolizes slowly."
@@ -37,7 +38,7 @@
 
 /datum/reagent/inverse/lidocaine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	to_chat(affected_mob, span_userdanger("Your body aches with unimaginable pain!"))
+	to_chat(affected_mob, span_userdanger(LANG("datum.a5ef8d3101983288", null)))
 	affected_mob.adjust_organ_loss(ORGAN_SLOT_HEART,3 * REM * seconds_per_tick, 85)
 	affected_mob.adjust_stamina_loss(5 * REM * seconds_per_tick, 0)
 	if(prob(30))

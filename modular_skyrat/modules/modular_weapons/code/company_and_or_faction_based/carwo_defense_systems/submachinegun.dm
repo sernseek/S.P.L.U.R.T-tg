@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Base Sol SMG
 
 /obj/item/gun/ballistic/automatic/sol_smg
@@ -37,18 +38,12 @@
 
 /obj/item/gun/ballistic/automatic/sol_smg/examine(mob/user)
 	. = ..()
-	. += span_notice("You can <b>examine closer</b> to learn a little more about this weapon.")
+	. += span_notice(LANG("obj.b663717df67087e6", null))
 
 /obj/item/gun/ballistic/automatic/sol_smg/examine_more(mob/user)
 	. = ..()
 
-	. += "The Sindano submachinegun was originally produced for military contract. \
-		These guns were seen in the hands of anyone from medics, ship techs, logistics officers, \
-		and shuttle pilots often had several just to show off. Due to TerraGov's quest to \
-		extend the lifespans of their logistics officers and quartermasters, the weapon \
-		uses the same standard pistol cartridge that most other miltiary weapons of \
-		small caliber use. This results in interchangeable magazines between pistols \
-		and submachineguns, neat!"
+	. += LANG("obj.e5e2f232d58d675f", null)
 
 	return .
 

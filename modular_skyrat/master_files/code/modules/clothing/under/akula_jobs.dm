@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The DMI containing the tail overlay sprites
 #define TAIL_OVERLAY_DMI 'modular_skyrat/master_files/icons/mob/clothing/under/akula.dmi'
 /// The proper layer to render the tail overlays onto
@@ -92,7 +93,7 @@
 
 /obj/item/clothing/under/akula_wetsuit/job/examine(mob/user)
 	. = ..()
-	. += span_notice("This item could be examined further...")
+	. += span_notice(LANG("obj.b5542b5eea7b0c2d", null))
 
 /obj/item/clothing/under/akula_wetsuit/job/examine_more(mob/user)
 	. = ..()
@@ -197,10 +198,10 @@
 /obj/item/clothing/head/helmet/space/akula_wetsuit/examine()
 	. = ..()
 	if(attached_hat)
-		. += span_notice("There's [attached_hat] placed in the helmet.")
-		. += span_bold("Right-click to remove it.")
+		. += span_notice(LANG("obj.1726f4d5bedd47ed", list(attached_hat)))
+		. += span_bold(LANG("obj.72f9d9563d51f7dd", null))
 	else
-		. += span_notice("There's nothing placed in the helmet.")
+		. += span_notice(LANG("obj.a66851248ba5e40a", null))
 
 /obj/item/clothing/head/helmet/space/akula_wetsuit/attackby(obj/item/hitting_item, mob/living/user)
 	. = ..()
@@ -208,14 +209,14 @@
 		return
 	var/obj/item/clothing/hitting_hat = hitting_item
 	if(hitting_hat.clothing_flags & STACKABLE_HELMET_EXEMPT)
-		balloon_alert(user, "doesn't fit!")
+		balloon_alert(user, LANG("obj.7f1af0164989b57e", null))
 		return
 	if(attached_hat)
-		balloon_alert(user, "already something inside!")
+		balloon_alert(user, LANG("obj.63c6598c909d3022", null))
 		return
 
 	attached_hat = hitting_hat
-	balloon_alert(user, "[hitting_hat] put inside")
+	balloon_alert(user, LANG("obj.c52b20a5f1fb31f1", list(hitting_hat)))
 	hitting_hat.forceMove(src)
 	icon_state = "empty"
 	update_appearance()
@@ -238,7 +239,7 @@
 		return
 
 	user.put_in_active_hand(attached_hat)
-	balloon_alert(user, "[attached_hat] removed")
+	balloon_alert(user, LANG("obj.2a4235b4837591d1", list(attached_hat)))
 	attached_hat = null
 	icon_state = "helmet"
 	update_appearance()

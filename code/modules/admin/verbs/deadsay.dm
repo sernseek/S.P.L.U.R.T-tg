@@ -1,8 +1,9 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
-ADMIN_VERB(dsay, R_NONE, "DSay", "Speak to the dead.", ADMIN_CATEGORY_GAME)
+ADMIN_VERB(dsay, R_NONE, "死者发言", "Speak to the dead.", ADMIN_CATEGORY_GAME)
 	VERB_ARG(message, VERB_ARG_TYPE_TEXT, VERB_ARG_SOURCE_INPUT)
 	if(user.prefs.muted & MUTE_DEADCHAT)
-		to_chat(user, span_danger("You cannot send DSAY messages (muted)."), confidential = TRUE)
+		to_chat(user, span_danger(LANG("datum.ba44f832ff62cd71", null)), confidential = TRUE)
 		return
 
 	if (user.handle_spam_prevention(message,MUTE_DEADCHAT))
@@ -25,7 +26,7 @@ ADMIN_VERB(dsay, R_NONE, "DSay", "Speak to the dead.", ADMIN_CATEGORY_GAME)
 	BLACKBOX_LOG_ADMIN_VERB("Dsay")
 
 /client/proc/get_dead_say()
-	var/msg = input(src, null, "dsay \"text\"") as text|null
+	var/msg = input(src, null, LANG("client.8ce3fd241dec5b49", null)) as text|null
 	if (isnull(msg))
 		return
 	SSadmin_verbs.dynamic_invoke_verb(src, /datum/admin_verb/dsay, msg)

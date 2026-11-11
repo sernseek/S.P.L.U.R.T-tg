@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/borg/upgrade/transform/ntjack
 	name = "borg module picker (Centcom)"
 	desc = "Allows you to to turn a cyborg into a experimental nanotrasen cyborg."
@@ -81,7 +82,7 @@
 // Borg Dom Aura :)
 /obj/item/borg/upgrade/dominatrixmodule/action(mob/living/silicon/robot/borg, mob/living/user)
 	if(borg.hasToys)
-		to_chat(usr, span_warning("This unit already has a 'recreational' module installed!"))
+		to_chat(usr, span_warning(LANG("obj.b0ba2dcf69729ee8", null)))
 		return FALSE
 	. = ..()
 	if(.)
@@ -261,7 +262,7 @@
 // WellTrained Obedience Behaviour
 /obj/item/borg/upgrade/obediencemodule/action(mob/living/silicon/robot/borg, mob/living/user)
 	if(borg.hasToys)
-		to_chat(usr, span_warning("This unit already has a 'recreational' module installed!"))
+		to_chat(usr, span_warning(LANG("obj.b0ba2dcf69729ee8", null)))
 		return FALSE
 	. = ..()
 	if(.)

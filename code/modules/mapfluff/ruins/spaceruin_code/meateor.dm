@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /area/ruin/space/meateor
 	name = "\improper Organic Asteroid"
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
@@ -104,7 +105,7 @@
 
 /// Cut the pod open and destroy it
 /obj/structure/meateor_fluff/flesh_pod/proc/cut_open(mob/user)
-	balloon_alert(user, "slicing...")
+	balloon_alert(user, LANG("obj.6e1259d158fa62f4", null))
 	if (!do_after(user, 3 SECONDS, target = src))
 		return
 	take_damage(max_integrity)

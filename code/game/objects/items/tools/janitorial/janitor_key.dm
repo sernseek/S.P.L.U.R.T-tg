@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///The time limit on the keys before the access it's been given clears itself.
 #define ACCESS_TIMER_LIMIT (10 MINUTES)
 
@@ -34,12 +35,12 @@
 /obj/item/access_key/examine(mob/user)
 	. = ..()
 	if(department_access)
-		. += "It currently holds access to the [department_access] region."
+		. += LANG("obj.6d9d27189f086bce", list(department_access))
 
 /obj/item/access_key/examine_more(mob/user)
 	. = ..()
-	. += span_notice("Access can be granted through a Keycard Authentication Device.")
-	. += span_notice("This access is limited to one department at a time.")
+	. += span_notice(LANG("obj.1c024d16026087f3", null))
+	. += span_notice(LANG("obj.4483eb2922781b4f", null))
 
 /**
  * Called when attempting to open an airlock.
@@ -51,12 +52,12 @@
 /obj/item/access_key/proc/attempt_open_door(mob/living/user, obj/machinery/door/airlock)
 	if(DOING_INTERACTION_WITH_TARGET(user, airlock))
 		return FALSE
-	user.balloon_alert_to_viewers("fumbles with keys...", "finding key...")
+	user.balloon_alert_to_viewers(LANG("obj.0c54933f09bfc29d", null), LANG("obj.3dcd157963a2b6c3", null))
 	user.playsound_local(src, 'sound/items/rattling_keys.ogg', 25, TRUE)
 	if(!do_after(user, key_speed, airlock))
 		return FALSE
 	if(!department_access || !airlock.check_access_list(SSid_access.accesses_by_region[department_access]))
-		airlock.balloon_alert(user, "no access!")
+		airlock.balloon_alert(user, LANG("obj.ddafd75296a2dc2d", null))
 		return FALSE
 	return airlock.try_to_activate_door(user, access_bypass = TRUE)
 
@@ -70,7 +71,7 @@
 /obj/item/access_key/proc/department_access_given(obj/machinery/keycard_auth/source, list/region_access)
 	SIGNAL_HANDLER
 	department_access = region_access[1]
-	say("Access granted to [department_access] area.")
+	say(LANG("obj.607a25a39c92e6db", list(department_access)))
 	playsound(src, 'sound/machines/ding.ogg', 25, TRUE)
 	addtimer(CALLBACK(src, PROC_REF(clear_access)), ACCESS_TIMER_LIMIT, TIMER_UNIQUE|TIMER_OVERRIDE)
 	log_game("Access to the [department_access] department was given to [src] [(ismob(loc)) ? "held by [loc]" : "which is not being held"]")
@@ -84,7 +85,7 @@
 	log_game("Access to the [department_access] department on [src] has expired.")
 	investigate_log("Access to the [department_access] department on [src] has expired.]", INVESTIGATE_ACCESSCHANGES)
 	department_access = null
-	say("Access revoked, time ran out.")
+	say(LANG("obj.1fbe3b0dc7dda9cb", null))
 	playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE)
 
 #undef ACCESS_TIMER_LIMIT

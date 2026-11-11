@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/stack/sheet/animalhide
 	name = "hide"
 	desc = "Something went wrong."
@@ -408,17 +409,17 @@ GLOBAL_LIST_INIT(bear_pelt_recipes, list ( \
 	if(!tool.get_sharpness())
 		return ..()
 	playsound(loc, 'sound/items/weapons/slice.ogg', 50, TRUE, -1)
-	user.visible_message(span_notice("[user] starts cutting hair off \the [src]."), span_notice("You start cutting the hair off \the [src]..."), span_hear("You hear the sound of a knife rubbing against flesh."))
+	user.visible_message(span_notice(LANG("obj.cdc347966716a71b", list(user, src))), span_notice(LANG("obj.4a5f6834f0d6f6bc", list(src))), span_hear(LANG("obj.a412897885ceae0f", null)))
 	if(!do_after(user, 5 SECONDS, target = src))
 		return ITEM_INTERACT_BLOCKING
-	to_chat(user, span_notice("You cut the hair from [src.name]."))
+	to_chat(user, span_notice(LANG("obj.07e8728d0c72fc38", list(src.name))))
 	new /obj/item/stack/sheet/hairlesshide(user.drop_location(), amount)
 	use(amount)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/sheet/animalhide/examine(mob/user)
 	. = ..()
-	. += span_notice("You can remove the hair with any sharp object.")
+	. += span_notice(LANG("obj.6fdc6d9a9d49aeaa", null))
 
 //Step two - washing..... it's actually in washing machine code.
 
@@ -435,7 +436,7 @@ GLOBAL_LIST_INIT(bear_pelt_recipes, list ( \
 
 /obj/item/stack/sheet/hairlesshide/examine(mob/user)
 	. = ..()
-	. += span_notice("You can clean it up by washing in the water.")
+	. += span_notice(LANG("obj.3a0baa69d2c0b5ee", null))
 
 //Step three - drying
 /obj/item/stack/sheet/wethide
@@ -455,7 +456,7 @@ GLOBAL_LIST_INIT(bear_pelt_recipes, list ( \
 
 /obj/item/stack/sheet/wethide/examine(mob/user)
 	. = ..()
-	. += span_notice("You can dry it up to make leather.")
+	. += span_notice(LANG("obj.1a2d14232204737d", null))
 
 /obj/item/stack/sheet/wethide/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
 	. = ..()
@@ -466,7 +467,7 @@ GLOBAL_LIST_INIT(bear_pelt_recipes, list ( \
 	AddComponent(/datum/component/bakeable, /obj/item/stack/sheet/leather, rand(15 SECONDS, 20 SECONDS), TRUE, TRUE)
 
 /obj/item/stack/sheet/wethide/burn()
-	visible_message(span_notice("[src] dries up!"))
+	visible_message(span_notice(LANG("obj.fef5d09d21ff5d4e", list(src))))
 	new /obj/item/stack/sheet/leather(loc, amount) // all the sheets to incentivize not losing your whole stack by accident
 	qdel(src)
 

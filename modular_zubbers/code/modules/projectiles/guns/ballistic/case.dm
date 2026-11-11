@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/storage/toolbox/guncase/skyrat/pistol/ntusp
 	name = "\improper NT22-HCS 'Enforcer' case"
 
@@ -137,19 +138,19 @@ GLOBAL_LIST_INIT(szot_case_blurbs, list(
 /obj/item/storage/toolbox/guncase/skyrat/szot_warstory/examine(mob/user)
 	. = ..()
 	if(lock_broken)
-		. += span_notice("The lock appears to be broken.")
+		. += span_notice(LANG("obj.36ca592ba0d613a6", null))
 	else if(!case_locked && !gun_chosen)
-		. += span_notice("The time to raise arms has come again... What kind of gun did you squirrel away in this thing anyway?")
+		. += span_notice(LANG("obj.fbbdf636e274e6b9", null))
 	var/wear = (scuffing / max_integrity) * 100
 	switch(wear)
 		if(1 to 25)
-			. += "It looks a little scuffed."
+			. += LANG("obj.91c971b482e8fe4a", null)
 		if(25 to 60)
-			. += "It looks slightly damaged."
+			. += LANG("obj.bc3c8a2327d585d1", null)
 		if(60 to 90)
-			. += "It appears heavily damaged."
+			. += LANG("obj.27d47c4b2f198d89", null)
 		if(90 to INFINITY)
-			. += span_warning("It's falling apart!")
+			. += span_warning(LANG("obj.ad6c0cee53a99c80", null))
 
 /// Forces the lock and leaves the case intact
 /obj/item/storage/toolbox/guncase/skyrat/szot_warstory/proc/break_lock()
@@ -177,14 +178,14 @@ GLOBAL_LIST_INIT(szot_case_blurbs, list(
 	if(isnull(id_card))
 		return NONE
 	if(!check_access(id_card))
-		balloon_alert(user, "access denied!")
+		balloon_alert(user, LANG("obj.1bd3ceeb3a56d0d5", null))
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 30, TRUE)
 		return ITEM_INTERACT_BLOCKING
 	if(!case_locked && opened)
-		balloon_alert(user, "close the lid first!")
+		balloon_alert(user, LANG("obj.d2a8e49ae525d2a8", null))
 		return ITEM_INTERACT_BLOCKING
 	if(lock_broken)
-		balloon_alert(user, "lock is broken!")
+		balloon_alert(user, LANG("obj.529495551791401f", null))
 		return ITEM_INTERACT_BLOCKING
 	case_locked = !case_locked
 	// the storage itself only opens up once something has actually been put in it
@@ -198,13 +199,13 @@ GLOBAL_LIST_INIT(szot_case_blurbs, list(
 
 /obj/item/storage/toolbox/guncase/skyrat/szot_warstory/attack_hand_secondary(mob/user, list/modifiers)
 	if(!gun_chosen)
-		balloon_alert(user, "it won't budge!")
+		balloon_alert(user, LANG("obj.73bdfe0e62c8ab3c", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	return ..()
 
 /obj/item/storage/toolbox/guncase/skyrat/szot_warstory/attack_self(mob/user)
 	if(case_locked)
-		balloon_alert(user, "it's locked!")
+		balloon_alert(user, LANG("obj.2ffcba260e4b2ba0", null))
 		return
 	if(!gun_chosen)
 		choose_weapon(user)
@@ -213,10 +214,10 @@ GLOBAL_LIST_INIT(szot_case_blurbs, list(
 
 /obj/item/storage/toolbox/guncase/skyrat/szot_warstory/click_alt(mob/user)
 	if(case_locked)
-		balloon_alert(user, "it's locked!")
+		balloon_alert(user, LANG("obj.2ffcba260e4b2ba0", null))
 		return CLICK_ACTION_BLOCKING
 	if(!gun_chosen)
-		balloon_alert(user, "pick a weapon first!")
+		balloon_alert(user, LANG("obj.792e8cf88f5dd4bb", null))
 		return CLICK_ACTION_BLOCKING
 	return ..()
 
@@ -264,7 +265,7 @@ GLOBAL_LIST_INIT(szot_case_blurbs, list(
 	else
 		unpack_shells()
 
-	balloon_alert(user, "case unpacked")
+	balloon_alert(user, LANG("obj.b7df39d9f514ecb1", null))
 	atom_storage.show_contents(user)
 
 /// A mine on its own is no use, so the case hands over a working set of four

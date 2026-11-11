@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 ** The base card class that is used by decks and cardhands
 */
@@ -126,7 +127,7 @@
 		return
 
 	if(count_cards() == 0)
-		to_chat(user, span_warning("There are no more cards to draw!"))
+		to_chat(user, span_warning(LANG("obj.aee197f983056b73", null)))
 		return
 
 	var/list/cards = fetch_card_atoms()

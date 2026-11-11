@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/chemical_reaction/coca_paste
 	results = list(/datum/reagent/drug/coca_paste = 5)
 	required_reagents = list(/datum/reagent/drug/coca_powder = 10, /datum/reagent/toxin/acid/nitracid = 1, /datum/reagent/water = 9)
@@ -78,7 +79,7 @@
 	. = TRUE
 
 /datum/reagent/drug/cocaine/overdose_start(mob/living/M)
-	to_chat(M, span_userdanger("Your heart beats is beating so fast, it hurts..."))
+	to_chat(M, span_userdanger(LANG("datum.5fbbe175e31b1b93", null)))
 
 /datum/reagent/drug/cocaine/overdose_process(mob/living/M, seconds_per_tick, times_fired)
 	M.adjust_tox_loss(5 * REM * seconds_per_tick, 0)
@@ -88,7 +89,7 @@
 		M.emote(pick("twitch","drool"))
 	if(!HAS_TRAIT(M, TRAIT_FLOORED))
 		if(SPT_PROB(1.5, seconds_per_tick))
-			M.visible_message(span_danger("[M] collapses onto the floor!"))
+			M.visible_message(span_danger(LANG("datum.5d39e298c951d530", list(M))))
 			M.Paralyze(135,TRUE)
 			M.drop_all_held_items()
 	..()
@@ -148,7 +149,7 @@
 	return UPDATE_MOB_HEALTH
 
 /datum/reagent/drug/coca_paste/overdose_start(mob/living/M)
-	to_chat(M, span_userdanger("Your heart beats is beating so fast, it hurts..."))
+	to_chat(M, span_userdanger(LANG("datum.5fbbe175e31b1b93", null)))
 
 /datum/reagent/drug/coca_paste/overdose_process(mob/living/M, seconds_per_tick, times_fired)
 	M.adjust_tox_loss(5 * REM * seconds_per_tick, 0)
@@ -158,7 +159,7 @@
 		M.emote(pick("twitch","drool"))
 	if(!HAS_TRAIT(M, TRAIT_FLOORED))
 		if(SPT_PROB(1.5, seconds_per_tick))
-			M.visible_message(span_danger("[M] collapses onto the floor!"))
+			M.visible_message(span_danger(LANG("datum.5d39e298c951d530", list(M))))
 			M.Paralyze(135,TRUE)
 			M.drop_all_held_items()
 	..()
@@ -204,7 +205,7 @@
 	..()
 
 /datum/reagent/drug/freebase_cocaine/overdose_start(mob/living/M)
-	to_chat(M, span_userdanger("Your heart beats is beating so fast, it hurts..."))
+	to_chat(M, span_userdanger(LANG("datum.5fbbe175e31b1b93", null)))
 
 /datum/reagent/drug/freebase_cocaine/overdose_process(mob/living/M, seconds_per_tick, times_fired)
 	M.adjust_tox_loss(5 * REM * seconds_per_tick, 0)
@@ -214,7 +215,7 @@
 		M.emote(pick("twitch","drool"))
 	if(!HAS_TRAIT(M, TRAIT_FLOORED))
 		if(SPT_PROB(1.5, seconds_per_tick))
-			M.visible_message(span_danger("[M] collapses onto the floor!"))
+			M.visible_message(span_danger(LANG("datum.5d39e298c951d530", list(M))))
 			M.Paralyze(135,TRUE)
 			M.drop_all_held_items()
 	..()

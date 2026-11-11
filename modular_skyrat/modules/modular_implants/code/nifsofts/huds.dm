@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/nifsoft/hud
 	name = "Scrying Lens"
 	program_desc = "An umbrella term for all sorts of NIFsofts dealing with heads-up displays, this sort of technology dates back almost to the beginning of NIFsoft development. These 'softs are commonly used in the civilian field for integration with all sorts of activities; piloting, swordplay, scientific research, or even AI copiloting for important social interactions. While normally the nanomachines involved in the program's operation are used as a sort of artificial contact lens over the user's visual organs, Nanotrasen regulations have bid these particular forks to instead integrate with glasses the user's already wearing."
@@ -46,7 +47,7 @@
 /datum/nifsoft/hud/activate()
 	var/obj/item/clothing/glasses/worn_glasses = linked_mob.get_item_by_slot(ITEM_SLOT_EYES)
 	if(eyewear_check && !active && (!istype(worn_glasses) || !HAS_TRAIT(worn_glasses, TRAIT_NIFSOFT_HUD_GRANTER)))
-		linked_mob.balloon_alert(linked_mob, "no compatible eyewear!")
+		linked_mob.balloon_alert(linked_mob, LANG("datum.c58b0336ff05e1dc", null))
 		return FALSE
 
 	. = ..() // active = !active
@@ -81,7 +82,7 @@
 /datum/element/nifsoft_hud/proc/on_examine(datum/source, mob/user, list/examine_text)
 	SIGNAL_HANDLER
 
-	examine_text += span_cyan("Wearing this item in your glasses slot will allow you to use NIFSoft HUDs.")
+	examine_text += span_cyan(LANG("datum.e66b4f135b23ee31", null))
 
 /datum/element/nifsoft_hud/Detach(datum/target)
 	UnregisterSignal(target, COMSIG_ATOM_EXAMINE)

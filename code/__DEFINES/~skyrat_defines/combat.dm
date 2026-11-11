@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 //Stamina threshold from which resisting a grab becomes hard
 #define STAMINA_THRESHOLD_HARD_RESIST 80
@@ -29,7 +30,7 @@
 //It's really not recommended to use this proc to give feedback, hence why silent is defaulting to true.
 /mob/living/carbon/proc/KnockToFloor(silent = TRUE, ignore_canknockdown = FALSE, knockdown_amt = 1)
 	if(!silent && body_position != LYING_DOWN)
-		to_chat(src, span_warning("You are knocked to the floor!"))
+		to_chat(src, span_warning(LANG("mob.b27ae9b87831db5e", null)))
 	Knockdown(knockdown_amt, ignore_canknockdown)
 
 /mob/living/proc/StaminaKnockdown(stamina_damage, disarm, brief_stun, hardstun, ignore_canknockdown = FALSE, paralyze_amount, knockdown_amt = 1)
@@ -84,7 +85,7 @@
 	switch(deprecise_zone(user.zone_selected))
 		if(BODY_ZONE_HEAD)
 			if(!(target.body_position == LYING_DOWN))
-				target.balloon_alert(user, "not floored!")
+				target.balloon_alert(user, LANG("datum.67cee84e78257fb6", null))
 				return FALSE
 			. = TRUE
 			try_headslam(user, target, affecting)
@@ -111,9 +112,9 @@
 
 /// Attempts to perform a suplex after SUPLEX_TIMER, causing both to be stunned. (Why spacemen are able to do such a thing on reflex, nobody knows.)
 /datum/species/proc/try_suplex(mob/living/carbon/human/user, mob/living/carbon/human/target)
-	target.visible_message(span_danger("[user.name] holds [target.name] tight and starts lifting [target.p_them()] up!"), \
-			span_userdanger("[user.name] holds you tight and lifts you up!"), ignored_mobs=user)
-	to_chat(user, span_danger("You hold [target.name] tight and lift [target.p_them()] up..."))
+	target.visible_message(span_danger(LANG("datum.9166136b8a767d8c", list(user.name, target.name, target.p_them()))), \
+			span_userdanger(LANG("datum.d09f49eb67cb8154", list(user.name))), ignored_mobs=user)
+	to_chat(user, span_danger(LANG("datum.5572671b1613ffc6", list(target.name, target.p_them()))))
 	user.changeNext_move(SUPLEX_TIMER)
 	if(!do_after(user, SUPLEX_TIMER, target) || !grab_maneuver_state_check(user, target))
 		return FALSE
@@ -124,9 +125,9 @@
 		if(IS_OPAQUE_TURF(next_turf))
 			break
 		moved_turf = next_turf
-	target.visible_message(span_danger("[user.name] suplexes [target.name] down to the ground!"), \
-		span_userdanger("[user.name] suplexes you!"), ignored_mobs=user)
-	to_chat(user, span_danger("You suplex [target.name]!"))
+	target.visible_message(span_danger(LANG("datum.3627a9cbd6269d55", list(user.name, target.name))), \
+		span_userdanger(LANG("datum.b29386988dcf5ee9", list(user.name))), ignored_mobs=user)
+	to_chat(user, span_danger(LANG("datum.f05043700f13cefa", list(target.name))))
 	user.StaminaKnockdown(30, TRUE, TRUE)
 	user.SpinAnimation(7,1)
 	target.SpinAnimation(7,1)
@@ -141,12 +142,12 @@
 	var/time_doing = 4 SECONDS
 	if(IS_UNCONSCIOUS_OR_CRIT(target))
 		time_doing = 2 SECONDS
-		target.visible_message(span_danger("[user] holds [target]'s head tightly..."), ignored_mobs = user)
-		to_chat(user, span_danger("You grasp [target]'s head to prepare to slam it down..."))
+		target.visible_message(span_danger(LANG("datum.3089419dac864a1c", list(user, target))), ignored_mobs = user)
+		to_chat(user, span_danger(LANG("datum.54b6f6031443ff20", list(target))))
 	else
-		target.visible_message(span_danger("[user] holds [target]'s head and tries to overpower [target.p_them()]!"), \
-			span_userdanger("You struggle as [user] holds your head and tries to overpower you!"), ignored_mobs = user)
-		to_chat(user, span_danger("You grasp [target]'s head and try to overpower [target.p_them()]..."))
+		target.visible_message(span_danger(LANG("datum.78bcb02b128871a5", list(user, target, target.p_them()))), \
+			span_userdanger(LANG("datum.dfe8829b20bfa9d9", list(user))), ignored_mobs = user)
+		to_chat(user, span_danger(LANG("datum.5fe6c3555adc819b", list(target, target.p_them()))))
 	user.changeNext_move(time_doing)
 	if(!do_after(user, time_doing, target) || !grab_maneuver_state_check(user, target))
 		return
@@ -156,9 +157,9 @@
 	if(armor_block < HEADSMASH_BLOCK_ARMOR)
 		head_knock = TRUE
 
-	target.visible_message(span_danger("[user.name] violently slams [target.name]'s head into the floor!"), \
-		span_userdanger("[user.name] slams your head against the floor!"), ignored_mobs = user)
-	to_chat(user, span_danger("You slam [target.name]'s head against the floor!"))
+	target.visible_message(span_danger(LANG("datum.13659bb362f97095", list(user.name, target.name))), \
+		span_userdanger(LANG("datum.c23288f4fa0156fb", list(user.name))), ignored_mobs = user)
+	to_chat(user, span_danger(LANG("datum.ec810fde2e92062d", list(target.name))))
 
 	// wound bonus because if you're doing this you probably really don't like the other guy so you're looking forward to inconveniencing them (with a fracture)
 	var/fun_times_at_the_headbash_factory = (head_knock ? 8 : 3)
@@ -177,18 +178,18 @@
 
 	if (!pregen_data.can_be_applied_to(affecting, random_roll = FALSE))
 		if (!(affecting.biological_state & BIO_JOINTED))
-			to_chat(user, span_warning("[target]'s [affecting.plaintext_zone] has no joint to dislocate!"))
+			to_chat(user, span_warning(LANG("datum.32a9850ff1b4bba6", list(target, affecting.plaintext_zone))))
 		return FALSE
 
 	user.changeNext_move(4 SECONDS)
-	target.visible_message(span_danger("[user.name] twists [target.name]'s [affecting.name] violently!"), \
-			span_userdanger("[user.name] twists your [affecting.name] violently!"), ignored_mobs=user)
-	to_chat(user, span_danger("You start twisting [target.name]'s [affecting.name] violently!"))
+	target.visible_message(span_danger(LANG("datum.ea1f462240b1f93f", list(user.name, target.name, affecting.name))), \
+			span_userdanger(LANG("datum.e0d76d3258545ca0", list(user.name, affecting.name))), ignored_mobs=user)
+	to_chat(user, span_danger(LANG("datum.5089db74db079e14", list(target.name, affecting.name))))
 	if(!do_after(user, 4 SECONDS, target) || !grab_maneuver_state_check(user, target))
 		return FALSE
-	target.visible_message(span_danger("[user.name] dislocates [target.name]'s [affecting.name]!"), \
-		span_userdanger("[user.name] dislocates your [affecting.name]!"), ignored_mobs=user)
-	to_chat(user, span_danger("You dislocate [target.name]'s [affecting.name]!"))
+	target.visible_message(span_danger(LANG("datum.7c76bbd93527e947", list(user.name, target.name, affecting.name))), \
+		span_userdanger(LANG("datum.38e849fc1bad297d", list(user.name, affecting.name))), ignored_mobs=user)
+	to_chat(user, span_danger(LANG("datum.e6b8feaf3919c4f7", list(target.name, affecting.name))))
 	affecting.force_wound_upwards(/datum/wound/blunt/bone/moderate)
 	log_combat(user, target, "dislocates", "the [affecting.name]")
 	return TRUE

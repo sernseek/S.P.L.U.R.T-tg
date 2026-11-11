@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/implant/tracking
 	name = "tracking implant"
 	desc = "Track with this."
@@ -47,13 +48,13 @@
 		return
 
 	if(params["implant_action"] == "warn")
-		var/warning = tgui_input_text(user, "What warning do you want to send to [imp_in.name]?", "Messaging", max_length = MAX_MESSAGE_LEN)
+		var/warning = tgui_input_text(user, LANG("obj.09ca1f813f01e1f7", list(imp_in.name)), LANG("obj.0a5ca72d9fea0bca", null), max_length = MAX_MESSAGE_LEN)
 		if(!warning || QDELETED(src) || QDELETED(user) || QDELETED(console) || isnull(imp_in))
 			return TRUE
 		if(!console.is_operational || !user.can_perform_action(console, NEED_DEXTERITY|ALLOW_SILICON_REACH))
 			return TRUE
 
-		to_chat(imp_in, span_hear("You hear a voice in your head saying: '[warning]'"))
+		to_chat(imp_in, span_hear(LANG("obj.d667566a22f280b9", list(warning))))
 		log_directed_talk(user, imp_in, warning, LOG_SAY, "implant message")
 		return TRUE
 

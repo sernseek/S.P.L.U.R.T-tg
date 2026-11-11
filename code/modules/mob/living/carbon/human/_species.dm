@@ -1,3 +1,9 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+// ZH EDIT ADDITION START
+// Local defines for now, TODO: put these in their own file with the rest of the offset defines
+#define NOVA_UNDERWEAR_UNDERSHIRT_LAYER (UNIFORM_LAYER + 0.01)
+#define NOVA_BRA_SOCKS_LAYER (UNIFORM_LAYER + 0.02)
+// ZH EDIT ADDITION END
 /// List of roundstart races' their species_id's
 GLOBAL_LIST_EMPTY(roundstart_races)
 ///List of all roundstart languages by path except common
@@ -591,7 +597,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_CHEST)
 			if(!H.w_uniform && !HAS_TRAIT(H, TRAIT_NO_JUMPSUIT) && (!O || IS_ORGANIC_LIMB(O)))
 				if(!disable_warning)
-					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
+					to_chat(H, span_warning(LANG("datum.dae58471cf6dfcff", list(I.name))))
 				return FALSE
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
 		if(ITEM_SLOT_EYES)
@@ -621,7 +627,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_CHEST)
 			if(!H.w_uniform && !HAS_TRAIT(H, TRAIT_NO_JUMPSUIT) && (!O || IS_ORGANIC_LIMB(O)))
 				if(!disable_warning)
-					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
+					to_chat(H, span_warning(LANG("datum.dae58471cf6dfcff", list(I.name))))
 				return FALSE
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
 		if(ITEM_SLOT_LPOCKET)
@@ -634,7 +640,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 			if(!H.w_uniform && !HAS_TRAIT(H, TRAIT_NO_JUMPSUIT) && (!O || IS_ORGANIC_LIMB(O)))
 				if(!disable_warning)
-					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
+					to_chat(H, span_warning(LANG("datum.dae58471cf6dfcff", list(I.name))))
 				return FALSE
 			return TRUE
 		if(ITEM_SLOT_RPOCKET)
@@ -647,7 +653,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 			if(!H.w_uniform && !HAS_TRAIT(H, TRAIT_NO_JUMPSUIT) && (!O || IS_ORGANIC_LIMB(O)))
 				if(!disable_warning)
-					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
+					to_chat(H, span_warning(LANG("datum.dae58471cf6dfcff", list(I.name))))
 				return FALSE
 			return TRUE
 		if(ITEM_SLOT_SUITSTORE)
@@ -656,14 +662,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/obj/item/clothing/suit/suit = H.get_item_by_slot(ITEM_SLOT_OCLOTHING)
 			if(!istype(suit))
 				if(!disable_warning)
-					to_chat(H, span_warning("You need a suit before you can attach this [I.name]!"))
+					to_chat(H, span_warning(LANG("datum.360d4820e5772b88", list(I.name))))
 				return FALSE
 			var/any_suit_storage = (is_type_in_typecache(I, GLOB.any_suit_storage) || I.w_class == WEIGHT_CLASS_TINY)
 			if(any_suit_storage)
 				return TRUE
 			if(I.w_class > WEIGHT_CLASS_BULKY)
 				if(!disable_warning)
-					to_chat(H, span_warning("\The [I] is too big to attach!")) //should be src?
+					to_chat(H, span_warning(LANG("datum.e1af9077bfe5982f", list(I)))) //should be src?
 				return FALSE
 			if(is_type_in_list(I, suit.allowed))
 				return TRUE
@@ -685,7 +691,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/equip_delay_self_check(obj/item/I, mob/living/carbon/human/H, bypass_equip_delay_self)
 	if(!I.equip_delay_self || bypass_equip_delay_self)
 		return TRUE
-	H.visible_message(span_notice("[H] start putting on [I]..."), span_notice("You start putting on [I]..."))
+	H.visible_message(span_notice(LANG("datum.8f1b5729dffb8a81", list(H, I))), span_notice(LANG("datum.ce720265949b8007", list(I))))
 	return do_after(H, I.equip_delay_self, target = H)
 
 
@@ -715,13 +721,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(!source.IsParalyzed())
 			source.emote("collapse")
 		source.Paralyze(RAD_MOB_KNOCKDOWN_AMOUNT)
-		to_chat(source, span_danger("You feel weak."))
+		to_chat(source, span_danger(LANG("datum.0809d49b5ce94e78", null)))
 
 	if(time_since_irradiated > RAD_MOB_VOMIT && SPT_PROB(RAD_MOB_VOMIT_PROB, seconds_per_tick))
 		source.vomit(VOMIT_CATEGORY_BLOOD, lost_nutrition = 10)
 
 	if(time_since_irradiated > RAD_MOB_MUTATE && SPT_PROB(RAD_MOB_MUTATE_PROB, seconds_per_tick))
-		to_chat(source, span_danger("You mutate!"))
+		to_chat(source, span_danger(LANG("datum.735fefd651c0f48d", null)))
 		source.easy_random_mutate(NEGATIVE + MINOR_NEGATIVE)
 		source.emote("gasp")
 		source.domutcheck()
@@ -729,7 +735,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(time_since_irradiated > RAD_MOB_HAIRLOSS && SPT_PROB(RAD_MOB_HAIRLOSS_PROB, seconds_per_tick))
 		var/obj/item/bodypart/head/head = source.get_bodypart(BODY_ZONE_HEAD)
 		if(!(source.hairstyle == "Bald") && (head?.head_flags & (HEAD_HAIR|HEAD_FACIAL_HAIR)))
-			to_chat(source, span_danger("Your hair starts to fall out in clumps..."))
+			to_chat(source, span_danger(LANG("datum.cc5e9c19740b0d58", null)))
 			addtimer(CALLBACK(src, PROC_REF(go_bald), source), 5 SECONDS)
 
 /**
@@ -767,7 +773,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 ///This proc handles punching damage. IMPORTANT: Our owner is the TARGET and not the USER in this proc. For whatever reason...
 /datum/species/proc/harm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
 	if(HAS_TRAIT(user, TRAIT_PACIFISM) && !attacker_style?.pacifist_style)
-		to_chat(user, span_warning("You don't want to harm [target]!"))
+		to_chat(user, span_warning(LANG("datum.39d6a060f571533f", list(target))))
 		return FALSE
 
 	var/obj/item/organ/brain/brain = user.get_organ_slot(ORGAN_SLOT_BRAIN)
@@ -796,7 +802,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				atk_verb_continuous = attacking_bodypart.unarmed_attack_verbs_continuous[atk_verb_index]
 			atk_effect = attacking_bodypart.unarmed_attack_effect
 		else  //Nothing? Okay. Fail.
-			user.balloon_alert(user, "can't attack!")
+			user.balloon_alert(user, LANG("datum.d96d836c3bba47d6", null))
 			return FALSE
 
 	user.do_attack_animation(target, atk_effect)
@@ -869,9 +875,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	if(!damage || !affecting || prob(miss_chance))//future-proofing for species that have 0 damage/weird cases where no zone is targeted
 		playsound(target.loc, attacking_bodypart.unarmed_miss_sound, 25, TRUE, -1)
-		target.visible_message(span_danger("[user]'s [atk_verb] misses [target]!"), \
-						span_danger("You avoid [user]'s [atk_verb]!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, user)
-		to_chat(user, span_warning("Your [atk_verb] misses [target]!"))
+		target.visible_message(span_danger(LANG("datum.9177cc8ccae19492", list(user, atk_verb, target))), \
+						span_danger(LANG("datum.58e151ee2f5059d3", list(user, atk_verb))), span_hear(LANG("datum.b8189c1ed616b3a4", null)), COMBAT_MESSAGE_RANGE, user)
+		to_chat(user, span_warning(LANG("datum.6e3a93673a00d168", list(atk_verb, target))))
 		log_combat(user, target, "attempted to punch")
 		return FALSE
 
@@ -899,9 +905,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		atk_verb = attacking_bodypart.grappled_attack_verb
 		atk_verb_continuous = attacking_bodypart.grappled_attack_verb_continuous
 
-	target.visible_message(span_danger("[user] [atk_verb_continuous] [target]!"), \
-					span_userdanger("[user] [atk_verb_continuous] you!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, user)
-	to_chat(user, span_danger("You [atk_verb] [target]!"))
+	target.visible_message(span_danger(LANG("datum.dd02d8c90a5dee7a", list(user, atk_verb_continuous, target))), \
+					span_userdanger(LANG("datum.9ab70b397edc0103", list(user, atk_verb_continuous))), span_hear(LANG("datum.6c7f8149b8c68cd4", null)), COMBAT_MESSAGE_RANGE, user)
+	to_chat(user, span_danger(LANG("datum.22d557f300d422c9", list(atk_verb, target))))
 
 	target.lastattacker = user.real_name
 	target.lastattackerckey = user.ckey
@@ -952,45 +958,45 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	switch(roll_them_bones)
 		if (-INFINITY to 0) //Mostly a gimmie, this one just keeps them staggered briefly
 			target.adjust_staggered_up_to(1 SECONDS, 10 SECONDS)
-			target.visible_message(span_warning("[user]'s [atk_verb] briefly winds [target]!"), \
-				span_warning("You are briefly winded by [user]'s [atk_verb]!"), span_hear("You hear a thud!"), COMBAT_MESSAGE_RANGE, user)
-			to_chat(user, span_warning("Your [atk_verb] briefly winds [target]!"))
+			target.visible_message(span_warning(LANG("datum.9fcccdda0dcec8dd", list(user, atk_verb, target))), \
+				span_warning(LANG("datum.38e1cca41ac94167", list(user, atk_verb))), span_hear(LANG("datum.c21e1095e1f9cd18", null)), COMBAT_MESSAGE_RANGE, user)
+			to_chat(user, span_warning(LANG("datum.5635177d75eae7d7", list(atk_verb, target))))
 
 		if (1 to 10)
 			target.adjust_eye_blur_up_to(5 SECONDS, 10 SECONDS)
-			target.visible_message(span_warning("[user]'s [atk_verb] hits [target] so hard, their eyes water! Ouch!"), \
-				span_warning("You are hit viciously by [user]'s [atk_verb], and your eyes begin to water!"), span_hear("You hear a thud!"), COMBAT_MESSAGE_RANGE, user)
-			to_chat(user, span_warning("Your [atk_verb] causes [target] to tear up!"))
+			target.visible_message(span_warning(LANG("datum.aec9a3ca9fdb5cf8", list(user, atk_verb, target))), \
+				span_warning(LANG("datum.8f7cdcc55548aedb", list(user, atk_verb))), span_hear(LANG("datum.c21e1095e1f9cd18", null)), COMBAT_MESSAGE_RANGE, user)
+			to_chat(user, span_warning(LANG("datum.b8a6a91309833ce2", list(atk_verb, target))))
 
 		if (11 to 30)
 			target.adjust_dizzy_up_to(5 SECONDS, 10 SECONDS)
 			target.adjust_eye_blur_up_to(5 SECONDS, 10 SECONDS)
 			target.adjust_confusion_up_to(5 SECONDS, 10 SECONDS)
-			target.visible_message(span_warning("[user]'s [atk_verb] hits [target] so hard, they are sent reeling in agony! Damn!"), \
-				span_warning("You are hit viciously by [user]'s [atk_verb], and everything becomes a dizzying blur!"), span_hear("You hear a thud!"), COMBAT_MESSAGE_RANGE, user)
-			to_chat(user, span_warning("Your [atk_verb] causes [target] to go stumbling about in a confuzed daze!"))
+			target.visible_message(span_warning(LANG("datum.dbc3700406f9779c", list(user, atk_verb, target))), \
+				span_warning(LANG("datum.26cad71ddeac1b0b", list(user, atk_verb))), span_hear(LANG("datum.c21e1095e1f9cd18", null)), COMBAT_MESSAGE_RANGE, user)
+			to_chat(user, span_warning(LANG("datum.4228bb626bd5e7a6", list(atk_verb, target))))
 
 		if(31 to 40)
 			target.adjust_dizzy_up_to(5 SECONDS, 10 SECONDS)
 			target.adjust_confusion_up_to(5 SECONDS, 10 SECONDS)
 			target.adjust_temp_blindness_up_to(5 SECONDS, 10 SECONDS)
-			target.visible_message(span_warning("[user]'s [atk_verb] hits [target] so hard, they are sent reeling blindly in agony! Goddamn!"), \
-				span_warning("You are hit viciously by [user]'s [atk_verb], and everything becomes a dizzying, blinding blur!"), span_hear("You hear a thud!"), COMBAT_MESSAGE_RANGE, user)
-			to_chat(user, span_warning("Your [atk_verb] causes [target] to go stumbling about in a confuzed, blind daze!"))
+			target.visible_message(span_warning(LANG("datum.408bb95c1ff6076e", list(user, atk_verb, target))), \
+				span_warning(LANG("datum.1b9f3a7f2f016b2a", list(user, atk_verb))), span_hear(LANG("datum.c21e1095e1f9cd18", null)), COMBAT_MESSAGE_RANGE, user)
+			to_chat(user, span_warning(LANG("datum.185962d4906789c5", list(atk_verb, target))))
 
 		if (41 to 45)
 			target.apply_effect(4 SECONDS, EFFECT_KNOCKDOWN, armor_block)
-			target.visible_message(span_warning("[user]'s [atk_verb] hits [target] so hard, you knock them off their feet! Holy shit!"), \
-				span_warning("You are hit viciously by [user]'s [atk_verb] and sent toppling head over heels!"), span_hear("You hear a sickening thud!"), COMBAT_MESSAGE_RANGE, user)
-			to_chat(user, span_warning("Your [atk_verb] lands, and you send [target] sailing off their feet!"))
+			target.visible_message(span_warning(LANG("datum.6f197d566171058e", list(user, atk_verb, target))), \
+				span_warning(LANG("datum.1a29d567b6dee993", list(user, atk_verb))), span_hear(LANG("datum.e92d32248de4ac68", null)), COMBAT_MESSAGE_RANGE, user)
+			to_chat(user, span_warning(LANG("datum.a04cd8853d3dc6e8", list(atk_verb, target))))
 
 		if (46 to INFINITY)
 			target.apply_effect(4 SECONDS, EFFECT_KNOCKDOWN, armor_block)
 			var/obj/item/bodypart/affecting = target.get_bodypart(target.get_random_valid_zone(user.zone_selected))
 			target.apply_damage(5, BRUTE, affecting, armor_block, wound_bonus = limb_accuracy * 2) //Mostly for the crunchy wounding effect than actually doing damage
-			target.visible_message(span_warning("[user]'s [atk_verb] hits [target] so hard, you hit them off their feet with a loud crunch! Fucking hell!"), \
-				span_warning("You are hit viciously by [user]'s [atk_verb], and suddenly feel an overwhelming pain as you topple head over heels!"), span_hear("You hear a sickening crack and a loud thud!"), COMBAT_MESSAGE_RANGE, user)
-			to_chat(user, span_warning("Your [atk_verb] lands, and [target] is sent crashing to the floor with the immense force! Good god!"))
+			target.visible_message(span_warning(LANG("datum.c219ed4b0eb5af7f", list(user, atk_verb, target))), \
+				span_warning(LANG("datum.044d33cc6a85dd92", list(user, atk_verb))), span_hear(LANG("datum.a149271b46326f0a", null)), COMBAT_MESSAGE_RANGE, user)
+			to_chat(user, span_warning(LANG("datum.723ae72fd4fe11d1", list(atk_verb, target))))
 
 
 /datum/species/proc/disarm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
@@ -1014,9 +1020,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		attacker_style = GET_ACTIVE_MARTIAL_ART(owner)
 	if((owner != target) && target.check_block(owner, 0, owner.name, attack_type = UNARMED_ATTACK))
 		log_combat(owner, target, "attempted to touch")
-		target.visible_message(span_warning("[owner] attempts to touch [target]!"), \
-						span_danger("[owner] attempts to touch you!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, owner)
-		to_chat(owner, span_warning("You attempt to touch [target]!"))
+		target.visible_message(span_warning(LANG("datum.037cd05a333459e3", list(owner, target))), \
+						span_danger(LANG("datum.b6efcc7002a14b4d", list(owner))), span_hear(LANG("datum.b8189c1ed616b3a4", null)), COMBAT_MESSAGE_RANGE, owner)
+		to_chat(owner, span_warning(LANG("datum.58bf0cb652c40ee0", list(target))))
 		return
 
 	SEND_SIGNAL(owner, COMSIG_MOB_ATTACK_HAND, owner, target, attacker_style, modifiers) //BUBBER EDIT - Original line SEND_SIGNAL(owner, COMSIG_MOB_ATTACK_HAND, owner, target, attacker_style)
@@ -1607,16 +1613,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "band-aid",
-			SPECIES_PERK_NAME = "Brutal Weakness",
-			SPECIES_PERK_DESC = "[plural_form] are weak to brute damage.",
+			SPECIES_PERK_NAME = LANG("datum.0c3f230d79cad854", null),
+			SPECIES_PERK_DESC = LANG("datum.c39c169663f63157", list(plural_form)),
 		))
 
 	if(initial(fake_chest.brute_modifier) < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "shield-alt",
-			SPECIES_PERK_NAME = "Brutal Resilience",
-			SPECIES_PERK_DESC = "[plural_form] are resilient to brute damage.",
+			SPECIES_PERK_NAME = LANG("datum.6b8dd08d3f404e7e", null),
+			SPECIES_PERK_DESC = LANG("datum.53e1f0753becf15a", list(plural_form)),
 		))
 
 	// Burn related
@@ -1624,16 +1630,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "burn",
-			SPECIES_PERK_NAME = "Burn Weakness",
-			SPECIES_PERK_DESC = "[plural_form] are weak to burn damage.",
+			SPECIES_PERK_NAME = LANG("datum.3c7f7a6cf7a0bfef", null),
+			SPECIES_PERK_DESC = LANG("datum.125549271a44e1ec", list(plural_form)),
 		))
 
 	if(initial(fake_chest.burn_modifier) < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "shield-alt",
-			SPECIES_PERK_NAME = "Burn Resilience",
-			SPECIES_PERK_DESC = "[plural_form] are resilient to burn damage.",
+			SPECIES_PERK_NAME = LANG("datum.8f9a12941c775dd9", null),
+			SPECIES_PERK_DESC = LANG("datum.eb0ddcb2184783ee", list(plural_form)),
 		))
 
 	// Shock damage
@@ -1641,24 +1647,24 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "bolt",
-			SPECIES_PERK_NAME = "Shock Vulnerability",
-			SPECIES_PERK_DESC = "[plural_form] are vulnerable to being shocked.",
+			SPECIES_PERK_NAME = LANG("datum.deebd9bd1bff1d22", null),
+			SPECIES_PERK_DESC = LANG("datum.a1110d7cedaa8261", list(plural_form)),
 		))
 
 	if(siemens_coeff < 1)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "shield-alt",
-			SPECIES_PERK_NAME = "Shock Resilience",
-			SPECIES_PERK_DESC = "[plural_form] are resilient to being shocked.",
+			SPECIES_PERK_NAME = LANG("datum.fa00d085c787d742", null),
+			SPECIES_PERK_DESC = LANG("datum.96efdefadb657092", list(plural_form)),
 		))
 
 	if(inherent_biotypes & (MOB_ROBOTIC|MOB_MINERAL))
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = FA_ICON_HAMMER,
-			SPECIES_PERK_NAME = "Tough Frame",
-			SPECIES_PERK_DESC = "[plural_form] are more resistant to slashing and stabbing, but more vulnerable to impacts.",
+			SPECIES_PERK_NAME = LANG("datum.a87ad65db45d0756", null),
+			SPECIES_PERK_DESC = LANG("datum.c41fad735031a5eb", list(plural_form)),
 		))
 
 	return to_add
@@ -1676,16 +1682,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "temperature-high",
-			SPECIES_PERK_NAME = "Heat Vulnerability",
-			SPECIES_PERK_DESC = "[plural_form] are vulnerable to high temperatures.",
+			SPECIES_PERK_NAME = LANG("datum.bff4c19c9a8fba2d", null),
+			SPECIES_PERK_DESC = LANG("datum.cd5454f111b559eb", list(plural_form)),
 		))
 
 	if(heatmod < 1 || bodytemp_heat_damage_limit > BODYTEMP_HEAT_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "thermometer-empty",
-			SPECIES_PERK_NAME = "Heat Resilience",
-			SPECIES_PERK_DESC = "[plural_form] are resilient to hotter environments.",
+			SPECIES_PERK_NAME = LANG("datum.7e9e1fbec2a77cd9", null),
+			SPECIES_PERK_DESC = LANG("datum.aa13855833ec2a08", list(plural_form)),
 		))
 
 	// Cold temperature tolerance
@@ -1693,16 +1699,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "temperature-low",
-			SPECIES_PERK_NAME = "Cold Vulnerability",
-			SPECIES_PERK_DESC = "[plural_form] are vulnerable to cold temperatures.",
+			SPECIES_PERK_NAME = LANG("datum.026c16573200ff8d", null),
+			SPECIES_PERK_DESC = LANG("datum.bbabcb1bd3412175", list(plural_form)),
 		))
 
 	if(coldmod < 1 || bodytemp_cold_damage_limit < BODYTEMP_COLD_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "thermometer-empty",
-			SPECIES_PERK_NAME = "Cold Resilience",
-			SPECIES_PERK_DESC = "[plural_form] are resilient to colder environments.",
+			SPECIES_PERK_NAME = LANG("datum.881c4d858f0aabc3", null),
+			SPECIES_PERK_DESC = LANG("datum.8a10dcf0d2a10f13", list(plural_form)),
 		))
 
 	return to_add
@@ -1721,8 +1727,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "tint-slash",
-			SPECIES_PERK_NAME = "Bloodletted",
-			SPECIES_PERK_DESC = "[plural_form] do not have blood.",
+			SPECIES_PERK_NAME = LANG("datum.a4ced63b6a9ff532", null),
+			SPECIES_PERK_DESC = LANG("datum.16ce77647f6b26ca", list(plural_form)),
 		))
 
 	// Otherwise, check if their exotic blood is a valid typepath
@@ -1731,7 +1737,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "tint",
 			SPECIES_PERK_NAME = initial(blood_type.reagent_type.name),
-			SPECIES_PERK_DESC = "[name] blood is [initial(blood_type.reagent_type.name)], which can make receiving medical treatment harder.",
+			SPECIES_PERK_DESC = LANG("datum.207d7e80fe0db9a0", list(name, initial(blood_type.reagent_type.name))),
 		))
 
 	// Otherwise otherwise, see if they have an exotic bloodtype set
@@ -1739,8 +1745,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "tint",
-			SPECIES_PERK_NAME = "Exotic Blood",
-			SPECIES_PERK_DESC = "[plural_form] have \"[exotic_bloodtype]\" type blood, which can make receiving medical treatment harder.",
+			SPECIES_PERK_NAME = LANG("datum.5868eddea8d2df21", null),
+			SPECIES_PERK_DESC = LANG("datum.be7f199d01a045a4", list(plural_form, exotic_bloodtype)),
 		))
 
 	return to_add
@@ -1757,50 +1763,48 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "user-plus",
-			SPECIES_PERK_NAME = "Limbs Easily Reattached",
-			SPECIES_PERK_DESC = "[plural_form] limbs are easily readded, and as such do not \
-				require surgery to restore. Simply pick it up and pop it back in, champ!",
+			SPECIES_PERK_NAME = LANG("datum.a84b26ef63d1d32b", null),
+			SPECIES_PERK_DESC = LANG("datum.4c2f84f24f4cf5db", list(plural_form)),
 		))
 
 	if(TRAIT_EASYDISMEMBER in inherent_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "user-times",
-			SPECIES_PERK_NAME = "Limbs Easily Dismembered",
-			SPECIES_PERK_DESC = "[plural_form] limbs are not secured well, and as such they are easily dismembered.",
+			SPECIES_PERK_NAME = LANG("datum.dcd7af13f6a9742a", null),
+			SPECIES_PERK_DESC = LANG("datum.3e6d2c312c7234f0", list(plural_form)),
 		))
 
 	if(TRAIT_EASILY_WOUNDED in inherent_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "user-times",
-			SPECIES_PERK_NAME = "Easily Wounded",
-			SPECIES_PERK_DESC = "[plural_form] skin is very weak and fragile. They are much easier to apply serious wounds to.",
+			SPECIES_PERK_NAME = LANG("datum.2ee374c017ec3bf8", null),
+			SPECIES_PERK_DESC = LANG("datum.6a7ea703e7012ca1", list(plural_form)),
 		))
 
 	if(TRAIT_TOXINLOVER in inherent_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "syringe",
-			SPECIES_PERK_NAME = "Toxins Lover",
-			SPECIES_PERK_DESC = "Toxins damage dealt to [plural_form] are reversed - healing toxins will instead cause harm, and \
-				causing toxins will instead cause healing. Be careful around purging chemicals!",
+			SPECIES_PERK_NAME = LANG("datum.658c485b93d24d0f", null),
+			SPECIES_PERK_DESC = LANG("datum.69ff4aed68b648fb", list(plural_form)),
 		))
 
 	if (TRAIT_GENELESS in inherent_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "dna",
-			SPECIES_PERK_NAME = "No Genes",
-			SPECIES_PERK_DESC = "[plural_form] have no genes, making genetic scrambling a useless weapon, but also locking them out from getting genetic powers.",
+			SPECIES_PERK_NAME = LANG("datum.15dd96e0d4bff3b2", null),
+			SPECIES_PERK_DESC = LANG("datum.e9c069ef543f0061", list(plural_form)),
 		))
 
 	if (TRAIT_NOBREATH in inherent_traits)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "wind",
-			SPECIES_PERK_NAME = "No Respiration",
-			SPECIES_PERK_DESC = "[plural_form] have no need to breathe!",
+			SPECIES_PERK_NAME = LANG("datum.dd93dc57bf707f3a", null),
+			SPECIES_PERK_DESC = LANG("datum.12e9e22c3fb6b5a5", list(plural_form)),
 		))
 
 	return to_add
@@ -1817,9 +1821,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "skull",
-			SPECIES_PERK_NAME = "Undead",
-			SPECIES_PERK_DESC = "[plural_form] are of the undead! The undead do not have the need to eat or breathe, and \
-				most viruses will not be able to infect a walking corpse. Their worries mostly stop at remaining in one piece, really.",
+			SPECIES_PERK_NAME = LANG("datum.6ecd33b3d80a6878", null),
+			SPECIES_PERK_DESC = LANG("datum.3aae23e6927e85de", list(plural_form)),
 		))
 
 	return to_add
@@ -1864,7 +1867,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_TYPE = perk_type,
 			SPECIES_PERK_ICON = "wine-glass",
 			SPECIES_PERK_NAME = perk_name,
-			SPECIES_PERK_DESC = "[name] livers are [more_or_less] susceptable to alcohol than human livers, by about [percent_difference]%."
+			SPECIES_PERK_DESC = LANG("datum.596465780607b8af", list(name, more_or_less, percent_difference))
 		))
 
 	var/tox_shrugging = initial(mutantliver.toxTolerance)
@@ -1879,7 +1882,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_TYPE = perk_type,
 			SPECIES_PERK_ICON = "biohazard",
 			SPECIES_PERK_NAME = perk_name,
-			SPECIES_PERK_DESC = "[name] livers are capable of rapidly shrugging off [tox_shrugging]u of toxins, which is [more_or_less] than humans."
+			SPECIES_PERK_DESC = LANG("datum.8a807677f39f08dc", list(name, tox_shrugging, more_or_less))
 		))
 
 	return to_add
@@ -1897,8 +1900,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "wind",
-			SPECIES_PERK_NAME = "[capitalize(breath_id)] Breathing",
-			SPECIES_PERK_DESC = "[plural_form] must breathe [breath_id] to survive. You receive a tank when you arrive.",
+			SPECIES_PERK_NAME = LANG("datum.06a739e485c80381", list(capitalize(breath_id))),
+			SPECIES_PERK_DESC = LANG("datum.7adf099253c4d34a", list(plural_form, breath_id)),
 		))
 
 	return to_add
@@ -1930,11 +1933,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "comment",
-			SPECIES_PERK_NAME = "Native Speaker",
+			SPECIES_PERK_NAME = LANG("datum.2c6ae453c19c3937", null),
 			/* SKYRAT EDIT - Digitigrade customization - ORIGINAL:
 			SPECIES_PERK_DESC = "Alongside [initial(common_language.name)], [plural_form] gain the ability to speak [english_list(bonus_languages)].",
 			*/ // ORIGINAL END - SKYRAT EDIT START:
-			SPECIES_PERK_DESC = "Alongside [initial(common_language.name)], [plural_form] commonly speak [english_list(bonus_languages)].",
+			// lang_english_list：逐项过显示边界再用顿号连接。english_list 直接 Join 出来的
+			// "Marish and Empathy" 整串永远不是目录键，语言名连同 " and " 一起留成英文。
+			SPECIES_PERK_DESC = LANG("datum.fa2f48f79475c9d9", list(initial(common_language.name), plural_form, lang_english_list(bonus_languages))),
 			// SKYRAT EDIT END
 		))
 
@@ -1942,8 +1947,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "comment",
-			SPECIES_PERK_NAME = "Foreign Speaker",
-			SPECIES_PERK_DESC = "[plural_form] may not speak [initial(common_language.name)], but they can speak [english_list(bonus_languages)].",
+			SPECIES_PERK_NAME = LANG("datum.863543657cb119d7", null),
+			SPECIES_PERK_DESC = LANG("datum.73588689fa11f402", list(plural_form, initial(common_language.name), lang_english_list(bonus_languages))),
 		))
 
 	return to_add

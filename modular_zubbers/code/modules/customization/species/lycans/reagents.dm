@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BASE_BURN_PER_SECOND 0.5
 
 /datum/reagent/silver/on_mob_metabolize(mob/living/affected_mob)
@@ -6,7 +7,7 @@
 	if (get_lycanthropy_intensity(affected_mob) == 0)
 		return
 
-	to_chat(affected_mob, span_userdanger("THE SILVER STEEL OF LUNA IS WITHIN YOUR VERY VEINS! YOUR FLESH BURNS AND BOILS!"))
+	to_chat(affected_mob, span_userdanger(LANG("datum.912d8548888288bb", null)))
 	affected_mob.emote("scream")
 
 /datum/reagent/silver/on_mob_end_metabolize(mob/living/affected_mob, metabolization_ratio)
@@ -15,7 +16,7 @@
 	if (get_lycanthropy_intensity(affected_mob) == 0)
 		return
 
-	to_chat(affected_mob, span_bolddanger("You feel comfort return to you as the last of the blessed lunar steel is filtered from your blood."))
+	to_chat(affected_mob, span_bolddanger(LANG("datum.38372dc334fb6efa", null)))
 
 /datum/reagent/silver/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
 	. = ..()
@@ -34,7 +35,7 @@
 	)
 
 	if (SPT_PROB(5, seconds_per_tick))
-		to_chat(affected_mob, span_warning("The silver in your veins burns your lycanthropic flesh...!"))
+		to_chat(affected_mob, span_warning(LANG("datum.23c8553a259d406d", null)))
 		affected_mob.emote("scream")
 
 /datum/reagent/silver/proc/get_lycanthropy_intensity(mob/living/carbon/affected_mob)

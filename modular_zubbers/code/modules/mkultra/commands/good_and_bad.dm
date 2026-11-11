@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/mkultra_command/good_boy
 	name = "Praise"
 	description = "Give praise as a reward"
@@ -10,7 +11,7 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	to_chat(owner, span_userlove("[status.get_gender()] has praised me!!"))
+	to_chat(owner, span_userlove(LANG("datum.a34000d587e738c6", list(status.get_gender()))))
 	owner.emote("shiver")
 	status.progress += 20
 	return TRUE
@@ -27,5 +28,5 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	to_chat(owner, span_red("I've failed [status.get_gender()]... what a bad pet..."))
+	to_chat(owner, span_red(LANG("datum.30f9b506a449790b", list(status.get_gender()))))
 	return TRUE

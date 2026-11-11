@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Room the drunks are arriving through, for the klaxon.
 GLOBAL_VAR_INIT(vitezstvi_crash_area_name, null)
 /// The real dock's position before we ever touched it, so it can be put back.
@@ -103,7 +104,7 @@ GLOBAL_VAR_INIT(vitezstvi_home_dock_original, null)
 	var/site = GLOB.vitezstvi_crash_area_name || "somewhere important"
 	var/obj/docking_port/mobile/emergency/vitezstvi/port = locate() in SSshuttle.mobile_docking_ports
 	notify_ghosts(
-		"The VARS-7 Provodnik is [rerouted ? "now" : ""] inbound to [site].",
+		LANG("_root.1e1001ccbbee0e7c", list(rerouted ? "now" : "", site)),
 		source = port,
 		header = "Incoming Shuttle",
 	)

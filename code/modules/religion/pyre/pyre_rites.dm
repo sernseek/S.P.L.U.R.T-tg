@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 ///apply a bunch of fire immunity effect to clothing
 /datum/religion_rites/fireproof/proc/apply_fireproof(obj/item/clothing/fireproofed)
@@ -37,7 +38,7 @@
 		chosen_clothing = null //our lord and savior no longer cares about this apparel
 		return TRUE
 	chosen_clothing = null
-	to_chat(user, span_warning("The clothing that was chosen for the rite is no longer on the altar!"))
+	to_chat(user, span_warning(LANG("datum.0a5cf1f1ab836223", null)))
 	return FALSE
 
 
@@ -55,44 +56,44 @@
 
 /datum/religion_rites/burning_sacrifice/perform_rite(mob/living/user, atom/religious_tool)
 	if(!ismovable(religious_tool))
-		to_chat(user, span_warning("This rite requires a religious device that individuals can be buckled to."))
+		to_chat(user, span_warning(LANG("datum.3ebb81f1929b18a9", null)))
 		return FALSE
 	var/atom/movable/movable_reltool = religious_tool
 	if(!movable_reltool)
 		return FALSE
 	if(!LAZYLEN(movable_reltool.buckled_mobs))
-		to_chat(user, span_warning("Nothing is buckled to the altar!"))
+		to_chat(user, span_warning(LANG("datum.23f81a21cbf956fc", null)))
 		return FALSE
 	for(var/corpse in movable_reltool.buckled_mobs)
 		if(!iscarbon(corpse))// only works with carbon corpse since most normal mobs can't be set on fire.
-			to_chat(user, span_warning("Only carbon lifeforms can be properly burned for the sacrifice!"))
+			to_chat(user, span_warning(LANG("datum.8cabb78d7e615fd3", null)))
 			return FALSE
 		chosen_sacrifice = corpse
 		if(chosen_sacrifice.stat != DEAD)
-			to_chat(user, span_warning("You can only sacrifice dead bodies, this one is still alive!"))
+			to_chat(user, span_warning(LANG("datum.30fc41e6285947c5", null)))
 			return FALSE
 		if(!chosen_sacrifice.on_fire && !HAS_TRAIT_FROM(chosen_sacrifice, TRAIT_HUSK, BURN))
-			to_chat(user, span_warning("This corpse needs to be on fire or husked to be sacrificed!"))
+			to_chat(user, span_warning(LANG("datum.a07380b895012245", null)))
 			return FALSE
 		return ..()
 
 /datum/religion_rites/burning_sacrifice/invoke_effect(mob/living/user, atom/movable/religious_tool)
 	..()
 	if(!(chosen_sacrifice in religious_tool.buckled_mobs)) //checks one last time if the right corpse is still buckled
-		to_chat(user, span_warning("The right sacrifice is no longer on the altar!"))
+		to_chat(user, span_warning(LANG("datum.166713535b9ae10a", null)))
 		chosen_sacrifice = null
 		return FALSE
 	if(!chosen_sacrifice.on_fire && !HAS_TRAIT_FROM(chosen_sacrifice, TRAIT_HUSK, BURN))
-		to_chat(user, span_warning("The sacrifice has to be on fire or husked to finish the end of the rite!"))
+		to_chat(user, span_warning(LANG("datum.4a9cf98463dc1321", null)))
 		chosen_sacrifice = null
 		return FALSE
 	if(chosen_sacrifice.stat != DEAD)
-		to_chat(user, span_warning("The sacrifice has to stay dead for the rite to work!"))
+		to_chat(user, span_warning(LANG("datum.b3b4ceb7e6959bf9", null)))
 		chosen_sacrifice = null
 		return FALSE
 	var/favor_gained = 100 + round(chosen_sacrifice.get_fire_loss())
 	GLOB.religious_sect.adjust_favor(favor_gained, user)
-	to_chat(user, span_notice("[GLOB.deity] absorbs the charred corpse and any trace of fire with it. [GLOB.deity] rewards you with [favor_gained] favor."))
+	to_chat(user, span_notice(LANG("datum.0b1f910bc4c1e759", list(GLOB.deity, GLOB.deity, favor_gained))))
 	chosen_sacrifice.dust(force = TRUE)
 	playsound(get_turf(religious_tool), 'sound/effects/supermatter.ogg', 50, TRUE)
 	chosen_sacrifice = null
@@ -133,7 +134,7 @@
 			continue
 		enchant_target = can_enchant
 		return ..()
-	to_chat(user, span_warning("You need to place a holy arrow on [religious_tool] to do this!"))
+	to_chat(user, span_warning(LANG("datum.ffa50a9db3c48b47", list(religious_tool))))
 	return FALSE
 
 /datum/religion_rites/blazing_star/invoke_effect(mob/living/user, atom/movable/religious_tool)
@@ -142,9 +143,9 @@
 	var/turf/tool_turf = get_turf(religious_tool)
 	enchant_target = null
 	if(QDELETED(enchanting) || !(tool_turf == enchanting.loc)) //check if the arrow is still there
-		to_chat(user, span_warning("Your target left the altar!"))
+		to_chat(user, span_warning(LANG("datum.a4aeac01f2519693", null)))
 		return FALSE
-	enchanting.visible_message(span_notice("[enchant_target] is blessed by holy fire!"))
+	enchanting.visible_message(span_notice(LANG("datum.e64ec40a7e8ee886", list(enchant_target))))
 	playsound(tool_turf, 'sound/effects/pray.ogg', 50, TRUE)
 	new /obj/item/ammo_casing/arrow/holy/blazing(tool_turf)
 	qdel(enchanting)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /* Alien shit!
  * Contains:
  * structure/alien
@@ -389,22 +390,22 @@
 	if(user.get_organ_by_type(/obj/item/organ/alien/plasmavessel))
 		switch(status)
 			if(BURSTING)
-				to_chat(user, span_notice("The child is hatching out."))
+				to_chat(user, span_notice(LANG("obj.b8f3bd4da1f8f358", null)))
 				return
 			if(BURST)
-				to_chat(user, span_notice("You clear the hatched egg."))
+				to_chat(user, span_notice(LANG("obj.ffbd1b4a7304eb4e", null)))
 				playsound(loc, 'sound/effects/blob/attackblob.ogg', 100, TRUE)
 				qdel(src)
 				return
 			if(GROWING)
-				to_chat(user, span_notice("The child is not developed yet."))
+				to_chat(user, span_notice(LANG("obj.fbd3e8517e0eb9b6", null)))
 				return
 			if(GROWN)
-				to_chat(user, span_notice("You retrieve the child."))
+				to_chat(user, span_notice(LANG("obj.33f071ba05b48764", null)))
 				Burst(kill=FALSE)
 				return
 	else
-		to_chat(user, span_notice("It feels slimy."))
+		to_chat(user, span_notice(LANG("obj.f58b3ac9bc7eb5b1", null)))
 		user.changeNext_move(CLICK_CD_MELEE)
 
 

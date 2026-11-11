@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/innate/join_soulcatcher
 	name = "Enter Soulcatcher"
 	background_icon = 'modular_skyrat/master_files/icons/mob/actions/action_backgrounds.dmi'
@@ -13,7 +14,7 @@
 
 	joining_soul.join_soulcatcher()
 
-GAME_VERB(/mob/dead/observer, join_soulcatcher, "Enter Soulcatcher", "IC")
+GAME_VERB(/mob/dead/observer, join_soulcatcher, "进入灵魂捕手", "IC")
 	var/list/joinable_soulcatchers = list()
 	var/list/rooms_to_join = list()
 
@@ -33,17 +34,17 @@ GAME_VERB(/mob/dead/observer, join_soulcatcher, "Enter Soulcatcher", "IC")
 		rooms_to_join += carrier_rooms
 
 	if(!length(joinable_soulcatchers) || !length(rooms_to_join))
-		to_chat(src, span_warning("No soulcatchers are joinable."))
+		to_chat(src, span_warning(LANG("mob.12c1199864abe5be", null)))
 		return FALSE
 
-	var/datum/component/carrier/soulcatcher/soulcatcher_to_join = tgui_input_list(src, "Choose a soulcatcher to join", "Enter a soulcatcher", joinable_soulcatchers)
+	var/datum/component/carrier/soulcatcher/soulcatcher_to_join = tgui_input_list(src, LANG("mob.08d0cbc922869bc1", null), LANG("mob.0327af66ab6a844a", null), joinable_soulcatchers)
 	if(!soulcatcher_to_join || !(soulcatcher_to_join in joinable_soulcatchers))
 		return FALSE
 
 	rooms_to_join = soulcatcher_to_join.get_open_rooms(TRUE)
-	var/datum/carrier_room/soulcatcher/room_to_join = tgui_input_list(src, "Choose a room to enter", "Enter a room", rooms_to_join)
+	var/datum/carrier_room/soulcatcher/room_to_join = tgui_input_list(src, LANG("mob.4df897d12bc51396", null), LANG("mob.fc0082d23b32d36d", null), rooms_to_join)
 	if(!room_to_join)
-		to_chat(src, span_warning("There no rooms that you can join."))
+		to_chat(src, span_warning(LANG("mob.929fb5d2cb7aa885", null)))
 		return FALSE
 
 	if(soulcatcher_to_join.require_approval)
@@ -52,7 +53,7 @@ GAME_VERB(/mob/dead/observer, join_soulcatcher, "Enter Soulcatcher", "IC")
 			ghost_name = "unknown"
 
 		if(!soulcatcher_to_join.get_approval(ghost_name))
-			to_chat(src, span_warning("The owner of [soulcatcher_to_join.name] declined your request to join."))
+			to_chat(src, span_warning(LANG("mob.a629390dff4bf1cf", list(soulcatcher_to_join.name))))
 			return FALSE
 
 	room_to_join.add_soul_from_ghost(src)

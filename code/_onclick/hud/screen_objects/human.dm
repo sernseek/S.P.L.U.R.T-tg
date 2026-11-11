@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /atom/movable/screen/human
 	icon = 'icons/hud/screen_midnight.dmi'
 
@@ -48,7 +49,7 @@
 
 /atom/movable/screen/ling/chems/Click(location, control, params)
 	. = ..()
-	to_chat(usr, span_notice("Shows you how many chemicals you have. While hovering over this, it will show the max amount of chemicals you can hold."))
+	to_chat(usr, span_notice(LANG("atom.a289da76a9d56ef6", null)))
 
 /atom/movable/screen/ling/chems/MouseEntered(location,control,params)
 	if(usr != get_mob())

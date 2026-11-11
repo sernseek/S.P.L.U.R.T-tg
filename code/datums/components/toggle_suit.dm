@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
  * Simple component for allowing a user to change an atom's appearance on alt-click.
  * When toggled, changes the atom's icon_state between [base_icon_state] and [base_icon_state]_t.
@@ -43,7 +44,7 @@
 		return
 
 	if(living_user.usable_hands <= 0)
-		source.balloon_alert(living_user, "you don't have hands!")
+		source.balloon_alert(living_user, LANG("datum.602a55339e17c0f1", null))
 		return
 
 	do_icon_toggle(source, living_user)
@@ -60,7 +61,7 @@
 /datum/component/toggle_icon/proc/on_examine(atom/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 
-	examine_list += span_notice("Alt-click on [source] to toggle the [toggle_noun].")
+	examine_list += span_notice(LANG("datum.7eaeb65922500ebb", list(source, toggle_noun)))
 
 /*
  * Signal proc for COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM.
@@ -74,7 +75,7 @@
 /datum/component/toggle_icon/proc/on_adding_context(atom/source, list/context, obj/item/held_item, mob/user)
 	SIGNAL_HANDLER
 
-	context[SCREENTIP_CONTEXT_ALT_LMB] = "Toggle [toggle_noun]"
+	context[SCREENTIP_CONTEXT_ALT_LMB] = LANG("datum.fd7e830fbe13ac8c", list(toggle_noun))
 	return CONTEXTUAL_SCREENTIP_SET
 
 /*
@@ -85,7 +86,7 @@
  * user - the mob doing the toggling
  */
 /datum/component/toggle_icon/proc/do_icon_toggle(atom/source, mob/living/user)
-	source.balloon_alert(user, "toggled [toggle_noun]")
+	source.balloon_alert(user, LANG("datum.6befe2b0109bae84", list(toggle_noun)))
 
 	toggled = !toggled
 

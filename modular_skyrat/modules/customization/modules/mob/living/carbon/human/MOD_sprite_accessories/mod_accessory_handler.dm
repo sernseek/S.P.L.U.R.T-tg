@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define HARDLIGHT_DMI 'modular_skyrat/modules/customization/modules/mob/living/carbon/human/MOD_sprite_accessories/icons/MOD_mask.dmi'
 // luminance weights and the stretch that turns the standard blue texture into a near-white pattern for tinting
 #define HARDLIGHT_LUMA_RED 0.3
@@ -136,7 +137,7 @@
 	INVOKE_ASYNC(src, PROC_REF(pick_hardlight_color), ui.user)
 
 /obj/item/mod/control/proc/pick_hardlight_color(mob/user)
-	var/new_color = tgui_color_picker(user, "Choose a hardlight color", "Hardlight Color", get_hardlight_color())
+	var/new_color = tgui_color_picker(user, LANG("obj.acc3a1df6648eace", null), LANG("obj.5ff7bf30f659157f", null), get_hardlight_color())
 	if(!new_color || QDELETED(src) || ui_status(user, ui_state(user)) < UI_INTERACTIVE)
 		return
 	set_hardlight_color(new_color)

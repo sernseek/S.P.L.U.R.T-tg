@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
  * Dehydrated Carp
  * Instant carp, just add water
@@ -16,7 +17,7 @@
 	if(owner)
 		return ..()
 	add_fingerprint(user)
-	to_chat(user, span_notice("You pet [src]. You swear it looks up at you."))
+	to_chat(user, span_notice(LANG("obj.e40ec5eabdbabc36", list(src))))
 	owner = user
 	RegisterSignal(owner, COMSIG_QDELETING, PROC_REF(owner_deleted))
 
@@ -24,8 +25,8 @@
 	if(swelling)
 		return
 	swelling = TRUE
-	desc = "It's growing!"
-	visible_message(span_notice("[src] swells up!"))
+	desc = LANG("obj.c0c04da7f8eb3b0e", null)
+	visible_message(span_notice(LANG("obj.74d46365c5222225", list(src))))
 
 	//Animation
 	icon = 'icons/mob/simple/carp.dmi'
@@ -34,7 +35,7 @@
 	addtimer(CALLBACK(src, PROC_REF(spawn_carp)), 0.6 SECONDS)
 
 /obj/item/toy/plush/carpplushie/dehy_carp/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] starts eating [src]. It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.dc1d83474035f659", list(user, src, user.p_theyre()))))
 	playsound(src, 'sound/items/eatfood.ogg', 50, TRUE)
 	if(!istype(user))
 		return BRUTELOSS

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/item_action/organ_action
 	name = "Organ Action"
 	check_flags = AB_CHECK_CONSCIOUS
@@ -14,7 +15,7 @@
 /datum/action/item_action/organ_action/toggle/New(Target)
 	..()
 	var/obj/item/organ/organ_target = target
-	name = "Toggle [organ_target.name]"
+	name = LANG("datum.fd7e830fbe13ac8c", list(organ_target)) // ZH EDIT CHANGE - I18N - 父类 New() 的整串反查在此之前，拼出的名字不是目录键 - ORIGINAL: name = "Toggle [organ_target.name]"
 
 /datum/action/item_action/organ_action/use
 	name = "Use Organ"
@@ -40,10 +41,10 @@
 	if(!cat_tongue.feral_mode)
 		background_icon_state = "bg_default"
 		button_icon_state = "feral_mode_off"
-		to_chat(cat_tongue.owner, span_notice("You will make unarmed attacks normally."))
+		to_chat(cat_tongue.owner, span_notice(LANG("datum.d8ec2d0dd3423012", null)))
 	else
 		background_icon_state = "bg_default_on"
 		button_icon_state = "feral_mode_on"
-		to_chat(cat_tongue.owner, span_notice("You will bite when making an unarmed attack."))
+		to_chat(cat_tongue.owner, span_notice(LANG("datum.600b107e6f1a513a", null)))
 	build_all_button_icons()
 	return TRUE

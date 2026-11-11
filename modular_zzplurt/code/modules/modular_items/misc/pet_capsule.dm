@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/pet_capsule
 	name = "pet capsule"
 	desc = "A bluespace capsule used to store pets of the more... dangerous variety"
@@ -51,7 +52,7 @@
 /obj/item/pet_capsule/proc/pet_capsule_triggered(atom/location_atom, is_in_hand = FALSE, mob/user = null)
 	//If pet has not been chosen yet
 	if (!pet_picked && is_in_hand && user != null)
-		new_name = input(user, "New name :", "Rename your pet(Once per shift!)")
+		new_name = input(user, LANG("obj.85bc525fc8de169d", null), LANG("obj.529c15627ae0f74b", null))
 
 		var/selected_icon = show_radial_menu(loc, loc , pet_icons,  radius = 42, require_near = TRUE)
 		switch(selected_icon)
@@ -88,7 +89,7 @@
 
 	else if (!open && pet_picked && is_in_hand && user != null)
 		owner = user
-		to_chat(user, "<span class='notice'>You set yourself as the owner!</span>")
+		to_chat(user, LANG("obj.8784025eeb6753a6", null))
 
 	//Make pet appear if thrown on the floor
 	else if (!open && !is_in_hand && pet_picked)
@@ -99,7 +100,7 @@
 		stored_pet.name = new_name //Apply the customized name
 
 		// smoke & message effect
-		loc.visible_message("<span class='warning'>\The [src] opens, [stored_pet.name] suddenly appearing!</span>")
+		loc.visible_message(LANG("obj.1d1bf1f0a275ea9d", list(src, stored_pet.name)))
 		var/datum/effect_system/basic/spark_spread/sparks = new(targetloc, 10, TRUE)
 		sparks.start()
 
@@ -117,7 +118,7 @@
 	else if (open && stored_pet != null)
 		open = FALSE
 		icon_state = closed_state
-		loc.visible_message("<span class='warning'>\The [src] closes, [stored_pet.name] being recalled inside of it!</span>")
+		loc.visible_message(LANG("obj.d3a2f78a20730955", list(src, stored_pet.name)))
 		del(stored_pet)
 
 /obj/item/pet_capsule/attack_self(mob/user)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define ARRIVALS_STATION "arrivals_stationary"
 #define ARRIVALS_INTERLINK "arrivals_shuttle"
 #define CONSOLE_ANNOUNCE_COOLDOWN 5 SECONDS
@@ -54,7 +55,7 @@
 		waiting = FALSE
 
 		if(console && console.last_cancel_announce + CONSOLE_ANNOUNCE_COOLDOWN <= world.time)
-			console.say("Lifesigns detected onboard, automatic return aborted.")
+			console.say(LANG("obj.cc98e814b4286c65", null))
 			console.last_cancel_announce = world.time
 
 		return
@@ -66,7 +67,7 @@
 	waiting = TRUE
 
 	if(console && console.last_depart_announce + CONSOLE_ANNOUNCE_COOLDOWN <= world.time)
-		console.say("Commencing automatic return subroutine in [wait_time / 10] seconds.")
+		console.say(LANG("obj.f4791af7ea993327", list(wait_time / 10)))
 		console.last_depart_announce = world.time
 
 /obj/docking_port/mobile/arrivals_skyrat/getModeStr()

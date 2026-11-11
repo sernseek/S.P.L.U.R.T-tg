@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/heretic_knowledge/emag_hand
 	name = "The Blacksmith's Hammer"
 	desc = "Sacrifice a set of wirecutters and a diamond to enhance your mansus grasp with the ability to cause malfunctiong (emagging) on right click for one use."
@@ -12,14 +13,14 @@
 
 /datum/heretic_knowledge/emag_hand/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
 	if (HAS_TRAIT(user, TRAIT_EMAGGING_HAND))
-		user.balloon_alert(user, "grasp already enhanced!")
+		user.balloon_alert(user, LANG("datum.438a3c05d12934de", null))
 		return FALSE
 	return TRUE
 
 /datum/heretic_knowledge/emag_hand/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
 	ADD_TRAIT(user, TRAIT_EMAGGING_HAND, "emag_hand")
 	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK_SECONDARY, PROC_REF(emag_on_mansus_grasp_secondary))
-	to_chat(user, span_warning("Your next mansus grasp right-click will emag whatever you hit."))
+	to_chat(user, span_warning(LANG("datum.de8826b9814f90d6", null)))
 	return TRUE
 
 /datum/heretic_knowledge/emag_hand/proc/emag_on_mansus_grasp_secondary(mob/living/source, atom/target)
@@ -30,4 +31,4 @@
 
 	REMOVE_TRAIT(source, TRAIT_EMAGGING_HAND, "emag_hand")
 	UnregisterSignal(source, COMSIG_HERETIC_MANSUS_GRASP_ATTACK_SECONDARY)
-	to_chat(source, span_warning("The Blacksmith strikes [target] with its hammer. It bends to your will, and you feel the power fade from your hand..."))
+	to_chat(source, span_warning(LANG("datum.4513cda76e08788f", list(target))))

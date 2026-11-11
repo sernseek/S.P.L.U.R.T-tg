@@ -1,4 +1,5 @@
-ADMIN_VERB(lorecaster_story_manager, R_ADMIN, "Lorecaster Stories", "Open the Lorecaster Story Manager.", ADMIN_CATEGORY_EVENTS)
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+ADMIN_VERB(lorecaster_story_manager, R_ADMIN, "Lorecaster 故事", "Open the Lorecaster Story Manager.", ADMIN_CATEGORY_EVENTS)
 	var/datum/story_manager_interface/ui = new(usr)
 	ui.ui_interact(usr)
 

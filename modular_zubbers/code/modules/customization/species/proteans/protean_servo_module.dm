@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /////////Protean servo module////////
 //Module meant to give temporary passive buffs to wearer, gives three options with diffrent effects and shared cooldowns.
 
@@ -25,7 +26,7 @@
 
 	if(protean_in_suit == mod.wearer) //Protean cant benefit from module they're suposed to be powering
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
-		to_chat(mod.wearer, span_warning("[src] needs someone else as the wearer, it can't be used on a Protean."))
+		to_chat(mod.wearer, span_warning(LANG("obj.c4fa322ca0fa1e71", list(src))))
 		deactivate()
 		return
 
@@ -69,7 +70,7 @@
 	var/mob/living/carbon/wearer = suit.wearer
 
 	wearer.apply_status_effect(/datum/status_effect/protean_servo_movement)
-	wearer.visible_message(span_warning("[protean] speeds up [wearer]'s movement!"))
+	wearer.visible_message(span_warning(LANG("datum.f2c146f762bb076d", list(protean, wearer))))
 	StartCooldown()
 
 /*
@@ -103,7 +104,7 @@
 	var/mob/living/carbon/wearer = suit.wearer
 
 	wearer.apply_status_effect(/datum/status_effect/protean_servo_engineer)
-	wearer.visible_message(span_warning("[protean] assists in [wearer]'s construction tasks!"))
+	wearer.visible_message(span_warning(LANG("datum.29ae8aae40f0ed6f", list(protean, wearer))))
 	StartCooldown()
 
 ////Protean servo module: Status Effects////
@@ -134,7 +135,7 @@
 	owner.remove_traits(list(TRAIT_RESTRAINED),PROTEAN_SERVO_TRAIT)
 	for(var/obj/item/thing in owner.held_items)
 		clear_servo_trait(thing)
-	owner.visible_message(span_warning("[owner]'s movement return to normal as Protean module runs out of power."))
+	owner.visible_message(span_warning(LANG("datum.a745b1f64df52fb9", list(owner))))
 
 /datum/status_effect/protean_servo_movement/proc/clear_servo_trait(obj/item/thing, ...)
 	SIGNAL_HANDLER
@@ -195,7 +196,7 @@
 	. = ..()
 	owner.remove_actionspeed_modifier(/datum/actionspeed_modifier/protean_servo_engineer)
 	owner.remove_traits(list(TRAIT_QUICK_BUILD),PROTEAN_SERVO_TRAIT)
-	owner.visible_message(span_warning("[owner]'s movement return to normal as Protean module runs out of power."))
+	owner.visible_message(span_warning(LANG("datum.a745b1f64df52fb9", list(owner))))
 
 /datum/actionspeed_modifier/protean_servo_engineer
 	multiplicative_slowdown = -0.35 //action speed modifier

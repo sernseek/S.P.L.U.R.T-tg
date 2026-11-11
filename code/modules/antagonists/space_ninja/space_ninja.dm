@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/antagonist/ninja
 	name = "\improper Space Ninja"
 	antagpanel_category = ANTAG_GROUP_NINJAS
@@ -106,9 +107,9 @@
 /datum/antagonist/ninja/greet()
 	. = ..()
 	SEND_SOUND(owner.current, sound('sound/music/antag/ninja_greeting.ogg'))
-	to_chat(owner.current, span_danger("I am an elite mercenary of the mighty Spider Clan!"))
-	to_chat(owner.current, span_warning("Surprise is my weapon. Shadows are my armor. Without them, I am nothing."))
-	to_chat(owner.current, span_notice("The station is located to your [dir2text(get_dir(owner.current, locate(world.maxx/2, world.maxy/2, owner.current.z)))]. A thrown ninja star will be a great way to get there."))
+	to_chat(owner.current, span_danger(LANG("datum.6fb06062ced2f748", null)))
+	to_chat(owner.current, span_warning(LANG("datum.a797bbd7779de8aa", null)))
+	to_chat(owner.current, span_notice(LANG("datum.bfa95e0ed43a6088", list(dir2text(get_dir(owner.current, locate(world.maxx/2, world.maxy/2, owner.current.z)))))))
 	owner.announce_objectives()
 
 /datum/antagonist/ninja/on_gain() // BUBBER EDIT BEGIN- WHOLE PROC EDITS

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define POPCOUNT_SURVIVORS "survivors" //Not dead at roundend
 #define POPCOUNT_ESCAPEES "escapees" //Not dead and on centcom/shuttles marked as escaped
 #define POPCOUNT_SHUTTLE_ESCAPEES "shuttle_escapees" //Emergency shuttle only.
@@ -250,7 +251,7 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	//Set news report and mode result
 	SSdynamic.set_round_result()
 
-	to_chat(world, span_infoplain(span_big(span_bold("<BR><BR><BR>The round has ended."))))
+	to_chat(world, span_infoplain(span_big(span_bold(LANG("datum.351d28ade636e3cc", null)))))
 	log_game("The round has ended.")
 	if(!CONFIG_GET(flag/roundend_embeds)) // SPLURT EDIT - Discord rounded embeds.
 		for(var/channel_tag in CONFIG_GET(str_list/channel_announce_end_game))
@@ -264,7 +265,7 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	*/
 	if(!CONFIG_GET(flag/roundend_embeds)) // SPLURT EDIT - Discord rounded embeds.
 		for(var/channel_tag in CONFIG_GET(str_list/channel_announce_end_game))
-			send2chat("The current round has ended. Please standby for your shift interlude Nanotrasen News Network's report!", channel_tag)
+			send2chat(LANG("datum.ca45dae6d2c9ab35", null), channel_tag)
 			send2chat(send_news_report(), channel_tag)
 	//SKYRAT EDIT - END
 
@@ -360,7 +361,7 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 		var/statspage = CONFIG_GET(string/roundstatsurl)
 		var/info = statspage ? "<a href='byond://?action=openLink&link=[url_encode(statspage)][GLOB.round_id]'>[GLOB.round_id]</a>" : GLOB.round_id
 		parts += "[FOURSPACES]Round ID: <b>[info]</b>"
-	parts += "[FOURSPACES]Map: [SSmapping.current_map?.return_map_name()]"
+	parts += "[FOURSPACES][GLOB.i18n_server_locale != DEFAULT_UI_LOCALE ? "地图" : "Map"]: [SSmapping.current_map?.return_map_name()]" // ZH EDIT - I18N - single-word label, gate inline (AC skips single words; keep "Map"/"Round" out of the global reverse table)
 	parts += "[FOURSPACES]Shift Duration: <B>[DisplayTimeText(world.time - SSticker.round_start_time)]</B>"
 	parts += "[FOURSPACES]Station Integrity: <B>[GLOB.station_was_nuked ? span_redtext("Destroyed") : "[popcount["station_integrity"]]%"]</B>"
 	var/total_players = GLOB.joined_player_list.len
@@ -368,15 +369,14 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 		parts+= "[FOURSPACES]Total Population: <B>[total_players]</B>"
 		if(station_evacuated)
 			parts += "<BR>[FOURSPACES]Evacuation Rate: <B>[popcount[POPCOUNT_ESCAPEES]] ([PERCENT(popcount[POPCOUNT_ESCAPEES]/total_players)]%)</B>"
-			parts += "[FOURSPACES](on emergency shuttle): <B>[popcount[POPCOUNT_SHUTTLE_ESCAPEES]] ([PERCENT(popcount[POPCOUNT_SHUTTLE_ESCAPEES]/total_players)]%)</B>"
+			parts += "[FOURSPACES]([GLOB.i18n_server_locale != DEFAULT_UI_LOCALE ? "乘紧急穿梭机" : "on emergency shuttle"]): <B>[popcount[POPCOUNT_SHUTTLE_ESCAPEES]] ([PERCENT(popcount[POPCOUNT_SHUTTLE_ESCAPEES]/total_players)]%)</B>"
 		parts += "[FOURSPACES]Survival Rate: <B>[popcount[POPCOUNT_SURVIVORS]] ([PERCENT(popcount[POPCOUNT_SURVIVORS]/total_players)]%)</B>"
 		if(SSblackbox.first_death)
 			var/list/ded = SSblackbox.first_death
 			if(ded.len)
-				parts += "[FOURSPACES]First Death: <b>[ded["name"]], [ded["role"]], at [ded["area"]]. Damage taken: [ded["damage"]].[ded["last_words"] ? " Their last words were: \"[ded["last_words"]]\"" : ""]</b>"
-			//ignore this comment, it fixes the broken sytax parsing caused by the " above
+				parts += "[FOURSPACES][LANG("datum.fdc519ac07739dbb", list(ded["name"], ded["role"], ded["area"], ded["damage"], ded["last_words"] ? LANG("datum.eb109e145e1438d4", list(ded["last_words"])) : ""))]"
 			else
-				parts += "[FOURSPACES]<i>Nobody died this shift!</i>"
+				parts += "[FOURSPACES][LANG("datum.3ad62a838c10e29c", null)]"
 	/* BUBBER EDIT REMOVAL BEGIN - Storyteller
 	parts += "[FOURSPACES]Round: [SSdynamic.current_tier.name]"
 	for(var/datum/dynamic_ruleset/rule as anything in SSdynamic.executed_rulesets - SSdynamic.unreported_rulesets)
@@ -478,10 +478,15 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 		var/mob/living/silicon/ai/aiPlayer = i
 		var/datum/mind/aiMind = aiPlayer.deployed_shell?.mind || aiPlayer.mind
 		if(aiMind)
-			parts += "<b>[aiPlayer.name]</b>'s laws [aiPlayer.stat != DEAD ? "at the end of the round" : "when it was [span_redtext("deactivated")]"] were:" //SKYRAT EDIT CHANGE
+			// ZH EDIT CHANGE START - i18n: 手工 LANG 化。拆成两条完整模板，中文语序才排得开。
+			// ORIGINAL: parts += "<b>[aiPlayer.name]</b>'s laws [aiPlayer.stat != DEAD ? "at the end of the round" : "when it was [span_redtext("deactivated")]"] were:" //SKYRAT EDIT CHANGE
+			parts += aiPlayer.stat != DEAD \
+				? LANG("datum.c9614dfa3e5164f5", list(aiPlayer.name)) \
+				: LANG("datum.9a3724cc3403ed49", list(aiPlayer.name, span_redtext("deactivated")))
+			// ZH EDIT CHANGE END
 			parts += aiPlayer.laws.get_law_list(include_zeroth=TRUE)
 
-		parts += "<b>Total law changes: [aiPlayer.law_change_counter]</b>"
+		parts += LANG("datum.1c8f9492d4fdd9e4", list(aiPlayer.law_change_counter)) // ZH EDIT CHANGE - i18n - ORIGINAL: parts += "<b>Total law changes: [aiPlayer.law_change_counter]</b>"
 
 		if (aiPlayer.connected_robots.len)
 			var/borg_num = aiPlayer.connected_robots.len
@@ -549,8 +554,8 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	for(var/venue_path in SSrestaurant.all_venues)
 		var/datum/venue/venue = SSrestaurant.all_venues[venue_path]
 		tourist_income += venue.total_income
-		parts += "The [venue] served [venue.customers_served] customer\s and made [venue.total_income] [MONEY_NAME].<br>"
-	parts += "In total, they earned [tourist_income] [MONEY_NAME][tourist_income ? "!" : "..."]<br>"
+		parts += LANG("_root.econ_venue", list("[venue]", venue.customers_served, venue.total_income, MONEY_NAME)) + "<br>" // ZH EDIT - I18N - interpolated, not extractable; manual LANG key ("[venue]" as text so its name reverses)
+	parts += LANG("_root.econ_total", list(tourist_income, MONEY_NAME, tourist_income ? "!" : "...")) + "<br>" // ZH EDIT - I18N
 	log_econ("Roundend service income: [tourist_income] [MONEY_NAME].")
 
 	// Award service achievements based on tourist income
@@ -623,10 +628,10 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 		hardcores += human_player
 	if(!length(hardcores))
 		return
-	. += "<div class='panel stationborder'><span class='header'>The following people made it out as a random hardcore character:</span>"
+	. += LANG("datum.095babc2249bd0ed", null)
 	. += "<ul class='playerlist'>"
 	for(var/mob/living/carbon/human/human_player in hardcores)
-		. += "<li>[printplayer(human_player.mind)] with a hardcore random score of [round(human_player.hardcore_survival_score)]</li>"
+		. += LANG("datum.a04c84086697c4bf", list(printplayer(human_player.mind), round(human_player.hardcore_survival_score)))
 	. += "</ul></div>"
 
 /datum/controller/subsystem/ticker/proc/antag_report()
@@ -691,7 +696,7 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	var/datum/action/report/R = new
 	C.persistent_client.player_actions += R
 	R.Grant(C.mob)
-	to_chat(C,span_infoplain("<a href='byond://?src=[REF(R)];report=1'>Show roundend report again</a>"))
+	to_chat(C,span_infoplain(LANG("datum.23cab8f60925ee6f", list(REF(R)))))
 
 /datum/action/report
 	name = "Show roundend report"
@@ -717,26 +722,28 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 
 
 /proc/printplayer(datum/mind/ply, fleecheck)
+	var/localized = GLOB.i18n_server_locale != DEFAULT_UI_LOCALE // ZH EDIT - I18N
 	var/jobtext = ""
 	if(!is_unassigned_job(ply.assigned_role))
-		jobtext = " the <b>[ply.assigned_role.title]</b>"
+		// ZH EDIT CHANGE - I18N - reverse the job title and drop the english " the " connector for zh - ORIGINAL: jobtext = " the <b>[ply.assigned_role.title]</b>"
+		jobtext = localized ? "，<b>[lang_reverse_text(ply.assigned_role.title)]</b>" : " the <b>[ply.assigned_role.title]</b>"
 	//SKYRAT EDIT CHANGE BEGIN - ROUNDEND
 	//var/text = "<b>[ply.key]</b> was <b>[ply.name]</b>[jobtext] and" - SKYRAT EDIT - ORIGINAL
 	var/text = "<b>[ply.name]</b>[jobtext]"
 	//SKYRAT EDIT CHANGE END
 	if(ply.current)
 		if(ply.current.stat == DEAD)
-			text += " [span_redtext("died")]"
+			text += " [span_redtext(lang_reverse_text("died"))]" // ZH EDIT - I18N
 		else
-			text += " [span_greentext("survived")]"
+			text += " [span_greentext(lang_reverse_text("survived"))]" // ZH EDIT - I18N
 		if(fleecheck)
 			var/turf/T = get_turf(ply.current)
 			if(!T || !is_station_level(T.z))
-				text += " while [span_redtext("fleeing the station")]"
+				text += localized ? " [span_redtext(lang_reverse_text("while fleeing the station"))]" : " while [span_redtext("fleeing the station")]" // ZH EDIT - I18N
 		if(ply.current.real_name != ply.name)
-			text += " as <b>[ply.current.real_name]</b>"
+			text += localized ? "（化名 <b>[ply.current.real_name]</b>）" : " as <b>[ply.current.real_name]</b>" // ZH EDIT - I18N
 	else
-		text += " [span_redtext("had their body destroyed")]"
+		text += " [span_redtext(lang_reverse_text("had their body destroyed"))]" // ZH EDIT - I18N
 	return text
 
 /proc/printplayerlist(list/players,fleecheck)
@@ -755,7 +762,7 @@ GLOBAL_LIST_INIT(achievements_unlocked, list())
 	var/list/objective_parts = list()
 	var/count = 1
 	for(var/datum/objective/objective in objectives)
-		objective_parts += "<b>[objective.objective_name] #[count]</b>: [objective.explanation_text] [objective.get_roundend_success_suffix()]"
+		objective_parts += "<b>[lang_reverse_text(objective.objective_name)] #[count]</b>: [lang_reverse_text(objective.explanation_text)] [objective.get_roundend_success_suffix()]" // ZH EDIT - I18N - reverse non-interpolated full-sentence objectives (interpolated ones hit the to_chat boundary engine); objective_name 同样反查（"Objective"→目标）
 		count++
 	return objective_parts.Join("<br>")
 

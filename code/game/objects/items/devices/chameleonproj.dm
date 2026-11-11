@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/chameleon
 	name = "chameleon projector"
 	icon = 'icons/obj/devices/syndie_gadget.dmi'
@@ -34,7 +35,7 @@
 	if (isturf(user.loc) || istype(user.loc, /obj/structure) || active_dummy)
 		toggle(user)
 	else
-		to_chat(user, span_warning("You can't use [src] while inside something!"))
+		to_chat(user, span_warning(LANG("obj.8f40d67198a30100", list(src))))
 
 /obj/item/chameleon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!can_copy(interacting_with) || SHOULD_SKIP_INTERACTION(interacting_with, src, user))
@@ -69,7 +70,7 @@
 
 /obj/item/chameleon/proc/make_copy(atom/target, mob/user)
 	playsound(get_turf(src), 'sound/items/weapons/flash.ogg', 100, TRUE, -6)
-	to_chat(user, span_notice("Scanned [target]."))
+	to_chat(user, span_notice(LANG("obj.34db2e6d45b0e9be", list(target))))
 	var/obj/temp = new /obj()
 	temp.appearance = target.appearance
 	temp.layer = initial(target.layer) // scanning things in your inventory
@@ -87,20 +88,20 @@
 		playsound(get_turf(src), 'sound/effects/pop.ogg', 100, TRUE, -6)
 		qdel(active_dummy)
 		active_dummy = null
-		to_chat(user, span_notice("You deactivate \the [src]."))
+		to_chat(user, span_notice(LANG("obj.03d7907e8d038ced", list(src))))
 		new /obj/effect/temp_visual/emp/pulse(get_turf(src))
 	else
 		playsound(get_turf(src), 'sound/effects/pop.ogg', 100, TRUE, -6)
 		var/obj/effect/dummy/chameleon/C = new/obj/effect/dummy/chameleon(user.drop_location())
 		C.activate(user, saved_appearance, src)
-		to_chat(user, span_notice("You activate \the [src]."))
+		to_chat(user, span_notice(LANG("obj.41ddd5031269c4e0", list(src))))
 		new /obj/effect/temp_visual/emp/pulse(get_turf(src))
 	user.cancel_camera()
 
 /obj/item/chameleon/proc/disrupt(delete_dummy = 1)
 	if(active_dummy)
 		for(var/mob/M in active_dummy)
-			to_chat(M, span_danger("Your chameleon projector deactivates."))
+			to_chat(M, span_danger(LANG("obj.4a54dbc604b2cb84", null)))
 		do_sparks(5, FALSE, src, src)
 		eject_all()
 		if(delete_dummy)

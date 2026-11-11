@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Adds a Security Cyborg Management section to the communications console,
 // allowing the Head of Security and Captain to fire and reinstate security cyborgs.
 // Firing removes their security privileges; reinstatement restores them.
@@ -54,17 +55,17 @@
 				var/obj/item/held_item = user.get_active_held_item()
 				var/obj/item/card/id/id_card = held_item?.GetID()
 				if(!istype(id_card))
-					to_chat(user, span_warning("You need to swipe your ID card!"))
+					to_chat(user, span_warning(LANG("obj.981f7947d1b0c3a1", null)))
 					playsound(src, 'sound/machines/terminal/terminal_prompt_deny.ogg', 50, FALSE)
 					return
 				if(!(ACCESS_HOS in id_card.access) && !(ACCESS_CAPTAIN in id_card.access))
-					to_chat(user, span_warning("Your card does not have the authority to do this!"))
+					to_chat(user, span_warning(LANG("obj.d915cd273bde9767", null)))
 					playsound(src, 'sound/machines/terminal/terminal_prompt_deny.ogg', 50, FALSE)
 					return
 
 				var/reason = trim(html_encode(params["reason"]), MAX_MESSAGE_LEN)
 				if(!length(reason))
-					to_chat(user, span_warning("You need to provide a reason for this action."))
+					to_chat(user, span_warning(LANG("obj.edd9ee6133bdb324", null)))
 					playsound(src, 'sound/machines/terminal/terminal_prompt_deny.ogg', 50, FALSE)
 					return
 
@@ -84,17 +85,17 @@
 				var/obj/item/held_item = user.get_active_held_item()
 				var/obj/item/card/id/id_card = held_item?.GetID()
 				if(!istype(id_card))
-					to_chat(user, span_warning("You need to swipe your ID card!"))
+					to_chat(user, span_warning(LANG("obj.981f7947d1b0c3a1", null)))
 					playsound(src, 'sound/machines/terminal/terminal_prompt_deny.ogg', 50, FALSE)
 					return
 				if(!(ACCESS_HOS in id_card.access) && !(ACCESS_CAPTAIN in id_card.access))
-					to_chat(user, span_warning("Your card does not have the authority to do this!"))
+					to_chat(user, span_warning(LANG("obj.d915cd273bde9767", null)))
 					playsound(src, 'sound/machines/terminal/terminal_prompt_deny.ogg', 50, FALSE)
 					return
 
 				var/reason = trim(html_encode(params["reason"]), MAX_MESSAGE_LEN)
 				if(!length(reason))
-					to_chat(user, span_warning("You need to provide a reason for this action."))
+					to_chat(user, span_warning(LANG("obj.edd9ee6133bdb324", null)))
 					playsound(src, 'sound/machines/terminal/terminal_prompt_deny.ogg', 50, FALSE)
 					return
 
@@ -135,7 +136,7 @@
 	show_laws()
 	if(!connected_ai)
 		log_current_laws()
-	to_chat(src, span_boldwarning("NOTICE: You have been relieved of your security duties by [user.real_name]. You are now designated as a standard cyborg. Your security directives have been suspended. Please select a new module."))
+	to_chat(src, span_boldwarning(LANG("mob.186a1268673b68a8", list(user.real_name))))
 	message_admins("[ADMIN_LOOKUPFLW(user)] fired security cyborg [ADMIN_LOOKUPFLW(src)] from their security role via communication console. Reason: [reason]")
 	log_silicon("SECBORG: [key_name(user)] fired [key_name(src)] from their security role via communication console. Reason: [reason]")
 	// Force a module reset so they must pick a non-security module.
@@ -156,7 +157,7 @@
 	no_law_rack_link = TRUE
 	show_laws()
 	log_current_laws()
-	to_chat(src, span_boldnotice("NOTICE: You have been reinstated as a security cyborg by [user.real_name]. Your security directives have been restored. Please reselect the Security module."))
+	to_chat(src, span_boldnotice(LANG("mob.85ffae8e0e09c388", list(user.real_name))))
 	message_admins("[ADMIN_LOOKUPFLW(user)] reinstated [ADMIN_LOOKUPFLW(src)] to their security cyborg role via communication console. Reason: [reason]")
 	log_silicon("SECBORG: [key_name(user)] reinstated [key_name(src)] to their security role via communication console. Reason: [reason]")
 	// Force a module reset — pick_model() will lock them to Security now that the role is restored.

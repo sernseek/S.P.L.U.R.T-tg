@@ -21,6 +21,39 @@ export function createStats(verbose: boolean): StatsOptions {
 }
 
 const dirname = path.resolve();
+const tguiPackageDir = path.resolve(dirname, './packages/tgui');
+const isTguiPackageSource = (modulePath: string) =>
+  modulePath.startsWith(`${tguiPackageDir}${path.sep}`);
+
+// ZH EDIT ADDITION START - I18N: tgui 包内的 createSearch 换成也匹配显示译文的版本（i18n/search.ts），
+// 上游界面不必逐个改。只作用于 tgui 包，免得其它 bundle 被连带打进整份目录；shim 自己仍拿原实现。
+const localizedSearchModule = path.resolve(tguiPackageDir, './i18n/search.ts');
+// ZH EDIT ADDITION END
+
+const swcReactOptions = (importSource?: string) => {
+  const reactOptions: {
+    importSource?: string;
+    runtime: 'automatic';
+  } = {
+    runtime: 'automatic',
+  };
+
+  if (importSource) {
+    reactOptions.importSource = importSource;
+  }
+
+  return {
+    jsc: {
+      parser: {
+        syntax: 'typescript',
+        tsx: true,
+      },
+      transform: {
+        react: reactOptions,
+      },
+    },
+  };
+};
 
 export default defineConfig({
   context: dirname,
@@ -38,25 +71,36 @@ export default defineConfig({
       {
         test: /\.([tj]s(x)?|cjs)$/,
         type: 'javascript/auto',
-        use: [
+        oneOf: [
           {
-            loader: 'builtin:swc-loader',
-            options: {
-              jsc: {
-                parser: {
-                  syntax: 'typescript',
-                  tsx: true,
-                },
-                transform: {
-                  react: {
-                    runtime: 'automatic',
-                  },
-                },
+            include: isTguiPackageSource,
+            use: [
+              {
+                loader: 'builtin:swc-loader',
+                options: swcReactOptions('tgui/i18n'),
               },
-            },
+            ],
+          },
+          {
+            use: [
+              {
+                loader: 'builtin:swc-loader',
+                options: swcReactOptions(),
+              },
+            ],
           },
         ],
       },
+      // ZH EDIT ADDITION START - I18N
+      {
+        test: (modulePath: string) =>
+          isTguiPackageSource(modulePath) &&
+          modulePath !== localizedSearchModule,
+        resolve: {
+          alias: { 'tgui-core/string$': localizedSearchModule },
+        },
+      },
+      // ZH EDIT ADDITION END
       {
         test: /\.(s)?css$/,
         type: 'javascript/auto',

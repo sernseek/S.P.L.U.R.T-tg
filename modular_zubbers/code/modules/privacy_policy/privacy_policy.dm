@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/privacy_policy_ui
 	var/client/owner
 
@@ -11,7 +12,7 @@
 /datum/privacy_policy_ui/ui_close(mob/user)
 	// we spawned async and this has already been checked if we reached this point, we don't need further checks
 	if(owner)
-		to_chat(owner, span_danger("You must accept the Privacy Policy to continue playing."))
+		to_chat(owner, span_danger(LANG("datum.1986993d05377a9d", null)))
 		new type(owner.mob)
 	qdel(src)
 

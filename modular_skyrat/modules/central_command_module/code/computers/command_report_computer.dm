@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 #define ANNOUNCEMENT_COOLDOWN (10 MINUTES)
 
@@ -75,7 +76,7 @@
 
 	if(announce_contents)
 		priority_announce(command_report_content, command_report_title, report_sound, sender_override = command_name, has_important_message = TRUE)
-	print_command_report(command_report_content, "[announce_contents ? "" : "Classified "][command_name] Update", !announce_contents)
+	print_command_report(command_report_content, LANG("obj.fb6958b641d31224", list(announce_contents ? "" : "Classified ", command_name)), !announce_contents)
 
 	log_admin("[key_name(usr)] has created a command report: \"[command_report_content]\", sent from \"[command_name]\".")
 	message_admins("[key_name_admin(usr)] has created a command report, sent from \"[command_name]\".")

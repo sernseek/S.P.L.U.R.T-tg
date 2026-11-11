@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///The selected target is not trackable
 #define RADAR_NOT_TRACKABLE 0
 ///The selected target is trackable
@@ -360,7 +361,7 @@
 	for(var/obj/machinery/nuclearbomb/nuke as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/nuclearbomb))
 		var/list/nuke_info = list(
 			ref = REF(nuke),
-			name = nuke.name,
+			name = nuke.lang_localize_name_for_display(nuke.name), // ZH EDIT - I18N: 纯显示；atom 版守玩家改名。ORIGINAL: name = nuke.name,
 			)
 		objects += list(nuke_info)
 
@@ -386,7 +387,7 @@
 
 	for(var/obj/machinery/nuclearbomb/bomb as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/nuclearbomb))
 		if(bomb.timing)
-			examine_list += span_danger("Extreme danger. Arming signal detected. Time remaining: [bomb.get_time_left()].")
+			examine_list += span_danger(LANG("datum.bd76de8eae070a2b", list(bomb.get_time_left())))
 	return examine_list
 
 /*
@@ -401,11 +402,11 @@
 
 	playsound(computer, 'sound/items/nuke_toy_lowpower.ogg', 50, FALSE)
 	if(isliving(computer.loc))
-		to_chat(computer.loc, span_userdanger("Your [computer.name] vibrates and lets out an ominous alarm. Uh oh."))
+		to_chat(computer.loc, span_userdanger(LANG("datum.60b954c6fe57aab1", list(computer.name))))
 	else
 		computer.audible_message(
-			span_danger("[computer] vibrates and lets out an ominous alarm. Uh oh."),
-			span_notice("[computer] begins to vibrate rapidly. Wonder what that means..."),
+			span_danger(LANG("datum.d10e6587a59199a3", list(computer))),
+			span_notice(LANG("datum.cc399bfef025d386", list(computer))),
 		)
 
 

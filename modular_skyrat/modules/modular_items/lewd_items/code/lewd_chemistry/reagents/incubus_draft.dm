@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 * PENIS ENLARGEMENT
 * Normal function increases the player's penis size.
@@ -128,20 +129,20 @@
 		if(mob_penis.genital_size >= (penis_max_length - 2))
 			if(exposed_mob.dna.features["penis_sheath"] == SHEATH_SLIT)
 				if(mob_penis.aroused != AROUSAL_FULL)
-					to_chat(exposed_mob, span_purple("Your [pick(words_for_bigger_cock)] [pick(bigger_cock_text_list)] [pick(cock_action_text_list)]about [mob_penis.genital_size] inches long, and [mob_penis.girth] inches in circumference."))
-			exposed_mob.visible_message(span_notice("[exposed_mob]'s [pick(words_for_bigger_cock)] [pick(bigger_cock_text_list)] [pick(public_cock_action_text_list)]"))
-			to_chat(exposed_mob, span_purple("Your [pick(words_for_bigger_cock)] [pick(bigger_cock_text_list)] [pick(cock_action_text_list)]about [mob_penis.genital_size] inches long, and [mob_penis.girth] inches in circumference."))
+					to_chat(exposed_mob, span_purple(LANG("datum.480e8082903e15b1", list(pick(words_for_bigger_cock), pick(bigger_cock_text_list), pick(cock_action_text_list), mob_penis.genital_size, mob_penis.girth))))
+			exposed_mob.visible_message(span_notice(LANG("datum.bac41663d2babd3f", list(exposed_mob, pick(words_for_bigger_cock), pick(bigger_cock_text_list), pick(public_cock_action_text_list)))))
+			to_chat(exposed_mob, span_purple(LANG("datum.480e8082903e15b1", list(pick(words_for_bigger_cock), pick(bigger_cock_text_list), pick(cock_action_text_list), mob_penis.genital_size, mob_penis.girth))))
 		else
 			if(exposed_mob.dna.features["penis_sheath"] == SHEATH_SLIT)
 				if(mob_penis.aroused != AROUSAL_FULL)
-					to_chat(exposed_mob, span_purple("Your [pick(cock_text_list)] [pick(cock_action_text_list)]about [mob_penis.genital_size] inches long, and [mob_penis.girth] inches in circumference."))
-			exposed_mob.visible_message(span_notice("[exposed_mob]'s [pick(cock_text_list)] [pick(public_cock_action_text_list)]"))
-			to_chat(exposed_mob, span_purple("Your [pick(cock_text_list)] [pick(cock_action_text_list)]about [mob_penis.genital_size] inches long, and [mob_penis.girth] inches in circumference."))
+					to_chat(exposed_mob, span_purple(LANG("datum.a27d7cf2a1282079", list(pick(cock_text_list), pick(cock_action_text_list), mob_penis.genital_size, mob_penis.girth))))
+			exposed_mob.visible_message(span_notice(LANG("datum.4af0ffab954b29db", list(exposed_mob, pick(cock_text_list), pick(public_cock_action_text_list)))))
+			to_chat(exposed_mob, span_purple(LANG("datum.a27d7cf2a1282079", list(pick(cock_text_list), pick(cock_action_text_list), mob_penis.genital_size, mob_penis.girth))))
 	else
 		if(mob_penis.genital_size >= (penis_max_length - 2))
-			to_chat(exposed_mob, span_purple("Your [pick(words_for_bigger_cock)] [pick(bigger_cock_text_list)] [pick(cock_action_text_list)]about [mob_penis.genital_size] inches long, and [mob_penis.girth] inches in circumference."))
+			to_chat(exposed_mob, span_purple(LANG("datum.480e8082903e15b1", list(pick(words_for_bigger_cock), pick(bigger_cock_text_list), pick(cock_action_text_list), mob_penis.genital_size, mob_penis.girth))))
 		else
-			to_chat(exposed_mob, span_purple("Your [pick(cock_text_list)] [pick(cock_action_text_list)]about [mob_penis.genital_size] inches long, and [mob_penis.girth] inches in circumference."))
+			to_chat(exposed_mob, span_purple(LANG("datum.a27d7cf2a1282079", list(pick(cock_text_list), pick(cock_action_text_list), mob_penis.genital_size, mob_penis.girth))))
 
 /**
 * Helper function for the helper function used to display the messages that appear in chat while the testicles growth is occurring
@@ -160,13 +161,13 @@
 
 	// Display a different message when they reach 'enormous'
 	if(mob_testicles.genital_size <= balls_big_size)
-		to_chat(exposed_mob, span_purple("Your balls [pick(ball_action_text_list)]. They are now [mob_testicles.balls_size_to_description(mob_testicles.genital_size)]."))
+		to_chat(exposed_mob, span_purple(LANG("datum.1e9d8b184496e3a3", list(pick(ball_action_text_list), mob_testicles.balls_size_to_description(mob_testicles.genital_size)))))
 	else if(mob_testicles.genital_size == balls_max_size)
-		to_chat(exposed_mob, span_purple("You can feel your heavy balls churn as they swell to enormous proportions!"))
+		to_chat(exposed_mob, span_purple(LANG("datum.2ddafaf695163e50", null)))
 
 // Notify the user that they're overdosing. Doesn't affect their mood.
 /datum/reagent/drug/aphrodisiac/incubus_draft/overdose_start(mob/living/carbon/human/exposed_mob)
-	to_chat(exposed_mob, span_userdanger("You feel like you took too much [name]!"))
+	to_chat(exposed_mob, span_userdanger(LANG("datum.6edb1afbc6f2b172", list(name))))
 	exposed_mob.add_mood_event("[type]_overdose", /datum/mood_event/minor_overdose, name)
 
 /datum/chemical_reaction/incubus_draft

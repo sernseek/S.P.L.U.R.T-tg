@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Name of the blanks file
 #define BLANKS_FILE_NAME "config/blanks.json"
 
@@ -199,8 +200,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 /obj/machinery/photocopier/examine(mob/user)
 	. = ..()
 	if(object_copy)
-		. += span_notice("There is something inside the scanner tray.")
-	. += span_notice("You can put any type of blank paper inside to print a form onto it or to copy something onto it.")
+		. += span_notice(LANG("obj.cde32625fb381859", null))
+	. += span_notice(LANG("obj.b9b924fde6114dfc", null))
 
 /obj/machinery/photocopier/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -216,12 +217,18 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	if(GLOB.paper_blanks)
 		for(var/blank_id in GLOB.paper_blanks)
 			var/list/paper_blank = GLOB.paper_blanks[blank_id]
+			// ZH EDIT START - I18N: blank name/category come from config/blanks.json (extracted to `blanks`
+			// namespace). ui_static_data is constant data (bypasses P1), so reverse here. act uses `code`
+			// (display-only, safe); category reversed consistently for both entry + filter list.
+			// ORIGINAL: name = paper_blank["name"], category = paper_blank["category"],
+			var/blank_category = lang_reverse_text(paper_blank["category"])
 			blank_infos += list(list(
-				name = paper_blank["name"],
-				category = paper_blank["category"],
+				name = lang_reverse_text(paper_blank["name"]),
+				category = blank_category,
 				code = blank_id,
 			))
-			category_names |= paper_blank["category"]
+			category_names |= blank_category
+			// ZH EDIT END
 
 	static_data["blanks"] = blank_infos
 	static_data["categories"] = category_names
@@ -287,9 +294,9 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 			if(ass)
 				if(ishuman(ass) && (ass.get_item_by_slot(ITEM_SLOT_ICLOTHING) || ass.get_item_by_slot(ITEM_SLOT_OCLOTHING)))
 					if(ass == usr)
-						to_chat(usr, span_notice("You feel kind of silly, copying your ass with your clothes on."))
+						to_chat(usr, span_notice(LANG("obj.1c5c262c7f0af633", null)))
 					else
-						to_chat(usr, span_notice("You feel kind of silly, copying [ass]\'s ass with [ass.p_their()] clothes on."))
+						to_chat(usr, span_notice(LANG("obj.4d2a02dfcfcd40a1", list(ass, ass.p_their()))))
 					return FALSE
 				do_copies(CALLBACK(src, PROC_REF(make_ass_copy)), usr, ASS_PAPER_USE, ASS_TONER_USE, num_copies)
 				return TRUE
@@ -318,7 +325,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 				remove_photocopy(usr, object_copy)
 				object_copy = null
 			else if(check_ass())
-				to_chat(ass, span_notice("You feel a slight pressure on your ass."))
+				to_chat(ass, span_notice(LANG("obj.9aae3e004e966413", null)))
 			return TRUE
 
 		// AI printing photos from their saved images.
@@ -327,7 +334,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 				return FALSE
 			var/mob/living/silicon/ai/tempAI = usr
 			if(!length(tempAI.aicamera.stored))
-				balloon_alert(usr, "no images saved!")
+				balloon_alert(usr, LANG("obj.75905408ec65465c", null))
 				return FALSE
 			var/datum/picture/selection = tempAI.aicamera.selectpicture(usr)
 			do_copies(CALLBACK(src, PROC_REF(make_photo_copy), selection, PHOTO_COLOR), usr, PHOTO_PAPER_USE, PHOTO_TONER_USE, 1)
@@ -399,8 +406,8 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	obj_flags |= EMAGGED
 
 	playsound(src, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-	visible_message(span_warning("Sparks fly out of [src]!"))
-	balloon_alert(user, "payment system shorted")
+	visible_message(span_warning(LANG("obj.b7523a488c133b30", list(src))))
+	balloon_alert(user, LANG("obj.7c056592bf681a5b", null))
 	return TRUE
 
 /**
@@ -462,12 +469,12 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	if(copies_made.len)
 		if(!(obj_flags & EMAGGED) && attempt_charge(src, user, (copies_made.len - 1) * usage_cost) & COMPONENT_OBJ_CANCEL_CHARGE)
 			visible_message(
-				span_warning("An error message flashes across \the [src]'s screen."), \
-				span_warning("Failed to charge bank account. Scrapping copies.") \
+				span_warning(LANG("obj.96f2366dbb3a417e", list(src))), \
+				span_warning(LANG("obj.9016c64e81798509", null)) \
 			)
 			QDEL_LIST(copies_made)
 	else
-		to_chat(user, span_warning("Failed to copy object!"))
+		to_chat(user, span_warning(LANG("obj.66f020250a3de6ff", null)))
 
 	copies_left = 0
 	reset_busy()
@@ -480,7 +487,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 /// Determines if the printer is currently busy, informs the user if it is.
 /obj/machinery/photocopier/proc/check_busy(mob/user)
 	if(busy)
-		balloon_alert(user, "printer is busy!")
+		balloon_alert(user, LANG("obj.9c010ccc0809f28c", null))
 		return TRUE
 	return FALSE
 
@@ -608,12 +615,12 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	var/copy_colour = get_toner_color()
 	var/obj/item/paper/printblank = get_empty_paper(created_paper)
 
-	var/printname = blank["name"]
+	var/printname = lang_reverse_text(blank["name"]) // ZH EDIT - I18N: form title from config/blanks.json (`blanks` namespace), exact reverse (display-only). ORIGINAL: var/printname = blank["name"]
 	var/list/printinfo
 	for(var/infoline in blank["info"])
-		printinfo += infoline
+		printinfo += lang_reverse_text(infoline) // ZH EDIT - I18N: form body HTML lines reversed per-line (whole-line exact match, locale==en no-op). ORIGINAL: printinfo += infoline
 
-	printblank.name = "paper - '[printname]'"
+	printblank.name = "[lang_reverse_text("paper")] - '[printname]'" // ZH EDIT - I18N: localize the "paper" prefix word (exact reverse, locale==en no-op). ORIGINAL: printblank.name = "paper - '[printname]'"
 	printblank.add_raw_text(printinfo, color = copy_colour)
 	printblank.update_appearance()
 	use_toner(PAPER_TONER_USE)
@@ -632,7 +639,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	if(isnull(temp_img))
 		return null
 	var/obj/item/photo/copied_ass = new /obj/item/photo(src)
-	var/datum/picture/toEmbed = new(name = "[ass]'s Ass", desc = "You see [ass]'s ass on the photo.", image = temp_img)
+	var/datum/picture/toEmbed = new(name = "[ass]'s Ass", desc = LANG("obj.cd745ebf2cd3b2d0", list(ass)), image = temp_img)
 	toEmbed.psize_x = 128
 	toEmbed.psize_y = 128
 	copied_ass.set_picture(toEmbed, TRUE, TRUE)
@@ -658,7 +665,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 	object.forceMove(user.loc)
 	user.put_in_hands(object)
 
-	to_chat(user, span_notice("You take [object] out of [src]. [busy ? "The [src] comes to a halt." : ""]"))
+	to_chat(user, span_notice(LANG("obj.522335876dcffb27", list(object, src, busy ? "The [src] comes to a halt." : ""))))
 
 /obj/machinery/photocopier/update_icon_state()
 	. = ..()
@@ -678,43 +685,43 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 /obj/machinery/photocopier/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	// No infinite paper chain. You need the original paperwork to make more copies.
 	if(istype(tool, /obj/item/paperwork/photocopy))
-		balloon_alert(user, "too blurry!")
-		to_chat(user, span_warning("The [tool] is far too messy to produce a good copy!"))
+		balloon_alert(user, LANG("obj.e208b225be5476d4", null))
+		to_chat(user, span_warning(LANG("obj.359c3affecf870d9", list(tool))))
 		return ITEM_INTERACT_FAILURE
 
 	if(istype(tool, /obj/item/paper/paperslip))
-		balloon_alert(user, "too small!")
+		balloon_alert(user, LANG("obj.4116c0e3d619111f", null))
 		return ITEM_INTERACT_FAILURE
 
 	if(istype(tool, /obj/item/blueprints))
-		balloon_alert(user, "too large!")
-		to_chat(user, span_warning("\The [tool] is too large to put into the copier. You need to find something else to record the document."))
+		balloon_alert(user, LANG("obj.919c5bb5a64f7252", null))
+		to_chat(user, span_warning(LANG("obj.9112806fb48e961c", list(tool))))
 		return ITEM_INTERACT_FAILURE
 
 	if(istype(tool, /obj/item/toner))
 		if(toner_cartridge)
-			balloon_alert(user, "another cartridge inside!")
+			balloon_alert(user, LANG("obj.4d5dd04fbe5826fc", null))
 			return ITEM_INTERACT_FAILURE
 
 		tool.forceMove(src)
 		toner_cartridge = tool
-		balloon_alert(user, "cartridge inserted")
+		balloon_alert(user, LANG("obj.de4a800587e09e45", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(istype(tool, /obj/item/paperplane))
-		balloon_alert(user, "flatten paper first!")
+		balloon_alert(user, LANG("obj.beb7a19f46e548ed", null))
 		return ITEM_INTERACT_FAILURE
 
 	if(istype(tool, /obj/item/paper))
 		var/obj/item/paper/paper = tool
 
 		if(paper.resistance_flags & ON_FIRE)
-			balloon_alert(user, "paper on fire!")
+			balloon_alert(user, LANG("obj.219dbe54787af44a", null))
 			return ITEM_INTERACT_FAILURE
 
 		if(paper.is_empty()) // if not empty it gets inserted as an object to be copied
 			if(!has_room_for_paper())
-				balloon_alert(user, "cannot hold more paper!")
+				balloon_alert(user, LANG("obj.e5b6428250d824df", null))
 				return ITEM_INTERACT_FAILURE
 
 			insert_empty_paper(user, paper.type)
@@ -725,7 +732,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 		var/obj/item/paper_bin/paper_bin = tool
 
 		if(!paper_bin.total_paper)
-			balloon_alert(user, "paper bin empty!")
+			balloon_alert(user, LANG("obj.19d2056ff86a06d8", null))
 			return ITEM_INTERACT_FAILURE
 
 		var/paper_inserted = 0
@@ -750,12 +757,12 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 				paper_bin.total_paper -= (paper_to_take)
 
 		if(!paper_inserted && !has_room_for_paper()) // no paper was inserted because it was full
-			balloon_alert(user, "cannot hold more paper!")
+			balloon_alert(user, LANG("obj.e5b6428250d824df", null))
 			return ITEM_INTERACT_FAILURE
 
 		paper_bin.update_appearance()
 		// we use silent for insert_empty_paper() so that we don't spam balloon_alerts and instead condense them into one alert here
-		balloon_alert(user, "[paper_inserted] paper inserted")
+		balloon_alert(user, LANG("obj.f72992b01329cf85", list(paper_inserted)))
 		return ITEM_INTERACT_SUCCESS
 
 	if(is_type_in_typecache(tool, whitelist_scannable_objects))
@@ -774,17 +781,17 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 		paper_stack[paper_type] = 0
 	paper_stack[paper_type] += amount
 	if(!silent)
-		balloon_alert(user, "paper inserted")
+		balloon_alert(user, LANG("obj.93f23f942a05946e", null))
 
 /obj/machinery/photocopier/proc/insert_copy_object(mob/user, obj/item/object)
 	if(!copier_empty())
-		balloon_alert(user, "scanner tray occupied!")
+		balloon_alert(user, LANG("obj.53bbcfb22bf4d9ef", null))
 		return
 	if(!user.temporarilyRemoveItemFromInventory(object))
 		return
 	object_copy = object
 	object.forceMove(src)
-	balloon_alert(user, "copy object inserted")
+	balloon_alert(user, LANG("obj.4e2b6d3295782f22", null))
 	flick("photocopier1", src)
 
 /obj/machinery/photocopier/atom_break(damage_flag)
@@ -798,25 +805,25 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 		return
 	add_fingerprint(user)
 	if(target == user)
-		user.visible_message(span_notice("[user] starts climbing onto the photocopier!"), span_notice("You start climbing onto the photocopier..."))
+		user.visible_message(span_notice(LANG("obj.fb46d96403767453", list(user))), span_notice(LANG("obj.d90343fc5c828847", null)))
 	else
-		user.visible_message(span_warning("[user] starts putting [target] onto the photocopier!"), span_notice("You start putting [target] onto the photocopier..."))
+		user.visible_message(span_warning(LANG("obj.06c1be2f249d8d67", list(user, target))), span_notice(LANG("obj.cd293da6bafa7b78", list(target))))
 
 	if(do_after(user, 2 SECONDS, target = src))
 		if(!target || QDELETED(target) || QDELETED(src) || !Adjacent(target)) //check if the photocopier/target still exists.
 			return
 
 		if(target == user)
-			user.visible_message(span_notice("[user] climbs onto the photocopier!"), span_notice("You climb onto the photocopier."))
+			user.visible_message(span_notice(LANG("obj.8bb41664dc04f792", list(user))), span_notice(LANG("obj.65dad9081434c91f", null)))
 		else
-			user.visible_message(span_warning("[user] puts [target] onto the photocopier!"), span_notice("You put [target] onto the photocopier."))
+			user.visible_message(span_warning(LANG("obj.7203f651677985f8", list(user, target))), span_notice(LANG("obj.a8f5084c0d61d05d", list(target))))
 
 		target.forceMove(drop_location())
 		ass = target
 
 		if(!isnull(object_copy))
 			object_copy.forceMove(drop_location())
-			visible_message(span_warning("[object_copy] is shoved out of the way by [ass]!"))
+			visible_message(span_warning(LANG("obj.a05226dce889beee", list(object_copy, ass))))
 			object_copy = null
 
 /**
@@ -891,7 +898,7 @@ GLOBAL_LIST_INIT(paper_blanks, init_paper_blanks())
 
 /obj/item/toner/examine(mob/user)
 	. = ..()
-	. += span_notice("The ink level gauge on the side reads [round(charges / max_charges * 100)]%")
+	. += span_notice(LANG("obj.bf440d8e0558b3c5", list(round(charges / max_charges * 100))))
 
 /obj/item/toner/large
 	name = "large toner cartridge"

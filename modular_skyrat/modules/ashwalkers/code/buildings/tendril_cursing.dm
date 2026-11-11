@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/spawner/lavaland
 	/// whether it has a curse attached to it
 	var/cursed = FALSE
@@ -10,11 +11,11 @@
 			src.add_atom_colour("#41007e", TEMPORARY_COLOUR_PRIORITY)
 		else
 			src.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, "#41007e")
-		balloon_alert_to_viewers("a curse has been [cursed ? "placed..." : "lifted..."]")
+		balloon_alert_to_viewers(LANG("obj.8bed25c6ee5e743e", list(cursed ? "placed..." : "lifted...")))
 		if(isliving(user))
 			var/mob/living/living_user = user
 			living_user.adjust_fire_loss(100)
-		to_chat(user, span_warning("The knife sears your hand!"))
+		to_chat(user, span_warning(LANG("obj.83922db4ee6949e0", null)))
 		return
 	return ..()
 
@@ -27,7 +28,7 @@
 		for(var/mob/select_mob in GLOB.player_list)
 			if(!is_species(select_mob, /datum/species/lizard/ashwalker))
 				continue
-			to_chat(select_mob, span_boldwarning("A cursed tendril has been broken! The target has been marked until they flee the lands!"))
+			to_chat(select_mob, span_boldwarning(LANG("obj.b4feab5bda9af201", null)))
 	. = ..()
 
 /datum/component/ash_cursed
@@ -55,7 +56,7 @@
 	for(var/mob/select_mob in GLOB.player_list)
 		if(!is_species(select_mob, /datum/species/lizard/ashwalker))
 			continue
-		to_chat(select_mob, span_boldwarning("A target has died, the curse has been lifted!"))
+		to_chat(select_mob, span_boldwarning(LANG("datum.6dcd6da4edf3183b", null)))
 	Destroy()
 
 /datum/component/ash_cursed/proc/do_move()
@@ -66,7 +67,7 @@
 		for(var/mob/select_mob in GLOB.player_list)
 			if(!is_species(select_mob, /datum/species/lizard/ashwalker))
 				continue
-			to_chat(select_mob, span_boldwarning("A target has fled from the land, breaking the curse!"))
+			to_chat(select_mob, span_boldwarning(LANG("datum.9e661497f8c319fd", null)))
 		return
 	if(prob(75))
 		return

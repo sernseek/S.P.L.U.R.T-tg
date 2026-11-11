@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/vote
 	var/has_desc = FALSE
 
@@ -28,7 +29,7 @@
 	if((length(choices) == 1)) // Only one choice, no need to vote.
 		var/de_facto_winner = choices[1]
 		SSgamemode.storyteller_vote_result(de_facto_winner)
-		to_chat(world, span_boldannounce("The storyteller vote has been skipped because there is only one storyteller left to vote for. The storyteller has been changed to [de_facto_winner]."))
+		to_chat(world, span_boldannounce(LANG("datum.08c4419b536fc65a", list(de_facto_winner))))
 		return FALSE
 
 /datum/vote/storyteller/can_be_initiated(mob/by_who, forced = FALSE)

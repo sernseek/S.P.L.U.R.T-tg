@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Very important modifications for the bird communication, also new emote files for bubber EXCLUSIVE emote list!
 
 /datum/emote/living/chirp
@@ -166,11 +167,11 @@
 /datum/emote/living/carbon/bonk/run_emote(mob/user, params, type_override, intentional)
 	. = ..()
 	if(!length(user.get_empty_held_indexes()))
-		to_chat(user, span_warning("You don't have any free hands to bonk someone with."))
+		to_chat(user, span_warning(LANG("datum.f1d4b7675fa0ea8e", null)))
 		return
 	var/obj/item/hand_item/bonkinghand/bonk = new(user)
 	if(user.put_in_hands(bonk))
-		to_chat(user, span_notice("You ready your hand to bonk someone."))
+		to_chat(user, span_notice(LANG("datum.ad1135e042d2294c", null)))
 
 /datum/emote/living/kweh
 	key = "kweh"

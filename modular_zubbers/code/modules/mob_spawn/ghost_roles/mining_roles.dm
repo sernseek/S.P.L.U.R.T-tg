@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/mob_spawn/ghost_role/human/lavaland_gasstation
 	name = "Gas Station Attendant"
 	desc = "Seems like there's somebody inside, peacefully sleeping."
@@ -40,7 +41,7 @@
 	if(visualsOnly)
 		return
 	hermit.mind?.teach_crafting_recipe(/datum/crafting_recipe/research_paper)
-	to_chat(hermit, span_notice("You learn the recipe for the <b>research paper</b>, giving you the ability to craft everything from nothing."))
+	to_chat(hermit, span_notice(LANG("datum.51426d395f5d6134", null)))
 
 /// Manager and departmental ID additions
 #define ROLE_LZGAS "Lizard Gas Station Manager"

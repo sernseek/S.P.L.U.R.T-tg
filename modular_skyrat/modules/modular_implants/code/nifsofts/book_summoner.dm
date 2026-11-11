@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/disk/nifsoft_uploader/summoner/book
 	name = "Grimoire Akasha"
 	loaded_nifsoft = /datum/nifsoft/summoner/book
@@ -30,7 +31,7 @@
 
 /obj/item/book/carving_act(mob/living/user, obj/item/tool)
 	if(cannot_carve)
-		balloon_alert(user, "unable to be carved!")
+		balloon_alert(user, LANG("obj.590378e198fdb83f", null))
 		return ITEM_INTERACT_BLOCKING
 
 	return ..()

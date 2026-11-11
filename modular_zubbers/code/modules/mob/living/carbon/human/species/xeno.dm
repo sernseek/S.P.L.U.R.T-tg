@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/xeno
 	mutant_organs = list()
 	heatmod = 1
@@ -51,15 +52,15 @@
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "eye",
-		SPECIES_PERK_NAME = "Darkvision",
-		SPECIES_PERK_DESC = "Xenomorph Hybrids inherit the ability to see in the dark from pure Xenomorphs, albeit to a less powerful degree."
+		SPECIES_PERK_NAME = LANG("datum.927dd0fa2284048c", null),
+		SPECIES_PERK_DESC = LANG("datum.2c8d4fb271004af5", null)
 	))
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "biohazard",
-		SPECIES_PERK_NAME = "Sharp Claws",
-		SPECIES_PERK_DESC = "Xenomorph Hybrids possess sharp claws and talons."
+		SPECIES_PERK_NAME = LANG("datum.0473e5a83006d8f6", null),
+		SPECIES_PERK_DESC = LANG("datum.af48828b8aa64a98", null)
 	))
 
 	return to_add

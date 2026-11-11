@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/claymore/dragonslayer
 	slot_flags = ITEM_SLOT_BACK | ITEM_SLOT_SUITSTORE //Can be worn on back, or in suit storage with berserker armor
 	w_class = WEIGHT_CLASS_BULKY //Allows it to fit in suit storage slot on berserker armor
@@ -9,7 +10,7 @@
 		var/obj/item/clothing/suit/hooded/berserker/gatsu/armor = user.get_item_by_slot(ITEM_SLOT_OCLOTHING)
 		if(!istype(armor))
 			if(!disable_warning)
-				to_chat(user, span_warning("[src] can only be carried by the berserker armor!"))
+				to_chat(user, span_warning(LANG("obj.5a649ad08c162d4d", list(src))))
 			return FALSE
 		return TRUE
 	return ..()

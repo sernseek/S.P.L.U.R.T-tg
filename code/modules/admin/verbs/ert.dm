@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// If we spawn an ERT with the "choose experienced leader" option, select the leader from the top X playtimes
 #define ERT_EXPERIENCED_LEADER_CHOOSE_TOP 3
 
@@ -139,7 +140,7 @@
 	var/turf/brief_spawn
 
 	if(ertemplate.use_custom_shuttle && ertemplate.ert_template)
-		to_chat(usr, span_boldnotice("Attempting to spawn ERT custom shuttle, this may take a few seconds..."))
+		to_chat(usr, span_boldnotice(LANG("datum.efe7279e004a2ebd", null)))
 		var/datum/map_template/shuttle/ship = new ertemplate.ert_template
 		var/x = rand(TRANSITIONEDGE, world.maxx - TRANSITIONEDGE - ship.width)
 		var/y = rand(TRANSITIONEDGE, world.maxy - TRANSITIONEDGE - ship.height)
@@ -178,7 +179,7 @@
 			admin_officer.PossessByPlayer(usr.key)
 
 		else
-			to_chat(usr, span_warning("Could not spawn you in as briefing officer as you are not a ghost!"))
+			to_chat(usr, span_warning(LANG("datum.946bf8032645c514", null)))
 
 	//Pick the (un)lucky players
 	var/numagents = min(ertemplate.teamsize, length(candidates))
@@ -265,7 +266,7 @@
 	message_admins("[capitalize(ertemplate.polldesc)] has spawned with the mission: [ertemplate.mission]")
 	// BUBBER EDIT ADDITION BEGIN
 	if(ertemplate.notify_players)
-		priority_announce("Central command has responded to your request for a CODE [uppertext(ertemplate.code)] Emergency Response Team and have confirmed one to be enroute.", "ERT Request", ANNOUNCER_ERTYES)
+		priority_announce(LANG("datum.e6117052a0815d1e", list(uppertext(ertemplate.code))), "ERT Request", ANNOUNCER_ERTYES)
 		// shitcode begin!
 		if(istype(ertemplate, /datum/ert/deathsquad))
 			SSsecurity_level.set_level(SEC_LEVEL_EPSILON)
@@ -273,7 +274,7 @@
 
 	return TRUE
 
-ADMIN_VERB(summon_ert, R_FUN, "Summon ERT", "Summons an emergency response team.", ADMIN_CATEGORY_FUN)
+ADMIN_VERB(summon_ert, R_FUN, "召唤 ERT", "Summons an emergency response team.", ADMIN_CATEGORY_FUN)
 	message_admins("[key_name_admin(user)] is creating a CentCom response team...")
 	if(user.holder?.make_emergency_response_team())
 		log_admin("[key_name(user)] created a CentCom response team.")

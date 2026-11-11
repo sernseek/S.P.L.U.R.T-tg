@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/mob_cooldown/blood_worm/invade
 	name = "Invade Corpse"
 	desc = "Invade a humanoid corpse, taking it as your host."
@@ -40,10 +41,10 @@
 	var/mob/living/carbon/human/victim = target
 
 	if (!worm.Adjacent(victim))
-		victim.balloon_alert(worm, "too far away!")
+		victim.balloon_alert(worm, LANG("datum.a462ee7cec0ddb47", null))
 		return FALSE
 	if (!victim.IsReachableBy(worm))
-		victim.balloon_alert(worm, "can't reach!")
+		victim.balloon_alert(worm, LANG("datum.fba9228dcadf2006", null))
 		return FALSE
 
 	unset_click_ability(worm, refund_cooldown = FALSE) // If you fail after this point, it's because your attempt got interrupted or because the victim is invalid.
@@ -52,9 +53,9 @@
 		return TRUE // Don't bite the victim.
 
 	worm.visible_message(
-		message = span_danger("\The [worm] starts entering \the [victim]!"),
-		self_message = span_notice("You start entering \the [victim]."),
-		blind_message = span_hear("You hear squeezing.")
+		message = span_danger(LANG("datum.7b10e1eb6a9e71e0", list(worm, victim))),
+		self_message = span_notice(LANG("datum.279af54805a21b86", list(victim))),
+		blind_message = span_hear(LANG("datum.da94412caa1d6e52", null))
 	)
 
 	if (!do_after(worm, 5 SECONDS, victim, extra_checks = CALLBACK(src, PROC_REF(invade_check), worm, victim)))
@@ -68,18 +69,18 @@
 /datum/action/cooldown/mob_cooldown/blood_worm/invade/proc/invade_check(mob/living/basic/blood_worm/worm, mob/living/carbon/human/victim, feedback = FALSE)
 	if (HAS_TRAIT(victim, TRAIT_BLOOD_WORM_HOST))
 		if (feedback)
-			victim.balloon_alert(worm, "already a host!")
+			victim.balloon_alert(worm, LANG("datum.2e1347137477383e", null))
 		return FALSE
 	if (victim.stat != DEAD)
 		if (feedback)
-			victim.balloon_alert(worm, "still alive!")
+			victim.balloon_alert(worm, LANG("datum.61eeb765550d35d0", null))
 		return FALSE
 	if (!CAN_HAVE_BLOOD(victim))
 		if (feedback)
-			victim.balloon_alert(worm, "no blood!")
+			victim.balloon_alert(worm, LANG("datum.ce2814af84b667b1", null))
 		return FALSE
 	if (victim.get_blood_volume() + worm.health * BLOOD_WORM_HEALTH_TO_BLOOD <= worm.get_eject_volume_threshold())
 		if (feedback)
-			victim.balloon_alert(worm, "not enough blood for control!")
+			victim.balloon_alert(worm, LANG("datum.ce5f30501fad650d", null))
 		return FALSE
 	return TRUE

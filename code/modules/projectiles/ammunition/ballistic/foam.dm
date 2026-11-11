@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/ammo_casing/foam_dart
 	name = "foam dart"
 	desc = "It's Donk or Don't! Ages 8 and up."
@@ -30,7 +31,7 @@
 
 /obj/item/ammo_casing/foam_dart/update_desc()
 	. = ..()
-	desc = "It's Donk or Don't! [modified ? "... Although, this one doesn't look too safe." : "Ages 8 and up."]"
+	desc = LANG("obj.1491871420876ab7", list(modified ? "... Although, this one doesn't look too safe." : "Ages 8 and up."))
 
 /obj/item/ammo_casing/foam_dart/examine_more(mob/user)
 	. = ..()
@@ -38,9 +39,8 @@
 		var/list/type_initial_names = list()
 		for(var/type in insertable_items_hint)
 			var/obj/item/type_item = type
-			type_initial_names += "\a [initial(type_item.name)]"
-		. += span_notice("[modified ? "You can" : "If you removed the safety cap with a screwdriver, you could"] insert a small item\
-			[length(type_initial_names) ? ", such as [english_list(type_initial_names, and_text = "or ", final_comma_text = ", ")]" : ""].")
+			type_initial_names += LANG("obj.fd9662584913017e", list(initial(type_item.name)))
+		. += span_notice(LANG("obj.4a7ad516aef93fe1", list(modified ? "You can" : "If you removed the safety cap with a screwdriver, you could", length(type_initial_names) ? ", such as [lang_english_list(type_initial_names, and_text = "or ", final_comma_text = ", ")]" : "")))
 
 /obj/item/ammo_casing/foam_dart/screwdriver_act(mob/living/user, obj/item/tool)
 	if(modified)
@@ -50,7 +50,7 @@
 	dart.modified = TRUE
 	dart.damage_type = BRUTE
 	dart.set_embed(null) // Cap is what makes them sticky
-	to_chat(user, span_notice("You pop the safety cap off [src]."))
+	to_chat(user, span_notice(LANG("obj.013544a5ec8fef7b", list(src))))
 	update_appearance()
 	return ITEM_INTERACT_SUCCESS
 

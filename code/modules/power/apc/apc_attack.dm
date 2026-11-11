@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Ethereals:
 /// How long it takes an ethereal to drain or charge APCs. Also used as a spam limiter.
 #define ETHEREAL_APC_DRAIN_TIME (3 SECONDS)
@@ -50,13 +51,13 @@
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, balloon_alert), user, "draining power..."), ETHEREAL_APC_ALERT_DELAY)
 	while(do_after(user, ETHEREAL_APC_DRAIN_TIME, target = src))
 		if(isnull(used_stomach) || (used_stomach != user.get_organ_slot(ORGAN_SLOT_STOMACH)))
-			balloon_alert(user, "stomach removed!?")
+			balloon_alert(user, LANG("obj.102b018fb6781e77", null))
 			return
 		if(isnull(cell))
-			balloon_alert(user, "cell removed!")
+			balloon_alert(user, LANG("obj.a47322cdb516ded7", null))
 			return
 		if(cell.charge() < half_max_charge)
-			balloon_alert(user, "safeties kicked in!")
+			balloon_alert(user, LANG("obj.03fc1b0635c50be5", null))
 			return
 
 		var/our_available_charge = cell.charge() - half_max_charge
@@ -67,10 +68,10 @@
 		used_stomach.adjust_charge(energy_drained)
 
 		if(stomach_cell.used_charge() <= 0)
-			balloon_alert(user, "your charge is full!")
+			balloon_alert(user, LANG("obj.5e4dbacc862cd204", null))
 			return
 		if(cell.charge() <= 0)
-			balloon_alert(user, "apc is empty!")
+			balloon_alert(user, LANG("obj.1328a0e7ac0f3f34", null))
 			return
 
 /// Handles charging our internal cell from an ethereal and their stomach
@@ -88,10 +89,10 @@
 	if(!do_after(user, ETHEREAL_APC_DRAIN_TIME, target = src))
 		return
 	if(isnull(used_stomach) || (used_stomach != user.get_organ_slot(ORGAN_SLOT_STOMACH)))
-		balloon_alert(user, "stomach removed!?")
+		balloon_alert(user, LANG("obj.102b018fb6781e77", null))
 		return
 	if(isnull(cell))
-		balloon_alert(user, "cell removed!")
+		balloon_alert(user, LANG("obj.a47322cdb516ded7", null))
 		return
 
 	var/stomach_charge = stomach_cell.charge()
@@ -102,10 +103,10 @@
 	cell.give(-energy_drained)
 
 	if(cell.used_charge() <= 0)
-		balloon_alert(user, "apc is full!")
+		balloon_alert(user, LANG("obj.cbf89b69384bdc21", null))
 		return
 	if(stomach_cell.charge() <= 0)
-		balloon_alert(user, "out of charge!")
+		balloon_alert(user, LANG("obj.6428cbcddb15f126", null))
 		return
 
 
@@ -117,8 +118,8 @@
 
 	if(opened && (!issilicon(user)))
 		if(cell)
-			user.visible_message(span_notice("[user] removes \the [cell] from [src]!"))
-			balloon_alert(user, "cell removed")
+			user.visible_message(span_notice(LANG("obj.ea367116b2948c11", list(user, cell, src))))
+			balloon_alert(user, LANG("obj.0dfdca6e675f39e2", null))
 			user.put_in_hands(cell)
 		return
 	if((machine_stat & MAINT) && !opened) //no board; no interface
@@ -152,7 +153,7 @@
 		else if(istype(malfai) && !(malfai == user || (user in malfai.connected_robots)))
 			. = FALSE
 	if (!. && !loud)
-		balloon_alert(user, "it's disabled!")
+		balloon_alert(user, LANG("obj.487c33b3390a7aae", null))
 	return .
 
 /obj/machinery/power/apc/shock(mob/living/shocking, chance, shock_source, siemens_coeff)

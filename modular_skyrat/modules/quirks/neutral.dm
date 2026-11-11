@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_VAR_INIT(DNR_trait_overlay, generate_DNR_trait_overlay())
 
 /// Instantiates GLOB.DNR_trait_overlay by creating a new mutable_appearance instance of the overlay.
@@ -86,7 +87,7 @@ GLOBAL_VAR_INIT(DNR_trait_overlay, generate_DNR_trait_overlay())
 	. = ..()
 
 	if(stat != DEAD && HAS_TRAIT(src, TRAIT_DNR) && (HAS_TRAIT(user, TRAIT_SECURITY_HUD) || HAS_TRAIT(user, TRAIT_MEDICAL_HUD)))
-		. += "\n[span_boldwarning("This individual is unable to be revived, and may be permanently dead if allowed to die!")]"
+		. += LANG("mob.65aac1b5abce675a", list(span_boldwarning("This individual is unable to be revived, and may be permanently dead if allowed to die!")))
 
 /datum/atom_hud/data/human/dnr
 	hud_icons = list(DNR_HUD)
@@ -224,7 +225,7 @@ GLOBAL_VAR_INIT(DNR_trait_overlay, generate_DNR_trait_overlay())
 	flipped = !flipped
 	update_static_data()
 
-	balloon_alert(user, "card flipped")
+	balloon_alert(user, LANG("obj.724433573c61d4b8", null))
 	return CLICK_ACTION_SUCCESS
 
 /datum/quirk/felinid_aspect
@@ -347,16 +348,16 @@ GLOBAL_VAR_INIT(DNR_trait_overlay, generate_DNR_trait_overlay())
 	var/obj/item/food/potential_food = caster.get_active_held_item()
 	if(!istype(potential_food))
 		if(caster.get_inactive_held_item())
-			to_chat(caster, span_warning("You must be holding food!"))
+			to_chat(caster, span_warning(LANG("datum.bfe58e1f874bc97c", null)))
 		else
-			to_chat(caster, span_warning("You aren't holding anything that can be used as an ingredient!"))
+			to_chat(caster, span_warning(LANG("datum.aece7aafafc54c4e", null)))
 		return FALSE
 	if(!can_sniff(potential_food, caster))
 		return FALSE
-	caster.balloon_alert_to_viewers("sniffing...")
-	to_chat(caster, span_notice("You start judging [potential_food] for its culinary potential..."))
+	caster.balloon_alert_to_viewers(LANG("datum.d9bec2a3502dfa3b", null))
+	to_chat(caster, span_notice(LANG("datum.29423fb22bf0e037", list(potential_food))))
 	if(!do_after(caster, 5 SECONDS, potential_food))
-		to_chat(caster, span_notice("You didn't get a good enough whiff of [potential_food]."))
+		to_chat(caster, span_notice(LANG("datum.17ad53cbdd694faa", list(potential_food))))
 		return FALSE
 	check_recipes(potential_food)
 	return TRUE
@@ -369,10 +370,10 @@ GLOBAL_VAR_INIT(DNR_trait_overlay, generate_DNR_trait_overlay())
 		if(food_type in recipe.reqs)
 			type_recipe_list += recipe.result
 	if(length(type_recipe_list) == 0)
-		to_chat(owner, span_notice("Nothing more can be made from this."))
+		to_chat(owner, span_notice(LANG("datum.0891e9b2ee3ba19b", null)))
 		return FALSE
 	var/datum/crafting_recipe/chosen = pick(type_recipe_list)
-	to_chat(owner, span_notice("[potential_food] could probably be used to make [chosen::name]"))
+	to_chat(owner, span_notice(LANG("datum.4ea899536ece1782", list(potential_food, chosen::name))))
 ///End of Mouse Traits
 
 /datum/quirk/sensitivesnout

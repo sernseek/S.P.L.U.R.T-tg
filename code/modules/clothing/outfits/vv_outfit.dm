@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // This outfit preserves varedits made on the items
 // Created from admin helpers.
 /datum/outfit/varedit
@@ -148,10 +149,10 @@
 	for(var/obj/item/implant/implant in implants)
 		outfit.implants |= implant.type
 	//Copy to outfit cache
-	var/outfit_name = stripped_input(usr,"Enter the outfit name")
+	var/outfit_name = stripped_input(usr,LANG("mob.7b0f97c0690f0be6", null))
 	outfit.name = outfit_name
 	GLOB.custom_outfits += outfit
-	to_chat(usr,"Outfit registered, use select equipment to equip it.")
+	to_chat(usr,LANG("mob.15fc7b145545d4d4", null))
 
 /datum/outfit/varedit/post_equip(mob/living/carbon/human/human, visuals_only)
 	. = ..()

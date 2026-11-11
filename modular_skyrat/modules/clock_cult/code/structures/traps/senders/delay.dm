@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/wallframe/clocktrap/delay
 	name = "clockwork timer"
 	desc = "A small, detached timer."
@@ -19,7 +20,7 @@
 
 
 /obj/structure/destructible/clockwork/trap/delay/multitool_act(mob/living/user, obj/item/tool)
-	delay_time = tgui_input_number(user, "Input delay time", "Clockwork Timer", 1 SECONDS, 120 SECONDS, 1 SECONDS)
+	delay_time = tgui_input_number(user, LANG("obj.5ab69af643baa521", null), LANG("obj.9bc5a903bc29707b", null), 1 SECONDS, 120 SECONDS, 1 SECONDS)
 	return TRUE
 
 

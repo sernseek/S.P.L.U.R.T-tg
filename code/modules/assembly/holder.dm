@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/assembly_holder
 	name = "Assembly"
 	icon = 'icons/obj/devices/new_assemblies.dmi'
@@ -48,20 +49,20 @@
 
 /obj/item/assembly_holder/proc/try_add_assembly(obj/item/assembly/attached_assembly, mob/user)
 	if(attached_assembly.secured)
-		balloon_alert(user, "not attachable!")
+		balloon_alert(user, LANG("obj.56801767b0d13542", null))
 		return FALSE
 
 	if(LAZYLEN(assemblies) >= HOLDER_MAX_ASSEMBLIES)
-		balloon_alert(user, "too many assemblies!")
+		balloon_alert(user, LANG("obj.2ac5107dda8e9c96", null))
 		return FALSE
 
 	if(attached_assembly.assembly_flags & ASSEMBLY_NO_DUPLICATES)
 		if(locate(attached_assembly.type) in assemblies)
-			balloon_alert(user, "can't attach another of that!")
+			balloon_alert(user, LANG("obj.5b65d31a6fe85ea9", null))
 			return FALSE
 
 	add_assembly(attached_assembly, user)
-	balloon_alert(user, "part attached")
+	balloon_alert(user, LANG("obj.df8c754affb0de59", null))
 	return TRUE
 
 /**
@@ -143,7 +144,7 @@
 
 
 /obj/item/assembly_holder/screwdriver_act(mob/user, obj/item/tool)
-	loc.balloon_alert(user, "disassembled")
+	loc.balloon_alert(user, LANG("obj.6da68488a6a04800", null))
 
 	deconstruct(TRUE)
 
@@ -157,7 +158,7 @@
 /obj/item/assembly_holder/attack_self(mob/user)
 	src.add_fingerprint(user)
 	if(LAZYLEN(assemblies) == 1)
-		balloon_alert(user, "part missing!")
+		balloon_alert(user, LANG("obj.4ede08de27380494", null))
 		return
 
 	for(var/obj/item/assembly/assembly as anything in assemblies)

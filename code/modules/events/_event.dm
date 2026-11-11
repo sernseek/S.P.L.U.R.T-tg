@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define RANDOM_EVENT_ADMIN_INTERVENTION_TIME (3 MINUTES) // SKYRAT EDIT CHANGE - ORIGINAL: #define RANDOM_EVENT_ADMIN_INTERVENTION_TIME (20 SECONDS)
 
 //this singleton datum is used by the events controller to dictate how it selects events
@@ -114,7 +115,7 @@
 	..()
 	if(href_list["cancel"])
 		if(!triggering)
-			to_chat(usr, span_admin("You are too late to cancel that event"))
+			to_chat(usr, span_admin(LANG("datum.f89ac756a995c14f", null)))
 			return
 		triggering = FALSE
 		message_admins("[key_name_admin(usr)] cancelled event [name].")
@@ -122,7 +123,7 @@
 		SSblackbox.record_feedback("tally", "event_admin_cancelled", 1, typepath)
 	if(href_list["different_event"])
 		if(!triggering)
-			to_chat(usr, span_admin("Too late to change events now!"))
+			to_chat(usr, span_admin(LANG("datum.2bce0c8ec54b2948", null)))
 			return
 		triggering = FALSE
 		message_admins("[key_name_admin(usr)] chose to have event [name] rolled into a different event.")
@@ -235,7 +236,7 @@ Runs the event
 	if(control.alert_observers)
 		if (atom_of_interest)
 			notify_ghosts(
-				"[control.name] has an object of interest: [atom_of_interest]!",
+				LANG("datum.f1f8dce975abb44e", list(control.name, atom_of_interest)),
 				source = atom_of_interest,
 			)
 	return

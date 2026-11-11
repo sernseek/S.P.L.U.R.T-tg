@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The minimum ratio of reagents that need to have the `REAGENT_BLOOD_REGENERATING` chemical_flags for the Hemophage not to violently vomit upon consumption.
 #define MINIMUM_BLOOD_REGENING_REAGENT_RATIO 0.75
 
@@ -49,7 +50,7 @@
 
 	body.set_disgust(max(body.disgust, TUMOR_DISLIKED_FOOD_DISGUST))
 
-	to_chat(body, span_warning("That tasted awful..."))
+	to_chat(body, span_warning(LANG("datum.e235ec33e1c9c868", null)))
 
 	// We don't lose nutrition because we don't even use nutrition as Hemopahges. It WILL however purge nearly all of what's in their stomach.
 	body.vomit(vomit_flags = HEMOPHAGE_VOMIT_FLAGS, lost_nutrition = 0, distance = 1, purge_ratio = HEMOPHAGE_VOMIT_PURGE_RATIO)

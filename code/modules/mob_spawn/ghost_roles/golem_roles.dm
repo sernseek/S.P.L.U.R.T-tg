@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 //reserved file just for golems since they're such a big thing, available on lavaland and from the station
 
@@ -30,7 +31,7 @@
 	var/area/init_area = get_area(src)
 	if(!mapload && init_area)
 		notify_ghosts(
-			"\A golem shell has been completed in \the [init_area.name].",
+			LANG("obj.53b7eb3eac8be04e", list(init_area.name)),
 			source = src,
 			header = "Golem Shell",
 			click_interact = TRUE,
@@ -55,8 +56,7 @@
 
 	if(is_station_level(new_spawn.z))
 		return
-	to_chat(new_spawn, "Build golem shells in the autolathe, and feed refined mineral sheets to the shells to bring them to life! \
-		You are generally a peaceful group unless provoked.")
+	to_chat(new_spawn, LANG("obj.1bb4a91959d985b2", null))
 	try_keep_home(new_spawn)
 
 /// Makes free golems slow and sad on the space station
@@ -106,7 +106,7 @@
 		CRASH("[type] created a golem without a mind.")
 
 	new_spawn.mind.enslave_mind_to_creator(real_owner)
-	to_chat(new_spawn, span_userdanger("Serve [real_owner.real_name], and assist [real_owner.p_them()] in completing [real_owner.p_their()] goals at any cost."))
+	to_chat(new_spawn, span_userdanger(LANG("obj.28ce7fd8ca2f7bfc", list(real_owner.real_name, real_owner.p_them(), real_owner.p_their()))))
 
 /obj/effect/mob_spawn/ghost_role/human/golem/servant/name_mob(mob/living/spawned_mob, forced_name)
 	if(owner_ref?.resolve())
@@ -121,7 +121,7 @@
 
 	if(user.combat_mode)
 		return
-	to_chat(user, span_notice("You begin prying load-bearing chunks from the completed shell."))
+	to_chat(user, span_notice(LANG("obj.b23669893b2b460d", null)))
 	playsound(user, 'sound/items/tools/crowbar.ogg', 70)
 
 	if(do_after(user, delay = deconstruct_time, target = src))
@@ -131,7 +131,7 @@
 		else
 			new /obj/item/stack/sheet/iron/five(get_turf(src))
 
-		to_chat(user, span_notice("The Golem crumbles in on itself!"))
+		to_chat(user, span_notice(LANG("obj.d31c06cde6d9def3", null)))
 		playsound(src, 'sound/effects/rock/rock_break.ogg', 60)
 		qdel(src)
 

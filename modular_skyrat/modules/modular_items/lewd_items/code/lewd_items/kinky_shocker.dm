@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/kinky_shocker
 	name = "kinky shocker"
 	desc = "A small toy that can weakly shock someone."
@@ -50,23 +51,23 @@
 /obj/item/kinky_shocker/examine(mob/user)
 	. = ..()
 	if(cell)
-		. += span_notice("\The [src] is [round(cell.percent())]% charged.")
+		. += span_notice(LANG("obj.f103c61308828e8d", list(src, round(cell.percent()))))
 	else
-		. += span_warning("\The [src] does not have a power source installed.")
+		. += span_warning(LANG("obj.a88e2f3257272994", list(src)))
 
 /obj/item/kinky_shocker/attackby(obj/item/stock_parts/power_store/cell/powercell, mob/user, params)
 	if(!istype(powercell))
 		return ..()
 	if(cell)
-		to_chat(user, span_warning("[src] already has a cell!"))
+		to_chat(user, span_warning(LANG("obj.6ce8d1004a112c57", list(src))))
 	else
 		if(powercell.maxcharge < cell_hit_cost)
-			to_chat(user, span_notice("[src] requires a higher capacity cell."))
+			to_chat(user, span_notice(LANG("obj.82ea442cce47f39a", list(src))))
 			return
 		if(!user.transferItemToLoc(powercell, src))
 			return
 		cell = powercell
-		to_chat(user, span_notice("You install a cell in [src]."))
+		to_chat(user, span_notice(LANG("obj.9bc9caa999424042", list(src))))
 		update_appearance()
 
 /obj/item/kinky_shocker/click_alt(mob/user)
@@ -79,7 +80,7 @@
 	cell.update_appearance()
 	cell.forceMove(get_turf(src))
 	cell = null
-	to_chat(user, span_notice("You remove the cell from [src]."))
+	to_chat(user, span_notice(LANG("obj.5fdb5c9e5937160a", list(src))))
 	shocker_on = FALSE
 	update_appearance()
 	return CLICK_ACTION_SUCCESS
@@ -90,14 +91,14 @@
 /obj/item/kinky_shocker/proc/toggle_shocker(mob/user)
 	if(cell && cell.charge >= cell_hit_cost)
 		shocker_on = !shocker_on
-		to_chat(user, span_notice("You turn the shocker [shocker_on? "on. Buzz!" : "off."]"))
+		to_chat(user, span_notice(LANG("obj.89a48fe6ce6354a6", list(shocker_on? "on. Buzz!" : "off."))))
 		conditional_pref_sound(user, shocker_on ? 'sound/items/weapons/magin.ogg' : 'sound/items/weapons/magout.ogg', 40, TRUE)
 	else
 		shocker_on = FALSE
 		if(!cell)
-			to_chat(user, span_warning("[src] does not have a power source!"))
+			to_chat(user, span_warning(LANG("obj.a4409c9a809c8775", list(src))))
 		else
-			to_chat(user, span_warning("[src] is out of charge."))
+			to_chat(user, span_warning(LANG("obj.dc821be82982f526", list(src))))
 	update_appearance()
 	add_fingerprint(user)
 
@@ -118,11 +119,11 @@
 		return
 
 	if(!shocker_on)
-		to_chat(user, span_danger("[src] must be enabled before use!"))
+		to_chat(user, span_danger(LANG("obj.a7060135677f81d8", list(src))))
 		return
 
 	if(!target.check_erp_prefs(/datum/preference/toggle/erp/sex_toy, user, src))
-		to_chat(user, span_danger("[target] doesn't want you to do that."))
+		to_chat(user, span_danger(LANG("obj.8d0a01828f0e2a19", list(target))))
 		return
 
 	var/message = ""
@@ -161,7 +162,7 @@
 						"shocks [target]'s tummy with [src]",
 						"leans [src] against [target]'s synthetic genitals, turning it on")
 			else
-				to_chat(user, span_danger("Looks like [target]'s groin is covered!"))
+				to_chat(user, span_danger(LANG("obj.c5b0317d58c50f81", list(target))))
 				return
 
 		if(BODY_ZONE_CHEST)
@@ -179,15 +180,15 @@
 						"shocks [target]'s nipples with [src]",
 						"leans [src] against [target]'s chest, turning it on")
 			else
-				to_chat(user, span_danger("Looks like [target]'s chest is covered!"))
+				to_chat(user, span_danger(LANG("obj.b0aede841acb5a5f", list(target))))
 				return
 
 		if(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM)
 			if(carbon_target && !carbon_target.has_arms())
-				to_chat(user, span_danger("Looks like [target] doesn't have any arms!"))
+				to_chat(user, span_danger(LANG("obj.94e9b8d5daebf74b", list(target))))
 				return
 			if(carbon_target && !carbon_target.is_hands_uncovered())
-				to_chat(user, span_danger("Looks like [target]'s arms are covered!"))
+				to_chat(user, span_danger(LANG("obj.598db493d9e3e47b", list(target))))
 				return
 			var/arm = user.zone_selected == BODY_ZONE_L_ARM ? "left arm" : "right arm"
 			message = (user == target) ? pick("leans [src] against [target.p_their()] [arm], letting it shock [target.p_them()].",
@@ -198,7 +199,7 @@
 
 		if(BODY_ZONE_HEAD)
 			if(carbon_target && !carbon_target.is_head_uncovered())
-				to_chat(user, span_danger("Looks like [target]'s head is covered!"))
+				to_chat(user, span_danger(LANG("obj.9c27705f83cadf59", list(target))))
 				return
 			message = (user == target) ? pick("leans [src] against [target.p_their()] head, letting it shock [target.p_them()]. Ouch! Why would [target.p_they()] do that?!",
 					"shocks [target.p_their()] head with [src]") \
@@ -208,10 +209,10 @@
 
 		if(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 			if(carbon_target && !carbon_target.has_feet())
-				to_chat(user, span_danger("Looks like [target] doesn't have any legs!"))
+				to_chat(user, span_danger(LANG("obj.b5d126735cb1cfdb", list(target))))
 				return
 			if(carbon_target && !carbon_target.is_barefoot())
-				to_chat(user, span_danger("Looks like [target]'s toes are covered!"))
+				to_chat(user, span_danger(LANG("obj.8d97145111a323af", list(target))))
 				return
 			var/leg = user.zone_selected == BODY_ZONE_L_LEG ? "left leg" : "right leg"
 			message = (user == target) ? pick("leans [src] against [target.p_their()] [leg], letting it shock [target.p_them()].",
@@ -220,7 +221,7 @@
 					"shocks [target]'s [user.zone_selected == BODY_ZONE_L_LEG ? "left foot" : "right foot"] with [src]",
 					"leans [src] against [target]'s [leg], turning it on")
 		else
-			to_chat(user, span_danger("You can't shock [target] there!"))
+			to_chat(user, span_danger(LANG("obj.ad638842d0f30da8", list(target))))
 			return
 
 	user.visible_message(span_purple("[user] [message]!"))

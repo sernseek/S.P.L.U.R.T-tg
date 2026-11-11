@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///The default pressure for releasing air into an holding tank or the turf
 #define CAN_DEFAULT_RELEASE_PRESSURE (ONE_ATMOSPHERE)
 ///The temperature resistance of this canister
@@ -81,7 +82,7 @@
 /obj/machinery/portable_atmospherics/canister/interact(mob/user)
 	. = ..()
 	if(!allowed(user))
-		to_chat(user, span_alert("Error - Unauthorized User."))
+		to_chat(user, span_alert(LANG("obj.5806cf78b39fc01a", null)))
 		playsound(src, 'sound/machines/compiler/compiler-failure.ogg', 50, TRUE)
 		return
 
@@ -95,7 +96,7 @@
 		context[SCREENTIP_CONTEXT_LMB] = "Insert cell"
 	switch(held_item.tool_behaviour)
 		if(TOOL_SCREWDRIVER)
-			context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] hatch"
+			context[SCREENTIP_CONTEXT_LMB] = LANG("obj.c7b92747a20bcc58", list(panel_open ? "Close" : "Open"))
 		if(TOOL_CROWBAR)
 			if(panel_open && internal_cell)
 				context[SCREENTIP_CONTEXT_LMB] = "Remove cell"
@@ -108,15 +109,15 @@
 /obj/machinery/portable_atmospherics/canister/examine(user)
 	. = ..()
 	if(atom_integrity < max_integrity)
-		. += span_notice("Integrity compromised, repair hull with a welding tool.")
-	. += span_notice("A sticker on its side says <b>MAX SAFE PRESSURE: [siunit_pressure(initial(pressure_limit), 0)]; MAX SAFE TEMPERATURE: [siunit(temp_limit, "K", 0)]</b>.")
-	. += span_notice("The hull is <b>welded</b> together and can be cut apart.")
+		. += span_notice(LANG("obj.98771757b5b039e3", null))
+	. += span_notice(LANG("obj.a9cd71f254fb20f5", list(siunit_pressure(initial(pressure_limit), 0), siunit(temp_limit, "K", 0))))
+	. += span_notice(LANG("obj.0fe8027b21e8b623", null))
 	if(internal_cell)
-		. += span_notice("The internal cell has [internal_cell.percent()]% of its total charge.")
+		. += span_notice(LANG("obj.5c06ab5de666ad8e", list(internal_cell.percent())))
 	else
-		. += span_notice("Warning, no cell installed, use a screwdriver to open the hatch and insert one.")
+		. += span_notice(LANG("obj.0a6205dad7fb21d6", null))
 	if(panel_open)
-		. += span_notice("Hatch open, close it with a screwdriver.")
+		. += span_notice(LANG("obj.d0dcb8934459c4e6", null))
 
 // Please keep the canister types sorted
 // Basic canister per gas below here
@@ -418,7 +419,7 @@
 
 	var/obj/item/stock_parts/power_store/cell/active_cell = tool
 	if(!panel_open)
-		balloon_alert(user, "open hatch first!")
+		balloon_alert(user, LANG("obj.7fab421331b2ed6d", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!user.transferItemToLoc(active_cell, src))
@@ -426,9 +427,9 @@
 
 	if(internal_cell)
 		user.put_in_hands(internal_cell)
-		balloon_alert(user, "you replace the cell")
+		balloon_alert(user, LANG("obj.8abfa2bc219e2946", null))
 	else
-		balloon_alert(user, "you install the cell")
+		balloon_alert(user, LANG("obj.65590cb7d3fe2620", null))
 	internal_cell = active_cell
 	return ITEM_INTERACT_SUCCESS
 
@@ -440,7 +441,7 @@
 		return ITEM_INTERACT_BLOCKING
 
 	internal_cell.forceMove(drop_location())
-	balloon_alert(user, "cell removed")
+	balloon_alert(user, LANG("obj.0dfdca6e675f39e2", null))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/portable_atmospherics/canister/welder_act_secondary(mob/living/user, obj/item/I)
@@ -449,12 +450,12 @@
 
 	var/pressure = air_contents.return_pressure()
 	if(pressure > 300)
-		to_chat(user, span_alert("The pressure gauge on [src] indicates a high pressure inside... maybe you want to reconsider?"))
+		to_chat(user, span_alert(LANG("obj.12619175e936e861", list(src))))
 		message_admins("[src] deconstructed by [ADMIN_LOOKUPFLW(user)]")
 		user.log_message("deconstructed [src] with a welder.", LOG_GAME)
-	to_chat(user, span_notice("You begin cutting [src] apart..."))
+	to_chat(user, span_notice(LANG("obj.d3772e3f85248841", list(src))))
 	if(I.use_tool(src, user, 3 SECONDS, volume=50))
-		to_chat(user, span_notice("You cut [src] apart."))
+		to_chat(user, span_notice(LANG("obj.bb48c3d8cc1eb6ca", list(src))))
 		deconstruct(TRUE)
 
 	return ITEM_INTERACT_SUCCESS
@@ -602,7 +603,7 @@
 	if (holding)
 		var/datum/gas_mixture/holding_mix = holding.return_air()
 		.["holdingTank"] = list(
-			"name" = holding.name,
+			"name" = holding.lang_localize_name_for_display(holding.name), // ZH EDIT - I18N: 内置罐名纯显示；atom 版守玩家改名。ORIGINAL: "name" = holding.name,
 			"tankPressure" = round(holding_mix.return_pressure())
 		)
 	else
@@ -620,7 +621,7 @@
 
 	switch(action)
 		if("relabel")
-			var/label = tgui_input_list(usr, "New canister label", "Canister", GLOB.gas_id_to_canister)
+			var/label = tgui_input_list(usr, LANG("obj.6bca2b5842c9bf7d", null), LANG("obj.de5b4446104c472f", null), GLOB.gas_id_to_canister)
 			if(isnull(label))
 				return
 			var/newtype = GLOB.gas_id_to_canister[label]
@@ -646,7 +647,7 @@
 				pressure = CAN_MAX_RELEASE_PRESSURE
 				. = TRUE
 			else if(pressure == "input")
-				pressure = tgui_input_number(usr, message = "New release pressure", title = "Canister Pressure", default = release_pressure, max_value = CAN_MAX_RELEASE_PRESSURE, min_value = CAN_MIN_RELEASE_PRESSURE, round_value = FALSE)
+				pressure = tgui_input_number(usr, message = LANG("obj.cd24599e9a80bea3", null), title = LANG("obj.6d99668e8dfacc65", null), default = release_pressure, max_value = CAN_MAX_RELEASE_PRESSURE, min_value = CAN_MIN_RELEASE_PRESSURE, round_value = FALSE)
 				if(!isnull(pressure))
 					. = TRUE
 			else if(text2num(pressure) != null)

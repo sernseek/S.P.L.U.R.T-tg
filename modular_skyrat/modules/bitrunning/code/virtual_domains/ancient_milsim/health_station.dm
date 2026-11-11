@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/health_station
 	name = "\improper N-URSEI Automated Medical Suite"
 	desc = "The N-URSEI, better known as simply the 'Nurse,' is a well-known product of Medical technology in the CIN. The name is of disputed origin, \
@@ -69,7 +70,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/health_station, 32)
 /obj/machinery/health_station/examine(mob/living/carbon/user)
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("The status display reads: ბიომასის პროცენტული მაჩვენებელია [charge_amount]%.")
+		. += span_notice(LANG("obj.b8ddc16ba0375e8d", list(charge_amount)))
 
 /obj/machinery/health_station/attack_ghost(mob/user)
 	examine(user)
@@ -102,7 +103,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/health_station, 32)
 		if("Health Scan")
 			healthscan(user, user, scanpower = SCANPOWER_ADVANCED)
 			chemscan(user, user)
-			balloon_alert(user, "analyzing vitals")
+			balloon_alert(user, LANG("obj.2cbcf7799aed9199", null))
 			playsound(user.loc, 'sound/items/healthanalyzer.ogg', 40, TRUE)
 		if("Heal Wounds")
 			playsound(user.loc, 'sound/machines/ping.ogg', 40, TRUE)
@@ -120,37 +121,37 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/health_station, 32)
 	if(istype(attacking_item, /obj/item/reagent_containers/hypospray/medipen))
 		var/obj/item/reagent_containers/hypospray/medipen/medipen = attacking_item
 		if(!(LAZYFIND(refillable_pens, medipen.type)))
-			balloon_alert(user, "medipen incompatible!")
+			balloon_alert(user, LANG("obj.90406cd7721427b0", null))
 			return
 		if(medipen.reagents?.reagent_list.len)
-			balloon_alert(user, "medipen full!")
+			balloon_alert(user, LANG("obj.d76f6bf00554e8b7", null))
 			return
 		var/charge_taken = is_type_in_list(medipen, refillable_pens, zebra = TRUE)
 		if(charge_amount < charge_taken)
-			balloon_alert(user, "no biomass!")
+			balloon_alert(user, LANG("obj.6b08db811c80deab", null))
 			return
 		if(do_after(user, 2 SECONDS, src))
 			medipen.used_up = FALSE
 			medipen.add_initial_reagents()
 			charge_amount -= charge_taken
-		balloon_alert(user, "medipen refilled!")
+		balloon_alert(user, LANG("obj.12c222f8c690c0c0", null))
 		playsound(src, 'sound/items/hypospray.ogg', 40, TRUE)
 		update_appearance()
 	return TRUE
 
 /obj/machinery/health_station/proc/heal_wound(mob/living/carbon/user)
 	if(charge_amount < 20)
-		balloon_alert(user, "no biomass!")
+		balloon_alert(user, LANG("obj.6b08db811c80deab", null))
 		return FALSE
 
 	if(!user.all_wounds)
-		balloon_alert(user, "no wounds!")
+		balloon_alert(user, LANG("obj.3ca838dbd5fc89e2", null))
 		return FALSE
 
 	if(do_after(user, 5 SECONDS, src))
 		var/datum/wound/wound2fix = user.all_wounds[1]
 		wound2fix.remove_wound()
-		balloon_alert(user, "wound treated")
+		balloon_alert(user, LANG("obj.b1b2785bf3a35c18", null))
 		charge_amount -= 20
 		playsound(src, 'sound/items/handling/surgery/saw.ogg', 40, TRUE)
 		update_appearance()
@@ -159,7 +160,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/health_station, 32)
 /obj/machinery/health_station/proc/heal_damage(mob/living/carbon/user)
 	var/overall_damage = (user.get_tox_loss() + user.get_oxy_loss() + user.get_fire_loss() + user.get_brute_loss())
 	if(charge_amount < 15)
-		balloon_alert(user, "no biomass!")
+		balloon_alert(user, LANG("obj.6b08db811c80deab", null))
 		return FALSE
 
 	if(overall_damage)
@@ -170,12 +171,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/health_station, 32)
 			need_mob_update += user.adjust_oxy_loss(-overall_damage/2, updating_health = FALSE)
 			if(need_mob_update)
 				user.updatehealth()
-			balloon_alert(user, "damage treated")
+			balloon_alert(user, LANG("obj.bf74fe36c76c8aae", null))
 			charge_amount -= 15
 			playsound(src, 'sound/items/handling/surgery/retractor1.ogg', 40, TRUE)
 			update_appearance()
 	else
-		balloon_alert(user, "no damage!")
+		balloon_alert(user, LANG("obj.22a070713fdac5f7", null))
 		return FALSE
 
 	return TRUE

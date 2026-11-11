@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/protean
 	id = SPECIES_PROTEAN
 	examine_limb_id = SPECIES_PROTEAN
@@ -114,8 +115,8 @@
 
 	organ.Remove(source)
 	organ.forceMove(get_turf(source))
-	to_chat(source, span_danger("Your mass rejected [organ]!"))
-	organ.balloon_alert_to_viewers("rejected!", vision_distance = 1)
+	to_chat(source, span_danger(LANG("datum.0242e677d4e04d11", list(organ))))
+	organ.balloon_alert_to_viewers(LANG("datum.c10edb676d93174f", null), vision_distance = 1)
 
 /datum/species/protean/on_species_loss(mob/living/carbon/human/gainer, datum/species/new_species, pref_load)
 	. = ..()
@@ -166,12 +167,12 @@
 
 /datum/species/protean/proc/assimilate_modsuit(mob/living/user, obj/item/mod/control/to_assimilate, forced = FALSE)
 	if(species_modsuit.stored_modsuit)
-		to_chat(user, span_warning("Can't absorb two modsuits!"))
+		to_chat(user, span_warning(LANG("datum.23e9192000fc2532", null)))
 		if(forced)
 			stack_trace("assimilate_modsuit() tried to assimilate two modsuits. stored_modsuit: [species_modsuit.stored_modsuit], new_modsuit: [to_assimilate]")
 		return
 	if(!user?.transferItemToLoc(to_assimilate, species_modsuit, forced))
-		owner.balloon_alert(user, "stuck!")
+		owner.balloon_alert(user, LANG("datum.bf05b7e9f7b3f3ad", null))
 	if(!forced)
 		for(var/obj/item/part as anything in species_modsuit.get_parts())
 			if(part.loc == src)
@@ -203,13 +204,13 @@
 
 /datum/species/protean/proc/unassimilate_modsuit(mob/living/user, forced = FALSE)
 	if(!species_modsuit.stored_modsuit)
-		to_chat(user, span_warning("There is no assimilated suit."))
+		to_chat(user, span_warning(LANG("datum.5c82e355ef9bdd13", null)))
 		return
 	if(species_modsuit.active && !forced)
-		user.balloon_alert(user, "deactivate modsuit")
+		user.balloon_alert(user, LANG("datum.b90af0ffcf8418af", null))
 		return
 	if(!(user?.has_active_hand()) && !forced)
-		user.balloon_alert(user, "need active hand")
+		user.balloon_alert(user, LANG("datum.7cd067c519465753", null))
 		return
 
 	for(var/obj/item/part in species_modsuit.get_parts())
@@ -224,7 +225,7 @@
 			continue
 		species_modsuit.uninstall(module, user)
 		if(!species_modsuit.stored_modsuit.install(module, user, TRUE))
-			to_chat(user, span_notice("[module] has fallen to the floor!"))
+			to_chat(user, span_notice(LANG("datum.505699e93ed7a7be", list(module))))
 			module.forceMove(get_turf(species_modsuit))
 		species_modsuit.cached_modules -= module
 
@@ -289,15 +290,15 @@
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = FA_ICON_REFRESH,
-		SPECIES_PERK_NAME = "MODsuit Mode",
-		SPECIES_PERK_DESC = "[plural_form] are able to turn into MODsuits, and have some special components available to them. When [plural_form] enter a critical state, they instead withdraw into MODsuit form until a refactory is inserted into them."
+		SPECIES_PERK_NAME = LANG("datum.0700184c4c553bcf", null),
+		SPECIES_PERK_DESC = LANG("datum.c1f826efef6e3e78", list(plural_form, plural_form))
 	))
 
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 		SPECIES_PERK_ICON = FA_ICON_SQUARE_VIRUS,
-		SPECIES_PERK_NAME = "Protean Oddities",
-		SPECIES_PERK_DESC = "[plural_form] are inorganic beings. They are unable to gain nutrition from traditional foods. Instead, they must consume metals - Primarily, iron. \ In addition to this, [plural_form] are unable to be surgically or chemically healed; [plural_form] regenerate their body over time, consuming their nutrition to do so."
+		SPECIES_PERK_NAME = LANG("datum.5a1ade721859271f", null),
+		SPECIES_PERK_DESC = LANG("datum.ee0a3f56b5cb7837", list(plural_form, plural_form, plural_form))
 	))
 
 	return perk_descriptions

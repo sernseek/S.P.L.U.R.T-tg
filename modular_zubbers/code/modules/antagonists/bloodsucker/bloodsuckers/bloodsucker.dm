@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/antagonist/bloodsucker
 	name = "\improper Bloodsucker"
 	show_in_antagpanel = TRUE
@@ -312,22 +313,22 @@
 /datum/antagonist/bloodsucker/greet()
 	. = ..()
 	var/fullname = return_full_name()
-	to_chat(owner, span_userdanger("You are [fullname], a strain of vampire known as a Bloodsucker!"))
+	to_chat(owner, span_userdanger(LANG("datum.9f97517450d71856", list(fullname))))
 	owner.announce_objectives()
 	if(bloodsucker_level_unspent >= 2)
-		to_chat(owner, span_announce("As a latejoiner, you have [bloodsucker_level_unspent] bonus Ranks, entering your claimed coffin allows you to spend a Rank."))
+		to_chat(owner, span_announce(LANG("datum.2eec518d795718bd", list(bloodsucker_level_unspent))))
 	owner.current.playsound_local(null, 'modular_zubbers/sound/bloodsucker/BloodsuckerAlert.ogg', 100, FALSE, pressure_affected = FALSE)
 	antag_memory += "Although you were born a mortal, in undeath you earned the name <b>[fullname]</b>.<br>"
 
 /datum/antagonist/bloodsucker/farewell()
-	to_chat(owner.current, span_userdanger("<FONT size = 3>With a snap, your curse has ended. You are no longer a Bloodsucker. You live once more!</FONT>"))
+	to_chat(owner.current, span_userdanger(LANG("datum.6295c04079ea8d0c", null)))
 	// Refill with Blood so they don't instantly die.
 	if(!HAS_TRAIT(owner.current, TRAIT_NOBLOOD))
 		owner.current.blood_volume = max(owner.current.blood_volume, BLOOD_VOLUME_NORMAL)
 
 // Called when using admin tools to give antag status
 /datum/antagonist/bloodsucker/admin_add(datum/mind/new_owner, mob/admin)
-	var/levels = tgui_input_number(admin, "How many unspent Ranks would you like [new_owner] to have?","Bloodsucker Rank", GetUnspentRank(), 100, 0)
+	var/levels = tgui_input_number(admin, LANG("datum.2abace27d6c022a6", list(new_owner)),LANG("datum.6053769513ef59f0", null), GetUnspentRank(), 100, 0)
 	var/msg = " made [key_name_admin(new_owner)] into \a [name]"
 	if(levels > 1)
 		bloodsucker_level_unspent = levels

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Armament Station
  *
@@ -48,7 +49,7 @@
 
 /obj/item/armament_points_card/examine(mob/user)
 	. = ..()
-	. += span_notice("It has [points] points left.")
+	. += span_notice(LANG("obj.0cc6aa3564f88865", list(points)))
 
 /obj/item/armament_points_card/proc/use_points(points_to_use)
 	if(points_to_use > points)
@@ -68,9 +69,9 @@
 	if(istype(attacking_item, /obj/item/armament_points_card))
 		var/obj/item/armament_points_card/attacking_card = attacking_item
 		if(!attacking_card.points)
-			to_chat(user, span_warning("No points left on [attacking_card]!"))
+			to_chat(user, span_warning(LANG("obj.c883815d83279718", list(attacking_card))))
 			return
-		var/points_to_transfer = clamp(tgui_input_number(user, "How many points do you want to transfer?", "Transfer Points", 1, attacking_card.points, 1), 0, attacking_card.points)
+		var/points_to_transfer = clamp(tgui_input_number(user, LANG("obj.ac788a706ebc4f01", null), LANG("obj.bfebd14087fd650b", null), 1, attacking_card.points, 1), 0, attacking_card.points)
 
 		if(!points_to_transfer)
 			return
@@ -81,4 +82,4 @@
 		if(attacking_card.use_points(points_to_transfer))
 			points += points_to_transfer
 			update_maptext()
-			to_chat(user, span_notice("You transfer [points_to_transfer] onto [src]!"))
+			to_chat(user, span_notice(LANG("obj.a0c2e8f2e706f60f", list(points_to_transfer, src))))

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Allowing religion to be reselected by new chaplains if something happened to the old one (cryo or being deleted)
 
 /datum/religion_sect/on_select()
@@ -62,7 +63,7 @@
 
 		actual_successor.mind.holy_role = HOLY_ROLE_HIGHPRIEST
 
-		to_chat(actual_successor, span_warning("You have been chosen as the successor to the previous high priest. Visit a holy altar to declare the station's religion!"))
+		to_chat(actual_successor, span_warning(LANG("_root.25c717b16142608d", null)))
 
 		return actual_successor
 

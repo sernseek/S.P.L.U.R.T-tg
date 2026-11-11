@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/toy/plush
 	name = "plush"
 	desc = "This is the special coder plush, do not steal."
@@ -125,52 +126,52 @@
 /obj/item/toy/plush/attack_self(mob/user)
 	. = ..()
 	if(stuffed || grenade)
-		to_chat(user, span_notice("You pet [src]. D'awww."))
+		to_chat(user, span_notice(LANG("obj.5b936446d47a9c34", list(src))))
 		if(grenade && !grenade.active)
 			user.log_message("activated a hidden grenade in [src].", LOG_VICTIM)
 			grenade.arm_grenade(user, msg = FALSE, volume = 10)
 	else
-		to_chat(user, span_notice("You try to pet [src], but it has no stuffing. Aww..."))
+		to_chat(user, span_notice(LANG("obj.c7a2d29cc8dd7b2e", list(src))))
 
 /obj/item/toy/plush/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(tool.get_sharpness())
 		if(grenade)
-			to_chat(user, span_notice("You remove the grenade from [src]."))
+			to_chat(user, span_notice(LANG("obj.183b7f6c55f5a314", list(src))))
 			user.put_in_hands(grenade)
 			return ITEM_INTERACT_SUCCESS
 		if(!stuffed)
-			to_chat(user, span_warning("You already murdered it!"))
+			to_chat(user, span_warning(LANG("obj.78c08dc0d24ebd3e", null)))
 			return ITEM_INTERACT_BLOCKING
 		if(!divine)
-			user.visible_message(span_notice("[user] tears out the stuffing from [src]!"), span_notice("You rip a bunch of the stuffing from [src]. Murderer."))
+			user.visible_message(span_notice(LANG("obj.d9de58154685ccbb", list(user, src))), span_notice(LANG("obj.58a2777defe1a286", list(src))))
 			tool.play_tool_sound(src)
 			stuffed = FALSE
 			return ITEM_INTERACT_SUCCESS
 
-		to_chat(user, span_notice("What a fool you are. [src] is a god, how can you kill a god? What a grand and intoxicating innocence."))
+		to_chat(user, span_notice(LANG("obj.e532fc336e01c805", list(src))))
 		user.adjust_drunk_effect(20, up_to = 50)
 
 		var/turf/current_location = get_turf(user)
 		var/area/current_area = current_location.loc //copied from hand tele code
 		if(current_location && current_area && (current_area.area_flags & NOTELEPORT))
-			to_chat(user, span_notice("There is no escape. No recall or intervention can work in this place."))
+			to_chat(user, span_notice(LANG("obj.8c0817aa42682618", null)))
 		else
-			to_chat(user, span_notice("There is no escape. Although recall or intervention can work in this place, attempting to flee from [src]'s immense power would be futile."))
-		user.visible_message(span_notice("[user] lays down their weapons and begs for [src]'s mercy!"), span_notice("You lay down your weapons and beg for [src]'s mercy."))
+			to_chat(user, span_notice(LANG("obj.dcc84c1c11d75947", list(src))))
+		user.visible_message(span_notice(LANG("obj.f5f84947bc7e13a1", list(user, src))), span_notice(LANG("obj.98fe2e8ac37da7cd", list(src))))
 		user.drop_all_held_items()
 		return ITEM_INTERACT_SUCCESS
 
 	if(isgrenade(tool))
 		if(stuffed)
-			to_chat(user, span_warning("You need to remove some stuffing first!"))
+			to_chat(user, span_warning(LANG("obj.c6530043c76ec391", null)))
 			return ITEM_INTERACT_BLOCKING
 		if(grenade)
-			to_chat(user, span_warning("[src] already has a grenade!"))
+			to_chat(user, span_warning(LANG("obj.4d044d1029706163", list(src))))
 			return ITEM_INTERACT_BLOCKING
 		if(!user.transferItemToLoc(tool, src))
 			return ITEM_INTERACT_BLOCKING
-		user.visible_message(span_warning("[user] slides [grenade] into [src]."), \
-		span_danger("You slide [tool] into [src]."))
+		user.visible_message(span_warning(LANG("obj.3a28423b23b405bd", list(user, grenade, src))), \
+		span_danger(LANG("obj.797cf9639448f268", list(tool, src))))
 		grenade = tool
 		user.log_message("added a grenade ([tool.name]) to [src]", LOG_GAME)
 		return ITEM_INTERACT_SUCCESS
@@ -214,8 +215,8 @@
 			chance -= duty //do we mate for life?
 
 		if(prob(chance)) //did we bag a date?
-			user.visible_message(span_notice("[user] makes [Kisser] kiss [src]!"),
-									span_notice("You make [Kisser] kiss [src]!"))
+			user.visible_message(span_notice(LANG("obj.caa35028ec5932f1", list(user, Kisser, src))),
+									span_notice(LANG("obj.4eb4c0c92bd8d50b", list(Kisser, src))))
 			if(lover) //who cares for the past, we live in the present
 				lover.heartbreak(src)
 			new_lover(Kisser)
@@ -226,24 +227,24 @@
 
 	//then comes marriage
 	else if(Kisser.lover == src && Kisser.partner != src) //need to be lovers (assumes loving is a two way street) but not married (also assumes similar)
-		user.visible_message(span_notice("[user] pronounces [Kisser] and [src] married! D'aw."),
-									span_notice("You pronounce [Kisser] and [src] married!"))
+		user.visible_message(span_notice(LANG("obj.2ee618e6e166d4bb", list(user, Kisser, src))),
+									span_notice(LANG("obj.5bf6f77408110256", list(Kisser, src))))
 		new_partner(Kisser)
 		Kisser.new_partner(src)
 
 	//then comes a baby in a baby's carriage, or an adoption in an adoption's orphanage
 	else if(Kisser.partner == src && !plush_child) //the one advancing does not take ownership of the child and we have a one child policy in the toyshop
-		user.visible_message(span_notice("[user] is going to break [Kisser] and [src] by bashing them like that."),
-									span_notice("[Kisser] passionately embraces [src] in your hands. Look away you perv!"))
+		user.visible_message(span_notice(LANG("obj.9aa245403118b320", list(user, Kisser, src))),
+									span_notice(LANG("obj.0b595dcb07e32d12", list(Kisser, src))))
 		user.client.give_award(/datum/award/achievement/misc/rule8, user)
 		if(plop(Kisser))
-			user.visible_message(span_notice("Something drops at the feet of [user]."),
-							span_notice("The miracle of oh god did that just come out of [src]?!"))
+			user.visible_message(span_notice(LANG("obj.d622f7f5ec9c82a8", list(user))),
+							span_notice(LANG("obj.c8e000488f4bfbb5", list(src))))
 
 	//then comes protection, or abstinence if we are catholic
 	else if(Kisser.partner == src && plush_child)
-		user.visible_message(span_notice("[user] makes [Kisser] nuzzle [src]!"),
-									span_notice("You make [Kisser] nuzzle [src]!"))
+		user.visible_message(span_notice(LANG("obj.e56e0e07a700fc13", list(user, Kisser, src))),
+									span_notice(LANG("obj.652bb603e1609706", list(Kisser, src))))
 
 	//then oh fuck something unexpected happened
 	else
@@ -435,8 +436,8 @@
 /obj/item/toy/plush/ratplush/proc/clash_of_the_plushies(obj/item/toy/plush/narplush/P)
 	clash_target = P
 	P.clashing = TRUE
-	say("YOU.")
-	P.say("Ratvar?!")
+	say(LANG("obj.71020c0fb8702a9c", null))
+	P.say(LANG("obj.300c4cba58bef40d", null))
 	var/obj/item/toy/plush/a_winnar_is
 	var/victory_chance = 10
 	for(var/i in 1 to 10) //We only fight ten times max
@@ -447,7 +448,7 @@
 			clash_target = null
 			return
 		if(!Adjacent(P))
-			visible_message(span_warning("The two plushies angrily flail at each other before giving up."))
+			visible_message(span_warning(LANG("obj.33dd4a45f472d01e", null)))
 			clash_target = null
 			P.clashing = FALSE
 			return
@@ -495,7 +496,7 @@
 		qdel(P)
 		clash_target = null
 	else
-		say("NO! I will not be banished again...")
+		say(LANG("obj.5d0034f5ff29a40a", null))
 		P.say(pick("Ha.", "Ra'sha fonn dest.", "You fool. To come here."))
 		playsound(src, 'sound/effects/magic/clockwork/anima_fragment_death.ogg', 62, TRUE, frequency = 2)
 		playsound(P, 'sound/effects/magic/demon_attack1.ogg', 50, TRUE, frequency = 2)
@@ -699,12 +700,12 @@
 	plappable = TRUE //SPLURT EDIT - What are you doing cutting a hole in that plushie?!
 
 /obj/item/toy/plush/moth/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] stares deeply into the eyes of [src] and it begins consuming [user.p_them()]!  It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.4cd5d9a163d8a09f", list(user, src, user.p_them(), user.p_theyre()))))
 	suicide_count++
 	if(suicide_count < 3)
-		desc = "A plushie depicting an unsettling mothperson. After killing [suicide_count] [suicide_count == 1 ? "person" : "people"] it's not looking so huggable now..."
+		desc = LANG("obj.8158013476c872f3", list(suicide_count, suicide_count == 1 ? "person" : "people"))
 	else
-		desc = "A plushie depicting a creepy mothperson. It's killed [suicide_count] people! I don't think I want to hug it any more!"
+		desc = LANG("obj.5584554e31c94e04", list(suicide_count))
 		divine = TRUE
 		resistance_flags = INDESTRUCTIBLE | FIRE_PROOF | ACID_PROOF | LAVA_PROOF
 	playsound(src, 'sound/effects/hallucinations/wail.ogg', 50, TRUE, -1)
@@ -817,7 +818,7 @@
 	if(!istype(nana))
 		return ..()
 	nana.forceMove(src) // go into the cotton stomach
-	to_chat(feeder, span_notice("You hand over the [nana] to [src] and watch as it eats..."))
+	to_chat(feeder, span_notice(LANG("obj.dff5f1a6926f5d7b", list(nana, src))))
 	playsound(src, 'sound/items/eatfood.ogg', 75, TRUE)
 	addtimer(CALLBACK(src, PROC_REF(eat), feeder, nana), 3 SECONDS)
 	return ITEM_INTERACT_SUCCESS
@@ -827,7 +828,7 @@
 		do_teleport(src, get_turf(src), 15, channel = TELEPORT_CHANNEL_BLUESPACE)
 	else if(istype(nana, /obj/item/food/grown/banana/mime) && !french)
 		name = "peluche de singe"
-		desc = "L'étiquette indique: 'Oop eek! Je suis un chimpanzé!', avec 'Maintenant en TAILLE JUMBO!' sur l'autre face."
+		desc = LANG("obj.10eff55996eb2113", null)
 		french = TRUE
 	// throw the peel at a random mob, or a random turf if there are none
 	var/obj/item/grown/bananapeel/peel = new nana.trash_type(get_turf(src))

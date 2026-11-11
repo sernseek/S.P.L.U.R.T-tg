@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/griddle/stone
 	name = "stone griddle"
 	desc = "You could probably cook an egg on this... the griddle slab looks very unsanitary."
@@ -21,10 +22,10 @@
 /obj/machinery/griddle/stone/examine(mob/user)
 	. = ..()
 
-	. += span_notice("It can be taken apart with a <b>crowbar</b>.")
+	. += span_notice(LANG("obj.01fa2e713cdec9b7", null))
 
 /obj/machinery/griddle/stone/crowbar_act(mob/living/user, obj/item/tool)
-	user.balloon_alert_to_viewers("disassembling...")
+	user.balloon_alert_to_viewers(LANG("obj.b5ba987161d1a2e3", null))
 	if(!tool.use_tool(src, user, 2 SECONDS, volume = 100))
 		return
 	new /obj/item/stack/sheet/mineral/stone(drop_location(), 5)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  *	# WITHOUT THIS POWER:
  *
@@ -25,18 +26,18 @@
 
 /datum/action/cooldown/bloodsucker/masquerade/get_power_explanation_extended()
 	. = list()
-	. += "Masquerade will forge your identity to be practically identical to that of a human."
-	. += "- You lose nearly all Bloodsucker benefits, including healing, sleep, radiation, crit, virus, gutting and cold immunity."
-	. += "- Your eyes turn to that of a regular human as your heart begins to beat."
-	. += "- You gain a Genetic sequence, and appear to have 100% blood when scanned by a Health Analyzer."
-	. += "- You will not appear as Pale when examined. Anything further than Pale, however, will not be hidden."
-	. += "At the end of a Masquerade, you will re-gain your Vampiric abilities, as well as lose any diseases you might have."
+	. += LANG("datum.03246613bbcea5bf", null)
+	. += LANG("datum.653aa2e7ae6b357f", null)
+	. += LANG("datum.ac70988790e6561f", null)
+	. += LANG("datum.fd51b0eb1081bf26", null)
+	. += LANG("datum.40d40255bf5beb00", null)
+	. += LANG("datum.35c91d606498adba", null)
 
 /datum/action/cooldown/bloodsucker/masquerade/ActivatePower(atom/target)
 	var/mob/living/carbon/user = owner
-	owner.balloon_alert(owner, "masquerade turned on.")
-	to_chat(user, span_notice("Your heart beats falsely within your lifeless chest, and your eyes are no longer sensitive to the light. You may yet pass for a mortal."))
-	to_chat(user, span_warning("Your vampiric healing is halted while imitating life."))
+	owner.balloon_alert(owner, LANG("datum.9b746749e2832f33", null))
+	to_chat(user, span_notice(LANG("datum.53e4bb6c8adb4447", null)))
+	to_chat(user, span_warning(LANG("datum.88d6a22d0e63b5da", null)))
 
 	// Give status effect
 	user.apply_status_effect(/datum/status_effect/masquerade)
@@ -66,7 +67,7 @@
 	if(!.)
 		return
 	var/mob/living/carbon/user = owner
-	owner.balloon_alert(owner, "masquerade turned off.")
+	owner.balloon_alert(owner, LANG("datum.7198a6a8aee8013b", null))
 
 	// Remove status effect, mutations & diseases that you got while on masq.
 	user.remove_status_effect(/datum/status_effect/masquerade)
@@ -89,7 +90,7 @@
 		eyes.color_cutoffs = BLOODSUCKER_SIGHT_COLOR_CUTOFF
 		eyes.sight_flags = SEE_MOBS
 		user.update_sight()
-	to_chat(user, span_notice("Your heart beats one final time, while your skin dries out and your icy pallor returns."))
+	to_chat(user, span_notice(LANG("datum.de46cdb07c5c35a5", null)))
 
 /**
  * # Status effect

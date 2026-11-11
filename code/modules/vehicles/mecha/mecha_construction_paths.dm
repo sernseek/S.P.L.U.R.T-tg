@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Mecha construction
 /datum/component/construction/mecha
 	var/base_icon
@@ -73,7 +74,7 @@
 	. = user.transferItemToLoc(I, parent)
 	if(.)
 		var/atom/parent_atom = parent
-		user.balloon_alert_to_viewers("connected [I]")
+		user.balloon_alert_to_viewers(LANG("datum.567e760d89d2c2ad", list(I)))
 		parent_atom.add_overlay(I.icon_state+"+o")
 		qdel(I)
 
@@ -679,7 +680,7 @@
 		return FALSE
 
 	if(istype(I, /obj/item/assembly/signaler/anomaly) && !istype(I, required_core))
-		to_chat(user, span_warning("The anomaly core socket only accepts \a [initial(required_core.name)]!"))
+		to_chat(user, span_warning(LANG("datum.d2bcde5e425b6083", list(initial(required_core.name)))))
 		return FALSE
 
 	return TRUE

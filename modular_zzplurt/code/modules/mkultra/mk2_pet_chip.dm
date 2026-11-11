@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Mk.2 variant implemented independently of the base Mk.II chip.
 #ifndef DNA_BLANK
 #define DNA_BLANK 0
@@ -41,7 +42,7 @@
 		return TRUE
 	if(warning_given[ckey])
 		return TRUE
-	var/choice = tgui_alert(user, "This item is strictly intended as an ERP item. It should not be used for any mechanical gain, especially for antagonist purposes. Failure to respect this will result in administrative action being taken. Do you wish to continue using this item?", "A word of warning.", list("Yes", "No"))
+	var/choice = tgui_alert(user, LANG("obj.92b1b8d6bfc27aa9", null), LANG("obj.8f211533a7c1c710", null), list("Yes", "No"))
 	if(choice != "Yes")
 		return FALSE
 	warning_given[ckey] = TRUE
@@ -63,37 +64,37 @@
 	. = ..()
 	var/mob/living/carbon/human/dna_holder = user
 	if(!istype(dna_holder))
-		to_chat(user, span_warning("The skillchip can't find a DNA identifier to record!"))
+		to_chat(user, span_warning(LANG("obj.1ab73ec3201d7115", null)))
 		return
 
 	if(!dna_holder.client?.prefs?.read_preference(/datum/preference/toggle/erp/hypnosis))
-		to_chat(dna_holder, span_danger("Preferences check failed. You must enable 'Hypnosis' in your game preferences (ERP section) in order to use [src]!"))
+		to_chat(dna_holder, span_danger(LANG("obj.981684c6de70f97c", list(src))))
 		return
 
 	var/mob/living/carbon/human/enthrall = enthrall_ref?.resolve()
 	if(!isnull(enthrall))
-		var/response = tgui_alert(dna_holder, "The display reads the skillchip is imprinted with enthrall [enthrall_name]. Would you like to re-imprint it?", "DNA Imprint", list("Re-imprint", "Cancel Imprinting"))
+		var/response = tgui_alert(dna_holder, LANG("obj.ff4221c2a83bf448", list(enthrall_name)), LANG("obj.74490f80660b0f5b", null), list("Re-imprint", "Cancel Imprinting"))
 		if(response == "Re-imprint")
 			enthrall_ckey = null
 			enthrall_gender = null
 			enthrall_name = null
 			enthrall_ref = null
 			status = DNA_BLANK
-			visible_message(span_notice("The light on [src] begins to flash slowly!"))
+			visible_message(span_notice(LANG("obj.0785b7ab353fdc80", list(src))))
 		else
 			return
 
-	to_chat(dna_holder, span_notice("You press the programming button on [src]."))
+	to_chat(dna_holder, span_notice(LANG("obj.9f0b3ed489dfc160", list(src))))
 	var/list/title_options = list("Master", "Mistress", "Custom...", "Cancel Imprinting")
-	var/selected_title = tgui_input_list(dna_holder, "What title would you like to use with your thrall?", "DNA Imprint: [dna_holder.real_name]", title_options)
+	var/selected_title = tgui_input_list(dna_holder, LANG("obj.5b4f6691146bc82c", null), LANG("obj.9bd4c7d1f69a6e19", list(dna_holder.real_name)), title_options)
 	if(selected_title == "Cancel Imprinting" || !selected_title)
 		return
 
 	if(selected_title == "Custom...")
-		var/custom_title = tgui_input_text(dna_holder, "Enter the title your thrall will call you.", "Custom Title", dna_holder.real_name, 24)
+		var/custom_title = tgui_input_text(dna_holder, LANG("obj.c9d44a47b76e8391", null), LANG("obj.1ae51c1f07613d0f", null), dna_holder.real_name, 24)
 		custom_title = trim(custom_title)
 		if(!length(custom_title))
-			to_chat(dna_holder, span_warning("Invalid title; imprinting cancelled."))
+			to_chat(dna_holder, span_warning(LANG("obj.1a3a9fa327933c27", null)))
 			return
 
 		// Strip basic punctuation to keep chat output clean.
@@ -104,7 +105,7 @@
 		custom_title = replacetext(custom_title, "\\", "")
 		custom_title = trim(custom_title)
 		if(!length(custom_title))
-			to_chat(dna_holder, span_warning("Invalid title; imprinting cancelled."))
+			to_chat(dna_holder, span_warning(LANG("obj.1a3a9fa327933c27", null)))
 			return
 		enthrall_gender = custom_title
 	else
@@ -114,19 +115,19 @@
 	enthrall_ckey = dna_holder.ckey
 	enthrall_name = dna_holder.real_name
 	status = DNA_READY
-	to_chat(dna_holder, span_purple("[src] imprinted with DNA identifier: [enthrall_gender] [enthrall_name]."))
-	visible_message(span_notice("The light on [src] remains steadily lit!"))
+	to_chat(dna_holder, span_purple(LANG("obj.a47245cf1305ceac", list(src, enthrall_gender, enthrall_name))))
+	visible_message(span_notice(LANG("obj.ea653b94622c87fa", list(src))))
 
 /obj/item/skillchip/mk2pet/examine(mob/user)
 	. = ..()
 	switch(status)
 		if(DNA_BLANK)
-			. += span_notice("The status light is flashing, indicating that the skillchip is ready for DNA imprint.")
+			. += span_notice(LANG("obj.36ff85dabe548ec4", null))
 		if(DNA_READY)
-			. += span_notice("The status light is on, indicating that the skillchip is ready for use.")
-			. += span_purple("The status display reads [enthrall_name].")
+			. += span_notice(LANG("obj.19110d78361802b0", null))
+			. += span_purple(LANG("obj.f1995ff5bc495812", list(enthrall_name)))
 		else
-			. += span_notice("The status light is off, indicating that the skillchip is non-functional.")
+			. += span_notice(LANG("obj.2a81582a16656f4d", null))
 
 /obj/item/skillchip/mk2pet/has_mob_incompatibility(mob/living/carbon/target)
 	if(!istype(target))
@@ -157,7 +158,7 @@
 
 /obj/item/skillchip/mk2pet/on_activate(mob/living/carbon/user, silent = FALSE)
 	if(status != DNA_READY)
-		to_chat(user, span_warning("[src] is not imprinted and fizzles."))
+		to_chat(user, span_warning(LANG("obj.e1df3f917b346484", list(src))))
 		// Prompt the user to imprint now so the Skillsoft station path can still set it up.
 		attack_self(user)
 		return FALSE
@@ -172,7 +173,7 @@
 			vocal_cords.Remove(enthrall)
 		new_vocal_cords.Insert(enthrall)
 		qdel(vocal_cords)
-		to_chat(enthrall, span_purple("<i>You feel your vocal cords tingle as they grow more charismatic and sultry.</i>"))
+		to_chat(enthrall, span_purple(LANG("obj.120d347f13a40b21", null)))
 
 	user.apply_status_effect(/datum/status_effect/chem/enthrall/pet_chip/mk2)
 	return TRUE

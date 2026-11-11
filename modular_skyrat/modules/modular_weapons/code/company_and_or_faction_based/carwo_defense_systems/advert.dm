@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/sign/poster/official/carwo_grenade
 	name = "Tydhouer - Precision Timing"
 	desc = "This poster depicts, alongside the prominent logo of Carwo Defense Systems, a variety of specialist .980 Tydhouer grenades for the Kiboko launcher."
@@ -7,10 +8,7 @@
 /obj/structure/sign/poster/official/carwo_grenade/examine_more(mob/user)
 	. = ..()
 
-	. += "Small text details that certain types of grenades may not be available in your \
-		region depending on local weapons regulations. Suspiciously, however, if you squint at \
-		it a bit, the background colors of the image come together vaguely in the shape of \
-		a computer board and a multitool. What did they mean by this?"
+	. += LANG("obj.ea0fe7a3278e9bf1", null)
 
 	return .
 
@@ -26,10 +24,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/official/carwo_grenade, 3
 /obj/structure/sign/poster/official/carwo_magazine/examine_more(mob/user)
 	. = ..()
 
-	. += "Small text details that certain types of magazines may not be available in your \
-		region depending on local weapons regulations. Suspiciously, however, if you squint at \
-		it a bit, the background colors of the image come together vaguely in the shape of \
-		a computer board and a multitool. What did they mean by this?"
+	. += LANG("obj.90a3e1c22099692c", null)
 
 	return .
 

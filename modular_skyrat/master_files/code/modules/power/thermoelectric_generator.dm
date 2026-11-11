@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define TEG_EFFICIENCY 0.45
 
 /obj/machinery/power/thermoelectric_generator
@@ -45,7 +46,7 @@
 		return CONTEXTUAL_SCREENTIP_SET
 	switch(held_item.tool_behaviour)
 		if(TOOL_SCREWDRIVER)
-			context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] panel"
+			context[SCREENTIP_CONTEXT_LMB] = LANG("obj.45725a89b7fc8d2e", list(panel_open ? "Close" : "Open"))
 		if(TOOL_WRENCH)
 			if (panel_open)
 				context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Unan" : "An"]chor"
@@ -207,31 +208,31 @@
 
 	if(!panel_open) //connect/disconnect circulators
 		if(!anchored)
-			balloon_alert(user, "anchor [src] before trying to connect the circulators!")
+			balloon_alert(user, LANG("obj.cb1f5897497d03c7", list(src)))
 			return TRUE
 		else
 			if(hot_circ && cold_circ)
-				balloon_alert(user, "you start removing the circulators...")
+				balloon_alert(user, LANG("obj.7cefdbe10f3273eb", null))
 				if(I.use_tool(src, user, 30, volume=50))
 					null_circulators()
 					update_appearance()
-					balloon_alert(user, "you disconnect [src]'s circulator links.")
+					balloon_alert(user, LANG("obj.8a91f7be429f6d45", list(src)))
 					playsound(src, 'sound/misc/box_deploy.ogg', 50)
 				return TRUE
 
-			balloon_alert(user, "you attempt to attach the circulators...")
+			balloon_alert(user, LANG("obj.d6f8adbe3e3413ab", null))
 			if(I.use_tool(src, user, 30, volume=50))
 				switch(find_circulators())
 					if(0)
-						balloon_alert(user, "no circulators found!")
+						balloon_alert(user, LANG("obj.9aa109cb6c73907a", null))
 					if(1)
-						balloon_alert(user, "only one circulator found!")
+						balloon_alert(user, LANG("obj.abc5cae416b17f2c", null))
 					if(2)
-						balloon_alert(user, "you connect [src]'s circulator links.")
+						balloon_alert(user, LANG("obj.3ce0044083a5cdc6", list(src)))
 						playsound(src, 'sound/misc/box_deploy.ogg', 50)
 						return TRUE
 					if(3)
-						balloon_alert(user, "both circulators are the same mode!")
+						balloon_alert(user, LANG("obj.bbd9f63dc4e6b090", null))
 				return TRUE
 
 	set_anchored(!anchored)
@@ -239,7 +240,7 @@
 	if(!anchored)
 		null_circulators()
 	connect_to_network()
-	balloon_alert(user, "you [anchored?"secure":"unsecure"] [src].")
+	balloon_alert(user, LANG("obj.f27b3c0f8ebdb994", list(anchored?"secure":"unsecure", src)))
 	update_appearance()
 	return TRUE
 
@@ -248,21 +249,21 @@
 		return TRUE
 
 	if(hot_circ && cold_circ)
-		balloon_alert(user, "disconnect the circulators first!")
+		balloon_alert(user, LANG("obj.fb9f66654e2fec92", null))
 		return TRUE
 	panel_open = !panel_open
 	I.play_tool_sound(src)
-	balloon_alert(user, "you [panel_open?"open":"close"] the panel on [src].")
+	balloon_alert(user, LANG("obj.c25f6bcf143a82a3", list(panel_open?"open":"close", src)))
 	update_appearance()
 	return TRUE
 
 /obj/machinery/power/thermoelectric_generator/crowbar_act(mob/user, obj/item/I)
 
 	if(anchored)
-		balloon_alert(user, "[src] is anchored!")
+		balloon_alert(user, LANG("obj.81cc51deff1f70a9", list(src)))
 		return TRUE
 	else if(!panel_open)
-		balloon_alert(user, "open the panel first!")
+		balloon_alert(user, LANG("obj.2152c7cd805774d4", null))
 		return TRUE
 	else
 		default_deconstruction_crowbar(I)

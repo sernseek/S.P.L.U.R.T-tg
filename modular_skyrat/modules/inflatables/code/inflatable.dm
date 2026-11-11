@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 #define TAPE_REQUIRED_TO_FIX 2
 #define INFLATABLE_DOOR_OPENED FALSE
@@ -48,7 +49,7 @@
 
 /obj/structure/inflatable/attackby(obj/item/attacking_item, mob/user, params)
 	if(attacking_item.sharpness)
-		visible_message(span_danger("<b>[user] pierces [src] with [attacking_item]!</b>"))
+		visible_message(span_danger(LANG("obj.c1dbe4873940d5e2", list(user, src, attacking_item))))
 		deflate(TRUE)
 		return
 	return ..()
@@ -69,12 +70,12 @@
 
 	playsound(src, 'sound/machines/hiss.ogg', 75, 1)
 	if(!violent)
-		balloon_alert_to_viewers("slowly deflates!")
+		balloon_alert_to_viewers(LANG("obj.51e200d16d7582e4", null))
 		addtimer(CALLBACK(src, PROC_REF(slow_deflate_finish)), manual_deflation_time)
 		return
 
 	var/turf/inflatable_loc = get_turf(src)
-	inflatable_loc.balloon_alert_to_viewers("[src] rapidly deflates!") // just so we don't balloon alert from the qdeleted inflatable object
+	inflatable_loc.balloon_alert_to_viewers(LANG("obj.9e2e92c54a3e8775", list(src))) // just so we don't balloon alert from the qdeleted inflatable object
 	if(torn_type)
 		new torn_type(get_turf(src))
 	qdel(src)
@@ -85,7 +86,7 @@
 		new deflated_type(get_turf(src))
 	qdel(src)
 
-GAME_VERB_SRC(/obj/structure/inflatable, hand_deflate, oview(1), "Deflate", "Object")
+GAME_VERB_SRC(/obj/structure/inflatable, hand_deflate, oview(1), "放气", "Object")
 	if(usr.stat || usr.can_interact())
 		return
 	deflate(FALSE)
@@ -110,7 +111,7 @@ GAME_VERB_SRC(/obj/structure/inflatable, hand_deflate, oview(1), "Deflate", "Obj
 	if(!user.can_interact_with(src))
 		return
 	toggle_door()
-	to_chat(user, span_notice("You [door_state ? "close" : "open"] [src]!"))
+	to_chat(user, span_notice(LANG("obj.22d557f300d422c9", list(door_state ? "close" : "open", src))))
 
 /obj/structure/inflatable/door/update_icon_state()
 	. = ..()
@@ -151,13 +152,13 @@ GAME_VERB_SRC(/obj/structure/inflatable, hand_deflate, oview(1), "Deflate", "Obj
 /obj/item/inflatable/attack_self(mob/user)
 	. = ..()
 	if(torn)
-		to_chat(user, span_warning("[src] is too damaged to function!"))
+		to_chat(user, span_warning(LANG("obj.87b477bbe29a86ce", list(src))))
 		return
 	if(locate(structure_type) in get_turf(user))
-		to_chat(user, span_warning("There is already a wall here!"))
+		to_chat(user, span_warning(LANG("obj.bc8eb20a743fb12e", null)))
 		return
 	playsound(loc, 'sound/items/zip/zip.ogg', 75, 1)
-	to_chat(user, span_notice("You inflate [src]."))
+	to_chat(user, span_notice(LANG("obj.d4212a0e2e241c95", list(src))))
 	if(do_after(user, 1 SECONDS, src))
 		new structure_type(get_turf(user))
 		qdel(src)
@@ -166,16 +167,16 @@ GAME_VERB_SRC(/obj/structure/inflatable, hand_deflate, oview(1), "Deflate", "Obj
 	if(!istype(attacking_item, /obj/item/stack/medical/wrap/sticky_tape))
 		return ..()
 	if(!torn)
-		to_chat(user, span_notice("[src] does not need repairing!"))
+		to_chat(user, span_notice(LANG("obj.01384bcbca593f02", list(src))))
 		return
 	var/obj/item/stack/medical/wrap/sticky_tape/attacking_tape = attacking_item
 	if(attacking_tape.use(TAPE_REQUIRED_TO_FIX, check = TRUE))
-		to_chat(user, span_danger("There is not enough of [attacking_tape]! You need at least [TAPE_REQUIRED_TO_FIX] pieces!"))
+		to_chat(user, span_danger(LANG("obj.c57a68ddac733724", list(attacking_tape, TAPE_REQUIRED_TO_FIX))))
 		return
 	if(!do_after(user, 2 SECONDS, src))
 		return
 	playsound(user, 'modular_skyrat/modules/inflatables/sound/ducttape1.ogg', 50, 1)
-	to_chat(user, span_notice("You fix [src] using [attacking_tape]!"))
+	to_chat(user, span_notice(LANG("obj.5cf3fab90e408d99", list(src, attacking_tape))))
 	attacking_tape.use(TAPE_REQUIRED_TO_FIX)
 	torn = FALSE
 	update_appearance()
@@ -187,10 +188,10 @@ GAME_VERB_SRC(/obj/structure/inflatable, hand_deflate, oview(1), "Deflate", "Obj
 /obj/item/inflatable/examine(mob/user)
 	. = ..()
 	if(torn)
-		. += span_warning("It is badly torn, and cannot be used! The damage looks like it could be repaired with some <b>tape</b>.")
+		. += span_warning(LANG("obj.a579b6155dde8dc6", null))
 
 /obj/item/inflatable/suicide_act(mob/living/user)
-	visible_message(user, span_danger("[user] starts shoving the [src] up [user.p_their()] ass! It looks like [user.p_their()] going to pull the cord, oh shit!"))
+	visible_message(user, span_danger(LANG("obj.bcaa34e69f7f0db3", list(user, src, user.p_their(), user.p_their()))))
 	playsound(user.loc, 'sound/machines/hiss.ogg', 75, 1)
 	new structure_type(user.loc)
 	user.gib()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Dorborg specific modules
 
 #define STATUS_IDLE 0
@@ -31,7 +32,7 @@
 	if(!proximity)
 		return
 	if(user.client && (target in user.client.screen))
-		to_chat(user, "<span class='warning'>You need to take that [target.name] off before cleaning it!</span>")
+		to_chat(user, LANG("obj.38d21fc3fd1437eb", list(target.name)))
 		return
 
 	var/mob/living/silicon/robot/this_robot = user
@@ -41,57 +42,57 @@
 	do_attack_animation(target, "bubbles", src)
 
 	if(istype(target, /obj/effect/decal/cleanable)) // GOTTAAAAAA SWWEEEEP SWEEP SWEEP SWEEP SWEEEEP!!
-		this_robot.visible_message("[this_robot] begins to lick \the [target.name] clean...", "<span class='notice'>You begin to lick \the [target.name] clean...</span>")
+		this_robot.visible_message(LANG("obj.d83d3e8030418487", list(this_robot, target.name)), LANG("obj.7c5bacc7880a30a7", list(target.name)))
 		if(do_after(this_robot, src.cleanspeed, target = target))
-			to_chat(this_robot, "<span class='notice'>You clean \the [target.name].</span>")
+			to_chat(this_robot, LANG("obj.7166149a2c81ca44", list(target.name)))
 			qdel(target)
 	else if(istype(target, /obj/item/trash)) // yummers
-		this_robot.visible_message("[this_robot] nibbles away at \the [target.name].", "<span class='warning'>You begin to nibble away at \the [target.name]...</span>")
+		this_robot.visible_message(LANG("obj.5393a0e86a793770", list(this_robot, target.name)), LANG("obj.416d67bae20cc045", list(target.name)))
 		if(!do_after(this_robot, src.cleanspeed, target = target))
 			return
-		to_chat(this_robot, "<span class='notice'>You finish off \the [target.name].</span>")
+		to_chat(this_robot, LANG("obj.6b20d13add1f1a06", list(target.name)))
 		qdel(target)
 		this_robot.cell.give(250)
 	else if(istype(target, /obj/item/stock_parts/power_store/cell)) // ayo this is bussin
-		this_robot.visible_message("[this_robot] begins cramming \the [target.name] down its throat.", "<span class='warning'>You begin cramming \the [target.name] down your throat...</span>")
+		this_robot.visible_message(LANG("obj.27adf59f63625aa8", list(this_robot, target.name)), LANG("obj.ca395af4a74141db", list(target.name)))
 		if(!do_after(this_robot, 50, target = target))
 			return
-		to_chat(this_robot, "<span class='notice'>You finish off \the [target.name].</span>")
+		to_chat(this_robot, LANG("obj.6b20d13add1f1a06", list(target.name)))
 		var/obj/item/stock_parts/power_store/cell/target_cell = target
 		this_robot.cell.charge = this_robot.cell.charge + (target_cell.charge / 3)
 		qdel(target)
 	else if(ishuman(living_target)) // good boy
 		if(status == STATUS_IDLE && check_zone(this_robot.zone_selected) == "head")
-			this_robot.visible_message("<span class='warning'>\the [this_robot] affectionally licks \the [living_target]'s face!</span>", "<span class='notice'>You affectionally lick \the [living_target]'s face!</span>")
+			this_robot.visible_message(LANG("obj.21034fd2967b3d13", list(this_robot, living_target)), LANG("obj.dd152999e1e7c313", list(living_target)))
 			if(istype(living_target) && living_target.fire_stacks > 0)
 				living_target.adjust_fire_stacks(-10)
 			return
 		else if(status == STATUS_IDLE)
-			this_robot.visible_message("<span class='warning'>\the [this_robot] affectionally licks \the [living_target]!</span>", "<span class='notice'>You affectionally lick \the [living_target]!</span>")
+			this_robot.visible_message(LANG("obj.8467018818540366", list(this_robot, living_target)), LANG("obj.0558a19d6cdc9567", list(living_target)))
 			if(istype(living_target) && living_target.fire_stacks > 0)
 				living_target.adjust_fire_stacks(-10)
 			return
 		else
 			if(this_robot.cell.charge <= 800)
-				to_chat(this_robot, "<span class='warning'>Insufficent Power!</span>")
+				to_chat(this_robot, LANG("obj.a2ccc541f9ac02bb", null))
 				return
 			living_target.AdjustStun(4)
 			living_target.AdjustKnockdown(80)
 			living_target.adjust_stutter(5 SECONDS)
-			living_target.visible_message("<span class='danger'>[this_robot] shocks [living_target] with its tongue!</span>", "<span class='userdanger'>[this_robot] shocks you with its tongue!</span>")
+			living_target.visible_message(LANG("obj.25d3b73b2f589abc", list(this_robot, living_target)), LANG("obj.356d8f681910424f", list(this_robot)))
 			playsound(this_robot, 'sound/effects/sparks/sparks4.ogg', 50, 1, -1)
 			this_robot.cell.use(600)
 			log_combat(this_robot, living_target, "tongue stunned")
 	else if(istype(target, /obj/structure/window)) // splurp
-		this_robot.visible_message("[this_robot] begins to lick \the [target.name] clean...", "<span class='notice'>You begin to lick \the [target.name] clean...</span>")
+		this_robot.visible_message(LANG("obj.d83d3e8030418487", list(this_robot, target.name)), LANG("obj.7c5bacc7880a30a7", list(target.name)))
 		if(do_after(this_robot, src.cleanspeed, target = target))
-			to_chat(this_robot, "<span class='notice'>You clean \the [target.name].</span>")
+			to_chat(this_robot, LANG("obj.7166149a2c81ca44", list(target.name)))
 			target.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
 			target.set_opacity(initial(target.opacity))
 	else // not so slurp
-		this_robot.visible_message("[this_robot] begins to lick \the [target.name] clean...", "<span class='notice'>You begin to lick \the [target.name] clean...</span>")
+		this_robot.visible_message(LANG("obj.d83d3e8030418487", list(this_robot, target.name)), LANG("obj.7c5bacc7880a30a7", list(target.name)))
 		if(do_after(this_robot, src.cleanspeed, target = target))
-			to_chat(this_robot, "<span class='notice'>You clean \the [target.name].</span>")
+			to_chat(this_robot, LANG("obj.7166149a2c81ca44", list(target.name)))
 			var/obj/effect/decal/cleanable/cleanable_target = locate() in target
 			qdel(cleanable_target)
 			target.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
@@ -104,18 +105,18 @@
 		if(this_robot.emagged && status == STATUS_IDLE)
 			status = STATUS_ENERGIZED
 			name = "energized tongue"
-			desc = "Your tongue is energized for dangerously maximum efficency."
+			desc = LANG("obj.ecc716bebfbc5805", null)
 			icon_state = "syndietongue"
-			to_chat(this_robot, "<span class='notice'>Your tongue is now [status ? "Energized" : "Normal"].</span>")
+			to_chat(this_robot, LANG("obj.392d294b4ee5720c", list(status ? "Energized" : "Normal")))
 			cleanspeed = EMAGGED_CLEANSPEED
 		else
 			status = STATUS_IDLE
 			name = "synthetic tongue"
-			desc = "Useful for slurping mess off the floor before affectionally licking the crew members in the face."
+			desc = LANG("obj.314513c3031a6823", null)
 			icon_state = "synthtongue"
 			cleanspeed = BASIC_CLEANSPEED
 			if(this_robot.emagged)
-				to_chat(this_robot, "<span class='notice'>Your tongue is now [status ? "Energized" : "Normal"].</span>")
+				to_chat(this_robot, LANG("obj.392d294b4ee5720c", list(status ? "Energized" : "Normal")))
 	update_icon()
 
 /obj/item/soap/dogborg_tongue/scrubpup
@@ -149,13 +150,13 @@
 	return is_alert ? span_alert(format_text) : span_info(format_text)
 
 /obj/item/dogborg/dogborg_nose/proc/scan_enviroment(mob/user)
-	user.visible_message("[user] sniffs around the air.", "<span class='info'>You sniff the air for gas traces.</span>")
+	user.visible_message(LANG("obj.f2ea5bd775d2c881", list(user)), LANG("obj.9208986079eafd43", null))
 	var/message = list(span_boldnotice("Results of environmental analysis:\n"))
 	within_operational_parameters = TRUE
 
 	var/datum/gas_mixture/mixture = user.loc.return_analyzable_air()
 	if(!mixture)
-		to_chat(user, span_warning("Module data request returned an empty string - no gas mixture provided."))
+		to_chat(user, span_warning(LANG("obj.cbd67351ade33493", null)))
 		return FALSE
 
 	var/list/airs = islist(mixture) ? mixture : list(mixture)
@@ -204,7 +205,7 @@
 	if(!proximity)
 		return
 	do_attack_animation(target, null, src)
-	user.visible_message("<span class='notice'>[user] [pick("nuzzles", "pushes", "boops")] \the [target.name] with their nose!</span>")
+	user.visible_message(LANG("obj.0429f388d165d975", list(user, pick("nuzzles", "pushes", "boops"), target.name)))
 
 // Equipping dogborg modules (gets called during transformation)
 
@@ -299,20 +300,20 @@
 		if(R.emagged && status == 0)
 			name = "combat jaws"
 			icon_state = "jaws"
-			desc = "The jaws of the law."
+			desc = LANG("obj.c00c33d296152f3c", null)
 			force = 12
 			attack_verb_simple = list("chomped", "bit", "ripped", "mauled", "enforced")
 			status = 1
-			to_chat(user, "<span class='notice'>Your jaws are now [status ? "Combat" : "Pup'd"].</span>")
+			to_chat(user, LANG("obj.2f71f527c22fc4bd", list(status ? "Combat" : "Pup'd")))
 		else
 			name = "puppy jaws"
 			icon_state = "smalljaws"
-			desc = "The jaws of a small dog."
+			desc = LANG("obj.eb9ff5c7269b1156", null)
 			force = 5
 			attack_verb_simple = list("nibbled", "bit", "gnawed", "chomped", "nommed")
 			status = 0
 			if(R.emagged)
-				to_chat(user, "<span class='notice'>Your jaws are now [status ? "Combat" : "Pup'd"].</span>")
+				to_chat(user, LANG("obj.2f71f527c22fc4bd", list(status ? "Combat" : "Pup'd")))
 	update_icon()
 
 

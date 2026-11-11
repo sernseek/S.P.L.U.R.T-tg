@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/supply_pack/company_import/deforest
 	desc = "Contains one DeForest medical import item."
 	subcategory = "DeForest Medical"
@@ -12,7 +13,7 @@
 	if(name == initial(name))
 		name = "[template_item.name] Single-Pack"
 	if(desc == initial(desc))
-		desc = "Contains one [template_item.name]."
+		desc = LANG("datum.f8838e5b5bc224b8", list(template_item.name))
 	qdel(template_item)
 
 /datum/supply_pack/company_import/deforest/first_aid_kit

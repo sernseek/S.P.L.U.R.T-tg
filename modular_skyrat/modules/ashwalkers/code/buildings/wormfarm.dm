@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/wormfarm
 	name = "worm farm"
 	desc = "A wonderfully dirty barrel where worms can have a happy little life."
@@ -42,26 +43,26 @@
 
 /obj/structure/wormfarm/examine(mob/user)
 	. = ..()
-	. += span_notice("<br>There are currently [current_worm]/[max_worm] worms in the barrel.")
+	. += span_notice(LANG("obj.7a1c5486399827ab", list(current_worm, max_worm)))
 	if(current_worm < max_worm)
-		. += span_notice("You can place more worms in the barrel.")
+		. += span_notice(LANG("obj.10eefb41046f25c4", null))
 	if(current_worm > 0)
-		. += span_notice("You can get fertilizer by feeding the worms food.")
+		. += span_notice(LANG("obj.17971a870b8987e9", null))
 
 /obj/structure/wormfarm/attack_hand(mob/living/user, list/modifiers)
 	if(in_use)
-		balloon_alert(user, "currently in use")
+		balloon_alert(user, LANG("obj.c56e281752c99780", null))
 		return ..()
 
-	balloon_alert(user, "digging up worms")
+	balloon_alert(user, LANG("obj.fc851fd881a14836", null))
 	var/skill_modifier = user.mind.get_skill_modifier(/datum/skill/primitive, SKILL_SPEED_MODIFIER)
 	if(!do_after(user, 2 SECONDS * skill_modifier, src))
-		balloon_alert(user, "stopped digging")
+		balloon_alert(user, LANG("obj.d76e263a1d57ea3f", null))
 		in_use = FALSE
 		return ..()
 
 	if(current_worm <= 0)
-		balloon_alert(user, "no worms available")
+		balloon_alert(user, LANG("obj.d58f72ab3e7b3065", null))
 		in_use = FALSE
 		return ..()
 
@@ -75,25 +76,25 @@
 	//we want to check for worms first because they are a type of food as well...
 	if(istype(attacking_item, /obj/item/food/bait/worm))
 		if(current_worm >= max_worm)
-			balloon_alert(user, "too many worms in the barrel")
+			balloon_alert(user, LANG("obj.fcf94d59a3707a5a", null))
 			return
 
 		qdel(attacking_item)
-		balloon_alert(user, "worm released into barrel")
+		balloon_alert(user, LANG("obj.4ed12fa2c82633c4", null))
 		current_worm++
 		return
 
 	//if it aint a worm, lets check for any other food items
 	if(istype(attacking_item, /obj/item/food))
 		if(in_use)
-			balloon_alert(user, "currently in use")
+			balloon_alert(user, LANG("obj.c56e281752c99780", null))
 			return
 		in_use = TRUE
 
-		balloon_alert(user, "feeding the worms")
+		balloon_alert(user, LANG("obj.1f5afd68b570ba48", null))
 		var/skill_modifier = user.mind.get_skill_modifier(/datum/skill/primitive, SKILL_SPEED_MODIFIER)
 		if(!do_after(user, 1 SECONDS * skill_modifier, src))
-			balloon_alert(user, "stopped feeding the worms")
+			balloon_alert(user, LANG("obj.6b0f3f43cbddefeb", null))
 			in_use = FALSE
 			return
 
@@ -103,7 +104,7 @@
 			return
 
 		qdel(attacking_item)
-		balloon_alert(user, "feeding complete, check back later")
+		balloon_alert(user, LANG("obj.3bcda56e171b2f73", null))
 
 		current_food++
 		if(prob(user.mind.get_skill_modifier(/datum/skill/primitive, SKILL_PROBS_MODIFIER)))
@@ -115,7 +116,7 @@
 
 	if(istype(attacking_item, /obj/item/storage/bag/plants))
 		if(in_use)
-			balloon_alert(user, "currently in use")
+			balloon_alert(user, LANG("obj.c56e281752c99780", null))
 			return
 		in_use = TRUE
 
@@ -134,9 +135,9 @@
 			user.mind?.adjust_experience(/datum/skill/primitive, 5)
 
 		if(ate_food)
-			balloon_alert(user, "feeding the worms")
+			balloon_alert(user, LANG("obj.1f5afd68b570ba48", null))
 		else
-			balloon_alert(user, "no food in the bag")
+			balloon_alert(user, LANG("obj.c2a6fbc77a8ff865", null))
 		in_use = FALSE
 		return
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/heretic_rune/add_fingerprint(...)
 	return
 
@@ -13,8 +14,7 @@
 /obj/effect/heretic_rune/examine(mob/user)
 	. = ..()
 
-	. += span_notice("This rune can be created by any acolyte at any time with their [EXAMINE_HINT("mansus grasp")], and is how they perform \
-	[EXAMINE_HINT("rituals")], the backbone of their gameplay.")
+	. += span_notice(LANG("obj.a93d020ab9913970", list(EXAMINE_HINT("mansus grasp"), EXAMINE_HINT("rituals"))))
 	if (IS_HERETIC(user))
-		. += span_notice("[EXAMINE_HINT("Drop items")] on the rune to use them as an ingredient in a ritual.")
-	. += span_notice("Remove with [EXAMINE_HINT("soap")], or an [EXAMINE_HINT("antimagic item")].")
+		. += span_notice(LANG("obj.49ab82e0b5bb8dd5", list(EXAMINE_HINT("Drop items"))))
+	. += span_notice(LANG("obj.56d23b0696dcc00c", list(EXAMINE_HINT("soap"), EXAMINE_HINT("antimagic item"))))

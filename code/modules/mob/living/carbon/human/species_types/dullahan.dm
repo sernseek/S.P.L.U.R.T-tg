@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/dullahan
 	name = "Dullahan"
 	id = SPECIES_DULLAHAN
@@ -161,10 +162,8 @@
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "horse-head",
-		SPECIES_PERK_NAME = "Headless and Horseless",
-		SPECIES_PERK_DESC = "Dullahans must lug their head around in their arms. While \
-			many creative uses can come out of your head being independent of your \
-			body, Dullahans will find it mostly a pain.",
+		SPECIES_PERK_NAME = LANG("datum.d9231718c5b5d65e", null),
+		SPECIES_PERK_DESC = LANG("datum.8cc7a4f93246c38a", null),
 	))
 
 	return to_add
@@ -176,11 +175,8 @@
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "skull",
-		SPECIES_PERK_NAME = "Minor Undead",
-		SPECIES_PERK_DESC = "[name] are minor undead. \
-			Minor undead enjoy some of the perks of being dead, like \
-			not needing to breathe or eat, but do not get many of the \
-			environmental immunities involved with being fully undead.",
+		SPECIES_PERK_NAME = LANG("datum.e00d4a39bfe0dc7b", null),
+		SPECIES_PERK_DESC = LANG("datum.ea0f02c18fdab51a", list(name)),
 	))
 
 	return to_add

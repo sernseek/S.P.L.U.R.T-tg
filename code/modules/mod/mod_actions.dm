@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/item_action/mod
 	background_icon_state = "bg_mod"
 	overlay_icon_state = "bg_mod_border"
@@ -33,7 +34,7 @@
 /datum/action/item_action/mod/do_effect(trigger_flags)
 	var/obj/item/mod/control/mod = target
 	if(mod.malfunctioning && prob(MOD_MALFUNCTION_PROB))
-		mod.balloon_alert(usr, "button malfunctions!")
+		mod.balloon_alert(usr, LANG("datum.a820219e011d9757", null))
 		return FALSE
 	return TRUE
 
@@ -156,8 +157,8 @@
 	if(linked_module.allow_flags & MODULE_ALLOW_INCAPACITATED)
 		// clears check hands and check conscious
 		check_flags = NONE
-	name = "Activate [capitalize(linked_module.name)]"
-	desc = "Quickly activate [linked_module]."
+	name = LANG("datum.cc60b34c8bec228a", list(linked_module)) // ZH EDIT CHANGE - I18N - ORIGINAL: name = "Activate [capitalize(linked_module.name)]"
+	desc = LANG("datum.577f2905a3351bec", list(linked_module))
 	RegisterSignals(linked_module, list(
 		COMSIG_MODULE_ACTIVATED,
 		COMSIG_MODULE_DEACTIVATED,

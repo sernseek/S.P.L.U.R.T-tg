@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Tajaran Bubber edit
 //makes them more like Citrp's tajara aka snow cats
 
@@ -55,7 +56,7 @@
 	. = ..()
 	if(istype(eyes_owner))
 		if(HAS_TRAIT(eyes_owner, TRAIT_NIGHT_VISION)) //prevents double stacking of tajara night vision and the night vision quirk.
-			to_chat(eyes_owner, span_danger("You feel as the shadows are gone but suddenly they return!"))
+			to_chat(eyes_owner, span_danger(LANG("obj.70450f2c3effff95", null)))
 			REMOVE_TRAIT(eyes_owner, TRAIT_NIGHT_VISION, QUIRK_TRAIT)
 
 /obj/item/organ/ears/cat/tajaran
@@ -69,41 +70,38 @@
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "fire",
-			SPECIES_PERK_NAME = "Fire weakness",
-			SPECIES_PERK_DESC = "Tajara take longer to cool off when set on fire."
+			SPECIES_PERK_NAME = LANG("datum.995f4c6640668a7d", null),
+			SPECIES_PERK_DESC = LANG("datum.caf71be434b92b41", null)
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "sun",
-			SPECIES_PERK_NAME = "Bright Lights",
-			SPECIES_PERK_DESC = "Tajara need an extra layer of flash protection to protect \
-				themselves, such as against security officers or when welding.",
+			SPECIES_PERK_NAME = LANG("datum.da9dee50ff8ae0e8", null),
+			SPECIES_PERK_DESC = LANG("datum.f6a2cb1fe7f357f1", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "eye",
-			SPECIES_PERK_NAME = "Nightvision",
-			SPECIES_PERK_DESC = "Their eyes are adapted to low light, and can see in the dark better than others.",
+			SPECIES_PERK_NAME = LANG("datum.ac6f015f15b87f50", null),
+			SPECIES_PERK_DESC = LANG("datum.0da38e116e5f5d9a", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "assistive-listening-systems",
-			SPECIES_PERK_NAME = "Sensitive Hearing",
-			SPECIES_PERK_DESC = "Tajara are more sensitive to loud sounds, such as flashbangs.",
+			SPECIES_PERK_NAME = LANG("datum.bb136bbdf22cb336", null),
+			SPECIES_PERK_DESC = LANG("datum.95d8688b14887b52", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "paw",
-			SPECIES_PERK_NAME = "Soft Landing",
-			SPECIES_PERK_DESC = "Tajara are unhurt by high falls, and land on their feet.",
+			SPECIES_PERK_NAME = LANG("datum.ac7ca64554ede9e7", null),
+			SPECIES_PERK_DESC = LANG("datum.e49e3c39eb57d56f", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = FA_ICON_PERSON_FALLING,
-			SPECIES_PERK_NAME = "Cat Grace",
-			SPECIES_PERK_DESC = "Tajara are catlike and have catlike instincts allowing them to land upright on their feet.  \
-				Instead of being knocked down from falling, you only receive a short slowdown. \
-				However, the fall will deal additional damage since they are not the size and weight of a cat.",
+			SPECIES_PERK_NAME = LANG("datum.1c8445c68f34e14c", null),
+			SPECIES_PERK_DESC = LANG("datum.03e0485e65f90753", null),
 		),
 	)
 

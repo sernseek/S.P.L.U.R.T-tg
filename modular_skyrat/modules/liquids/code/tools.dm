@@ -1,8 +1,9 @@
-ADMIN_VERB(spawn_liquid, R_ADMIN, "Spawn Liquid", "Spawns an amount of chosen liquid at your current location.", ADMIN_CATEGORY_FUN)
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+ADMIN_VERB(spawn_liquid, R_ADMIN, "生成液体", "Spawns an amount of chosen liquid at your current location.", ADMIN_CATEGORY_FUN)
 	var/choice
 	var/valid_id
 	while(!valid_id)
-		choice = tgui_input_text(user, "Enter the ID of the reagent you want to add.", "Search reagents")
+		choice = tgui_input_text(user, LANG("datum.d4cf7df60e6e7714", null), LANG("datum.130464905b6cdd46", null))
 		if(isnull(choice)) //Get me out of here!
 			break
 		if (!ispath(text2path(choice)))
@@ -12,10 +13,10 @@ ADMIN_VERB(spawn_liquid, R_ADMIN, "Spawn Liquid", "Spawns an amount of chosen li
 		else
 			valid_id = TRUE
 		if(!valid_id)
-			to_chat(user, span_warning("A reagent with that ID doesn't exist!"))
+			to_chat(user, span_warning(LANG("datum.66e644d87af88862", null)))
 	if(!choice)
 		return
-	var/volume = tgui_input_number(user, "Volume:", "Choose volume")
+	var/volume = tgui_input_number(user, LANG("datum.a2039dea5487a2b7", null), LANG("datum.6fe2348972fe8aef", null))
 	if(!volume)
 		return
 	var/turf/epicenter = get_turf(user.mob)
@@ -23,7 +24,7 @@ ADMIN_VERB(spawn_liquid, R_ADMIN, "Spawn Liquid", "Spawns an amount of chosen li
 	message_admins("[ADMIN_LOOKUPFLW(user)] spawned liquid at [epicenter.loc] ([choice] - [volume]).")
 	log_admin("[key_name(user)] spawned liquid at [epicenter.loc] ([choice] - [volume]).")
 
-ADMIN_VERB_AND_CONTEXT_MENU(remove_liquid, R_ADMIN, "Remove liquids", "Removes all liquids in specified radius.", ADMIN_CATEGORY_GAME, /turf/open)
+ADMIN_VERB_AND_CONTEXT_MENU(remove_liquid, R_ADMIN, "移除液体", "Removes all liquids in specified radius.", ADMIN_CATEGORY_GAME, /turf/open)
 	VERB_ARG_TYPED(locale, VERB_ARG_TYPE_TURF, VERB_ARG_SOURCE_WORLD, /turf/open)
 	VERB_ARG(range, VERB_ARG_TYPE_NUM, VERB_ARG_SOURCE_INPUT)
 

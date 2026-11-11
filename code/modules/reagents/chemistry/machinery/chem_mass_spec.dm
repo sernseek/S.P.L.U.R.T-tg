@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/chem_mass_spec
 	name = "high-performance liquid chromatography machine"
 	desc = "Allows you to purify reagents & separate out inverse reagents"
@@ -78,7 +79,7 @@
 		context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Unan" : "An"]chor"
 		return CONTEXTUAL_SCREENTIP_SET
 	else if(held_item.tool_behaviour == TOOL_SCREWDRIVER)
-		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] panel"
+		context[SCREENTIP_CONTEXT_LMB] = LANG("obj.45725a89b7fc8d2e", list(panel_open ? "Close" : "Open"))
 		return CONTEXTUAL_SCREENTIP_SET
 	else if(panel_open && held_item.tool_behaviour == TOOL_CROWBAR)
 		context[SCREENTIP_CONTEXT_LMB] = "Deconstruct"
@@ -88,23 +89,23 @@
 	. = ..()
 
 	if(!QDELETED(beaker1))
-		. += span_notice("Input beaker of [beaker1.reagents.maximum_volume]u capacity is inserted.")
-		. += span_notice("Its Input beaker Can be ejected with [EXAMINE_HINT("LMB Alt")] click.")
+		. += span_notice(LANG("obj.23d1ac8d3f2eb519", list(beaker1.reagents.maximum_volume)))
+		. += span_notice(LANG("obj.e931dcd2c3b8be53", list(EXAMINE_HINT("LMB Alt"))))
 	else
-		. += span_warning("Its missing an input beaker. insert with [EXAMINE_HINT("Left Click")].")
+		. += span_warning(LANG("obj.489241c763d5ed76", list(EXAMINE_HINT("Left Click"))))
 	if(!QDELETED(beaker2))
-		. += span_notice("Output beaker of [beaker2.reagents.maximum_volume]u capacity is inserted.")
-		. += span_notice("Its Output beaker can be ejected with [EXAMINE_HINT("RMB Alt")] click.")
+		. += span_notice(LANG("obj.51f4fb4e59adbec7", list(beaker2.reagents.maximum_volume)))
+		. += span_notice(LANG("obj.d91371729ce553cb", list(EXAMINE_HINT("RMB Alt"))))
 	else
-		. += span_warning("Its missing an output beaker, insert with [EXAMINE_HINT("Right Click")].")
+		. += span_warning(LANG("obj.eedbf6c625db8357", list(EXAMINE_HINT("Right Click"))))
 
 	if(anchored)
-		. += span_notice("Its [EXAMINE_HINT("anchored")] in place.")
+		. += span_notice(LANG("obj.04b10ee4cf37358e", list(EXAMINE_HINT("anchored"))))
 	else
-		. += span_warning("Needs to be [EXAMINE_HINT("wrenched")] to use.")
-	. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "closed" : "open"].")
+		. += span_warning(LANG("obj.7fa302fb98f1a2d0", list(EXAMINE_HINT("wrenched"))))
+	. += span_notice(LANG("obj.f3fabb12d30acb3c", list(EXAMINE_HINT("screwed"), panel_open ? "closed" : "open")))
 	if(panel_open)
-		. += span_notice("It can be [EXAMINE_HINT("pried")] apart.")
+		. += span_notice(LANG("obj.fa5fc7965e12e9d0", list(EXAMINE_HINT("pried"))))
 
 /obj/machinery/chem_mass_spec/update_overlays()
 	. = ..()
@@ -147,7 +148,7 @@
 
 /obj/machinery/chem_mass_spec/item_interaction(mob/living/user, obj/item/item, list/modifiers)
 	if(processing_reagents)
-		balloon_alert(user, "still processing!")
+		balloon_alert(user, LANG("obj.2807df1677620a4e", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!item.can_insert_container(user, src))
@@ -157,7 +158,7 @@
 	if(!replace_beaker(user, !is_right_clicking, item))
 		return ITEM_INTERACT_BLOCKING
 
-	to_chat(user, span_notice("You add [item] to [is_right_clicking ? "output" : "input"] slot."))
+	to_chat(user, span_notice(LANG("obj.73f897d51ab0f68c", list(item, is_right_clicking ? "output" : "input"))))
 	update_appearance()
 	ui_interact(user)
 
@@ -166,7 +167,7 @@
 /obj/machinery/chem_mass_spec/wrench_act(mob/living/user, obj/item/tool)
 	. = ITEM_INTERACT_BLOCKING
 	if(processing_reagents)
-		balloon_alert(user, "still processing!")
+		balloon_alert(user, LANG("obj.2807df1677620a4e", null))
 		return .
 
 	if(default_unfasten_wrench(user, tool) == SUCCESSFUL_UNFASTEN)
@@ -174,14 +175,14 @@
 
 /obj/machinery/chem_mass_spec/screwdriver_act(mob/living/user, obj/item/tool)
 	if(processing_reagents)
-		balloon_alert(user, "still processing!")
+		balloon_alert(user, LANG("obj.2807df1677620a4e", null))
 		return ITEM_INTERACT_BLOCKING
 
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/chem_mass_spec/crowbar_act(mob/living/user, obj/item/tool)
 	if(processing_reagents)
-		balloon_alert(user, "still processing!")
+		balloon_alert(user, LANG("obj.2807df1677620a4e", null))
 		return ITEM_INTERACT_BLOCKING
 
 	return default_deconstruction_crowbar(user, tool)
@@ -317,7 +318,7 @@
 					log = "Cannot purify above [round(initial_purity * 100)]%"
 
 			beakerContents += list(list(
-				"name" = target.name,
+				"name" = lang_localize_display_name(target.name), // ZH EDIT - I18N: 试剂名纯显示。ORIGINAL: "name" = target.name,
 				"volume" = round(reagent.volume, CHEMICAL_VOLUME_ROUNDING),
 				"mass" = target.mass,
 				"purity" = round(purity * 100),
@@ -341,7 +342,7 @@
 		var/list/beakerContents = list()
 		for(var/datum/reagent/reagent as anything in beaker_2_reagents.reagent_list)
 			beakerContents += list(list(
-				"name" = reagent.name,
+				"name" = lang_localize_display_name(reagent.name), // ZH EDIT - I18N: 试剂名纯显示。ORIGINAL: "name" = reagent.name,
 				"volume" = round(reagent.volume, CHEMICAL_VOLUME_ROUNDING),
 				"mass" = reagent.mass,
 				"purity" = round(reagent.purity * 100),
@@ -359,17 +360,17 @@
 	switch(action)
 		if("activate")
 			if(QDELETED(beaker1))
-				say("Missing input beaker!")
+				say(LANG("obj.5b0996ece3613c91", null))
 				return
 			if(QDELETED(beaker2))
-				say("Missing output beaker!")
+				say(LANG("obj.4a1552b9ef91a517", null))
 				return
 
 			//adjust timer for purification
 			progress_time = 0
 			estimate_time()
 			if(delay_time <= 0)
-				say("No work to be done!")
+				say(LANG("obj.5890d1b0f36ad123", null))
 				return
 
 			//start the purification process
@@ -447,14 +448,14 @@
 
 /obj/machinery/chem_mass_spec/click_alt(mob/living/user)
 	if(processing_reagents)
-		balloon_alert(user, "still processing!")
+		balloon_alert(user, LANG("obj.2807df1677620a4e", null))
 		return CLICK_ACTION_BLOCKING
 	replace_beaker(user, TRUE)
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/chem_mass_spec/click_alt_secondary(mob/living/user)
 	if(processing_reagents)
-		balloon_alert(user, "still processing!")
+		balloon_alert(user, LANG("obj.2807df1677620a4e", null))
 		return
 	replace_beaker(user, FALSE)
 

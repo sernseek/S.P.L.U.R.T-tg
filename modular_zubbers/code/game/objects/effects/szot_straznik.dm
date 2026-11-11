@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Szot Dynamica's reusable answer to the anti-personnel mine. Holds a cell and a capacitor;
 // the capacitor decides how hard it goes off, the cell decides how many times it can.
 
@@ -78,7 +79,7 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 	sync_lamp_brightness()
 	set_light_on(TRUE)
 	playsound(src, 'modular_zubbers/sound/effects/szot/tesla_mine_deploy_beep.ogg', 50, FALSE)
-	visible_message(span_danger("\The [src] beeps softly."), vision_distance = COMBAT_MESSAGE_RANGE)
+	visible_message(span_danger(LANG("obj.4b8a5fa75787944b", list(src))), vision_distance = COMBAT_MESSAGE_RANGE)
 	update_appearance()
 
 /obj/effect/mine/straznik/Destroy()
@@ -105,32 +106,26 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 
 /obj/effect/mine/straznik/examine(mob/user)
 	. = ..()
-	. += span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src].")
+	. += span_notice(LANG("obj.443782c7961051dd", list(EXAMINE_HINT("look closer"), src)))
 	if(isnull(cell))
-		. += span_notice("There is no power cell installed.")
+		. += span_notice(LANG("obj.b21d2f5d4c232681", null))
 	else
-		. += span_notice("The power cell reads [round(cell.percent())]%.")
+		. += span_notice(LANG("obj.8c7fdd229fafbc37", list(round(cell.percent()))))
 	if(cell && capacitor)
 		var/per_shot = STRAZNIK_DISCHARGE_COST(capacitor.rating)
-		. += span_notice("It can discharge approximately [round(cell.charge / per_shot)] more times.")
-	. += span_notice("The maintenance panel is [panel_open ? "open" : "screwed shut"].")
+		. += span_notice(LANG("obj.2d66699efda12fb0", list(round(cell.charge / per_shot))))
+	. += span_notice(LANG("obj.a5319df9eab9ca69", list(panel_open ? "open" : "screwed shut")))
 	if(panel_open)
-		. += span_notice("The capacitor and the power cell can be swapped out by hand.")
+		. += span_notice(LANG("obj.e28ed7932315414d", null))
 
 /obj/effect/mine/straznik/examine_more(mob/user)
 	. = ..()
 
-	. += "The 'Strażnik' was produced in large numbers for CIN forces as a reusable alternative to conventional \
-		anti-personnel mines. Its electrical discharge was intended to electrocute intruders rather than making an \
-		expensive hole in the facility it was activated in."
+	. += LANG("obj.4277e23dd73fcd33", null)
 
-	. += "Time has not been especially kind to surviving examples. Most of these mines now contain thoroughly obsolete \
-		electrical components, and half dead leaky power cells installed when they entered storage; they have the \
-		occasional habit of electrocuting an unwitting farmer or colonist with no way of knowing their home was once \
-		a CIN battlefield."
+	. += LANG("obj.ce695d8a8ff0452e", null)
 
-	. += "Fortunately, all the important parts are replaceable, leaving your mind to grapple with the terrifying \
-		concept of a reusable landmine."
+	. += LANG("obj.51ecd1feb872d654", null)
 
 	return .
 
@@ -150,7 +145,7 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 	// draw through use() rather than touching charge directly, so a rigged cell behaves as a rigged cell should
 	var/tier = capacitor?.rating || 1
 	if(!cell?.use(STRAZNIK_DISCHARGE_COST(tier)))
-		visible_message(span_warning("\The [src] clicks flatly and does nothing."))
+		visible_message(span_warning(LANG("obj.bb5c1203dab81589", list(src))))
 		disarm()
 		return
 
@@ -217,7 +212,7 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 
 /obj/effect/mine/straznik/screwdriver_act(mob/living/user, obj/item/tool)
 	if(armed)
-		balloon_alert(user, "it's live!")
+		balloon_alert(user, LANG("obj.258fe02f6ffc3b90", null))
 		return ITEM_INTERACT_BLOCKING
 	panel_open = !panel_open
 	balloon_alert(user, panel_open ? "panel opened" : "panel closed")
@@ -233,7 +228,7 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 
 /obj/effect/mine/straznik/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(armed && !istype(tool, /obj/item/storage/part_replacer/bluespace))
-		balloon_alert(user, "it's live!")
+		balloon_alert(user, LANG("obj.258fe02f6ffc3b90", null))
 		return ITEM_INTERACT_BLOCKING
 	if(!panel_open)
 		// a bluespace replacer reaches inside on its own; anything else needs the housing opened first
@@ -242,7 +237,7 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 			if(!isnull(swapped))
 				return swapped
 		else if(istype(tool, /obj/item/storage/part_replacer))
-			balloon_alert(user, "unscrew the panel first!")
+			balloon_alert(user, LANG("obj.aa8ac3b3acba9a62", null))
 			return ITEM_INTERACT_BLOCKING
 		return ..()
 	var/swapped = swap_internal_part(user, tool)
@@ -289,7 +284,7 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 			user.put_in_hands(capacitor)
 		capacitor = tool
 		sync_lamp_brightness()
-		balloon_alert(user, "capacitor fitted")
+		balloon_alert(user, LANG("obj.beab606d282dacf3", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(istype(tool, /obj/item/stock_parts/power_store/cell))
@@ -298,7 +293,7 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 		if(cell)
 			user.put_in_hands(cell)
 		cell = tool
-		balloon_alert(user, "cell fitted")
+		balloon_alert(user, LANG("obj.c6818efdef18f9a3", null))
 		return ITEM_INTERACT_SUCCESS
 
 	return null
@@ -309,7 +304,7 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 	if(triggered || !armed || !presses_the_plate(triggerer))
 		return
 	triggered = TRUE
-	visible_message(span_danger("[icon2html(src, viewers(src))] \The [src] discharges!"))
+	visible_message(span_danger(LANG("obj.590c78932c72b081", list(icon2html(src, viewers(src)), src))))
 	mineEffect(triggerer)
 	SEND_SIGNAL(src, COMSIG_MINE_TRIGGERED, triggerer)
 	// it survives, and brings itself back up once the capacitor recovers
@@ -391,35 +386,35 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 
 /obj/item/minespawner/straznik/examine(mob/user)
 	. = ..()
-	. += span_notice("The power cell reads [cell ? "[round(cell.percent())]%" : "empty"]. It can be swapped out by hand.")
-	. += span_notice("A [capacitor ? capacitor.name : "missing capacitor"] is fitted. A better one makes it hit harder.")
-	. += span_notice("The maintenance panel is [panel_open ? "open" : "screwed shut"].")
+	. += span_notice(LANG("obj.2d32fe3d1f3d1cdd", list(cell ? "[round(cell.percent())]%" : "empty")))
+	. += span_notice(LANG("obj.d7e1979dd178de0f", list(capacitor ? capacitor.name : "missing capacitor")))
+	. += span_notice(LANG("obj.a5319df9eab9ca69", list(panel_open ? "open" : "screwed shut")))
 
 /obj/item/minespawner/straznik/attack_self(mob/user)
 	if(locate(/obj/effect/mine) in get_turf(user))
-		balloon_alert(user, "already a mine here!")
+		balloon_alert(user, LANG("obj.2aa6ad11df0d4aec", null))
 		return
 	if(!cell?.charge)
-		balloon_alert(user, "no charge!")
+		balloon_alert(user, LANG("obj.c0d39a143f2b1626", null))
 		return
 	if(!capacitor)
-		balloon_alert(user, "no capacitor!")
+		balloon_alert(user, LANG("obj.a525b3677db421bf", null))
 		return
 	if(panel_open)
-		balloon_alert(user, "close the panel first!")
+		balloon_alert(user, LANG("obj.feaafe3679c78ec3", null))
 		return
 	playsound(src, 'modular_zubbers/sound/effects/szot/tesla_mine_deploy_beep.ogg', 60, FALSE)
-	to_chat(user, span_warning("You press a button marked \"ARM\" on \the [src]. It begins to hum ominously!"))
+	to_chat(user, span_warning(LANG("obj.0d33b54285950146", list(src))))
 	active = TRUE
 	addtimer(CALLBACK(src, PROC_REF(deploy_mine)), 3 SECONDS)
 
 /obj/item/minespawner/straznik/attack_hand_secondary(mob/user, list/modifiers)
 	if(!cell)
-		balloon_alert(user, "no cell!")
+		balloon_alert(user, LANG("obj.0210855e097c27b8", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	user.put_in_hands(cell)
 	cell = null
-	balloon_alert(user, "cell removed")
+	balloon_alert(user, LANG("obj.0dfdca6e675f39e2", null))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/minespawner/straznik/screwdriver_act(mob/living/user, obj/item/tool)
@@ -441,7 +436,7 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 			if(!isnull(swapped))
 				return swapped
 		else if(istype(tool, /obj/item/storage/part_replacer))
-			balloon_alert(user, "unscrew the panel first!")
+			balloon_alert(user, LANG("obj.aa8ac3b3acba9a62", null))
 			return ITEM_INTERACT_BLOCKING
 		return ..()
 	var/swapped = swap_internal_part(user, tool)
@@ -484,7 +479,7 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 		if(capacitor)
 			user.put_in_hands(capacitor)
 		capacitor = tool
-		balloon_alert(user, "capacitor fitted")
+		balloon_alert(user, LANG("obj.beab606d282dacf3", null))
 		return ITEM_INTERACT_SUCCESS
 	if(istype(tool, /obj/item/stock_parts/power_store/cell))
 		if(!user.transferItemToLoc(tool, src))
@@ -492,14 +487,14 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 		if(cell)
 			user.put_in_hands(cell)
 		cell = tool
-		balloon_alert(user, "cell fitted")
+		balloon_alert(user, LANG("obj.c6818efdef18f9a3", null))
 		return ITEM_INTERACT_SUCCESS
 	return null
 
 /obj/item/minespawner/straznik/deploy_mine()
 	// it may have been thrown onto a tile that was clear when it was armed
 	if(locate(/obj/effect/mine) in get_turf(src))
-		visible_message(span_warning("\The [src] refuses to arm; there is already a mine here."))
+		visible_message(span_warning(LANG("obj.2a67fb70b0f923fb", list(src))))
 		active = FALSE
 		return
 	var/obj/effect/mine/straznik/planted = new mine_type(get_turf(src))
@@ -517,13 +512,13 @@ GLOBAL_LIST_INIT(straznik_burn, list(28, 45, 68, 92))
 /// Lifts a safe mine back out of the floor, parts and all
 /obj/effect/mine/straznik/attack_hand(mob/user, list/modifiers)
 	if(armed)
-		balloon_alert(user, "disarming...")
+		balloon_alert(user, LANG("obj.558ffcd8e2ea8578", null))
 		if(!do_after(user, 5 SECONDS, src))
 			return
 		disarm()
-		balloon_alert(user, "disarmed")
+		balloon_alert(user, LANG("obj.c8412f942d9103b9", null))
 		return
-	balloon_alert(user, "lifting mine...")
+	balloon_alert(user, LANG("obj.cd0c8944a3f9a7b5", null))
 	if(!do_after(user, 3 SECONDS, src))
 		return
 	var/obj/item/minespawner/straznik/recovered = new(get_turf(src))

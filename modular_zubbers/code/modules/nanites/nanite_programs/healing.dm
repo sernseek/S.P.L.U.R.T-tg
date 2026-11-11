@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Programs that heal the host in some way.
 
 /datum/nanite_program/regenerative
@@ -171,7 +172,7 @@
 /datum/nanite_program/defib/proc/zap()
 	var/mob/living/carbon/C = host_mob
 	playsound(C, 'sound/machines/defib/defib_zap.ogg', 50, FALSE)
-	C.balloon_alert_to_viewers("twitches violently")
+	C.balloon_alert_to_viewers(LANG("datum.b2a71ec7f68a1928", null))
 	C.get_ghost()
 	if(check_revivable())
 		if(C.stat == DEAD)

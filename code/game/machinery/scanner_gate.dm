@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define SCANGATE_NONE "Off"
 #define SCANGATE_MINDSHIELD "Mindshield"
 #define SCANGATE_DISEASE "Disease"
@@ -113,11 +114,11 @@
 /obj/machinery/scanner_gate/examine(mob/user)
 	. = ..()
 
-	. += span_notice("It's set to scan for [span_boldnotice(scangate_mode)].")
+	. += span_notice(LANG("obj.8923acff08432a68", list(span_boldnotice(scangate_mode))))
 	if(locked)
-		. += span_notice("The control panel is ID-locked. Swipe a valid ID to unlock it.")
+		. += span_notice(LANG("obj.51c43946147668b5", null))
 	else
-		. += span_notice("The control panel is unlocked. Swipe an ID to lock it.")
+		. += span_notice(LANG("obj.d3afdb2f7c190a88", null))
 
 /obj/machinery/scanner_gate/proc/on_entered(datum/source, atom/movable/thing)
 	SIGNAL_HANDLER
@@ -167,14 +168,14 @@
 
 		locked = FALSE
 		req_access = list()
-		balloon_alert(user, "unlocked")
+		balloon_alert(user, LANG("obj.6a4e03ca38b93195", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(obj_flags & EMAGGED)
-		balloon_alert(user, "nothing happens!")
+		balloon_alert(user, LANG("obj.bccffc95efe66ad7", null))
 		return ITEM_INTERACT_BLOCKING
 
-	balloon_alert(user, "locked")
+	balloon_alert(user, LANG("obj.90bdd1199999a332", null))
 	req_access = tool.GetAccess() // returns a copy so this is chill
 	locked = TRUE
 	return ITEM_INTERACT_SUCCESS
@@ -192,7 +193,7 @@
 	locked = FALSE
 	req_access = list()
 	obj_flags |= EMAGGED
-	balloon_alert(user, "id checker disabled")
+	balloon_alert(user, LANG("obj.0c26f175452ec432", null))
 	return TRUE
 
 /obj/machinery/scanner_gate/proc/perform_scan(atom/movable/thing)
@@ -299,7 +300,7 @@
 	else
 		SEND_SIGNAL(src, COMSIG_SCANGATE_PASS_NO_TRIGGER, thing)
 		if(bypassed)
-			say("[detected_thing] detection bypassed.")
+			say(LANG("obj.ecf2aa5591ab2792", list(detected_thing)))
 		if(!ignore_signals)
 			color = wires.get_color_of_wire(WIRE_DENY)
 			var/obj/item/assembly/assembly = wires.get_attached(color)
@@ -313,7 +314,7 @@
 		return
 
 	if(detected_thing)
-		say("[detected_thing][reverse ? " not " : " "]detected!!")
+		say(LANG("obj.dae2106cfee04ab2", list(detected_thing, reverse ? " not " : " ")))
 
 	COOLDOWN_START(src, next_beep, 2 SECONDS)
 	playsound(source = src, soundin = 'sound/machines/scanner/scanbuzz.ogg', vol = 30, vary = FALSE, extrarange = MEDIUM_RANGE_SOUND_EXTRARANGE, falloff_distance = 4)

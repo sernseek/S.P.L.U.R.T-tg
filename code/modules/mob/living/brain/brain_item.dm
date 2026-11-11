@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/brain
 	name = "brain"
 	desc = "A piece of juicy meat found in a person's head."
@@ -64,7 +65,7 @@
 	// Special check for if you're trapped in a body you can't control because it's owned by a ling.
 	if(IS_CHANGELING(brain_owner) && !(movement_flags & NO_ID_TRANSFER))
 		if(brainmob && !IS_DEAD_OR_FAKING(brain_owner))
-			to_chat(brainmob, span_danger("You can't feel your body! You're still just a brain!"))
+			to_chat(brainmob, span_danger(LANG("obj.5faf9bb10eb6bc53", null)))
 		forceMove(brain_owner)
 		brain_owner.update_body_parts()
 		return
@@ -116,7 +117,7 @@
 	// Delete skillchips first as parent proc sets owner to null, and skillchips need to know the brain's owner.
 	if(!QDELETED(organ_owner) && length(skillchips))
 		if(!special)
-			to_chat(organ_owner, span_notice("You feel your skillchips enable emergency power saving mode, deactivating as your brain leaves your body..."))
+			to_chat(organ_owner, span_notice(LANG("obj.403340e251c7cfb1", null)))
 			for(var/chip in skillchips)
 				var/obj/item/skillchip/skillchip = chip
 				// Run the try_ proc with force = TRUE.
@@ -167,7 +168,7 @@
 
 	if(L.mind && L.mind.current && !decoy_override)
 		L.mind.transfer_to(brainmob)
-		to_chat(brainmob, span_notice("You feel slightly disoriented. That's normal when you're just a brain."))
+		to_chat(brainmob, span_notice(LANG("obj.f07cc098d37983e7", null)))
 
 /obj/item/organ/brain/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(istype(tool, /obj/item/borg/apparatus/organ_storage))
@@ -180,7 +181,7 @@
 	if(!length(skillchips) || tool.get_sharpness() != SHARP_EDGED)
 		return NONE
 
-	to_chat(user,span_notice("You begin to excise skillchips from [src]."))
+	to_chat(user,span_notice(LANG("obj.3d2a2f8a8d805f91", list(src))))
 	if(!do_after(user, 15 SECONDS, target = src))
 		return ITEM_INTERACT_BLOCKING
 
@@ -211,21 +212,21 @@
 		user.do_attack_animation(src)
 		playsound(loc, 'sound/effects/meatslap.ogg', 50)
 		set_organ_damage(maxHealth) //fails the brain as the brain was attacked, they're pretty fragile.
-		visible_message(span_danger("[user] hits [src] with [item]!"))
-		to_chat(user, span_danger("You hit [src] with [item]!"))
+		visible_message(span_danger(LANG("obj.846115adf019747f", list(user, src, item))))
+		to_chat(user, span_danger(LANG("obj.c57da0f4127a54eb", list(src, item))))
 
 /obj/item/organ/brain/proc/check_for_repair(obj/item/item, mob/user)
 	if(damage && item.is_drainable() && item.reagents.has_reagent(/datum/reagent/medicine/mannitol) && (organ_flags & ORGAN_ORGANIC)) //attempt to heal the brain
 		if(brainmob?.health <= HEALTH_THRESHOLD_DEAD) //if the brain is fucked anyway, do nothing
-			to_chat(user, span_warning("[src] is far too damaged, there's nothing else we can do for it!"))
+			to_chat(user, span_warning(LANG("obj.57f2d422a8170aff", list(src))))
 			return TRUE
 
-		user.visible_message(span_notice("[user] starts to slowly pour the contents of [item] onto [src]."), span_notice("You start to slowly pour the contents of [item] onto [src]."))
+		user.visible_message(span_notice(LANG("obj.36b950010de56066", list(user, item, src))), span_notice(LANG("obj.09d70374d6ac85e0", list(item, src))))
 		if(!do_after(user, 3 SECONDS, src))
-			to_chat(user, span_warning("You failed to pour the contents of [item] onto [src]!"))
+			to_chat(user, span_warning(LANG("obj.6c40dd899344a99a", list(item, src))))
 			return TRUE
 		var/and_bright_shade = !shade_color ? "" : " and turn a slightly brighter shade of [shade_color]"
-		user.visible_message(span_notice("[user] pours the contents of [item] onto [src], causing it to reform its original shape[and_bright_shade]."), span_notice("You pour the contents of [item] onto [src], causing it to reform its original shape[and_bright_shade]."))
+		user.visible_message(span_notice(LANG("obj.66fef8d1fe5ee2db", list(user, item, src, and_bright_shade))), span_notice(LANG("obj.029c8ce39691eb90", list(item, src, and_bright_shade))))
 		var/amount = item.reagents.get_reagent_amount(/datum/reagent/medicine/mannitol)
 		var/healto = max(0, damage - amount * 2)
 		item.reagents.remove_all(ROUND_UP(item.reagents.total_volume / amount * (damage - healto) * 0.5)) //only removes however much solution is needed while also taking into account how much of the solution is mannitol
@@ -236,14 +237,14 @@
 /obj/item/organ/brain/examine(mob/user)
 	. = ..()
 	if(length(skillchips))
-		. += span_info("It has a skillchip embedded in it.")
+		. += span_info(LANG("obj.d2be189b0e6f3a5a", null))
 	. += brain_damage_examine()
 	if (smooth_brain)
-		. += span_notice("All the pesky wrinkles are gone. Now it just needs a good drying...")
+		. += span_notice(LANG("obj.c493d591387803a4", null))
 	if(brain_size < 1)
-		. += span_notice("It is a bit on the smaller side...")
+		. += span_notice(LANG("obj.ddc86c082513ad56", null))
 	if(brain_size > 1)
-		. += span_notice("It is bigger than average...")
+		. += span_notice(LANG("obj.d961631f8e187689", null))
 
 /// Needed so subtypes can override examine text while still calling parent
 /obj/item/organ/brain/proc/brain_damage_examine()
@@ -263,22 +264,24 @@
 	var/list/trauma_text
 	for(var/datum/brain_trauma/trauma as anything in traumas)
 		var/trauma_desc = ""
+		// ZH EDIT - I18N - reverse-localize the severity prefix + scan_desc (both listed in strings/i18n/*/_brain_traumas.json);
+		// lang_reverse_text is locale-gated (no-op on english / en locale) so english output is unchanged.
 		switch(trauma.resilience)
 			if(TRAUMA_RESILIENCE_BASIC)
-				trauma_desc = conditional_tooltip("Mild ", "Repair via brain surgery or medication such as [/datum/reagent/medicine/neurine::name].", add_tooltips)
+				trauma_desc = conditional_tooltip(lang_reverse_text("Mild "), "Repair via brain surgery or medication such as [/datum/reagent/medicine/neurine::name].", add_tooltips)
 			if(TRAUMA_RESILIENCE_SURGERY)
-				trauma_desc = conditional_tooltip("Severe ", "Repair via brain surgery.", add_tooltips)
+				trauma_desc = conditional_tooltip(lang_reverse_text("Severe "), "Repair via brain surgery.", add_tooltips)
 			if(TRAUMA_RESILIENCE_LOBOTOMY)
-				trauma_desc = conditional_tooltip("Deep-rooted ", "Repair via advanced brain surgery.", add_tooltips) // BUBBER EDIT CHANGE - Original: Repair via Lobotomy
+				trauma_desc = conditional_tooltip(lang_reverse_text("Deep-rooted "), /* ZH EDIT CHANGE - I18N */ "Repair via advanced brain surgery.", add_tooltips) // BUBBER EDIT CHANGE - Original: Repair via Lobotomy
 			if(TRAUMA_RESILIENCE_WOUND)
-				trauma_desc = conditional_tooltip("Fracture-derived ", "Repair via treatment of wounds afflicting the head.", add_tooltips)
+				trauma_desc = conditional_tooltip(lang_reverse_text("Fracture-derived "), "Repair via treatment of wounds afflicting the head.", add_tooltips)
 			if(TRAUMA_RESILIENCE_MAGIC)
 				// BUBBER EDIT CHANGE BEGIN - Blessed neurectomy
 				trauma_desc = conditional_tooltip("Soul-bound ", "Repair via blessed brain surgery.", add_tooltips)
 				// BUBBER EDIT CHANGE END - Blessed neurectomy
 			if(TRAUMA_RESILIENCE_ABSOLUTE)
-				trauma_desc = conditional_tooltip("Permanent ", "Irreparable under normal circumstances.", add_tooltips)
-		trauma_desc += capitalize(trauma.scan_desc)
+				trauma_desc = conditional_tooltip(lang_reverse_text("Permanent "), "Irreparable under normal circumstances.", add_tooltips)
+		trauma_desc += lang_reverse_text(capitalize(trauma.scan_desc))
 		LAZYADD(trauma_text, trauma_desc)
 	if(LAZYLEN(trauma_text))
 		return "Mental trauma: [english_list(trauma_text, and_text = ", and ")]."
@@ -306,7 +309,7 @@
 	var/target_has_brain = C.get_organ_by_type(/obj/item/organ/brain)
 
 	if(!target_has_brain && C.is_eyes_covered())
-		to_chat(user, span_warning("You're going to need to remove [C.p_their()] head cover first!"))
+		to_chat(user, span_warning(LANG("obj.7338963e686370a2", list(C.p_their()))))
 		return
 
 	//since these people will be dead M != usr
@@ -322,10 +325,10 @@
 						span_userdanger("[msg]"))
 
 		if(C != user)
-			to_chat(C, span_notice("[user] inserts [src] into your head."))
-			to_chat(user, span_notice("You insert [src] into [C]'s head."))
+			to_chat(C, span_notice(LANG("obj.86ea0b907f7cce5f", list(user, src))))
+			to_chat(user, span_notice(LANG("obj.c6c98f5c778cd639", list(src, C))))
 		else
-			to_chat(user, span_notice("You insert [src] into your head.") )
+			to_chat(user, span_notice(LANG("obj.bf192f0a6a5beb5a", list(src))) )
 
 		Insert(C)
 	else
@@ -345,7 +348,7 @@
 	if(HAS_TRAIT(src, TRAIT_BRAIN_DAMAGE_NODEATH))
 		return
 	if(damage >= maxHealth) //rip
-		to_chat(owner, span_userdanger("The last spark of life in your brain fizzles out..."))
+		to_chat(owner, span_userdanger(LANG("obj.88fba09bc00a5a5c", null)))
 		owner.investigate_log("has been killed by brain damage.", INVESTIGATE_DEATHS)
 		owner.death()
 
@@ -440,7 +443,7 @@
 		brain_message = span_warning("You can feel your mind flickering on and off...")
 
 	if(.)
-		. += "\n[brain_message]"
+		. += LANG("obj.65aac1b5abce675a", list(brain_message))
 	else
 		return brain_message
 

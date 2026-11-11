@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// SKYRAT MODULE SKYRAT_XENO_REDO
 
 #define RAVAGER_OUTLINE_EFFECT "ravager_endure_outline"
@@ -86,11 +87,11 @@
 /datum/action/cooldown/alien/skyrat/literally_too_angry_to_die/Activate()
 	. = ..()
 	if(endure_active)
-		owner.balloon_alert(owner, "already enduring")
+		owner.balloon_alert(owner, LANG("datum.073d10200abd1201", null))
 		return FALSE
-	owner.balloon_alert(owner, "endure began")
+	owner.balloon_alert(owner, LANG("datum.e439177dd4f701b0", null))
 	playsound(owner, 'modular_skyrat/modules/xenos_skyrat_redo/sound/alien_roar1.ogg', 100, TRUE, 8, 0.9)
-	to_chat(owner, span_danger("We numb our ability to feel pain, allowing us to fight until the very last for the next [endure_duration/10] seconds."))
+	to_chat(owner, span_danger(LANG("datum.3f350272a7b3e2ec", list(endure_duration/10))))
 	addtimer(CALLBACK(src, PROC_REF(endure_deactivate)), endure_duration)
 	owner.add_filter(RAVAGER_OUTLINE_EFFECT, 4, outline_filter(1, COLOR_RED_LIGHT))
 	ADD_TRAIT(owner, TRAIT_STUNIMMUNE, TRAIT_XENO_ABILITY_GIVEN)
@@ -101,7 +102,7 @@
 
 /datum/action/cooldown/alien/skyrat/literally_too_angry_to_die/proc/endure_deactivate()
 	endure_active = FALSE
-	owner.balloon_alert(owner, "endure ended")
+	owner.balloon_alert(owner, LANG("datum.1d22877b84fb8861", null))
 	owner.remove_filter(RAVAGER_OUTLINE_EFFECT)
 	REMOVE_TRAIT(owner, TRAIT_STUNIMMUNE, TRAIT_XENO_ABILITY_GIVEN)
 	REMOVE_TRAIT(owner, TRAIT_NOSOFTCRIT, TRAIT_XENO_ABILITY_GIVEN)

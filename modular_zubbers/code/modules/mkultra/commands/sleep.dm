@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/mkultra_command/sleep_command
 	name = "Sleep"
 	description = "Make your victim sleep for 60 seconds."
@@ -12,7 +13,7 @@
 		return FALSE
 	var/mob/living/carbon/victim = owner
 	if(HAS_TRAIT(victim, TRAIT_KNOCKEDOUT))
-		to_chat(source, span_warning("[victim] is already fast asleep!"))
+		to_chat(source, span_warning(LANG("datum.ba3e6d681dba128a", list(victim))))
 		return FALSE
 	victim.SetSleeping(1 MINUTES)
 	return TRUE

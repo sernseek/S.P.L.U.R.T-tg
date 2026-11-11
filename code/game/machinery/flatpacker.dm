@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///Incremets an an value assosiated by an key in the list creating that value if nessassary
 #define CREATE_AND_INCREMENT(L, I, increment) if(!(I in L)) { L[I] = 0; } L[I] += increment;
 
@@ -65,7 +66,7 @@
 			context[SCREENTIP_CONTEXT_LMB] = "Insert board"
 			return CONTEXTUAL_SCREENTIP_SET
 		else if(held_item.tool_behaviour == TOOL_SCREWDRIVER)
-			context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] panel"
+			context[SCREENTIP_CONTEXT_LMB] = LANG("obj.45725a89b7fc8d2e", list(panel_open ? "Close" : "Open"))
 			return CONTEXTUAL_SCREENTIP_SET
 		else if(held_item.tool_behaviour == TOOL_CROWBAR && panel_open)
 			context[SCREENTIP_CONTEXT_LMB] = "Deconstruct"
@@ -76,16 +77,16 @@
 	if(!in_range(user, src) && !isobserver(user))
 		return
 
-	. += span_notice("The status display reads:")
-	. += span_notice("Capable of packing up to <b>Tier [max_part_tier]</b>.")
-	. += span_notice("Storing up to <b>[materials.max_amount]</b> material units.")
-	. += span_notice("Material consumption at <b>[creation_efficiency * 100]%</b>.")
+	. += span_notice(LANG("obj.e69769dde0bfcc79", null))
+	. += span_notice(LANG("obj.9583a516606b940b", list(max_part_tier)))
+	. += span_notice(LANG("obj.3df7019346567bf3", list(materials.max_amount)))
+	. += span_notice(LANG("obj.83037b3636b8eac1", list(creation_efficiency * 100)))
 
-	. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "close" : "open"].")
+	. += span_notice(LANG("obj.f3fabb12d30acb3c", list(EXAMINE_HINT("screwed"), panel_open ? "close" : "open")))
 	if(panel_open)
-		. += span_notice("It can be [EXAMINE_HINT("pried")] apart.")
+		. += span_notice(LANG("obj.fa5fc7965e12e9d0", list(EXAMINE_HINT("pried"))))
 	if(!QDELETED(inserted_board))
-		. += span_notice("The board can be ejected via [EXAMINE_HINT("Ctrl Click")].")
+		. += span_notice(LANG("obj.160d08bc7c459346", list(EXAMINE_HINT("Ctrl Click"))))
 		if(length(inserted_board.flatpack_components))
 			var/list/obj/item/to_insert
 			for(var/obj/item/component as anything in inserted_board.flatpack_components)
@@ -95,7 +96,7 @@
 					continue
 				LAZYADDASSOC(to_insert, get_flatpack_component_name(component), "[inserted]/[required]")
 			if(length(to_insert))
-				. += span_warning("The following components must be inserted by hand before packaging:")
+				. += span_warning(LANG("obj.1b0e461f9850d854", null))
 				for(var/component_name in to_insert)
 					. += span_warning("[component_name]: [to_insert[component_name]].")
 
@@ -224,7 +225,7 @@
 
 	if(istype(attacking_item, /obj/item/circuitboard/machine))
 		if(busy)
-			balloon_alert(user, "busy!")
+			balloon_alert(user, LANG("obj.8df72942c63f9092", null))
 			return ITEM_INTERACT_BLOCKING
 		if (!user.transferItemToLoc(attacking_item, src))
 			return ITEM_INTERACT_BLOCKING
@@ -249,11 +250,11 @@
 		return ITEM_INTERACT_SUCCESS
 	else if(!QDELETED(inserted_board) && (attacking_item.type in inserted_board.flatpack_components))
 		if(get_flatpack_component_count(attacking_item.type) == inserted_board.req_components[attacking_item.type])
-			balloon_alert(user, "max count reached!")
+			balloon_alert(user, LANG("obj.e29760231041a641", null))
 			return ITEM_INTERACT_BLOCKING
 
 		if(!user.transferItemToLoc(attacking_item, src))
-			to_chat(user, span_warning("[attacking_item] is stuck in hand!"))
+			to_chat(user, span_warning(LANG("obj.dccaca761333c7d0", list(attacking_item))))
 			return ITEM_INTERACT_BLOCKING
 
 		LAZYADD(flatpacked_components, attacking_item)
@@ -335,14 +336,14 @@
 			if(QDELETED(inserted_board))
 				return
 			if(print_tier > max_part_tier)
-				say("Design too complex.")
+				say(LANG("obj.77f3272f2b56eef5", null))
 				return
 			for(var/obj/item/component as anything in inserted_board.flatpack_components)
 				if(inserted_board.req_components[component] != get_flatpack_component_count(component))
-					say("Not enough [get_flatpack_component_name(component)].")
+					say(LANG("obj.14e00f6dc8e3391d", list(get_flatpack_component_name(component))))
 					return
 			if(!materials.has_materials(needed_mats, creation_efficiency))
-				say("Not enough materials to begin production.")
+				say(LANG("obj.f818a0852c2f3b7b", null))
 				return
 			playsound(src, 'sound/items/tools/rped.ogg', 50, TRUE)
 
@@ -370,7 +371,7 @@
 
 			//we use initial(active_power_usage) because higher tier parts will have higher active usage but we have no benefit from it
 			if(!directly_use_energy(ROUND_UP((amount / MAX_STACK_SIZE) * 0.4 * initial(active_power_usage))))
-				say("No power to dispense sheets")
+				say(LANG("obj.c98ac2147c20335f", null))
 				return
 
 			materials.retrieve_stack(amount, material)

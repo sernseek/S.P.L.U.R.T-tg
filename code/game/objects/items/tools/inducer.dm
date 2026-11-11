@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/inducer
 	name = "inducer"
 	desc = "A tool for inductively charging internal power cells and batteries."
@@ -57,7 +58,7 @@
 			return CONTEXTUAL_SCREENTIP_SET
 
 	if(held_item.tool_behaviour == TOOL_SCREWDRIVER)
-		context[SCREENTIP_CONTEXT_LMB] = "[opened ? "Close" : "Open"] Panel"
+		context[SCREENTIP_CONTEXT_LMB] = LANG("obj.3a1f9b9bcb4eed7a", list(opened ? "Close" : "Open"))
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/inducer/examine(mob/living/user)
@@ -73,20 +74,20 @@
  */
 /obj/item/inducer/proc/examine_hints(mob/living/user)
 	PROTECTED_PROC(TRUE)
-	SHOULD_BE_PURE(TRUE)
+	// ZH EDIT REMOVAL - i18n - ORIGINAL: SHOULD_BE_PURE(TRUE) - EXAMINE_HINT() 现在调不纯的 lang_reverse_text()（中文反查），此 proc 不再纯
 
 	. = list()
 
 	var/obj/item/stock_parts/power_store/our_cell = get_cell(src, user)
 	if(!QDELETED(our_cell))
-		. += span_notice("Its display shows: [display_energy(our_cell.charge)].")
+		. += span_notice(LANG("obj.a9d97eaed5460284", list(display_energy(our_cell.charge))))
 		if(opened)
-			. += span_notice("The cell can be removed with an empty hand.")
-			. += span_notice("Plasma sheets can be used to recharge the cell.")
+			. += span_notice(LANG("obj.b0f8c071405793b2", null))
+			. += span_notice(LANG("obj.ce305ae13590eba0", null))
 	else
-		. += span_warning("It's missing a power cell.")
+		. += span_warning(LANG("obj.65452ac44d6e839e", null))
 
-	. += span_notice("Its battery compartment can be [EXAMINE_HINT("screwed")] [opened ? "shut" : "open"].")
+	. += span_notice(LANG("obj.e45263dc39909a2b", list(EXAMINE_HINT("screwed"), opened ? "shut" : "open")))
 
 /obj/item/inducer/update_overlays()
 	. = ..()
@@ -109,7 +110,7 @@
 		return
 
 	opened = !opened
-	to_chat(user, span_notice("You [opened ? "open" : "close"] the battery compartment."))
+	to_chat(user, span_notice(LANG("obj.a7ac68d898171348", list(opened ? "open" : "close"))))
 	update_appearance(UPDATE_OVERLAYS)
 
 	return ITEM_INTERACT_SUCCESS
@@ -122,15 +123,15 @@
 
 	if(istype(tool, /obj/item/stock_parts/power_store))
 		if(!opened)
-			balloon_alert(user, "open first!")
+			balloon_alert(user, LANG("obj.c3fdd0858199d5fc", null))
 			return ITEM_INTERACT_FAILURE
 
 		if(!QDELETED(powerdevice))
-			balloon_alert(user, "cell already installed!")
+			balloon_alert(user, LANG("obj.d2ad27b2fb0eb6cd", null))
 			return ITEM_INTERACT_FAILURE
 
 		if(!user.transferItemToLoc(tool, src))
-			balloon_alert(user, "stuck in hand!")
+			balloon_alert(user, LANG("obj.c7cbf2eb61d75d5b", null))
 			return ITEM_INTERACT_FAILURE
 
 		powerdevice = tool
@@ -138,12 +139,12 @@
 
 	else if(istype(tool, /obj/item/stack/sheet/mineral/plasma) && !QDELETED(powerdevice))
 		if(!powerdevice.used_charge())
-			balloon_alert(user, "fully charged!")
+			balloon_alert(user, LANG("obj.42739bb492b100de", null))
 			return ITEM_INTERACT_FAILURE
 
 		tool.use(1)
 		powerdevice.give(1.5 * STANDARD_CELL_CHARGE)
-		balloon_alert(user, "cell recharged")
+		balloon_alert(user, LANG("obj.aac7e1661ebd251c", null))
 
 		return ITEM_INTERACT_SUCCESS
 
@@ -158,24 +159,24 @@
 
 	//basic checks
 	if(opened)
-		balloon_alert(user, "close first!")
+		balloon_alert(user, LANG("obj.33c8300c4f2d2178", null))
 		return ITEM_INTERACT_FAILURE
 
 	if(recharging || (!isturf(interacting_with) && user.loc == interacting_with))
 		return ITEM_INTERACT_FAILURE
 
 	if(!ISADVANCEDTOOLUSER(user))
-		to_chat(user, span_warning("You don't have the dexterity to use [src]!"))
+		to_chat(user, span_warning(LANG("obj.41d5752e5eac12cb", list(src))))
 		return ITEM_INTERACT_FAILURE
 
 	var/obj/item/stock_parts/power_store/our_cell = get_cell(src, user)
 
 	if(QDELETED(our_cell))
-		balloon_alert(user, "no cell installed!")
+		balloon_alert(user, LANG("obj.48299e411d7e5893", null))
 		return ITEM_INTERACT_FAILURE
 
 	if(!our_cell.charge)
-		balloon_alert(user, "no charge!")
+		balloon_alert(user, LANG("obj.c0d39a143f2b1626", null))
 		return ITEM_INTERACT_FAILURE
 
 	var/obj/item/stock_parts/power_store/target_cell = interacting_with.get_cell(src, user)
@@ -184,12 +185,12 @@
 		return ITEM_INTERACT_FAILURE
 
 	if(!target_cell.used_charge())
-		balloon_alert(user, "fully charged!")
+		balloon_alert(user, LANG("obj.42739bb492b100de", null))
 		return ITEM_INTERACT_FAILURE
 
 	//begin recharging
 	recharging = TRUE
-	user.visible_message(span_notice("[user] starts recharging [interacting_with] with [src]."), span_notice("You start recharging [interacting_with] with [src]."))
+	user.visible_message(span_notice(LANG("obj.571e129a0d611da4", list(user, interacting_with, src))), span_notice(LANG("obj.8965d95dede2db2b", list(interacting_with, src))))
 
 	var/done_any = FALSE
 	while(target_cell.used_charge())
@@ -215,13 +216,13 @@
 
 	// Only show a message if we succeeded at least once
 	if(done_any)
-		user.visible_message(span_notice("[user] recharges [interacting_with]!"), span_notice("You recharge [interacting_with]!"))
+		user.visible_message(span_notice(LANG("obj.ab8d31721d7a6118", list(user, interacting_with))), span_notice(LANG("obj.85e4228fa822dfdd", list(interacting_with))))
 
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/inducer/attack_self(mob/user)
 	if(opened && !QDELETED(powerdevice))
-		user.visible_message(span_notice("[user] removes [powerdevice] from [src]!"), span_notice("You remove [powerdevice]."))
+		user.visible_message(span_notice(LANG("obj.6eec863436b99805", list(user, powerdevice, src))), span_notice(LANG("obj.1973523e4f545786", list(powerdevice))))
 		powerdevice.update_appearance()
 		user.put_in_hands(powerdevice)
 		update_appearance(UPDATE_OVERLAYS)
@@ -260,18 +261,18 @@
 
 	var/obj/item/stock_parts/power_store/our_cell = get_cell(src, user)
 	if(!QDELETED(our_cell))
-		. += span_notice("Its display shows: [display_energy(our_cell.charge)].")
+		. += span_notice(LANG("obj.a9d97eaed5460284", list(display_energy(our_cell.charge))))
 		if(opened)
-			. += span_notice("Plasma sheets can be used to recharge the cell.")
+			. += span_notice(LANG("obj.ce305ae13590eba0", null))
 	else
-		. += span_warning("It's missing a power cell.")
-	. += span_notice("Its battery compartment can be [EXAMINE_HINT("screwed")] [opened ? "shut" : "open"].")
+		. += span_warning(LANG("obj.65452ac44d6e839e", null))
+	. += span_notice(LANG("obj.e45263dc39909a2b", list(EXAMINE_HINT("screwed"), opened ? "shut" : "open")))
 
 /obj/item/inducer/cyborg/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	return NONE
 
 /obj/item/inducer/cyborg/interact_with_atom(atom/movable/interacting_with, mob/living/user, list/modifiers)
 	if(iscyborg(user) && iscyborg(interacting_with))
-		balloon_alert(user, "can't charge this!")
+		balloon_alert(user, LANG("obj.a11e4871a80fce6e", null))
 		return ITEM_INTERACT_FAILURE
 	return ..()

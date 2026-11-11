@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// A fake nuke that actually contains beer.
 /obj/machinery/nuclearbomb/beer
 	name = "\improper Nanotrasen-brand nuclear fission explosive"
@@ -24,9 +25,9 @@
 /obj/machinery/nuclearbomb/beer/examine(mob/user)
 	. = ..()
 	if(keg.reagents.total_volume)
-		. += span_notice("It has [keg.reagents.total_volume] unit\s left.")
+		. += span_notice(LANG("obj.5600f9efd453a9b7", list(keg.reagents.total_volume)))
 	else
-		. += span_danger("It's empty.")
+		. += span_danger(LANG("obj.552a41054f376fdf", null))
 
 /obj/machinery/nuclearbomb/beer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(!tool.is_refillable())
@@ -46,7 +47,7 @@
 	if(is_station_level(bomb_location.z))
 		addtimer(CALLBACK(src, PROC_REF(really_actually_explode)), 11 SECONDS)
 	else
-		visible_message(span_notice("[src] fizzes ominously."))
+		visible_message(span_notice(LANG("obj.740520ea4001699d", list(src))))
 		addtimer(CALLBACK(src, PROC_REF(local_foam)), 11 SECONDS)
 
 /obj/machinery/nuclearbomb/beer/disarm_nuke(mob/disarmer)

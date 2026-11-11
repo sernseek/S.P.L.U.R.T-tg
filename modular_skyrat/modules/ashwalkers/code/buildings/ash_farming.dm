@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/simple_farm
 	///whether we limit the amount of plants you can have per turf
 	var/one_per_turf = TRUE
@@ -36,7 +37,7 @@
 		var/obj/structure/simple_farm/locate_farm = locate() in get_turf(atom_parent)
 
 		if(one_per_turf && locate_farm)
-			atom_parent.balloon_alert_to_viewers("cannot plant more seeds here!")
+			atom_parent.balloon_alert_to_viewers(LANG("datum.cd992e8329c511c0", null))
 			return
 
 		locate_farm = new(get_turf(atom_parent))
@@ -50,7 +51,7 @@
 		attacking_item.forceMove(locate_farm)
 		locate_farm.planted_seed = attacking_item
 		locate_farm.attached_atom = atom_parent
-		atom_parent.balloon_alert_to_viewers("seed has been planted!")
+		atom_parent.balloon_alert_to_viewers(LANG("datum.ff8ef9aa59fafe56", null))
 		locate_farm.update_appearance()
 		locate_farm.late_setup()
 
@@ -58,7 +59,7 @@
  * check_examine is meant to listen for the COMSIG_ATOM_EXAMINE signal, where it will put additional information in the examine
  */
 /datum/component/simple_farm/proc/check_examine(datum/source, mob/user, list/examine_list)
-	examine_list += span_notice("<br>You are able to plant seeds here!")
+	examine_list += span_notice(LANG("datum.381384000dc59ae7", null))
 
 /**
  * delete_farm is meant to be called when the parent of this component has been deleted-- thus deleting the ability to grow the simple farm
@@ -118,11 +119,11 @@
 
 /obj/structure/simple_farm/examine(mob/user)
 	. = ..()
-	. += span_notice("<br>[src] will be ready for harvest in [DisplayTimeText(COOLDOWN_TIMELEFT(src, harvest_timer))]")
+	. += span_notice(LANG("obj.80da4e79ea0ec820", list(src, DisplayTimeText(COOLDOWN_TIMELEFT(src, harvest_timer)))))
 	if(farm_level < SKILL_LEVEL_LEGENDARY)
-		. += span_notice("<br>You can use <b>worm fertilizer</b> to increase the level of the farm.")
+		. += span_notice(LANG("obj.bf570990ccfc1361", null))
 	if(stored_worms < 5)
-		. += span_notice("<br>You can use <b>worms</b> to increase the performance of the farm.")
+		. += span_notice(LANG("obj.4fce4ab256c78df4", null))
 
 /obj/structure/simple_farm/process(seconds_per_tick)
 	update_appearance()
@@ -150,7 +151,7 @@
 
 /obj/structure/simple_farm/attack_hand(mob/living/user, list/modifiers)
 	if(!COOLDOWN_FINISHED(src, harvest_timer))
-		balloon_alert(user, "plant not ready for harvest!")
+		balloon_alert(user, LANG("obj.789d9fb4fd49e550", null))
 		return
 
 	COOLDOWN_START(src, harvest_timer, harvest_cooldown)
@@ -163,7 +164,7 @@
 	//if its a shovel or knife, dismantle
 	if(attacking_item.tool_behaviour == TOOL_SHOVEL || attacking_item.tool_behaviour == TOOL_KNIFE)
 		var/turf/src_turf = get_turf(src)
-		src_turf.balloon_alert_to_viewers("the plant crumbles!")
+		src_turf.balloon_alert_to_viewers(LANG("obj.f0b57d5d082527d0", null))
 		Destroy()
 		return
 
@@ -182,14 +183,14 @@
 	else if(istype(attacking_item, /obj/item/stack/worm_fertilizer))
 		user.mind?.adjust_experience(/datum/skill/primitive, 5)
 		if(farm_level >= SKILL_LEVEL_LEGENDARY)
-			balloon_alert(user, "farm already max level!")
+			balloon_alert(user, LANG("obj.d6bcccafdcb97999", null))
 			return
 
 		var/obj/item/stack/worm_fertilizer/fertilizer = attacking_item
 		if(!fertilizer.use(1))
 			return
 
-		balloon_alert(user, "increased farm level")
+		balloon_alert(user, LANG("obj.1f45f02dcf14b4fa", null))
 		farm_level++
 		return
 
@@ -197,10 +198,10 @@
 	else if(istype(attacking_item, /obj/item/food/bait/worm))
 		user.mind?.adjust_experience(/datum/skill/primitive, 5)
 		if(stored_worms >= 5)
-			balloon_alert(user, "plant already full on worms!")
+			balloon_alert(user, LANG("obj.1b0e551977adcc78", null))
 			return
 
-		balloon_alert(user, "applied worm")
+		balloon_alert(user, LANG("obj.32e873a442226cf4", null))
 		qdel(attacking_item)
 		stored_worms++
 		return
@@ -246,7 +247,7 @@
 				add_atom_colour(color_matrix_were_rich, FIXED_COLOUR_PRIORITY)
 				bonus_potency += 20
 				harvest_cooldown -= 15 SECONDS
-				balloon_alert_to_viewers("[src] gains a golden glow!")
+				balloon_alert_to_viewers(LANG("obj.896609a454f0213b", list(src)))
 
 
 /**
@@ -284,7 +285,7 @@
 		if(prob(15) && length(planted_seed.mutatelist))
 			var/type = pick(planted_seed.mutatelist)
 			seed = new type
-			balloon_alert_to_viewers("something special drops!")
+			balloon_alert_to_viewers(LANG("obj.63205a5c652a8861", null))
 		else
 			// SPLURT EDIT START - fixes botany genes
 			/*

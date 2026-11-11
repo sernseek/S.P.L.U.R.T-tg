@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define ETHEREAL_CELL_DRAIN_TIME (3.5 SECONDS)
 #define ETHEREAL_CELL_POWER_DRAIN (0.75 * STANDARD_CELL_CHARGE)
 /// The factor by which we multiply drain to get how much we gain
@@ -195,9 +196,9 @@
 /obj/item/stock_parts/power_store/examine(mob/user)
 	. = ..()
 	if(corrupted)
-		. += span_danger("This [name] seems to be faulty!")
+		. += span_danger(LANG("obj.c96d8fcdf395ab7a", list(name)))
 	else if(!isnull(charge_light_type))
-		. += "The charge meter reads [CEILING(percent(), 0.1)]%." //so it doesn't say 0% charge when the overlay indicates it still has charge
+		. += LANG("obj.00f8f6f702faa55b", list(CEILING(percent(), 0.1))) //so it doesn't say 0% charge when the overlay indicates it still has charge
 
 /obj/item/stock_parts/power_store/proc/try_explode(max_charge = FALSE)
 	var/check_charge = charge
@@ -257,13 +258,13 @@
 	return TRUE
 
 /obj/item/stock_parts/power_store/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] is licking the electrodes of [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.8ab7a582b649b0e4", list(user, src, user.p_theyre()))))
 	do_sparks(2, TRUE, user)
 	var/eating_success = do_after(user, 5 SECONDS, src)
 	if(QDELETED(user))
 		return SHAME
 	if(!eating_success || QDELETED(src) || charge == 0)
-		user.visible_message(span_suicide("[user] chickens out!"))
+		user.visible_message(span_suicide(LANG("obj.700a662c5fd205f0", list(user))))
 		return SHAME
 	playsound(user, 'sound/effects/sparks/sparks1.ogg', charge / maxcharge)
 	var/damage = charge / (1 KILO JOULES)
@@ -272,7 +273,7 @@
 	charge = 0
 	update_appearance()
 	if(user.stat != DEAD)
-		to_chat(user, span_suicide("There's not enough charge in [src] to kill you!"))
+		to_chat(user, span_suicide(LANG("obj.64efa883a99a86e0", list(src))))
 		return SHAME
 	addtimer(CALLBACK(src, PROC_REF(gib_user), user, discharged_energy), 3 SECONDS)
 	return MANUAL_SUICIDE
@@ -307,16 +308,16 @@
 /// Handles letting an ethereal drain our charge into their stomach
 /obj/item/stock_parts/power_store/proc/ethereal_drain(mob/living/carbon/human/user, obj/item/organ/stomach/ethereal/used_stomach)
 	if(charge() <= 0)
-		balloon_alert(user, "out of charge!")
+		balloon_alert(user, LANG("obj.6428cbcddb15f126", null))
 		return
 
 	var/obj/item/stock_parts/power_store/stomach_cell = used_stomach.cell
 	used_stomach.drain_time = world.time + ETHEREAL_CELL_DRAIN_TIME
-	to_chat(user, span_notice("You begin clumsily channeling power from [src] into your body."))
+	to_chat(user, span_notice(LANG("obj.9119e821a2911589", list(src))))
 
 	while(do_after(user, ETHEREAL_CELL_DRAIN_TIME, target = src))
 		if(isnull(used_stomach) || (used_stomach != user.get_organ_slot(ORGAN_SLOT_STOMACH)))
-			balloon_alert(user, "stomach removed!?")
+			balloon_alert(user, LANG("obj.102b018fb6781e77", null))
 			return
 
 		var/our_charge = charge()
@@ -328,10 +329,10 @@
 		update_appearance(UPDATE_OVERLAYS)
 
 		if(stomach_cell.used_charge() <= 0)
-			balloon_alert(user, "your charge is full!")
+			balloon_alert(user, LANG("obj.5e4dbacc862cd204", null))
 			return
 		if(charge() <= 0)
-			balloon_alert(user, "out of charge!")
+			balloon_alert(user, LANG("obj.6428cbcddb15f126", null))
 			return
 
 /obj/item/stock_parts/power_store/blob_act(obj/structure/blob/B)

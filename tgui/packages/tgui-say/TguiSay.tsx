@@ -6,10 +6,30 @@ import { isEscape, KEY } from 'tgui-core/keys';
 import { type BooleanLike, classes } from 'tgui-core/react';
 
 import { type Channel, ChannelIterator } from './ChannelIterator';
+// ZH EDIT ADDITION - SAY_CHANNEL_PICKER
+import {
+  ChannelPicker,
+  channelPickerHeight,
+  pickableChannels,
+  pickableLanguages,
+  type SpeechOption,
+  type SpeechOptions,
+} from './ChannelPicker';
 import { ChatHistory } from './ChatHistory';
 import { LineLength, RADIO_PREFIXES, WindowSize } from './constants';
 import { getPrefix, windowClose, windowOpen, windowSet } from './helpers';
 import { byondMessages } from './timers';
+// ZH EDIT ADDITION START - TTS_EXPRESSION - Mood picker.
+import {
+  applyMood,
+  currentMood,
+  MoodPicker,
+  moodPickerHeight,
+} from './MoodPicker';
+
+/** Channels whose messages accept a custom say verb. */
+const MOOD_CHANNELS = ['Say', 'Radio', 'Whis'];
+// ZH EDIT ADDITION END
 
 type ByondOpen = {
   channel: Channel;
@@ -19,6 +39,7 @@ type ByondProps = {
   maxLength: number;
   lightMode: BooleanLike;
   scale: BooleanLike;
+  moodVerbs?: string[]; // ZH EDIT ADDITION - TTS_EXPRESSION
 };
 
 export function TguiSay() {
@@ -36,6 +57,25 @@ export function TguiSay() {
   const [maxLength, setMaxLength] = useState(1024);
   const [size, setSize] = useState(WindowSize.Small);
   const [value, setValue] = useState('');
+  // ZH EDIT ADDITION START - TTS_EXPRESSION
+  const [moodVerbs, setMoodVerbs] = useState<string[]>([]);
+  const [moodOpen, setMoodOpen] = useState(false);
+  // ZH EDIT ADDITION END
+  // ZH EDIT ADDITION START - SAY_CHANNEL_PICKER
+  const [speechOptions, setSpeechOptions] = useState<SpeechOptions>({
+    channels: [],
+    languages: [],
+  });
+  const [channelOpen, setChannelOpen] = useState(false);
+  const [language, setLanguageState] = useState<string | null>(null);
+  // Read by handlers subscribed once on mount, which would see a stale state value.
+  const languageRef = useRef<string | null>(null);
+  const pickerOpen = moodOpen || channelOpen;
+  const moodExtra =
+    (moodOpen && moodPickerHeight(moodVerbs)) ||
+    (channelOpen && channelPickerHeight(speechOptions)) ||
+    0;
+  // ZH EDIT ADDITION END
 
   const position = useRef([window.screenX, window.screenY]);
   const isDragging = useRef(false);
@@ -117,6 +157,8 @@ export function TguiSay() {
   }
 
   function handleClose(): void {
+    setMoodOpen(false); // ZH EDIT ADDITION - TTS_EXPRESSION
+    setChannelOpen(false); // ZH EDIT ADDITION - SAY_CHANNEL_PICKER
     innerRef.current?.blur();
     windowClose(scale.current);
 
@@ -135,7 +177,7 @@ export function TguiSay() {
       chatHistory.current.add(value);
       Byond.sendMessage('entry', {
         channel: iterator.current(),
-        entry: iterator.isSay() ? prefix + value : value,
+        entry: withLanguage(iterator.isSay() ? prefix + value : value), // ZH EDIT CHANGE - SAY_CHANNEL_PICKER - ORIGINAL: entry: iterator.isSay() ? prefix + value : value,
       });
     }
 
@@ -150,7 +192,9 @@ export function TguiSay() {
     if (!currentValue || !iterator.isVisible()) return;
 
     const prefix = currentPrefix.current ?? '';
-    const grunt = iterator.isSay() ? prefix + currentValue : currentValue;
+    const grunt = withLanguage(
+      iterator.isSay() ? prefix + currentValue : currentValue,
+    ); // ZH EDIT CHANGE - SAY_CHANNEL_PICKER - ORIGINAL: const grunt = iterator.isSay() ? prefix + currentValue : currentValue;
 
     messages.current.forceSayMsg(grunt, iterator.current());
     handleClose();
@@ -171,6 +215,11 @@ export function TguiSay() {
     iterator.next();
     setButtonContent(iterator.current());
     setCurrentPrefix(null);
+    // ZH EDIT ADDITION START - SAY_CHANNEL_PICKER - The pickers' buttons hide on channels
+    // like Me; an open picker would keep the window tall with nothing in it.
+    setMoodOpen(false);
+    setChannelOpen(false);
+    // ZH EDIT ADDITION END
     messages.current.channelIncrementMsg(iterator.isVisible());
   }
 
@@ -255,7 +304,81 @@ export function TguiSay() {
     setMaxLength(data.maxLength);
     setLightMode(!!data.lightMode);
     scale.current = !!data.scale;
+    setMoodVerbs(data.moodVerbs || []); // ZH EDIT ADDITION - TTS_EXPRESSION
   }
+
+  // ZH EDIT ADDITION START - SAY_CHANNEL_PICKER
+  function setLanguage(prefix: string | null): void {
+    languageRef.current = prefix;
+    setLanguageState(prefix);
+  }
+
+  /** Puts the picked language's prefix in front of a message sent on a speech channel. */
+  function withLanguage(entry: string): string {
+    const prefix = languageRef.current;
+    if (!prefix || !MOOD_CHANNELS.includes(channelIterator.current.current())) {
+      return entry;
+    }
+    return `${prefix} ${entry}`;
+  }
+
+  /** Prefix of the radio channel in use (`;` for common), or null when not on the radio. */
+  function currentRadio(): string | null {
+    if (channelIterator.current.current() === 'Radio') {
+      return ';';
+    }
+    return currentPrefix.current?.trim() || null;
+  }
+
+  function handleSpeechOptions(data: SpeechOptions): void {
+    setSpeechOptions(data);
+    const picked = languageRef.current;
+    if (picked && !data.languages.some((lang) => lang.prefix === picked)) {
+      setLanguage(null);
+    }
+  }
+
+  function handlePickChannel(prefix: string): void {
+    const iterator = channelIterator.current;
+    const key = `${prefix} ` as keyof typeof RADIO_PREFIXES;
+
+    if (prefix === currentRadio()) {
+      iterator.set('Say');
+      setCurrentPrefix(null);
+      setButtonContent(iterator.current());
+    } else if (prefix === ';') {
+      iterator.set('Radio');
+      setCurrentPrefix(null);
+      setButtonContent(iterator.current());
+    } else {
+      iterator.set('Say');
+      setCurrentPrefix(key);
+      setButtonContent(RADIO_PREFIXES[key]);
+      if (key === ':b ') {
+        Byond.sendMessage('thinking', { visible: false });
+      }
+    }
+    setChannelOpen(false);
+    innerRef.current?.focus();
+  }
+
+  function handlePickLanguage(option: SpeechOption): void {
+    const isCurrent = languageRef.current
+      ? option.prefix === languageRef.current
+      : !!option.selected;
+    setLanguage(isCurrent || option.selected ? null : option.prefix);
+    setChannelOpen(false);
+    innerRef.current?.focus();
+  }
+  // ZH EDIT ADDITION END
+
+  // ZH EDIT ADDITION START - TTS_EXPRESSION
+  function handleMoodPick(verb: string): void {
+    setValue(applyMood(value, verb, moodVerbs));
+    setMoodOpen(false);
+    innerRef.current?.focus();
+  }
+  // ZH EDIT ADDITION END
 
   function unloadChat(): void {
     setCurrentPrefix(null);
@@ -270,6 +393,7 @@ export function TguiSay() {
     Byond.subscribeTo('open', handleOpen);
     Byond.subscribeTo('save', handleSaveText);
     Byond.subscribeTo('close', handleClose);
+    Byond.subscribeTo('speechOptions', handleSpeechOptions); // ZH EDIT ADDITION - SAY_CHANNEL_PICKER
   }, []);
 
   /** Value has changed, we need to check if the size of the window is ok */
@@ -286,28 +410,58 @@ export function TguiSay() {
     }
 
     if (size !== newSize) {
-      windowSet(newSize, scale.current);
+      windowSet(newSize + moodExtra, scale.current); // ZH EDIT CHANGE - TTS_EXPRESSION - ORIGINAL: windowSet(newSize, scale.current);
       setSize(newSize);
     }
   }, [value]);
+
+  // ZH EDIT ADDITION START - TTS_EXPRESSION - Make room for the mood picker.
+  useEffect(() => {
+    windowSet(size + moodExtra, scale.current);
+  }, [moodOpen, channelOpen]); // ZH EDIT CHANGE - SAY_CHANNEL_PICKER - ORIGINAL: }, [moodOpen]);
+  // ZH EDIT ADDITION END
 
   const theme =
     (lightMode && 'lightMode') ||
     (currentPrefix.current && RADIO_PREFIXES[currentPrefix.current]) ||
     channelIterator.current.current();
 
+  // ZH EDIT ADDITION START - TTS_EXPRESSION
+  const showMood =
+    moodVerbs.length > 0 &&
+    MOOD_CHANNELS.includes(channelIterator.current.current());
+  // ZH EDIT ADDITION END
+  // ZH EDIT ADDITION START - SAY_CHANNEL_PICKER
+  const showChannel =
+    (pickableChannels(speechOptions).length > 0 ||
+      pickableLanguages(speechOptions).length > 0) &&
+    MOOD_CHANNELS.includes(channelIterator.current.current());
+  const languageName = speechOptions.languages.find(
+    (lang) => lang.prefix === language,
+  )?.name;
+  // ZH EDIT ADDITION END
+
   return (
     <>
       <div
         className={`window window-${theme} window-${size}`}
         onMouseDown={dragStartHandler}
+        style={pickerOpen ? { height: `${size + moodExtra}px` } : undefined} // ZH EDIT ADDITION - TTS_EXPRESSION, SAY_CHANNEL_PICKER
       >
         {!lightMode && <div className={`shine shine-${theme}`} />}
       </div>
       <div
-        className={classes(['content', lightMode && 'content-lightMode'])}
+        className={classes([
+          'content',
+          lightMode && 'content-lightMode',
+          showMood !== showChannel && 'content-mood', // ZH EDIT ADDITION - TTS_EXPRESSION, SAY_CHANNEL_PICKER
+          showMood && showChannel && 'content-mood-2', // ZH EDIT ADDITION - SAY_CHANNEL_PICKER
+        ])}
         style={{
           zoom: scale.current ? '' : `${100 / window.devicePixelRatio}%`,
+          // ZH EDIT ADDITION START - TTS_EXPRESSION
+          ...(pickerOpen && { bottom: 'auto', height: `${size - 4}px` }),
+          // ZH EDIT ADDITION END
         }}
       >
         <button
@@ -332,7 +486,73 @@ export function TguiSay() {
           spellCheck={false}
           value={value}
         />
+        {/* ZH EDIT ADDITION START - TTS_EXPRESSION */}
+        {showMood && (
+          <button
+            className={classes([
+              'button',
+              `button-${theme}`,
+              currentMood(value, moodVerbs) && 'mood-verb-selected',
+            ])}
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => {
+              setMoodOpen(!moodOpen);
+              setChannelOpen(false); // ZH EDIT ADDITION - SAY_CHANNEL_PICKER
+            }}
+            title={currentMood(value, moodVerbs) || undefined}
+            type="button"
+          >
+            情
+          </button>
+        )}
+        {/* ZH EDIT ADDITION END */}
+        {/* ZH EDIT ADDITION START - SAY_CHANNEL_PICKER */}
+        {showChannel && (
+          <button
+            className={classes([
+              'button',
+              `button-${theme}`,
+              !!language && 'mood-verb-selected',
+            ])}
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => {
+              setChannelOpen(!channelOpen);
+              setMoodOpen(false);
+            }}
+            title={languageName || '选择无线电频道或语言'}
+            type="button"
+          >
+            频
+          </button>
+        )}
+        {/* ZH EDIT ADDITION END */}
       </div>
+      {/* ZH EDIT ADDITION START - TTS_EXPRESSION */}
+      {moodOpen && showMood && (
+        <MoodPicker
+          verbs={moodVerbs}
+          selected={currentMood(value, moodVerbs)}
+          theme={theme}
+          light={lightMode}
+          top={size}
+          onPick={handleMoodPick}
+        />
+      )}
+      {/* ZH EDIT ADDITION END */}
+      {/* ZH EDIT ADDITION START - SAY_CHANNEL_PICKER */}
+      {channelOpen && showChannel && (
+        <ChannelPicker
+          options={speechOptions}
+          channel={currentRadio()}
+          language={language}
+          theme={theme}
+          light={lightMode}
+          top={size}
+          onPickChannel={handlePickChannel}
+          onPickLanguage={handlePickLanguage}
+        />
+      )}
+      {/* ZH EDIT ADDITION END */}
     </>
   );
 }

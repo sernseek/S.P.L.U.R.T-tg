@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * # Integrated Circuit Component
  *
@@ -115,7 +116,7 @@
 /obj/item/circuit_component/examine(mob/user)
 	. = ..()
 	if(circuit_flags & CIRCUIT_FLAG_REFUSE_MODULE)
-		. += span_notice("It's incompatible with module components.")
+		. += span_notice(LANG("obj.85e2ca09948d8892", null))
 
 /// updates the ui alerts in the given component. new_flag adds flags, remove_flag removes them
 /obj/item/circuit_component/proc/update_ui_alerts(new_flag, remove_flag)

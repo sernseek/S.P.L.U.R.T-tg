@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * # Emote
  *
@@ -114,6 +115,8 @@
 		else
 			msg = params
 
+	// ZH EDIT ADDITION - i18n: 留一份**代词替换前**的原串，反查要用它（见下方 lang_reverse_text）
+	var/pre_pronoun_msg = msg
 	msg = replace_pronoun(user, msg)
 	if(!msg)
 		return
@@ -124,8 +127,21 @@
 	if(user.client)
 		user.log_message(msg, LOG_EMOTE)
 
+	// ZH EDIT ADDITION START - I18N - emote 消息在下游拼成「[user] [msg]」整句动态、无法命中目录；
+	// 在日志之后（日志保英文）对 msg 整串反查（含单词条目；miss 原样返回，locale==en 时 no-op）。
+	//
+	// **必须用代词替换前的原串查**：目录键是源码里的 "their" 形态（"stretches their arms."），而
+	// replace_pronoun 已按 mob 代词把它改成了 its/his/her，拿替换后的串去查必然 miss。这正是
+	// 「clears its throat.」「twitches its ears!」「flaps its wings ANGRILY!」这批含代词的表情
+	// 整句漏翻、其余表情却正常的原因。命中就用译文（中文无需再做代词替换）；未命中再退回按
+	// 替换后的串查一次，兼容那些译文本身带代词占位的条目。
+	var/localized_msg = lang_reverse_text(pre_pronoun_msg)
+	msg = (localized_msg != pre_pronoun_msg) ? localized_msg : lang_reverse_text(msg)
+	// ZH EDIT ADDITION END
+
 	var/tmp_sound = get_sound(user)
-	if(tmp_sound && should_play_sound(user, intentional))
+	var/list/tts_voicing = tts_emote_voice(user, key) // ZH EDIT ADDITION - TTS_EXPRESSION - Humanoids perform vocal emotes in their own TTS voice.
+	if((tmp_sound || tts_voicing) && should_play_sound(user, intentional)) // ZH EDIT CHANGE - TTS_EXPRESSION - ORIGINAL: if(tmp_sound && should_play_sound(user, intentional))
 		if(intentional)
 			if(!TIMER_COOLDOWN_FINISHED(user, MANUAL_GENERAL_EMOTE_AUDIO_COOLDOWN) || !TIMER_COOLDOWN_FINISHED(user, MANUAL_SPECIFIC_EMOTE_AUDIO_COOLDOWN(type)) || !TIMER_COOLDOWN_FINISHED(user, FORCED_GENERAL_EMOTE_AUDIO_COOLDOWN) || !TIMER_COOLDOWN_FINISHED(user, FORCED_SPECIFIC_EMOTE_AUDIO_COOLDOWN(type)))
 				return FALSE
@@ -142,7 +158,9 @@
 			frequency = rand(MIN_EMOTE_PITCH, MAX_EMOTE_PITCH) * (1 + sqrt(abs(user.pitch)) * sign(user.pitch) * EMOTE_TTS_PITCH_MULTIPLIER)
 		else if(vary)
 			frequency = rand(MIN_EMOTE_PITCH, MAX_EMOTE_PITCH)
-		if(use_sound_tokens && sound_wall_ignore)
+		if(tts_voicing) // ZH EDIT ADDITION - TTS_EXPRESSION
+			tts_play_emote(user, tts_voicing, tmp_sound, sound_volume, frequency) // ZH EDIT ADDITION - TTS_EXPRESSION
+		else if(use_sound_tokens && sound_wall_ignore) // ZH EDIT CHANGE - TTS_EXPRESSION - ORIGINAL: if(use_sound_tokens && sound_wall_ignore)
 			playsoundtoken(source = user, soundin = tmp_sound, range = SOUND_RANGE, volume = sound_volume)
 		else
 			playsound(source = user,soundin = tmp_sound,vol = sound_volume, vary = FALSE, ignore_walls = sound_wall_ignore, frequency = frequency, volume_preference = /datum/preference/numeric/volume/sound_emote) // BUBBER EDIT CHANGE - Add volume pref - ORIGINAL: playsound(source = user,soundin = tmp_sound,vol = 50, vary = FALSE, ignore_walls = sound_wall_ignore, frequency = frequency)
@@ -153,6 +171,15 @@
 	var/is_audible = running_emote_type & EMOTE_AUDIBLE
 	var/additional_message_flags = get_message_flags(intentional)
 	var/space = should_have_space_before_emote(html_decode(msg)[1]) ? " " : "" // SKYRAT EDIT ADDITION
+	// ZH EDIT ADDITION START - I18N - 下面每处 `[user]` 都是 BYOND 渲染 atom：给的是**英文名**，
+	// 而且非专名还会自动补一个 "The "。走显示边界拿译名（mob 版会把角色名/宠物挂牌这类**身份名**排除在外，
+	// 只翻类型标签）；未命中或英文服时保持 `"[user]"` 原样，冠词与英文输出逐字节不变。
+	var/user_display = "[user]"
+	if(GLOB.i18n_server_locale != DEFAULT_UI_LOCALE)
+		var/localized_user_name = user.lang_localize_name_for_display(user.name)
+		if(localized_user_name != user.name)
+			user_display = localized_user_name
+	// ZH EDIT ADDITION END
 
 	// Emote doesn't get printed to chat, runechat only
 	if(running_emote_type & EMOTE_RUNECHAT)
@@ -175,16 +202,16 @@
 					runechat_flags = EMOTE_MESSAGE,
 				)
 			else if(is_important)
-				to_chat(viewer, span_emote("<b>[user]</b> [msg]"))
+				to_chat(viewer, span_emote("<b>[user_display]</b> [msg]"))
 			else if(is_audible && is_visual)
 				viewer.show_message(
-					span_emote("<b>[user]</b> [msg]"), MSG_AUDIBLE,
-					span_emote("You see how <b>[user]</b> [msg]"), MSG_VISUAL,
+					span_emote("<b>[user_display]</b> [msg]"), MSG_AUDIBLE,
+					span_emote("You see how <b>[user_display]</b> [msg]"), MSG_VISUAL,
 				)
 			else if(is_audible)
-				viewer.show_message(span_emote("<b>[user]</b> [msg]"), MSG_AUDIBLE)
+				viewer.show_message(span_emote("<b>[user_display]</b> [msg]"), MSG_AUDIBLE)
 			else if(is_visual)
-				viewer.show_message(span_emote("<b>[user]</b> [msg]"), MSG_VISUAL)
+				viewer.show_message(span_emote("<b>[user_display]</b> [msg]"), MSG_VISUAL)
 		return // Early exit so no dchat message
 
 	// The emote has some important information, and should always be shown to the user
@@ -194,7 +221,7 @@
 			if(!pref_check_emote(viewer))
 				continue
 			// SKYRAT EDIT END
-			to_chat(viewer, span_emote("<b>[user]</b> [msg]"))
+			to_chat(viewer, span_emote("<b>[user_display]</b> [msg]"))
 			if(user.runechat_prefs_check(viewer, EMOTE_MESSAGE))
 				viewer.create_chat_message(
 					speaker = user,
@@ -206,7 +233,7 @@
 	else if(is_visual && is_audible)
 		user.audible_message(
 			message = msg,
-			deaf_message = span_emote("You see how <b>[user]</b> [msg]"),
+			deaf_message = span_emote(LANG("datum.925c6790ca04918f", list(user, msg))),
 			self_message = msg,
 			audible_message_flags = EMOTE_MESSAGE|ALWAYS_SHOW_SELF_MESSAGE|additional_message_flags,
 			separation = space, // SKYRAT EDIT ADDITION
@@ -244,7 +271,7 @@
 		else if(is_visual && is_audible)
 			hologram.audible_message(
 				message = msg,
-				deaf_message = "<span class='emote'>You see how <b>[user]</b> [msg]</span>",
+				deaf_message = LANG("datum.3b266acd31b1d21f", list(user, msg)),
 				self_message = msg,
 				audible_message_flags = EMOTE_MESSAGE|ALWAYS_SHOW_SELF_MESSAGE,
 				separation = space,
@@ -269,7 +296,7 @@
 	// SKYRAT EDIT -- END
 
 	if(!isnull(user.client))
-		var/dchatmsg = "<b>[user]</b>[space][msg]" // SKYRAT EDIT - Better emotes - Original: var/dchatmsg = "<b>[user]</b> [msg]"
+		var/dchatmsg = "<b>[user_display]</b>[space][msg]" // SKYRAT EDIT - Better emotes - Original: var/dchatmsg = "<b>[user]</b> [msg]"
 		for(var/mob/ghost as anything in GLOB.dead_mob_list - viewers(get_turf(user)))
 			if(isnull(ghost.client) || isnewplayer(ghost))
 				continue
@@ -305,7 +332,7 @@
 		var/datum/emote/default_emote = /datum/emote
 		if(cooldown > initial(default_emote.cooldown)) // only worry about longer-than-normal emotes
 			// Original: to_chat(user, span_danger("You must wait another [DisplayTimeText(user.emotes_used[src] - world.time + cooldown)] before using that emote."))
-			user.balloon_alert(user, "on cooldown!") // BUBBER EDIT CHANGE
+			user.balloon_alert(user, LANG("datum.d4ae5d4dded19efe", null)) // BUBBER EDIT CHANGE
 		return FALSE
 	if(!user.emotes_used)
 		user.emotes_used = list()
@@ -436,28 +463,28 @@
 	if(status_check && !is_type_in_typecache(user, mob_type_ignore_stat_typecache))
 		if(IS_UNCONSCIOUS(user) && !(can_use_flags & EMOTE_CANUSE_UNCONSCIOUS))
 			if(intentional)
-				to_chat(user, span_warning("You cannot [key] while unconscious!"))
+				to_chat(user, span_warning(LANG("datum.b0df7fb7cfe537a7", list(key))))
 			return FALSE
 		if(HAS_TRAIT(user, TRAIT_HANDS_BLOCKED) && (can_use_flags & EMOTE_CANUSE_REQUIRE_HANDS))
 			if(intentional)
-				to_chat(user, span_warning("You cannot use your hands to [key] right now!"))
+				to_chat(user, span_warning(LANG("datum.a6c43807910b0261", list(key))))
 			return FALSE
 
 		switch(user.stat)
 			if(SOFT_CRIT)
 				if(!(can_use_flags & EMOTE_CANUSE_SOFTCRIT))
 					if(intentional)
-						to_chat(user, span_warning("You cannot [key] while in a critical condition!"))
+						to_chat(user, span_warning(LANG("datum.060263017f74632c", list(key))))
 					return FALSE
 			if(HARD_CRIT)
 				if(!(can_use_flags & EMOTE_CANUSE_HARDCRIT))
 					if(intentional)
-						to_chat(user, span_warning("You cannot [key] while in a critical condition!"))
+						to_chat(user, span_warning(LANG("datum.060263017f74632c", list(key))))
 					return FALSE
 			if(DEAD)
 				if(!(can_use_flags & EMOTE_CANUSE_DEAD))
 					if(intentional)
-						to_chat(user, span_warning("You cannot [key] while dead!"))
+						to_chat(user, span_warning(LANG("datum.9cfbc2db1e9bbc48", list(key))))
 					return FALSE
 
 //splurt REMOVAL

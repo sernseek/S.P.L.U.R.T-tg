@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 Functional Toggle lets you convert stuff to functional (exo suit), with armor, cold and heat protection values, to non functional (neck), with all those set to zero.
 It allows people to use a jacket over a piece or armor and only sacrifice the minimal amount of functionality in the pursuit of design.
@@ -17,7 +18,7 @@ Use CTRL + SHIFT + LEFT CLICK to turn them on and off.
 /obj/item/clothing/suit/examine(mob/user)
 	. = ..()
 	if(!(HAS_TRAIT(src, TRAIT_NODROP)))
-		. += span_notice("Ctrl + Shift + Left Click to swap between functional (suit) and non-functional (neck) mode, to allow for things such as wearing a (nonfunctional) jacket over a piece of armor for the visual effect.")
+		. += span_notice(LANG("obj.aa0df15762b176e9", null))
 	else
 		only_functional = TRUE
 
@@ -31,14 +32,14 @@ Use CTRL + SHIFT + LEFT CLICK to turn them on and off.
 	if(!iscarbon(user))
 		return NONE
 	if(only_functional)
-		to_chat(user, span_danger("[src] does not have a non-functional mode!"))
+		to_chat(user, span_danger(LANG("obj.58dc2e9d16e636bf", list(src))))
 		return NONE
 	var/mob/living/carbon/char = user
 	if((char.get_item_by_slot(ITEM_SLOT_NECK) == src) || (char.get_item_by_slot(ITEM_SLOT_OCLOTHING) == src))
-		to_chat(user, span_warning("You can't adjust [src] while wearing it!"))
+		to_chat(user, span_warning(LANG("obj.3374cd4e2a15cf3c", list(src))))
 		return CLICK_ACTION_BLOCKING
 	if(!user.is_holding(src))
-		to_chat(user, span_warning("You must be holding [src] in order to adjust it!"))
+		to_chat(user, span_warning(LANG("obj.d48ac3903f5f0214", list(src))))
 		return CLICK_ACTION_BLOCKING
 	if(slot_flags & ITEM_SLOT_OCLOTHING)
 		functional_suit_values = list(
@@ -53,7 +54,7 @@ Use CTRL + SHIFT + LEFT CLICK to turn them on and off.
 		heat_protection = null
 		slowdown = 0
 		set_armor(/datum/armor/none)
-		user.visible_message(span_notice("[user] adjusts [user.p_their()] [src] for non-functional use."), span_notice("You adjust your [src] for non-functional use."))
+		user.visible_message(span_notice(LANG("obj.b7d2a7d2f2bfec8f", list(user, user.p_their(), src))), span_notice(LANG("obj.c5df9463890fc5e2", list(src))))
 	else if(!isnull(functional_suit_values))
 		slot_flags = functional_suit_values[PREV_SLOT_FLAGS]
 		cold_protection = functional_suit_values[PREV_COLD_PROTECTION]
@@ -61,7 +62,7 @@ Use CTRL + SHIFT + LEFT CLICK to turn them on and off.
 		slowdown = functional_suit_values[PREV_SLOWDOWN]
 		set_armor(functional_suit_values[PREV_ARMOR_DATUM])
 		functional_suit_values = null
-		user.visible_message(span_notice("[user] adjusts [user.p_their()] [src] for functional use."), span_notice("You adjust your [src] for functional use."))
+		user.visible_message(span_notice(LANG("obj.67e852fe1c3332fa", list(user, user.p_their(), src))), span_notice(LANG("obj.b064f37c5b49a60f", list(src))))
 	return CLICK_ACTION_SUCCESS
 
 #undef PREV_SLOT_FLAGS

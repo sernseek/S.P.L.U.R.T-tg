@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Use this file to add UPGRADES to borgs, the standard items will go in the modular robot_items.dm
 
 /*
@@ -260,22 +261,22 @@
 	if(!istype(mob))
 		return ITEM_INTERACT_BLOCKING
 	if(HAS_TRAIT(interacting_with, TRAIT_AFFECTION_AVERSION)) // Checks for Affection Aversion trait
-		to_chat(user, span_warning("ERROR: [interacting_with] is on the Do Not Lick registry!"))
+		to_chat(user, span_warning(LANG("obj.d3e97a9e657f2bdf", list(interacting_with))))
 		return ITEM_INTERACT_BLOCKING
 	if(check_zone(borg.zone_selected) == "head")
-		borg.visible_message(span_warning("\the [borg] affectionally licks \the [mob]'s face!"), span_notice("You affectionally lick \the [mob]'s face!"))
+		borg.visible_message(span_warning(LANG("obj.22e854db74824fe7", list(borg, mob))), span_notice(LANG("obj.07757fa27ae5c807", list(mob))))
 	else
-		borg.visible_message(span_warning("\the [borg] affectionally licks \the [mob]!"), span_notice("You affectionally lick \the [mob]!"))
+		borg.visible_message(span_warning(LANG("obj.2494f9fd4d69745d", list(borg, mob))), span_notice(LANG("obj.2d2621f96ecbc845", list(mob))))
 	playsound(borg, 'sound/effects/blob/attackblob.ogg', 50, 1)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/quadborg_nose/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(HAS_TRAIT(interacting_with, TRAIT_AFFECTION_AVERSION)) // Checks for Affection Aversion trait
-		to_chat(user, span_warning("ERROR: [interacting_with] is on the No Nosing registry!"))
+		to_chat(user, span_warning(LANG("obj.6f4e619cb0499679", list(interacting_with))))
 		return ITEM_INTERACT_BLOCKING
 
 	do_attack_animation(interacting_with, null, src)
-	user.visible_message(span_notice("[user] [pick("nuzzles", "pushes", "boops")] \the [interacting_with.name] with their nose!"))
+	user.visible_message(span_notice(LANG("obj.a4ccf845338f5b03", list(user, pick("nuzzles", "pushes", "boops"), interacting_with.name))))
 	return ITEM_INTERACT_SUCCESS
 
 /// The Shrinkening
@@ -285,11 +286,11 @@
 // Added checks for borg models who come from the Zoolander Center for Borgs Who Can't Upgrade Good
 /obj/item/borg/upgrade/expand/action(mob/living/silicon/robot/borg, mob/living/user = usr)
 	if(TRAIT_R_EXPANDER_BLOCKED in borg.model.model_features)
-		to_chat(usr, span_warning("This unit is unable to equip an expand module!"))
+		to_chat(usr, span_warning(LANG("obj.396e90828d9baffd", null)))
 		return FALSE
 
 	if(borg.model.type == /obj/item/robot_model)
-		to_chat(usr, span_warning("This unit is still in factory default configuration!"))
+		to_chat(usr, span_warning(LANG("obj.90bae6cefd102396", null)))
 		return FALSE
 
 	return ..()
@@ -309,15 +310,15 @@
 		return FALSE
 
 	if(borg.model.type == /obj/item/robot_model)
-		to_chat(usr, span_warning("This unit is still in factory default configuration!"))
+		to_chat(usr, span_warning(LANG("obj.90bae6cefd102396", null)))
 		return FALSE
 
 	if(borg.hasShrunk)
-		to_chat(usr, span_warning("This unit already has a shrink module installed!"))
+		to_chat(usr, span_warning(LANG("obj.cd8c9ce8be7848e7", null)))
 		return FALSE
 
 	if(TRAIT_R_SMALL in borg.model.model_features)
-		to_chat(usr, span_warning("This unit's chassis cannot be shrunk any further."))
+		to_chat(usr, span_warning(LANG("obj.81a5b808764cd3a6", null)))
 		return FALSE
 
 	ADD_TRAIT(borg, TRAIT_NO_TRANSFORM, REF(src))

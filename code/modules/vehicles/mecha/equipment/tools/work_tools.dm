@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 //Hydraulic clamp, Kill clamp, Extinguisher, RCD, Cable layer.
 
@@ -57,9 +58,9 @@
 				if(M.ammo_resupply(box, source, TRUE))
 					return ..()
 		if(have_ammo)
-			to_chat(source, "No further supplies can be provided to [M].")
+			to_chat(source, LANG("obj.d220eddf4e2e4e04", list(M)))
 		else
-			to_chat(source, "No providable supplies found in cargo hold")
+			to_chat(source, LANG("obj.3c29a20c99cba464", null))
 		return
 
 	if(istype(target, /obj/machinery/door/firedoor) || istype(target, /obj/machinery/door/airlock))
@@ -77,7 +78,7 @@
 			to_chat(source, "[icon2html(src, source)][span_warning("Not enough room in cargo compartment!")]")
 			return
 		playsound(chassis, clampsound, 50, FALSE, -6)
-		chassis.visible_message(span_notice("[chassis] lifts [target] and starts to load it into cargo compartment."))
+		chassis.visible_message(span_notice(LANG("obj.a5dc4d5ef4b36349", list(chassis, target))))
 		clamptarget.set_anchored(TRUE)
 		if(!do_after_cooldown(target, source, flags = MECH_DO_AFTER_DIR_CHANGE_FLAG|MECH_DO_AFTER_ADJACENCY_FLAG))
 			clamptarget.set_anchored(FALSE)
@@ -100,12 +101,12 @@
 	if(!source.combat_mode)
 		step_away(victim, chassis)
 		if(killer_clamp)
-			target.visible_message(span_danger("[chassis] tosses [target] like a piece of paper!"), \
-				span_userdanger("[chassis] tosses you like a piece of paper!"))
+			target.visible_message(span_danger(LANG("obj.c86e9eac7ace9e41", list(chassis, target))), \
+				span_userdanger(LANG("obj.bd3563f35824c67a", list(chassis))))
 		else
 			to_chat(source, "[icon2html(src, source)][span_notice("You push [target] out of the way.")]")
-			chassis.visible_message(span_notice("[chassis] pushes [target] out of the way."), \
-			span_notice("[chassis] pushes you aside."))
+			chassis.visible_message(span_notice(LANG("obj.c106d8a61426eca0", list(chassis, target))), \
+			span_notice(LANG("obj.c8391f89df4142eb", list(chassis))))
 		return ..()
 
 	if(victim.check_block(chassis, clamp_damage, name, attack_type = OVERWHELMING_ATTACK))
@@ -124,14 +125,14 @@
 			torn_off = TRUE
 		if(torn_off)
 			playsound(src, get_dismember_sound(), 80, TRUE)
-			carbon_victim.visible_message(span_danger("[chassis] rips [carbon_victim]'s arms off!"), \
-						span_userdanger("[chassis] rips your arms off!"))
+			carbon_victim.visible_message(span_danger(LANG("obj.b932339ad82960fa", list(chassis, carbon_victim))), \
+						span_userdanger(LANG("obj.8ad9c8f315ee83d0", list(chassis))))
 			log_combat(source, carbon_victim, "removed both arms with a real clamp,", "[name]", "(COMBAT MODE: [uppertext(source.combat_mode)] (DAMTYPE: [uppertext(damtype)])")
 			return ..()
 	var/armor_check = clamp(victim.run_armor_check(null, MELEE) / 3, 0, 100) //our target only benefits from a third of their armor. Because it's a huge ass clamp
-	victim.visible_message(span_danger("[chassis] squeezes [victim]!"), \
-						span_userdanger("[chassis] squeezes you!"),\
-						span_hear("You hear something crack."))
+	victim.visible_message(span_danger(LANG("obj.341972139a23fa19", list(chassis, victim))), \
+						span_userdanger(LANG("obj.a8ad6d4c43d1ea19", list(chassis))),\
+						span_hear(LANG("obj.79fb0a974c8bb793", null)))
 	log_combat(source, victim, "attacked", "[name]", "(Combat mode: [source.combat_mode ? "On" : "Off"]) (DAMTYPE: [uppertext(damtype)])")
 	var/final_damage = isalien(victim) ? clamp_damage * 3 : clamp_damage
 	chassis.do_attack_animation(victim)
@@ -198,10 +199,10 @@
 	var/turf/in_front = get_step(chassis, chassis.dir)
 	var/obj/structure/reagent_dispensers/watertank/refill_source = locate(/obj/structure/reagent_dispensers/watertank) in in_front
 	if(!refill_source)
-		to_chat(user, span_notice("Refill failed. No compatible tank found."))
+		to_chat(user, span_notice(LANG("obj.8109a51946a6e016", null)))
 		return
 	if(!refill_source.reagents?.total_volume)
-		to_chat(user, span_notice("Refill failed. Source tank empty."))
+		to_chat(user, span_notice(LANG("obj.1d1dc3249769d420", null)))
 		return
 
 	refill_source.reagents.trans_to(src, reagents.maximum_volume)
@@ -305,7 +306,7 @@
 	if (!(target in view(RCD_RANGE, get_turf(chassis))))
 		return
 	if(get_dist(chassis, target) > RCD_RANGE)
-		balloon_alert(source, "out of range!")
+		balloon_alert(source, LANG("obj.2201997fe1ea08ad", null))
 		return
 	initial_location = chassis.loc
 
@@ -337,20 +338,20 @@
 
 /obj/item/mecha_parts/mecha_equipment/ripleyupgrade/can_attach(obj/vehicle/sealed/mecha/ripley/mecha, attach_right = FALSE, mob/user)
 	if(mecha.type != /obj/vehicle/sealed/mecha/ripley)
-		to_chat(user, span_warning("This conversion kit can only be applied to APLU MK-I models."))
+		to_chat(user, span_warning(LANG("obj.5614c0bba54af635", null)))
 		return FALSE
 	var/obj/vehicle/sealed/mecha/ripley/workmech = mecha
 	if(LAZYLEN(workmech.cargo_hold))
-		to_chat(user, span_warning("[mecha]'s cargo hold must be empty before this conversion kit can be applied."))
+		to_chat(user, span_warning(LANG("obj.a9bf12d5cbdefafc", list(mecha))))
 		return FALSE
 	if(!(mecha.mecha_flags & PANEL_OPEN)) //non-removable upgrade, so lets make sure the pilot or owner has their say.
-		to_chat(user, span_warning("[mecha] panel must be open in order to allow this conversion kit."))
+		to_chat(user, span_warning(LANG("obj.ae616ae097b179d0", list(mecha))))
 		return FALSE
 	if(LAZYLEN(mecha.occupants)) //We're actually making a new mech and swapping things over, it might get weird if players are involved
-		to_chat(user, span_warning("[mecha] must be unoccupied before this conversion kit can be applied."))
+		to_chat(user, span_warning(LANG("obj.44a07f536b2e4dc0", list(mecha))))
 		return FALSE
 	if(!mecha.cell) //Turns out things break if the cell is missing
-		to_chat(user, span_warning("The conversion process requires a cell installed."))
+		to_chat(user, span_warning(LANG("obj.eb7e06b811113241", null)))
 		return FALSE
 	return TRUE
 
@@ -409,6 +410,6 @@
 
 /obj/item/mecha_parts/mecha_equipment/ripleyupgrade/paddy/can_attach(obj/vehicle/sealed/mecha/ripley/mecha, attach_right = FALSE, mob/user)
 	if(mecha.equip_by_category[MECHA_L_ARM] || mecha.equip_by_category[MECHA_R_ARM]) //Paddys can't use RIPLEY-type equipment
-		to_chat(user, span_warning("This kit cannot be applied with hardpoint equipment attached."))
+		to_chat(user, span_warning(LANG("obj.c59448cf5d10c99a", null)))
 		return FALSE
 	return ..()

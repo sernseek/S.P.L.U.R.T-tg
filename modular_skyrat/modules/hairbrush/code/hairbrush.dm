@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Hairbrushes
 
 /obj/item/hairbrush
@@ -13,7 +14,7 @@
 
 /obj/item/hairbrush/attack(mob/target, mob/user)
 	if(target.stat == DEAD)
-		to_chat(usr, span_warning("There isn't much point brushing someone who can't appreciate it!"))
+		to_chat(usr, span_warning(LANG("obj.227e6d840edff6e2", null)))
 		return
 	brush(target, user)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -26,33 +27,33 @@
 
 		// Don't brush if you can't reach their head or cancel the action
 		if(!head)
-			to_chat(user, span_warning("[human_target] has no head!"))
+			to_chat(user, span_warning(LANG("obj.14898dbc2bd48c2f", list(human_target))))
 			return
 		if(human_target.is_mouth_covered(ITEM_SLOT_HEAD))
-			to_chat(user, span_warning("You can't brush [human_target]'s hair while [human_target.p_their()] head is covered!"))
+			to_chat(user, span_warning(LANG("obj.4d58e6cb106da067", list(human_target, human_target.p_their()))))
 			return
 		if(!do_after(user, brush_speed, human_target))
 			return
 
 		// Do 1 brute to their head if they're bald. Should've been more careful.
 		if(human_target.hairstyle == "Bald" || human_target.hairstyle == "Skinhead" && is_species(human_target, /datum/species/human)) //It can be assumed most anthros have hair on them!
-			human_target.visible_message(span_warning("[usr] scrapes the bristles uncomfortably over [human_target]'s scalp."), span_warning("You scrape the bristles uncomfortably over [human_target]'s scalp."))
+			human_target.visible_message(span_warning(LANG("obj.cc2f542f32643ad9", list(usr, human_target))), span_warning(LANG("obj.c2c51632c0ba4e2c", list(human_target))))
 			head.receive_damage(1)
 			return
 
 		// Brush their hair
 		if(human_target == user)
-			human_target.visible_message(span_notice("[usr] brushes [usr.p_their()] hair!"), span_notice("You brush your hair."))
+			human_target.visible_message(span_notice(LANG("obj.2575757e60bca3ff", list(usr, usr.p_their()))), span_notice(LANG("obj.e476b3273abab935", null)))
 			human_target.add_mood_event("brushed", /datum/mood_event/brushed/self)
 		else
-			user.visible_message(span_notice("[usr] brushes [human_target]'s hair!"), span_notice("You brush [human_target]'s hair."), ignored_mobs=list(human_target))
+			user.visible_message(span_notice(LANG("obj.5bffa0b271087da9", list(usr, human_target))), span_notice(LANG("obj.208e63528927ebf5", list(human_target))), ignored_mobs=list(human_target))
 			human_target.show_message(span_notice("[usr] brushes your hair!"), MSG_VISUAL)
 			human_target.add_mood_event("brushed", /datum/mood_event/brushed, user)
 
 	else if(istype(target, /mob/living/basic/pet))
 		if(!do_after(usr, brush_speed, target))
 			return
-		to_chat(user, span_notice("[target] closes [target.p_their()] eyes as you brush [target.p_them()]!"))
+		to_chat(user, span_notice(LANG("obj.35c16eebc711d357", list(target, target.p_their(), target.p_them()))))
 		var/mob/living/living_user = user
 		if(istype(living_user))
 			living_user.add_mood_event("brushed", /datum/mood_event/brushed/pet, target)

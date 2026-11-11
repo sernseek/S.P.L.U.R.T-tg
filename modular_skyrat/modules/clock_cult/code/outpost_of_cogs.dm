@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/lazy_template/reebe
 	key = LAZY_TEMPLATE_KEY_OUTPOST_OF_COGS
 	map_dir = "_maps/skyrat/lazy_templates"
@@ -28,7 +29,7 @@
 
 	for(var/mob/target as anything in GLOB.player_list)
 		if(!isnewplayer(target) && !HAS_TRAIT(target, TRAIT_DEAF) && is_station_level(target.z))
-			to_chat(target, span_brass("You hear a distant, faint clanking of cogs..."))
+			to_chat(target, span_brass(LANG("_root.e1ac942c65a6b03c", null)))
 
 	sleep(7 SECONDS)
 
@@ -43,7 +44,7 @@
 		atom_area = get_area(atom_turf)
 
 	send_clock_message(null, "A portal has been opened at [atom_area] to our holy city, it is a glorious day in the name of Ratvar.", "<span class='bigbrass'>", msg_ghosts = FALSE)
-	notify_ghosts("A portal has been opened at [atom_area] to our holy city, it is a glorious day in the name of Ratvar.",
+	notify_ghosts(LANG("_root.7f5b95e4818cab85", list(atom_area)),
 		source = atom_area,
 		notify_flags = NOTIFY_CATEGORY_NOFLASH,
 		header = "Portal to Reebe",
@@ -67,14 +68,14 @@
 	if(!atom_area)
 		atom_area = get_area(portal)
 
-	priority_announce("An anomalous reading has been picked up at [atom_area], please ensure the safety of the crew in the vicinity.")
+	priority_announce(LANG("_root.4acfc2b5232c4806", list(atom_area)))
 
 	for(var/obj/effect/landmark/late_cog_portals/late_portal in GLOB.landmarks_list)
 		var/obj/effect/landmark/portal_exit/new_exit = new(get_turf(late_portal))
 		new_exit.id = "reebe_entry"
 		qdel(late_portal)
 
-	portal.visible_message("[portal] lets out a hiss of steam as it becomes a more blue color. You feel like it's safer to enter, now.")
+	portal.visible_message(LANG("_root.90b375b614db6660", list(portal)))
 	portal.desc += " It feels easier to enter, now."
 	new /obj/effect/temp_visual/steam_release(get_turf(portal))
 	animate(portal, 3 SECONDS, color = "#326de3")

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// A datum that's mainly used to get exploitables for antagonists.
 /datum/record_manifest
 
@@ -84,13 +85,13 @@
 		var/exploitable_id = params["exploitable_id"]
 		var/datum/record/locked/target_record = find_record(exploitable_id, TRUE)
 		if(!isnull(target_record)) // this can be null
-			to_chat(usr, "<b>Exploitable information:</b> [target_record.exploitable_information]")
+			to_chat(usr, LANG("datum.3381a415e2b9a004", list(target_record.exploitable_information)))
 
 	else if(action == "show_background")
 		var/background_id = params["background_id"]
 		var/datum/record/locked/target_record = find_record(background_id, TRUE)
 		if(!isnull(target_record))
-			to_chat(usr, "<b>Background information:</b> [target_record.background_information]")
+			to_chat(usr, LANG("datum.648c10dca4002ccb", list(target_record.background_information)))
 
 
 /datum/record_manifest/ui_data(mob/user)

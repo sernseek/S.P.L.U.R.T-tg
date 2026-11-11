@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/dish_drive/bullet
 	name = "bullet drive"
 	desc = "A modified verison of the dish drive, for security. Because they're lazy."
@@ -23,12 +24,12 @@
 /obj/machinery/dish_drive/bullet/do_the_dishes(manual)
 	if(!LAZYLEN(dish_drive_contents))
 		if(manual)
-			visible_message(span_notice("[src] is empty!"))
+			visible_message(span_notice(LANG("obj.02d482cc1aef0cef", list(src))))
 		return
 	var/obj/machinery/disposal/bin/bin = locate() in view(binrange, src) //SKYRAT EDIT CHANGE
 	if(!bin)
 		if(manual)
-			visible_message(span_warning("[src] buzzes. There are no disposal bins in range!"))
+			visible_message(span_warning(LANG("obj.40c1414541d9345d", list(src))))
 			playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, TRUE)
 		return
 	var/disposed = 0
@@ -39,12 +40,12 @@
 			use_energy(active_power_usage)
 			disposed++
 	if(disposed)
-		visible_message(span_notice("[src] [pick("whooshes", "bwooms", "fwooms", "pshooms")] and demoleculizes [disposed] stored item\s into the nearby void."))
+		visible_message(span_notice(LANG("obj.5cba38c25cd7835f", list(src, pick("whooshes", "bwooms", "fwooms", "pshooms"), disposed))))
 		playsound(src, 'sound/items/pshoom/pshoom.ogg', 50, TRUE)
 		playsound(bin, 'sound/items/pshoom/pshoom.ogg', 50, TRUE)
 		flick("synthesizer_beam", src)
 	else
-		visible_message(span_notice("There are no disposable items in [src]!"))
+		visible_message(span_notice(LANG("obj.359381c866f6b704", list(src))))
 	time_since_dishes = world.time + 600
 
 /obj/machinery/dish_drive/bullet/process()
@@ -54,12 +55,12 @@
 		return
 	for(var/obj/item/I in view(2 + suck_distance, src))
 		if(istype(I, /obj/machinery/dish_drive/bullet))
-			visible_message(span_userdanger("[src] has detected another bullet drive nearby, and is sad!"))
+			visible_message(span_userdanger(LANG("obj.5ce1d5826142a5a4", list(src))))
 			break
 		if(is_type_in_list(I, collectable_items) && I.loc != src && (!I.reagents || !I.reagents.total_volume))
 			if(I.Adjacent(src))
 				LAZYADD(dish_drive_contents, I)
-				visible_message(span_notice("[src] beams up [I]!"))
+				visible_message(span_notice(LANG("obj.52c367cc63542a81", list(src, I))))
 				I.moveToNullspace()
 				playsound(src, 'sound/items/pshoom/pshoom.ogg', 50, TRUE)
 				flick("synthesizer_beam", src)

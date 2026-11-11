@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/snail
 	name = "\improper Snailperson"
 	plural_form = "Snailpeople"
@@ -50,27 +51,26 @@
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 		SPECIES_PERK_ICON = FA_ICON_RUNNING,
-		SPECIES_PERK_NAME = "Turbo",
-		SPECIES_PERK_DESC = "Snailpeople walk and run very slow, but crawl around very fast. While crawling, they leave a trail of slippery slime behind them.",
+		SPECIES_PERK_NAME = LANG("datum.76aa7803a52cb308", null),
+		SPECIES_PERK_DESC = LANG("datum.46847837877391f3", null),
 	))
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 		SPECIES_PERK_ICON = FA_ICON_SHRIMP,
-		SPECIES_PERK_NAME = "Shelled",
-		SPECIES_PERK_DESC = "The back of a Snailperson is covered in an armored shell, which is effectively an unremovable backpack. \
-			Good for keeping your things from being stolen, but bad for needing to wear a MODsuit, or disguising.",
+		SPECIES_PERK_NAME = LANG("datum.f94f3cded792ab13", null),
+		SPECIES_PERK_DESC = LANG("datum.4e2bcf578b58ea8d", null),
 	))
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = FA_ICON_SKULL_CROSSBONES,
-		SPECIES_PERK_NAME = "Salty",
-		SPECIES_PERK_DESC = "Being evolved from Snails, Snailpeople are extremely susceptible to salt, which burns them.",
+		SPECIES_PERK_NAME = LANG("datum.cb0292fe474b2948", null),
+		SPECIES_PERK_DESC = LANG("datum.75214cb1c09edfc5", null),
 	))
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = FA_ICON_HAND_FIST,
-		SPECIES_PERK_NAME = "Squishy",
-		SPECIES_PERK_DESC = "Snailpeople are squishy and slimy, making their punches and kicks far less effective than other species.",
+		SPECIES_PERK_NAME = LANG("datum.341921a3d462a628", null),
+		SPECIES_PERK_DESC = LANG("datum.d2910fae406eb5e6", null),
 	))
 	return to_add
 

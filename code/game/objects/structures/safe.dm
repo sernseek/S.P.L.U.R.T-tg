@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 CONTAINS:
 SAFES
@@ -80,7 +81,7 @@ FLOOR SAFES
 
 /obj/structure/safe/examine(mob/user)
 	. = ..()
-	. += span_notice("The locking mechanism gears are <b>wrenched</b> in place.")
+	. += span_notice(LANG("obj.6f143554f0e9332e", null))
 
 /obj/structure/safe/update_icon_state()
 	//uses the same icon as the captain's spare safe (therefore lockable storage) so keep it in line with that
@@ -89,20 +90,20 @@ FLOOR SAFES
 
 /obj/structure/safe/wrench_act(mob/living/user, obj/item/tool)
 	if(!open)
-		balloon_alert(user, "must be open!")
+		balloon_alert(user, LANG("obj.e689b44df41ce842", null))
 		return ITEM_INTERACT_BLOCKING
 
-	balloon_alert(user, "resetting lock...")
-	to_chat(user, span_notice("You begin resetting the lock for [src]. You'll need to set [number_of_tumblers] numbers."))
+	balloon_alert(user, LANG("obj.ae0cbe3c2c21bc0c", null))
+	to_chat(user, span_notice(LANG("obj.48d5137267ed9515", list(src, number_of_tumblers))))
 
 	var/list/new_tumblers = list()
 	for(var/tumbler_index in 1 to number_of_tumblers)
-		var/input_value = tgui_input_number(user, "Set tumbler #[tumbler_index] (0-99):", "Set Lock", 0, 99, 0)
+		var/input_value = tgui_input_number(user, LANG("obj.dd01363d42946dba", list(tumbler_index)), LANG("obj.4ac4ff181e4057eb", null), 0, 99, 0)
 		if(isnull(input_value))
-			balloon_alert(user, "reset cancelled!")
+			balloon_alert(user, LANG("obj.a5b0dfb7e2ce6503", null))
 			return ITEM_INTERACT_BLOCKING
 		if(!user.can_perform_action(src))
-			balloon_alert(user, "reset interrupted!")
+			balloon_alert(user, LANG("obj.0c726d077328d460", null))
 			return ITEM_INTERACT_BLOCKING
 		new_tumblers.Add(input_value)
 
@@ -114,8 +115,8 @@ FLOOR SAFES
 	current_tumbler_index = 1
 	dial = 0
 	tool.play_tool_sound(src)
-	to_chat(user, span_notice("You successfully reset the lock for [src]. The new combination is: [tumblers.Join("-")]."))
-	balloon_alert(user, "lock set!")
+	to_chat(user, span_notice(LANG("obj.bddbcd53e901782d", list(src, tumblers.Join("-")))))
+	balloon_alert(user, LANG("obj.189d53947ad3e84e", null))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/safe/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
@@ -124,22 +125,22 @@ FLOOR SAFES
 
 	if(!open)
 		if(!istype(tool, /obj/item/clothing/neck/stethoscope))
-			to_chat(user, span_warning("You can't put [tool] into the safe while it is closed!"))
+			to_chat(user, span_warning(LANG("obj.6fb4c95519b046c7", list(tool))))
 			return ITEM_INTERACT_BLOCKING
 
 		attack_hand(user)
 		return ITEM_INTERACT_SUCCESS
 
 	if(tool.w_class + space > maxspace)
-		to_chat(user, span_warning("[tool] won't fit in [src]."))
+		to_chat(user, span_warning(LANG("obj.6b579e251c08444b", list(tool, src))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!user.transferItemToLoc(tool, src))
-		to_chat(user, span_warning("\The [tool] is stuck to your hand, you cannot put it in the safe!"))
+		to_chat(user, span_warning(LANG("obj.6bed091c3c72c024", list(tool))))
 		return ITEM_INTERACT_BLOCKING
 
 	space += tool.w_class
-	to_chat(user, span_notice("You put [tool] in [src]."))
+	to_chat(user, span_notice(LANG("obj.de7df6459b40f465", list(tool, src))))
 	return ITEM_INTERACT_SUCCESS
 
 
@@ -209,9 +210,9 @@ FLOOR SAFES
 	switch(action)
 		if("open")
 			if(!check_unlocked() && !open && !broken)
-				to_chat(user, span_warning("You cannot open [src], as its lock is engaged!"))
+				to_chat(user, span_warning(LANG("obj.3d3f43374fece566", list(src))))
 				return
-			to_chat(user, span_notice("You [open ? "close" : "open"] [src]."))
+			to_chat(user, span_notice(LANG("obj.d6171b714b8cf981", list(open ? "close" : "open", src))))
 			open = !open
 			update_appearance()
 			return TRUE
@@ -219,7 +220,7 @@ FLOOR SAFES
 			if(open)
 				return
 			if(broken)
-				to_chat(user, span_warning("The dial will not turn, as the mechanism is destroyed!"))
+				to_chat(user, span_warning(LANG("obj.ee82e86c5128d754", null)))
 				return
 			var/ticks = text2num(params["num"])
 			for(var/iterate in 1 to ticks)
@@ -240,7 +241,7 @@ FLOOR SAFES
 			if(open)
 				return
 			if(broken)
-				to_chat(user, span_warning("The dial will not turn, as the mechanism is destroyed!"))
+				to_chat(user, span_warning(LANG("obj.ee82e86c5128d754", null)))
 				return
 			var/ticks = text2num(params["num"])
 			for(var/iterate in 1 to ticks)
@@ -296,7 +297,7 @@ FLOOR SAFES
 	if(!canhear)
 		return
 	if(current_tick == 2)
-		to_chat(user, span_italics("The sounds from [src] are too fast and blend together."))
+		to_chat(user, span_italics(LANG("obj.1e17b7cc64130944", list(src))))
 	if(total_ticks == 1 || prob(SOUND_CHANCE))
 		balloon_alert(user, pick(sounds))
 

@@ -1,9 +1,10 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
  * Attempts to grant the target all organs from a given DNA infuser entry.area
  * Returns the entry if all organs were successfully replaced.
  * If no infusion was picked, the infusion had no organs, or if one or more organs could not be granted, returns FALSE
 */
-GAME_VERB_PROC(/client, grant_dna_infusion, "Apply DNA Infusion", "Debug")
+GAME_VERB_PROC(/client, grant_dna_infusion, "应用 DNA 灌注", "Debug")
 	VERB_ARG_TYPED(target, VERB_ARG_TYPE_MOB, VERB_ARG_SOURCE_WORLD, /mob/living/carbon/human)
 
 	var/list/infusions = list()
@@ -11,7 +12,7 @@ GAME_VERB_PROC(/client, grant_dna_infusion, "Apply DNA Infusion", "Debug")
 		var/str = "[initial(path.name)] ([path])"
 		infusions[str] = path
 
-	var/datum/infuser_entry/picked_infusion = tgui_input_list(usr, "Select infusion", "Apply DNA Infusion", infusions)
+	var/datum/infuser_entry/picked_infusion = tgui_input_list(usr, LANG("client.d9c73f660843c79e", null), LANG("client.a8cd614ea9074318", null), infusions)
 
 	if(isnull(picked_infusion))
 		return FALSE
@@ -28,7 +29,7 @@ GAME_VERB_PROC(/client, grant_dna_infusion, "Apply DNA Infusion", "Debug")
 		var/obj/item/organ/new_organ = new infusion_organ()
 		new_organ.replace_into(target)
 		if(new_organ.owner != target)
-			to_chat(usr, span_notice("[target] is unable to carry [new_organ]!"))
+			to_chat(usr, span_notice(LANG("client.41edee27ee8518d6", list(target, new_organ))))
 			qdel(new_organ)
 			. = FALSE
 			continue

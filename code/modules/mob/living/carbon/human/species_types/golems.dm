@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Animated beings of stone. They have increased defenses, and do not need to breathe. They must eat minerals to live, which give additional buffs.
 /datum/species/golem
 	name = "Golem"
@@ -113,8 +114,7 @@
 	if(!IS_DEAD_OR_FAKING(source))
 		return
 
-	examine_text += span_warning("This golem appears to be in a state of disrepair. \
-		It may be possible to rebuild it by adding minerals into its form.")
+	examine_text += span_warning(LANG("datum.b0dffa55c5b23ee0", null))
 
 /datum/species/golem/proc/rebuild_check(mob/living/carbon/human/source, mob/living/user, obj/item/tool, ...)
 	SIGNAL_HANDLER
@@ -136,8 +136,8 @@
 
 	while(check_rebuild(source, user, mats))
 		user.visible_message(
-			span_notice("[user] uses some of [mats] to rebuild [source]'s form."),
-			span_notice("You use some of [mats] to rebuild [source]'s form."),
+			span_notice(LANG("datum.2a5811ffe898242f", list(user, mats, source))),
+			span_notice(LANG("datum.fec0a4020e441c9f", list(mats, source))),
 		)
 
 		var/do_after_time = 2 SECONDS
@@ -179,8 +179,8 @@
 
 		if(source.revive(excess_healing = 10)) // give a bit of organ/tox/oxy healing for free
 			source.visible_message(
-				span_notice("[source] stabilizes and reforms into a functional state!"),
-				span_boldnotice("You stabilize and reform into a functional state!"),
+				span_notice(LANG("datum.488d54441d3d3f8d", list(source))),
+				span_boldnotice(LANG("datum.faa33782ca79b5f4", null)),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 			source.set_resting(FALSE, silent = TRUE, instant = TRUE)
@@ -220,9 +220,8 @@
 	if(source.nutrition < NUTRITION_LEVEL_STARVING)
 		if(!early_warning && COOLDOWN_FINISHED(src, warning_cd) && !IS_UNCONSCIOUS(source))
 			source.visible_message(
-				span_warning("[source] shudders weakly as their form begins to destabilize!"),
-				span_bolddanger("You feel your form destabilizing as you run low on material to sustain yourself! \
-					Find some minerals to eat soon, or you may crumble!"),
+				span_warning(LANG("datum.1ce1bcc7dc5ac8ee", list(source))),
+				span_bolddanger(LANG("datum.43d45a669f6dc2ce", null)),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 			early_warning = TRUE
@@ -234,9 +233,8 @@
 	if(source.nutrition < 50)
 		if(!final_warning && COOLDOWN_FINISHED(src, warning_cd) && !IS_UNCONSCIOUS(source))
 			source.visible_message(
-				span_warning("[source] looks like they're on the verge of falling apart!"),
-				span_userdanger("Your form shudders violently as you near complete destabilization! \
-					Eat some minerals quickly, or you may crumble!"),
+				span_warning(LANG("datum.8e7fdfa41d5ccddf", list(source))),
+				span_userdanger(LANG("datum.471b8267d344da9d", null)),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 			final_warning = TRUE
@@ -247,8 +245,8 @@
 
 	if(source.nutrition < 2 && source.stat != DEAD)
 		source.visible_message(
-			span_warning("[source] shudders and crumbles into a pile of inert rocks!"),
-			span_userdanger("You run our of material to sustain your animated form, and crumble into a pile of inert rocks!"),
+			span_warning(LANG("datum.825c12ecc0744853", list(source))),
+			span_userdanger(LANG("datum.91b1134184a1ccd8", null)),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
 		source.investigate_log("starved to death as a golem", INVESTIGATE_DEATHS)
@@ -274,33 +272,29 @@
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "user-shield",
-		SPECIES_PERK_NAME = "Lithoid",
-		SPECIES_PERK_DESC = "Lithoids are creatures made out of minerals instead of \
-			blood and flesh. They are strong and immune to many environmental and personal dangers \
-			such as fire, radiation, lack of air, lava, viruses, and dismemberment.",
+		SPECIES_PERK_NAME = LANG("datum.39f6bbbdc17e184c", null),
+		SPECIES_PERK_DESC = LANG("datum.58ea2eb25635ebfc", null),
 	))
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "gem",
-		SPECIES_PERK_NAME = "Metamorphic Rock",
-		SPECIES_PERK_DESC = "Consuming minerals can grant Lithoids temporary benefits based on the type consumed.",
+		SPECIES_PERK_NAME = LANG("datum.a01e575cc0926db9", null),
+		SPECIES_PERK_DESC = LANG("datum.28e6fa6aa948179d", null),
 	))
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "tools",
-		SPECIES_PERK_NAME = "Natural Miners",
-		SPECIES_PERK_DESC = "Golems can see dimly in the dark, sense minerals, break boulders, and mine stone with their bare hands. \
-			They can even smelt ores in an internal furnace, if their surrounding environment is hot enough.",
+		SPECIES_PERK_NAME = LANG("datum.bb4be19979497f02", null),
+		SPECIES_PERK_DESC = LANG("datum.c8228c6afd8e95fa", null),
 	))
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "bolt",
-		SPECIES_PERK_NAME = "Anima",
-		SPECIES_PERK_DESC = "Maintaining the force animating stone is taxing. Lithoids must eat frequently \
-			in order to avoid returning to inanimate statues, and only derive nutrition from eating minerals.",
+		SPECIES_PERK_NAME = LANG("datum.ce6c815d8aa3a7d9", null),
+		SPECIES_PERK_DESC = LANG("datum.75555c87fe3ac857", null),
 	))
 
 	return to_add

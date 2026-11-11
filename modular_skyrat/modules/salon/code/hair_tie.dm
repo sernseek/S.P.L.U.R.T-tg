@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/head/hair_tie
 	name = "hair tie"
 	desc = "An elastic hair tie, made to hold your hair up!"
@@ -43,9 +44,9 @@
 /obj/item/clothing/head/hair_tie/examine(mob/user)
 	. = ..()
 	if(picked_hairstyle)
-		. += span_notice("Wearing it will change your hairstyle to '[picked_hairstyle]'.")
-	. += span_notice("<b>Use in hand</b> to pick a new hairstyle.")
-	. += span_notice("<b>Alt-click</b> [src] to fling it.")
+		. += span_notice(LANG("obj.8c1142963a9aeec3", list(picked_hairstyle)))
+	. += span_notice(LANG("obj.6a90f1b18a625c33", null))
+	. += span_notice(LANG("obj.57fa8705b4bec721", list(src)))
 
 /obj/item/clothing/head/hair_tie/mob_can_equip(mob/living/carbon/human/user, slot, disable_warning, bypass_equip_delay_self, ignore_equipped, indirect_action)
 	if(user.hairstyle == "Bald") //could create a list of the bald hairstyles to check
@@ -53,9 +54,9 @@
 	return ..()
 
 /obj/item/clothing/head/hair_tie/attack_self(mob/user)
-	var/hair_id = tgui_input_list(user, "How does your hair look when its up?", "Pick!", SSaccessories.hairstyles_list)
+	var/hair_id = tgui_input_list(user, LANG("obj.fa685d47e51961bd", null), LANG("obj.26d3def8963e06f6", null), SSaccessories.hairstyles_list)
 	if(!hair_id || hair_id == "Bald")
-		balloon_alert(user, "error!")
+		balloon_alert(user, LANG("obj.bf18be827b2de949", null))
 		return
 	balloon_alert(user, "[hair_id]")
 	picked_hairstyle = hair_id
@@ -67,8 +68,8 @@
 	if(!picked_hairstyle)
 		return
 	user.visible_message(
-		span_notice("[user.name] ties up [user.p_their()] hair."),
-		span_notice("You tie up your hair!"),
+		span_notice(LANG("obj.bc7e21c6ed376044", list(user.name, user.p_their()))),
+		span_notice(LANG("obj.ec3ecf1037f3bcd7", null)),
 	)
 	actual_hairstyle = user.hairstyle
 	user.set_hairstyle(picked_hairstyle, update = TRUE)
@@ -80,19 +81,19 @@
 	if(!picked_hairstyle || !actual_hairstyle)
 		return
 	user.visible_message(
-		span_notice("[user.name] takes [src] out of [user.p_their()] hair."),
-		span_notice("You let down your hair!"),
+		span_notice(LANG("obj.ffa903f3629c48e7", list(user.name, src, user.p_their()))),
+		span_notice(LANG("obj.e5d6035c262de9bb", null)),
 	)
 	user.set_hairstyle(actual_hairstyle, update = TRUE)
 	actual_hairstyle = null
 
 /obj/item/clothing/head/hair_tie/click_alt(mob/living/user)
 	if(!(user.get_slot_by_item(src) == ITEM_SLOT_HANDS))
-		balloon_alert(user, "hold in-hand!")
+		balloon_alert(user, LANG("obj.194a79c096b80455", null))
 		return CLICK_ACTION_BLOCKING
 	user.visible_message(
-		span_danger("[user.name] puts [src] around [user.p_their()] fingers, beginning to flick it!"),
-		span_notice("You try to flick [src]!"),
+		span_danger(LANG("obj.e88a8775476bece9", list(user.name, src, user.p_their()))),
+		span_notice(LANG("obj.4496199f93cd1baa", list(src))),
 	)
 	flick_hair_tie(user)
 	return CLICK_ACTION_SUCCESS

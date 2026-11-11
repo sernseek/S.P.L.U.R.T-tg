@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Maximum amount of items that tail sweep can throw at once
 #define TAILSWEEP_MAX_OBJECTS 4
 
@@ -64,7 +65,7 @@
 		sweeped.throw_at(get_ranged_target_turf(sweeped, pick(GLOB.cardinals-new_dir), range = 1), range = 1, speed = 1)
 
 	playsound(pos_to_check, SFX_RUSTLE, 50, TRUE, -5)
-	affected_mob.visible_message(span_danger("[affected_mob] turns, sweeping their tail across \the [tabled]!"), span_notice("You turn, sweeping your tail across \the [tabled]."))
+	affected_mob.visible_message(span_danger(LANG("datum.7de27549613ecc7c", list(affected_mob, tabled))), span_notice(LANG("datum.6f0b843f996462e1", list(tabled))))
 
 	COOLDOWN_START(src, swipe_cooldown, TAILSWEEP_DELAY SECONDS)
 

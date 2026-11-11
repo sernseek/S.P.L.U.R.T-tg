@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * ## catwalk flooring
  *
@@ -29,10 +30,10 @@
 	. = ..()
 
 	if(covered)
-		. += span_notice("You can <b>unscrew</b> it to reveal the contents beneath.")
+		. += span_notice(LANG("turf.5415cbeff4717a24", null))
 	else
-		. += span_notice("You can <b>screw</b> it to hide the contents beneath.")
-		. += span_notice("There's a <b>small crack</b> on the edge of it.")
+		. += span_notice(LANG("turf.348d6a274fa3bce8", null))
+		. += span_notice(LANG("turf.ff9d66d17aebc7c4", null))
 
 /turf/open/floor/catwalk_floor/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ..()
@@ -60,7 +61,7 @@
 
 /turf/open/floor/catwalk_floor/crowbar_act(mob/user, obj/item/crowbar)
 	if(covered)
-		user.balloon_alert(user, "remove cover first!")
+		user.balloon_alert(user, LANG("turf.627322fda424d134", null))
 		return FALSE
 	. = ..()
 

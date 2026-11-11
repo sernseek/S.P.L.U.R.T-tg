@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /proc/lose_some_weight_lardass()
 	var/unlucky_victim = "your mother" //debug text that should never trigger but should tell coders that something went wrong without breaking immersion
 	var/unlucky_victim_fatty_score = 0
@@ -27,8 +28,7 @@
 			unlucky_victim_fatty_score = possible_fatty_score
 
 	priority_announce(
-		"It appears that the level 5 biohazard aboard [station_name()] was a false alarm, as our sensors appeared to have mistakenly labeled [unlucky_victim] as a level 5 biohazard. \
-		All crewmembers are reminded to practice healthy eating habbits as part of Nanotrasen's Safe and Healthy Eating program.",
+		LANG("_root.a788b412c6c35f2b", list(station_name(), unlucky_victim)),
 		"Biohazard Alert"
 	)
 

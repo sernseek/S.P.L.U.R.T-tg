@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * # Tarkon Produce Orders Console
  *
@@ -35,10 +36,10 @@
 
 /obj/machinery/computer/order_console/cook/tarkon/purchase_items(obj/item/card/id/card, express = FALSE)
 	if(!synced_bank_account)
-		say("Error, no department account found.")
+		say(LANG("obj.148b37fb82a1554d", null))
 		return FALSE
 	var/final_cost = round(get_total_cost() * (express ? express_cost_multiplier : cargo_cost_multiplier))
 	if(synced_bank_account.adjust_money(-final_cost, "[name]: Purchase"))
 		return TRUE
-	say("Sorry, but you do not have enough [credit_type].")
+	say(LANG("obj.eac2f740e586a659", list(credit_type)))
 	return FALSE

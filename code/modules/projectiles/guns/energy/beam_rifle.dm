@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/energy/event_horizon
 	name = "\improper Event Horizon anti-existential beam rifle"
 	desc = "The deranged minds of Nanotrasen, in their great hubris and spite, have birthed forth the definitive conclusion to the arms race. Weaponized black holes, and a platform to deliver them.\
@@ -37,7 +38,7 @@
 /obj/item/gun/energy/event_horizon/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
 
 	if(!HAS_TRAIT(user, TRAIT_USER_SCOPED))
-		balloon_alert(user, "must be scoped!")
+		balloon_alert(user, LANG("obj.bc7366f5b1f80010", null))
 		return
 
 	. = ..()

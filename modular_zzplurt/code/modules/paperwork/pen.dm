@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/pen/attack(mob/living/M, mob/living/user, params)
 	. = ..()
 
@@ -17,7 +18,7 @@
 		possible_genitals += ORG
 
 	if(length(possible_genitals))
-		selected_bodypart = tgui_input_list(user, "Select a genital to write on (or none to write on [user == M ? "your" : "[M]'s"] [user.zone_selected])", "Bodywriting", possible_genitals)
+		selected_bodypart = tgui_input_list(user, LANG("obj.bf682f25ca248702", list(user == M ? "your" : "[M]'s", user.zone_selected)), LANG("obj.b88b28ee70359c02", null), possible_genitals)
 
 	if(!selected_bodypart)
 		var/obj/item/bodypart/BP = M.get_bodypart(user.zone_selected)
@@ -28,10 +29,10 @@
 	if(!selected_bodypart)
 		return
 
-	var/writing = tgui_input_text(user, "Add writing, doesn't replace current text", "Writing on [selected_bodypart.name]")
+	var/writing = tgui_input_text(user, LANG("obj.a946bca606297aa2", null), LANG("obj.b6816b248c0964ff", list(selected_bodypart.name)))
 	if(!writing)
 		return
-	to_chat(user, span_notice("You write [writing] on [user == M ? "your" : "[M]'s"] [selected_bodypart.name]."))
+	to_chat(user, span_notice(LANG("obj.1dfa7ce80d1ce674", list(writing, user == M ? "your" : "[M]'s", selected_bodypart.name))))
 	selected_bodypart.written_text += writing
 
 /obj/item/pen/fountain/centcom

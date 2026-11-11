@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/vehicle/sealed/mecha/ripley
 	desc = "Autonomous Power Loader Unit MK-I. Designed primarily around heavy lifting, the Ripley can be outfitted with utility equipment to fill a number of roles."
 	name = "\improper APLU MK-I \"Ripley\""
@@ -325,15 +326,15 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 			step_rand(stored)
 
 /obj/item/mecha_parts/mecha_equipment/ejector/relay_container_resist_act(mob/living/user, obj/container)
-	to_chat(user, span_notice("You lean on the back of [container] and start pushing so it falls out of [src]."))
+	to_chat(user, span_notice(LANG("obj.d28e19882df7d0ce", list(container, src))))
 	if(do_after(user, 30 SECONDS, target = container))
 		if(!user || IS_UNCONSCIOUS_OR_CRIT(user) || user.loc != src || container.loc != src )
 			return
-		to_chat(user, span_notice("You successfully pushed [container] out of [src]!"))
+		to_chat(user, span_notice(LANG("obj.2c34dd80048298e6", list(container, src))))
 		container.forceMove(drop_location())
 	else
 		if(user.loc == src) //so we don't get the message if we resisted multiple times and succeeded.
-			to_chat(user, span_warning("You fail to push [container] out of [src]!"))
+			to_chat(user, span_warning(LANG("obj.396b17cf192906df", list(container, src))))
 
 /obj/item/mecha_parts/mecha_equipment/ejector/get_snowflake_data()
 	var/list/data = list(
@@ -343,7 +344,7 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 		)
 	for(var/atom/entry in contents)
 		data["cargo"] += list(list(
-			"name" = entry.name,
+			"name" = entry.lang_localize_name_for_display(entry.name), // ZH EDIT - I18N: 货箱内容名纯显示（act 走 ref）；atom 版守玩家改名。ORIGINAL: "name" = entry.name,
 			"ref" = REF(entry),
 		))
 	return data
@@ -389,7 +390,7 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 
 /obj/item/mecha_parts/mecha_equipment/ejector/seccage/proc/stop_cuff_removal(datum/source, obj/item/cuffs)
 	SIGNAL_HANDLER
-	to_chat(source, span_warning("You don't have the room to remove [cuffs]!"))
+	to_chat(source, span_warning(LANG("obj.200d9a54d6fe77fa", list(cuffs))))
 	return COMSIG_MOB_BLOCK_CUFF_REMOVAL
 
 /obj/item/mecha_parts/mecha_equipment/ejector/seccage/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
@@ -411,15 +412,15 @@ GLOBAL_DATUM(cargo_ripley, /obj/vehicle/sealed/mecha/ripley/cargo)
 	if (user.mob_size > MOB_SIZE_HUMAN)
 		breakout_time = 6 SECONDS
 
-	to_chat(user, span_notice("You begin attempting a breakout. (This will take around [DisplayTimeText(breakout_time)] and [chassis] needs to remain stationary.)"))
+	to_chat(user, span_notice(LANG("obj.da5628a5fd724f1b", list(DisplayTimeText(breakout_time), chassis))))
 	if(!do_after(user, breakout_time, target = chassis))
 		return
-	to_chat(user, span_notice("You break out of the [src]."))
+	to_chat(user, span_notice(LANG("obj.a64b9b49dcfaa1c2", list(src))))
 	playsound(chassis, 'sound/items/tools/crowbar.ogg', 100, TRUE)
 	cheese_it(user)
 	for(var/mob/freebird in contents)
 		if(user != freebird)
-			to_chat(freebird, span_warning("[user] has managed to open the hatch, and you fall out with him. You're free!"))
+			to_chat(freebird, span_warning(LANG("obj.46272e7d91987216", list(user))))
 			cheese_it(freebird)
 
 /obj/item/mecha_parts/mecha_equipment/ejector/seccage/proc/cheese_it(mob/living/escapee)

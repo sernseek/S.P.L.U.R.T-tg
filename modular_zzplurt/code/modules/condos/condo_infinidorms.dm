@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// SPLURT infinidorm extensions for upstream condos.
 /// Upstream still owns reservation lifecycle (`SScondos.active_condos`), while this layer
 /// stores room metadata, trusted guests, and short-lived reserved room payloads.
@@ -15,13 +16,13 @@
 	if(!user.mind)
 		return
 	if(!parentSphere)
-		to_chat(user, span_warning("The door seems to be malfunctioning and refuses to operate!"))
+		to_chat(user, span_warning(LANG("turf.f965e08fa01088c2", null)))
 		return
 	if(istype(get_area(src), /area/misc/condo) && (user.mind in entry_points))
 		var/entry_destination = entry_points[user.mind]
 		if(entry_destination)
 			destination = entry_destination
-	if(tgui_alert(user, leave_message, "Exit", list("Leave", "Stay")) == "Leave")
+	if(tgui_alert(user, leave_message, LANG("turf.e15dc1239279ed54", null), list("Leave", "Stay")) == "Leave")
 		if(HAS_TRAIT(user, TRAIT_IMMOBILIZED) || (get_dist(get_turf(src), get_turf(user)) > 1)) //no teleporting around if they're dead or moved away during the prompt.
 			return
 		user.forceMove(get_turf(destination))
@@ -93,13 +94,13 @@
 		trusted_guests = list()
 	if(!isnull(requested_is_ghost_cafe) && CONFIG_GET(flag/hilbertshotel_ghost_cafe_restricted))
 		if(room_entry["is_ghost_cafe"] != requested_is_ghost_cafe)
-			to_chat(user, span_warning("You can't enter this room from this side of the network."))
+			to_chat(user, span_warning(LANG("datum.af7d0d9fc8456827", null)))
 			return FALSE
 	if(status == ROOM_CLOSED && owner_mind != user.mind)
-		to_chat(user, span_warning("This room is closed!"))
+		to_chat(user, span_warning(LANG("datum.8cb899091e9b4ba5", null)))
 		return FALSE
 	if(status == ROOM_GUESTS_ONLY && owner_mind != user.mind && !(user.mind in trusted_guests))
-		to_chat(user, span_warning("Access denied. This room is only available to invited guests."))
+		to_chat(user, span_warning(LANG("datum.ac8dcc950a52ae3b", null)))
 		return FALSE
 	return TRUE
 
@@ -215,7 +216,7 @@
 	var/list/access_restrictions = reserved_entry["access_restrictions"]
 	if(!force && access_restrictions?["room_owner"] != user?.mind)
 		if(user)
-			to_chat(user, span_warning("Only this room's owner can delete its reservation."))
+			to_chat(user, span_warning(LANG("datum.b157aca1a49a0600", null)))
 		return FALSE
 	splurt_stop_reserved_room_timer(condo_number)
 	if(splurt_storage_turf)
@@ -236,16 +237,16 @@
 	if(!template)
 		template = splurt_get_default_template()
 	if(!template)
-		to_chat(user, span_warning("The room archive for [condo_number] is corrupted."))
+		to_chat(user, span_warning(LANG("datum.7abc56d42936cfc2", list(condo_number))))
 		return FALSE
 
 	var/datum/turf_reservation/condo/condo_reservation = SSmapping.request_turf_block_reservation(template.width, template.height, 1, reservation_type = /datum/turf_reservation/condo)
 	if(!condo_reservation)
-		to_chat(user, span_warning("Failed to reserve a room for you! Contact the technical concierge."))
+		to_chat(user, span_warning(LANG("datum.10a3b93c878e482a", null)))
 		return FALSE
 	var/turf/bottom_left = condo_reservation.bottom_left_turfs[1]
 	if(!bottom_left)
-		to_chat(user, span_warning("Failed to reserve a room for you! Contact the technical concierge."))
+		to_chat(user, span_warning(LANG("datum.10a3b93c878e482a", null)))
 		return FALSE
 	template.load(bottom_left)
 	condo_reservation.condo_template = template
@@ -501,7 +502,7 @@
 	if(!splurt_can_access_room(room_entry, user, requested_is_ghost_cafe))
 		return TRUE
 	if(splurt_restore_condo(condo_number, user, parent_object))
-		to_chat(user, span_notice("You feel a strange sense of déjà vu."))
+		to_chat(user, span_notice(LANG("datum.6f22e459f6e61ecd", null)))
 		return TRUE
 	return FALSE
 

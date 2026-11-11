@@ -1,3 +1,7 @@
+// ZH EDIT CHANGE - I18N: augment / style / implant / marking 名等标识符耦合显示名走**对象选项**
+// `{value: 英文, displayText: 英文}`——value 保持英文标识符(onSelected/selected/act 匹配用)，
+// displayText 由 tgui/i18n jsx-runtime 按英文查目录自动翻中文显示。裸字符串选项**一律不翻**
+// (见 i18n/localize.ts localizeOption)，故需要中文显示又要正确回传的下拉必须用对象选项。
 // THIS IS A SKYRAT UI FILE
 import {
   Box,
@@ -45,7 +49,10 @@ export const Markings = (props) => {
             <Stack.Item grow>
               <Dropdown
                 width="100%"
-                options={props.limb.markings.marking_choices}
+                options={(props.limb.markings.marking_choices).map((name) => ({
+  value: name,
+  displayText: name,
+}))}
                 selected={marking.name}
                 buttons
                 onSelected={(shit) =>
@@ -142,7 +149,10 @@ export const AugmentationPage = (props) => {
                 <Stack.Item grow>
                   <Dropdown
                     width="100%"
-                    options={Object.values(props.limb.aug_choices) as string[]}
+                    options={(Object.values(props.limb.aug_choices) as string[]).map((name) => ({
+  value: name,
+  displayText: name,
+}))}
                     selected={props.limb.chosen_aug}
                     onSelected={(value) => {
                       // Since the costs are positive,
@@ -165,7 +175,10 @@ export const AugmentationPage = (props) => {
                 <Stack.Item grow>
                   <Dropdown
                     width="100%"
-                    options={props.data.robotic_styles}
+                    options={(props.data.robotic_styles).map((name) => ({
+  value: name,
+  displayText: name,
+}))}
                     selected={props.limb.chosen_style}
                     onSelected={(value) =>
                       act('set_limb_aug_style', {
@@ -196,7 +209,10 @@ export const OrganPage = (props) => {
         <Stack.Item grow>
           <Dropdown
             width="100%"
-            options={Object.values(props.organ.organ_choices) as string[]}
+            options={(Object.values(props.organ.organ_choices) as string[]).map((name) => ({
+  value: name,
+  displayText: name,
+}))}
             selected={props.organ.chosen_organ}
             onSelected={(value) => {
               // Since the costs are positive, it's added and not substracted
@@ -227,7 +243,10 @@ export const LimbsPage = (props) => {
           <div>
             <Dropdown
               width="100%"
-              options={Object.values(markings)}
+              options={(Object.values(markings) as string[]).map((name) => ({
+  value: name,
+  displayText: name,
+}))}
               selected={Object.values(markings)[1]}
               placeholder="Pick a preset:"
               onSelected={(value) => act('set_preset', { preset: value })}

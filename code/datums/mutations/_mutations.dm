@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /// Negatives that are virtually harmless and mostly just funny (language)
 // Set to 0 because munchkinning via miscommunication = bad
@@ -123,7 +124,7 @@
 		return FALSE
 	// SKYRAT EDIT ADDITION
 	if(acquirer.has_borer())
-		to_chat(acquirer, span_warning("Something inside holds dearly to your humanity!"))
+		to_chat(acquirer, span_warning(LANG("datum.e91c9d57e5b43032", null)))
 	// SKYRAT EDIT END
 	if(LAZYLEN(species_allowed) && !LAZYFIND(species_allowed, acquirer.dna.species.id))
 		return FALSE

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/protean
 	COOLDOWN_DECLARE(transform_cooldown)
 /datum/species/protean/ui_interact(mob/user, datum/tgui/ui)
@@ -44,7 +45,7 @@
 			if(usr != owner)
 				return TRUE
 			if(!species_modsuit?.stored_modsuit)
-				owner.balloon_alert(owner, "no assimilated suit")
+				owner.balloon_alert(owner, LANG("datum.7c817cd84034d688", null))
 				return TRUE
 			INVOKE_ASYNC(src, PROC_REF(eject_stored_modsuit))
 		if("protean_transform")
@@ -55,7 +56,7 @@
 					UnregisterSignal(species_modsuit, COMSIG_ITEM_PRE_UNEQUIP)
 					qdel(component)
 				else if(species_modsuit.wearer == owner)
-					to_chat(owner, span_notice("You already look like yourself!"))
+					to_chat(owner, span_notice(LANG("datum.6a8ca75be3ce9c32", null)))
 				else
 					playsound(owner, 'sound/machines/click.ogg', 25)
 					species_modsuit.wearer.AddComponent(/datum/component/transformation, source = owner)
@@ -64,7 +65,7 @@
 	return TRUE
 
 /datum/species/protean/proc/eject_stored_modsuit()
-	to_chat(owner, span_notice("You begin to extract [species_modsuit.stored_modsuit] from your body."))
+	to_chat(owner, span_notice(LANG("datum.91b212bb7db0281f", list(species_modsuit.stored_modsuit))))
 	if(!do_after(owner, 5 SECONDS))
 		return
 	if(!species_modsuit?.stored_modsuit)

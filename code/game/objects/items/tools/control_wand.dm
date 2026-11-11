@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define WAND_OPEN "open"
 #define WAND_BOLT "bolt"
 #define WAND_EMERGENCY "emergency"
@@ -63,7 +64,7 @@
 	. = ..()
 	if(obj_flags & EMAGGED)
 		return FALSE
-	balloon_alert(user, "restricted functions unlocked")
+	balloon_alert(user, LANG("obj.22702edb8a00c39d", null))
 	obj_flags |= EMAGGED
 	update_icon_state()
 	return TRUE
@@ -85,7 +86,7 @@
 		if(WAND_DEPOWER)
 			mode = WAND_OPEN
 	update_icon_state()
-	balloon_alert(user, "mode: [ops[mode]]")
+	balloon_alert(user, LANG("obj.a72852bfd5dc43d4", list(ops[mode])))
 	if(mode_switch_sound)
 		playsound(src, mode_switch_sound, 50, TRUE)
 
@@ -184,12 +185,12 @@
 			return ITEM_INTERACT_BLOCKING
 
 	if (!door.check_access_list(access_list) || !door.requiresID())
-		interacting_with.balloon_alert(user, "can't access!")
+		interacting_with.balloon_alert(user, LANG("obj.0a322f0611e7a5df", null))
 		return ITEM_INTERACT_BLOCKING
 
 	var/area/door_area = get_area(door)
 	if(is_type_in_list(door_area, restricted_areas) && !is_my_domain(get_area(door)))
-		interacting_with.balloon_alert(user, "can't access!")
+		interacting_with.balloon_alert(user, LANG("obj.0a322f0611e7a5df", null))
 		return ITEM_INTERACT_BLOCKING
 
 	var/obj/machinery/door/airlock/airlock = door
@@ -207,7 +208,7 @@
 
 		if (WAND_BOLT)
 			if (!istype(airlock))
-				interacting_with.balloon_alert(user, "only airlocks!")
+				interacting_with.balloon_alert(user, LANG("obj.fef81673ad3cee0c", null))
 				return ITEM_INTERACT_BLOCKING
 
 			if (airlock.locked)
@@ -219,7 +220,7 @@
 
 		if (WAND_EMERGENCY)
 			if (!istype(airlock))
-				interacting_with.balloon_alert(user, "only airlocks!")
+				interacting_with.balloon_alert(user, LANG("obj.fef81673ad3cee0c", null))
 				return ITEM_INTERACT_BLOCKING
 
 			airlock.emergency = !airlock.emergency
@@ -227,20 +228,20 @@
 
 		if (WAND_SHOCK)
 			if (!istype(airlock))
-				interacting_with.balloon_alert(user, "only airlocks!")
+				interacting_with.balloon_alert(user, LANG("obj.fef81673ad3cee0c", null))
 				return ITEM_INTERACT_BLOCKING
 			if (!COOLDOWN_FINISHED(src, shock_cooldown))
-				interacting_with.balloon_alert(user, "shock pulse resetting!")
+				interacting_with.balloon_alert(user, LANG("obj.95a1cddaf045e7da", null))
 				return ITEM_INTERACT_BLOCKING
 			if (airlock.isElectrified())
-				interacting_with.balloon_alert(user, "already electrified!")
+				interacting_with.balloon_alert(user, LANG("obj.904155e24bf18d0b", null))
 			else
 				airlock.set_electrified(MACHINE_DEFAULT_ELECTRIFY_TIME, user)
 				COOLDOWN_START(src, shock_cooldown, 10 SECONDS)
 
 		if (WAND_DEPOWER)
 			if (!istype(airlock))
-				interacting_with.balloon_alert(user, "only airlocks!")
+				interacting_with.balloon_alert(user, LANG("obj.fef81673ad3cee0c", null))
 				return ITEM_INTERACT_BLOCKING
 			// First hit disrupts main power, backup comes back in ten seconds, if you stick around you can hit backup for 60 more seconds of downtime.
 			if (!airlock.main_power_timer)

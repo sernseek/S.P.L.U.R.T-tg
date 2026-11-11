@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // rework void chill to like, cause sleep and healing at max stacks? But if you touch them at all they break out
 // possinly also make it just not do damage bc sleep is kinda strong
 // damage resistance on the wakeup attack?
@@ -14,12 +15,12 @@
 		return
 
 	if (isclosedturf(get_turf(cast_on)))
-		owner.balloon_alert(owner, "cant cast on walls!")
+		owner.balloon_alert(owner, LANG("datum.32c97331d36e5da3", null))
 		return SPELL_CANCEL_CAST
 
 	var/turf/in_LOS = view(cast_range, owner)
 	if (!(cast_on in in_LOS))
-		owner.balloon_alert(owner, "need line of sight!")
+		owner.balloon_alert(owner, LANG("datum.bb5a69ab6a6cc3b0", null))
 		return SPELL_CANCEL_CAST
 
 /datum/heretic_knowledge_tree_column/void
@@ -102,7 +103,7 @@
 
 /datum/action/cooldown/spell/void_stealth/proc/cloak_mob(mob/living/cast_on)
 	active_cloak = cast_on.apply_status_effect(/datum/status_effect/void_stealth)
-	to_chat(cast_on, span_notice("The void surrounds you, and you find yourself invisible to the mortal world."))
+	to_chat(cast_on, span_notice(LANG("datum.0db5aed8a08fc338", null)))
 
 /datum/action/cooldown/spell/void_stealth/proc/uncloak_mob(mob/living/cast_on, show_message = TRUE)
 	if(!QDELETED(active_cloak))
@@ -112,8 +113,8 @@
 
 	if(show_message)
 		cast_on.visible_message(
-			span_warning("[cast_on] appears from nothing!"),
-			span_notice("The void wrapping your form unravels, revealing you to the mortal world once more."),
+			span_warning(LANG("datum.4b737b683ad8a574", list(cast_on))),
+			span_notice(LANG("datum.8ed27fa7187c4f04", null)),
 		)
 	StartCooldown(remove_time)
 
@@ -150,7 +151,7 @@
 /datum/status_effect/void_stealth/proc/before_spell_cast(datum/source, datum/spell)
 	SIGNAL_HANDLER
 	if(!istype(spell, /datum/action/cooldown/spell/void_stealth))
-		owner.balloon_alert(owner, "cant cast spells while cloaked!")
+		owner.balloon_alert(owner, LANG("datum.d938539e1c73891d", null))
 		return SPELL_CANCEL_CAST
 
 
@@ -219,7 +220,7 @@
 		return FALSE
 	var/mob/target_mob = cast_on
 	if (target_mob.has_status_effect(/datum/status_effect/crucible_soul))
-		owner.balloon_alert(owner, "cant use while phased out!")
+		owner.balloon_alert(owner, LANG("datum.f80184778200a6d8", null))
 		return FALSE
 
 	return TRUE // self cast
@@ -259,7 +260,7 @@
 		return
 	if (IS_UNCONSCIOUS_OR_CRIT(living_owner))
 		return
-	if (!tgui_alert(living_owner, "Enter a soothing sleep? (You will be awakened if you are attacked)", "Void Sleep", list("Yes", "No"), timeout = 5 SECONDS))
+	if (!tgui_alert(living_owner, LANG("atom.7078c3483e7aadc9", null), LANG("atom.cc43c24a31304225", null), list("Yes", "No"), timeout = 5 SECONDS))
 		return
 	if (living_owner.IsSleeping())
 		return
@@ -303,7 +304,7 @@
 		RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(on_stat_changed))
 		RegisterSignal(owner, COMSIG_LIVING_CHECK_BLOCK, PROC_REF(on_block_check))
 		if (!silent)
-			to_chat(owner, span_hypnophrase("You drift away into a deep, dark dream, of death, void, and a comforting cold..."))
+			to_chat(owner, span_hypnophrase(LANG("datum.cda10ab077fa7360", null)))
 	else
 		COOLDOWN_START(src, wakeup_period, 5 SECONDS)
 		if (should_reduce_timer_on_wakeup)
@@ -328,8 +329,8 @@
 	SIGNAL_HANDLER
 
 	owner.visible_message(
-		span_warning("[owner] jolts awake from [owner.p_their()] deep sleep!"),
-		span_userdanger("You jolt awake from your deep sleep!")
+		span_warning(LANG("datum.af0ffae15cc74475", list(owner, owner.p_their()))),
+		span_userdanger(LANG("datum.bf8d6cd9bc6e6b65", null))
 	)
 	set_sleep_status(FALSE, silent = TRUE)
 	//return SUCCESSFUL_BLOCK // TODO reenable if we make it so you can fall into the sleep due to cold involuntarily
@@ -356,7 +357,7 @@
 	else
 		if (stacks >= 5)
 			if (SPT_PROB(5, seconds_between_ticks))
-				to_chat(owner, span_hypnophrase("The cold slows you down, slows your mind, your heart... you want to take a nap."))
+				to_chat(owner, span_hypnophrase(LANG("datum.33b51c96ea270616", null)))
 			if (SPT_PROB(5, seconds_between_ticks))
 				owner.emote("yawn")
 		if (owner.IsSleeping())
@@ -410,9 +411,9 @@
 							if (tempcheck && prob(40))
 								affected_mob.AdjustSleeping(3 SECONDS) // ko
 						if (prob(15))
-							to_chat(affected_mob, span_warning("The cold makes you sleepy..."))
+							to_chat(affected_mob, span_warning(LANG("obj.9aeb9859b92acac1", null)))
 
 /obj/structure/void_conduit/examine(mob/user)
 	. = ..()
 
-	. += span_notice("Chills the area around it, afflicts nearby enemies with void chill as well as drowsiness, and forces sleep at a certain level of drowsiness.")
+	. += span_notice(LANG("obj.7d9ae7042e1d17e9", null))

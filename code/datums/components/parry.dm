@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Add to a projectile to allow it to be parried by mobs with a certain trait (TRAIT_MINING_PARRYING by default)
 /datum/component/parriable_projectile
 	/// List of all turfs the projectile passed on its last loop and we assigned comsigs to
@@ -108,9 +109,9 @@
 			source.set_angle((source.angle + 180) % 360 + rand(-3, 3))
 		else
 			source.set_angle(dir2angle(user.dir) + rand(-3, 3))
-		user.visible_message(span_warning("[user] expertly parries [source] with [user.p_their()] bare hand!"), span_warning("You parry [source] with your hand!"))
+		user.visible_message(span_warning(LANG("datum.0b95cb4e537954b8", list(user, source, user.p_their()))), span_warning(LANG("datum.e9c310e14c1d21aa", list(source))))
 	else
-		user.visible_message(span_warning("[user] boosts [source] with [user.p_their()] bare hand!"), span_warning("You boost [source] with your hand!"))
+		user.visible_message(span_warning(LANG("datum.1a61a1289a5bf2a7", list(user, source, user.p_their()))), span_warning(LANG("datum.e78c713370337f8f", list(source))))
 	source.firer = user
 	source.speed *= (source.firer == user) ? boost_speed_mult : parry_speed_mult
 	source.damage *= (source.firer == user) ? boost_damage_mult : parry_damage_mult

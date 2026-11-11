@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/spellbook
 	name = "spell book"
 	desc = "An unearthly tome that glows with power."
@@ -39,7 +40,7 @@
 /obj/item/spellbook/proc/on_magic_charge(datum/source, datum/action/cooldown/spell/spell, mob/living/caster)
 	SIGNAL_HANDLER
 
-	to_chat(caster, span_warning("Glowing red letters appear on the front cover..."))
+	to_chat(caster, span_warning(LANG("obj.4a1a4281c9f77ab5", null)))
 	to_chat(caster, span_red(pick(
 		"NICE TRY BUT NO!",
 		"CLEVER BUT NOT CLEVER ENOUGH!",
@@ -53,23 +54,23 @@
 /obj/item/spellbook/examine(mob/user)
 	. = ..()
 	if(owner)
-		. += "There is a small signature on the front cover: \"[owner]\"."
+		. += LANG("obj.9cdd04e824b20035", list(owner))
 	else
-		. += "It appears to have no author."
+		. += LANG("obj.ddaae0557b534731", null)
 
 /obj/item/spellbook/attack_self(mob/user)
 	if(!owner)
 		if(!user.mind)
 			return
-		to_chat(user, span_notice("You bind [src] to yourself."))
+		to_chat(user, span_notice(LANG("obj.de6bffcd625de317", list(src))))
 		owner = user.mind
 		return
 
 	if(user.mind != owner)
 		if(IS_WIZARD_APPRENTICE(user))
-			to_chat(user, span_warning("If you got caught sneaking a peek from your teacher's spellbook, you'd likely be expelled from the Wizard Academy. Better not."))
+			to_chat(user, span_warning(LANG("obj.703c024cc27d3502", null)))
 		else
-			to_chat(user, span_warning("[src] does not recognize you as its owner and refuses to open!"))
+			to_chat(user, span_warning(LANG("obj.aa4173ace0b2744f", list(src))))
 		return
 
 	return ..()
@@ -80,7 +81,7 @@
 	var/success_string
 	if(istype(tool, /obj/item/antag_spawner/contract))
 		if(astype(tool, /obj/item/antag_spawner/contract).used)
-			to_chat(user, span_warning("The contract has been used, you can't get your points back now!"))
+			to_chat(user, span_warning(LANG("obj.1e561a6d6070ad66", null)))
 			return ITEM_INTERACT_BLOCKING
 		spawner_entry = locate(/datum/spellbook_entry/item/contract) in entries
 		success_string = "You feed the contract back into the spellbook, refunding your points."
@@ -96,10 +97,10 @@
 	if(isnull(success_string))
 		return NONE
 	if(!istype(spawner_entry)) // No success_string means it isn't a valid item, no spawner entry means the book doesn't have it(somehow)(they had this check before I got here)
-		to_chat(user, span_warning("[src] doesn't seem to want to refund [tool]."))
+		to_chat(user, span_warning(LANG("obj.34e9a265b0048b7d", list(src, tool))))
 		return ITEM_INTERACT_BLOCKING
 	if(!spawner_entry.can_refund(user, src, tool))
-		to_chat(user, span_warning("You can't refund [src]."))
+		to_chat(user, span_warning(LANG("obj.3639a6ab4391cf68", list(src))))
 		return ITEM_INTERACT_BLOCKING
 
 	to_chat(user, span_notice(success_string))
@@ -162,7 +163,7 @@
 		return
 	var/mob/living/carbon/human/wizard = usr
 	if(!istype(wizard))
-		to_chat(wizard, span_warning("The book doesn't seem to listen to lower life forms."))
+		to_chat(wizard, span_warning(LANG("obj.e4f348635aacc33b", null)))
 		return FALSE
 
 	// Actions that are always available
@@ -186,7 +187,7 @@
 			return TRUE
 
 	if(uses < initial(uses))
-		to_chat(wizard, span_warning("You need to have all your spell points to do this!"))
+		to_chat(wizard, span_warning(LANG("obj.0f07e876774f6120", null)))
 		return FALSE
 
 	// Actions that are only available if you have full spell points
@@ -215,7 +216,7 @@
 	to_buy.times++
 	if(HAS_TRAIT(user, TRAIT_SPELLS_LOTTERY))
 		if(prob(50 / to_buy.cost))
-			to_chat(user, span_notice("This spell was given to you for free!"))
+			to_chat(user, span_notice(LANG("obj.fa8b89dd15986b66", null)))
 			return TRUE
 	uses -= to_buy.cost
 	return TRUE

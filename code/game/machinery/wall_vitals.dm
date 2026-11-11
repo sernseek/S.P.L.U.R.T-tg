@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/wallframe/status_display/vitals
 	name = "vitals display frame"
 	desc = "Used to build vitals displays. Secure on a wall nearby a stasis bed, operating table, \
@@ -153,7 +154,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 		set_patient(connected_table.patient)
 
 /obj/machinery/vitals_reader/wrench_act(mob/living/user, obj/item/tool)
-	balloon_alert(user, "detaching...")
+	balloon_alert(user, LANG("obj.277a49dcdf87163f", null))
 	if(tool.use_tool(src, user, 6 SECONDS, volume = 50))
 		playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
 		deconstruct(TRUE)
@@ -165,16 +166,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 
 	if(isnull(connected))
 		if(find_machine())
-			balloon_alert(user, "connected to [connected.name]")
+			balloon_alert(user, LANG("obj.19792e7ea494e1a1", list(connected.name)))
 		else
-			balloon_alert(user, "no connectable machines nearby!")
+			balloon_alert(user, LANG("obj.b02d926103d40680", null))
 		return ITEM_INTERACT_SUCCESS
 
-	balloon_alert(user, "disconnecting...")
+	balloon_alert(user, LANG("obj.731dc5a8b0340741", null))
 	if(!do_after(user, 2 SECONDS, target = src))
 		return ITEM_INTERACT_BLOCKING
 
-	balloon_alert(user, "disconnected from [connected.name]")
+	balloon_alert(user, LANG("obj.aeb0fd1de9ab5d10", list(connected.name)))
 	set_connection(null)
 	return ITEM_INTERACT_SUCCESS
 
@@ -210,21 +211,20 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/vitals_reader/advanced, 32)
 		return
 
 	if(isnull(connected))
-		. += span_notice("The display is currently not connected to anything. \
-			Use a [EXAMINE_HINT("multitool")] to connect it to a neighboring machine.")
+		. += span_notice(LANG("obj.310e5dfeb00a51c5", list(EXAMINE_HINT("multitool"))))
 		return
 
 	if(isnull(patient) || user.is_blind())
 		return
 
 	if(machine_stat & EMPED)
-		. += span_warning("The display is flickering erratically!")
+		. += span_warning(LANG("obj.c1fd6a523cbe68b8", null))
 		return
 
 	if(!issilicon(user) && !isobserver(user) && get_dist(src, user) > 2)
-		. += span_notice("<i>You are too far away to read the display.</i>")
+		. += span_notice(LANG("obj.4fe03d1b32004a2c", null))
 	else if(HAS_TRAIT(user, TRAIT_DUMB) || !user.can_read(src, reading_check_flags = READING_CHECK_LITERACY, silent = TRUE))
-		. += span_warning("You try to comprehend the display, but it's too complex for you to understand.")
+		. += span_warning(LANG("obj.3cc803089013f286", null))
 	else
 		. += healthscan(user, patient, mode = SCANNER_CONDENSED, scanpower = src.scanpower, tochat = FALSE)
 		. += chemscan(user, patient, tochat = FALSE)

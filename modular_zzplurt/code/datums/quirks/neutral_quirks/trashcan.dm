@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/trashcan
 	name = "Trashcan"
 	desc = "You are able to consume and digest trash."
@@ -40,10 +41,10 @@
 
 	playsound(H.loc,'sound/items/eatfood.ogg', rand(10,50), 1)
 	if(vore_component?.selected_belly)
-		H.visible_message(span_notice("[H] [vore_component.selected_belly.insert_verb]s the [I.name] into their [vore_component.selected_belly.name]"),
-			span_notice("You [vore_component.selected_belly.insert_verb] the [I.name] into your [vore_component.selected_belly.name]"))
+		H.visible_message(span_notice(LANG("datum.c70cc92911968989", list(H, vore_component.selected_belly.insert_verb, I.name, vore_component.selected_belly.name))),
+			span_notice(LANG("datum.72ff7dd9b630b388", list(vore_component.selected_belly.insert_verb, I.name, vore_component.selected_belly.name))))
 	else
-		H.visible_message(span_notice("[H] consumes the [I.name]."))
+		H.visible_message(span_notice(LANG("datum.f0a078123688a401", list(H, I.name))))
 
 	qdel(I) // This is easier than adding snowflake code to vore stuff
 

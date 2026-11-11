@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ////////////////////////////////
 /proc/message_admins(msg)
 	msg = "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">[msg]</span></span>"
@@ -36,7 +37,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////ADMIN HELPER PROCS
 
-ADMIN_VERB(spawn_atom, R_SPAWN, "Spawn", "Spawn an atom.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(spawn_atom, R_SPAWN, "生成", "Spawn an atom.", ADMIN_CATEGORY_DEBUG)
 	VERB_ARG(object, VERB_ARG_TYPE_TYPEPATH, VERB_ARG_SOURCE_INPUT)
 	var/static/list/atom_types
 	if (isnull(atom_types))
@@ -76,7 +77,7 @@ ADMIN_VERB(spawn_atom, R_SPAWN, "Spawn", "Spawn an atom.", ADMIN_CATEGORY_DEBUG)
 	BLACKBOX_LOG_ADMIN_VERB("Spawn Atom")
 	return TRUE
 
-ADMIN_VERB(spawn_atom_pod, R_SPAWN, "PodSpawn", "Spawn an atom via supply drop.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(spawn_atom_pod, R_SPAWN, "补给舱生成", "Spawn an atom via supply drop.", ADMIN_CATEGORY_DEBUG)
 	VERB_ARG(object, VERB_ARG_TYPE_TYPEPATH, VERB_ARG_SOURCE_INPUT)
 	var/chosen = pick_closest_path(object)
 	if(!chosen)
@@ -97,7 +98,7 @@ ADMIN_VERB(spawn_atom_pod, R_SPAWN, "PodSpawn", "Spawn an atom via supply drop."
 	log_admin("[key_name(user)] pod-spawned [chosen] at [AREACOORD(user.mob)]")
 	BLACKBOX_LOG_ADMIN_VERB("Podspawn Atom")
 
-ADMIN_VERB(spawn_cargo, R_SPAWN, "Spawn Cargo", "Spawn a cargo crate.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(spawn_cargo, R_SPAWN, "生成货物", "Spawn a cargo crate.", ADMIN_CATEGORY_DEBUG)
 	VERB_ARG(object, VERB_ARG_TYPE_TYPEPATH, VERB_ARG_SOURCE_INPUT)
 	var/chosen = pick_closest_path(object, make_types_fancy(subtypesof(/datum/supply_pack)))
 	if(!chosen)
@@ -109,7 +110,7 @@ ADMIN_VERB(spawn_cargo, R_SPAWN, "Spawn Cargo", "Spawn a cargo crate.", ADMIN_CA
 	log_admin("[key_name(user)] spawned cargo pack [chosen] at [AREACOORD(user.mob)]")
 	BLACKBOX_LOG_ADMIN_VERB("Spawn Cargo")
 
-ADMIN_VERB(create_or_modify_area, R_DEBUG, "Create Or Modify Area", "Create of modify an area. wow.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(create_or_modify_area, R_DEBUG, "创建或修改区域", "Create of modify an area. wow.", ADMIN_CATEGORY_DEBUG)
 	create_area(user.mob)
 
 //Kicks all the clients currently in the lobby. The second parameter (kick_only_afk) determins if an is_afk() check is ran, or if all clients are kicked
@@ -143,7 +144,7 @@ ADMIN_VERB(create_or_modify_area, R_DEBUG, "Create Or Modify Area", "Create of m
 		question = "This mob already has a user ([tomob.key]) in control of it! "
 	question += "Are you sure you want to place [frommob.name]([frommob.key]) in control of [tomob.name]?"
 
-	var/ask = tgui_alert(usr, question, "Place ghost in control of mob?", list("Yes", "No"))
+	var/ask = tgui_alert(usr, question, LANG("datum.83b45c15e68da421", null), list("Yes", "No"))
 	if (ask != "Yes")
 		return TRUE
 

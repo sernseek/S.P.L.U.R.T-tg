@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 SUBSYSTEM_DEF(area_spawn)
 	name = "Area Spawn"
 	ss_flags = SS_NO_FIRE
@@ -361,7 +362,7 @@ SUBSYSTEM_DEF(area_spawn)
 /**
  * Show overlay over area of priorities. Wall priority over open priority.
  */
-ADMIN_VERB(test_area_spawner, R_DEBUG, "Test Area Spawner", "Show area spawner placement candidates as an overlay.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(test_area_spawner, R_DEBUG, "测试区域生成器", "Show area spawner placement candidates as an overlay.", ADMIN_CATEGORY_DEBUG)
 	VERB_ARG_TYPED(area, VERB_ARG_TYPE_AREA, VERB_ARG_SOURCE_WORLD, /area)
 	for(var/obj/effect/turf_test/old_test in area)
 		qdel(old_test)

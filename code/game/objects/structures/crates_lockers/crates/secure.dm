@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/closet/crate/secure
 	desc = "A secure crate."
 	name = "secure crate"
@@ -32,7 +33,7 @@
 
 /obj/structure/closet/crate/secure/proc/boom(mob/user)
 	if(user)
-		to_chat(user, span_danger("The crate's anti-tamper system activates!"))
+		to_chat(user, span_danger(LANG("obj.11eb8ecf9f865c12", null)))
 		log_bomber(user, "has detonated a", src)
 	dump_contents()
 	explosion(src, heavy_impact_range = 1, light_impact_range = 5, flash_range = 5)

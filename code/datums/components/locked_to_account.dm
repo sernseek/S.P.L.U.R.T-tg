@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 #define DENY_SOUND_COOLDOWN (2 SECONDS)
 
@@ -36,10 +37,10 @@
 	SIGNAL_HANDLER
 	// BUBBER EDIT ADDITION BEGIN - departmental locks open for a whole department, so say so
 	if(istype(buyer_account, /datum/bank_account/department))
-		examine_list += span_warning("An account lock prevents this from opening except by [buyer_account.account_holder] personnel.")
+		examine_list += span_warning(LANG("datum.57670a3c56c63d5b", list(buyer_account.account_holder)))
 		return
 	// BUBBER EDIT ADDITION END
-	examine_list += span_warning("An account lock prevents this from opening except by the purchasing account holder.")
+	examine_list += span_warning(LANG("datum.44d25152006aca0a", null))
 
 // BUBBER EDIT ADDITION BEGIN - the crate's own lock needs this check too, see modular_zubbers/code/modules/cargo/account_crates.dm
 /**
@@ -55,12 +56,12 @@
 	var/obj/item/card/id/id_card = user.get_idcard(TRUE)
 	if(isnull(id_card))
 		if(!silent)
-			deny(source, user, "No ID detected!")
+			deny(source, user, LANG("datum.f1378ade3d9e9ab5", null)) // ZH EDIT CHANGE - I18N - ORIGINAL: deny(source, user, "No ID detected!")
 		return FALSE
 
 	if(!id_card.registered_account)
 		if(!silent)
-			deny(source, user, "No linked bank account detected!")
+			deny(source, user, LANG("datum.4a3a3d6db7d274ca", null)) // ZH EDIT CHANGE - I18N - ORIGINAL: deny(source, user, "No linked bank account detected!")
 		return FALSE
 
 	if(istype(buyer_account, /datum/bank_account/department))
@@ -71,7 +72,7 @@
 		return TRUE
 
 	if(!silent)
-		deny(source, user, "Bank account does not match with buyer!")
+		deny(source, user, LANG("datum.1a0bc4267714af28", null)) // ZH EDIT CHANGE - I18N - ORIGINAL: deny(source, user, "Bank account does not match with buyer!")
 	return FALSE
 // BUBBER EDIT ADDITION END
 
@@ -126,13 +127,13 @@
 /// emag skips this whole check and goes straight to remove_lock
 /datum/component/locked_to_account/proc/on_emag(obj/structure/closet/source, mob/emagger)
 	SIGNAL_HANDLER
-	emagger.balloon_alert(emagger, "account lock bypassed")
+	emagger.balloon_alert(emagger, LANG("datum.dbf58af7d11a4879", null))
 	remove_lock(source, emagger)
 
 /// unlocks the crate  and removes this component
 /datum/component/locked_to_account/proc/remove_lock(obj/structure/closet/source, mob/user)
-	source.visible_message(span_notice("[source]'s account lock disengages with a soft click."))
-	to_chat(user, span_notice("You unlock [source]."))
+	source.visible_message(span_notice(LANG("datum.ea3b89afefa3bfdb", list(source))))
+	to_chat(user, span_notice(LANG("datum.e85c8e13804f7be1", list(source))))
 	source.update_appearance()
 	qdel(src)
 

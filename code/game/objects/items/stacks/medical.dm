@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/stack/medical
 	name = "medical pack"
 	singular_name = "medical pack"
@@ -142,8 +143,8 @@
 	if(patient == user)
 		if(!silent)
 			user.visible_message(
-				span_notice("[user] starts to apply [src] on [user.p_them()]self..."),
-				span_notice("You begin applying [src] on yourself..."),
+				span_notice(LANG("obj.9e700588e61d8a7e", list(user, src, user.p_them()))),
+				span_notice(LANG("obj.494a2e1ba79ada41", list(src))),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 		if(!do_after(
@@ -161,8 +162,8 @@
 	else if(other_delay)
 		if(!silent)
 			user.visible_message(
-				span_notice("[user] starts to apply [src] on [patient]."),
-				span_notice("You begin applying [src] on [patient]..."),
+				span_notice(LANG("obj.2f9d5ff9a2699d8c", list(user, src, patient))),
+				span_notice(LANG("obj.789345c2068e0c65", list(src, patient))),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 		if(!do_after(
@@ -180,8 +181,8 @@
 	else
 		if(!silent)
 			user.visible_message(
-				span_notice("[user] applies [src] on [patient]."),
-				span_notice("You apply [src] on [patient]."),
+				span_notice(LANG("obj.57058f0003dae9da", list(user, src, patient))),
+				span_notice(LANG("obj.2fb2847d75432a59", list(src, patient))),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 
@@ -216,7 +217,7 @@
 	// second, handle what happens otherwise
 	if(!iscarbon(patient))
 		// behavior 0: non-carbons have no limbs so we can assume they are fully healed
-		patient.balloon_alert(user, "fully treated")
+		patient.balloon_alert(user, LANG("obj.a074fe022ed07e73", null))
 	else if(auto_change_zone)
 		// behavior 1: automatically pick another zone to heal
 		try_heal_auto_change_zone(patient, user, preferred_target, healed_zone)
@@ -236,7 +237,7 @@
 		other_affected_limbs += limb.body_zone
 
 	if(!length(other_affected_limbs))
-		patient.balloon_alert(user, "fully treated")
+		patient.balloon_alert(user, LANG("obj.a074fe022ed07e73", null))
 		return
 
 	var/next_picked = (preferred_target in other_affected_limbs) ? preferred_target : other_affected_limbs[1]
@@ -247,7 +248,7 @@
 /obj/item/stack/medical/proc/try_heal_manual_target(mob/living/carbon/patient, mob/living/user)
 	PRIVATE_PROC(TRUE)
 
-	patient.balloon_alert(user, "assessing injury...")
+	patient.balloon_alert(user, LANG("obj.3c2da1047ff1cbf1", null))
 	if(!do_after(user, 1 SECONDS, patient))
 		return
 	var/new_zone = check_zone(user.zone_selected)
@@ -271,7 +272,7 @@
 		return FALSE
 	if(!works_on_dead && patient.stat == DEAD)
 		if(!silent)
-			patient.balloon_alert(user, "[patient.p_theyre()] dead!")
+			patient.balloon_alert(user, LANG("obj.f92d80355089c036", list(patient.p_theyre())))
 		return FALSE
 
 	if(iscarbon(patient))
@@ -279,11 +280,11 @@
 		var/obj/item/bodypart/affecting = carbon_patient.get_bodypart(healed_zone)
 		if(!affecting) //Missing limb?
 			if(!silent)
-				carbon_patient.balloon_alert(user, "no [parse_zone(healed_zone)]!")
+				carbon_patient.balloon_alert(user, LANG("obj.e9a0d247d3bb381a", list(parse_zone(healed_zone))))
 			return FALSE
 		if(!IS_ORGANIC_LIMB(affecting)) //Limb must be organic to be healed - RR
 			if(!silent)
-				carbon_patient.balloon_alert(user, "[affecting.plaintext_zone] is not organic!")
+				carbon_patient.balloon_alert(user, LANG("obj.095eb9ebc8b4dd52", list(affecting.plaintext_zone)))
 			return FALSE
 
 		var/datum/wound/burn/flesh/any_burn_wound = locate() in affecting.wounds
@@ -295,28 +296,28 @@
 		if(!brute_to_heal && !burn_to_heal && !can_heal_burn_wounds && !can_suture_bleeding)
 			if(!silent)
 				if(!brute_to_heal && stop_bleeding) // no brute, no bleeding
-					carbon_patient.balloon_alert(user, "[affecting.plaintext_zone] is not bleeding or bruised!")
+					carbon_patient.balloon_alert(user, LANG("obj.94ac81dfd0783a82", list(affecting.plaintext_zone)))
 				else if(!burn_to_heal && (flesh_regeneration || sanitization) && any_burn_wound) // no burns, existing burn wounds are treated
-					carbon_patient.balloon_alert(user, "[affecting.plaintext_zone] is fully treated, give it time!")
+					carbon_patient.balloon_alert(user, LANG("obj.8e4a2b0bd4c698ef", list(affecting.plaintext_zone)))
 				else if(!affecting.brute_dam && !affecting.burn_dam) // not hurt at all
-					carbon_patient.balloon_alert(user, "[affecting.plaintext_zone] is not hurt!")
+					carbon_patient.balloon_alert(user, LANG("obj.0f3ccebe4e15a1de", list(affecting.plaintext_zone)))
 				else // probably hurt in some way but we are not the right item for this
-					carbon_patient.balloon_alert(user, "can't heal [affecting.plaintext_zone] with [name]!")
+					carbon_patient.balloon_alert(user, LANG("obj.9f10db8b7c3d25df", list(affecting.plaintext_zone, name)))
 			return FALSE
 		return TRUE
 
 	if(isanimal_or_basicmob(patient))
 		if(!heal_brute) // only brute can heal
 			if(!silent)
-				patient.balloon_alert(user, "can't heal with [name]!")
+				patient.balloon_alert(user, LANG("obj.7c83ee80537c472b", list(name)))
 			return FALSE
 		if(!(patient.mob_biotypes & MOB_ORGANIC))
 			if(!silent)
-				patient.balloon_alert(user, "no organic tissue!")
+				patient.balloon_alert(user, LANG("obj.cb7625df85b68585", null))
 			return FALSE
 		if(patient.health == patient.maxHealth)
 			if(!silent)
-				patient.balloon_alert(user, "not hurt!")
+				patient.balloon_alert(user, LANG("obj.b92229253323fb1d", null))
 			return FALSE
 		return TRUE
 
@@ -328,8 +329,8 @@
 /obj/item/stack/medical/proc/heal_carbon(mob/living/carbon/patient, mob/living/user, healed_zone)
 	var/obj/item/bodypart/affecting = patient.get_bodypart(healed_zone)
 	user.visible_message(
-		span_green("[user] applies [src] on [patient]'s [affecting.plaintext_zone]."),
-		span_green("You apply [src] on [patient]'s [affecting.plaintext_zone]."),
+		span_green(LANG("obj.ffec4be7d636dfc0", list(user, src, patient, affecting.plaintext_zone))),
+		span_green(LANG("obj.651d562b8b1837bc", list(src, patient, affecting.plaintext_zone))),
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
 	var/previous_damage = affecting.get_damage()
@@ -354,8 +355,8 @@
 /obj/item/stack/medical/proc/heal_simplemob(mob/living/patient, mob/living/user)
 	patient.adjust_brute_loss(-1 * (heal_brute * patient.maxHealth / 100))
 	user.visible_message(
-		span_green("[user] applies [src] on [patient]."),
-		span_green("You apply [src] on [patient]."),
+		span_green(LANG("obj.57058f0003dae9da", list(user, src, patient))),
+		span_green(LANG("obj.2fb2847d75432a59", list(src, patient))),
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
 	return TRUE
@@ -381,7 +382,7 @@
 	return list(/datum/reagent/medicine/c2/libital = 10)
 
 /obj/item/stack/medical/bruise_pack/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] is bludgeoning [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.ec344f15b15e34c3", list(user, user.p_them(), src, user.p_theyre()))))
 	return BRUTELOSS
 
 /obj/item/stack/medical/wrap
@@ -449,20 +450,20 @@
 		treatment_delay *= 0.5
 		if(user == patient)
 			user.visible_message(
-				span_warning("[user] begins expertly wrapping the wounds on [p_their()]'s [limb.plaintext_zone] with [src]..."),
-				span_warning("You begin quickly wrapping the wounds on your [limb.plaintext_zone] with [src], keeping the holo-image indications in mind..."),
+				span_warning(LANG("obj.53365dac4e9d7080", list(user, p_their(), limb.plaintext_zone, src))),
+				span_warning(LANG("obj.1c2dbb184fd759e2", list(limb.plaintext_zone, src))),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 		else
 			user.visible_message(
-				span_warning("[user] begins expertly wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src]..."),
-				span_warning("You begin quickly wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src], keeping the holo-image indications in mind..."),
+				span_warning(LANG("obj.53365dac4e9d7080", list(user, patient, limb.plaintext_zone, src))),
+				span_warning(LANG("obj.c947fdff97195454", list(patient, limb.plaintext_zone, src))),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 	else
 		user.visible_message(
-			span_warning("[user] begins wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src]..."),
-			span_warning("You begin wrapping the wounds on [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone] with [src]..."),
+			span_warning(LANG("obj.5d71c12a11d574d4", list(user, patient, limb.plaintext_zone, src))),
+			span_warning(LANG("obj.5ef5731bc3947085", list(user == patient ? "your" : "[patient]'s", limb.plaintext_zone, src))),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
 	if(heal_begin_sound)
@@ -477,10 +478,10 @@
 
 /// Callback for limb applicability component
 /obj/item/stack/medical/wrap/proc/on_gauze_limb(mob/user, mob/living/patient, obj/item/bodypart/limb)
-	patient.balloon_alert(user, "wrapped [limb.plaintext_zone]")
+	patient.balloon_alert(user, LANG("obj.64d7e2d4de4e1318", list(limb.plaintext_zone)))
 	user.visible_message(
-		span_green("[user] applies [src] to [patient]'s [limb.plaintext_zone]."),
-		span_green("You bandage the wounds on [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone]."),
+		span_green(LANG("obj.7032cacb7207084e", list(user, src, patient, limb.plaintext_zone))),
+		span_green(LANG("obj.3fd5804945ccdec8", list(user == patient ? "your" : "[patient]'s", limb.plaintext_zone))),
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
 	if(limb.cached_bleed_rate)
@@ -535,16 +536,16 @@
 /obj/item/stack/medical/wrap/gauze/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(tool.tool_behaviour == TOOL_WIRECUTTER || tool.get_sharpness())
 		if(get_amount() < 2)
-			balloon_alert(user, "not enough gauze!")
+			balloon_alert(user, LANG("obj.94e1c165cc0bb2cf", null))
 			return ITEM_INTERACT_BLOCKING
 		new /obj/item/stack/sheet/cloth(tool.drop_location())
 		if(IsReachableBy(user))
-			user.visible_message(span_notice("[user] cuts [src] into pieces of cloth with [tool]."), \
-				span_notice("You cut [src] into pieces of cloth with [tool]."), \
-				span_hear("You hear cutting."))
+			user.visible_message(span_notice(LANG("obj.f0f1df75a960a941", list(user, src, tool))), \
+				span_notice(LANG("obj.c6b8591ebf377965", list(src, tool))), \
+				span_hear(LANG("obj.cbfa7730eca28115", null)))
 		else //telekinesis
-			visible_message(span_notice("[tool] cuts [src] into pieces of cloth."), \
-				blind_message = span_hear("You hear cutting."))
+			visible_message(span_notice(LANG("obj.18743a6aa4fb44b4", list(tool, src))), \
+				blind_message = span_hear(LANG("obj.cbfa7730eca28115", null)))
 		use(2)
 		return ITEM_INTERACT_SUCCESS
 
@@ -552,7 +553,7 @@
 
 
 /obj/item/stack/medical/wrap/gauze/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] begins tightening [src] around [user.p_their()] neck! It looks like [user.p_they()] forgot how to use medical supplies!"))
+	user.visible_message(span_suicide(LANG("obj.f7eb5930127cc2cd", list(user, src, user.p_their(), user.p_they()))))
 	return OXYLOSS
 
 /obj/item/stack/medical/wrap/gauze/improvised
@@ -635,7 +636,7 @@
 	return list(/datum/reagent/medicine/c2/lenturi = 10)
 
 /obj/item/stack/medical/ointment/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] is squeezing [src] into [user.p_their()] mouth! [capitalize(user.p_do())]n't [user.p_they()] know that stuff is toxic?"))
+	user.visible_message(span_suicide(LANG("obj.e09251044763d3f2", list(user, src, user.p_their(), capitalize(user.p_do()), user.p_they()))))
 	return TOXLOSS
 
 /obj/item/stack/medical/mesh
@@ -679,26 +680,26 @@
 /obj/item/stack/medical/mesh/try_heal_checks(mob/living/patient, mob/living/user, healed_zone, silent = FALSE)
 	if(!is_open)
 		if(!silent)
-			balloon_alert(user, "open it first!")
+			balloon_alert(user, LANG("obj.c11fbd0784705ace", null))
 		return FALSE
 	return ..()
 
 /obj/item/stack/medical/mesh/click_alt(mob/living/user)
 	if(!is_open)
-		balloon_alert(user, "open it first!")
+		balloon_alert(user, LANG("obj.c11fbd0784705ace", null))
 		return CLICK_ACTION_BLOCKING
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/stack/medical/mesh/attack_hand(mob/user, list/modifiers)
 	if(!is_open && user.get_inactive_held_item() == src)
-		balloon_alert(user, "open it first!")
+		balloon_alert(user, LANG("obj.c11fbd0784705ace", null))
 		return
 	return ..()
 
 /obj/item/stack/medical/mesh/attack_self(mob/user)
 	if(!is_open)
 		is_open = TRUE
-		balloon_alert(user, "opened")
+		balloon_alert(user, LANG("obj.6c16667d2785151a", null))
 		update_appearance()
 		playsound(src, 'sound/items/poster/poster_ripped.ogg', 20, TRUE)
 		return
@@ -771,16 +772,16 @@
 	return "gel" + (tray_extended ? "" : "_out")
 
 /obj/item/stack/medical/bone_gel/attack(mob/living/patient, mob/user)
-	patient.balloon_alert(user, "no fractures!")
+	patient.balloon_alert(user, LANG("obj.6627342b3d2896bb", null))
 	return
 
 /obj/item/stack/medical/bone_gel/suicide_act(mob/living/user)
 	if(!iscarbon(user))
 		return
 	var/mob/living/carbon/patient = user
-	patient.visible_message(span_suicide("[patient] is squirting all of [src] into [patient.p_their()] mouth! That's not proper procedure! It looks like [patient.p_theyre()] trying to commit suicide!"))
+	patient.visible_message(span_suicide(LANG("obj.762651c6242735b4", list(patient, src, patient.p_their(), patient.p_theyre()))))
 	if(!do_after(patient, 2 SECONDS))
-		patient.visible_message(span_suicide("[patient] screws up like an idiot and still dies anyway!"))
+		patient.visible_message(span_suicide(LANG("obj.d1a5684f4c8e4263", list(patient))))
 		return BRUTELOSS
 
 	patient.emote("scream")

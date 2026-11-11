@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/bloodsucker
 	///Who owns this structure?
 	var/mob/living/owner
@@ -17,7 +18,7 @@
 		. += span_cult(ghost_desc)
 	if(IS_BLOODSUCKER(user) && vamp_desc)
 		if(!owner)
-			. += span_cult("It is unsecured. Click on [src] while in your haven to secure it in place to get its full potential.")
+			. += span_cult(LANG("obj.d5e820b22b4d2fe8", list(src)))
 			return
 		. += span_cult(vamp_desc)
 	if(IS_GHOUL(user) && ghoul_desc != "")
@@ -27,20 +28,20 @@
 
 /// This handles bolting down the structure.
 /obj/structure/bloodsucker/proc/bolt(mob/user)
-	to_chat(user, span_danger("You have secured [src] in place."))
-	to_chat(user, span_announce("* Bloodsucker Tip: Examine [src] to understand how it functions!"))
+	to_chat(user, span_danger(LANG("obj.963a9d0fa8833f8b", list(src))))
+	to_chat(user, span_announce(LANG("obj.e5495ae3c1de7898", list(src))))
 	owner = user
 
 /// This handles unbolting of the structure.
 /obj/structure/bloodsucker/proc/unbolt(mob/user)
-	to_chat(user, span_danger("You have unsecured [src]."))
+	to_chat(user, span_danger(LANG("obj.37fdc1dff3a7ae85", list(src))))
 	owner = null
 
 /obj/structure/bloodsucker/attackby(obj/item/item, mob/living/user, params)
 	/// If a Bloodsucker tries to wrench it in place, yell at them.
 	if(item.tool_behaviour == TOOL_WRENCH && !anchored && IS_BLOODSUCKER(user))
 		user.playsound_local(null, 'sound/machines/buzz/buzz-sigh.ogg', 40, FALSE, pressure_affected = FALSE)
-		to_chat(user, span_announce("* Bloodsucker Tip: Examine Bloodsucker structures to understand how they function!"))
+		to_chat(user, span_announce(LANG("obj.a43ac769ee54edf2", null)))
 		return
 	return ..()
 
@@ -50,14 +51,14 @@
 	/// Claiming the Rack instead of using it?
 	if(istype(bloodsuckerdatum) && !owner)
 		if(!bloodsuckerdatum.bloodsucker_haven_area)
-			to_chat(user, span_danger("You don't have a haven. Claim a coffin to make that location your haven."))
+			to_chat(user, span_danger(LANG("obj.c092b46ac76e0808", null)))
 			return FALSE
 		if(bloodsuckerdatum.bloodsucker_haven_area != get_area(src))
-			to_chat(user, span_danger("You may only activate this structure in your haven: [bloodsuckerdatum.bloodsucker_haven_area]."))
+			to_chat(user, span_danger(LANG("obj.cb2e1d6cf960aef4", list(bloodsuckerdatum.bloodsucker_haven_area))))
 			return FALSE
 
 		/// Radial menu for securing your Persuasion rack in place.
-		to_chat(user, span_notice("Do you wish to secure [src] here?"))
+		to_chat(user, span_notice(LANG("obj.17a43af76a7819b3", list(src))))
 		var/static/list/secure_options = list(
 			"Yes" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_yes"),
 			"No" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_no"))
@@ -75,7 +76,7 @@
 /obj/structure/bloodsucker/click_alt(mob/user)
 	. = ..()
 	if(user == owner && user.Adjacent(src))
-		balloon_alert(user, "unbolt [src]?")
+		balloon_alert(user, LANG("obj.a49c19d5e1cc5d6f", list(src)))
 		var/static/list/unclaim_options = list(
 			"Yes" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_yes"),
 			"No" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_no"),
@@ -141,8 +142,7 @@
 	. = ..()
 	var/datum/antagonist/bloodsucker/bloodsuckerdatum = IS_BLOODSUCKER(user)
 	if(bloodsuckerdatum)
-		. += span_cult("You can support a total of [convert_integer_to_words(bloodsuckerdatum.max_ghouls())] [bloodsuckerdatum.max_ghouls() == 1 ? "ghoul" : "ghouls"], \
-		with [convert_integer_to_words(bloodsuckerdatum.free_ghoul_slots())] [bloodsuckerdatum.free_ghoul_slots() == 1 ? "slot" : "slots"] remaining.")
+		. += span_cult(LANG("obj.28aca50bdc0d1ae6", list(convert_integer_to_words(bloodsuckerdatum.max_ghouls()), bloodsuckerdatum.max_ghouls() == 1 ? "ghoul" : "ghouls", convert_integer_to_words(bloodsuckerdatum.free_ghoul_slots()), bloodsuckerdatum.free_ghoul_slots() == 1 ? "slot" : "slots")))
 
 /obj/structure/bloodsucker/ghoulrack/atom_deconstruct(disassembled = TRUE)
 	. = ..()
@@ -163,16 +163,16 @@
 /obj/structure/bloodsucker/ghoulrack/mouse_drop_receive(atom/movable/movable_atom, mob/user, params)
 	var/mob/living/living_target = movable_atom
 	if(!anchored && IS_BLOODSUCKER(user))
-		user.balloon_alert(user, "not secured!")
-		to_chat(user, span_danger("Until this rack is secured in place, it cannot serve its purpose."))
-		to_chat(user, span_announce("* Bloodsucker Tip: Examine the Persuasion Rack to understand how it functions!"))
+		user.balloon_alert(user, LANG("obj.801f0be9a529882b", null))
+		to_chat(user, span_danger(LANG("obj.6f3d2b69ec0df1e3", null)))
+		to_chat(user, span_announce(LANG("obj.b15c40612e7ba93d", null)))
 		return
 	// Default checks
 	if(!isliving(movable_atom) || !living_target.Adjacent(src) || living_target == user || !isliving(user) || has_buckled_mobs() || user.incapacitated || living_target.buckled)
 		return
 	// Don't buckle Silicon to it please.
 	if(issilicon(living_target))
-		to_chat(user, span_danger("You realize that this machine cannot be ghouled, therefore it is useless to buckle them."))
+		to_chat(user, span_danger(LANG("obj.32a39783455ece1e", null)))
 		return
 	if(do_after(user, 5 SECONDS, living_target))
 		attach_victim(living_target, user)
@@ -201,8 +201,8 @@
 	if(!buckle_mob(target))
 		return
 	user.visible_message(
-		span_notice("[user] straps [target] into the rack, immobilizing them."),
-		span_boldnotice("You secure [target] tightly in place. They won't escape you now."),
+		span_notice(LANG("obj.05345b56579a1f2e", list(user, target))),
+		span_boldnotice(LANG("obj.deac57236300affc", list(target))),
 	)
 
 	playsound(loc, 'sound/effects/pop_expl.ogg', 25, 1)
@@ -221,16 +221,16 @@
 
 	if(buckled_mob == user)
 		buckled_mob.visible_message(
-			span_danger("[user] tries to release themself from the rack!"),
-			span_danger("You attempt to release yourself from the rack!"),
-			span_hear("You hear a squishy wet noise."))
+			span_danger(LANG("obj.123ca39d58fa5c91", list(user))),
+			span_danger(LANG("obj.3aa504820b1d5581", null)),
+			span_hear(LANG("obj.042cea85fe252252", null)))
 		if(!do_after(user, 20 SECONDS, buckled_mob))
 			return
 	else
 		buckled_mob.visible_message(
-			span_danger("[user] tries to pull [buckled_mob] rack!"),
-			span_danger("[user] tries to pull [buckled_mob] rack!"),
-			span_hear("You hear a squishy wet noise."))
+			span_danger(LANG("obj.23bce3566b8f8d8b", list(user, buckled_mob))),
+			span_danger(LANG("obj.23bce3566b8f8d8b", list(user, buckled_mob))),
+			span_hear(LANG("obj.042cea85fe252252", null)))
 		if(!do_after(user, 10 SECONDS, buckled_mob))
 			return
 
@@ -240,7 +240,7 @@
 	. = ..()
 	if(!.)
 		return
-	visible_message(span_danger("[buckled_mob][buckled_mob.stat == DEAD ? "'s corpse" : ""] slides off of the rack."))
+	visible_message(span_danger(LANG("obj.8ba22f4f9283d7c2", list(buckled_mob, buckled_mob.stat == DEAD ? "'s corpse" : ""))))
 	density = FALSE
 	buckled_mob.Paralyze(2 SECONDS)
 	update_appearance(UPDATE_ICON)
@@ -260,8 +260,8 @@
 		user_unbuckle_mob(buckled_carbons, user)
 		return
 	if(!bloodsuckerdatum.my_clan)
-		to_chat(user, span_warning("You can't ghoul people until you enter a Clan (Through your Antagonist UI button)"))
-		user.balloon_alert(user, "join a clan first!")
+		to_chat(user, span_warning(LANG("obj.f8435f87ccd96ccb", null)))
+		user.balloon_alert(user, LANG("obj.2b92356f4527e667", null))
 		return
 	var/datum/antagonist/ghoul/ghouldatum = IS_GHOUL(buckled_carbons)
 	// Are they our Ghoul?
@@ -269,8 +269,8 @@
 		SEND_SIGNAL(bloodsuckerdatum, COMSIG_BLOODSUCKER_INTERACT_WITH_GHOUL, ghouldatum)
 		return
 	if(bloodsuckerdatum.free_ghoul_slots() < 1)
-		to_chat(user, span_warning("You can't ghoul more people until you level up more! You are currently at [bloodsuckerdatum.free_ghoul_slots()] active / [bloodsuckerdatum.max_ghouls()] max ghouls."))
-		user.balloon_alert(user, "not enough ghoul slots!")
+		to_chat(user, span_warning(LANG("obj.c80d56c6c65f9ab4", list(bloodsuckerdatum.free_ghoul_slots(), bloodsuckerdatum.max_ghouls()))))
+		user.balloon_alert(user, LANG("obj.2aa5735167aa2832", null))
 		return
 
 
@@ -289,20 +289,20 @@
 	if(IS_GHOUL(target))
 		var/datum/antagonist/ghoul/ghouldatum = IS_GHOUL(target)
 		if(!ghouldatum.master.broke_masquerade)
-			balloon_alert(user, "someone else's ghoul!")
+			balloon_alert(user, LANG("obj.a758693d245b27f3", null))
 			return FALSE
 
 	var/disloyalty_requires = RequireDisloyalty(user, target)
 	if(disloyalty_requires == GHOULING_BANNED)
 		if(target.ckey)
-			balloon_alert(user, "can't be ghouled!")
+			balloon_alert(user, LANG("obj.daf2c88990978ce0", null))
 		else
-			balloon_alert(user, "target has no mind!")
+			balloon_alert(user, LANG("obj.31d4588a98976ea3", null))
 		return FALSE
 
 	// Conversion Process
 	if(convert_progress)
-		balloon_alert(user, "spilling blood...")
+		balloon_alert(user, LANG("obj.1f276ab6d8e1f349", null))
 		bloodsuckerdatum.AdjustBloodVolume(-TORTURE_BLOOD_HALF_COST)
 		if(!do_torture(user, target))
 			return FALSE
@@ -313,27 +313,27 @@
 
 		// We're done? Let's see if they can be Ghoul.
 		if(convert_progress)
-			balloon_alert(user, "needs more persuasion...")
+			balloon_alert(user, LANG("obj.04d7422d767592f5", null))
 			return
 
 		if(disloyalty_requires)
-			balloon_alert(user, "has external loyalties! more persuasion required!")
+			balloon_alert(user, LANG("obj.b045ba0563ef8f9b", null))
 		else
-			balloon_alert(user, "ready for communion!")
+			balloon_alert(user, LANG("obj.3928337ee0397e49", null))
 		return
 
 	if(!disloyalty_confirm && disloyalty_requires)
 		if(!do_disloyalty(user, target))
 			return
 		if(!disloyalty_confirm)
-			balloon_alert(user, "refused persuasion!")
+			balloon_alert(user, LANG("obj.c10d51c83f3cb9de", null))
 		else
-			balloon_alert(user, "ready for communion!")
+			balloon_alert(user, LANG("obj.3928337ee0397e49", null))
 		return
 
-	user.balloon_alert_to_viewers("smears blood...", "painting bloody marks...")
+	user.balloon_alert_to_viewers(LANG("obj.789dc9062778c2b4", null), LANG("obj.6e67831133d12c3a", null))
 	if(!do_after(user, 5 SECONDS, target))
-		balloon_alert(user, "interrupted!")
+		balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 		return
 	// Convert to Ghoul!
 	bloodsuckerdatum.AdjustBloodVolume(-TORTURE_CONVERSION_COST)
@@ -376,8 +376,8 @@
 	if(held_item)
 		held_item.play_tool_sound(target)
 	target.visible_message(
-		span_danger("[user] performs a ritual, spilling some of [target]'s blood from their [selected_bodypart.name] and shaking them up!"),
-		span_userdanger("[user] performs a ritual, spilling some blood from your [selected_bodypart.name], shaking you up!"))
+		span_danger(LANG("obj.dead939d753c4475", list(user, target, selected_bodypart.name))),
+		span_userdanger(LANG("obj.c5aaf8bf633b1ed5", list(user, selected_bodypart.name))))
 
 	INVOKE_ASYNC(target, TYPE_PROC_REF(/mob, emote), "scream")
 	target.set_timed_status_effect(5 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
@@ -392,12 +392,11 @@
 	if(is_banned_from(target.ckey, ROLE_BLOODSUCKER))
 		return TRUE
 	disloyalty_offered = TRUE
-	to_chat(user, span_notice("[target] has been given the opportunity for servitude. You await their decision..."))
+	to_chat(user, span_notice(LANG("obj.e321d070a4b9b7aa", list(target))))
 	var/alert_response = tgui_alert(
 		user = target, \
-		message = "You are being tortured! Do you want to give in and pledge your undying loyalty to [user]? \n\
-			You will not lose your current objectives, but they come second to the will of your new master!", \
-		title = "THE HORRIBLE PAIN! WHEN WILL IT END?!",
+		message = LANG("obj.e2bb461f95fb3bb2", list(user)), \
+		title = LANG("obj.a8cc6d365d637cd4", null),
 		buttons = list("Accept", "Refuse"),
 		timeout = 10 SECONDS, \
 		autofocus = TRUE, \
@@ -406,12 +405,12 @@
 		if("Accept")
 			disloyalty_confirm = TRUE
 			target.visible_message(
-				span_notice("[target] gives in to [user]'s offer of servitude!"),
-				span_userdanger("You give in to [user]'s offer of servitude!"))
+				span_notice(LANG("obj.c11ce2d929b21b32", list(target, user))),
+				span_userdanger(LANG("obj.6c6a921115e67988", list(user))))
 		else
 			target.visible_message(
-				span_danger("[target] stares defiantly at [user], refusing to give in!"),
-				span_danger("You stare defiantly at [user], refusing to give in!"))
+				span_danger(LANG("obj.60adadf259798790", list(target, user))),
+				span_danger(LANG("obj.9c7cd1ba7d5ef30c", list(user))))
 	disloyalty_offered = FALSE
 	return TRUE
 
@@ -495,12 +494,12 @@
 		return
 	if(IS_UNCONSCIOUS_OR_CRIT(user))
 		return
-	user.balloon_alert_to_viewers("motions their hand at [src]")
+	user.balloon_alert_to_viewers(LANG("obj.feeb5bdfa469ce59", list(src)))
 	toggle(user)
 
 /obj/structure/bloodsucker/candelabrum/proc/toggle(mob/user)
 	if(!anchored)
-		to_chat(user, span_danger("You can't turn this on while it is not secured!"))
+		to_chat(user, span_danger(LANG("obj.9ba5f243216c2ef0", null)))
 		return
 	lit = !lit
 	if(lit)
@@ -508,7 +507,7 @@
 		set_light(2, 3, "#66FFFF")
 		START_PROCESSING(SSobj, src)
 	else
-		desc = "Despite not being lit, it makes your skin crawl."
+		desc = LANG("obj.681bb728f19cdace", null)
 		set_light(0)
 		STOP_PROCESSING(SSobj, src)
 	update_icon()
@@ -587,19 +586,19 @@
 // Buckling
 /obj/structure/bloodsucker/bloodthrone/buckle_mob(mob/living/user, force = FALSE, check_loc = TRUE)
 	if(!anchored)
-		to_chat(user, span_announce("[src] is not bolted to the ground!"))
+		to_chat(user, span_announce(LANG("obj.669b7a9ea2251e93", list(src))))
 		return
 	. = ..()
 	user.visible_message(
-		span_notice("[user] sits down on [src]."),
-		span_boldnotice("You sit down onto [src]."),
+		span_notice(LANG("obj.85309f7b11835af2", list(user, src))),
+		span_boldnotice(LANG("obj.010e755249ec7e1d", list(src))),
 	)
 	if(IS_BLOODSUCKER(user))
 		RegisterSignal(user, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	else
 		unbuckle_mob(user)
 		user.Paralyze(10 SECONDS)
-		to_chat(user, span_cult("The power of the blood throne overwhelms you!"))
+		to_chat(user, span_cult(LANG("obj.78bd948599628d80", null)))
 
 /obj/structure/bloodsucker/bloodthrone/post_buckle_mob(mob/living/target)
 	. = ..()
@@ -608,7 +607,7 @@
 
 // Unbuckling
 /obj/structure/bloodsucker/bloodthrone/unbuckle_mob(mob/living/user, force = FALSE, can_fall = TRUE)
-	src.visible_message(span_danger("[user] unbuckles themselves from [src]."))
+	src.visible_message(span_danger(LANG("obj.75718bf62e8becd0", list(user, src))))
 	if(IS_BLOODSUCKER(user))
 		UnregisterSignal(user, COMSIG_MOB_SAY)
 	. = ..()

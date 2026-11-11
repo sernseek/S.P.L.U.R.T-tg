@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/mob_spawn/ghost_role/borer_egg
 	name = "borer egg"
 	desc = "An egg of a creature that is known to crawl inside of you, be careful."
@@ -41,7 +42,7 @@
 	forceMove(host_egg)
 	var/area/src_area = get_area(src)
 	if(src_area)
-		notify_ghosts("A cortical borer egg has been laid in \the [src_area.name].",
+		notify_ghosts(LANG("obj.57f1c758f02d0847", list(src_area.name)),
 			source = src,
 			notify_flags = NOTIFY_CATEGORY_NOFLASH & ~GHOST_NOTIFY_NOTIFY_SUICIDERS,
 			click_interact = TRUE,
@@ -63,7 +64,7 @@
 	return ..()
 
 /obj/item/borer_egg/attack_self(mob/user, modifiers)
-	to_chat(user, span_notice("You crush [src] within your grasp."))
+	to_chat(user, span_notice(LANG("obj.bf7fe563a8015893", list(src))))
 	new /obj/effect/decal/cleanable/food/egg_smudge(get_turf(user))
 	if(host_spawner)
 		QDEL_NULL(host_spawner)

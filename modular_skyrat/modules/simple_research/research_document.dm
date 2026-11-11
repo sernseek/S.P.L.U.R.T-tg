@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/crafting_recipe/research_paper
 	name = "Reseach Paper"
 	result = /obj/item/research_paper
@@ -48,32 +49,32 @@
 	. = ..()
 	var/skill_modifier = user.mind.get_skill_modifier(/datum/skill/research, SKILL_SPEED_MODIFIER)
 	var/shape_one = show_radial_menu(user, src, radial_icons_cache, require_near = TRUE)
-	to_chat(user, span_notice("You begin to [pick(thinking_list)] about the [shape_one]... and then [pick(thinking_list)] about their [pick(shape_parts)]..."))
+	to_chat(user, span_notice(LANG("obj.27318dc0604898d0", list(pick(thinking_list), shape_one, pick(thinking_list), pick(shape_parts)))))
 	if(!do_after(user, 5 SECONDS * skill_modifier, src))
-		to_chat(user, span_warning("You stopped researching."))
+		to_chat(user, span_warning(LANG("obj.c50bc9e4333513a4", null)))
 		return
 
 	user.mind?.adjust_experience(/datum/skill/research, 5)
 
 	var/shape_two = show_radial_menu(user, src, radial_icons_cache, require_near = TRUE)
-	to_chat(user, span_notice("You begin to [pick(thinking_list)] about the [shape_two]... and then [pick(thinking_list)] about their [pick(shape_parts)]..."))
+	to_chat(user, span_notice(LANG("obj.27318dc0604898d0", list(pick(thinking_list), shape_two, pick(thinking_list), pick(shape_parts)))))
 	if(!do_after(user, 5 SECONDS * skill_modifier, src))
-		to_chat(user, span_warning("You stopped researching."))
+		to_chat(user, span_warning(LANG("obj.c50bc9e4333513a4", null)))
 		return
 
 	user.mind?.adjust_experience(/datum/skill/research, 5)
 
 	var/shape_three = show_radial_menu(user, src, radial_icons_cache, require_near = TRUE)
-	to_chat(user, span_notice("You begin to [pick(thinking_list)] about the [shape_three]... and then [pick(thinking_list)] about their [pick(shape_parts)]..."))
+	to_chat(user, span_notice(LANG("obj.27318dc0604898d0", list(pick(thinking_list), shape_three, pick(thinking_list), pick(shape_parts)))))
 	if(!do_after(user, 5 SECONDS * skill_modifier, src))
-		to_chat(user, span_warning("You stopped researching."))
+		to_chat(user, span_warning(LANG("obj.c50bc9e4333513a4", null)))
 		return
 
 	user.mind?.adjust_experience(/datum/skill/research, 5)
 
 	var/datum/simple_research/find_research = GLOB.simple_research["[shape_one][shape_two][shape_three]"]
 	if(!find_research)
-		to_chat(user, span_warning("You were researching a dead end!"))
+		to_chat(user, span_warning(LANG("obj.4c387c181aa0a702", null)))
 		return
 
 	find_research = new find_research()
@@ -85,7 +86,7 @@
 				--failure_amount
 
 	if(failure_amount > 0)
-		to_chat(user, span_warning("You are unable to research this! You are missing [failure_amount] pre-requisite items!"))
+		to_chat(user, span_warning(LANG("obj.fc04340c235858d6", list(failure_amount))))
 		return
 
 	if(!locate(find_research.type) in discovered_items)
@@ -128,19 +129,19 @@
 		return
 
 	if(material_satisfied[number])
-		to_chat(user, span_warning("You have already used [attacking_stack] on this scrap!"))
+		to_chat(user, span_warning(LANG("obj.6c07f336a3802dec", list(attacking_stack))))
 		return
 
 	if(!attacking_stack.use(1))
-		to_chat(user, span_warning("You were unable to use [attacking_stack]!"))
+		to_chat(user, span_warning(LANG("obj.ceb0bb11fc15d6fd", list(attacking_stack))))
 		return
 
-	to_chat(user, span_notice("You use [attacking_stack] on [src]."))
+	to_chat(user, span_notice(LANG("obj.1b70dc667ebf88f3", list(attacking_stack, src))))
 
 	material_satisfied[number] = TRUE
 
 	if(material_satisfied[1] && material_satisfied[2])
 		new spawning_item(get_turf(src))
-		to_chat(user, span_notice("You completed [src]."))
+		to_chat(user, span_notice(LANG("obj.ad5a2d39015ceb0b", list(src))))
 		user.mind?.adjust_experience(/datum/skill/research, 5)
 		qdel(src)

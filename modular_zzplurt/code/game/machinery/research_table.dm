@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define POINT_TYPE_CARGO "cargo"
 #define POINT_TYPE_SCIENCE "science"
 
@@ -27,21 +28,21 @@
 /obj/machinery/research_table/examine(mob/user)
 	. = ..()
 	if(configured)
-		. += span_notice("The same person can be used up to [max_repeat_usage * tier] time\s.")
+		. += span_notice(LANG("obj.150a1ea92ea4f180", list(max_repeat_usage * tier)))
 	switch(point_type)
 		if(POINT_TYPE_SCIENCE)
-			. += span_notice("The table is set to generate science points.")
+			. += span_notice(LANG("obj.b5892a864c97291f", null))
 		else
-			. += span_notice("The table is set to generate money for cargo.")
+			. += span_notice(LANG("obj.99e88b3668a2aec3", null))
 	if(!configured && !panel_open)
-		. += span_notice("It's not configured yet, you could use a <b>multitool</b> to configure it.")
+		. += span_notice(LANG("obj.abc037a43e28b6b3", null))
 	if(panel_open)
-		. += span_notice("The panel is <b>screwed</b> open and you could change generation type with a <b>multitool</b>.")
+		. += span_notice(LANG("obj.e8e0632f81b86f15", null))
 
 /obj/machinery/research_table/multitool_act(mob/living/user, obj/item/I)
 	if(!user.combat_mode)
 		if(panel_open)
-			user.visible_message(span_notice("[user] begins changing the generation type on \the [src]."), span_notice("You begin changing the generation type on \the [src]."))
+			user.visible_message(span_notice(LANG("obj.fa37c7d690bc878a", list(user, src))), span_notice(LANG("obj.fa255344118f8dd2", list(src))))
 			if(do_after(user, 5 SECONDS, src))
 				point_type = point_type == POINT_TYPE_SCIENCE ? POINT_TYPE_CARGO : POINT_TYPE_SCIENCE
 				var/generation_message = null
@@ -50,17 +51,17 @@
 						generation_message = "generate research points for science"
 					else
 						generation_message = "generate money for cargo"
-				user.visible_message(span_notice("[user] finished changing the generation type on \the [src]."), span_notice("You change the generation type on \the [src] to [generation_message]."))
+				user.visible_message(span_notice(LANG("obj.8c56a9abc8dc808f", list(user, src))), span_notice(LANG("obj.196a58da2e562e6d", list(src, generation_message))))
 			else
-				to_chat(user, span_warning("You need to stand still and uninterrupted for 5 seconds!"))
+				to_chat(user, span_warning(LANG("obj.47857b028691edc5", null)))
 			return TRUE
 		else
-			user.visible_message(span_notice("[user] begins reconfiguring \the [src]."), span_notice("You begin reconfiguring \the [src]."))
+			user.visible_message(span_notice(LANG("obj.4c794cdf919cc71e", list(user, src))), span_notice(LANG("obj.39d1d63211699a0d", list(src))))
 			if(do_after(user, 5 SECONDS, src))
 				configured = !configured
-				user.visible_message(span_notice("[user] finished reconfiguring \the [src]."), span_notice("The research table is now [configured ? "configured" : "not configured"]."))
+				user.visible_message(span_notice(LANG("obj.35c6d4e2f938b839", list(user, src))), span_notice(LANG("obj.4521b75a4a825f0d", list(configured ? "configured" : "not configured"))))
 			else
-				to_chat(user, span_warning("You need to stand still and uninterrupted for 5 seconds!"))
+				to_chat(user, span_warning(LANG("obj.47857b028691edc5", null)))
 			return TRUE
 	. = ..()
 
@@ -79,7 +80,7 @@
 			M.forceMove(get_turf(src))
 		. = ..()
 		if(. && !configured) // Successfully buckled, not configured.
-			say("Warning, table not configured yet!")
+			say(LANG("obj.45a9c4910ee82d19", null))
 	return
 
 /obj/machinery/research_table/user_unbuckle_mob(mob/living/buckled_mob, mob/user)
@@ -87,12 +88,12 @@
 		return
 	if(!handle_unbuckling(buckled_mob, user))
 		if(buckled_mob == user)
-			to_chat(user, span_warning("You fail to unbuckle yourself."))
+			to_chat(user, span_warning(LANG("obj.23b7578467c0666a", null)))
 		else
-			to_chat(user, span_warning("You fail to unbuckle [buckled_mob]."))
+			to_chat(user, span_warning(LANG("obj.ab3c10dc947752a4", list(buckled_mob))))
 		return
 	UnregisterSignal(buckled_mob, COMSIG_MOB_POST_CLIMAX)
-	say("User left, resetting scanners.")
+	say(LANG("obj.1bbc847f6bc47249", null))
 	return ..()
 
 /obj/machinery/research_table/proc/handle_unbuckling(mob/living/buckled_mob, user)
@@ -105,7 +106,7 @@
 
 /obj/machinery/research_table/buckle_mob(mob/living/buckled_mob, force, check_loc)
 	RegisterSignal(buckled_mob, COMSIG_MOB_POST_CLIMAX, PROC_REF(on_climax))
-	say("New user detected, tracking data.")
+	say(LANG("obj.363a81bdc899ca4e", null))
 	. = ..()
 
 /obj/machinery/research_table/RefreshParts()
@@ -120,19 +121,19 @@
 
 /obj/machinery/research_table/proc/on_climax(mob/living/carbon/buckled_mob, mob/living/partner, interaction_position, manual)
 	if(!configured)
-		say("Failed to get any data, the table is not configured!")
+		say(LANG("obj.a288a13337d693c6", null))
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 30, 1)
 		return
 	if(!istype(buckled_mob))
-		say("Failed to get any data from the subject, it is not a human.")
+		say(LANG("obj.763fdf1cc6363aab", null))
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 30, 1)
 		return
 	if(buckled_mob == partner)
-		say("Failed to get any data from the subject, two are needed for the experiment!")
+		say(LANG("obj.1a965be90cc9f129", null))
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 30, 1)
 		return
 	if(users[buckled_mob.name] > (max_repeat_usage * tier))
-		say("There is already too much data from this subject.")
+		say(LANG("obj.eee83cce0a808737", null))
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 30, 1)
 		return
 	users[buckled_mob.name] += 1
@@ -174,14 +175,14 @@
 			if(station_techweb)
 				station_techweb.add_point_list(list(TECHWEB_POINT_TYPE_GENERIC = points_awarded))
 			else
-				say("Cannot connect to a techweb on the station!")
+				say(LANG("obj.97318dfca34c1478", null))
 		else
 			var/datum/bank_account/D = SSeconomy.get_dep_account(ACCOUNT_CAR)
 			if(D)
 				D.adjust_money(points_awarded)
 	if(points_awarded)
 		var/add_s = points_awarded == 1 ? "" : "s"
-		say("Obtained [points_awarded] [point_type == POINT_TYPE_SCIENCE ? "point" : "credit"][add_s] from the session.")
+		say(LANG("obj.ab49da724cc6bd2e", list(points_awarded, point_type == POINT_TYPE_SCIENCE ? "point" : "credit", add_s)))
 		var/list/quotes = list(
 			"Thank you for your contribution to science!" = 72,
 			"Goooooood boooooy!" = 16,
@@ -208,7 +209,7 @@
 
 	// YOU FUCKING SUCK AT SEX
 	else
-		say("Obtained no [point_type == POINT_TYPE_SCIENCE ? "points" : "credits"] from the session.") // Probably has no genitals at all
+		say(LANG("obj.ecd06bdb28341bd5", list(point_type == POINT_TYPE_SCIENCE ? "points" : "credits"))) // Probably has no genitals at all
 		playsound(src, 'sound/machines/buzz/buzz-two.ogg', 30, 1)
 
 #undef POINT_TYPE_CARGO

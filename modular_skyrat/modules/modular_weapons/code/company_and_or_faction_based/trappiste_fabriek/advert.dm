@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/sign/poster/official/trappiste_suppressor
 	name = "Keep It Quiet - Ear Protection Unneeded"
 	desc = "This poster depicts, alongside the prominent logo of Trappiste Fabriek, a \
@@ -10,10 +11,7 @@
 /obj/structure/sign/poster/official/trappiste_suppressor/examine_more(mob/user)
 	. = ..()
 
-	. += "It was hard to notice before, but now that you really look at it... \
-		This thing is completely covered in micro scale text telling you in just about \
-		every human language and then some that Trappiste isn't liable for ear damage \
-		caused by their weapons, suppressed or not."
+	. += LANG("obj.21593b373b2299da", null)
 
 	return .
 
@@ -31,10 +29,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/official/trappiste_suppre
 /obj/structure/sign/poster/official/trappiste_ammunition/examine_more(mob/user)
 	. = ..()
 
-	. += "Small text details that this information may also be transferrable \
-		to other types of TerraGov ammunition, but that you should check the box \
-		the bullets come in just to be sure. Trappiste is, of course,\
-		not liable for excess harm caused by misreading color identification systems."
+	. += LANG("obj.b18128c74d8646f4", null)
 
 	return .
 

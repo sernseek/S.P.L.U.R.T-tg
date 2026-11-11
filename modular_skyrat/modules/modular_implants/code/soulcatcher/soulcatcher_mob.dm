@@ -9,15 +9,15 @@
 	var/datum/weakref/previous_body
 
 /// Checks if the mob wants to leave the soulcatcher. If they do and are able to leave, they are booted out.
-GAME_VERB(/mob/living/soulcatcher_soul, leave_soulcatcher, "Leave Soulcatcher", "IC")
+GAME_VERB(/mob/living/soulcatcher_soul, leave_soulcatcher, "离开灵魂捕手", "IC")
 	if(!able_to_leave)
-		to_chat(src, span_warning("You are unable to leave the soulcatcher."))
+		to_chat(src, span_warning(LANG("mob.f0ac5649fe304176", null)))
 		return FALSE
 
-	if(tgui_alert(src, "Are you sure you wish to leave the soulcatcher? IF you had a body, this will return you to your body", "Soulcatcher", list("Yes", "No")) != "Yes")
+	if(tgui_alert(src, LANG("mob.19325a1b0ad07f26", null), LANG("mob.49410bda6648d9c5", null), list("Yes", "No")) != "Yes")
 		return FALSE
 
-	if(tgui_alert(src, "Are you really sure about this?", "Soulcatcher", list("Yes", "No")) != "Yes")
+	if(tgui_alert(src, LANG("mob.38a6207970a3920d", null), LANG("mob.49410bda6648d9c5", null), list("Yes", "No")) != "Yes")
 		return FALSE
 
 	return_to_body()

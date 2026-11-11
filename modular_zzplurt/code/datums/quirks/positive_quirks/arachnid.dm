@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/arachnid
 	name = "Silkspinner"
 	desc = "Your bodily anatomy allows you to spin webs and cocoons, even though you aren't an arachnid! This quirk does nothing for members of the arachnid species."
@@ -15,7 +16,7 @@
 	// Check if already an arachnid
 	if(is_species(quirk_mob,/datum/species/arachnid))
 		// Warn user and return
-		to_chat(quirk_mob, span_warning("As an arachnid, the Arachnid quirk does nothing for you! These abilities are innate to your species."))
+		to_chat(quirk_mob, span_warning(LANG("datum.6053a3f5d1c8b6b3", null)))
 		return
 
 	// Define arachnid abilities

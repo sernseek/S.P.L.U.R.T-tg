@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/disk/nifsoft_uploader/scryer
 	name = "NIFSoft Scryer Uploader Disk"
 	loaded_nifsoft = /datum/nifsoft/scryer
@@ -43,7 +44,7 @@
 		return FALSE
 
 	if(linked_mob.handcuffed)
-		linked_mob.balloon_alert(linked_mob, "handcuffed")
+		linked_mob.balloon_alert(linked_mob, LANG("datum.15d796f05efc019d", null))
 		activate()
 		return FALSE
 
@@ -81,8 +82,8 @@
 
 /obj/item/clothing/neck/link_scryer/loaded/nifsoft/examine(mob/user)
 	. = ..()
-	. += span_notice("The MODlink ID is [mod_link.id], frequency is [mod_link.frequency || "unset"]. <b>Right-click</b> with a multitool to copy/imprint the frequency.")
-	. += span_notice("<b>Right-click</b> with an empty hand to change the name.")
+	. += span_notice(LANG("obj.779b5fc69d2d5884", list(mod_link.id, mod_link.frequency || "unset")))
+	. += span_notice(LANG("obj.421abe837eb2b7e1", null))
 
 /obj/item/clothing/neck/link_scryer/loaded/nifsoft/equipped(mob/living/user, slot)
 	. = ..()
@@ -97,19 +98,19 @@
 	return TRUE
 
 /obj/item/clothing/neck/link_scryer/loaded/nifsoft/screwdriver_act(mob/living/user, obj/item/tool)
-	balloon_alert(user, "cell non-removable!")
+	balloon_alert(user, LANG("obj.6a34b38ffe179ddd", null))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/clothing/neck/link_scryer/loaded/nifsoft/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
-	var/new_label = reject_bad_text(tgui_input_text(user, "Change the visible name", "Set Name", label, MAX_NAME_LEN))
+	var/new_label = reject_bad_text(tgui_input_text(user, LANG("obj.ef858bfd31749053", null), LANG("obj.043408e2d9bad7f0", null), label, MAX_NAME_LEN))
 	if(!new_label)
-		balloon_alert(user, "invalid name!")
+		balloon_alert(user, LANG("obj.b3c641ad6521a873", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	label = new_label
-	balloon_alert(user, "name set!")
+	balloon_alert(user, LANG("obj.63b7d8101662b5cf", null))
 	update_name()
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 

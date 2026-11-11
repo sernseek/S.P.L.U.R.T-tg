@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/hololadder
 	name = "hololadder"
 
@@ -30,14 +31,14 @@
 	. = ..()
 
 	if(isnull(server_ref.resolve()))
-		. += span_infoplain("It's not connected to anything.")
+		. += span_infoplain(LANG("obj.b8effa34c8b656fe", null))
 		return
 
 	if(isobserver(user))
-		. += span_notice("Left click to view the server that this ladder is connected to.")
+		. += span_notice(LANG("obj.a577a0f87648bb4f", null))
 		return
 
-	. += span_infoplain("This ladder is connected to a server. You can click on it or walk over it to disconnect.")
+	. += span_infoplain(LANG("obj.222fff72103df1f0", null))
 
 
 /obj/structure/hololadder/attack_hand(mob/user, list/modifiers)
@@ -69,14 +70,14 @@
 		for(var/datum/weakref/ghostrole_weakref as anything in our_server.spawned_threat_refs)
 			var/mob/living/ghostrole = ghostrole_weakref.resolve()
 			if(ghostrole?.stat == STABLE && ghostrole.client && ghostrole.mind.has_antag_datum(/datum/antagonist/bitrunning_glitch))
-				to_chat(user, span_danger("A being in the simulation is preventing your retreat. You must either complete your mission or remove the obstacle before safe exit will be possible."))
+				to_chat(user, span_danger(LANG("obj.3f0203ba0aa81f43", null)))
 				return
 
 	if(!HAS_TRAIT(user, TRAIT_TEMPORARY_BODY))
-		balloon_alert(user, "no connection detected")
+		balloon_alert(user, LANG("obj.acea3d3bf78d82e1", null))
 		return
 
-	balloon_alert(user, "disconnecting...")
+	balloon_alert(user, LANG("obj.731dc5a8b0340741", null))
 	if(do_after(user, travel_time, src))
 		SEND_SIGNAL(user, COMSIG_BITRUNNER_LADDER_SEVER)
 

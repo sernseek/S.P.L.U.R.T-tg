@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 
 /datum/emote/living/ruffle
@@ -1437,7 +1438,7 @@
 /datum/emote/living/carbon/human/piss/run_emote(mob/user, params, type_override, intentional)
 	. = ..()
 	if(!user.get_organ_slot(ORGAN_SLOT_BLADDER) || !ishuman(user))
-		to_chat(user, "<span class='warning'>You don't have a bladder!</span>")
+		to_chat(user, LANG("datum.00b4421f5f3a5e13", null))
 		return
 	var/obj/item/organ/bladder/bladder = user.get_organ_slot(ORGAN_SLOT_BLADDER)
 	bladder.urinate()

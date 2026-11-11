@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CHEMICALS_PER_UNIT 2
 #define CHEMICAL_SECOND_DIVISOR (5 SECONDS)
 #define OUT_OF_HOST_EGG_COST 50
@@ -24,7 +25,7 @@
 		compiled_string += " ([chemical_evo_points] chemical point[chemical_evo_points == 1 ? "" : "s"])"
 	if(stat_evo_points)
 		compiled_string += " ([stat_evo_points] stat point[stat_evo_points == 1 ? "" : "s"])"
-	name = "[initial(name)][compiled_string]"
+	name = "[lang_reverse_text(initial(name))][compiled_string]" // ZH EDIT CHANGE - I18N - initial(name) 会覆盖掉已反查的中文名. ORIGINAL: name = "[initial(name)][compiled_string]"
 
 /datum/action/cooldown/mob_cooldown/borer/Trigger(trigger_flags, atom/target)
 	if(!can_trigger(trigger_flags, target))
@@ -43,19 +44,19 @@
 
 /datum/action/cooldown/mob_cooldown/borer/proc/can_trigger(trigger_flags, atom/target)
 	if(!iscorticalborer(owner))
-		to_chat(owner, span_warning("You must be a cortical borer to use this action!"))
+		to_chat(owner, span_warning(LANG("datum.be2d754be4a2cbce", null)))
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	if(owner.stat == DEAD)
 		return FALSE
 	if(cortical_owner.chemical_storage < chemical_cost)
-		cortical_owner.balloon_alert(cortical_owner, "need [chemical_cost] chemicals")
+		cortical_owner.balloon_alert(cortical_owner, LANG("datum.fd4b72da83273c75", list(chemical_cost)))
 		return FALSE
 	if(cortical_owner.chemical_evolution < chemical_evo_points)
-		cortical_owner.balloon_alert(cortical_owner, "need [chemical_evo_points] chemical points")
+		cortical_owner.balloon_alert(cortical_owner, LANG("datum.ddb76f4f3ce55bad", list(chemical_evo_points)))
 		return FALSE
 	if(cortical_owner.stat_evolution < stat_evo_points)
-		cortical_owner.balloon_alert(cortical_owner, "need [stat_evo_points] stat points")
+		cortical_owner.balloon_alert(cortical_owner, LANG("datum.d1b79863e9e6ebdf", list(stat_evo_points)))
 		return FALSE
 	return TRUE
 
@@ -71,10 +72,10 @@
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	if(!cortical_owner.human_host)
-		owner.balloon_alert(owner, "host required")
+		owner.balloon_alert(owner, LANG("datum.e5b1d0ed6506f1b7", null))
 		return
 	if(cortical_owner.host_sugar())
-		owner.balloon_alert(owner, "cannot function with sugar in host")
+		owner.balloon_alert(owner, LANG("datum.8371672bfb76245d", null))
 		return
 	ui_interact(owner)
 
@@ -119,7 +120,7 @@
 			if(!iscorticalborer(usr) || !COOLDOWN_FINISHED(cortical_owner, injection_cooldown))
 				return
 			if(cortical_owner.host_sugar())
-				owner.balloon_alert(owner, "cannot function with sugar in host")
+				owner.balloon_alert(owner, LANG("datum.8371672bfb76245d", null))
 				return
 			var/reagent_name = params["reagent"]
 			var/reagent = GLOB.name2reagent[reagent_name]
@@ -129,7 +130,7 @@
 			cortical_owner.reagent_holder.reagents.add_reagent(reagent, cortical_owner.injection_rate_current, added_purity = 1)
 			cortical_owner.reagent_holder.reagents.trans_to(cortical_owner.human_host, cortical_owner.injection_rate_current, methods = INGEST)
 
-			to_chat(cortical_owner.human_host, span_warning("You feel something cool inside of you and a dull ache in your head!"))
+			to_chat(cortical_owner.human_host, span_warning(LANG("datum.dabb1002ffdc094f", null)))
 			cortical_owner.chemical_storage -= cortical_owner.injection_rate_current * CHEMICALS_PER_UNIT
 			COOLDOWN_START(cortical_owner, injection_cooldown, (cortical_owner.injection_rate_current / CHEMICAL_SECOND_DIVISOR))
 
@@ -253,31 +254,31 @@
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	if(!cortical_owner.inside_human())
-		owner.balloon_alert(owner, "host required")
+		owner.balloon_alert(owner, LANG("datum.e5b1d0ed6506f1b7", null))
 		return
 	if(cortical_owner.host_sugar())
-		owner.balloon_alert(owner, "cannot function with sugar in host")
+		owner.balloon_alert(owner, LANG("datum.8371672bfb76245d", null))
 		return
 	if(!length(cortical_owner.possible_focuses))
-		owner.balloon_alert(owner, "all focuses already learned")
+		owner.balloon_alert(owner, LANG("datum.e32a78d4f9d3a348", null))
 		return
 	var/list/fancy_list = list()
 	for(var/datum/borer_focus/foci as anything in cortical_owner.possible_focuses)
 		if(foci in cortical_owner.body_focuses)
 			continue
 		fancy_list["[foci.name] ([foci.cost] points)"] = foci
-	var/focus_choice = tgui_input_list(cortical_owner, "Learn a focus!", "Focus Choice", fancy_list)
+	var/focus_choice = tgui_input_list(cortical_owner, LANG("datum.3b0d0681eefef849", null), LANG("datum.a03360aaaa7652af", null), fancy_list)
 	if(!focus_choice)
-		owner.balloon_alert(owner, "focus not chosen")
+		owner.balloon_alert(owner, LANG("datum.110b7f80db22d358", null))
 		return
 	var/datum/borer_focus/picked_focus = fancy_list[focus_choice]
 	if(cortical_owner.stat_evolution < picked_focus.cost)
-		owner.balloon_alert(owner, "[picked_focus.cost] points required")
+		owner.balloon_alert(owner, LANG("datum.6c847a899a9df0b9", list(picked_focus.cost)))
 		return
 	cortical_owner.stat_evolution -= picked_focus.cost
 	cortical_owner.body_focuses += picked_focus
 	picked_focus.on_add(cortical_owner.human_host, owner)
-	owner.balloon_alert(owner, "focus learned successfully")
+	owner.balloon_alert(owner, LANG("datum.1766dc6a52759263", null))
 	StartCooldown()
 
 /datum/action/cooldown/mob_cooldown/borer/learn_bloodchemical
@@ -292,26 +293,26 @@
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	if(!cortical_owner.inside_human())
-		owner.balloon_alert(owner, "host required")
+		owner.balloon_alert(owner, LANG("datum.e5b1d0ed6506f1b7", null))
 		return
 	if(cortical_owner.host_sugar())
-		owner.balloon_alert(owner, "cannot function with sugar in host")
+		owner.balloon_alert(owner, LANG("datum.8371672bfb76245d", null))
 		return
 	if(length(cortical_owner.human_host.reagents.reagent_list) <= 0)
-		owner.balloon_alert(owner, "no reagents in host")
+		owner.balloon_alert(owner, LANG("datum.39117aa569dbc80e", null))
 		return
-	var/datum/reagent/reagent_choice = tgui_input_list(cortical_owner, "Choose a chemical to learn.", "Chemical Selection", cortical_owner.human_host.reagents.reagent_list)
+	var/datum/reagent/reagent_choice = tgui_input_list(cortical_owner, LANG("datum.6ae2bb36dd0dbe2c", null), LANG("datum.47ba8fa7c57c0772", null), cortical_owner.human_host.reagents.reagent_list)
 	if(!reagent_choice)
-		owner.balloon_alert(owner, "chemical not chosen")
+		owner.balloon_alert(owner, LANG("datum.27e75030c0459ae9", null))
 		return
 	if(locate(reagent_choice) in cortical_owner.known_chemicals)
-		owner.balloon_alert(owner, "chemical already known")
+		owner.balloon_alert(owner, LANG("datum.98809fc8ff50abdf", null))
 		return
 	if(locate(reagent_choice) in cortical_owner.blacklisted_chemicals)
-		owner.balloon_alert(owner, "chemical blacklisted")
+		owner.balloon_alert(owner, LANG("datum.650113de904b9e10", null))
 		return
 	if(!(reagent_choice.chemical_flags & REAGENT_CAN_BE_SYNTHESIZED))
-		owner.balloon_alert(owner, "cannot learn [initial(reagent_choice.name)]")
+		owner.balloon_alert(owner, LANG("datum.581e54cf312fda04", list(initial(reagent_choice.name))))
 		return
 	cortical_owner.chemical_evolution -= chemical_evo_points
 	cortical_owner.known_chemicals += reagent_choice.type
@@ -321,9 +322,9 @@
 		cortical_owner.human_host.adjust_organ_loss(ORGAN_SLOT_BRAIN, 5 * cortical_owner.host_harm_multiplier)
 	if(cortical_owner.blood_chems_learned == BLOOD_CHEM_OBJECTIVE)
 		GLOB.successful_blood_chem += 1
-	owner.balloon_alert(owner, "[initial(reagent_choice.name)] learned")
+	owner.balloon_alert(owner, LANG("datum.5eeb1a38da79c357", list(initial(reagent_choice.name))))
 	if(!HAS_TRAIT(cortical_owner.human_host, TRAIT_AGEUSIA))
-		to_chat(cortical_owner.human_host, span_notice("You get a strange aftertaste of [initial(reagent_choice.taste_description)]!"))
+		to_chat(cortical_owner.human_host, span_notice(LANG("datum.b2abea8c6eda2db9", list(initial(reagent_choice.taste_description)))))
 	StartCooldown()
 
 //become stronger by learning new chemicals
@@ -339,17 +340,17 @@
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	if(!cortical_owner.inside_human())
-		owner.balloon_alert(owner, "host required")
+		owner.balloon_alert(owner, LANG("datum.e5b1d0ed6506f1b7", null))
 		return
 	if(cortical_owner.host_sugar())
-		owner.balloon_alert(owner, "cannot function with sugar in host")
+		owner.balloon_alert(owner, LANG("datum.8371672bfb76245d", null))
 		return
 	if(!length(cortical_owner.potential_chemicals))
-		owner.balloon_alert(owner, "all chemicals learned")
+		owner.balloon_alert(owner, LANG("datum.dd0d744a00356c8c", null))
 		return
-	var/datum/reagent/reagent_choice = tgui_input_list(cortical_owner, "Choose a chemical to learn.", "Chemical Selection", cortical_owner.potential_chemicals)
+	var/datum/reagent/reagent_choice = tgui_input_list(cortical_owner, LANG("datum.6ae2bb36dd0dbe2c", null), LANG("datum.47ba8fa7c57c0772", null), cortical_owner.potential_chemicals)
 	if(!reagent_choice)
-		owner.balloon_alert(owner, "no chemical chosen")
+		owner.balloon_alert(owner, LANG("datum.057c1b33ea32ce14", null))
 		return
 	cortical_owner.chemical_evolution -= chemical_evo_points
 	cortical_owner.known_chemicals += reagent_choice
@@ -357,9 +358,9 @@
 	var/obj/item/organ/brain/victim_brain = cortical_owner.human_host.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(victim_brain)
 		cortical_owner.human_host.adjust_organ_loss(ORGAN_SLOT_BRAIN, 5 * cortical_owner.host_harm_multiplier)
-	owner.balloon_alert(owner, "[initial(reagent_choice.name)] learned")
+	owner.balloon_alert(owner, LANG("datum.5eeb1a38da79c357", list(initial(reagent_choice.name))))
 	if(!HAS_TRAIT(cortical_owner.human_host, TRAIT_AGEUSIA))
-		to_chat(cortical_owner.human_host, span_notice("You get a strange aftertaste of [initial(reagent_choice.taste_description)]!"))
+		to_chat(cortical_owner.human_host, span_notice(LANG("datum.b2abea8c6eda2db9", list(initial(reagent_choice.taste_description)))))
 	StartCooldown()
 
 //become stronger by affecting the stats
@@ -375,10 +376,10 @@
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	if(!cortical_owner.inside_human())
-		owner.balloon_alert(owner, "host required")
+		owner.balloon_alert(owner, LANG("datum.e5b1d0ed6506f1b7", null))
 		return
 	if(cortical_owner.host_sugar())
-		owner.balloon_alert(owner, "cannot function with sugar in host")
+		owner.balloon_alert(owner, LANG("datum.8371672bfb76245d", null))
 		return
 	cortical_owner.stat_evolution -= stat_evo_points
 	cortical_owner.maxHealth += cortical_owner.health_per_level
@@ -390,8 +391,8 @@
 	if(victim_brain)
 		cortical_owner.human_host.adjust_organ_loss(ORGAN_SLOT_BRAIN, 10 * cortical_owner.host_harm_multiplier)
 	cortical_owner.human_host.adjust_eye_blur(6 SECONDS * cortical_owner.host_harm_multiplier) //about 12 seconds' worth by default
-	to_chat(cortical_owner, span_notice("You have grown!"))
-	to_chat(cortical_owner.human_host, span_warning("You feel a sharp pressure in your head!"))
+	to_chat(cortical_owner, span_notice(LANG("datum.bdfca1a389c6a1a0", null)))
+	to_chat(cortical_owner.human_host, span_warning(LANG("datum.8cc645e54a8ed49f", null)))
 	StartCooldown()
 
 //go between either hiding behind tables or behind mobs
@@ -408,11 +409,11 @@
 	if(HAS_TRAIT(cortical_owner, TRAIT_PRONE))
 		SEND_SIGNAL(cortical_owner, COMSIG_MOVABLE_REMOVE_PRONE_STATE)
 		cortical_owner.upgrade_flags &= ~BORER_HIDING
-		owner.balloon_alert(owner, "stopped hiding")
+		owner.balloon_alert(owner, LANG("datum.2a555a0e5e9ef15a", null))
 		StartCooldown()
 		return
 	cortical_owner.upgrade_flags |= BORER_HIDING
-	owner.balloon_alert(owner, "started hiding")
+	owner.balloon_alert(owner, LANG("datum.a2e87acf37022225", null))
 	cortical_owner.AddComponent(/datum/component/prone_mob)
 	StartCooldown()
 
@@ -424,17 +425,17 @@
 
 /datum/action/cooldown/mob_cooldown/borer/fear_human/Activate(target)
 	if(!ishuman(target)) //no nonhuman hosts
-		owner.balloon_alert(owner, "not human!")
+		owner.balloon_alert(owner, LANG("datum.12534d5e2b140579", null))
 		return FALSE
 	var/mob/living/carbon/human/human_target = target
 	if(human_target.stat == DEAD) //no dead hosts
-		owner.balloon_alert(owner, "dead!")
+		owner.balloon_alert(owner, LANG("datum.1bf49ad4e413a0a1", null))
 		return FALSE
 	if(!owner.Adjacent(human_target))
-		owner.balloon_alert(owner, "chosen target too far")
+		owner.balloon_alert(owner, LANG("datum.5eac76f10ba68306", null))
 		return FALSE
 	if(considered_afk(human_target.mind))
-		owner.balloon_alert(owner, "mind inactive!")
+		owner.balloon_alert(owner, LANG("datum.8927f9e7bf92333b", null))
 		return FALSE
 
 	incite_fear(target)
@@ -447,11 +448,11 @@
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	if(cortical_owner.host_sugar())
-		owner.balloon_alert(owner, "cannot function with sugar in host")
+		owner.balloon_alert(owner, LANG("datum.8371672bfb76245d", null))
 		return FALSE
 	if(cortical_owner.human_host)
 		if(considered_afk(cortical_owner.human_host.mind))
-			owner.balloon_alert(owner, "mind inactive!")
+			owner.balloon_alert(owner, LANG("datum.8927f9e7bf92333b", null))
 			return FALSE
 	return TRUE
 
@@ -466,7 +467,7 @@
 
 /datum/action/cooldown/mob_cooldown/borer/fear_human/proc/incite_fear(mob/living/carbon/human/singular_fear)
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
-	to_chat(singular_fear, span_warning("Something glares menacingly at you!"))
+	to_chat(singular_fear, span_warning(LANG("datum.c02e852136b4a356", null)))
 	singular_fear.Paralyze(7 SECONDS)
 	singular_fear.adjust_stamina_loss(50)
 	singular_fear.set_confusion_if_lower(9 SECONDS)
@@ -477,11 +478,11 @@
 
 /datum/action/cooldown/mob_cooldown/borer/fear_human/proc/incite_internal_fear()
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
-	owner.balloon_alert(owner, "fear incited into host")
+	owner.balloon_alert(owner, LANG("datum.0250b1ea7488160a", null))
 	cortical_owner.human_host.Paralyze(10 SECONDS)
 	cortical_owner.human_host.adjust_stamina_loss(100)
 	cortical_owner.human_host.set_confusion_if_lower(15 SECONDS)
-	to_chat(cortical_owner.human_host, span_warning("Something moves inside of you violently!"))
+	to_chat(cortical_owner.human_host, span_warning(LANG("datum.820d62cde3ddf660", null)))
 	var/turf/human_turf = get_turf(cortical_owner.human_host)
 	var/logging_text = "[key_name(cortical_owner)] feared/paralyzed [key_name(cortical_owner.human_host)] (internal) at [loc_name(human_turf)]"
 	cortical_owner.log_message(logging_text, LOG_GAME)
@@ -500,10 +501,10 @@
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	if(cortical_owner.host_sugar())
-		owner.balloon_alert(owner, "cannot function with sugar in host")
+		owner.balloon_alert(owner, LANG("datum.8371672bfb76245d", null))
 		return
 	if(!cortical_owner.human_host)
-		owner.balloon_alert(owner, "host required")
+		owner.balloon_alert(owner, LANG("datum.e5b1d0ed6506f1b7", null))
 		return
 	healthscan(owner, cortical_owner.human_host, scanpower = SCANPOWER_ADVANCED) // :thinking:
 	chemscan(owner, cortical_owner.human_host)
@@ -523,26 +524,26 @@
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	if(cortical_owner.host_sugar())
-		owner.balloon_alert(owner, "cannot function with sugar in host")
+		owner.balloon_alert(owner, LANG("datum.8371672bfb76245d", null))
 		return FALSE
 	if(!cortical_owner.inside_human())
-		owner.balloon_alert(owner, "must be in a host")
+		owner.balloon_alert(owner, LANG("datum.ed65332eac7ba43b", null))
 		return FALSE
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/borer/force_speak/Activate(atom/target)
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	// Don't encode as say will do that for usq
-	var/borer_message = tgui_input_text(cortical_owner, "What would you like to force your host to say?", "Force Speak", "", MAX_MESSAGE_LEN, FALSE, FALSE)
+	var/borer_message = tgui_input_text(cortical_owner, LANG("datum.cff11def83968987", null), LANG("datum.69d11ea47a7bccd9", null), "", MAX_MESSAGE_LEN, FALSE, FALSE)
 	if(!borer_message)
-		owner.balloon_alert(owner, "no message given")
+		owner.balloon_alert(owner, LANG("datum.90c12c6f0a3a5a6e", null))
 		return
 	// check if it's a good message and give feedback to the borer (IC filters)
 	if(!owner.try_speak(borer_message))
 		return
 
 	var/mob/living/carbon/human/cortical_host = cortical_owner.human_host
-	to_chat(cortical_host, span_boldwarning("Your voice moves without your permission!"))
+	to_chat(cortical_host, span_boldwarning(LANG("datum.b6773c5c23bc9f3c", null)))
 	var/obj/item/organ/brain/victim_brain = cortical_owner.human_host.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(victim_brain)
 		cortical_owner.human_host.adjust_organ_loss(ORGAN_SLOT_BRAIN, 2 * cortical_owner.host_harm_multiplier)
@@ -570,7 +571,7 @@
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	if(!(cortical_owner.upgrade_flags & BORER_ALONE_PRODUCTION) && !cortical_owner.inside_human())
-		owner.balloon_alert(owner, "host required")
+		owner.balloon_alert(owner, LANG("datum.e5b1d0ed6506f1b7", null))
 		return
 	cortical_owner.chemical_storage -= chemical_cost
 	if((cortical_owner.upgrade_flags & BORER_ALONE_PRODUCTION) && !cortical_owner.inside_human())
@@ -592,13 +593,13 @@
 					cortical_owner.human_host.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_SURGERY)
 				if(72 to 75)
 					cortical_owner.human_host.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_LOBOTOMY)
-	to_chat(cortical_owner.human_host, span_warning("Your brain begins to hurt..."))
+	to_chat(cortical_owner.human_host, span_warning(LANG("datum.0b6fe2fd5df0de99", null)))
 	var/turf/borer_turf = get_turf(cortical_owner)
 	new /obj/effect/decal/cleanable/vomit(borer_turf)
 	playsound(borer_turf, 'sound/effects/splat.ogg', 50, TRUE)
 	var/logging_text = "[key_name(cortical_owner)] gave birth at [loc_name(borer_turf)]"
 	cortical_owner.log_message(logging_text, LOG_GAME)
-	owner.balloon_alert(owner, "egg laid")
+	owner.balloon_alert(owner, LANG("datum.d6c3c53e00f8b589", null))
 	StartCooldown()
 
 /datum/action/cooldown/mob_cooldown/borer/produce_offspring/proc/no_host_egg()
@@ -610,7 +611,7 @@
 	playsound(borer_turf, 'sound/effects/splat.ogg', 50, TRUE)
 	var/logging_text = "[key_name(cortical_owner)] gave birth alone at [loc_name(borer_turf)]"
 	cortical_owner.log_message(logging_text, LOG_GAME)
-	owner.balloon_alert(owner, "egg laid")
+	owner.balloon_alert(owner, LANG("datum.d6c3c53e00f8b589", null))
 
 /datum/action/cooldown/mob_cooldown/borer/produce_offspring/proc/produce_egg()
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
@@ -635,13 +636,13 @@
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	if(cortical_owner.host_sugar())
-		owner.balloon_alert(owner, "cannot function with sugar in host")
+		owner.balloon_alert(owner, LANG("datum.8371672bfb76245d", null))
 		return
 	if(!cortical_owner.inside_human())
-		owner.balloon_alert(owner, "host required")
+		owner.balloon_alert(owner, LANG("datum.e5b1d0ed6506f1b7", null))
 		return
 	if(cortical_owner.human_host.has_quirk(/datum/quirk/dnr))
-		owner.balloon_alert(owner, "host unrevivable")
+		owner.balloon_alert(owner, LANG("datum.6b269ffaee6625e1", null))
 		return
 	cortical_owner.chemical_storage -= chemical_cost
 	if(cortical_owner.human_host.get_brute_loss())
@@ -657,8 +658,8 @@
 	for(var/obj/item/organ/internal_target in cortical_owner.human_host.organs)
 		internal_target.apply_organ_damage(-internal_target.damage * 0.5)
 	cortical_owner.human_host.revive()
-	to_chat(cortical_owner.human_host, span_boldwarning("Your heart jumpstarts!"))
-	owner.balloon_alert(owner, "host revived")
+	to_chat(cortical_owner.human_host, span_boldwarning(LANG("datum.e21c9ab8d504f117", null)))
+	owner.balloon_alert(owner, LANG("datum.fb62ab1dd8acfe44", null))
 	var/turf/human_turf = get_turf(cortical_owner.human_host)
 	var/logging_text = "[key_name(cortical_owner)] revived [key_name(cortical_owner.human_host)] at [loc_name(human_turf)]"
 	cortical_owner.log_message(logging_text, LOG_GAME)
@@ -679,24 +680,24 @@
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	if(!cortical_owner.inside_human())
-		owner.balloon_alert(owner, "host required")
+		owner.balloon_alert(owner, LANG("datum.e5b1d0ed6506f1b7", null))
 		return
 	if(cortical_owner.host_sugar())
-		owner.balloon_alert(owner, "cannot function with sugar in host")
+		owner.balloon_alert(owner, LANG("datum.8371672bfb76245d", null))
 		return
 	for(var/ckey_check in GLOB.willing_hosts)
 		if(ckey_check == cortical_owner.human_host.ckey)
-			owner.balloon_alert(owner, "host already willing")
+			owner.balloon_alert(owner, LANG("datum.2a14311737c4b3d7", null))
 			return
-	owner.balloon_alert(owner, "asking host...")
+	owner.balloon_alert(owner, LANG("datum.c2e7027c207de7cf", null))
 	cortical_owner.chemical_storage -= chemical_cost
-	var/host_choice = tgui_input_list(cortical_owner.human_host,"Do you accept to be a willing host?", "Willing Host Request", list("Yes", "No"))
+	var/host_choice = tgui_input_list(cortical_owner.human_host,LANG("datum.dc53a04f397afaeb", null), LANG("datum.c4728aac07469cf9", null), list("Yes", "No"))
 	if(host_choice != "Yes")
-		owner.balloon_alert(owner, "host not willing!")
+		owner.balloon_alert(owner, LANG("datum.207caf6fd1d6727d", null))
 		StartCooldown()
 		return
-	owner.balloon_alert(owner, "host willing!")
-	to_chat(cortical_owner.human_host, span_notice("You have accepted being a willing host!"))
+	owner.balloon_alert(owner, LANG("datum.1292038936bd5988", null))
+	to_chat(cortical_owner.human_host, span_notice(LANG("datum.21ff038db0871d6a", null)))
 	GLOB.willing_hosts += cortical_owner.human_host.ckey
 	StartCooldown()
 
@@ -718,9 +719,9 @@
 	if(!.)
 		return FALSE
 	if(cortical_owner.host_sugar())
-		owner.balloon_alert(owner, "cannot function with sugar in host")
+		owner.balloon_alert(owner, LANG("datum.8371672bfb76245d", null))
 		return
-	owner.balloon_alert(owner, "stealth mode [in_stealth ? "disabled" : "enabled"]")
+	owner.balloon_alert(owner, LANG("datum.89d182cdd6587093", list(in_stealth ? "disabled" : "enabled")))
 	cortical_owner.chemical_storage -= chemical_cost
 	if(in_stealth)
 		cortical_owner.upgrade_flags &= ~BORER_STEALTH_MODE
@@ -743,10 +744,10 @@
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	if(!cortical_owner.inside_human())
-		owner.balloon_alert(owner, "host required")
+		owner.balloon_alert(owner, LANG("datum.e5b1d0ed6506f1b7", null))
 		return
 	if(cortical_owner.human_host.stat != DEAD)
-		owner.balloon_alert(owner, "host not dead")
+		owner.balloon_alert(owner, LANG("datum.d95ac2cd17492242", null))
 		return
 
 	cortical_owner.chemical_storage -= chemical_cost
@@ -763,7 +764,7 @@
 	playsound(borer_turf, 'sound/effects/splat.ogg', 50, TRUE)
 	var/logging_text = "[key_name(cortical_owner)] gave birth to an empowered borer at [loc_name(borer_turf)]"
 	cortical_owner.log_message(logging_text, LOG_GAME)
-	cortical_owner.balloon_alert(owner, "egg laid")
+	cortical_owner.balloon_alert(owner, LANG("datum.d6c3c53e00f8b589", null))
 	StartCooldown()
 
 #undef CHEMICALS_PER_UNIT

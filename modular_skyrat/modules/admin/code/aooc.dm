@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_VAR_INIT(AOOC_COLOR, "#de3c8c")
 GLOBAL_VAR_INIT(aooc_allowed, TRUE)	// used with admin verbs to disable aooc - not a config option
 GLOBAL_LIST_EMPTY(ckey_to_aooc_name)
@@ -6,10 +7,10 @@ GLOBAL_LIST_EMPTY(ckey_to_aooc_name)
 #define AOOC_LISTEN_ADMIN 2
 
 //GAME_VERB(/client, aooc, "AOOC", "OOC", msg as text)
-GAME_VERB(/client, aooc, "AOOC", "OOC")
+GAME_VERB(/client, aooc, "反派 OOC", "OOC")
 	VERB_ARG(msg, VERB_ARG_TYPE_TEXT, VERB_ARG_SOURCE_INPUT)
 	if(GLOB.say_disabled)	//This is here to try to identify lag problems
-		to_chat(usr, span_danger("Speech is currently admin-disabled."))
+		to_chat(usr, span_danger(LANG("client.b79ad8a388d1b3a4", null)))
 		return
 
 	if(!mob)
@@ -17,16 +18,16 @@ GAME_VERB(/client, aooc, "AOOC", "OOC")
 
 	if(!holder)
 		if(!mob.mind || !length(mob.mind.antag_datums))
-			to_chat(src, span_danger("You're not an antagonist!"))
+			to_chat(src, span_danger(LANG("client.64888d2366898696", null)))
 			return
 		if(!GLOB.aooc_allowed)
-			to_chat(src, span_danger("AOOC is globally muted."))
+			to_chat(src, span_danger(LANG("client.af6892f50161a767", null)))
 			return
 		if(prefs.muted & MUTE_OOC)
-			to_chat(src, span_danger("You cannot use OOC (muted)."))
+			to_chat(src, span_danger(LANG("client.058db9ff84dbe18d", null)))
 			return
 	if(is_banned_from(ckey, "OOC"))
-		to_chat(src, span_danger("You have been banned from OOC."))
+		to_chat(src, span_danger(LANG("client.aaaae170c8fb6787", null)))
 		return
 	if(QDELETED(src))
 		return
@@ -40,7 +41,7 @@ GAME_VERB(/client, aooc, "AOOC", "OOC")
 	msg = emoji_parse(msg)
 
 	if(!(prefs.chat_toggles & CHAT_OOC))
-		to_chat(src, span_danger("You have OOC muted."))
+		to_chat(src, span_danger(LANG("client.a877c979d7d49962", null)))
 		return
 
 	mob.log_talk(raw_msg, LOG_OOC, tag = "AOOC")
@@ -74,7 +75,7 @@ GAME_VERB(/client, aooc, "AOOC", "OOC")
 		var/mode = listeners[iterated_listener]
 		var/color = (!anon && CONFIG_GET(flag/allow_admin_ooccolor) && iterated_client?.prefs?.read_preference(/datum/preference/color/ooc_color)) ? iterated_client?.prefs?.read_preference(/datum/preference/color/ooc_color) : GLOB.AOOC_COLOR
 		var/name = (mode == AOOC_LISTEN_ADMIN && anon) ? "([key])[keyname]" : keyname
-		to_chat(iterated_client, span_oocplain("<font color='[color]'><b><span class='prefix'>AOOC:</span> <EM>[name]:</EM> <span class='message linkify'>[msg]</span></b></font>"))
+		to_chat(iterated_client, span_oocplain(LANG("client.0600bf7ad7dc17d8", list(color, name, msg))))
 
 #undef AOOC_LISTEN_PLAYER
 #undef AOOC_LISTEN_ADMIN
@@ -99,9 +100,9 @@ GAME_VERB(/client, aooc, "AOOC", "OOC")
 			listeners[iterated_mob.client] = TRUE
 	for(var/iterated_listener in listeners)
 		var/client/iterated_client = iterated_listener
-		to_chat(iterated_client, span_oocplain("<B>The AOOC channel has been globally [GLOB.aooc_allowed ? "enabled" : "disabled"].</B>"))
+		to_chat(iterated_client, span_oocplain(LANG("_root.9dcf1da536be006b", list(GLOB.aooc_allowed ? "enabled" : "disabled"))))
 
-ADMIN_VERB(toggleaooc, R_ADMIN, "Toggle Antag OOC", "Toggles Antag OOC.", ADMIN_CATEGORY_SERVER)
+ADMIN_VERB(toggleaooc, R_ADMIN, "切换反派 OOC", "Toggles Antag OOC.", ADMIN_CATEGORY_SERVER)
 	toggle_aooc()
 	log_admin("[key_name(usr)] toggled Antagonist OOC.")
 	message_admins("[key_name_admin(usr)] toggled Antagonist OOC.")

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/interaction/lewd/armpit_fuck
 	name = "Armpit Fuck"
 	description = "Fuck their armpit."
@@ -208,11 +209,11 @@
 		if(intent == "harm")
 			target_arousal += 10
 			target_pleasure += 6
-			to_chat(target, span_purple("You can barely breathe with their armpit crushing your face... it's amazing!"))
+			to_chat(target, span_purple(LANG("datum.8b7b8165e177e58b", null)))
 		else
 			target_arousal += 8
 			target_pleasure += 4
-			to_chat(target, span_purple("You can barely breathe with their armpit on your face... it's incredible!"))
+			to_chat(target, span_purple(LANG("datum.a006f1527f15bcad", null)))
 
 	. = ..()
 

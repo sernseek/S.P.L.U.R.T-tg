@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Define to mimic a span macro but for the purple font that vote specifically uses.
 //#define vote_font(text) ("<font color='purple'>" + text + "</font>") // BUBBER EDIT REMOVAL - Moved to code/__DEFINES/~~bubber_defines/span.dm - Why TG didn't define this properly, it is a mystery
 
@@ -218,7 +219,7 @@ SUBSYSTEM_DEF(vote)
 	// No valid vote found? No vote
 	if(!istype(to_vote))
 		if(vote_initiator)
-			to_chat(vote_initiator, span_warning("Invalid voting choice."))
+			to_chat(vote_initiator, span_warning(LANG("datum.818b68c09448ac2d", null)))
 		return FALSE
 
 	// Vote can't be initiated in our circumstances? No vote
@@ -273,7 +274,7 @@ SUBSYSTEM_DEF(vote)
 	// Even if it's forced we can't vote before we're set up
 	if(!MC_RUNNING(init_stage))
 		if(vote_initiator)
-			to_chat(vote_initiator, span_warning("You cannot start a vote now, the server is not done initializing."))
+			to_chat(vote_initiator, span_warning(LANG("datum.628b797e75afde6b", null)))
 		return FALSE
 
 	if(forced)
@@ -282,12 +283,12 @@ SUBSYSTEM_DEF(vote)
 	var/next_allowed_time = last_vote_time + CONFIG_GET(number/vote_delay)
 	if(next_allowed_time > world.time)
 		if(vote_initiator)
-			to_chat(vote_initiator, span_warning("A vote was initiated recently. You must wait [DisplayTimeText(next_allowed_time - world.time)] before a new vote can be started!"))
+			to_chat(vote_initiator, span_warning(LANG("datum.1a8fd54d4b698db9", list(DisplayTimeText(next_allowed_time - world.time)))))
 		return FALSE
 
 	if(current_vote)
 		if(vote_initiator)
-			to_chat(vote_initiator, span_warning("There is already a vote in progress! Please wait for it to finish."))
+			to_chat(vote_initiator, span_warning(LANG("datum.206e6de2a6928d0c", null)))
 		return FALSE
 
 	return TRUE
@@ -346,7 +347,15 @@ SUBSYSTEM_DEF(vote)
 			var/list/choices = list()
 			for(var/key in current_vote.choices)
 				choices += list(list(
-					"name" = key,
+					// ZH EDIT CHANGE START - I18N: 键必须原样回传（choices[key]++ 按它计数），但 "name" 不在
+					// payload_skip_keys 里 → P1 会把**多词**选项译成中文（地图名 "Delta Station"/"Ice Box Station"
+					// 进了 _map_names.json 之后就是这样），前端 act 回传中文 → choices[中文]++ 建出幽灵条目，
+					// 真键永远 0 票 → 投票无效、结束时换不了图。改用 "id" 承载键（"id" 已在 payload_skip_keys），
+					// "name" 让给显示名（get_choice_display_name：基类原样返回，地图投票返回「译名-英文」）。
+					// ORIGINAL: "name" = key,
+					"id" = key,
+					"name" = current_vote.get_choice_display_name(key),
+					// ZH EDIT CHANGE END
 					"votes" = current_vote.choices[key],
 				))
 
@@ -456,10 +465,10 @@ SUBSYSTEM_DEF(vote)
 	voting -= user.client?.ckey
 
 /// Mob level verb that allows players to vote on the current vote.
-GAME_VERB(/mob, vote, "Vote", "OOC")
+GAME_VERB(/mob, vote, "投票", "OOC")
 
 	if(!SSvote.initialized)
-		to_chat(usr, span_notice("<i>Voting is not set up yet!</i>"))
+		to_chat(usr, span_notice(LANG("mob.cb7a09b75d45651f", null)))
 		return
 
 	SSvote.ui_interact(usr)

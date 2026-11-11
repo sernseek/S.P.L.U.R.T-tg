@@ -215,7 +215,7 @@
 		var/datum/design/design = SSresearch.techweb_design_by_id(research)
 		data["alloys"] += list(
 			list(
-				"name" = design.name,
+				"name" = lang_localize_display_name(design.name), // ZH EDIT - display only; actions use design.id
 				"id" = design.id,
 				)
 			)

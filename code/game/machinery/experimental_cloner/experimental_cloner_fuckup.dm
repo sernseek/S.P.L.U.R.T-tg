@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CLONER_FAILURE_COMMON 3
 #define CLONER_FAILURE_RARE 1
 
@@ -128,8 +129,8 @@
 
 /datum/experimental_cloner_fuckup/monkey/post_emerged(mob/living/carbon/victim)
 	victim.visible_message(\
-		span_boldwarning("[victim]'s hair begins to grow rapidly!"),\
-		span_boldwarning("As you emerge from the pod, all the hair on your body starts to grow!"))
+		span_boldwarning(LANG("datum.51b4e9171a9e7b10", list(victim))),\
+		span_boldwarning(LANG("datum.08885eff6312276c", null)))
 	victim.monkeyize()
 
 /// No skin
@@ -139,8 +140,8 @@
 /datum/experimental_cloner_fuckup/skeletised/post_emerged(mob/living/victim)
 	victim.emote("scream")
 	victim.visible_message(\
-		span_boldwarning("[victim]'s flesh slithers off in a disgusting heap!"),\
-		span_boldwarning("As you emerge from the pod, your skin slithers off onto the ground!"))
+		span_boldwarning(LANG("datum.998a10a4d4370a68", list(victim))),\
+		span_boldwarning(LANG("datum.3f691e4c7aea0b80", null)))
 	victim.set_species(/datum/species/skeleton)
 	new /obj/effect/gibspawner/human/bodypartless(victim.drop_location(), victim)
 
@@ -158,8 +159,8 @@
 /datum/experimental_cloner_fuckup/total_failure/post_emerged(mob/living/victim)
 	victim.emote("scream")
 	victim.visible_message(\
-		span_boldwarning("[victim] collapses bonelessly into a writhing heap of flesh!"),\
-		span_boldwarning("As you emerge from the pod, your boneless flesh collapses into a writhing heap!"))
+		span_boldwarning(LANG("datum.6827409733790e88", list(victim))),\
+		span_boldwarning(LANG("datum.8f9cecb79fd4457f", null)))
 	var/mob/living/basic/fleshblob/blob = new(victim.drop_location())
 	blob.name = victim.real_name
 	blob.real_name = victim.real_name

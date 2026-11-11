@@ -49,7 +49,7 @@
 
 /mob/living/basic/drone/Initialize(mapload)
 	. = ..()
-	name = "[initial(name)] [rand(0,9)]-[rand(100,999)]" //So that we can identify drones from each other
+	name = "[lang_reverse_text(initial(name))] [rand(0,9)]-[rand(100,999)]" /* ZH EDIT CHANGE - I18N - initial(name) 是编译期英文原值 */ //So that we can identify drones from each other
 
 /obj/item/storage/backpack/drone_bag
 	name = "drone backpack"

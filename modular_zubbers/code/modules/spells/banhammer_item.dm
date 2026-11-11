@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/banhammer/real
 	name = "\improper REAL banhammer"
 	desc = "A hammer that has been banned in several sectors. Careful when using this."
@@ -13,14 +14,14 @@
 
 /obj/item/banhammer/real/attack_self(mob/user)
 
-	var/desired_ban_reason = reject_bad_text(tgui_input_text(user, "Ban Reason", "Set Ban Reason", ban_reason, MAX_PLAQUE_LEN))
+	var/desired_ban_reason = reject_bad_text(tgui_input_text(user, LANG("obj.26109a2455217750", null), LANG("obj.4577f72f807cdb15", null), ban_reason, MAX_PLAQUE_LEN))
 
 	if(desired_ban_reason)
 		ban_reason = desired_ban_reason
 	else
 		ban_reason = initial(ban_reason)
 
-	to_chat(user, span_notice("Ban reason set to: \"[ban_reason]\""))
+	to_chat(user, span_notice(LANG("obj.6b5ddd4aa6109a1d", list(ban_reason))))
 
 
 /obj/item/banhammer/real/attack(mob/M, mob/living/user)
@@ -31,13 +32,13 @@
 		return
 
 	if(M.can_block_magic())
-		M.visible_message(span_danger("[M] resists the effects of the banhammer! They're ban immune!"))
+		M.visible_message(span_danger(LANG("obj.735c3150e326bc1b", list(M))))
 		return
 
 	if(user.combat_mode) //Perma
 		var/area/current_area = get_area(M)
 		if(!current_area || istype(current_area,/area/station/security/prison)) //Already perma'd.
-			M.visible_message(span_danger("[M] resists the effects of the banhammer! They're already in the permabrig!"))
+			M.visible_message(span_danger(LANG("obj.57be23d0ba8825ab", list(M))))
 			return
 
 		var/turf/turf_to_teleport_to

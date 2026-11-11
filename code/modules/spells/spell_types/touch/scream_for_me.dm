@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Weaker smite, not outright gibbing your target, but a lot more bloody, and Sanguine school, so doesn't get affected by splattercasting.
 /datum/action/cooldown/spell/touch/scream_for_me
 	name = "Scream For Me"
@@ -17,8 +18,8 @@
 
 /datum/action/cooldown/spell/touch/scream_for_me/on_antimagic_triggered(obj/item/melee/touch_attack/hand, mob/living/victim, mob/living/carbon/caster)
 	caster.visible_message(
-		span_warning("The feedback mutilates [caster]'s arm!"),
-		span_userdanger("The spell bounces from [victim]'s skin back into your arm!"),
+		span_warning(LANG("datum.f7eb65fdcd13d93c", list(caster))),
+		span_userdanger(LANG("datum.80c86c81c4a76173", list(victim))),
 	)
 	var/obj/item/bodypart/to_wound = caster.get_holding_bodypart_of_item(hand)
 	caster.cause_wound_of_type_and_severity(WOUND_SLASH, to_wound, WOUND_SEVERITY_MODERATE, WOUND_SEVERITY_CRITICAL)

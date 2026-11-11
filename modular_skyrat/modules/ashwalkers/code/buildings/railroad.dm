@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/stack/rail_track
 	name = "railroad tracks"
 	singular_name = "railroad track"
@@ -19,7 +20,7 @@
 	var/obj/structure/railroad/check_rail = locate() in target_turf
 	if(check_rail || !use(1))
 		return NONE
-	to_chat(user, span_notice("You place [src] on [target_turf]."))
+	to_chat(user, span_notice(LANG("obj.7a67ae81e5981d09", list(src, target_turf))))
 	new /obj/structure/railroad(target_turf)
 	return ITEM_INTERACT_SUCCESS
 
@@ -69,8 +70,8 @@
 
 /obj/vehicle/ridden/rail_cart/examine(mob/user)
 	. = ..()
-	. += span_notice("<br><b>Alt-Click</b> to attach a rail cart to this cart.")
-	. += span_notice("<br>Filling it with <b>10 sand</b> will allow it to be used as a planter!")
+	. += span_notice(LANG("obj.115030f8410efba8", null))
+	. += span_notice(LANG("obj.01f454c0137e9db9", null))
 
 /obj/vehicle/ridden/rail_cart/Initialize(mapload)
 	. = ..()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Piggy banks. They store your hard-earned money until you or someone destroys it.
  * If the persistence id is set, money will be carried between rounds until broken.
@@ -102,7 +103,7 @@
 	. = ..()
 	if(DOING_INTERACTION_WITH_TARGET(user, src))
 		return
-	balloon_alert(user, "rattle rattle...")
+	balloon_alert(user, LANG("obj.8b7ed7bc74d01195", null))
 	if(!do_after(user, 0.5 SECONDS, src))
 		return
 	var/percentile = round(calculate_dosh_amount()/maximum_value * 100, 1)
@@ -110,19 +111,19 @@
 		playsound(src, SFX_RATTLE, percentile * 0.5, FALSE, FALSE)
 	switch(percentile)
 		if(0)
-			balloon_alert(user, "it's empty")
+			balloon_alert(user, LANG("obj.b98f11e171001c70", null))
 		if(1 to 9)
-			balloon_alert(user, "it's almost empty")
+			balloon_alert(user, LANG("obj.fddcd38a33d9de41", null))
 		if(10 to 25)
-			balloon_alert(user, "it's some cash")
+			balloon_alert(user, LANG("obj.d47cb4b84d6a92d3", null))
 		if(25 to 45)
-			balloon_alert(user, "it's plenty of cash")
+			balloon_alert(user, LANG("obj.a3419eb61faed807", null))
 		if(45 to 70)
-			balloon_alert(user, "it feels almost full")
+			balloon_alert(user, LANG("obj.3dff58d1a0facd11", null))
 		if(70 to 95)
-			balloon_alert(user, "it feels full")
+			balloon_alert(user, LANG("obj.6172bef34728a2f5", null))
 		if(95 to INFINITY)
-			balloon_alert(user, "brimming with cash")
+			balloon_alert(user, LANG("obj.d5e94a84147151ae", null))
 
 /obj/item/piggy_bank/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	var/creds_value = tool.get_item_credit_value()
@@ -132,18 +133,18 @@
 	var/dosh_amount = calculate_dosh_amount()
 
 	if(dosh_amount >= maximum_value)
-		balloon_alert(user, "it's full!")
+		balloon_alert(user, LANG("obj.2cb7d3546d66854d", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(dosh_amount + creds_value > maximum_value)
-		balloon_alert(user, "too much cash!")
+		balloon_alert(user, LANG("obj.dca03cee6e63e83d", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!user.transferItemToLoc(tool, src))
-		balloon_alert(user, "stuck in your hands!")
+		balloon_alert(user, LANG("obj.e8dcafaf50fe27e9", null))
 		return ITEM_INTERACT_BLOCKING
 
-	balloon_alert(user, "inserted [creds_value] creds")
+	balloon_alert(user, LANG("obj.d486be196e191fb9", list(creds_value)))
 	sanitize_piggy_bank_contents_len()
 	return ITEM_INTERACT_SUCCESS
 

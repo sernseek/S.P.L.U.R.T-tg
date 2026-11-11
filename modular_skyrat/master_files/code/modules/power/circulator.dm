@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //node2, air2, network2 correspond to input
 //node1, air1, network1 correspond to output
 
@@ -46,12 +47,12 @@
 		return CONTEXTUAL_SCREENTIP_SET
 	switch(held_item.tool_behaviour)
 		if(TOOL_SCREWDRIVER)
-			context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] panel"
+			context[SCREENTIP_CONTEXT_LMB] = LANG("obj.45725a89b7fc8d2e", list(panel_open ? "Close" : "Open"))
 		if(TOOL_WRENCH)
 			context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Unan" : "An"]chor"
 			context[SCREENTIP_CONTEXT_RMB] = "Rotate"
 		if(TOOL_MULTITOOL)
-			context[SCREENTIP_CONTEXT_LMB] = "Change to [mode ? "hot" : "cold"] mode"
+			context[SCREENTIP_CONTEXT_LMB] = LANG("obj.65f9fd6d0fcd0438", list(mode ? "hot" : "cold"))
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/components/binary/circulator/Destroy()
@@ -156,16 +157,16 @@
 /obj/machinery/atmospherics/components/binary/circulator/wrench_act(mob/living/user, obj/item/I)
 
 	if(!panel_open)
-		balloon_alert(user, "open the panel first!")
+		balloon_alert(user, LANG("obj.2152c7cd805774d4", null))
 		return TRUE
 
 	if(generator)
-		balloon_alert(user, "disconnect [generator] first!")
+		balloon_alert(user, LANG("obj.f45567b103df76c4", list(generator)))
 		return TRUE
 
 	set_anchored(!anchored)
 	I.play_tool_sound(src)
-	balloon_alert(user, "you [anchored?"secure":"unsecure"] [src].")
+	balloon_alert(user, LANG("obj.f27b3c0f8ebdb994", list(anchored?"secure":"unsecure", src)))
 
 	var/obj/machinery/atmospherics/node1 = nodes[1]
 	var/obj/machinery/atmospherics/node2 = nodes[2]
@@ -218,22 +219,22 @@
 
 /obj/machinery/atmospherics/components/binary/circulator/multitool_act(mob/living/user, obj/item/I)
 	if(generator)
-		balloon_alert(user, "disconnect [generator] first!")
+		balloon_alert(user, LANG("obj.f45567b103df76c4", list(generator)))
 		return TRUE
 
 	mode = !mode
-	balloon_alert(user, "you set [src] to [mode?"cold":"hot"] mode.")
+	balloon_alert(user, LANG("obj.010736acc6179453", list(src, mode?"cold":"hot")))
 	return TRUE
 
 /obj/machinery/atmospherics/components/binary/circulator/screwdriver_act(mob/user, obj/item/I)
 	if(..())
 		return TRUE
 	if(generator)
-		balloon_alert(user, "disconnect the generator first!")
+		balloon_alert(user, LANG("obj.b28ab096832a5f0d", null))
 		return TRUE
 	panel_open = !panel_open
 	I.play_tool_sound(src)
-	balloon_alert(user, "you [panel_open?"open":"close"] the panel on [src].")
+	balloon_alert(user, LANG("obj.c25f6bcf143a82a3", list(panel_open?"open":"close", src)))
 	update_icon_nopipes()
 	return TRUE
 
@@ -249,7 +250,7 @@
 
 /obj/machinery/atmospherics/components/binary/circulator/crowbar_act(mob/user, obj/item/I)
 	if(anchored)
-		balloon_alert(user, "[src] is anchored!")
+		balloon_alert(user, LANG("obj.81cc51deff1f70a9", list(src)))
 		return TRUE
 	if(!panel_open)
 		circulator_flip()
@@ -275,7 +276,7 @@
 	pixel_x = 0
 	pixel_y = 0
 
-GAME_VERB_SRC(/obj/machinery/atmospherics/components/binary/circulator, circulator_flip, oview(1), "Flip", "Object")
+GAME_VERB_SRC(/obj/machinery/atmospherics/components/binary/circulator, circulator_flip, oview(1), "翻转", "Object")
 	if(!ishuman(usr))
 		return
 	flip(usr)
@@ -289,7 +290,7 @@ GAME_VERB_SRC(/obj/machinery/atmospherics/components/binary/circulator, circulat
 // DO A FLIP
 /obj/machinery/atmospherics/components/binary/circulator/proc/flip(mob/living/carbon/human/user)
 	flipped = !flipped
-	balloon_alert(user, "you flip [src].")
+	balloon_alert(user, LANG("obj.002704394ed7564b", list(src)))
 	playsound(src, 'sound/items/tools/change_drill.ogg', 50)
 	update_icon_nopipes()
 

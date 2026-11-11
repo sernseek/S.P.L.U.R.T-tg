@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // ⡖⢒⠒⢲⡖⠒⢲⡖⠒⢶⡖⠒⡖⢲⡖⢲⠒⢲⠒⣶⠒⡖⠒⡖⢲⠒⢲⠒⣶⠒⡖⠒⡖⢲⠒⢲⠒⣲⠒⡖⠒⡖⢲⠒⢲⠒⢲⠒⢲⠒⡖⢲⡖⢲⡖⢲⠒⣶⠒⡖⠒⡖⢲⡖⢲
 // ⡇⢸⡇⢸⠁⠾⠘⡇⢸⠈⢲⢸⡇⢠⠁⢸⣄⡖⣾⠀⣿⠀⣇⢸⣇⢸⡇⢸⠀⣿⠀⣧⢠⣇⢸⣄⣼⡀⣿⠀⣇⢸⣇⣸⡇⣸⣀⣾⡀⣷⢠⣇⣸⣇⢸⡇⣼⡀⣿⡀⣧⣰⣇⢸⡇⢸
 // ⠧⠬⠥⠾⠤⠿⠤⠧⠼⠧⠧⠬⠧⠼⠦⠼⠬⠽⠭⠿⠭⠧⠽⠧⠽⠧⠽⠤⠿⠬⠧⠬⠧⠽⠤⠽⠥⠿⠬⠣⠽⠧⠽⠧⠽⠤⠽⠬⠧⠼⠧⠽⠧⠽⠧⠽⠬⠿⠬⠧⠭⠧⠽⠧⠽
@@ -100,30 +101,30 @@
 	if(!ishuman(target))
 		return
 	if(target.buckled)
-		to_chat(user, "<span class='warning'>The user is buckled and can not be put into your [src.name].</span>")
+		to_chat(user, LANG("obj.dd5f523ef9df08e9", list(src.name)))
 		return
 	if(target.anchored)
-		to_chat(user, "<span class='warning'>The user is anchored and can not be put into your [src.name].</span>")
+		to_chat(user, LANG("obj.8dc491e18369cf2e", list(src.name)))
 		return
 	if(patient)
-		to_chat(user, "<span class='warning'>Your [src.name] is already occupied.</span>")
+		to_chat(user, LANG("obj.e7a9f01f0c40bc9e", list(src.name)))
 		return
 
 	var/datum/component/vore/vore = target.GetComponent(/datum/component/vore)
 	if(!vore)
-		to_chat(user, "<span class='warning'>The target registers an error code. Unable to insert into [src.name].</span>")
+		to_chat(user, LANG("obj.0ac6cf3a28acc319", list(src.name)))
 		return ..()
 
 	var/voracious = TRUE
 	if(!target.client || !hound.client || !check_preference(target, /datum/preference/toggle/erp/vore_enable) || !check_vore_preference(target, /datum/vore_pref/toggle/cyborg_sleepers) || !check_preference(hound, /datum/preference/toggle/erp/vore_enable) || !check_vore_preference(hound, /datum/vore_pref/toggle/cyborg_sleepers))
 		voracious = FALSE
 
-	user.visible_message("<span class='warning'>[hound.name] is carefully inserting [target.name] into their [src.name].</span>", "<span class='notice'>You start placing [target] into your [src.name]...</span>")
+	user.visible_message(LANG("obj.f33fef69ac4c3fc9", list(hound.name, target.name, src.name)), LANG("obj.4f1d304017f78a31", list(target, src.name)))
 	if(do_after(user, 10 SECONDS, target) && !target.buckled && !target.anchored && !patient)
 		if(!in_range(src, target)) // Proximity is probably old news by now, do a new check.
 			return // If they moved away, you can't eat them.
 		if(patient)
-			to_chat(user, "<span class='warning'>Your [src.name] is already occupied.</span>")
+			to_chat(user, LANG("obj.e7a9f01f0c40bc9e", list(src.name)))
 			return 	// If you don't have someone in you, proceed.
 		if(!isjellyperson(target) && ("toxin" in injection_chems))
 			injection_chems -= "toxin"
@@ -136,7 +137,7 @@
 		target.extinguish_mob() //The tongue already puts out fire stacks but being put into the sleeper shouldn't allow you to keep burning.
 		update_gut(hound)
 		user.visible_message("<span class='warning'>[voracious ? "[hound]'s [src.name] lights up and expands as [target] slips inside into their [src.name]." : "[hound]'s sleeper indicator lights up as [target] is scooped up into [src.name]."]</span>", \
-			"<span class='notice'>Your [voracious ? "[src.name] lights up as [target] slips into" : "sleeper indicator light shines brightly as [target] is scooped inside"] your [src.name]. Life support functions engaged.</span>")
+			LANG("obj.02426879ce6aa0ff", list(voracious ? "[src.name] lights up as [target] slips into" : "sleeper indicator light shines brightly as [target] is scooped inside", src.name)))
 		message_admins("[key_name(hound)] has sleeper'd [key_name(patient)] as a dogborg. [ADMIN_JMP(src)]")
 		playsound(hound, voracious ? 'modular_zubbers/sound/vore/insertion1.ogg' : 'sound/effects/bin/bin_close.ogg', 100, 1)
 
@@ -147,8 +148,8 @@
 		return
 
 	if(!user.combat_mode)
-		user.visible_message("<span class='warning'>[user] gently rubs the flexible confines.</span>", \
-			"<span class='notice'>You gently rub [hound.name]'s flexible confines.</span>")
+		user.visible_message(LANG("obj.5a0ab329c7dc3b7d", list(user)), \
+			LANG("obj.ad62bbdc9dc352c3", list(hound.name)))
 		return
 
 	var/voracious = TRUE
@@ -156,18 +157,18 @@
 		voracious = FALSE
 
 	if(prob(escape_chance) && !escape_pending)
-		user.visible_message("<span class='notice'>You see [voracious ? "[user] struggling against the expanded material of [hound]'s gut!" : "and hear [user] pounding against something inside of [hound]'s [src.name]!"]</span>", \
-			"<span class='notice'>[voracious ? "You start struggling inside of [src.name]'s tight, flexible confines," : "You start pounding against the metallic walls of [src.name],"] managing to trigger a hidden emergency release... (this will take about [DisplayTimeText(breakout_time)].)</span>", \
-			"<span class='italics'>You hear a [voracious ? "couple of thumps" : "loud banging noise"] coming from within [hound].</span>")
+		user.visible_message(LANG("obj.258ae0707d5e8648", list(voracious ? "[user] struggling against the expanded material of [hound]'s gut!" : "and hear [user] pounding against something inside of [hound]'s [src.name]!")), \
+			LANG("obj.1cf7c3ce69c01045", list(voracious ? "You start struggling inside of [src.name]'s tight, flexible confines," : "You start pounding against the metallic walls of [src.name],", DisplayTimeText(breakout_time))), \
+			LANG("obj.58cbfdd4dd93d9dd", list(voracious ? "couple of thumps" : "loud banging noise", hound)))
 		escape_pending = TRUE
 		if(do_after(user, breakout_time, src, IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM))
-			user.visible_message("<span class='warning'>[user] successfully broke out of [hound.name]!</span>", \
-				"<span class='notice'>You successfully break out of [hound.name]!</span>")
+			user.visible_message(LANG("obj.99bff7f08fe560dd", list(user, hound.name)), \
+				LANG("obj.b33d3d46e6cc0b55", list(hound.name)))
 			go_out(user, hound)
 	else
-		user.visible_message("<span class='notice'>You see [voracious ? "[user] struggling against the expanded material of [hound]'s gut!" : "and hear [user] pounding against something inside of [hound]'s [src.name]!"]</span>", \
-			"<span class='notice'>[voracious ? "You start struggling inside of [src.name]'s tight, flexible confines," : "You start pounding against the metallic walls of [src.name],"] trying to find the trigger the release...</span>", \
-			"<span class='italics'>You hear a [voracious ? "couple of thumps" : "loud banging noise"] coming from within [hound].</span>")
+		user.visible_message(LANG("obj.258ae0707d5e8648", list(voracious ? "[user] struggling against the expanded material of [hound]'s gut!" : "and hear [user] pounding against something inside of [hound]'s [src.name]!")), \
+			LANG("obj.9279a2f26ee65c6e", list(voracious ? "You start struggling inside of [src.name]'s tight, flexible confines," : "You start pounding against the metallic walls of [src.name],")), \
+			LANG("obj.58cbfdd4dd93d9dd", list(voracious ? "couple of thumps" : "loud banging noise", hound)))
 
 // Ejects the sleeper's occupant forcefully.
 
@@ -220,7 +221,7 @@
 	data["occupied"] = patient ? 1 : 0
 
 	if(cleaning)
-		data["items"] = "Self-cleaning mode active: [length(contents - items_preserved)] object(s) remaining."
+		data["items"] = LANG("obj.6ec36555b3152673", list(length(contents - items_preserved)))
 	data["cleaning"] = cleaning
 	data["medical_scanner"] = medical_scanner
 	data["chems"] = list()
@@ -278,11 +279,11 @@
 			. = TRUE
 		if("cleaning")
 			if(!contents || length(contents) == 0)
-				to_chat(usr, "Your [src.name] is already clean.")
+				to_chat(usr, LANG("obj.0773d0a330221a21", list(src.name)))
 				return
 			if(patient)
-				to_chat(patient, "<span class='danger'>[usr.name]'s [src.name] fills with caustic enzymes around you!</span>")
-			to_chat(usr, "<span class='danger'>Cleaning process enabled.</span>")
+				to_chat(patient, LANG("obj.df6b0144c464fb28", list(usr.name, src.name)))
+			to_chat(usr, LANG("obj.fdb7f8927f856a5c", null))
 			playsound(loc, 'sound/machines/click.ogg', 50, 1)
 			cleaning = TRUE
 			clean_cycle(usr)
@@ -372,8 +373,8 @@
 				var/mob/living/carbon/this_target = target
 				if(this_target.stat == DEAD && check_vore_preference(this_target, /datum/vore_pref/toggle/digestion))	// Mob is now dead
 					message_admins("[key_name(hound)] has digested [key_name(this_target)] as a dogborg. [ADMIN_JMP(hound)]")
-					to_chat(hound,"<span class='notice'>You feel your belly slowly churn around [this_target], breaking them down into a soft slurry to be used as power for your systems.</span>")
-					to_chat(this_target,"<span class='notice'>You feel [hound]'s belly slowly churn around your form, breaking you down into a soft slurry to be used as power for [hound]'s systems.</span>")
+					to_chat(hound,LANG("obj.6e87c2c65ef207b8", list(this_target)))
+					to_chat(this_target,LANG("obj.754d1bcb816b3576", list(hound, hound)))
 					hound.cell.give(30000) // yummers
 					if((world.time - NORMIE_HEARCHECK) > last_hearcheck)
 						var/turf/source = get_turf(hound)
@@ -394,7 +395,7 @@
 							for(var/atom/movable/thing in B)
 								thing.forceMove(src)
 								if(ismob(thing))
-									to_chat(thing, "As [this_target] melts away around you, you find yourself in [hound]'s [name]")
+									to_chat(thing, LANG("obj.45f338d688c8ac21", list(this_target, hound, name)))
 					for(var/obj/item/W in this_target)
 						if(!this_target.dropItemToGround(W))
 							qdel(W)
@@ -413,12 +414,12 @@
 		cleaning_cycles = initial(cleaning_cycles)
 		cleaning = FALSE
 		escape_pending = FALSE
-		to_chat(hound, "<span class='notice'>Your [src.name] clicks as its self-cleaning cycle ends. NOTE: Foreign objects are still detected. Resume self-cleaning?</span>")
+		to_chat(hound, LANG("obj.a3440a915fd93e91", list(src.name)))
 		playsound(loc, 'sound/machines/click.ogg', 50, 1)
 
 	if(!contents || length(contents) == 0)
 		// Belly is entirely empty
-		to_chat(hound, "<span class='notice'>Your [src.name] chimes as it completes its self-cleaning cycle.</span>")
+		to_chat(hound, LANG("obj.718192b7c7b65847", list(src.name)))
 		playsound(loc, 'sound/machines/ding.ogg', 50, 1)
 		cleaning_cycles = initial(cleaning_cycles)
 		cleaning = FALSE
@@ -452,15 +453,15 @@
 	if(!hound || !patient || !patient.reagents)
 		return
 	if(hound.cell.charge <= INJECTION_COST + 50) //This is so borgs don't kill themselves with it. Remember, 750 charge used every injection.
-		to_chat(hound, "<span class='notice'>You don't have enough power to synthesize fluids.</span>")
+		to_chat(hound, LANG("obj.dd6796c165e65fee", null))
 		return
 	if(!chem_allowed(chem)) //Preventing people from accidentally killing themselves by trying to inject too many chemicals!
-		to_chat(hound, "<span class='notice'>Your stomach is currently too full of fluids to secrete more fluids of this kind.</span>")
+		to_chat(hound, LANG("obj.55b3abacd4a02647", null))
 		return
 	patient.reagents.add_reagent(chem, INJECTION_AMOUNT)
 	hound.cell.use(INJECTION_COST) //-750 charge per injection
 	var/datum/reagent/this_reagent = GLOB.chemical_reagents_list[chem]
-	to_chat(hound, "<span class='notice'>Injecting [INJECTION_AMOUNT] unit\s of [this_reagent.name] into occupant.</span>")
+	to_chat(hound, LANG("obj.d81a09f914442df2", list(INJECTION_AMOUNT, this_reagent.name)))
 
 /obj/item/dogborg/sleeper/proc/chem_allowed(chem)
 	if(!patient || !patient.reagents)
@@ -488,38 +489,38 @@
 	if(!ishuman(target))
 		return
 	if(target.buckled)
-		to_chat(user, "<span class='warning'>The user is buckled and can not be put into your [src.name].</span>")
+		to_chat(user, LANG("obj.dd5f523ef9df08e9", list(src.name)))
 		return
 	if(target.anchored)
-		to_chat(user, "<span class='warning'>The user is anchored and can not be put into your [src.name].</span>")
+		to_chat(user, LANG("obj.8dc491e18369cf2e", list(src.name)))
 		return
 	if(patient)
-		to_chat(user, "<span class='warning'>Your [src.name] is already occupied.</span>")
+		to_chat(user, LANG("obj.e7a9f01f0c40bc9e", list(src.name)))
 		return
 
 	var/datum/component/vore/vore = target.GetComponent(/datum/component/vore)
 	if(!vore)
-		to_chat(user, "The target registers an error code. Unable to insert into [src.name].")
+		to_chat(user, LANG("obj.f38d447855bf1547", list(src.name)))
 		return
 
 	var/voracious = TRUE
 	if(!check_vore_preference(target, /datum/vore_pref/toggle/cyborg_sleepers) || !check_vore_preference(hound, /datum/vore_pref/toggle/cyborg_sleepers))
 		voracious = FALSE
 
-	user.visible_message("<span class='warning'>[hound.name] is ingesting [target] into their [src.name].</span>", "<span class='notice'>You start ingesting [target] into your [src.name]...</span>")
+	user.visible_message(LANG("obj.d4dc76ffd3635bae", list(hound.name, target, src.name)), LANG("obj.05b2248ede68e229", list(target, src.name)))
 	if(do_after(user, 3 SECONDS, target) && !patient && !target.buckled)
 
 		if(patient)
-			to_chat(user,"<span class='warning'>Your [src.name] is already occupied.</span>")
+			to_chat(user,LANG("obj.e7a9f01f0c40bc9e", list(src.name)))
 			return
 		if(target.buckled)
-			to_chat(user,"<span class='warning'>[target] is buckled and can not be put into your [src.name].</span>")
+			to_chat(user,LANG("obj.bc94b8135cdfef41", list(target, src.name)))
 			return
 
 		target.forceMove(src)
 		target.reset_perspective(src)
 		update_gut(hound)
-		user.visible_message("<span class='warning'>[hound.name]'s mobile brig clunks in series as [target] slips inside.</span>", "<span class='notice'>Your mobile brig groans lightly as [target] slips inside.</span>")
+		user.visible_message(LANG("obj.b5af981894f2bce5", list(hound.name, target)), LANG("obj.6e1c8133f5e790a3", list(target)))
 		playsound(hound, voracious ? 'modular_zubbers/sound/vore/insertion1.ogg' : 'sound/effects/bin/bin_close.ogg', 80, 1)
 
 /obj/item/dogborg/sleeper/K9/flavour
@@ -554,20 +555,20 @@
 	if(!hound || !istype(target) || !proximity || target.anchored)
 		return
 	if(length(contents) > (max_item_count - 1))
-		to_chat(user,"<span class='warning'>Your [src] is full. Eject or process contents to continue.</span>")
+		to_chat(user,LANG("obj.dd230f5cbf06471a", list(src)))
 		return
 	if(isitem(target))
 		var/obj/item/this_item = target
 		if(is_item_accepted(this_item))
-			to_chat(user,"<span class='warning'>[this_item] registers an error code to your [src]!</span>")
+			to_chat(user,LANG("obj.ed814ba9e8282be4", list(this_item, src)))
 			return
 		if(this_item.w_class > WEIGHT_CLASS_NORMAL)
-			to_chat(user,"<span class='warning'>[this_item] is too large to fit into your [src]!</span>")
+			to_chat(user,LANG("obj.17206a20f8304edd", list(this_item, src)))
 			return
-		user.visible_message(span_warning("[hound.name] is ingesting [this_item] into their [src.name]."), span_notice("You start ingesting [this_item] into your [src.name]..."))
+		user.visible_message(span_warning(LANG("obj.aed2685a14e35bc6", list(hound.name, this_item, src.name))), span_notice(LANG("obj.aa8dd10a95016af2", list(this_item, src.name))))
 		if(do_after(user, 1.5 SECONDS, target) && length(contents) < max_item_count)
 			this_item.forceMove(src)
-			this_item.visible_message("<span class='warning'>[hound.name]'s garbage processor groans lightly as [this_item] slips inside.</span>", "<span class='notice'>Your garbage compactor groans lightly as [this_item] slips inside.</span>")
+			this_item.visible_message(LANG("obj.1b4d680af2640499", list(hound.name, this_item)), LANG("obj.b73f4dadcea4f7f4", list(this_item)))
 			playsound(hound, 'sound/machines/disposalflush.ogg', 50, 1)
 			if(length(contents) > 11) // grow that tum after a certain junk amount
 				hound.sleeper_occupant = 1
@@ -581,20 +582,20 @@
 		var/mob/living/trashman = target
 		var/datum/component/vore/vore = target.GetComponent(/datum/component/vore)
 		if(!vore)
-			to_chat(user, "<span class='warning'>[target] registers an error code to your [src]</span>")
+			to_chat(user, LANG("obj.6d697fb336345215", list(target, src)))
 			return
 		if(patient)
-			to_chat(user,"<span class='warning'>Your [src] is already occupied.</span>")
+			to_chat(user,LANG("obj.e7a9f01f0c40bc9e", list(src)))
 			return
 		if(trashman.buckled)
-			to_chat(user,"<span class='warning'>[trashman] is buckled and can not be put into your [src].</span>")
+			to_chat(user,LANG("obj.bc94b8135cdfef41", list(trashman, src)))
 			return
-		user.visible_message(span_warning("[hound.name] is ingesting [trashman] into their [src]."), span_notice("You start ingesting [trashman] into your [src.name]..."))
+		user.visible_message(span_warning(LANG("obj.aed2685a14e35bc6", list(hound.name, trashman, src))), span_notice(LANG("obj.aa8dd10a95016af2", list(trashman, src.name))))
 		if(do_after(user, 3 SECONDS, trashman) && !patient && !trashman.buckled && length(contents) < max_item_count)
 			trashman.forceMove(src)
 			trashman.reset_perspective(src)
 			update_gut(user)
-			user.visible_message("<span class='warning'>[hound.name]'s garbage processor groans lightly as [trashman] slips inside.</span>", "<span class='notice'>Your garbage compactor groans lightly as [trashman] slips inside.</span>")
+			user.visible_message(LANG("obj.1b4d680af2640499", list(hound.name, trashman)), LANG("obj.b73f4dadcea4f7f4", list(trashman)))
 			playsound(hound, 'sound/effects/bin/bin_close.ogg', 80, 1)
 
 #undef INJECTION_AMOUNT

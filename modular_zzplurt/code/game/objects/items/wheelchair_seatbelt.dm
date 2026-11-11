@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/vehicle/ridden/wheelchair
 	var/has_seatbelt = FALSE
 	var/seatbelt_engaged = FALSE
@@ -23,49 +24,49 @@
 
 /obj/vehicle/ridden/wheelchair/proc/remove_mob(mob/living/user)
 	if(!buckled_mobs.len)
-		to_chat(user, span_warning("The	wheelchair is empty!"))
+		to_chat(user, span_warning(LANG("obj.1c9e8b13bbfe3e9a", null)))
 		return
 	var/mob/living/M = buckled_mobs[1]
 	if(has_seatbelt	&& seatbelt_engaged)
-		to_chat(user, span_warning("The	seatbelt is engaged! Disengage it first."))
+		to_chat(user, span_warning(LANG("obj.22c57e3caff158a0", null)))
 		return
-	to_chat(user, span_notice("You start to help [M] out of the	wheelchair..."))
+	to_chat(user, span_notice(LANG("obj.db1550adbb111220", list(M))))
 	if(do_after(user, 3	SECONDS, target	= src))
 		unbuckle_mob(M)
-		to_chat(user, span_notice("You help	[M]	out	of the wheelchair."))
-		to_chat(M, span_notice("[user] helps you out of the	wheelchair."))
+		to_chat(user, span_notice(LANG("obj.95cdc9725aadedbe", list(M))))
+		to_chat(M, span_notice(LANG("obj.0863a6c454bdc8a0", list(user))))
 	else
-		to_chat(user, span_warning("You	were interrupted while helping [M] out of the wheelchair."))
+		to_chat(user, span_warning(LANG("obj.843208578f1021ef", list(M))))
 
 /obj/vehicle/ridden/wheelchair/proc/toggle_seatbelt(mob/living/user)
 	if(!buckled_mobs.len)
-		to_chat(user, span_warning("The	wheelchair is empty!"))
+		to_chat(user, span_warning(LANG("obj.1c9e8b13bbfe3e9a", null)))
 		return
 	var/action = seatbelt_engaged ?	"disengage"	: "engage"
-	to_chat(user, span_notice("You start to [action] the seatbelt..."))
+	to_chat(user, span_notice(LANG("obj.092cab0a0ec07239", list(action))))
 	if(do_after(user, 3	SECONDS, target	= src))
 		seatbelt_engaged = !seatbelt_engaged
-		to_chat(user, span_notice("You [seatbelt_engaged ? "engage"	: "disengage"] the seatbelt."))
+		to_chat(user, span_notice(LANG("obj.49a43509fd1fd5f8", list(seatbelt_engaged ? "engage"	: "disengage"))))
 		playsound(src, 'modular_zzplurt/sound/items/buckling_seatbelt.ogg',	50,	TRUE)
 		for(var/mob/living/M in buckled_mobs)
-			to_chat(M, span_notice("[user] [seatbelt_engaged ? "engages" : "disengages"] your seatbelt."))
+			to_chat(M, span_notice(LANG("obj.fc0f43954a287ced", list(user, seatbelt_engaged ? "engages" : "disengages"))))
 	else
-		to_chat(user, span_warning("You	were interrupted while trying to [action] the seatbelt."))
+		to_chat(user, span_warning(LANG("obj.63de33ffc98eddc0", list(action))))
 
 /obj/vehicle/ridden/wheelchair/unbuckle_mob(mob/living/buckled_mob,	force =	FALSE, can_fall	= TRUE)
 	if(has_seatbelt	&& seatbelt_engaged	&& !force)
-		to_chat(buckled_mob, span_warning("You're secured by the seatbelt!"))
+		to_chat(buckled_mob, span_warning(LANG("obj.72e9377eddddca69", null)))
 		return FALSE
 	return ..()
 
 /obj/vehicle/ridden/wheelchair/post_buckle_mob(mob/living/user)
 	. =	..()
 	if(has_seatbelt)
-		to_chat(user, span_notice("This	wheelchair has a seatbelt. You can toggle it with right-click when not in combat mode."))
+		to_chat(user, span_notice(LANG("obj.4a45866834da39b5", null)))
 
 /obj/vehicle/ridden/wheelchair/relaymove(mob/living/user, direction)
 	if(world.time <	last_collision_time	+ collision_cooldown)
-		to_chat(user, span_warning("The	wheelchair is still	recovering from	the	last collision!"))
+		to_chat(user, span_warning(LANG("obj.d85818eeefa14e96", null)))
 		return FALSE
 	return ..()
 
@@ -76,11 +77,11 @@
 	last_stamina_damage_time = world.time
 	for(var/mob/living/M in buckled_mobs)
 		M.apply_damage(30, STAMINA)
-		to_chat(M, span_warning("The collision jolts you, draining your	stamina!"))
+		to_chat(M, span_warning(LANG("obj.84a5dbee85623f1a", null)))
 	if(has_seatbelt	&& seatbelt_engaged)
 		last_collision_time	= world.time
 		for(var/mob/living/M in buckled_mobs)
-			to_chat(M, span_warning("The seatbelt keeps	you	secure as the wheelchair collides with [A]!"))
+			to_chat(M, span_warning(LANG("obj.913d8e924b4bf490", list(A))))
 		playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
 	else
 		handle_collision(A)
@@ -94,10 +95,10 @@
 	var/damage = rand(3, 7)
 	L.apply_damage(damage, BRUTE)
 	L.Knockdown(0.5	SECONDS)
-	to_chat(L, span_danger("You're hit by [src]	and	knocked	down!"))
+	to_chat(L, span_danger(LANG("obj.067bfa29f556cc2d", list(src))))
 	if(buckled_mobs.len)
 		var/mob/living/user	= buckled_mobs[1]
-		to_chat(user, span_warning("You	hit	[L]	with your wheelchair!"))
+		to_chat(user, span_warning(LANG("obj.d4e05dd28fe72d97", list(L))))
 
 /obj/vehicle/ridden/wheelchair/proc/handle_collision(atom/A)
 	for(var/mob/living/passenger in buckled_mobs)
@@ -110,7 +111,7 @@
 		var/throw_dir =	get_dir(src, A)
 		var/turf/T = get_step(src, throw_dir)
 		passenger.throw_at(T, 2, 2)
-		to_chat(passenger, span_danger("You're thrown from the wheelchair as it collides with [A]!"))
+		to_chat(passenger, span_danger(LANG("obj.b3d27302e97a9910", list(A))))
 	playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
 
 /obj/vehicle/ridden/wheelchair/Initialize(mapload)
@@ -146,7 +147,7 @@
 	if(buckled && istype(buckled, /obj/vehicle/ridden/wheelchair))
 		var/obj/vehicle/ridden/wheelchair/W	= buckled
 		if(W.has_seatbelt && W.seatbelt_engaged)
-			. += span_notice("[p_they(TRUE)] [p_are()] currently buckled to the	seat!")
+			. += span_notice(LANG("mob.0ab59c64b907c5b9", list(p_they(TRUE), p_are())))
 
 /obj/vehicle/ridden/wheelchair/attack_hand_secondary(mob/user, list/modifiers)
 	if(has_seatbelt)

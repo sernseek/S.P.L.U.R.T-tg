@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/mob_spawn/ghost_role/human/ash_walkers_slave
 	name = "Necropolis Slave Casket"
 	icon = 'icons/obj/machines/sleeper.dmi'
@@ -36,7 +37,7 @@
 	new_spawn.mind.add_antag_datum(/datum/antagonist/ashwalker, team)
 	team.players_spawned += (new_spawn.ckey)
 
-	to_chat(new_spawn, "<b>Drag the corpses of men and beasts to your nest. It will absorb them to create more of your kind. Invade the strange structure of the outsiders if you must. Do not cause unnecessary destruction, as littering the wastes with ugly wreckage is certain to not gain you favor. Glory to the Necropolis!</b>")
+	to_chat(new_spawn, LANG("obj.534b41989021505a", null))
 
 /datum/outfit/ashwalker/slave
 	name = "Ash Walker - Slave"

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/ai_controller/basic_controller/fleshmind/tyrant
 	behavior_tree_json = "modular_zubbers/code/game/gamemodes/fleshmind/tyrant/tyrant.bt.json"
 	blackboard = list(
@@ -40,7 +41,7 @@
 	can_move = FALSE
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/tyrant_rocket/attack_sequence(mob/living/firer, atom/target)
-	firer.balloon_alert_to_viewers("begins whirring violently!")
+	firer.balloon_alert_to_viewers(LANG("datum.e09d844a81f39970", null))
 	playsound(src, 'modular_zubbers/sound/fleshmind/tyrant/charge_up.ogg', 100, TRUE)
 	if(!do_after(firer, 2 SECONDS))
 		return

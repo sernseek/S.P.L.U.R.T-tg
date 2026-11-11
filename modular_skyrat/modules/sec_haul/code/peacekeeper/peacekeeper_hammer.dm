@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/melee/breaching_hammer
 	name = "D-4 tactical hammer"
 	desc = "A metallic-plastic composite breaching hammer, looks like a whack with this would severly harm or tire someone."
@@ -34,7 +35,7 @@
 /obj/item/melee/breaching_hammer/proc/remove_track(mob/living/carbon/human/user)
 	REMOVE_TRAIT(user, TRAIT_AIRLOCK_SHOCKIMMUNE, REF(src))
 	breaching = FALSE
-	user.balloon_alert(user, "you put your hammer down!")
+	user.balloon_alert(user, LANG("obj.ac3c2ce7f721ea2e", null))
 	breacher = null
 
 /obj/item/melee/breaching_hammer/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
@@ -56,7 +57,7 @@
 	breaching = TRUE
 	breacher = user
 	INVOKE_ASYNC(src, TYPE_PROC_REF(/obj/item/melee/breaching_hammer, breaching_loop), user, target)
-	user.balloon_alert(user, "you begin breaching the door!")
+	user.balloon_alert(user, LANG("obj.9ab28c83bb1b49a3", null))
 
 /// Keeps looping until the door is breached or conditions fail
 /obj/item/melee/breaching_hammer/proc/breaching_loop(mob/living/user, obj/target)
@@ -67,7 +68,7 @@
 			break
 		target.take_damage(force * breaching_multipler)
 		playsound(target, 'sound/items/weapons/sonic_jackhammer.ogg', 70)
-		target.visible_message(span_warning("[target] begins to cave in and deform with each blow from [src]!"), span_warning("We are breaching [target]."), \
-		span_hear("you hear a thud of metal against metal."))
+		target.visible_message(span_warning(LANG("obj.0f5f1cfe256f6f69", list(target, src))), span_warning(LANG("obj.7c4b49c92ec04c6e", list(target))), \
+		span_hear(LANG("obj.1964886663f57445", null)))
 		user.do_attack_animation(target, used_item = src)
 	remove_track(user)

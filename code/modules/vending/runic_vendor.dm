@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define PULSE_DISTANCE_RANGE 2
 
 /obj/machinery/vending/runic_vendor
@@ -64,7 +65,7 @@
 /obj/machinery/vending/runic_vendor/handle_deconstruct(disassembled)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
-	visible_message(span_warning("[src] flickers and disappears!"))
+	visible_message(span_warning(LANG("obj.98c7a439586acd87", list(src))))
 	playsound(src,'sound/items/weapons/resonator_blast.ogg',25,TRUE)
 	return ..()
 
@@ -79,7 +80,7 @@
 		for(var/mob/living/mob_to_be_pulsed_back in pulsing_turf.contents)
 			hit_things += mob_to_be_pulsed_back
 			var/atom/target = get_edge_target_turf(mob_to_be_pulsed_back, get_dir(src, get_step_away(mob_to_be_pulsed_back, src)))
-			to_chat(mob_to_be_pulsed_back, span_userdanger("The field repels you with tremendous force!"))
+			to_chat(mob_to_be_pulsed_back, span_userdanger(LANG("obj.46ec87b613e1642a", null)))
 			playsound(src, 'sound/effects/gravhit.ogg', 50, TRUE)
 			mob_to_be_pulsed_back.throw_at(target, 4, 4)
 

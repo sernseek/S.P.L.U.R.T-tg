@@ -88,7 +88,7 @@
 		jobs_sorted += job.title
 
 		jobs[job.title] = list(
-			"description" = job.description,
+			"description" = lang_localize_job_description(job), // ZH EDIT - i18n: 拆基础句+opt-in 后缀分别反查（ORIGINAL: "description" = job.description,）
 			"department" = department_name,
 			"alt_titles" = job.alt_titles, // SKYRAT EDIT
 		)

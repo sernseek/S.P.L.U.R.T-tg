@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define TESHARI_TEMP_OFFSET -10 // K, added to comfort/damage limit etc
 #define TESHARI_HEATMOD 1.3
 #define TESHARI_COLDMOD 0.67 // Except cold.
@@ -95,8 +96,8 @@
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = FA_ICON_RUNNING,
-		SPECIES_PERK_NAME = "Tablerunning",
-		SPECIES_PERK_DESC = "A being of extreme agility, you can jump on tables just by running into them!"
+		SPECIES_PERK_NAME = LANG("datum.ea3210ef5986de51", null),
+		SPECIES_PERK_DESC = LANG("datum.0cec13428fea09b3", null)
 	))
 
 	return perk_descriptions

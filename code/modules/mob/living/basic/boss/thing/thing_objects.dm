@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/thing_boss_spike
 	name = "blades"
 	desc = "A sharp flurry of blades that have erupted from the ground."
@@ -131,7 +132,7 @@
 	for(var/zone in list(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
 		var/blocked = victim.run_armor_check(zone, ACID)
 		victim.apply_damage(25, BURN, def_zone = zone, blocked = blocked)
-	to_chat(victim, span_userdanger("You are burnt by the acid!"))
+	to_chat(victim, span_userdanger(LANG("obj.b42f7287e753a996", null)))
 	playsound(victim, 'sound/effects/wounds/sizzle1.ogg', vol = 50, vary = TRUE)
 	qdel(src)
 

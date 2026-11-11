@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define LINK_DENY "<a href='byond://?_src_=usr;open_door=[REF(src)];user=[REF(user)];action=deny'> (deny)</a>"
 #define LINK_OPEN "<a href='byond://?_src_=usr;open_door=[REF(src)];user=[REF(user)];action=open'> (open)</a>"
 #define LINK_BOLT "<a href='byond://?_src_=usr;open_door=[REF(src)];user=[REF(user)];action=bolt'> (bolt)</a>"
@@ -15,11 +16,11 @@
 		return
 
 	if(world.time < requesters[user.name] + 10 SECONDS)
-		to_chat(user, span_warning("Hold on, let the AI parse your request."))
+		to_chat(user, span_warning(LANG("obj.01d48847e7805171", null)))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	if(!hasPower())
-		to_chat(user, span_warning("This door isn't powered."))
+		to_chat(user, span_warning(LANG("obj.12e1e02247902783", null)))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	src.balloon_alert(user, UNLINT("AI requested"))
@@ -33,10 +34,10 @@
 			if(!is_station_level(AI.deployed_shell.registered_z))
 				continue
 			SEND_SOUND(AI.deployed_shell, 'sound/machines/synth/synth_no.ogg')
-			to_chat(AI.deployed_shell, "<b><a href='byond://?_src_=usr;track=[html_encode(user.name)]'>[user]</a></b> is requesting you to open the [src] [LINK_DENY][LINK_OPEN][LINK_BOLT][LINK_SHOCK]")
+			to_chat(AI.deployed_shell, LANG("obj.05095fb8e05f6504", list(html_encode(user.name), user, src, LINK_DENY, LINK_OPEN, LINK_BOLT, LINK_SHOCK)))
 		if(!is_station_level(AI.registered_z))
 			continue
-		to_chat(AI, "<b><a href='byond://?_src_=usr;track=[html_encode(user.name)]'>[user]</a></b> is requesting you to open the [src] [LINK_DENY][LINK_OPEN][LINK_BOLT][LINK_SHOCK]")
+		to_chat(AI, LANG("obj.05095fb8e05f6504", list(html_encode(user.name), user, src, LINK_DENY, LINK_OPEN, LINK_BOLT, LINK_SHOCK)))
 		SEND_SOUND(AI, 'sound/machines/synth/synth_no.ogg')
 	requesters[user.name] = world.time
 

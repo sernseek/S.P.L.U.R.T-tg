@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/mob_cooldown/aphrodisiacal_bite
 	name = "Inject Aphrodisiac"
 	desc = "Sink your fangs into another and inject them with your aphrodisiac."
@@ -30,37 +31,37 @@
 	. = ..()
 	if (!.)
 		return
-	owner.visible_message(span_warning("[owner] bares [owner.p_their()] fangs..."), span_notice("You bare your fangs..."))
+	owner.visible_message(span_warning(LANG("datum.10a1ffe027280cbc", list(owner, owner.p_their()))), span_notice(LANG("datum.beb400e3e5d5fb31", null)))
 
 /datum/action/cooldown/mob_cooldown/aphrodisiacal_bite/Activate(atom/target_atom)
 	if (!isliving(target_atom))
 		return FALSE
 
 	if (astype(owner, /mob/living/carbon)?.is_mouth_covered())
-		owner.balloon_alert(owner, "mouth covered!")
+		owner.balloon_alert(owner, LANG("datum.8b7fe4a7666bda72", null))
 		return FALSE
 
 	if (!owner.Adjacent(target_atom))
-		owner.balloon_alert(owner, "too far!")
+		owner.balloon_alert(owner, LANG("datum.f5e75781e8f1dc46", null))
 		return FALSE
 
 	if (target_atom == owner)
-		owner.balloon_alert(owner, "can't bite yourself!")
+		owner.balloon_alert(owner, LANG("datum.c4d2b4798946b8f4", null))
 		return FALSE
 
 	if(!iscarbon(target_atom))
-		owner.balloon_alert(owner, "not carbon!")
+		owner.balloon_alert(owner, LANG("datum.1cbaa4cf08bf200c", null))
 		return FALSE
 
 	if(!astype(target_atom, /mob/living/carbon).client?.prefs.read_preference(/datum/preference/toggle/erp/aphro))
-		owner.balloon_alert(owner, "not interested!")
+		owner.balloon_alert(owner, LANG("datum.8529cb15aeaaf38d", null))
 		log_game("[key_name(owner)] tried to bite [key_name(astype(target_atom, /mob/living/carbon))] but [key_name(astype(target_atom, /mob/living/carbon))] had aphrodisiacs disabled")
 		return FALSE
 
 	log_combat(owner, target_atom, "started to bite", null, "with venom: [reagent_typepath::name]")
-	owner.visible_message(span_warning("[owner] starts to bite [target_atom]!"), span_warning("You start to bite [target_atom]!"), ignored_mobs = target_atom)
-	to_chat(target_atom, span_userdanger("[owner] starts to bite you!"))
-	owner.balloon_alert_to_viewers("biting...")
+	owner.visible_message(span_warning(LANG("datum.b7dd8aa695b7a12b", list(owner, target_atom))), span_warning(LANG("datum.3f396cf83ac73f3a", list(target_atom))), ignored_mobs = target_atom)
+	to_chat(target_atom, span_userdanger(LANG("datum.e8886eaaebdcc8e3", list(owner))))
+	owner.balloon_alert_to_viewers(LANG("datum.1d0e07beede14ac4", null))
 	if (!do_after(owner, 0.5 SECONDS, target_atom, IGNORE_HELD_ITEM))
 		return FALSE
 

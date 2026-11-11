@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define ASH_WALKER_SPAWN_THRESHOLD 2
 //The ash walker den consumes corpses or unconscious mobs to create ash walker eggs. For more info on those, check ghost_role_spawners.dm
 /obj/structure/lavaland/ash_walker
@@ -53,18 +54,18 @@
 
 			if(issilicon(offeredmob)) //no advantage to sacrificing borgs...
 				offeredmob.investigate_log("has been gibbed by the necropolis tendril.", INVESTIGATE_DEATHS)
-				visible_message(span_notice("Serrated tendrils eagerly pull [offeredmob] apart, but find nothing of interest."))
+				visible_message(span_notice(LANG("obj.e803c8717dd1ef13", list(offeredmob))))
 				offeredmob.gib()
 				return
 
 			if(offeredmob.mind?.has_antag_datum(/datum/antagonist/ashwalker) && (offeredmob.ckey || offeredmob.get_ghost(FALSE, TRUE))) //special interactions for dead lava lizards with ghosts attached
-				visible_message(span_warning("Serrated tendrils carefully pull [offeredmob] to [src], absorbing the body and creating it anew."))
+				visible_message(span_warning(LANG("obj.e5669b25b3107482", list(offeredmob, src))))
 				var/mob/deadmob
 				if(offeredmob.ckey)
 					deadmob = offeredmob
 				else
 					deadmob = offeredmob.get_ghost(FALSE, TRUE)
-				to_chat(deadmob, "Your body has been returned to the nest. You are being remade anew, and will awaken shortly. </br><b>Your memories will remain intact in your new body, as your soul is being salvaged</b>")
+				to_chat(deadmob, LANG("obj.6d3cef375e7f301f", null))
 				SEND_SOUND(deadmob, sound('sound/effects/magic/enter_blood.ogg',volume=100))
 				addtimer(CALLBACK(src, PROC_REF(remake_walker), offeredmob), 20 SECONDS)
 				offeredmob.forceMove(src)
@@ -74,13 +75,13 @@
 				meat_counter += 20
 			else
 				meat_counter++
-			visible_message(span_warning("Serrated tendrils eagerly pull [offeredmob] to [src], tearing the body apart as its blood seeps over the eggs."))
+			visible_message(span_warning(LANG("obj.76d8a7089723e73f", list(offeredmob, src))))
 			playsound(get_turf(src),'sound/effects/magic/demon_consume.ogg', 100, TRUE)
 			var/deliverykey = offeredmob.fingerprintslast //ckey of whoever brought the body
 			var/mob/living/deliverymob = get_mob_by_key(deliverykey) //mob of said ckey
 			//there is a 40% chance that the Lava Lizard unlocks their respawn with each sacrifice
 			if(deliverymob && (deliverymob.mind?.has_antag_datum(/datum/antagonist/ashwalker)) && (deliverykey in ashies.players_spawned) && (prob(40)))
-				to_chat(deliverymob, span_warning("<b>The Necropolis is pleased with your sacrifice. You feel confident your existence after death is secure.</b>"))
+				to_chat(deliverymob, span_warning(LANG("obj.224569c8e6a8d3a4", null)))
 				ashies.players_spawned -= deliverykey
 			offeredmob.investigate_log("has been gibbed by the necropolis tendril.", INVESTIGATE_DEATHS)
 			offeredmob.gib(DROP_ALL_REMAINS)
@@ -102,14 +103,14 @@
 	newwalker.remove_language(/datum/language/common)
 	oldmob.mind.transfer_to(newwalker)
 	newwalker.mind.grab_ghost()
-	to_chat(newwalker, "<b>You have been pulled back from beyond the grave, with a new body and renewed purpose. Glory to the Necropolis!</b>")
+	to_chat(newwalker, LANG("obj.459af3acaa23a866", null))
 	playsound(get_turf(newwalker),'sound/effects/magic/exit_blood.ogg', 100, TRUE)
 	qdel(oldmob)
 
 /obj/structure/lavaland/ash_walker/proc/spawn_mob()
 	if(meat_counter >= ASH_WALKER_SPAWN_THRESHOLD)
 		new /obj/effect/mob_spawn/ghost_role/human/ash_walker(get_step(loc, pick(GLOB.alldirs)), ashies)
-		visible_message(span_danger("One of the eggs swells to an unnatural size and tumbles free. It's ready to hatch!"))
+		visible_message(span_danger(LANG("obj.14a90ae6f4e18765", null)))
 		meat_counter -= ASH_WALKER_SPAWN_THRESHOLD
 		ashies.eggs_created++
 
@@ -144,8 +145,8 @@
 /obj/effect/collapse/Initialize(mapload)
 	. = ..()
 	emitted_light = new(loc)
-	visible_message(span_bolddanger("The tendril writhes in fury as the earth around it begins to crack and break apart! Get back!"))
-	balloon_alert_to_viewers("interact to grab loot before collapse!", vision_distance = 7)
+	visible_message(span_bolddanger(LANG("obj.5abfde61e62a6dae", null)))
+	balloon_alert_to_viewers(LANG("obj.9dedb4914f4a8464", null), vision_distance = 7)
 	playsound(loc,'sound/effects/tendril_destroyed.ogg', 200, FALSE, 50, TRUE, TRUE)
 	addtimer(CALLBACK(src, PROC_REF(collapse)), 5 SECONDS)
 
@@ -153,17 +154,17 @@
 	var/list/examine_messages = ..()
 	if(isliving(user))
 		if(has_collected(user))
-			examine_messages += span_boldnotice("You've grabbed what you can, now get out!")
+			examine_messages += span_boldnotice(LANG("obj.86ccae07b0b02ce7", null))
 		else
-			examine_messages += span_boldnotice("You might have some time to grab some goodies with an open hand before it collapses!")
+			examine_messages += span_boldnotice(LANG("obj.a654af9ed0f5382e", null))
 	return examine_messages
 
 /obj/effect/collapse/attack_hand(mob/living/collector, list/modifiers)
 	. = ..()
 	if(has_collected(collector))
-		to_chat(collector, span_danger("You've already gotten some loot, just get out of there with it!"))
+		to_chat(collector, span_danger(LANG("obj.5ac6ed21848d60ad", null)))
 		return
-	visible_message(span_warning("Something falls free of the tendril!"))
+	visible_message(span_warning(LANG("obj.fa040f0dd7641419", null)))
 	var/obj/structure/closet/crate/necropolis/tendril/loot = new /obj/structure/closet/crate/necropolis/tendril(loc)
 	collector.start_pulling(loot)
 	collected += WEAKREF(collector)
@@ -188,7 +189,7 @@
 	for(var/mob/viewer in range(7, src))
 		shake_camera(viewer, 15, 1)
 	playsound(get_turf(src),'sound/effects/explosion/explosionfar.ogg', 200, TRUE)
-	visible_message(span_bolddanger("The tendril falls inward, the ground around it widening into a yawning chasm!"))
+	visible_message(span_bolddanger(LANG("obj.d60d68e33bf60aaf", null)))
 	for(var/turf/ground in RANGE_TURFS(2, src))
 		if(HAS_TRAIT(ground, TRAIT_NO_TERRAFORM))
 			continue

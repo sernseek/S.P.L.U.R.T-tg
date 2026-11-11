@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///Mostly useless funny rite for forgiving someone, making them innocent once again.
 /datum/religion_rites/forgive
 	name = "Forgive"
@@ -12,9 +13,9 @@
 	if(!honor)
 		return FALSE
 	if(!length(honor.guilty))
-		to_chat(user, span_warning("[GLOB.deity] is holding no grudges to forgive."))
+		to_chat(user, span_warning(LANG("datum.0ce7777650e21b78", list(GLOB.deity))))
 		return FALSE
-	var/forgiven_choice = tgui_input_list(user, "Choose one of [GLOB.deity]'s guilty to forgive", "Forgive", honor.guilty)
+	var/forgiven_choice = tgui_input_list(user, LANG("datum.de903664e472e869", list(GLOB.deity)), LANG("datum.5ecbfba7e3ae90b4", null), honor.guilty)
 	if(isnull(forgiven_choice))
 		return FALSE
 	who = forgiven_choice
@@ -47,7 +48,7 @@
 			continue
 		writ_target = could_writ //PLEASE SIGN MY AUTOGRAPH
 		return ..()
-	to_chat(user, span_warning("You need to place blank paper on [religious_tool] to do this!"))
+	to_chat(user, span_warning(LANG("datum.24468dd588002b18", list(religious_tool))))
 	return FALSE
 
 /datum/religion_rites/summon_rules/invoke_effect(mob/living/user, atom/movable/religious_tool)
@@ -56,9 +57,9 @@
 	var/turf/tool_turf = get_turf(religious_tool)
 	writ_target = null
 	if(QDELETED(autograph) || !(tool_turf == autograph.loc)) //check if the paper is still there
-		to_chat(user, span_warning("Your target left the altar!"))
+		to_chat(user, span_warning(LANG("datum.a4aeac01f2519693", null)))
 		return FALSE
-	autograph.visible_message(span_notice("Words magically form on [autograph]!"))
+	autograph.visible_message(span_notice(LANG("datum.fe9139d922b021eb", list(autograph))))
 	playsound(tool_turf, 'sound/effects/pray.ogg', 50, TRUE)
 	new /obj/item/paper/holy_writ(tool_turf)
 	qdel(autograph)
@@ -136,12 +137,12 @@
 
 /datum/religion_rites/deaconize/crusader/is_valid_for_deacon(mob/living/carbon/human/possible_deacon, mob/living/user)
 	if((TRAIT_GENELESS in possible_deacon.dna.species.inherent_traits) && !issynthetic(possible_deacon)) // BUBBER EDIT CHANGE: Let synths join crusades. Original: if(TRAIT_GENELESS in possible_deacon.dna.species.inherent_traits)
-		to_chat(user, span_warning("This species disgusts [GLOB.deity]! They would never be allowed to join the crusade!"))
+		to_chat(user, span_warning(LANG("datum.a0c946714faadc14", list(GLOB.deity))))
 		return FALSE
 	return ..()
 
 /datum/religion_rites/deaconize/crusader/invite_deacon(mob/living/carbon/human/invited)
-	var/ask = tgui_alert(invited, "Join [GLOB.deity]? You will be bound to a code of honor.", "Invitation", list("Yes", "No"), 60 SECONDS)
+	var/ask = tgui_alert(invited, LANG("datum.4c1c781db6d88a6d", list(GLOB.deity)), LANG("datum.5d69f114cdaad708", null), list("Yes", "No"), 60 SECONDS)
 	if(ask != "Yes")
 		return
 	potential_deacon = invited

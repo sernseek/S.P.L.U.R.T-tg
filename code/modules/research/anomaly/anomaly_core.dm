@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Embedded signaller used in anomalies.
 /obj/item/assembly/signaler/anomaly
 	name = "anomaly core"
@@ -26,7 +27,7 @@
 
 /obj/item/assembly/signaler/anomaly/manual_suicide(datum/mind/suicidee)
 	var/mob/living/user = suicidee.current
-	user.visible_message(span_suicide("[user]'s [name] is reacting to the radio signal, warping [user.p_their()] body!"))
+	user.visible_message(span_suicide(LANG("obj.22ad34d45715e41e", list(user, name, user.p_their()))))
 	user.set_suicide(TRUE)
 	user.gib(DROP_ALL_REMAINS)
 
@@ -34,7 +35,7 @@
 	return
 
 /obj/item/assembly/signaler/anomaly/analyzer_act(mob/living/user, obj/item/analyzer/tool)
-	to_chat(user, span_notice("Analyzing... [src]'s stabilized field is fluctuating along frequency [format_frequency(frequency)], code [code]."))
+	to_chat(user, span_notice(LANG("obj.ae651242b2be6dc0", list(src, format_frequency(frequency), code))))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/assembly/signaler/anomaly/on_mail_unwrap(atom/source, mob/user, obj/item/mail/traitor/letter)
@@ -226,7 +227,7 @@
 	new /obj/effect/temp_visual/thunderbolt(target)
 
 	for(var/mob/living/hit_mob in target)
-		to_chat(hit_mob, span_userdanger("You've been struck by lightning!"))
+		to_chat(hit_mob, span_userdanger(LANG("obj.d028d146d6fe3e90", null)))
 		hit_mob.electrocute_act(20, src, flags = SHOCK_TESLA|SHOCK_NOSTUN)
 
 	for(var/obj/hit_thing in target)

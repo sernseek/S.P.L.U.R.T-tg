@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// MODsuits, trade-off between armor and utility
 /obj/item/mod
 	name = "Base MOD"
@@ -133,7 +134,7 @@
 	var/atom/visible_atom = wearer || src
 	if(wearer)
 		clean_up()
-	visible_atom.visible_message(span_bolddanger("[src] fall[p_s()] apart, completely destroyed!"), vision_distance = COMBAT_MESSAGE_RANGE)
+	visible_atom.visible_message(span_bolddanger(LANG("obj.4340cc4e3977867b", list(src, p_s()))), vision_distance = COMBAT_MESSAGE_RANGE)
 	for(var/obj/item/mod/module/module as anything in modules)
 		uninstall(module)
 	if(ai_assistant)
@@ -149,28 +150,28 @@
 /obj/item/mod/control/examine(mob/user)
 	. = ..()
 	if(active)
-		. += span_notice("Charge: [core ? "[get_charge_percent()]%" : "No core"].")
-		. += span_notice("Selected module: [selected_module || "None"].")
+		. += span_notice(LANG("obj.8c009588a4e769f8", list(core ? "[get_charge_percent()]%" : "No core")))
+		. += span_notice(LANG("obj.55abaf4ac0fd150e", list(selected_module || "None")))
 	if(!open && !active)
 		if(!wearer)
-			. += span_notice("You could equip it to turn it on.")
-		. += span_notice("You could open the cover with a <b>screwdriver</b>.")
+			. += span_notice(LANG("obj.2b97178b43cedfdd", null))
+		. += span_notice(LANG("obj.95435a9923d7f3f4", null))
 	else if(open)
-		. += span_notice("You could close the cover with a <b>screwdriver</b>.")
-		. += span_notice("You could use <b>modules</b> on it to install them.")
-		. += span_notice("You could remove modules with a <b>crowbar</b>.")
-		. += span_notice("You could update the access lock with an <b>ID</b>.")
-		. += span_notice("You could access the wire panel with a <b>wire tool</b>.")
+		. += span_notice(LANG("obj.a4a437ade8c42c56", null))
+		. += span_notice(LANG("obj.37c4e079c16626e6", null))
+		. += span_notice(LANG("obj.6973575a7c680fdd", null))
+		. += span_notice(LANG("obj.cf497fd4f9c15701", null))
+		. += span_notice(LANG("obj.60e26bcded514475", null))
 		if(core)
-			. += span_notice("You could remove [core] with a <b>wrench</b>.")
+			. += span_notice(LANG("obj.29654fa4daf9b774", list(core)))
 		else
-			. += span_notice("You could use a <b>MOD core</b> on it to install one.")
+			. += span_notice(LANG("obj.0e481ddb5fa7bc50", null))
 		if(isnull(ai_assistant))
-			. += span_notice("You could install an AI or pAI using their <b>storage card</b>.")
+			. += span_notice(LANG("obj.729c340fd402ec60", null))
 		else if(isAI(ai_assistant))
-			. += span_notice("You could remove [ai_assistant] with an <b>intellicard</b>.")
-	. += span_notice("You could copy/set link frequency with a <b>multitool</b>.")
-	. += span_notice("<i>You could examine it more thoroughly...</i>")
+			. += span_notice(LANG("obj.dda434d8c9c2dd24", list(ai_assistant)))
+	. += span_notice(LANG("obj.4a579c339e52c3c5", null))
+	. += span_notice(LANG("obj.e08610866072a4d2", null))
 
 /obj/item/mod/control/examine_more(mob/user)
 	. = ..()
@@ -226,13 +227,13 @@
 		return ..()
 
 	if(active)
-		balloon_alert(wearer, "unit active!")
+		balloon_alert(wearer, LANG("obj.7913b0b70e3a0cf3", null))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, FALSE, SILENCED_SOUND_EXTRARANGE)
 		return FALSE
 
 	for(var/obj/item/part as anything in get_parts())
 		if(part.loc != src)
-			balloon_alert(user, "parts extended!")
+			balloon_alert(user, LANG("obj.d8967490a3432a8a", null))
 			playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, FALSE, SILENCED_SOUND_EXTRARANGE)
 			return FALSE
 
@@ -243,44 +244,44 @@
 		return ITEM_INTERACT_BLOCKING
 	if(open)
 		if(!core)
-			balloon_alert(user, "no core!")
+			balloon_alert(user, LANG("obj.9c96952522f32061", null))
 			return ITEM_INTERACT_BLOCKING
-		balloon_alert(user, "removing core...")
+		balloon_alert(user, LANG("obj.4afc363abc5bbb3a", null))
 		wrench.play_tool_sound(src, 100)
 		if(!wrench.use_tool(src, user, 3 SECONDS) || !open)
-			balloon_alert(user, "interrupted!")
+			balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 			return ITEM_INTERACT_BLOCKING
 		wrench.play_tool_sound(src, 100)
-		balloon_alert(user, "core removed")
+		balloon_alert(user, LANG("obj.8b10ca6a98faa6f4", null))
 		core.forceMove(drop_location())
 		return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /obj/item/mod/control/screwdriver_act(mob/living/user, obj/item/screwdriver)
 	if(active || activating || ai_controller)
-		balloon_alert(user, "unit active!")
+		balloon_alert(user, LANG("obj.7913b0b70e3a0cf3", null))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return ITEM_INTERACT_BLOCKING
-	balloon_alert(user, "[open ? "closing" : "opening"] cover...")
+	balloon_alert(user, LANG("obj.b6c2611c0475c996", list(open ? "closing" : "opening")))
 	screwdriver.play_tool_sound(src, 100)
 	if(screwdriver.use_tool(src, user, 1 SECONDS))
 		if(active || activating)
-			balloon_alert(user, "unit active!")
+			balloon_alert(user, LANG("obj.7913b0b70e3a0cf3", null))
 			return ITEM_INTERACT_SUCCESS
 		screwdriver.play_tool_sound(src, 100)
-		balloon_alert(user, "cover [open ? "closed" : "opened"]")
+		balloon_alert(user, LANG("obj.79db4d42235a62d4", list(open ? "closed" : "opened")))
 		open = !open
 	else
-		balloon_alert(user, "interrupted!")
+		balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/mod/control/crowbar_act(mob/living/user, obj/item/crowbar)
 	if(!open)
-		balloon_alert(user, "cover closed!")
+		balloon_alert(user, LANG("obj.252eb885a049a2db", null))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return ITEM_INTERACT_BLOCKING
 	if(!allowed(user))
-		balloon_alert(user, "insufficient access!")
+		balloon_alert(user, LANG("obj.9b3b0da8e550b773", null))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return ITEM_INTERACT_BLOCKING
 	if(SEND_SIGNAL(src, COMSIG_MOD_MODULE_REMOVAL, user) & MOD_CANCEL_REMOVAL)
@@ -292,7 +293,7 @@
 			if(!module.removable)
 				continue
 			removable_modules += module
-		var/obj/item/mod/module/module_to_remove = tgui_input_list(user, "Which module to remove?", "Module Removal", removable_modules)
+		var/obj/item/mod/module/module_to_remove = tgui_input_list(user, LANG("obj.72076eda14b57376", null), LANG("obj.911863855c5a9bf9", null), removable_modules)
 		if(!module_to_remove?.mod)
 			return ITEM_INTERACT_BLOCKING
 		uninstall(module_to_remove)
@@ -300,7 +301,7 @@
 		crowbar.play_tool_sound(src, 100)
 		SEND_SIGNAL(src, COMSIG_MOD_MODULE_REMOVED, user)
 		return ITEM_INTERACT_SUCCESS
-	balloon_alert(user, "no modules!")
+	balloon_alert(user, LANG("obj.54d7bd5dee0062bc", null))
 	playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 	return ITEM_INTERACT_BLOCKING
 
@@ -309,18 +310,18 @@
 	if(istype(tool, /obj/item/pai_card))
 		// Bubber Edit Start - Proteans can't interface with AIs
 		if(istype(src, /obj/item/mod/control/pre_equipped/protean))
-			balloon_alert(user, "unable to interface")
+			balloon_alert(user, LANG("obj.58864e92fb6a0b1c", null))
 			return NONE
 		// Bubber Edit End
 		if(!open)
-			balloon_alert(user, "cover closed!")
+			balloon_alert(user, LANG("obj.252eb885a049a2db", null))
 			return NONE // shoves the card in the storage anyways
 		insert_pai(user, tool)
 		return ITEM_INTERACT_SUCCESS
 	if(istype(tool, /obj/item/mod/paint))
 		var/obj/item/mod/paint/paint_kit = tool
 		if(active || activating)
-			balloon_alert(user, "unit active!")
+			balloon_alert(user, LANG("obj.7913b0b70e3a0cf3", null))
 			return ITEM_INTERACT_BLOCKING
 		if(LAZYACCESS(modifiers, RIGHT_CLICK)) // Right click
 			if(paint_kit.editing_mod == src)
@@ -338,7 +339,7 @@
 			return ITEM_INTERACT_SUCCESS
 	if(istype(tool, /obj/item/mod/module))
 		if(!open)
-			balloon_alert(user, "cover closed!")
+			balloon_alert(user, LANG("obj.252eb885a049a2db", null))
 			playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 			return ITEM_INTERACT_BLOCKING
 		install(tool, user)
@@ -346,16 +347,16 @@
 		return ITEM_INTERACT_SUCCESS
 	if(istype(tool, /obj/item/mod/core))
 		if(!open)
-			balloon_alert(user, "cover closed!")
+			balloon_alert(user, LANG("obj.252eb885a049a2db", null))
 			playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 			return ITEM_INTERACT_BLOCKING
 		if(core)
-			balloon_alert(user, "already has core!")
+			balloon_alert(user, LANG("obj.00b328e3912c1db9", null))
 			playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 			return ITEM_INTERACT_BLOCKING
 		var/obj/item/mod/core/attacking_core = tool
 		attacking_core.install(src)
-		balloon_alert(user, "core installed")
+		balloon_alert(user, LANG("obj.1a2673f997ae855a", null))
 		playsound(src, 'sound/machines/click.ogg', 50, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return ITEM_INTERACT_SUCCESS
 	if(open)
@@ -382,19 +383,19 @@
 
 /obj/item/mod/control/emag_act(mob/user, obj/item/card/emag/emag_card)
 	locked = !locked
-	balloon_alert(user, "access [locked ? "locked" : "unlocked"]")
+	balloon_alert(user, LANG("obj.b2198b2de0670c24", list(locked ? "locked" : "unlocked")))
 	return TRUE
 
 /obj/item/mod/control/emp_act(severity)
 	. = ..()
 	if(!active || !wearer)
 		return
-	to_chat(wearer, span_notice("[severity > 1 ? "Light" : "Strong"] electromagnetic pulse detected!"))
+	to_chat(wearer, span_notice(LANG("obj.01fe988752754b6f", list(severity > 1 ? "Light" : "Strong"))))
 	if(. & EMP_PROTECT_CONTENTS)
 		return
 	selected_module?.deactivate(display_message = TRUE)
 	wearer.apply_damage(5 / severity, BURN, spread_damage=TRUE)
-	to_chat(wearer, span_danger("You feel [src] heat up from the EMP, burning you slightly."))
+	to_chat(wearer, span_danger(LANG("obj.5d6df31142fcd2c4", list(src))))
 	if(!IS_UNCONSCIOUS(wearer) && prob(10))
 		wearer.emote("scream")
 
@@ -439,9 +440,9 @@
 
 		if("deploy", "undeploy")
 			owner.visible_message(
-				span_warning("[user] tries to [action_key] [owner]'s [src]..."),
-				span_userdanger("[user] is trying to [action_key] your [src]!"),
-				blind_message = span_hear("You hear rustling."),
+				span_warning(LANG("obj.40ac4005a925965f", list(user, action_key, owner, src))),
+				span_userdanger(LANG("obj.44eaa2ade6b0aca1", list(user, action_key, src))),
+				blind_message = span_hear(LANG("obj.845a0660f70b200e", null)),
 				ignored_mobs = user,
 			)
 			INVOKE_ASYNC(src, PROC_REF(attempt_strip_deploy), owner, user, action_key)
@@ -449,9 +450,9 @@
 
 		if("activate_mod", "deactivate_mod")
 			owner.visible_message(
-				span_warning("[user] tries to press [owner]'s [src]'s power button..."),
-				span_userdanger("[user] is trying to press your [src]'s power button!"),
-				blind_message = span_hear("You hear rustling."),
+				span_warning(LANG("obj.ecd0c7e457da736c", list(user, owner, src))),
+				span_userdanger(LANG("obj.78a4ee9c7c43452f", list(user, src))),
+				blind_message = span_hear(LANG("obj.845a0660f70b200e", null)),
 				ignored_mobs = user,
 			)
 			INVOKE_ASYNC(src, PROC_REF(attempt_strip_activate), owner, user)
@@ -464,8 +465,8 @@
 	if(!do_after(user, strip_delay, owner))
 		return
 	owner.visible_message(
-		span_warning("[user] [message]s [owner]'s [src]."),
-		span_userdanger("[user] [message]s your [src]!"),
+		span_warning(LANG("obj.499782c17ceeb7d1", list(user, message, owner, src))),
+		span_userdanger(LANG("obj.d299baf66d2bbb0e", list(user, message, src))),
 		ignored_mobs = user,
 	)
 	quick_deploy(user)
@@ -474,8 +475,8 @@
 	if(!do_after(user, strip_delay, owner))
 		return
 	owner.visible_message(
-		span_warning("[user] presses [owner]'s [src]'s power button."),
-		span_userdanger("[user] presses your [src]'s power button!"),
+		span_warning(LANG("obj.fd01df32453feda0", list(user, owner, src))),
+		span_userdanger(LANG("obj.1354cae78c1c5d67", list(user, src))),
 		ignored_mobs = user,
 	)
 	toggle_activate(user)
@@ -634,24 +635,24 @@
 	for(var/obj/item/mod/module/old_module as anything in modules)
 		if(is_type_in_list(new_module, old_module.incompatible_modules) || is_type_in_list(old_module, new_module.incompatible_modules))
 			if(user && !silent) // Bubber Edit: Silent arg
-				balloon_alert(user, "incompatible with [old_module]!")
+				balloon_alert(user, LANG("obj.0cd4714648fcbe3e", list(old_module)))
 				playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 			return
 	var/complexity_with_module = complexity
 	complexity_with_module += new_module.complexity
 	if(complexity_with_module > complexity_max)
 		if(user && !silent)
-			balloon_alert(user, "above complexity max!")
+			balloon_alert(user, LANG("obj.5da70bf771ba2307", null))
 			playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return
 	if(!new_module.has_required_parts(mod_parts))
 		if(user && !silent) // Bubber Edit: Silent arg
-			balloon_alert(user, "lacking required parts!")
+			balloon_alert(user, LANG("obj.a89d2f85d386008e", null))
 			playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return
 	if(!new_module.can_install(src))
 		if(user && !silent) // Bubber Edit: Silent arg
-			balloon_alert(user, "can't install!")
+			balloon_alert(user, LANG("obj.ea00f01a26d25898", null))
 			playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return
 	if(SEND_SIGNAL(src, COMSIG_MOD_TRY_INSTALL_MODULE, new_module, user) & MOD_ABORT_INSTALL)
@@ -672,7 +673,7 @@
 		new_module.on_part_activation()
 		new_module.part_activated = TRUE
 	if(user && !silent) // Bubber Edit: Silent Arg
-		balloon_alert(user, "[new_module] added")
+		balloon_alert(user, LANG("obj.685295ad08132316", list(new_module)))
 		playsound(src, 'sound/machines/click.ogg', 50, TRUE, SILENCED_SOUND_EXTRARANGE)
 	return TRUE // Bubber Edit: Return True
 /obj/item/mod/control/proc/uninstall(obj/item/mod/module/old_module, deleting = FALSE)
@@ -694,11 +695,11 @@
 
 /obj/item/mod/control/proc/update_access(mob/user, obj/item/card/id/card)
 	if(!allowed(user))
-		balloon_alert(user, "insufficient access!")
+		balloon_alert(user, LANG("obj.9b3b0da8e550b773", null))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return
 	req_access = card.access.Copy()
-	balloon_alert(user, "access updated")
+	balloon_alert(user, LANG("obj.b9909124474bcf91", null))
 
 /obj/item/mod/control/proc/get_charge_source()
 	return core?.charge_source()
@@ -764,7 +765,7 @@
 	wearer?.update_equipment_speed_mods()
 
 /obj/item/mod/control/proc/power_off()
-	balloon_alert(wearer, "no power!")
+	balloon_alert(wearer, LANG("obj.b3e1b703b228ad7a", null))
 	toggle_activate(wearer, force_deactivate = TRUE)
 
 /obj/item/mod/control/proc/set_mod_color(new_color)
@@ -819,14 +820,14 @@
 	SIGNAL_HANDLER
 
 	if(HAS_TRAIT(src, TRAIT_SPEED_POTIONED))
-		to_chat(user, span_warning("[src] has already been coated with red, that's as fast as it'll go!"))
+		to_chat(user, span_warning(LANG("obj.c653f13bf258479a", list(src))))
 		return SPEED_POTION_STOP
 
 	if(active)
-		to_chat(user, span_warning("It's too dangerous to smear [speed_potion] on [src] while it's active!"))
+		to_chat(user, span_warning(LANG("obj.8c0002f2925409ca", list(speed_potion, src))))
 		return SPEED_POTION_STOP
 
-	to_chat(user, span_notice("You slather the red gunk over [src], making it faster."))
+	to_chat(user, span_notice(LANG("obj.d3bf38ba888ceabc", list(src))))
 	set_mod_color(color_transition_filter(COLOR_RED))
 	ADD_TRAIT(src, TRAIT_SPEED_POTIONED, SLIME_POTION_TRAIT)
 	update_speed()

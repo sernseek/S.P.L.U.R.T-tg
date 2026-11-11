@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/bloodloss_dusting
 	name = "Dusting Sickness"
 	desc = "If you run out of blood to the point where a normal person would die, you turn to dust."
@@ -16,7 +17,7 @@
 	if(!istype(source))
 		return
 	if(source.blood_volume < BLOOD_VOLUME_SURVIVE)
-		to_chat(quirk_holder, span_danger("You ran out of blood!"))
+		to_chat(quirk_holder, span_danger(LANG("datum.f729390ec2a338c2", null)))
 		quirk_holder.investigate_log("has been dusted by a lack of blood. Caused by [src.name] quirk", INVESTIGATE_DEATHS)
 		quirk_holder.dust()
 		quirk_holder.drop_everything(del_on_drop = FALSE, force = TRUE, del_if_nodrop = TRUE)

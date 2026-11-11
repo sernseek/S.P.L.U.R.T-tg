@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MIN_PROGRESS_AMOUNT 3
 #define MIN_DEVIATION_RATE 0.90
 #define MAX_DEVIATION_RATE 1.1
@@ -48,12 +49,12 @@
 
 /obj/machinery/atmospherics/components/binary/crystallizer/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
-	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
+	context[SCREENTIP_CONTEXT_CTRL_LMB] = LANG("obj.fed2f8dfb3af5666", list(on ? "off" : "on"))
 	if(!held_item)
 		return CONTEXTUAL_SCREENTIP_SET
 	switch(held_item.tool_behaviour)
 		if(TOOL_SCREWDRIVER)
-			context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] panel"
+			context[SCREENTIP_CONTEXT_LMB] = LANG("obj.45725a89b7fc8d2e", list(panel_open ? "Close" : "Open"))
 		if(TOOL_WRENCH)
 			context[SCREENTIP_CONTEXT_LMB] = "Rotate"
 	return CONTEXTUAL_SCREENTIP_SET
@@ -89,10 +90,10 @@
 	if(!is_operational)
 		return CLICK_ACTION_BLOCKING
 	if(panel_open)
-		balloon_alert(user, "close panel!")
+		balloon_alert(user, LANG("obj.4337ae3ee9e4930a", null))
 		return CLICK_ACTION_BLOCKING
 	set_on(!on)
-	balloon_alert(user, "turned [on ? "on" : "off"]")
+	balloon_alert(user, LANG("obj.8fcfde3cd8c5cffd", list(on ? "on" : "off")))
 	investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
 	return CLICK_ACTION_SUCCESS
 
@@ -244,7 +245,7 @@
 		var/datum/gas_recipe/recipe = GLOB.gas_recipe_meta[path]
 		if(recipe.machine_type != "Crystallizer")
 			continue
-		data["selected_recipes"] += list(list("name" = recipe.name, "id" = recipe.id))
+		data["selected_recipes"] += list(list("name" = lang_localize_display_name(recipe.name), "id" = recipe.id)) // ZH EDIT - I18N: 名字纯显示，act 走同条负载里的 id。ORIGINAL: "name" = recipe.name
 	return data
 
 /obj/machinery/atmospherics/components/binary/crystallizer/ui_data()

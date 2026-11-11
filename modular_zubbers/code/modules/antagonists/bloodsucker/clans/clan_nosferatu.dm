@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/bloodsucker_clan/nosferatu
 	name = CLAN_NOSFERATU
 	description = "The Nosferatu Clan is unable to blend in with the crew, with no abilities such as Masquerade and Veil. \n\
@@ -39,7 +40,7 @@
 		if(isnull(item))
 			continue
 		if(provide_feedback)
-			to_chat(owner_mob, span_warning("You cannot ventcrawl while holding items!"))
+			to_chat(owner_mob, span_warning(LANG("datum.de0e3fda6bddb82e", null)))
 		return FALSE
 	return TRUE
 
@@ -77,8 +78,8 @@
 		ogler.add_mood_event("nosferatu_examine", /datum/mood_event/nosferatu_examined, ogled, owner_datum.GetRank())
 		ogler.adjust_disgust(owner_datum.GetRank() * 10)
 	// show that they are dangerous nosferatu, as if you're gazing upon them with fear, without mentioning the clan name/antagonist name, describe their appearance
-	examine_text += span_danger("[ogled.p_They()] look[ogled.p_s()] like a pale, grotesque hunchback, with a mouth full of jagged yellowy teeth, and breath that reeks of fresh blood. You feel both afraid and disgusted as you gaze upon [ogled.p_them()].")
-	examine_text += span_userdanger("[ogled.p_They()] [ogled.p_are()] clearly a BLOODSUCKER!")
+	examine_text += span_danger(LANG("datum.c19a8ac68cfc3a40", list(ogled.p_They(), ogled.p_s(), ogled.p_them())))
+	examine_text += span_userdanger(LANG("datum.f569f54ff5772152", list(ogled.p_They(), ogled.p_are())))
 
 /datum/bloodsucker_clan/nosferatu/Destroy(force)
 	var/datum/action/cooldown/bloodsucker/feed/suck = locate() in bloodsuckerdatum.powers
@@ -95,7 +96,7 @@
 	ghouldatum.owner.current.add_traits(traits_to_add, GHOUL_TRAIT)
 	ghouldatum.traits += traits_to_add
 	ghouldatum.owner.current.update_sight()
-	to_chat(ghouldatum.owner.current, span_notice("Additionally, you can now ventcrawl while naked, and are permanently disfigured. You also have night vision, know how which wires to cut, and have silent footsteps."))
+	to_chat(ghouldatum.owner.current, span_notice(LANG("datum.04e4ecb785d0b5ea", null)))
 
 /datum/bloodsucker_clan/nosferatu/favorite_ghoul_loss(datum/antagonist/bloodsucker/source, datum/antagonist/ghoul/ghouldatum)
 	ghouldatum.owner.current.update_sight()

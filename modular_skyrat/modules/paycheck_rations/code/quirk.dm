@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/item_quirk/ration_system
 	name = "Ration Ticket Receiver"
 	desc = "Due to some circumstance of your life, you have enrolled in the ration tickets program, \
@@ -34,7 +35,7 @@
 	tracked_ticket_book = WEAKREF(new_ticket_book)
 	account.payday_modifier -= 0.5
 	RegisterSignal(account, COMSIG_ON_BANK_ACCOUNT_PAYOUT, PROC_REF(make_ration_ticket))
-	to_chat(client_source.mob, span_notice("You remember to keep close hold of your ticket book, it can't be replaced if lost and all of your ration tickets are placed there!"))
+	to_chat(client_source.mob, span_notice(LANG("datum.ecb1fb4d4d804205", null)))
 
 /// Attempts to create a ration ticket book in the card holder's hand, and failing that, the drop location of the card
 /datum/quirk/item_quirk/ration_system/proc/make_ration_ticket(datum/bank_account/account)
@@ -65,7 +66,7 @@
 		last_ticket_luxury = !last_ticket_luxury
 		if(!ticket_book.atom_storage.attempt_insert(created_ticket, messages = FALSE))
 			qdel(created_ticket)
-			account.bank_card_talk("ERROR: Failed to place ration ticket in ticket book, ensure book is not full.")
+			account.bank_card_talk(LANG("datum.97b2f6d393c1a603", null))
 			break
-		account.bank_card_talk("A new [last_ticket_luxury ? "luxury item" : "standard"] ration ticket has been placed in your ticket book.")
+		account.bank_card_talk(LANG("datum.a6b7a75680b71683", list(last_ticket_luxury ? "luxury item" : "standard")))
 		break

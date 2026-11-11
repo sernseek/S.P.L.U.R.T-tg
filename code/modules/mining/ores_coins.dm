@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define ORESTACK_OVERLAYS_MAX 10
 
 /**********************Mineral ores**************************/
@@ -158,12 +159,12 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		return
 	var/mob/living/carbon/human/C = hit_atom
 	if(C.is_eyes_covered())
-		C.visible_message(span_danger("[C]'s eye protection blocks the sand!"), span_warning("Your eye protection blocks the sand!"))
+		C.visible_message(span_danger(LANG("obj.8d8a2bb95d14e234", list(C))), span_warning(LANG("obj.edc82cb36ce771c1", null)))
 		return
 	C.adjust_eye_blur(12 SECONDS)
 	C.adjust_stamina_loss(15) //the pain from your eyes burning does stamina damage
 	C.adjust_confusion(5 SECONDS)
-	to_chat(C, span_userdanger("\The [src] gets into your eyes! The pain, it burns!"))
+	to_chat(C, span_userdanger(LANG("obj.6be7640b2f6c6c90", list(src))))
 	qdel(src)
 
 /obj/item/stack/ore/glass/ex_act(severity, target)
@@ -186,12 +187,12 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 
 	var/sand_to_use = min(floor(cement.volume / cement.units_per_aggregate), amount)
 	if (!sand_to_use)
-		to_chat(user, span_warning("You don't have enough [cement.name] to mix with [src]."))
+		to_chat(user, span_warning(LANG("obj.c44337e663c8d7c4", list(cement.name, src))))
 		return ITEM_INTERACT_BLOCKING
 
 	use(sand_to_use)
 	target.reagents.convert_reagent(cement.type, cement.concrete_type, conversion_volume = sand_to_use * cement.units_per_aggregate)
-	user.visible_message(span_warning("[user] slips something into [target]!"), span_notice("You dissolve [src] in [target]."), null, 2)
+	user.visible_message(span_warning(LANG("obj.17fceef69cdd6a82", list(user, target))), span_notice(LANG("obj.a601765007d9b7b6", list(src, target))), null, 2)
 	playsound(target, 'sound/effects/bubbles/bubbles.ogg', 50, TRUE)
 	return ITEM_INTERACT_SUCCESS
 
@@ -235,7 +236,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	max_vein_size = 4
 
 /obj/item/stack/ore/plasma/welder_act(mob/living/user, obj/item/I)
-	to_chat(user, span_warning("You can't hit a high enough temperature to smelt [src] properly!"))
+	to_chat(user, span_warning(LANG("obj.b3ad97c22d06f654", list(src))))
 	return TRUE
 
 /obj/item/stack/ore/silver
@@ -360,9 +361,9 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 /obj/item/gibtonite/examine(mob/user)
 	. = ..()
 	if(rig)
-		. += span_warning("There is some kind of device <b>rigged</b> to it!")
+		. += span_warning(LANG("obj.2eba9ff516e47a65", null))
 	else
-		. += span_notice("You could <b>rig</b> something to it.")
+		. += span_notice(LANG("obj.0ffd41626d93ff42", null))
 
 /obj/item/gibtonite/Destroy()
 	QDEL_NULL(rig)
@@ -399,7 +400,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		RegisterSignal(src, COMSIG_IGNITER_ACTIVATE, PROC_REF(igniter_prime))
 		log_bomber(user, "attached [holder] to ", src)
 		attacher = key_name(user)
-		user.balloon_alert_to_viewers("attached rig")
+		user.balloon_alert_to_viewers(LANG("obj.9fd1e50279a98330", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(tool.tool_behaviour == TOOL_MINING || istype(tool, /obj/item/resonator) || tool.force >= 10)
@@ -420,7 +421,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	if(QDELETED(src))
 		return ITEM_INTERACT_BLOCKING
 
-	user.balloon_alert_to_viewers("detached rig")
+	user.balloon_alert_to_viewers(LANG("obj.1f75f20abde863e2", null))
 	user.log_message("detached [rig] from [src].", LOG_GAME)
 	user.put_in_hands(rig)
 	return ITEM_INTERACT_SUCCESS
@@ -436,7 +437,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	primed = FALSE
 	if(det_timer)
 		deltimer(det_timer)
-	defuser?.visible_message(span_notice("The chain reaction stopped! ...The ore's quality looks diminished."), span_notice("You stopped the chain reaction. ...The ore's quality looks diminished."))
+	defuser?.visible_message(span_notice(LANG("obj.5de28fb9eb8b69c8", null)), span_notice(LANG("obj.6b86ff65145bde6c", null)))
 	icon_state = "gibtonite"
 	quality = GIBTONITE_QUALITY_LOW
 
@@ -465,7 +466,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		notify_admins = TRUE
 
 	if(user)
-		user.visible_message(span_warning("[user] strikes \the [src], causing a chain reaction!"), span_danger("You strike \the [src], causing a chain reaction."))
+		user.visible_message(span_warning(LANG("obj.6fca09139236e18d", list(user, src))), span_danger(LANG("obj.0fab61145cd94435", list(src))))
 
 	var/attacher_text = attacher ? "Igniter attacher: [ADMIN_LOOKUPFLW(attacher)]" : null
 
@@ -558,9 +559,9 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	return value
 
 /obj/item/coin/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] contemplates suicide with \the [src]!"))
+	user.visible_message(span_suicide(LANG("obj.fbc20d1270363cb7", list(user, src))))
 	if (!attack_self(user))
-		user.visible_message(span_suicide("[user] couldn't flip \the [src]!"))
+		user.visible_message(span_suicide(LANG("obj.9fcc89179258883a", list(user, src))))
 		return SHAME
 	addtimer(CALLBACK(src, PROC_REF(manual_suicide), user), 1 SECONDS)//10 = time takes for flip animation
 	return MANUAL_SUICIDE_NONLETHAL
@@ -568,17 +569,17 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 /obj/item/coin/proc/manual_suicide(mob/living/user)
 	var/index = sideslist.Find(coinflip)
 	if (index == 2)//tails
-		user.visible_message(span_suicide("\the [src] lands on [coinflip]! [user] promptly falls over, dead!"))
+		user.visible_message(span_suicide(LANG("obj.49fc6cb35e694f21", list(src, coinflip, user))))
 		user.adjust_oxy_loss(200)
 		user.death(FALSE)
 		user.set_suicide(TRUE)
 		user.suicide_log()
 	else
-		user.visible_message(span_suicide("\the [src] lands on [coinflip]! [user] keeps on living!")) //Don't put it in your pocket. It's your lucky quarter.
+		user.visible_message(span_suicide(LANG("obj.0bb1d98769a53769", list(src, coinflip, user)))) //Don't put it in your pocket. It's your lucky quarter.
 
 /obj/item/coin/examine(mob/user)
 	. = ..()
-	. += span_info("It's worth [value] [MONEY_NAME_AUTOPURAL(value)].")
+	. += span_info(LANG("obj.fdb670515ae40655", list(value, MONEY_NAME_AUTOPURAL(value))))
 
 /obj/item/coin/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(!istype(tool, /obj/item/stack/cable_coil))
@@ -586,16 +587,16 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 
 	var/obj/item/stack/cable_coil/string = tool
 	if(string_attached)
-		to_chat(user, span_warning("There already is a string attached to this coin!"))
+		to_chat(user, span_warning(LANG("obj.273a71bb3c211ed2", null)))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!string.use(1))
-		to_chat(user, span_warning("You need one length of cable to attach a string to the coin!"))
+		to_chat(user, span_warning(LANG("obj.bd437cbe8a2e7689", null)))
 		return ITEM_INTERACT_BLOCKING
 
 	add_overlay("coin_string_overlay")
 	string_attached = TRUE
-	to_chat(user, span_notice("You attach a string to the coin."))
+	to_chat(user, span_notice(LANG("obj.b43140d2b74555e5", null)))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/coin/wirecutter_act(mob/living/user, obj/item/I)
@@ -606,13 +607,13 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	new /obj/item/stack/cable_coil(drop_location(), 1)
 	overlays = list()
 	string_attached = null
-	to_chat(user, span_notice("You detach the string from the coin."))
+	to_chat(user, span_notice(LANG("obj.c2c4de910cfa4fa6", null)))
 	return TRUE
 
 /obj/item/coin/attack_self(mob/user)
 	if(cooldown < world.time)
 		if(string_attached) //does the coin have a wire attached
-			to_chat(user, span_warning("The coin won't flip very well with something attached!") )
+			to_chat(user, span_warning(LANG("obj.d0b5b4320507022e", null)) )
 			return FALSE//do not flip the coin
 		cooldown = world.time + 15
 		flick("coin_[coinflip]_flip", src)
@@ -622,9 +623,9 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		var/oldloc = loc
 		sleep(1.5 SECONDS)
 		if(loc == oldloc && user && !user.incapacitated)
-			user.visible_message(span_notice("[user] flips [src]. It lands on [coinflip]."), \
-				span_notice("You flip [src]. It lands on [coinflip]."), \
-				span_hear("You hear the clattering of loose change."))
+			user.visible_message(span_notice(LANG("obj.4361b57ddd8b9ac6", list(user, src, coinflip))), \
+				span_notice(LANG("obj.4521788adc34d397", list(src, coinflip))), \
+				span_hear(LANG("obj.7720a1bbe1a6a40a", null)))
 		if(has_action)
 			if(coinflip == heads_name)
 				heads_action(user)
@@ -710,7 +711,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 /obj/item/coin/gold/debug/attack_self(mob/user)
 	if(cooldown < world.time)
 		if(string_attached) //does the coin have a wire attached
-			to_chat(user, span_warning("The coin won't flip very well with something attached!") )
+			to_chat(user, span_warning(LANG("obj.d0b5b4320507022e", null)) )
 			return FALSE//do not flip the coin
 		cooldown = world.time + 15
 		flick("coin_[coinflip]_flip", src)
@@ -720,11 +721,11 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		var/oldloc = loc
 		sleep(1.5 SECONDS)
 		if(loc == oldloc && user && !user.incapacitated)
-			user.visible_message(span_notice("[user] flips [src]. It lands on [coinflip]."), \
-				span_notice("You flip [src]. It lands on [coinflip]."), \
-				span_hear("You hear the clattering of loose change."))
+			user.visible_message(span_notice(LANG("obj.4361b57ddd8b9ac6", list(user, src, coinflip))), \
+				span_notice(LANG("obj.4521788adc34d397", list(src, coinflip))), \
+				span_hear(LANG("obj.7720a1bbe1a6a40a", null)))
 		SSeconomy.fire()
-		to_chat(user,"<span class='bounty'>[SSeconomy.inflation_value()] is the inflation value.</span>")
+		to_chat(user,LANG("obj.91141ee78f8de022", list(SSeconomy.inflation_value())))
 	return TRUE//did the coin flip? useful for suicide_act
 
 

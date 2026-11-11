@@ -8,8 +8,10 @@
 		spawn_rivers(moon_z, 8, /turf/open/water/moonstation, /area/moonstation/underground/unexplored)
 		spawn_rivers(moon_z, 8, /turf/open/water/moonstation/surface, /area/moonstation/surface/unexplored)
 
-/datum/controller/subsystem/mapping/setup_ruins()
+/datum/controller/subsystem/mapping/setup_ruins(include_station = TRUE, include_lava = TRUE, include_space = TRUE) // ZH EDIT CHANGE - DEFERRED_OFFSTATION - ORIGINAL: /datum/controller/subsystem/mapping/setup_ruins()
 	. = ..()
+	if(!include_station) // ZH EDIT ADDITION - DEFERRED_OFFSTATION - planetary station levels are never deferred
+		return
 	var/list/moonstation_ruins = levels_by_trait(ZTRAIT_MOONSTATION_RUINS)
 	if (moonstation_ruins.len)
 		seedRuins(moonstation_ruins, CONFIG_GET(number/lavaland_budget), list(/area/lavaland/surface/outdoors/unexplored), themed_ruins[ZTRAIT_LAVA_RUINS], clear_below = TRUE, mineral_budget = 15, mineral_budget_update = OREGEN_PRESET_LAVALAND)

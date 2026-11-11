@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/Initialize(mapload)
 	. = ..()
 	if(initial_size != RESIZE_DEFAULT_SIZE)
@@ -108,8 +109,8 @@
 				emote("spin")
 
 			visible_message(
-				span_notice("[src] makes a hard landing on [impacted_turf] but remains unharmed from the fall[graceful_landing ? " and stays on [p_their()] feet" : " by tucking in rolling into the landing"]."),
-				span_notice("You brace for the fall. You make a hard landing on [impacted_turf], but remain unharmed[graceful_landing ? " while landing on your feet" : " by tucking in and rolling into the landing"]."),
+				span_notice(LANG("mob.cbd5b4202aa61348", list(src, impacted_turf, graceful_landing ? " and stays on [p_their()] feet" : " by tucking in rolling into the landing"))),
+				span_notice(LANG("mob.719434d0345e7424", list(impacted_turf, graceful_landing ? " while landing on your feet" : " by tucking in and rolling into the landing"))),
 			)
 			return . | ZIMPACT_NO_MESSAGE
 
@@ -122,8 +123,8 @@
 		skip_knockdown = TRUE
 		if(small_surface_area || isfeline(src)) // SKYRAT EDIT CHANGE - ORIGINAL: if(small_surface_area)
 			visible_message(
-				span_notice("[src] makes a hard landing on [impacted_turf], but lands safely on [p_their()] feet!"),
-				span_notice("You make a hard landing on [impacted_turf], but land safely on your feet!"),
+				span_notice(LANG("mob.2d691e89464d9fc4", list(src, impacted_turf, p_their()))),
+				span_notice(LANG("mob.3f3dc8cfb1fb4dae", list(impacted_turf))),
 			)
 			new /obj/effect/temp_visual/mook_dust/small(impacted_turf)
 			return .
@@ -132,8 +133,8 @@
 		add_movespeed_modifier(/datum/movespeed_modifier/landed_on_feet)
 		addtimer(CALLBACK(src, TYPE_PROC_REF(/mob, remove_movespeed_modifier), /datum/movespeed_modifier/landed_on_feet), levels * 2 SECONDS)
 		visible_message(
-			span_danger("[src] makes a hard landing on [impacted_turf], landing on [p_their()] feet painfully!"),
-			span_userdanger("You make a hard landing on [impacted_turf], and instinctively land on your feet - painfully!"),
+			span_danger(LANG("mob.428913506ece9160", list(src, impacted_turf, p_their()))),
+			span_userdanger(LANG("mob.01673d254e98a1ea", list(impacted_turf))),
 		)
 		new /obj/effect/temp_visual/mook_dust(impacted_turf)
 
@@ -209,7 +210,7 @@
 		//Should stop you pushing a restrained person out of the way
 		if(L.pulledby && L.pulledby != src && HAS_TRAIT(L, TRAIT_RESTRAINED))
 			if(!(world.time % 5))
-				to_chat(src, span_warning("[L] is restrained, you cannot push past."))
+				to_chat(src, span_warning(LANG("mob.ffeb5befd9e8f237", list(L))))
 			return TRUE
 
 		if(L.pulling)
@@ -217,7 +218,7 @@
 				var/mob/P = L.pulling
 				if(HAS_TRAIT(P, TRAIT_RESTRAINED))
 					if(!(world.time % 5))
-						to_chat(src, span_warning("[L] is restraining [P], you cannot push past."))
+						to_chat(src, span_warning(LANG("mob.21053d2cded630e8", list(L, P))))
 					return TRUE
 
 	if(moving_diagonally)//no mob swap during diagonal moves.
@@ -441,9 +442,9 @@
 
 	if(AM.pulledby)
 		if(!supress_message)
-			AM.visible_message(span_danger("[src] pulls [AM] from [AM.pulledby]'s grip."), \
-							span_danger("[src] pulls you from [AM.pulledby]'s grip."), null, null, src)
-			to_chat(src, span_notice("You pull [AM] from [AM.pulledby]'s grip!"))
+			AM.visible_message(span_danger(LANG("mob.013760f79a5b6ae8", list(src, AM, AM.pulledby))), \
+							span_danger(LANG("mob.be29113afbd16729", list(src, AM.pulledby))), null, null, src)
+			to_chat(src, span_notice(LANG("mob.3c31c7995aa40fec", list(AM, AM.pulledby))))
 		log_combat(AM, AM.pulledby, "pulled from", src)
 		AM.pulledby.stop_pulling() //an object can't be pulled by two mobs at once.
 
@@ -469,20 +470,20 @@
 			//SKYRAT EDIT START - Tail coiling
 			if(ishuman(M))
 				if(zone_selected == BODY_ZONE_PRECISE_GROIN && M.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL) && src.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL))
-					M.visible_message(span_warning("[src] coils their tail with [AM], wow is that okay in public?!"), "[src] has entwined their tail with yours!")
-					to_chat(src, "You entwine your tail with [AM]")
+					M.visible_message(span_warning(LANG("mob.adf16c74d730a4df", list(src, AM))), LANG("mob.fbfa396a6fbdb2e8", list(src)))
+					to_chat(src, LANG("mob.f0f92635904d3b40", list(AM)))
 				else
 					var/mob/living/carbon/human/grabbed_human = M
 					var/grabbed_by_hands = (zone_selected == "l_arm" || zone_selected == "r_arm") && grabbed_human.usable_hands > 0
-					M.visible_message(span_warning("[src] grabs [M] [grabbed_by_hands ? "by their hands":"passively"]!"), \
-									span_warning("[src] grabs you [grabbed_by_hands ? "by your hands":"passively"]!"), null, null, src)
-					to_chat(src, span_notice("You grab [M] [grabbed_by_hands ? "by their hands":"passively"]!"))
+					M.visible_message(span_warning(LANG("mob.602aa52017aefc12", list(src, M, grabbed_by_hands ? "by their hands":"passively"))), \
+									span_warning(LANG("mob.3619c4502f9fe3d6", list(src, grabbed_by_hands ? "by your hands":"passively"))), null, null, src)
+					to_chat(src, span_notice(LANG("mob.d2fe496554668c78", list(M, grabbed_by_hands ? "by their hands":"passively"))))
 			// SKYRAT EDIT END
 					grabbed_human.share_blood_on_touch(src, grabbed_by_hands ? ITEM_SLOT_GLOVES : ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
 			else
-				M.visible_message(span_warning("[src] grabs [M] passively!"), \
-								span_warning("[src] grabs you passively!"), null, null, src)
-				to_chat(src, span_notice("You grab [M] passively!"))
+				M.visible_message(span_warning(LANG("mob.69eef1cf28ea8476", list(src, M))), \
+								span_warning(LANG("mob.221d7df75c65fc86", list(src))), null, null, src)
+				to_chat(src, span_notice(LANG("mob.36b256bbab8f2f78", list(M))))
 
 		if(isliving(M))
 			var/mob/living/L = M
@@ -561,7 +562,7 @@
 
 //mob verbs are a lot faster than object verbs
 //for more info on why this is not atom/pull, see examinate() in mob.dm
-GAME_VERB_CONTEXT(/mob/living, pulled, "Pull", "", null, /atom/movable)
+GAME_VERB_CONTEXT(/mob/living, pulled, "拖拽", "", null, /atom/movable)
 	VERB_ARG_TYPED(thing_pulled, VERB_ARG_TYPE_MOB | VERB_ARG_TYPE_OBJ, VERB_ARG_SOURCE_VIEW, /atom/movable)
 	if(istype(thing_pulled) && Adjacent(thing_pulled))
 		start_pulling(thing_pulled)
@@ -584,24 +585,24 @@ GAME_VERB_CONTEXT(/mob/living, pulled, "Pull", "", null, /atom/movable)
 	if(!..())
 		return FALSE
 	log_message("points at [pointing_at]", LOG_EMOTE)
-	visible_message(span_infoplain("[span_name("[src]")] points at [pointing_at]."), span_notice("You point at [pointing_at]."))
+	visible_message(span_infoplain(LANG("mob.892241f83654f083", list(span_name("[src]"), pointing_at))), span_notice(LANG("mob.d84cb5f3fe970ac8", list(pointing_at))))
 
 GAME_VERB_HIDDEN(/mob/living, succumb, "succumb")
 	VERB_ARG(whispered, VERB_ARG_TYPE_NUM, VERB_ARG_SOURCE_INPUT)
 	if (!CAN_SUCCUMB(src))
 		if(HAS_TRAIT(src, TRAIT_SUCCUMB_OVERRIDE))
 			if(whispered)
-				to_chat(src, span_notice("Your immortal body is keeping you alive! Unless you just press the UI button."), type=MESSAGE_TYPE_INFO)
+				to_chat(src, span_notice(LANG("mob.179b61c910a28322", null)), type=MESSAGE_TYPE_INFO)
 				return
 		else
-			to_chat(src, span_warning("You are unable to succumb to death! This life continues."), type=MESSAGE_TYPE_INFO)
+			to_chat(src, span_warning(LANG("mob.efd06aee4dccc331", null)), type=MESSAGE_TYPE_INFO)
 			return
 	log_message("Has [whispered ? "whispered his final words" : "succumbed to death"] with [round(health, 0.1)] points of health!", LOG_ATTACK)
 	adjust_oxy_loss(health - HEALTH_THRESHOLD_DEAD)
-	balloon_alert_to_viewers("succumbed to their wounds...", "succumbed...", 9) // BUBBER EDIT ADDITION - ALERT OBSERVERS THAT THEY SUCCUMBED
+	balloon_alert_to_viewers(LANG("mob.046cab9d83d28666", null), LANG("mob.043fecdd508e251e", null), 9) // BUBBER EDIT ADDITION - ALERT OBSERVERS THAT THEY SUCCUMBED
 	updatehealth()
 	if(!whispered)
-		to_chat(src, span_notice("You have given up life and succumbed to death."))
+		to_chat(src, span_notice(LANG("mob.bdd262fe6aae5d57", null)))
 	investigate_log("has succumbed to death.", INVESTIGATE_DEATHS)
 	death()
 
@@ -646,13 +647,13 @@ GAME_VERB_HIDDEN(/mob/living, succumb, "succumb")
 
 // MOB PROCS //END
 
-GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
+GAME_VERB_PROC(/mob/living, mob_sleep, "睡眠", null)
 
 	if(IsSleeping())
-		to_chat(src, span_warning("You are already sleeping!"))
+		to_chat(src, span_warning(LANG("mob.bd5702d4e6b7d6d4", null)))
 		return
 	else
-		if(tgui_alert(usr, "You sure you want to sleep for a while?", "Sleep", list("Yes", "No")) == "Yes")
+		if(tgui_alert(usr, LANG("mob.a08c61e6c3682a73", null), LANG("mob.736457262d964f5b", null), list("Yes", "No")) == "Yes")
 			SetSleeping(400) //Short nap
 
 
@@ -716,21 +717,21 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 	if(new_resting)
 		if(body_position == LYING_DOWN)
 			if(!silent)
-				to_chat(src, span_notice("You will now try to stay lying down on the floor."))
+				to_chat(src, span_notice(LANG("mob.086942abd5fe5c1e", null)))
 		else if(HAS_TRAIT(src, TRAIT_FORCED_STANDING) || (buckled && buckled.buckle_lying != NO_BUCKLE_LYING))
 			if(!silent)
-				to_chat(src, span_notice("You will now lay down as soon as you are able to."))
+				to_chat(src, span_notice(LANG("mob.d59c522d2d40be2e", null)))
 		else
 			if(!silent)
-				to_chat(src, span_notice("You lay down."))
+				to_chat(src, span_notice(LANG("mob.69b6e0d04f2da7ec", null)))
 			set_lying_down()
 	else
 		if(body_position == STANDING_UP)
 			if(!silent)
-				to_chat(src, span_notice("You will now try to remain standing up."))
+				to_chat(src, span_notice(LANG("mob.a9fc1772a00be1e9", null)))
 		else if(HAS_TRAIT(src, TRAIT_FLOORED) || (buckled && buckled.buckle_lying != NO_BUCKLE_LYING))
 			if(!silent)
-				to_chat(src, span_notice("You will now stand up as soon as you are able to."))
+				to_chat(src, span_notice(LANG("mob.d1de2e59146984b3", null)))
 		else
 			/*if(!silent) SKYRAT EDIT REMOVAL
 				to_chat(src, "<span class='notice'>You stand up.</span>")*/
@@ -765,21 +766,21 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 			get_up_speed = GET_UP_SLOW
 	if(!instant)
 		if(get_up_speed == GET_UP_SLOW) //Slow getups are easily noticable
-			visible_message(span_notice("[src] weakly attempts to stand up."), span_notice("You weakly attempt to stand up."))
+			visible_message(span_notice(LANG("mob.34f3257e5ddca66b", list(src))), span_notice(LANG("mob.5b9043eef76d224b", null)))
 			if(!do_after(src, 1 SECONDS, src, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM), extra_checks = CALLBACK(src, TYPE_PROC_REF(/mob/living, rest_checks_callback)), interaction_key = DOAFTER_SOURCE_GETTING_UP, cog_icon = null))
 				if(!body_position == STANDING_UP)
-					visible_message(span_warning("[src] fails to stand up."), span_warning("You fail to stand up."))
+					visible_message(span_warning(LANG("mob.675cb5d3fcd3802c", list(src))), span_warning(LANG("mob.b83d5fb8eceecd1a", null)))
 				return
 		else
 			if(!do_after(src, 1 SECONDS, src, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM), extra_checks = CALLBACK(src, TYPE_PROC_REF(/mob/living, rest_checks_callback)), interaction_key = DOAFTER_SOURCE_GETTING_UP, cog_icon = null))
 				return
 	if(pulledby && pulledby.grab_state)
-		to_chat(src, span_warning("You fail to stand up, you're restrained!"))
+		to_chat(src, span_warning(LANG("mob.5c0522f0496c59b1", null)))
 	// SKYRAT EDIT ADDITION END
 		return
 	if(resting || body_position == STANDING_UP || HAS_TRAIT(src, TRAIT_FLOORED))
 		return
-	to_chat(src, span_notice("You stand up.")) // SKYRAT EDIT ADDITION
+	to_chat(src, span_notice(LANG("mob.0f313ebe6f116ebd", null))) // SKYRAT EDIT ADDITION
 	set_body_position(STANDING_UP)
 	set_lying_angle(0)
 
@@ -1161,7 +1162,7 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 	if (silent)
 		return applied_damage > 0
 	var/visible_part = isnull(target_part) ? "side" : target_part.plaintext_zone
-	visible_message("[can_scratch ? span_warning("[src] scratches [p_their()] [visible_part].") : ""]", span_warning("Your [visible_part] itches. [can_scratch ? "You scratch it." : ""]"))
+	visible_message("[can_scratch ? span_warning("[src] scratches [p_their()] [visible_part].") : ""]", span_warning(LANG("mob.3e3c19fa179704e3", list(visible_part, can_scratch ? "You scratch it." : ""))))
 	return TRUE
 
 /mob/living/experience_pressure_difference(pressure_difference, direction, pressure_resistance_prob_delta = 0)
@@ -1296,30 +1297,30 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 			//SKYRAT EDIT ADDITION
 			// Akula break-out flavor
 			if(HAS_TRAIT(src, TRAIT_SLIPPERY))
-				visible_message(span_cyan("[src] slips free of [pulledby]'s grip!"), \
-								span_cyan("You slip free of [pulledby]'s grip!"), null, null, pulledby)
-				to_chat(pulledby, span_cyan("[src] slips free of your grip!"))
+				visible_message(span_cyan(LANG("mob.fde31b2c63a36da4", list(src, pulledby))), \
+								span_cyan(LANG("mob.47b3267ae33036d6", list(pulledby))), null, null, pulledby)
+				to_chat(pulledby, span_cyan(LANG("mob.a0770194e36a667f", list(src))))
 				playsound(loc, 'sound/misc/slip.ogg', 50, TRUE, -1)
 				log_combat(pulledby, src, "broke grab")
 				pulledby.stop_pulling()
 				return FALSE
 			//SKYRAT EDIT END
-			visible_message(span_danger("[src] breaks free of [pulledby]'s grip!"), \
-							span_danger("You break free of [pulledby]'s grip!"), null, null, pulledby)
-			to_chat(pulledby, span_warning("[src] breaks free of your grip!"))
+			visible_message(span_danger(LANG("mob.801741bb427ab142", list(src, pulledby))), \
+							span_danger(LANG("mob.b3003c7c6dfb151e", list(pulledby))), null, null, pulledby)
+			to_chat(pulledby, span_warning(LANG("mob.0a825ba64f65ea55", list(src))))
 			log_combat(pulledby, src, "broke grab")
 			pulledby.stop_pulling()
 			return TRUE
 
 		adjust_stamina_loss(damage_on_resist_fail) //Do some stamina damage if we fail to resist
 		visible_message(
-			span_danger("[src] struggles as they fail to break free of [pulledby]'s grip!"),
-			span_warning("You struggle as you fail to break free of [pulledby]'s grip!"),
+			span_danger(LANG("mob.997aa6ba9c664093", list(src, pulledby))),
+			span_warning(LANG("mob.b8ee116b1f186dbd", list(pulledby))),
 			null,
 			null,
 			pulledby,
 		)
-		to_chat(pulledby, span_danger("[src] struggles as they fail to break free of your grip!"))
+		to_chat(pulledby, span_danger(LANG("mob.a5cebe5feaa5c399", list(src))))
 		if(moving_resist && client) //we resisted by trying to move
 			client.move_delay = world.time + 4 SECONDS
 		return FALSE
@@ -1441,7 +1442,7 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 		CRASH("Missing target arg for can_perform_action")
 
 	if(IS_UNCONSCIOUS_OR_CRIT(src))
-		to_chat(src, span_warning("You are not conscious enough for this action!"))
+		to_chat(src, span_warning(LANG("mob.0d10b9626e66f035", null)))
 		return FALSE
 
 	if(!(interaction_flags_atom & INTERACT_ATOM_IGNORE_INCAPACITATED))
@@ -1452,71 +1453,71 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 			ignore_flags |= INCAPABLE_GRAB
 
 		if(INCAPACITATED_IGNORING(src, ignore_flags))
-			to_chat(src, span_warning("You are incapacitated at the moment!"))
+			to_chat(src, span_warning(LANG("mob.91d81b4164618494", null)))
 			return FALSE
 
 	// If the MOBILITY_UI bitflag is not set it indicates the mob's hands are cutoff, blocked, or handcuffed
 	// Note - AI's and borgs have the MOBILITY_UI bitflag set even though they don't have hands
 	// Also if it is not set, the mob could be incapcitated, knocked out, unconscious, asleep, EMP'd, etc.
 	if(!(mobility_flags & MOBILITY_UI) && !(action_bitflags & ALLOW_RESTING))
-		to_chat(src, span_warning("You don't have the mobility for this!"))
+		to_chat(src, span_warning(LANG("mob.d700d055e06652ce", null)))
 		return FALSE
 
 	// NEED_HANDS is already checked by MOBILITY_UI for humans so this is for silicons
 	if((action_bitflags & NEED_HANDS))
 		if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
-			to_chat(src, span_warning("You hands are blocked for this action!"))
+			to_chat(src, span_warning(LANG("mob.fa626da5fe57d4a3", null)))
 			return FALSE
 		if(!can_hold_items(isitem(target) ? target : null)) // almost redundant if it weren't for mobs
-			to_chat(src, span_warning("You don't have the hands for this action!"))
+			to_chat(src, span_warning(LANG("mob.cdd16c4765e490bc", null)))
 			return FALSE
 
 	if(!(action_bitflags & BYPASS_ADJACENCY) && ((action_bitflags & NOT_INSIDE_TARGET) || !recursive_loc_check(src, target)) && !target.IsReachableBy(src))
 		if(HAS_SILICON_ACCESS(src) && !ispAI(src))
 			if(!(action_bitflags & ALLOW_SILICON_REACH)) // silicons can ignore range checks (except pAIs)
 				if(!(action_bitflags & SILENT_ADJACENCY))
-					to_chat(src, span_warning("You are too far away!"))
+					to_chat(src, span_warning(LANG("mob.b9a48cf482059f40", null)))
 				return FALSE
 		else // just a normal carbon mob
 			if((action_bitflags & FORBID_TELEKINESIS_REACH))
 				if(!(action_bitflags & SILENT_ADJACENCY))
-					to_chat(src, span_warning("You are too far away!"))
+					to_chat(src, span_warning(LANG("mob.b9a48cf482059f40", null)))
 				return FALSE
 
 			var/datum/dna/mob_DNA = has_dna()
 			if(!mob_DNA || !mob_DNA.check_mutation(/datum/mutation/telekinesis) || !tkMaxRangeCheck(src, target))
 				if(!(action_bitflags & SILENT_ADJACENCY))
-					to_chat(src, span_warning("You are too far away!"))
+					to_chat(src, span_warning(LANG("mob.b9a48cf482059f40", null)))
 				return FALSE
 
 	if((action_bitflags & NEED_VENTCRAWL) && !HAS_TRAIT(src, TRAIT_VENTCRAWLER_NUDE) && !HAS_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS))
-		to_chat(src, span_warning("You wouldn't fit!"))
+		to_chat(src, span_warning(LANG("mob.b6dab63be1c21352", null)))
 		return FALSE
 
 	if((action_bitflags & NEED_DEXTERITY) && !ISADVANCEDTOOLUSER(src))
-		to_chat(src, span_warning("You don't have the dexterity to do this!"))
+		to_chat(src, span_warning(LANG("mob.e8ba50af79992c6d", null)))
 		return FALSE
 
 	if((action_bitflags & NEED_LITERACY) && !is_literate())
-		to_chat(src, span_warning("You can't comprehend any of this!"))
+		to_chat(src, span_warning(LANG("mob.a02b115db879c981", null)))
 		return FALSE
 
 	if((action_bitflags & NEED_LIGHT) && !has_light_nearby() && !has_nightvision())
-		to_chat(src, span_warning("You need more light to do this!"))
+		to_chat(src, span_warning(LANG("mob.1df7a3937a349edf", null)))
 		return FALSE
 
 	if((action_bitflags & NEED_GRAVITY) && !has_gravity())
-		to_chat(src, span_warning("You need gravity to do this!"))
+		to_chat(src, span_warning(LANG("mob.ca7c6cc2bf29ab31", null)))
 		return FALSE
 
 	return TRUE
 
 /mob/living/proc/can_use_guns(obj/item/G)//actually used for more than guns!
 	if(G.trigger_guard == TRIGGER_GUARD_NONE)
-		to_chat(src, span_warning("You are unable to fire this!"))
+		to_chat(src, span_warning(LANG("mob.415a78d745b72da2", null)))
 		return FALSE
 	if(G.trigger_guard != TRIGGER_GUARD_ALLOW_ALL && (!ISADVANCEDTOOLUSER(src) && !HAS_TRAIT(src, TRAIT_GUN_NATURAL)))
-		to_chat(src, span_warning("You try to fire [G], but can't use the trigger!"))
+		to_chat(src, span_warning(LANG("mob.562243a2e5054f61", list(G))))
 		return FALSE
 	return TRUE
 
@@ -1802,7 +1803,7 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 	if(!new_mob)
 		return
 
-	to_chat(src, span_hypnophrase(span_big("Your form morphs into that of a [what_to_randomize]!")))
+	to_chat(src, span_hypnophrase(span_big(LANG("mob.0b436fa65903df90", list(what_to_randomize)))))
 
 	// And of course, make sure they get policy for being transformed
 	var/poly_msg = get_policy(POLICY_POLYMORPH)
@@ -1823,8 +1824,8 @@ GAME_VERB_PROC(/mob/living, mob_sleep, "Sleep", null)
 
 	// Valid polymorph types unlock the Lepton.
 	if((change_flags & (WABBAJACK|MIRROR_MAGIC|MIRROR_PRIDE|RACE_SWAP)) && (SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_WABBAJACK] != TRUE))
-		to_chat(new_mob, span_revennotice("You have the strangest feeling, for a moment. A fragile, dizzying memory wanders into your mind.. all you can make out is-"))
-		to_chat(new_mob, span_hypnophrase("You sleep so it may wake. You wake so it may sleep. It wakes. Do not sleep."))
+		to_chat(new_mob, span_revennotice(LANG("mob.0427d0b4b343dfe4", null)))
+		to_chat(new_mob, span_hypnophrase(LANG("mob.d54e6313d396fe5c", null)))
 		SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_WABBAJACK] = TRUE
 
 	qdel(src)
@@ -2101,7 +2102,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/mob_pickup(mob/living/user)
 	var/obj/item/mob_holder/holder = new inhand_holder_type(get_turf(src), src, held_state, head_icon, held_lh, held_rh, worn_slot_flags)
 	SEND_SIGNAL(src, COMSIG_LIVING_SCOOPED_UP, user, holder)
-	user.visible_message(span_warning("[user] scoops up [src]!"))
+	user.visible_message(span_warning(LANG("mob.20aafc4f91ce14a7", list(user, src))))
 	user.put_in_hands(holder)
 
 /mob/living/proc/mob_try_pickup(mob/living/user, instant=FALSE)
@@ -2109,18 +2110,18 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if (!user.num_hands)
 			return
 		if (user.mob_size <= mob_size)
-			to_chat(user, span_warning("[src] is too big to pick up!"))
+			to_chat(user, span_warning(LANG("mob.7b111a84cb42461e", list(src))))
 			return
 	if(!user.get_empty_held_indexes())
-		to_chat(user, span_warning("Your hands are full!"))
+		to_chat(user, span_warning(LANG("mob.86b9ca924a677805", null)))
 		return FALSE
 	if(buckled)
-		to_chat(user, span_warning("[src] is buckled to something!"))
+		to_chat(user, span_warning(LANG("mob.65a86c2bb81ec41e", list(src))))
 		return FALSE
 	if(!instant)
-		user.visible_message(span_warning("[user] starts trying to scoop up [src]!"), \
-						span_danger("You start trying to scoop up [src]..."), null, null, src)
-		to_chat(src, span_userdanger("[user] starts trying to scoop you up!"))
+		user.visible_message(span_warning(LANG("mob.f32613ff3d6cae75", list(user, src))), \
+						span_danger(LANG("mob.9c2853436750e7d9", list(src))), null, null, src)
+		to_chat(src, span_userdanger(LANG("mob.d3b9676a015402cd", list(user))))
 		if(!do_after(user, 2 SECONDS, target = src))
 			return FALSE
 	mob_pickup(user)
@@ -2207,17 +2208,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/vv_get_header()
 	. = ..()
 	var/refid = REF(src)
-	. += {"
-		<br><font size='1'>[VV_HREF_TARGETREF(refid, VV_HK_GIVE_DIRECT_CONTROL, "[ckey || "no ckey"]")] / [VV_HREF_TARGETREF_1V(refid, VV_HK_BASIC_EDIT, "[real_name || "no real name"]", NAMEOF(src, real_name))]</font>
-		<br><font size='1'>
-			BRUTE:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=brute' id='brute'>[get_brute_loss()]</a>
-			FIRE:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=fire' id='fire'>[get_fire_loss()]</a>
-			TOXIN:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=toxin' id='toxin'>[get_tox_loss()]</a>
-			OXY:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=oxygen' id='oxygen'>[get_oxy_loss()]</a>
-			BRAIN:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=brain' id='brain'>[get_organ_loss(ORGAN_SLOT_BRAIN)]</a>
-			STAMINA:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=stamina' id='stamina'>[get_stamina_loss()]</a>
-		</font>
-	"}
+	. += LANG("mob.82fe9cfd4c5b7e46", list(VV_HREF_TARGETREF(refid, VV_HK_GIVE_DIRECT_CONTROL, "[ckey || "no ckey"]"), VV_HREF_TARGETREF_1V(refid, VV_HK_BASIC_EDIT, "[real_name || "no real name"]", NAMEOF(src, real_name)), HrefToken(), refid, get_brute_loss(), HrefToken(), refid, get_fire_loss(), HrefToken(), refid, get_tox_loss(), HrefToken(), refid, get_oxy_loss(), HrefToken(), refid, get_organ_loss(ORGAN_SLOT_BRAIN), HrefToken(), refid, get_stamina_loss()))
 
 /mob/living/vv_get_dropdown()
 	. = ..()
@@ -2259,12 +2250,12 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			return
 
 		var/old_name = real_name
-		var/new_name = sanitize_name(tgui_input_text(usr, "Enter the new name.", "Admin Rename", real_name))
+		var/new_name = sanitize_name(tgui_input_text(usr, LANG("mob.e6c2c78b1ffbae38", null), LANG("mob.7fb5d4bc698839eb", null), real_name))
 		if(!new_name || new_name == real_name)
 			return
 
 		fully_replace_character_name(real_name, new_name)
-		var/replace_preferences = !isnull(client) && (tgui_alert(usr, "Would you like to update the client's preference with the new name?", "Pref Overwrite", list("Yes", "No")) == "Yes")
+		var/replace_preferences = !isnull(client) && (tgui_alert(usr, LANG("mob.d6beda107d015be4", null), LANG("mob.f5707c0db9e7a22e", null), list("Yes", "No")) == "Yes")
 		if(replace_preferences)
 			client.prefs.write_preference(GLOB.preference_entries[/datum/preference/name/real_name], new_name)
 
@@ -2456,7 +2447,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	//down needs to check this floor
 	var/turf/check_turf = get_step_multiz(src, direction == DOWN ? NONE : direction)
 	if(!get_step_multiz(src, direction)) //We are at the edge z-level.
-		to_chat(src, span_warning("There's nothing interesting there."))
+		to_chat(src, span_warning(LANG("mob.774a72d2f7845d75", null)))
 		return null
 	if(!istransparentturf(check_turf) && !HAS_TRAIT(src, TRAIT_XRAY_VISION)) //There is no turf we can look through above us
 		var/turf/front_hole = get_step(check_turf, dir)
@@ -2468,7 +2459,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 					check_turf = checkhole
 					break
 		if(!istransparentturf(check_turf))
-			to_chat(src, span_warning("You can't see through the floor [direction == DOWN ? "below" : "above"] you."))
+			to_chat(src, span_warning(LANG("mob.8ebc6459878fbeff", list(direction == DOWN ? "below" : "above"))))
 			return null
 	return direction == DOWN ? get_step_multiz(check_turf, DOWN) : check_turf
 
@@ -2775,20 +2766,20 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 	if(isplatingturf(loc))
 		var/turf/open/floor/smashed_plating = loc
-		visible_message(span_danger("[src] is thrown violently into [smashed_plating], smashing through it and punching straight through!"),
-				span_userdanger("You're thrown violently into [smashed_plating], smashing through it and punching straight through!"))
+		visible_message(span_danger(LANG("mob.e66265c6ee54b507", list(src, smashed_plating))),
+				span_userdanger(LANG("mob.e39b918df65ab397", list(smashed_plating))))
 		apply_damage(rand(5,20), BRUTE, BODY_ZONE_CHEST)
 		smashed_plating.ScrapeAway(1, CHANGETURF_INHERIT_AIR)
 
 	for(var/obj/structure/lattice/lattice in loc)
-		visible_message(span_danger("[src] is thrown violently into [lattice], smashing through it and punching straight through!"),
-			span_userdanger("You're thrown violently into [lattice], smashing through it and punching straight through!"))
+		visible_message(span_danger(LANG("mob.e66265c6ee54b507", list(src, lattice))),
+			span_userdanger(LANG("mob.e39b918df65ab397", list(lattice))))
 		apply_damage(rand(5,10), BRUTE, BODY_ZONE_CHEST)
 		lattice.deconstruct(FALSE)
 
 /// Prints an ominous message if something bad is going to happen to you
 /mob/living/proc/ominous_nosebleed()
-	to_chat(src, span_warning("You feel a bit nauseous for just a moment."))
+	to_chat(src, span_warning(LANG("mob.08a873ea3dc44edd", null)))
 
 /**
  * Proc used by different station pets such as Ian and Poly so that some of their data can persist between rounds.
@@ -2816,11 +2807,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 		impediments[initial(possible.id)] = possible
 
-	var/chosen = tgui_input_list(admin, "What speech impediment?", "Impede Speech", impediments)
+	var/chosen = tgui_input_list(admin, LANG("mob.5b04e7004978465b", null), LANG("mob.f5eec1eba7b16986", null), impediments)
 	if(!chosen || !ispath(impediments[chosen], /datum/status_effect/speech) || QDELETED(src) || !check_rights(NONE))
 		return
 
-	var/duration = tgui_input_number(admin, "How long should it last (in seconds)? Max is infinite duration.", "Duration", 0, INFINITY, 0 SECONDS)
+	var/duration = tgui_input_number(admin, LANG("mob.fc1b76904fe31f34", null), LANG("mob.b3eba48af0c5ff9d", null), 0, INFINITY, 0 SECONDS)
 	if(!isnum(duration) || duration <= 0 || QDELETED(src) || !check_rights(NONE))
 		return
 
@@ -2832,7 +2823,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 	var/list/mood_events = typesof(/datum/mood_event)
 
-	var/chosen = tgui_input_list(admin, "What mood event?", "Add Mood Event", mood_events)
+	var/chosen = tgui_input_list(admin, LANG("mob.23a74f6baf659cd2", null), LANG("mob.58a76f3ab1bc9ba3", null), mood_events)
 	if (!chosen || QDELETED(src) || !check_rights(NONE))
 		return
 
@@ -2848,7 +2839,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		mood_events[event] = category
 
 
-	var/datum/mood_event/chosen = tgui_input_list(admin, "What mood event?", "Remove Mood Event", mood_events)
+	var/datum/mood_event/chosen = tgui_input_list(admin, LANG("mob.23a74f6baf659cd2", null), LANG("mob.b6a51714f7d690d8", null), mood_events)
 	if (!chosen || QDELETED(src) || !check_rights(NONE))
 		return
 
@@ -2904,7 +2895,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		reviver.log_message("has revived mob [key_name(src)] with a malfunctioning lazarus injector.", LOG_GAME)
 		if(!isnull(src.mind))
 			src.mind.enslave_mind_to_creator(reviver)
-		to_chat(src, span_userdanger("Serve [reviver.real_name], and assist [reviver.p_them()] in completing [reviver.p_their()] goals at any cost."))
+		to_chat(src, span_userdanger(LANG("mob.28ce7fd8ca2f7bfc", list(reviver.real_name, reviver.p_them(), reviver.p_their()))))
 		lazarus_policy = get_policy(ROLE_LAZARUS_BAD) || "You have been revived by a malfunctioning lazarus injector! You are now enslaved by whoever revived you."
 	to_chat(src, span_boldnotice(lazarus_policy))
 
@@ -2965,7 +2956,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		return
 
 	if(!cause_hallucination(chosen, "admin forced by [key_name_admin(admin)]"))
-		to_chat(admin, "That hallucination ([chosen]) could not be run - it may be invalid with this type of mob or has no effects.")
+		to_chat(admin, LANG("mob.17bc38c83fc8e3d3", list(chosen)))
 		return
 
 	message_admins("[key_name_admin(admin)] gave [ADMIN_LOOKUPFLW(src)] a hallucination. (Type: [chosen])")
@@ -2992,7 +2983,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	var/del_mob = FALSE
 	var/mob/old_mob
 	var/list/possible_players = list("Poll Ghosts") + sort_list(GLOB.clients)
-	var/client/guardian_client = tgui_input_list(admin, "Pick the player to put in control.", "Guardian Controller", possible_players)
+	var/client/guardian_client = tgui_input_list(admin, LANG("mob.eb21471916a6fe21", null), LANG("mob.a3ddb461da5ca0aa", null), possible_players)
 	if(isnull(guardian_client))
 		return
 	else if(guardian_client == "Poll Ghosts")
@@ -3000,19 +2991,19 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(chosen_one)
 			guardian_client = chosen_one.client
 		else
-			tgui_alert(admin, "No ghost candidates.", "Guardian Controller")
+			tgui_alert(admin, LANG("mob.fd90b5fc8b661f35", null), LANG("mob.a3ddb461da5ca0aa", null))
 			return
 	else
 		old_mob = guardian_client.mob
-		if(isobserver(old_mob) || tgui_alert(admin, "Do you want to delete [guardian_client]'s old mob?", "Guardian Controller", list("Yes"," No")) == "Yes")
+		if(isobserver(old_mob) || tgui_alert(admin, LANG("mob.ac29935c48f57e15", list(guardian_client)), LANG("mob.a3ddb461da5ca0aa", null), list("Yes"," No")) == "Yes")
 			del_mob = TRUE
-	var/picked_type = tgui_input_list(admin, "Pick the guardian type.", "Guardian Controller", subtypesof(/mob/living/basic/guardian))
-	var/picked_theme = tgui_input_list(admin, "Pick the guardian theme.", "Guardian Controller", list(GUARDIAN_THEME_TECH, GUARDIAN_THEME_MAGIC, GUARDIAN_THEME_CARP, GUARDIAN_THEME_MINER, "Random"))
+	var/picked_type = tgui_input_list(admin, LANG("mob.c7a193cd7681e328", null), LANG("mob.a3ddb461da5ca0aa", null), subtypesof(/mob/living/basic/guardian))
+	var/picked_theme = tgui_input_list(admin, LANG("mob.2eb6da149262eced", null), LANG("mob.a3ddb461da5ca0aa", null), list(GUARDIAN_THEME_TECH, GUARDIAN_THEME_MAGIC, GUARDIAN_THEME_CARP, GUARDIAN_THEME_MINER, "Random"))
 	if(picked_theme == "Random")
 		picked_theme = null //holopara code handles not having a theme by giving a random one
-	var/picked_name = tgui_input_text(admin, "Name the guardian, leave empty to let player name it.", "Guardian Controller", max_length = MAX_NAME_LEN)
-	var/picked_color = tgui_color_picker(admin, "Set the guardian's color, cancel to let player set it.", "Guardian Controller", COLOR_WHITE)
-	if(tgui_alert(admin, "Confirm creation.", "Guardian Controller", list("Yes", "No")) != "Yes")
+	var/picked_name = tgui_input_text(admin, LANG("mob.947d33c14e193c9a", null), LANG("mob.a3ddb461da5ca0aa", null), max_length = MAX_NAME_LEN)
+	var/picked_color = tgui_color_picker(admin, LANG("mob.6b0e61fd4e0aa506", null), LANG("mob.a3ddb461da5ca0aa", null), COLOR_WHITE)
+	if(tgui_alert(admin, LANG("mob.4ef76d04def51a66", null), LANG("mob.a3ddb461da5ca0aa", null), list("Yes", "No")) != "Yes")
 		return
 	var/mob/living/basic/guardian/summoned_guardian = new picked_type(src, picked_theme)
 	summoned_guardian.set_summoner(src, different_person = TRUE)
@@ -3030,7 +3021,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/proc/lookup()
 	if(looking_vertically)
-		to_chat(src, "You set your head straight again.")
+		to_chat(src, LANG("mob.e431441cf0e625a8", null))
 		end_look()
 		return
 
@@ -3039,15 +3030,15 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 	//Check if turf above exists
 	if(!above_turf)
-		to_chat(src, span_warning("There's nothing interesting above. Better keep your eyes ahead."))
+		to_chat(src, span_warning(LANG("mob.8a7b6fb5d121c877", null)))
 		return
 
-	to_chat(src, "You tilt your head upwards.")
+	to_chat(src, LANG("mob.93afd63df87bedf0", null))
 	look_up()
 
 /mob/living/proc/lookdown()
 	if(looking_vertically)
-		to_chat(src, "You set your head straight again.")
+		to_chat(src, LANG("mob.e431441cf0e625a8", null))
 		end_look()
 		return
 
@@ -3056,10 +3047,10 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 	//Check if turf below exists
 	if(!below_turf)
-		to_chat(src, span_warning("There's nothing interesting below. Better keep your eyes ahead."))
+		to_chat(src, span_warning(LANG("mob.953ca977e9d63ed1", null)))
 		return
 
-	to_chat(src, "You tilt your head downwards.")
+	to_chat(src, LANG("mob.5d30af4cc898753a", null))
 	look_down()
 
 /**

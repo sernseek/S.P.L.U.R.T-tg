@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/head/helmet/chaplain/bland
 	icon = 'modular_skyrat/master_files/icons/obj/clothing/head/chaplain.dmi'
 	worn_icon = 'modular_skyrat/master_files/icons/mob/clothing/head/chaplain.dmi'
@@ -108,7 +109,7 @@
 	if(narsian)
 		return ..()
 	else if(user.mind && (user.mind.holy_role))
-		to_chat(user, span_cult_large("\"Partake in the language of blood..\""))
+		to_chat(user, span_cult_large(LANG("obj.1bd79e12f2390ac3", null)))
 		user.grant_language(/datum/language/narsie, source = LANGUAGE_MIND)
 		special_desc_requirement = NONE // No point in keeping something that can't no longer be used
 		narsian = TRUE
@@ -123,7 +124,7 @@
 	if(narsian)
 		return ..()
 	else if(user.mind && (user.mind.holy_role))
-		to_chat(user, span_cult_large("\"Partake in the language of blood..\""))
+		to_chat(user, span_cult_large(LANG("obj.1bd79e12f2390ac3", null)))
 		user.grant_language(/datum/language/narsie, source = LANGUAGE_MIND)
 		special_desc_requirement = NONE // No point in keeping something that can't no longer be used
 		narsian = TRUE
@@ -138,7 +139,7 @@
 	if(ratvarian)
 		return ..()
 	else if(user.mind?.holy_role)
-		to_chat(user, span_bigbrass("The sound of cogs permeates your head..."))
+		to_chat(user, span_bigbrass(LANG("obj.37f309fcbad289e1", null)))
 		user.grant_language(/datum/language/ratvar, source = LANGUAGE_MIND)
 		special_desc_requirement = NONE // No point in keeping something that can't no longer be used
 		ratvarian = TRUE
@@ -164,28 +165,28 @@
 
 /obj/item/nullrod/rosary/attack(mob/living/target, mob/living/user, params)
 	if(!user.mind || !user.mind.holy_role)
-		balloon_alert(user, "not holy enough!")
+		balloon_alert(user, LANG("obj.1882d9f3ec1763c1", null))
 		return
 	if(user.combat_mode)
 		return ..()
 	if(praying)
-		balloon_alert(user, "already in use!")
+		balloon_alert(user, LANG("obj.38f46f8c1ab54d5a", null))
 		return
 
-	user.visible_message(span_info("[user] kneels[target == user ? null : " next to [target]"] and begins to utter a prayer to [deity_name]."), \
-		span_info("You kneel[target == user ? null : " next to [target]"] and begin a prayer to [deity_name]."))
+	user.visible_message(span_info(LANG("obj.e873321ab4bd050c", list(user, target == user ? null : " next to [target]", deity_name))), \
+		span_info(LANG("obj.e64d95dfc1dd6088", list(target == user ? null : " next to [target]", deity_name))))
 
 	praying = TRUE
 	if(do_after(user, 5 SECONDS, target = target))
 		target.reagents?.add_reagent(/datum/reagent/water/holywater, 5)
-		to_chat(target, span_notice("[user]'s prayer to [deity_name] has eased your pain!"))
+		to_chat(target, span_notice(LANG("obj.dab6c0d9c0b27f44", list(user, deity_name))))
 		target.adjust_tox_loss(-5, TRUE, TRUE)
 		target.adjust_oxy_loss(-5)
 		target.adjust_brute_loss(-5)
 		target.adjust_fire_loss(-5)
 		praying = FALSE
 	else
-		balloon_alert(user, "interrupted!")
+		balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 		praying = FALSE
 
 /obj/item/nullrod/scythe/sickle

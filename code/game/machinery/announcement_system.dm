@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_LIST_EMPTY(announcement_systems)
 
 /obj/machinery/announcement_system
@@ -32,6 +33,12 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	config_entries = init_subtypes(/datum/aas_config_entry, list())
 	. = ..()
 	radio = new radio_type(src)
+	// ZH EDIT ADDITION START - ADMIN - Let automated station broadcasts use the configured TTS voice.
+	if(SStts.tts_enabled)
+		voice = SStts.computer_voice
+		if(!(voice in SStts.available_speakers))
+			voice = SStts.random_tts_voice()
+	// ZH EDIT ADDITION END
 	GLOB.announcement_systems += src
 	update_appearance()
 
@@ -70,7 +77,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 /obj/machinery/announcement_system/multitool_act(mob/living/user, obj/item/tool)
 	if(!panel_open || !(machine_stat & EMPED))
 		return ITEM_INTERACT_BLOCKING
-	to_chat(user, span_notice("You reset [src]'s firmware."))
+	to_chat(user, span_notice(LANG("obj.f932ce759bbce750", list(src))))
 	set_machine_stat(machine_stat & ~EMPED)
 	update_appearance()
 	return ITEM_INTERACT_SUCCESS
@@ -94,7 +101,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		return FALSE
 	obj_flags |= EMAGGED
 	act_up()
-	balloon_alert(user, "announcement strings corrupted")
+	balloon_alert(user, LANG("obj.c2b1f388c0680972", null))
 	return TRUE
 
 /obj/machinery/announcement_system/ui_interact(mob/user, datum/tgui/ui)
@@ -107,7 +114,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	var/list/configs = list()
 	for(var/datum/aas_config_entry/config in config_entries)
 		configs += list(list(
-			name = config.name,
+			name = lang_localize_display_name(config.name), // ZH EDIT - I18N: 纯显示（act 走 entryRef/lineKey）。ORIGINAL: name = config.name,
 			entryRef = REF(config),
 			enabled = config.enabled,
 			modifiable = config.modifiable,
@@ -131,7 +138,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	if(!usr.can_perform_action(src, ALLOW_SILICON_REACH))
 		return
 	if(machine_stat & EMPED)
-		visible_message(span_warning("[src] buzzes."), span_hear("You hear a faint buzz."))
+		visible_message(span_warning(LANG("obj.9f1f2989394f9812", list(src))), span_hear(LANG("obj.c2e63776d067d9b7", null)))
 		playsound(src.loc, 'sound/machines/buzz/buzz-two.ogg', 50, TRUE)
 		return
 
@@ -161,9 +168,9 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		return
 
 	if (machine_stat & EMPED)
-		to_chat(user, span_warning("[src]'s firmware appears to be malfunctioning!"))
+		to_chat(user, span_warning(LANG("obj.c4eb860ada823ea5", list(src))))
 		if (!isAI(user))	// Deus Ex Machina goes without multitool in his default complectation.
-			to_chat(user, span_warning("However, you can reset it with [EXAMINE_HINT("multitool")], while its [EXAMINE_HINT("panel is open")]!"))
+			to_chat(user, span_warning(LANG("obj.03f0ba8774531eca", list(EXAMINE_HINT("multitool"), EXAMINE_HINT("panel is open")))))
 		return FALSE
 
 /// If AAS can't broadcast message, it shouldn't be picked by randomizer.
@@ -258,9 +265,20 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	// Fallback - first line
 	if (!announcement_message)
 		announcement_message = announcement_lines_map[announcement_lines_map[1]]
+	// ZH EDIT ADDITION - i18n - 全服中文时反查整条模板译文（在 %VAR 替换前；模板用 %PERSON 等占位符、
+	// 不被反查的 { 守卫跳过；译文须保留 %VAR 占位符）。译文进 strings/i18n/<locale>/ui.json。
+	announcement_message = lang_reverse_text(announcement_message)
+	// ZH EDIT ADDITION END
 	// Replace variables with their value
 	for(var/variable in vars_and_tooltips_map)
-		announcement_message = replacetext_char(announcement_message, "%[variable]", variables_map[variable] || "\[NO DATA\]")
+		// ZH EDIT CHANGE - i18n - 值也要本地化：模板早就译好了（上面那行反查），但 %RANK/%LOCATION
+		// 这些**值**由调用方传入英文，于是玩家看到「Feng Xin Zi 已注册为 Detective」这种半中半英。
+		// 职位名多为单词，既进不了字面 AC 字典（安全线：单词会从词内开火、污染 name== 比较），
+		// 公告整串又是运行期拼的、不是目录键 —— 两条落地路径都够不着，只能在这里逐个值查。
+		// lang_localize_arg 全程精确匹配（状态词→代词→整串反查→剥冠词），查不到原样返回；
+		// 公告是纯显示、无 act() 回传，值被译不会破坏任何比较。locale==en 时整链 no-op。
+		// ORIGINAL: announcement_message = replacetext_char(announcement_message, "%[variable]", variables_map[variable] || "\[NO DATA\]")
+		announcement_message = replacetext_char(announcement_message, "%[variable]", lang_localize_arg(variables_map[variable]) || "\[NO DATA\]")
 	return announcement_message
 
 /// Called when the announcement system is emagged or EMPed.

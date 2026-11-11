@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/plate_press
 	name = "license plate press"
 	desc = "You know, we're making a lot of license plates for a station with literally no cars in it."
@@ -30,10 +31,10 @@
 	if(!istype(tool, /obj/item/stack/license_plates/empty))
 		return NONE
 	if(!is_operational)
-		to_chat(user, span_warning("[src] has to be on to be loaded!"))
+		to_chat(user, span_warning(LANG("obj.7fc47c77a4071895", list(src))))
 		return ITEM_INTERACT_BLOCKING
 	if(current_plate)
-		to_chat(user, span_warning("[src] already has a plate in it!"))
+		to_chat(user, span_warning(LANG("obj.1e895fc93f92cb4f", list(src))))
 		return ITEM_INTERACT_BLOCKING
 
 	var/obj/item/stack/license_plates/empty/plate = tool
@@ -52,7 +53,7 @@
 
 	pressing = TRUE
 	update_appearance()
-	to_chat(user, span_notice("You start pressing a new license plate!"))
+	to_chat(user, span_notice(LANG("obj.26c3d242bfef2955", null)))
 
 	if(!do_after(user, 4 SECONDS, target = src))
 		pressing = FALSE
@@ -60,7 +61,7 @@
 		return FALSE
 
 	use_energy(active_power_usage)
-	to_chat(user, span_notice("You finish pressing a new license plate!"))
+	to_chat(user, span_notice(LANG("obj.cbe5289d35cacf5f", null)))
 
 	pressing = FALSE
 	QDEL_NULL(current_plate)

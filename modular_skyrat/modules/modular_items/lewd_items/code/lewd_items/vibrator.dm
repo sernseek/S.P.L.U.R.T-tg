@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define DEFAULT_AROUSAL_INCREASE 4
 #define DEFAULT_PLEASURE_INCREASE 2
 
@@ -48,7 +49,7 @@
 /obj/item/clothing/sextoy/vibrator/examine(mob/user)
 	. = ..()
 	if(!color_changed)
-		. += span_notice("Alt-click to change it's design.")
+		. += span_notice(LANG("obj.02d824974c25c6e2", null))
 
 /obj/item/clothing/sextoy/vibrator/click_alt(mob/user)
 	if(color_changed)
@@ -124,10 +125,10 @@
 
 	var/message = ""
 	if(!toy_on)
-		to_chat(user, span_notice("[src] must be on to use it!"))
+		to_chat(user, span_notice(LANG("obj.b31fb9dfcfe6e17b", list(src))))
 		return
 	if(!target.check_erp_prefs(/datum/preference/toggle/erp/sex_toy, user, src))
-		to_chat(user, span_danger("Looks like [target] don't want you to do that."))
+		to_chat(user, span_danger(LANG("obj.bc6595c02bc7720d", list(target))))
 		return
 
 	var/vibration_adj = ""
@@ -158,7 +159,7 @@
 			else if(penis?.is_exposed())
 				message = penis_message
 			else
-				to_chat(user, span_danger("Looks like [target]'s groin is covered!"))
+				to_chat(user, span_danger(LANG("obj.c5b0317d58c50f81", list(target))))
 				return
 
 			target.adjust_arousal(DEFAULT_AROUSAL_INCREASE)
@@ -178,7 +179,7 @@
 						"uses [src] to tease [target]'s [breasts ? "boobs" : ORGAN_SLOT_NIPPLES]",
 						"rubs [target]'s [breasts ? "tits" : ORGAN_SLOT_NIPPLES] with [src]")
 			else
-				to_chat(user, span_danger("Looks like [target]'s chest is covered!"))
+				to_chat(user, span_danger(LANG("obj.b0aede841acb5a5f", list(target))))
 				return
 
 			target.adjust_arousal(DEFAULT_AROUSAL_INCREASE)
@@ -195,13 +196,13 @@
 	toggle_mode()
 	switch(vibration_mode)
 		if(VIB_LOW)
-			to_chat(user, span_notice("Vibration mode now is low. Bzzz..."))
+			to_chat(user, span_notice(LANG("obj.e12c5aecb6f6b59c", null)))
 		if(VIB_MEDIUM)
-			to_chat(user, span_notice("Vibration mode now is medium. Bzzzz!"))
+			to_chat(user, span_notice(LANG("obj.647622368df23f9b", null)))
 		if(VIB_HIGH)
-			to_chat(user, span_notice("Vibration mode now is high. Careful with that thing."))
+			to_chat(user, span_notice(LANG("obj.f9ff6616b82c79a0", null)))
 		if(VIB_OFF)
-			to_chat(user, span_notice("Vibrator turned off. Fun's over?"))
+			to_chat(user, span_notice(LANG("obj.d11412a82348c7ff", null)))
 	update_icon()
 	update_icon_state()
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/carbon/human
 	/// Quad eyes offset in pixels. Positive is up, negative is down. (Suggested to not go above 2 or below -2)
 	var/quad_eyes_offset = 0
@@ -57,7 +58,7 @@
 
 	// Stat check
 	if(IS_UNCONSCIOUS_OR_CRIT(usr))
-		to_chat(usr, span_warning("You can't do this right now..."))
+		to_chat(usr, span_warning(LANG("mob.2ac07e40c8ea777a", null)))
 		return
 
 	// Only show the 'reveal all' button if we are already hiding something
@@ -105,16 +106,16 @@
 
 	// Choice to action
 	if(pick == "reveal all")
-		to_chat(usr, span_notice("You are no longer trying to hide your mutant parts."))
+		to_chat(usr, span_notice(LANG("mob.7838d2eb5f781f85", null)))
 		LAZYNULL(try_hide_mutant_parts)
 		update_body_parts()
 		return
 
 	else if(pick in try_hide_mutant_parts)
-		to_chat(usr, span_notice("You are no longer trying to hide your [pick]."))
+		to_chat(usr, span_notice(LANG("mob.c7aa196d1eb4e05f", list(pick))))
 		LAZYREMOVE(try_hide_mutant_parts, pick)
 	else
-		to_chat(usr, span_notice("You are now trying to hide your [pick]."))
+		to_chat(usr, span_notice(LANG("mob.b9b0d5b7ff25acc7", list(pick))))
 		LAZYOR(try_hide_mutant_parts, pick)
 	update_body_parts()
 	// automatically re-do the menu after making a selection

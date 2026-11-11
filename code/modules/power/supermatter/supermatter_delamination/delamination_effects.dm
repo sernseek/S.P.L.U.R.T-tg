@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define DELAM_MAX_DEVASTATION 17.5
 
 // These are supposed to be discrete effects so we can tell at a glance what does each override
@@ -45,7 +46,7 @@
 				message = "You hold onto \the [victim.loc] as hard as you can, as reality distorts around you. You feel safe."
 			to_chat(victim, span_bolddanger(message))
 			continue
-		to_chat(victim, span_bolddanger("You feel reality distort for a moment..."))
+		to_chat(victim, span_bolddanger(LANG("datum.dc04792aeb00cad4", null)))
 		if (isliving(victim))
 			var/mob/living/living_victim = victim
 			living_victim.add_mood_event("delam", /datum/mood_event/delam)
@@ -164,7 +165,7 @@
 	for(var/mob/player as anything in GLOB.player_list)
 		if(!isdead(player))
 			var/mob/living/living_player = player
-			to_chat(player, span_bolddanger("Everything around you is resonating with a powerful energy. This can't be good."))
+			to_chat(player, span_bolddanger(LANG("datum.3a8b77cd14066303", null)))
 			living_player.add_mood_event("cascade", /datum/mood_event/cascade)
 		SEND_SOUND(player, 'sound/effects/magic/charge.ogg')
 
@@ -181,12 +182,7 @@
 /// Spawn an evacuation rift for people to go through.
 /datum/sm_delam/proc/effect_evac_rift_start()
 	var/obj/cascade_portal/rift = new /obj/cascade_portal(get_turf(pick(GLOB.generic_event_spawns)))
-	priority_announce("We have been hit by a sector-wide electromagnetic pulse. All of our systems are heavily damaged, including those \
-		required for shuttle navigation. We can only reasonably conclude that a supermatter cascade is occurring on or near your station.\n\n\
-		Evacuation is no longer possible by conventional means; however, we managed to open a rift near the [get_area_name(rift)]. \
-		All personnel are hereby required to enter the rift by any means available.\n\n\
-		[Gibberish("Retrieval of survivors will be conducted upon recovery of necessary facilities.", FALSE, 5)] \
-		[Gibberish("Good luck--", FALSE, 25)]")
+	priority_announce(LANG("datum.df72b525a9e00595", list(get_area_name(rift), Gibberish("Retrieval of survivors will be conducted upon recovery of necessary facilities.", FALSE, 5), Gibberish("Good luck--", FALSE, 25))))
 	return rift
 
 /// Announce the destruction of the rift and end the round.

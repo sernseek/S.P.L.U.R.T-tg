@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // the light item
 // can be tube or bulb subtypes
 // will fit into empty /obj/machinery/light of the corresponding type
@@ -44,9 +45,9 @@
 
 /obj/item/light/suicide_act(mob/living/user)
 	if (status == LIGHT_BROKEN)
-		user.visible_message(span_suicide("[user] begins to stab [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
+		user.visible_message(span_suicide(LANG("obj.e72a1256a685556c", list(user, user.p_them(), src, user.p_theyre()))))
 	else
-		user.visible_message(span_suicide("[user] begins to eat \the [src]! It looks like [user.p_theyre()] not very bright!"))
+		user.visible_message(span_suicide(LANG("obj.7446c38ba51ffa1c", list(user, src, user.p_theyre()))))
 		shatter()
 	return BRUTELOSS
 
@@ -110,11 +111,11 @@
 	. = ..()
 	switch(status)
 		if(LIGHT_OK)
-			desc = "A replacement [name]."
+			desc = LANG("obj.4d3eacbb7bf43548", list(name))
 		if(LIGHT_BURNED)
-			desc = "A burnt-out [name]."
+			desc = LANG("obj.e272c82428315e04", list(name))
 		if(LIGHT_BROKEN)
-			desc = "A broken [name]."
+			desc = LANG("obj.0c66c17ad0abc3d5", list(name))
 
 /obj/item/light/proc/on_entered(datum/source, atom/movable/moving_atom)
 	SIGNAL_HANDLER
@@ -136,12 +137,12 @@
 
 /obj/item/light/proc/shatter(target)
 	if(status == LIGHT_OK || status == LIGHT_BURNED)
-		visible_message(span_danger("[src] shatters."),span_hear("You hear a small glass object shatter."))
+		visible_message(span_danger(LANG("obj.2f5bd03cb3300512", list(src))),span_hear(LANG("obj.1495b353d5e1d9a1", null)))
 		status = LIGHT_BROKEN
 		force = 5
 		sharpness = SHARP_POINTY
 		playsound(loc, 'sound/effects/glass/glasshit.ogg', 75, TRUE)
 		if(length(reagents.reagent_list))
-			visible_message(span_danger("The contents of [src] splash onto you as you step on it!"),span_hear("You feel the contents of [src] splash onto you as you step on it!."))
+			visible_message(span_danger(LANG("obj.6bace69025a9d6c5", list(src))),span_hear(LANG("obj.9a869e2ae05b23a5", list(src))))
 			reagents.expose(target, TOUCH)
 		update_appearance(UPDATE_DESC | UPDATE_ICON)

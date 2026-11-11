@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // idea inspired by vgstation, original pr on github vgstation-coders/vgstation13#4555
 
 /obj/machinery/power/smes/connector
@@ -67,7 +68,7 @@
 	PRIVATE_PROC(TRUE)
 
 	if(connected_smes)
-		balloon_alert(user, "disconnect SMES first!")
+		balloon_alert(user, LANG("obj.8413f2433575485a", null))
 		return FALSE
 	return TRUE
 
@@ -97,7 +98,7 @@
 
 /obj/machinery/power/smes/connector/ui_interact(mob/user, datum/tgui/ui)
 	if(!connected_smes)
-		balloon_alert(user, "no power bank!")
+		balloon_alert(user, LANG("obj.5308d2be70abb010", null))
 		return FALSE
 
 	return ..()
@@ -167,7 +168,7 @@
 		context[SCREENTIP_CONTEXT_LMB] = "[connected_port ? "Disconnect" : "Connect"]"
 		return CONTEXTUAL_SCREENTIP_SET
 	if(held_item.tool_behaviour == TOOL_SCREWDRIVER)
-		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] Panel"
+		context[SCREENTIP_CONTEXT_LMB] = LANG("obj.3a1f9b9bcb4eed7a", list(panel_open ? "Close" : "Open"))
 		return CONTEXTUAL_SCREENTIP_SET
 	if(held_item.tool_behaviour == TOOL_CROWBAR && panel_open && !connected_port)
 		context[SCREENTIP_CONTEXT_LMB] = "Deconstruct"
@@ -175,13 +176,13 @@
 
 /obj/machinery/smesbank/examine(user)
 	. = ..()
-	. += span_notice("its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "closed" : "open"].")
+	. += span_notice(LANG("obj.bba556de2501ef2d", list(EXAMINE_HINT("screwed"), panel_open ? "closed" : "open")))
 	if(connected_port)
-		. += span_notice("You need to [EXAMINE_HINT("unwrench")] from the port before deconstructing.")
+		. += span_notice(LANG("obj.d50594b32d27fbfd", list(EXAMINE_HINT("unwrench"))))
 	else
 		if(panel_open)
-			. += span_notice("It can be [EXAMINE_HINT("pried")] apart.")
-		. += span_notice("It should be [EXAMINE_HINT("wrenched")] onto a connector port to operate.")
+			. += span_notice(LANG("obj.fa5fc7965e12e9d0", list(EXAMINE_HINT("pried"))))
+		. += span_notice(LANG("obj.e4805b3e965b051d", list(EXAMINE_HINT("wrenched"))))
 
 /obj/machinery/smesbank/Destroy()
 	disconnect_port()
@@ -209,9 +210,9 @@
 		if(!wrench.use_tool(src, user, 8 SECONDS))
 			return ITEM_INTERACT_BLOCKING
 		user.visible_message( \
-			"[user] disconnects [src].", \
-			span_notice("You unfasten [src] from [connected_port]."), \
-			span_hear("You hear a ratchet."))
+			LANG("obj.4acbf7f4975d45b7", list(user, src)), \
+			span_notice(LANG("obj.bc4d44434c135224", list(src, connected_port))), \
+			span_hear(LANG("obj.aa8a193f8da7c41c", null)))
 		investigate_log("was disconnected from [connected_port] by [key_name(user)].", INVESTIGATE_ENGINE)
 		disconnect_port()
 		update_appearance(UPDATE_OVERLAYS)
@@ -223,9 +224,9 @@
 	if(!connect_port(possible_connector, user))
 		return ITEM_INTERACT_BLOCKING
 	user.visible_message( \
-		"[user] connects [src].", \
-		span_notice("You fasten [src] to [possible_connector]."), \
-		span_hear("You hear a ratchet."))
+		LANG("obj.1450de580c437995", list(user, src)), \
+		span_notice(LANG("obj.5cfbd1d1cfec840d", list(src, possible_connector))), \
+		span_hear(LANG("obj.aa8a193f8da7c41c", null)))
 	update_appearance(UPDATE_OVERLAYS)
 	investigate_log("was connected to [possible_connector] by [key_name(user)].", INVESTIGATE_ENGINE)
 	return ITEM_INTERACT_SUCCESS
@@ -239,7 +240,7 @@
 
 /obj/machinery/smesbank/crowbar_act(mob/living/user, obj/item/tool)
 	if(connected_port)
-		balloon_alert(user, "disconnect from [connected_port] first!")
+		balloon_alert(user, LANG("obj.120f3b8a88e324dc", list(connected_port)))
 		return ITEM_INTERACT_FAILURE
 
 	return default_deconstruction_crowbar(user, tool)
@@ -257,13 +258,13 @@
 
 	if(QDELETED(possible_connector))
 		if(user)
-			balloon_alert(user, "no connector!")
+			balloon_alert(user, LANG("obj.4108c44377cfcb80", null))
 		return FALSE
 
 	//Make sure not already connected to something else
 	if(possible_connector.panel_open)
 		if(user)
-			balloon_alert(user, "close connector panel!")
+			balloon_alert(user, LANG("obj.1b23fc096c19399f", null))
 		return FALSE
 
 	//Perform the connection

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/reagent/drug/aphrodisiac
 	max_breast_size = BREASTS_MAX_SIZE
 
@@ -52,7 +53,7 @@
 	// Damage from being too big for clothes
 	if((mob_belly?.genital_size >= (belly_max_size - 2)) && (exposed_mob.w_uniform || exposed_mob.wear_suit))
 		if(prob(damage_chance))
-			to_chat(exposed_mob, span_danger("Your belly strains against your clothes!"))
+			to_chat(exposed_mob, span_danger(LANG("datum.14f016b5d5c8d72e", null)))
 			exposed_mob.adjust_oxy_loss(5)
 			exposed_mob.apply_damage(1, BRUTE, exposed_mob.get_bodypart(BODY_ZONE_CHEST))
 
@@ -85,7 +86,7 @@
 	// Damage from being too big for clothes
 	if((mob_butt?.genital_size >= (butt_max_size - 2)) && (exposed_mob.w_uniform || exposed_mob.wear_suit))
 		if(prob(damage_chance))
-			to_chat(exposed_mob, span_danger("Your bottom strains against your clothes!"))
+			to_chat(exposed_mob, span_danger(LANG("datum.7533ce74891092ee", null)))
 			exposed_mob.apply_damage(1, BRUTE, exposed_mob.get_bodypart(BODY_ZONE_PRECISE_GROIN))
 
 /**
@@ -109,7 +110,7 @@
 	update_appearance(exposed_mob, new_belly)
 
 	if(!suppress_chat)
-		to_chat(exposed_mob, span_purple("Your midsection feels warm as it begins to expand outward."))
+		to_chat(exposed_mob, span_purple(LANG("datum.fa84c7c468698e00", null)))
 
 /**
 * Handle butt creation
@@ -132,7 +133,7 @@
 	update_appearance(exposed_mob, new_butt)
 
 	if(!suppress_chat)
-		to_chat(exposed_mob, span_purple("Your bottom feels warm as it begins to expand outward."))
+		to_chat(exposed_mob, span_purple(LANG("datum.23c63b68bd099104", null)))
 
 /**
 * Handle belly shrinkage

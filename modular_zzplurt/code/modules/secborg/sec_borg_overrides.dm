@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/silicon/robot
 	/// Set to TRUE when this cyborg has been fired from its security role via the communications console.
 	var/was_fired_from_security_role = FALSE
@@ -317,7 +318,7 @@
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/cyborg = user
 		if(cyborg.is_security_cyborg_role())
-			to_chat(user, span_warning("Security cyborgs cannot remotely electrify airlocks."))
+			to_chat(user, span_warning(LANG("obj.74654015374df385", null)))
 			return FALSE
 	return TRUE
 
@@ -325,7 +326,7 @@
 	if(!user_allowed_to_remote_shock(user))
 		return
 	if(wires.is_cut(WIRE_SHOCK))
-		to_chat(user, span_warning("Can't un-electrify the airlock - The electrification wire is cut."))
+		to_chat(user, span_warning(LANG("obj.ab4742914270b07b", null)))
 	else if(isElectrified())
 		set_electrified(MACHINE_NOT_ELECTRIFIED, user)
 
@@ -333,7 +334,7 @@
 	if(!user_allowed_to_remote_shock(user))
 		return
 	if(wires.is_cut(WIRE_SHOCK))
-		to_chat(user, span_warning("The electrification wire has been cut."))
+		to_chat(user, span_warning(LANG("obj.c5a4ae830755a2f6", null)))
 	else
 		set_electrified(MACHINE_DEFAULT_ELECTRIFY_TIME, user)
 
@@ -341,15 +342,15 @@
 	if(!user_allowed_to_remote_shock(user))
 		return
 	if(wires.is_cut(WIRE_SHOCK))
-		to_chat(user, span_warning("The electrification wire has been cut."))
+		to_chat(user, span_warning(LANG("obj.c5a4ae830755a2f6", null)))
 	else
 		set_electrified(MACHINE_ELECTRIFIED_PERMANENT, user)
 
 /mob/living/silicon/robot/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
 	if(is_security_cyborg_role())
 		if(ninja)
-			balloon_alert(ninja, "hacking protections active")
-		to_chat(src, span_warning("ALERT: Unauthorized hacking attempt blocked."))
+			balloon_alert(ninja, LANG("mob.3fe8890aada323b7", null))
+		to_chat(src, span_warning(LANG("mob.f5838bdb448dfa8e", null)))
 		log_silicon("HACK: [key_name(ninja)] attempted to hack protected security cyborg [key_name(src)]")
 		return FALSE
 	. = ..()
@@ -359,39 +360,39 @@
 		return FALSE
 	if(is_security_cyborg_role())
 		if(user)
-			balloon_alert(user, "tamper protections active")
-		to_chat(src, span_warning("ALERT: Unauthorized tamper attempt blocked."))
+			balloon_alert(user, LANG("mob.5aab1c48e07713c9", null))
+		to_chat(src, span_warning(LANG("mob.e78b009fba07a642", null)))
 		log_silicon("EMAG: [key_name(user)] attempted to emag protected security cyborg [key_name(src)]")
 		return FALSE
 	if(!opened)
 		if(locked)
-			balloon_alert(user, "cover lock destroyed")
+			balloon_alert(user, LANG("mob.95b487a03ca9696d", null))
 			locked = FALSE
 			if(shell)
-				balloon_alert(user, "shells cannot be subverted!")
-				to_chat(user, span_boldwarning("[src] seems to be controlled remotely! Emagging the interface may not work as expected."))
+				balloon_alert(user, LANG("mob.c810d1c71e8bed7f", null))
+				to_chat(user, span_boldwarning(LANG("mob.ece44261101f5cf1", list(src))))
 			return TRUE
 		else
-			balloon_alert(user, "cover already unlocked!")
+			balloon_alert(user, LANG("mob.ce6d77bd09746a4e", null))
 			return FALSE
 	if(world.time < emag_cooldown)
 		return FALSE
 	if(wiresexposed)
-		balloon_alert(user, "expose the fires first!")
+		balloon_alert(user, LANG("mob.af365309afe2b41b", null))
 		return FALSE
 
-	balloon_alert(user, "interface hacked")
+	balloon_alert(user, LANG("mob.e0149705b733a2db", null))
 	emag_cooldown = world.time + 100
 
 	if(connected_ai && connected_ai.mind && connected_ai.mind.has_antag_datum(/datum/antagonist/malf_ai))
-		to_chat(src, span_danger("ALERT: Foreign software execution prevented."))
+		to_chat(src, span_danger(LANG("mob.caebd82a8bd15b29", null)))
 		logevent("ALERT: Foreign software execution prevented.")
-		to_chat(connected_ai, span_danger("ALERT: Cyborg unit \[[src]\] successfully defended against subversion."))
+		to_chat(connected_ai, span_danger(LANG("mob.440af65d1b8ae58e", list(src))))
 		log_silicon("EMAG: [key_name(user)] attempted to emag cyborg [key_name(src)], but they were slaved to traitor AI [connected_ai].")
 		return TRUE
 
 	if(shell)
-		to_chat(user, span_danger("[src] is remotely controlled! Your emag attempt has triggered a system reset instead!"))
+		to_chat(user, span_danger(LANG("mob.58418714e3714800", list(src))))
 		log_silicon("EMAG: [key_name(user)] attempted to emag an AI shell belonging to [key_name(src) ? key_name(src) : connected_ai]. The shell has been reset as a result.")
 		ResetModel()
 		return TRUE
@@ -428,7 +429,7 @@
 	var/mob/living/silicon/robot/R = holder
 	if(R.is_security_cyborg_role() && (wire == WIRE_AI || wire == WIRE_LAWSYNC))
 		if(user)
-			R.balloon_alert(user, "protected wiring")
+			R.balloon_alert(user, LANG("datum.c1a93b59c03e759a", null))
 		return
 
 	switch(wire)
@@ -452,11 +453,11 @@
 		if(WIRE_CAMERA)
 			if(!QDELETED(R.builtInCamera) && !R.scrambledcodes)
 				R.builtInCamera.toggle_cam(usr, FALSE)
-				R.visible_message(span_notice("[R]'s camera lens focuses loudly."), span_notice("Your camera lens focuses loudly."))
+				R.visible_message(span_notice(LANG("datum.eccef7734e0e64d9", list(R))), span_notice(LANG("datum.4fddc8eb92b1f23a", null)))
 				log_silicon("[key_name(usr)] toggled [key_name(R)]'s camera to [R.builtInCamera.camera_enabled ? "on" : "off"] via pulse")
 		if(WIRE_LAWSYNC)
 			if(R.lawupdate)
-				R.visible_message(span_notice("[R] gently chimes."), span_notice("LawSync protocol engaged."))
+				R.visible_message(span_notice(LANG("datum.b033815b5b1f2177", list(R))), span_notice(LANG("datum.cd29dfbfdf2cc2ab", null)))
 				log_silicon("[key_name(usr)] forcibly synced [key_name(R)]'s laws via pulse")
 				R.lawsync()
 				R.show_laws()
@@ -465,13 +466,13 @@
 			log_silicon("[key_name(usr)] [!R.lockcharge ? "locked down" : "released"] [key_name(R)] via pulse")
 		if(WIRE_RESET_MODEL)
 			if(R.has_model())
-				R.visible_message(span_notice("[R]'s model servos twitch."), span_notice("Your model display flickers."))
+				R.visible_message(span_notice(LANG("datum.33b603fbed4f2134", list(R))), span_notice(LANG("datum.75348900e8074aaf", null)))
 
 /datum/wires/robot/on_cut(wire, mend, source)
 	var/mob/living/silicon/robot/R = holder
 	if(R.is_security_cyborg_role() && (wire == WIRE_AI || wire == WIRE_LAWSYNC))
 		if(usr)
-			R.balloon_alert(usr, "protected wiring")
+			R.balloon_alert(usr, LANG("datum.c1a93b59c03e759a", null))
 		return
 
 	switch(wire)
@@ -497,7 +498,7 @@
 				var/fixing_camera = !mend
 				R.builtInCamera.camera_enabled = fixing_camera
 				R.builtInCamera.toggle_cam(usr, 0)
-				R.visible_message(span_notice("[R]'s camera lens focuses loudly."), span_notice("Your camera lens focuses loudly."))
+				R.visible_message(span_notice(LANG("datum.eccef7734e0e64d9", list(R))), span_notice(LANG("datum.4fddc8eb92b1f23a", null)))
 				R.logevent("Camera Module fault [fixing_camera ? "cleared" : "detected"]")
 				log_silicon("[key_name(usr)] [fixing_camera ? "enabled" : "disabled"] [key_name(R)]'s camera via wire")
 		if(WIRE_LOCKDOWN)
@@ -515,11 +516,11 @@
 		return
 
 	if(wires.is_cut(WIRE_RESET_MODEL))
-		to_chat(src,span_userdanger("ERROR: Model installer reply timeout. Please check internal connections."))
+		to_chat(src,span_userdanger(LANG("mob.ebe078e6ac5fa2b7", null)))
 		return
 
 	if(lockcharge == TRUE)
-		to_chat(src,span_userdanger("ERROR: Lockdown is engaged. Please disengage lockdown to pick module."))
+		to_chat(src,span_userdanger(LANG("mob.fb386521159725d3", null)))
 		return
 
 	if(!length(GLOB.cyborg_model_list))
@@ -542,7 +543,7 @@
 	var/list/model_options = GLOB.cyborg_model_list.Copy()
 	if(is_security_cyborg_role())
 		model_options = list("Security" = /obj/item/robot_model/security)
-		to_chat(src, span_warning("You are not obligated to report a rogue AI, or cyborg as long as they do not break Space law."))
+		to_chat(src, span_warning(LANG("mob.f11d3c61ff98538f", null)))
 
 	var/list/model_icons = list()
 	for(var/option in model_options)
@@ -557,10 +558,10 @@
 	var/selected_model = model_options[input_model]
 	if(is_security_cyborg_role())
 		if(selected_model != /obj/item/robot_model && !ispath(selected_model, /obj/item/robot_model/security))
-			to_chat(src, span_warning("Security cyborgs are locked to the Security module."))
+			to_chat(src, span_warning(LANG("mob.15c0bdeeeadc70ca", null)))
 			return
 	else if(ispath(selected_model, /obj/item/robot_model/security))
-		to_chat(src, span_warning("Only security cyborgs can use the Security module."))
+		to_chat(src, span_warning(LANG("mob.0615046839ed8594", null)))
 		return
 
 	model.transform_to(selected_model)
@@ -698,8 +699,7 @@
 			cyborg.cut_overlays()
 			cyborg.setDir(SOUTH)
 			do_transform_delay()
-			to_chat(loc, span_userdanger("While you have chosen the security model, you are an auxiliary officer. You follow Space Law and your assigned objectives. \
-			While you may not be connected to the AI, you are still a machine. Keep this in mind when entering combat in support of your fellow officers. You should pull your punches if you need to."))
+			to_chat(loc, span_userdanger(LANG("obj.eb09ade85c85b0fc", null)))
 			return
 	..()
 

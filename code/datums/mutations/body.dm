@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //These mutations change your overall "form" somehow, like size
 
 //Epilepsy gives a very small chance to have a seizure every life tick, knocking you unconscious.
@@ -17,7 +18,7 @@
 /datum/mutation/epilepsy/proc/trigger_seizure()
 	if(IS_UNCONSCIOUS_OR_CRIT(owner))
 		return
-	owner.visible_message(span_danger("[owner] starts having a seizure!"), span_userdanger("You have a seizure!"))
+	owner.visible_message(span_danger(LANG("datum.e46c3046f38e3382", list(owner))), span_userdanger(LANG("datum.1d7bf17c01ab796d", null)))
 	owner.Unconscious(200 * GET_MUTATION_POWER(src))
 	owner.set_jitter(2000 SECONDS * GET_MUTATION_POWER(src)) //yes this number looks crazy but the jitter animations are amplified based on the duration.
 	owner.add_mood_event("epilepsy", /datum/mood_event/epilepsy)
@@ -128,24 +129,24 @@
 		return
 	// SKYRAT EDIT BEGIN
 	if(owner.current_size < 1 || isteshari(owner))
-		to_chat(owner, "You feel your body try to shrink, but your organs don't! Uh oh!")
+		to_chat(owner, LANG("datum.1ce5f60c7faa4103", null))
 		owner.adjust_brute_loss(25)
 		return
 	// SKYRAT EDIT END
 	ADD_TRAIT(owner, TRAIT_DWARF, GENETIC_MUTATION)
-	owner.visible_message(span_danger("[owner] suddenly shrinks!"), span_notice("Everything around you seems to grow.."))
+	owner.visible_message(span_danger(LANG("datum.15605ce8e8aad966", list(owner))), span_notice(LANG("datum.1de085fd1f276223", null)))
 
 /datum/mutation/dwarfism/on_losing(mob/living/carbon/human/owner)
 	if(..())
 		return
 	// SKYRAT EDIT BEGIN
 	if(owner.current_size < 1 || isteshari(owner))
-		to_chat(owner, "You feel relief as your organs cease to strain against your insides.")
+		to_chat(owner, LANG("datum.2b85b9f388b6bf57", null))
 		REMOVE_TRAIT(owner, TRAIT_DWARF, GENETIC_MUTATION)
 		return
 	// SKYRAT EDIT END
 	REMOVE_TRAIT(owner, TRAIT_DWARF, GENETIC_MUTATION)
-	owner.visible_message(span_danger("[owner] suddenly grows!"), span_notice("Everything around you seems to shrink.."))
+	owner.visible_message(span_danger(LANG("datum.3664a3e051c0441a", list(owner))), span_notice(LANG("datum.b4b7a7522793b5db", null)))
 
 /datum/mutation/acromegaly
 	name = "Acromegaly"
@@ -161,7 +162,7 @@
 	if(!.)
 		return
 	ADD_TRAIT(owner, TRAIT_TOO_TALL, GENETIC_MUTATION)
-	owner.visible_message(span_danger("[owner] suddenly grows tall!"), span_notice("You feel a small strange urge to fight small men with slingshots. Or maybe play some basketball."))
+	owner.visible_message(span_danger(LANG("datum.d174cf46251f9855", list(owner))), span_notice(LANG("datum.52769c76bdd1977e", null)))
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(head_bonk))
 	owner.regenerate_icons()
 
@@ -169,7 +170,7 @@
 	if(..())
 		return
 	REMOVE_TRAIT(owner, TRAIT_TOO_TALL, GENETIC_MUTATION)
-	owner.visible_message(span_danger("[owner] suddenly shrinks!"), span_notice("You return to your usual height."))
+	owner.visible_message(span_danger(LANG("datum.15605ce8e8aad966", list(owner))), span_notice(LANG("datum.234022bfcccad284", null)))
 	UnregisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(head_bonk))
 	owner.regenerate_icons()
 
@@ -179,7 +180,7 @@
 	var/atom/movable/whacked_by = (locate(/obj/machinery/door/airlock) in parent.loc) || (locate(/obj/machinery/door/firedoor) in parent.loc) || (locate(/obj/structure/mineral_door) in parent.loc)
 	if(!whacked_by || prob(100 - (8 *  GET_MUTATION_SYNCHRONIZER(src))))
 		return
-	to_chat(parent, span_danger("You hit your head on \the [whacked_by]'s header!"))
+	to_chat(parent, span_danger(LANG("datum.edd22812e71880b2", list(whacked_by))))
 	var/dmg = HAS_TRAIT(parent, TRAIT_HEAD_INJURY_BLOCKED) ? rand(1,4) : rand(2,9)
 	parent.apply_damage(dmg, BRUTE, BODY_ZONE_HEAD)
 	parent.do_attack_animation(whacked_by, ATTACK_EFFECT_PUNCH)
@@ -199,25 +200,25 @@
 		return
 	// SKYRAT EDIT BEGIN
 	if(owner.current_size > 1)
-		to_chat(owner, "You feel your body expanding even further, but it feels like your bones are expanding too much!")
+		to_chat(owner, LANG("datum.1572cf6ca036b897", null))
 		owner.adjust_brute_loss(25) // take some DAMAGE
 		return
 	// SKYRAT EDIT END
 	ADD_TRAIT(owner, TRAIT_GIANT, GENETIC_MUTATION)
 	// owner.update_transform(1.25) //SPLURT EDIT
-	owner.visible_message(span_danger("[owner] suddenly grows!"), span_notice("Everything around you seems to shrink.."))
+	owner.visible_message(span_danger(LANG("datum.3664a3e051c0441a", list(owner))), span_notice(LANG("datum.b4b7a7522793b5db", null)))
 
 /datum/mutation/gigantism/on_losing(mob/living/carbon/human/owner)
 	if(..())
 		return
 	// SKYRAT EDIT BEGIN
 	if(owner.current_size > 1)
-		to_chat(owner, "You feel relief as your bones cease their growth spurt.")
+		to_chat(owner, LANG("datum.496559743b09829d", null))
 		return
 	// SKYRAT EDIT END
 	REMOVE_TRAIT(owner, TRAIT_GIANT, GENETIC_MUTATION)
 	owner.update_transform(0.8)
-	owner.visible_message(span_danger("[owner] suddenly shrinks!"), span_notice("Everything around you seems to grow.."))
+	owner.visible_message(span_danger(LANG("datum.15605ce8e8aad966", list(owner))), span_notice(LANG("datum.1de085fd1f276223", null)))
 
 //Clumsiness has a very large amount of small drawbacks depending on item.
 /datum/mutation/clumsy
@@ -420,12 +421,12 @@
 		span_warning("[owner] does a jump to the left, a step to the right, and warps out of reality."),
 		span_warning("[owner]'s torso starts folding inside out until it vanishes from reality, taking [owner] with it."),
 		span_warning("One moment, you see [owner]. The next, [owner] is gone."))
-		owner.visible_message(warpmessage, span_userdanger("You feel a wave of nausea as you fall through reality!"))
+		owner.visible_message(warpmessage, span_userdanger(LANG("datum.dda35d7ae2b9620c", null)))
 		var/warpdistance = rand(10, 15) * GET_MUTATION_POWER(src)
 		do_teleport(owner, get_turf(owner), warpdistance, channel = TELEPORT_CHANNEL_FREE)
 		owner.adjust_disgust(GET_MUTATION_SYNCHRONIZER(src) * (warpchance * warpdistance))
 		warpchance = 0
-		owner.visible_message(span_danger("[owner] appears out of nowhere!"))
+		owner.visible_message(span_danger(LANG("datum.7f06e532c056af92", list(owner))))
 	else
 		warpchance += 0.0625 * seconds_per_tick / GET_MUTATION_ENERGY(src)
 
@@ -443,11 +444,11 @@
 /datum/mutation/acidflesh/on_life(seconds_per_tick)
 	if(SPT_PROB(13, seconds_per_tick))
 		if(COOLDOWN_FINISHED(src, msgcooldown))
-			to_chat(owner, span_danger("Your acid flesh bubbles..."))
+			to_chat(owner, span_danger(LANG("datum.8175f6e1d0d2f9e1", null)))
 			COOLDOWN_START(src, msgcooldown, 20 SECONDS)
 		if(prob(15))
 			owner.acid_act(rand(30, 50), 10)
-			owner.visible_message(span_warning("[owner]'s skin bubbles and pops."), span_userdanger("Your bubbling flesh pops! It burns!"))
+			owner.visible_message(span_warning(LANG("datum.a33e96e8a4b5f710", list(owner))), span_userdanger(LANG("datum.e989a0bc15aabed3", null)))
 			playsound(owner,'sound/items/weapons/sear.ogg', 50, TRUE)
 
 /datum/mutation/spastic
@@ -499,7 +500,7 @@
 		return
 	if(owner.buckled || owner.body_position == LYING_DOWN || HAS_TRAIT(owner, TRAIT_IMMOBILIZED) || owner.throwing || owner.movement_type & (VENTCRAWLING | FLYING | FLOATING))
 		return //remove the 'edge' cases
-	to_chat(owner, span_danger("You trip over your own feet."))
+	to_chat(owner, span_danger(LANG("datum.0b2924b8c9aa982a", null)))
 	owner.Knockdown(30)
 
 /datum/mutation/martyrdom
@@ -538,15 +539,15 @@
 	for(var/mob/living/carbon/human/splashed in view(2, owner))
 		var/obj/item/organ/eyes/eyes = splashed.get_organ_slot(ORGAN_SLOT_EYES)
 		if(eyes)
-			to_chat(splashed, span_userdanger("You are blinded by a shower of blood!"))
+			to_chat(splashed, span_userdanger(LANG("datum.5ea32e6ca8398c3c", null)))
 			eyes.apply_organ_damage(5)
 		else
-			to_chat(splashed, span_userdanger("You are knocked down by a wave of... blood?!"))
+			to_chat(splashed, span_userdanger(LANG("datum.c5de3c308e9930ee", null)))
 		splashed.Stun(2 SECONDS)
 		splashed.set_eye_blur_if_lower(40 SECONDS)
 		splashed.adjust_confusion(3 SECONDS)
 	for(var/mob/living/silicon/borgo in view(2, owner))
-		to_chat(borgo, span_userdanger("Your sensors are disabled by a shower of blood!"))
+		to_chat(borgo, span_userdanger(LANG("datum.e8f9a9e85039bb0c", null)))
 		borgo.Paralyze(6 SECONDS)
 	owner.investigate_log("has been gibbed by the martyrdom mutation.", INVESTIGATE_DEATHS)
 	owner.gib(DROP_ALL_REMAINS)
@@ -574,7 +575,7 @@
 
 	var/obj/item/bodypart/head/head = owner.get_bodypart(BODY_ZONE_HEAD)
 	if(head)
-		owner.visible_message(span_warning("[owner]'s head splatters with a sickening crunch!"), ignored_mobs = list(owner))
+		owner.visible_message(span_warning(LANG("datum.b4fa934e204dbe50", list(owner))), ignored_mobs = list(owner))
 		new /obj/effect/gibspawner/generic(get_turf(owner), owner)
 		head.drop_organs()
 		head.dismember(dam_type = BRUTE, silent = TRUE)
@@ -600,7 +601,7 @@
 	var/list/excluded_zones = GLOB.all_body_zones - BODY_ZONE_HEAD
 	owner.dna.species.regenerate_organs(owner, replace_current = FALSE, excluded_zones = excluded_zones) //replace_current needs to be FALSE to prevent weird adding and removing mutation healing
 	owner.apply_damage(damage = 50, damagetype = BRUTE, def_zone = BODY_ZONE_HEAD) //and this to DISCOURAGE organ farming, or at least not make it free.
-	owner.visible_message(span_warning("[owner]'s head returns with a sickening crunch!"), span_warning("Your head regrows with a sickening crack! Ouch."))
+	owner.visible_message(span_warning(LANG("datum.7d5bb6eeb46f9fe6", list(owner))), span_warning(LANG("datum.0e47897343560763", null)))
 	new /obj/effect/gibspawner/generic(get_turf(owner), owner)
 
 /datum/mutation/headless/proc/abort_attachment(datum/source, obj/item/bodypart/new_limb, special) //you aren't getting your head back
@@ -769,12 +770,12 @@
 
 	if(owner.nutrition <= nutrition_threshold)
 		if(IS_UNCONSCIOUS(owner) && !notified_of_ability)
-			to_chat(owner, span_green("You feel a strange tingling, as if your body is trying to do something - though you feel like you could use a meal first."))
+			to_chat(owner, span_green(LANG("datum.3b05fe7c17453a92", null)))
 			notified_of_ability = TRUE
 		return
 	if(!IS_UNCONSCIOUS(owner))
 		if(owner.nutrition > nutrition_threshold && !notified_of_ability)
-			to_chat(owner, span_green("You feel a strange tingling, as if your body is trying to do something - though you feel like you could use a nap first."))
+			to_chat(owner, span_green(LANG("datum.f839250242ebf94c", null)))
 			notified_of_ability = TRUE
 		return
 
@@ -785,13 +786,13 @@
 			var/replacement_type = owner.dna.species.get_mutant_organ_type_for_slot(pick(missing_important_organs))
 			var/obj/item/organ/replacement = new replacement_type()
 			replacement.Insert(owner, special = TRUE)
-			to_chat(owner, span_green("The tingling feeling builds to a climax, until ultimately you feel [replacement.gender == PLURAL ? "some" : "a"] new [replacement.name] where your old one[replacement.gender == PLURAL ? "s were" : " was"]!"))
+			to_chat(owner, span_green(LANG("datum.a5e24d606565cf8a", list(replacement.gender == PLURAL ? "some" : "a", replacement.name, replacement.gender == PLURAL ? "s were" : " was"))))
 		else
 			var/replacing_zone = pick(missing_limbs)
 			owner.regenerate_limb(replacing_zone)
 			var/obj/item/bodypart/replacement = owner.get_bodypart(replacing_zone)
-			to_chat(owner, span_green("The tingling feeling builds to a climax, until ultimately you feel [replacement.gender == PLURAL ? "some" : "a"] new [replacement.plaintext_zone] where your old one[replacement.gender == PLURAL ? "s were" : " was"]!"))
-			owner.visible_message(span_warning("[owner]'s [replacement.plaintext_zone] reforms, making a loud, grotesque sound!"), ignored_mobs = list(owner))
+			to_chat(owner, span_green(LANG("datum.a5e24d606565cf8a", list(replacement.gender == PLURAL ? "some" : "a", replacement.plaintext_zone, replacement.gender == PLURAL ? "s were" : " was"))))
+			owner.visible_message(span_warning(LANG("datum.36b6e280a48886a0", list(owner, replacement.plaintext_zone))), ignored_mobs = list(owner))
 		owner.adjust_nutrition(-NUTRITION_LEVEL_FULL * 0.5 * GET_MUTATION_SYNCHRONIZER(src))
 		playsound(owner, 'sound/effects/magic/demon_consume.ogg', 33, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		return
@@ -801,9 +802,9 @@
 		var/replacement_type = pick(missing_special_organs)
 		var/obj/item/organ/replacement = new replacement_type()
 		replacement.Insert(owner, special = TRUE)
-		to_chat(owner, span_green("The tingling feeling builds to a climax, until ultimately you feel [replacement.gender == PLURAL ? "some" : "a"] new [replacement.name] where your old one[replacement.gender == PLURAL ? "s were" : " was"]!"))
+		to_chat(owner, span_green(LANG("datum.a5e24d606565cf8a", list(replacement.gender == PLURAL ? "some" : "a", replacement.name, replacement.gender == PLURAL ? "s were" : " was"))))
 		if(replacement.organ_flags & ORGAN_EXTERNAL)
-			owner.visible_message(span_warning("[owner]'s [replacement.name] reforms, making a loud, grotesque sound!"), ignored_mobs = list(owner))
+			owner.visible_message(span_warning(LANG("datum.36b6e280a48886a0", list(owner, replacement.name))), ignored_mobs = list(owner))
 		owner.adjust_nutrition(-NUTRITION_LEVEL_FULL * 0.3 * GET_MUTATION_SYNCHRONIZER(src))
 		playsound(owner, 'sound/effects/magic/demon_consume.ogg', 33, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		return

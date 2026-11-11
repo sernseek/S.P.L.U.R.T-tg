@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define DUALWIELD_PENALTY_EXTRA_MULTIPLIER 1.4
 #define FIRING_PIN_REMOVAL_DELAY 50
 
@@ -196,22 +197,22 @@
 	. = ..()
 	if(!pinless)
 		if(pin)
-			. += "It has \a [pin] installed."
+			. += LANG("obj.4243143d622ce537", list(pin))
 			if(pin.pin_removable)
-				. += span_info("[pin] looks like [pin.p_they()] could be removed with some <b>tools</b>.")
+				. += span_info(LANG("obj.371cd0a7a5bf4284", list(pin, pin.p_they())))
 			else
-				. += span_info("[pin] looks like [pin.p_theyre()] firmly locked in, [pin.p_they()] look[pin.p_s()] impossible to remove.")
+				. += span_info(LANG("obj.38cc44d7f58f9917", list(pin, pin.p_theyre(), pin.p_they(), pin.p_s())))
 		else
-			. += "It doesn't have a <b>firing pin</b> installed, and won't fire."
+			. += LANG("obj.890cac0893c9964c", null)
 
 	var/healthpercent = (atom_integrity/max_integrity) * 100
 	switch(healthpercent)
 		if(60 to 95)
-			. += span_info("It looks slightly damaged.")
+			. += span_info(LANG("obj.bc3c8a2327d585d1", null))
 		if(25 to 60)
-			. += span_warning("It appears heavily damaged.")
+			. += span_warning(LANG("obj.27d47c4b2f198d89", null))
 		if(0 to 25)
-			. += span_boldwarning("It's falling apart!")
+			. += span_boldwarning(LANG("obj.ad6c0cee53a99c80", null))
 
 //called after the gun has successfully fired its chambered ammo.
 /obj/item/gun/proc/process_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
@@ -259,38 +260,38 @@
 		return FALSE
 	if(tk_firing(user))
 		visible_message(
-			span_danger("[src] fires itself[pointblank ? " point blank at [pbtarget]!" : "!"]"),
-			blind_message = span_hear("You hear a gunshot!"),
+			span_danger(LANG("obj.087c6e3bd3506e96", list(src, pointblank ? " point blank at [pbtarget]!" : "!"))),
+			blind_message = span_hear(LANG("obj.89ccf80f2f1a5591", null)),
 			vision_distance = COMBAT_MESSAGE_RANGE
 		)
 	else if(pointblank)
 		if(user == pbtarget)
 			user.visible_message(
-				span_danger("[user] fires [src] point blank at [user.p_them()]self!"),
-				span_userdanger("You fire [src] point blank at yourself!"),
-				span_hear("You hear a gunshot!"),
+				span_danger(LANG("obj.43a50ef15fdd8775", list(user, src, user.p_them()))),
+				span_userdanger(LANG("obj.29cb2a67c2001ab5", list(src))),
+				span_hear(LANG("obj.89ccf80f2f1a5591", null)),
 				vision_distance = COMBAT_MESSAGE_RANGE,
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 		else
 			user.visible_message(
-				span_danger("[user] fires [src] point blank at [pbtarget]!"),
-				span_danger("You fire [src] point blank at [pbtarget]!"),
-				span_hear("You hear a gunshot!"),
+				span_danger(LANG("obj.c4baaa4b1c78b1f2", list(user, src, pbtarget))),
+				span_danger(LANG("obj.96126c9a46fcc5ab", list(src, pbtarget))),
+				span_hear(LANG("obj.89ccf80f2f1a5591", null)),
 				vision_distance = COMBAT_MESSAGE_RANGE,
 				ignored_mobs = pbtarget,
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
-			to_chat(pbtarget, span_userdanger("[user] fires [src] point blank at you!"))
+			to_chat(pbtarget, span_userdanger(LANG("obj.4ace98d3c50acdbb", list(user, src))))
 		if(pb_knockback > 0 && ismob(pbtarget))
 			var/mob/PBT = pbtarget
 			var/atom/throw_target = get_edge_target_turf(PBT, user.dir)
 			PBT.throw_at(throw_target, pb_knockback, 2)
 	else if(!tk_firing(user))
 		user.visible_message(
-			span_danger("[user] fires [src]!"),
-			span_danger("You fire [src]!"),
-			span_hear("You hear a gunshot!"),
+			span_danger(LANG("obj.84c8fb6b2ba690ea", list(user, src))),
+			span_danger(LANG("obj.86b40daedce85509", list(src))),
+			span_hear(LANG("obj.89ccf80f2f1a5591", null)),
 			vision_distance = COMBAT_MESSAGE_RANGE,
 			ignored_mobs = user,
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
@@ -305,7 +306,7 @@
 		return ..()
 	var/mob/living/holder = loc
 	if(holder.is_holding(src) && !IS_UNCONSCIOUS(holder))
-		to_chat(holder, span_boldwarning("[src] breaks down!"))
+		to_chat(holder, span_boldwarning(LANG("obj.8e75b6957751c359", list(src))))
 		holder.playsound_local(get_turf(src), 'sound/items/weapons/smash.ogg', 50, TRUE)
 	return ..()
 
@@ -335,15 +336,15 @@
 	if(HAS_TRAIT(user, TRAIT_CLUMSY) && prob(40))
 		// yes this will sound silly for bows and wands, but that's a "gun" moment for you
 		user.visible_message(
-			span_danger("While trying to flip [src] [user] pulls the trigger accidentally!"),
-			span_userdanger("While trying to flip [src] you pull the trigger accidentally!"),
+			span_danger(LANG("obj.09734df927c46548", list(src, user))),
+			span_userdanger(LANG("obj.d54c4d9c6c6587ba", list(src))),
 		)
 		process_fire(user, user, FALSE, user.get_random_valid_zone(even_weights = TRUE))
 		user.dropItemToGround(src, TRUE)
 	else
 		user.visible_message(
-			span_notice("[user] spins [src] around [user.p_their()] finger by the trigger. That's pretty badass."),
-			span_notice("You spin [src] around your finger by the trigger. That's pretty badass."),
+			span_notice(LANG("obj.f57a5fa3ad4ec29e", list(user, src, user.p_their()))),
+			span_notice(LANG("obj.0b65d18c73f0fbf3", list(src))),
 		)
 		playsound(src, 'sound/items/handling/ammobox_pickup.ogg', 20, FALSE)
 
@@ -364,10 +365,10 @@
 
 	var/datum/component/gunpoint/gunpoint_component = user.GetComponent(/datum/component/gunpoint)
 	if (gunpoint_component)
-		balloon_alert(user, "already holding [gunpoint_component.target == interacting_with ? "them" : "someone"] up!")
+		balloon_alert(user, LANG("obj.a8a0e2f2d325ed18", list(gunpoint_component.target == interacting_with ? "them" : "someone")))
 		return ITEM_INTERACT_BLOCKING
 	if (user == interacting_with)
-		balloon_alert(user, "can't hold yourself up!")
+		balloon_alert(user, LANG("obj.9f94e30ecdb43245", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(do_after(user, 0.5 SECONDS, interacting_with))
@@ -421,7 +422,7 @@
 
 	var/obj/item/bodypart/other_hand = user.has_hand_for_held_index(user.get_inactive_hand_index()) //returns non-disabled inactive hands
 	if(weapon_weight == WEAPON_HEAVY && (user.get_inactive_held_item() || !other_hand))
-		balloon_alert(user, "use both hands!")
+		balloon_alert(user, LANG("obj.cf2ec0c76fbc8661", null))
 		return ITEM_INTERACT_BLOCKING
 	//DUAL (or more!) WIELDING
 	var/bonus_spread = 0
@@ -444,7 +445,7 @@
 				var/target_zone = user.get_random_valid_zone(blacklisted_parts = list(BODY_ZONE_CHEST, BODY_ZONE_HEAD, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), even_weights = TRUE, bypass_warning = TRUE)
 				if(!target_zone)
 					return
-				to_chat(user, span_userdanger("You shoot yourself in the foot with [src]!"))
+				to_chat(user, span_userdanger(LANG("obj.e953dcd990c9b9c2", list(src))))
 				process_fire(user, user, FALSE, null, target_zone)
 				SEND_SIGNAL(user, COMSIG_MOB_CLUMSY_SHOOT_FOOT)
 				if(!tk_firing(user) && !HAS_TRAIT(src, TRAIT_NODROP))
@@ -466,8 +467,8 @@
 			pin.auth_fail(user)
 			return FALSE
 	else
-		to_chat(user, span_warning("[src]'s trigger is locked. This weapon doesn't have a firing pin installed!"))
-		balloon_alert(user, "trigger locked, firing pin needed!")
+		to_chat(user, span_warning(LANG("obj.a9524f5f8a8b4343", list(src))))
+		balloon_alert(user, LANG("obj.a2de96daa4e040ca", null))
 	return FALSE
 
 /// Called to put ammo back in a gun which recharges itself, should call super if successful
@@ -488,7 +489,7 @@
 		return FALSE
 
 	if(HAS_TRAIT(user, TRAIT_PACIFISM) && chambered.harmful) // Is the bullet chambered harmful?
-		to_chat(user, span_warning("[src] is lethally chambered! You don't want to risk harming anyone..."))
+		to_chat(user, span_warning(LANG("obj.20d18c407315d073", list(src))))
 		firing_burst = FALSE
 		return FALSE
 
@@ -583,7 +584,7 @@
 			shoot_with_empty_chamber(user)
 			return user.combat_mode ? ITEM_INTERACT_SKIP_TO_ATTACK : NONE
 		if(HAS_TRAIT(user, TRAIT_PACIFISM) && chambered.harmful) // If the user has the pacifist trait, then they won't be able to fire [src] if the round chambered inside of [src] is lethal.
-			to_chat(user, span_warning("[src] is lethally chambered! You don't want to risk harming anyone..."))
+			to_chat(user, span_warning(LANG("obj.20d18c407315d073", list(src))))
 			return NONE
 		var/sprd = round((rand(0, 1) - 0.5) * DUALWIELD_PENALTY_EXTRA_MULTIPLIER * total_random_spread)
 		before_firing(target,user)
@@ -613,13 +614,13 @@
 	if(!user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return
 	if(pin?.pin_removable && user.is_holding(src))
-		user.visible_message(span_warning("[user] attempts to remove [pin] from [src] with [I]."),
-		span_notice("You attempt to remove [pin] from [src]. (It will take [DisplayTimeText(FIRING_PIN_REMOVAL_DELAY)].)"), null, 3)
+		user.visible_message(span_warning(LANG("obj.0a85d99f91ba0d11", list(user, pin, src, I))),
+		span_notice(LANG("obj.e57949f7dbccc87c", list(pin, src, DisplayTimeText(FIRING_PIN_REMOVAL_DELAY)))), null, 3)
 		if(I.use_tool(src, user, FIRING_PIN_REMOVAL_DELAY, volume = 50))
 			if(!pin) //check to see if the pin is still there, or we can spam messages by clicking multiple times during the tool delay
 				return
-			user.visible_message(span_notice("[pin] is pried out of [src] by [user], destroying the pin in the process."),
-								span_warning("You pry [pin] out with [I], destroying the pin in the process."), null, 3)
+			user.visible_message(span_notice(LANG("obj.3ca69651916abbfa", list(pin, src, user))),
+								span_warning(LANG("obj.3cce8d3c33639602", list(pin, I))), null, 3)
 			QDEL_NULL(pin)
 			return ITEM_INTERACT_SUCCESS
 
@@ -630,13 +631,13 @@
 	if(!user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return
 	if(pin?.pin_removable && user.is_holding(src))
-		user.visible_message(span_warning("[user] attempts to remove [pin] from [src] with [I]."),
-		span_notice("You attempt to remove [pin] from [src]. (It will take [DisplayTimeText(FIRING_PIN_REMOVAL_DELAY)].)"), null, 3)
+		user.visible_message(span_warning(LANG("obj.0a85d99f91ba0d11", list(user, pin, src, I))),
+		span_notice(LANG("obj.e57949f7dbccc87c", list(pin, src, DisplayTimeText(FIRING_PIN_REMOVAL_DELAY)))), null, 3)
 		if(I.use_tool(src, user, FIRING_PIN_REMOVAL_DELAY, 5, volume = 50))
 			if(!pin) //check to see if the pin is still there, or we can spam messages by clicking multiple times during the tool delay
 				return
-			user.visible_message(span_notice("[pin] is spliced out of [src] by [user], melting part of the pin in the process."),
-								span_warning("You splice [pin] out of [src] with [I], melting part of the pin in the process."), null, 3)
+			user.visible_message(span_notice(LANG("obj.96b906d8ace3e549", list(pin, src, user))),
+								span_warning(LANG("obj.ef089eb34e1f6b9e", list(pin, src, I))), null, 3)
 			QDEL_NULL(pin)
 			return TRUE
 
@@ -647,13 +648,13 @@
 	if(!user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return
 	if(pin?.pin_removable && user.is_holding(src))
-		user.visible_message(span_warning("[user] attempts to remove [pin] from [src] with [I]."),
-		span_notice("You attempt to remove [pin] from [src]. (It will take [DisplayTimeText(FIRING_PIN_REMOVAL_DELAY)].)"), null, 3)
+		user.visible_message(span_warning(LANG("obj.0a85d99f91ba0d11", list(user, pin, src, I))),
+		span_notice(LANG("obj.e57949f7dbccc87c", list(pin, src, DisplayTimeText(FIRING_PIN_REMOVAL_DELAY)))), null, 3)
 		if(I.use_tool(src, user, FIRING_PIN_REMOVAL_DELAY, volume = 50))
 			if(!pin) //check to see if the pin is still there, or we can spam messages by clicking multiple times during the tool delay
 				return
-			user.visible_message(span_notice("[pin] is ripped out of [src] by [user], mangling the pin in the process."),
-								span_warning("You rip [pin] out of [src] with [I], mangling the pin in the process."), null, 3)
+			user.visible_message(span_notice(LANG("obj.a6447eb52db4e073", list(pin, src, user))),
+								span_warning(LANG("obj.14171f9d476bb8ac", list(pin, src, I))), null, 3)
 			QDEL_NULL(pin)
 			return TRUE
 
@@ -668,26 +669,26 @@
 		return NONE
 
 	if(user == target)
-		target.visible_message(span_warning("[user] sticks [src] in [user.p_their()] mouth, ready to pull the trigger..."), \
-			span_userdanger("You stick [src] in your mouth, ready to pull the trigger..."))
+		target.visible_message(span_warning(LANG("obj.fe0c5c8f980f6961", list(user, src, user.p_their()))), \
+			span_userdanger(LANG("obj.c1e337b3fe01b001", list(src))))
 	else
-		target.visible_message(span_warning("[user] points [src] at [target]'s head, ready to pull the trigger..."), \
-			span_userdanger("[user] points [src] at your head, ready to pull the trigger..."))
+		target.visible_message(span_warning(LANG("obj.9641a45e280a68ea", list(user, src, target))), \
+			span_userdanger(LANG("obj.6c357ff9fe9b7a22", list(user, src))))
 
 	fire_cd = TRUE
 
 	if(!bypass_timer && (!do_after(user, 12 SECONDS, target) || user.zone_selected != BODY_ZONE_PRECISE_MOUTH))
 		if(user)
 			if(user == target)
-				user.visible_message(span_notice("[user] decided not to shoot."))
+				user.visible_message(span_notice(LANG("obj.83e8e8721be6fae1", list(user))))
 			else if(target?.Adjacent(user))
-				target.visible_message(span_notice("[user] has decided to spare [target]"), span_notice("[user] has decided to spare your life!"))
+				target.visible_message(span_notice(LANG("obj.93dfebcccf79387e", list(user, target))), span_notice(LANG("obj.4e0d65474bc0f347", list(user))))
 		fire_cd = FALSE
 		return ITEM_INTERACT_BLOCKING
 
 	fire_cd = FALSE
 
-	target.visible_message(span_warning("[user] pulls the trigger!"), span_userdanger("[(user == target) ? "You pull" : "[user] pulls"] the trigger!"))
+	target.visible_message(span_warning(LANG("obj.3153b1beaa68ff85", list(user))), span_userdanger(LANG("obj.4da13f67ddee7175", list((user == target) ? "You pull" : "[user] pulls"))))
 
 	if(!chambered?.loaded_projectile)
 		shoot_with_empty_chamber(user)
@@ -723,7 +724,7 @@
 /obj/item/gun/proc/fire_at_opener(mob/user, obj/item/mail/traitor/letter)
 	if(!user.put_in_hands(src)) //this won't ever fail under normal circumstances, but will happen with the admin versions
 		forceMove(user.loc)
-	to_chat(user, span_danger("As you open [letter], you see [src] inside! [about_to_shoot_inside_mail_text]"))
+	to_chat(user, span_danger(LANG("obj.1f2ca233bbf15718", list(letter, src, about_to_shoot_inside_mail_text))))
 	if(!can_shoot())
 		shoot_with_empty_chamber(user)
 		return

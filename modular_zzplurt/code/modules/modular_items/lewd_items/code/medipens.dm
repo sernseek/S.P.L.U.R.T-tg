@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/reagent_containers/hypospray/medipen/crocin
 	name = "emergency aphrodisiac shot"
 	volume = 30
@@ -83,7 +84,7 @@
 /obj/item/reagent_containers/hypospray/medipen/prospacillin/Initialize(mapload)
 	. = ..()
 	if(prob(50))
-		desc = "Macro haters' worst enemy"
+		desc = LANG("obj.0ac97209a265caca", null)
 
 /// Box with LEWD medipens ///
 /obj/item/storage/box/medipens/lewd

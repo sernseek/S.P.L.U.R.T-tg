@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/tongue/copy_traits_from(obj/item/organ/tongue/old_tongue, copy_actions = FALSE)
 	. = ..()
 	// make sure we get food preferences too, because those are now tied to tongues for some reason
@@ -117,7 +118,7 @@
 	INVOKE_ASYNC(src, PROC_REF(its_on_the_mouse), offerer, taker)
 
 /obj/item/organ/tongue/mouse/proc/its_on_the_mouse(mob/living/carbon/offerer, mob/living/taker)
-	offerer.say("For you, it's on the mouse.")
+	offerer.say(LANG("obj.bdf3f70e68587e28", null))
 	taker.add_mood_event("it_was_on_the_mouse", /datum/mood_event/it_was_on_the_mouse)
 
 /// This "human" tongue is only used in Character Preferences / Augmentation menu.

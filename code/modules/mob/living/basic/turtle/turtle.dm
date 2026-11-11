@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define PATH_PEST_KILLER "path_pest_killer"
 #define PATH_PLANT_HEALER "path_plant_healer"
 #define PATH_PLANT_MUTATOR "path_plant_mutator"
@@ -132,7 +133,7 @@
 	. = ..()
 
 	if(stat == DEAD)
-		. += span_notice("Its tree seems to be all withered...")
+		. += span_notice(LANG("mob.8a0e39ab50542f59", null))
 		return
 
 	var/destined_path = retrieve_destined_path()
@@ -141,13 +142,13 @@
 	var/text_to_display = "Its tree seems to be exuding "
 	switch(destined_path)
 		if(PATH_PEST_KILLER)
-			text_to_display += "pest killing"
+			text_to_display += LANG("mob.61a5f621e84cd678", null)
 		if(PATH_PLANT_HEALER)
-			text_to_display += "plant healing"
+			text_to_display += LANG("mob.6338c7d33c2ddb93", null)
 		if(PATH_PLANT_MUTATOR)
-			text_to_display += "plant mutating"
+			text_to_display += LANG("mob.708edb4e395b058b", null)
 
-	text_to_display += " properties... which [current_max_growth >= REQUIRED_TREE_GROWTH ? "seems to be fully grown" : "is yet to develop"]."
+	text_to_display += LANG("mob.9ce9a8ee16e736f1", list(current_max_growth >= REQUIRED_TREE_GROWTH ? "seems to be fully grown" : "is yet to develop"))
 	. += span_notice(text_to_display)
 
 
@@ -207,11 +208,11 @@
 		return NONE
 
 	if(isnull(used_item.reagents))
-		balloon_alert(user, "empty!")
+		balloon_alert(user, LANG("mob.6ef93b07027da376", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(stat == DEAD)
-		balloon_alert(user, "its dead!")
+		balloon_alert(user, LANG("mob.bddaa38754055083", null))
 		return ITEM_INTERACT_SUCCESS
 
 	var/should_transfer = FALSE
@@ -221,14 +222,14 @@
 			break
 
 	if(!should_transfer)
-		balloon_alert(user, "refuses to drink!")
+		balloon_alert(user, LANG("mob.c4b995df6e68dd81", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(!do_after(user, 1.5 SECONDS, target = src))
 		return ITEM_INTERACT_SUCCESS
 
 	used_item.reagents.trans_to(reagents, 5)
-	balloon_alert(user, "drinks happily")
+	balloon_alert(user, LANG("mob.a95d01b4982fd652", null))
 	playsound(src, 'sound/items/drink.ogg', vol = 25, vary = TRUE)
 	return ITEM_INTERACT_SUCCESS
 
@@ -261,7 +262,7 @@
 		var/atom/movable/movable_food = potential_food
 		movable_food.forceMove(drop_location())
 
-	balloon_alert_to_viewers("spits out some food")
+	balloon_alert_to_viewers(LANG("mob.29920c3b86a856a3", null))
 
 /mob/living/basic/turtle/death(gibbed)
 	. = ..()

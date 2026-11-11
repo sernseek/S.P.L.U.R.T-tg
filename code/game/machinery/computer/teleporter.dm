@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define REGIME_TELEPORTER "Teleporter"
 #define REGIME_GATE "Gate"
 
@@ -89,10 +90,10 @@
 		return
 
 	if(!check_hub_connection())
-		say("Error: Unable to detect hub.")
+		say(LANG("obj.534e85334d47b684", null))
 		return
 	if(calibrating)
-		say("Error: Calibration in progress. Stand by.")
+		say(LANG("obj.94a2986bc4fbfebf", null))
 		return
 
 	switch(action)
@@ -106,13 +107,13 @@
 			. = TRUE
 		if("calibrate")
 			if(!target_ref)
-				say("Error: No target set to calibrate to.")
+				say(LANG("obj.a28167a8565be28c", null))
 				return
 			if(power_station.teleporter_hub.calibrated || power_station.teleporter_hub.accuracy >= 3)
-				say("Hub is already calibrated!")
+				say(LANG("obj.fc14395093fdb1f7", null))
 				return
 
-			say("Processing hub calibration to target...")
+			say(LANG("obj.0b73f952f19d9a7b", null))
 			calibrating = TRUE
 			power_station.update_appearance()
 			addtimer(CALLBACK(src, PROC_REF(finish_calibration)), 5 SECONDS * (3 - power_station.teleporter_hub.accuracy)) //Better parts mean faster calibration
@@ -136,9 +137,9 @@
 	calibrating = FALSE
 	if(check_hub_connection())
 		power_station.teleporter_hub.calibrated = TRUE
-		say("Calibration complete.")
+		say(LANG("obj.e9cb2c41e9a37b39", null))
 	else
-		say("Error: Unable to detect hub.")
+		say(LANG("obj.534e85334d47b684", null))
 	power_station.update_appearance()
 
 /obj/machinery/computer/teleporter/proc/check_hub_connection()
@@ -205,17 +206,17 @@
 	var/list/targets = get_targets()
 
 	if (regime_set == REGIME_TELEPORTER)
-		var/desc = tgui_input_list(usr, "Select a location to lock in", "Locking Computer", sort_list(targets))
+		var/desc = tgui_input_list(usr, LANG("obj.0b1dfa92602df09a", null), LANG("obj.3a28d7cf92c6e382", null), sort_list(targets))
 		if(isnull(desc) || !user.can_perform_action(src, ALLOW_SILICON_REACH))
 			return
 		set_teleport_target(targets[desc])
 		user.log_message("set the teleporter target to [targets[desc]].]", LOG_GAME)
 	else
 		if (!length(targets))
-			to_chat(user, span_alert("No active connected stations located."))
+			to_chat(user, span_alert(LANG("obj.2e9bff880183cdff", null)))
 			return
 
-		var/desc = tgui_input_list(usr, "Select a station to lock in", "Locking Computer", sort_list(targets))
+		var/desc = tgui_input_list(usr, LANG("obj.9fb44fbc94de093c", null), LANG("obj.3a28d7cf92c6e382", null), sort_list(targets))
 		if(isnull(desc)|| !user.can_perform_action(src, ALLOW_SILICON_REACH))
 			return
 		var/obj/machinery/teleport/station/target_station = targets[desc]

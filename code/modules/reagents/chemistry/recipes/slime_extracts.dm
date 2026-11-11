@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /datum/chemical_reaction/slime
 	reaction_flags = REACTION_INSTANT
@@ -31,7 +32,7 @@
 
 /datum/chemical_reaction/slime/slimespawn/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/mob/living/basic/slime/spawning_slime = new(get_turf(holder.my_atom), /datum/slime_type/grey)
-	spawning_slime.visible_message(span_danger("Infused with plasma, the core begins to quiver and grow, and a new baby slime emerges from it!"))
+	spawning_slime.visible_message(span_danger(LANG("datum.d4eaf4cf69500e0b", null)))
 	..()
 
 /datum/chemical_reaction/slime/slimeinaprov
@@ -116,21 +117,21 @@
 	M.qdel_timer = addtimer(CALLBACK(src, PROC_REF(delete_extract), holder), 55, TIMER_STOPPABLE)
 
 /datum/chemical_reaction/slime/slimemobspawn/proc/summon_mobs(datum/reagents/holder, turf/T)
-	T.visible_message(span_danger("The slime extract begins to vibrate violently!"))
+	T.visible_message(span_danger(LANG("datum.074b2988a959be0b", null)))
 	addtimer(CALLBACK(src, PROC_REF(chemical_mob_spawn), holder, 4, "Gold Slime", HOSTILE_SPAWN), 5 SECONDS)
 
 /datum/chemical_reaction/slime/slimemobspawn/lesser
 	required_reagents = list(/datum/reagent/blood = 1)
 
 /datum/chemical_reaction/slime/slimemobspawn/lesser/summon_mobs(datum/reagents/holder, turf/T)
-	T.visible_message(span_danger("The slime extract begins to vibrate violently!"))
+	T.visible_message(span_danger(LANG("datum.074b2988a959be0b", null)))
 	addtimer(CALLBACK(src, PROC_REF(chemical_mob_spawn), holder, 3, "Lesser Gold Slime", HOSTILE_SPAWN, FACTION_NEUTRAL), 5 SECONDS)
 
 /datum/chemical_reaction/slime/slimemobspawn/friendly
 	required_reagents = list(/datum/reagent/water = 1)
 
 /datum/chemical_reaction/slime/slimemobspawn/friendly/summon_mobs(datum/reagents/holder, turf/T)
-	T.visible_message(span_danger("The slime extract begins to vibrate adorably!"))
+	T.visible_message(span_danger(LANG("datum.d2bb1db5059ffd76", null)))
 	addtimer(CALLBACK(src, PROC_REF(chemical_mob_spawn), holder, 1, "Friendly Gold Slime", FRIENDLY_SPAWN, FACTION_NEUTRAL), 5 SECONDS)
 
 /datum/chemical_reaction/slime/slimemobspawn/spider
@@ -138,7 +139,7 @@
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_SLIME | REACTION_TAG_DANGEROUS
 
 /datum/chemical_reaction/slime/slimemobspawn/spider/summon_mobs(datum/reagents/holder, turf/T)
-	T.visible_message(span_danger("The slime extract begins to vibrate crikey-ingly!"))
+	T.visible_message(span_danger(LANG("datum.87d9247131bcfbb0", null)))
 	addtimer(CALLBACK(src, PROC_REF(chemical_mob_spawn), holder, 3, "Traitor Spider Slime", /mob/living/basic/spider/giant/midwife, FACTION_NEUTRAL, FALSE), 5 SECONDS)
 
 
@@ -207,7 +208,7 @@
 
 /datum/chemical_reaction/slime/slimefreeze/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/turf/T = get_turf(holder.my_atom)
-	T.visible_message(span_danger("The slime extract starts to feel extremely cold!"))
+	T.visible_message(span_danger(LANG("datum.031fb71d2f01356d", null)))
 	addtimer(CALLBACK(src, PROC_REF(freeze), holder), 5 SECONDS)
 	var/obj/item/slime_extract/M = holder.my_atom
 	deltimer(M.qdel_timer)
@@ -242,7 +243,7 @@
 
 /datum/chemical_reaction/slime/slimefire/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/turf/T = get_turf(holder.my_atom)
-	T.visible_message(span_danger("The slime extract begins to vibrate adorably!"))
+	T.visible_message(span_danger(LANG("datum.d2bb1db5059ffd76", null)))
 	addtimer(CALLBACK(src, PROC_REF(slime_burn), holder), 5 SECONDS)
 	var/obj/item/slime_extract/M = holder.my_atom
 	deltimer(M.qdel_timer)
@@ -290,7 +291,7 @@
 
 /datum/chemical_reaction/slime/slimeglow/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/turf/T = get_turf(holder.my_atom)
-	T.visible_message(span_danger("The slime begins to emit a soft light. Squeezing it will cause it to grow brightly."))
+	T.visible_message(span_danger(LANG("datum.d5805e739f2dd098", null)))
 	new /obj/item/flashlight/slime(T)
 	..()
 
@@ -334,12 +335,12 @@
 /datum/chemical_reaction/slime/slimebloodlust/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	for(var/mob/living/basic/slime/slime in viewers(get_turf(holder.my_atom), null))
 		if(slime.hunger_disabled) //Undoes docility, but doesn't make rabid.
-			slime.visible_message(span_danger("[slime] forgets its training, becoming wild once again!"))
+			slime.visible_message(span_danger(LANG("datum.c0415275bf663979", list(slime))))
 			slime.set_default_behaviour()
 			slime.update_name()
 			continue
 		slime.set_enraged_behaviour()
-		slime.visible_message(span_danger("The [slime] is driven into a frenzy!"))
+		slime.visible_message(span_danger(LANG("datum.f05e3bad08ab0ae4", list(slime))))
 	..()
 
 /datum/chemical_reaction/slime/slimespeed
@@ -390,7 +391,7 @@
 		toucher.log_message("was the last to touch the slime which has exploded at [AREACOORD(T)].", LOG_GAME, log_globally = FALSE)
 	message_admins("Slime Explosion reaction started at [ADMIN_VERBOSEJMP(T)]. Last Fingerprint: [touch_msg]")
 	log_game("Slime Explosion reaction started at [AREACOORD(T)]. Last Fingerprint: [lastkey ? lastkey : "N/A"].")
-	T.visible_message(span_danger("The slime extract begins to vibrate violently !"))
+	T.visible_message(span_danger(LANG("datum.acb1114324158d99", null)))
 	addtimer(CALLBACK(src, PROC_REF(boom), holder), 5 SECONDS)
 	var/obj/item/slime_extract/M = holder.my_atom
 	deltimer(M.qdel_timer)
@@ -450,7 +451,7 @@
 
 /datum/chemical_reaction/slime/slimecrystal/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/obj/item/stack/ore/bluespace_crystal/BC = new (get_turf(holder.my_atom))
-	BC.visible_message(span_notice("\The [BC] appears out of thin air!"))
+	BC.visible_message(span_notice(LANG("datum.a9f10741f0817345", list(BC))))
 	..()
 
 /datum/chemical_reaction/slime/slimeradio
@@ -541,13 +542,13 @@
 /datum/chemical_reaction/slime/slime_rng/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	if(created_volume >= 5)
 		var/obj/item/grenade/clusterbuster/slime/S = new (get_turf(holder.my_atom))
-		S.visible_message(span_danger("Infused with plasma, the core begins to expand uncontrollably!"))
+		S.visible_message(span_danger(LANG("datum.23a76f0ea6af9a0a", null)))
 		S.icon_state = "[S.base_state]_active"
 		S.active = TRUE
 		addtimer(CALLBACK(S, TYPE_PROC_REF(/obj/item/grenade, detonate)), rand(1.5 SECONDS, 6 SECONDS))
 	else
 		var/mob/living/basic/slime/random/random_slime = new (get_turf(holder.my_atom))
-		random_slime.visible_message(span_danger("Infused with plasma, the core begins to quiver and grow, and a new baby slime emerges from it!"))
+		random_slime.visible_message(span_danger(LANG("datum.d4eaf4cf69500e0b", null)))
 	..()
 
 /datum/chemical_reaction/slime/slimebomb
@@ -557,7 +558,7 @@
 /datum/chemical_reaction/slime/slimebomb/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/turf/T = get_turf(holder.my_atom)
 	var/obj/item/grenade/clusterbuster/slime/volatile/S = new (T)
-	S.visible_message(span_danger("Infused with slime jelly, the core begins to expand uncontrollably!"))
+	S.visible_message(span_danger(LANG("datum.50c6813dd886f5aa", null)))
 	S.icon_state = "[S.base_state]_active"
 	S.active = TRUE
 	addtimer(CALLBACK(S, TYPE_PROC_REF(/obj/item/grenade, detonate)), rand(1.5 SECONDS, 6 SECONDS))

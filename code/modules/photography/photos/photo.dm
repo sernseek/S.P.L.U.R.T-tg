@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
  * Photo
  */
@@ -69,7 +70,7 @@
 	return ..()
 
 /obj/item/photo/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] is taking one last look at \the [src]! It looks like [user.p_theyre()] giving in to death!"))//when you wanna look at photo of waifu one last time before you die...
+	user.visible_message(span_suicide(LANG("obj.e6ae375c631cb691", list(user, src, user.p_theyre()))))//when you wanna look at photo of waifu one last time before you die...
 	user.emote("laugh", intentional = FALSE, forced = TRUE) // EVERY TIME I DO IT MAKES ME LAUGH
 	return OXYLOSS
 
@@ -81,7 +82,7 @@
 		return NONE
 	if(!user.can_write(tool))
 		return ITEM_INTERACT_BLOCKING
-	var/txt = tgui_input_text(user, "What would you like to write on the back?", "Photo Writing", max_length = 128)
+	var/txt = tgui_input_text(user, LANG("obj.e7b4788071486b3e", null), LANG("obj.c5ae40969625d4ba", null), max_length = 128)
 	if(!txt || !user.can_perform_action(src))
 		return ITEM_INTERACT_BLOCKING
 	playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
@@ -94,11 +95,11 @@
 	if(in_range(src, user) || isobserver(user))
 		show(user)
 	else
-		. += span_warning("You need to get closer to get a good look at this photo!")
+		. += span_warning(LANG("obj.47d659b35e641525", null))
 
 /obj/item/photo/proc/show(mob/user)
 	if(!istype(picture) || !picture.picture_image)
-		to_chat(user, span_warning("[src] seems to be blank..."))
+		to_chat(user, span_warning(LANG("obj.28872318eb803526", list(src))))
 		return
 	var/width_height = "width"
 	if(picture.psize_y > picture.psize_x)
@@ -112,9 +113,9 @@
 		+ "</body></html>", "window=photo_showing;size=[scribble ? "480x580" : "480x480"]")
 	onclose(user, "[name]")
 
-GAME_VERB_SRC(/obj/item/photo, rename, usr, "Rename photo", null)
+GAME_VERB_SRC(/obj/item/photo, rename, usr, "重命名照片", null)
 
-	var/n_name = tgui_input_text(usr, "What would you like to label the photo?", "Photo Labelling", max_length = MAX_NAME_LEN)
+	var/n_name = tgui_input_text(usr, LANG("obj.ab5cb1c631add2b2", null), LANG("obj.a9ed249c9bffa760", null), max_length = MAX_NAME_LEN)
 	//loc.loc check is for making possible renaming photos in clipboards
 	if(n_name && (loc == usr || loc.loc && loc.loc == usr) && !IS_UNCONSCIOUS_OR_CRIT(usr) && !usr.incapacitated)
 		name = "photo[(n_name ? "- '[n_name]'" : null)]"

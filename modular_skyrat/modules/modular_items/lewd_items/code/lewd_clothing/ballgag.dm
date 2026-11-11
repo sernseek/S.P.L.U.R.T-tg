@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Basic ball gag
 /obj/item/clothing/mask/ballgag
 	name = "ball gag"
@@ -85,7 +86,7 @@
 		return
 	size_list_position = ((size_list_position + 1) % list_len) + 1
 	gag_size = possible_gag_sizes[size_list_position]
-	balloon_alert(user, "size set to [gag_size]")
+	balloon_alert(user, LANG("obj.5724883150730d9c", list(gag_size)))
 
 // SPLURT ADDITION - Moved ringgag here
 // A ringgag to allow constant oral

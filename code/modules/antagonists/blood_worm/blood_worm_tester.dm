@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/blood_worm_tester
 	name = "hemoparasite testing tool"
 	desc = "A proprietary device patented by the DeForest Medical Corporation that is tailor-made for detecting hemoparasites, such as the infamous space-faring blood worm. The testing process is allegedly very painful."
@@ -24,26 +25,26 @@
 	return ..()
 
 /obj/item/blood_worm_tester/update_desc(updates)
-	desc = "[initial(desc)] [spent ? "This one is spent." : "It's loaded for a single use."]"
+	desc = "[lang_reverse_text(initial(desc))] [spent ? lang_reverse_text("This one is spent.") : lang_reverse_text("It's loaded for a single use.")]" // ZH EDIT CHANGE - i18n: 同上，initial(desc) 会覆盖掉反查好的中文 - ORIGINAL: desc = "[initial(desc)] [spent ? "This one is spent." : "It's loaded for a single use."]"
 	return ..()
 
 /obj/item/blood_worm_tester/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
 	if (spent)
-		target_mob.balloon_alert(user, "already spent!")
+		target_mob.balloon_alert(user, LANG("obj.4a150fb2bd9304d4", null))
 		return
 	if (!ISADVANCEDTOOLUSER(user))
-		target_mob.balloon_alert(user, "needs dexterity!")
+		target_mob.balloon_alert(user, LANG("obj.1a8b1918cb2bdf8c", null))
 		return
 	if (!ishuman(target_mob))
-		target_mob.balloon_alert(user, "target a human!")
+		target_mob.balloon_alert(user, LANG("obj.42b0d6ecfa46f762", null))
 		return
 	if (!target_mob.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
 		return
 
 	if (target_mob != user)
 		user.visible_message(
-			message = span_danger("\The [user] jab[user.p_s()] \the [target_mob] with \the [src]!"),
-			self_message = span_danger("You jab \the [target_mob] with \the [src]!"),
+			message = span_danger(LANG("obj.6c6745508678dbfd", list(user, user.p_s(), target_mob, src))),
+			self_message = span_danger(LANG("obj.ac1ef747e1e69220", list(target_mob, src))),
 			ignored_mobs = target_mob,
 		)
 
@@ -53,8 +54,8 @@
 		)
 	else
 		user.visible_message(
-			message = span_notice("\The [user] jab[user.p_s()] [user.p_themselves()] with \the [src]."),
-			self_message = span_notice("You jab yourself with \the [src]."),
+			message = span_notice(LANG("obj.7c83c01c43adb2f5", list(user, user.p_s(), user.p_themselves(), src))),
+			self_message = span_notice(LANG("obj.6d58d5b34b010620", list(src))),
 		)
 
 	log_combat(user, target_mob, "tested", src)
@@ -65,7 +66,7 @@
 
 	playsound(src, 'sound/items/hypospray.ogg', vol = 50, vary = TRUE)
 
-	say("Scanning...")
+	say(LANG("obj.93ade2f22afd63d5", null))
 
 	// Handling it as a timer instead of a do_after prevents abusing the do_after to do antag checks.
 	// Otherwise, if the target runs away from the testing do_after, then that means they're likely a host.
@@ -80,8 +81,8 @@
 
 /obj/item/blood_worm_tester/proc/report_results(is_worm)
 	if (is_worm)
-		say("Active hemoparasite presence detected!")
+		say(LANG("obj.87fe0f8fafec8c21", null))
 		playsound(src, 'sound/machines/beep/twobeep.ogg', vol = 50, vary = TRUE)
 	else
-		say("No anomalous readings found.")
+		say(LANG("obj.11ec176571221e25", null))
 		playsound(src, 'sound/machines/buzz/buzz-two.ogg', vol = 40, vary = TRUE)

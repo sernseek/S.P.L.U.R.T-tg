@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/portal/permanent/one_way/reebe
 	name = "whirring portal"
 	desc = "A tall, glowing portal. A low emination of moving cogs can be heard. You don't feel like coming back will be the easiest."
@@ -18,7 +19,7 @@
 	var/mob/movable_mob = movable
 
 	if(!IS_CLOCK(movable_mob) && clock_only && !isobserver(movable_mob))
-		to_chat(movable_mob, span_warning("An invisble force pushes you back as you try to approach [src]!"))
+		to_chat(movable_mob, span_warning(LANG("obj.b92e7087c29f2f70", list(src))))
 		return FALSE
 
 	return ..()
@@ -34,7 +35,7 @@
 
 
 /obj/effect/portal/permanent/one_way/reebe/leaving/teleport(atom/movable/movable, force)
-	to_chat(movable, span_notice("You prepare yourself to enter [src]..."))
+	to_chat(movable, span_notice(LANG("obj.2e7a7a51939d3ee0", list(src))))
 
 	if(!do_after(movable, 4 SECONDS))
 		return FALSE

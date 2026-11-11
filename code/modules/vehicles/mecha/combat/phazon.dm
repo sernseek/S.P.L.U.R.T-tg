@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/vehicle/sealed/mecha/phazon
 	name = "\improper Phazon"
 	desc = "This is a Phazon exosuit. The pinnacle of scientific research and pride of Nanotrasen, it uses cutting edge anomalous technology and expensive materials."
@@ -76,7 +77,7 @@
 	. = ..()
 	if (!. || !phasing)
 		return
-	balloon_alert(user, "not while phasing!")
+	balloon_alert(user, LANG("obj.54100eb7d99a11b8", null))
 	return FALSE
 
 /datum/action/vehicle/sealed/mecha/mech_switch_damtype
@@ -93,13 +94,13 @@
 	switch(chassis.damtype)
 		if(TOX)
 			new_damtype = BRUTE
-			chassis.balloon_alert(owner, "your punches will now deal brute damage")
+			chassis.balloon_alert(owner, LANG("datum.35e2aec508af7bf8", null))
 		if(BRUTE)
 			new_damtype = BURN
-			chassis.balloon_alert(owner, "your punches will now deal burn damage")
+			chassis.balloon_alert(owner, LANG("datum.b16d1bd1b8c0469d", null))
 		if(BURN)
 			new_damtype = TOX
-			chassis.balloon_alert(owner,"your punches will now deal toxin damage")
+			chassis.balloon_alert(owner,LANG("datum.c8de675d5e0b431e", null))
 	chassis.damtype = new_damtype
 	button_icon_state = "mech_damtype_[new_damtype]"
 	playsound(chassis, 'sound/vehicles/mecha/mechmove01.ogg', 50, TRUE)
@@ -118,5 +119,5 @@
 	var/obj/vehicle/sealed/mecha/phazon/phazon = chassis
 	phazon.phasing = !phazon.phasing
 	button_icon_state = "mech_phasing_[phazon.phasing ? "on" : "off"]"
-	phazon.balloon_alert(owner, "[phazon.phasing ? "enabled" : "disabled"] phasing")
+	phazon.balloon_alert(owner, LANG("datum.bef273b1ddbde9da", list(phazon.phasing ? "enabled" : "disabled")))
 	build_all_button_icons()

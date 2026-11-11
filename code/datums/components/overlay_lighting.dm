@@ -398,6 +398,12 @@
 		turn_off()
 	range = clamp(CEILING(new_range, 0.5), 1, 6)
 	var/pixel_bounds = ((range - 1) * 64) + 32
+	// ZH EDIT ADDITION START - RUNTIME_STABILITY - Unregister using the old radius before the range changes,
+	// otherwise the light stays listed in grid cells only the old (larger) range covered.
+	// (make_luminosity_update() at the end of this proc re-registers with the new radius while the light is on.)
+	if(current_holder)
+		clean_old_cells(current_holder)
+	// ZH EDIT ADDITION END
 	lumcount_range = ceil(range)
 	hide_from_holder()
 

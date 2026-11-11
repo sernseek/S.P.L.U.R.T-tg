@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //SPLURT EDIT REMOVAL BEGIN - Interactions - Moved climax defines to global defines
 /*
 #define CLIMAX_VAGINA "Vagina"
@@ -33,7 +34,7 @@
 	//SPLURT ADDITION START
 	// MKUltra cum lock hard block: do not proceed to climax when locked.
 	if(GLOB.mkultra_cum_locks && GLOB.mkultra_cum_locks[src])
-		visible_message(span_purple("[src] strains, but can't finish."), span_purple("You can't climax—you're locked by your owner."))
+		visible_message(span_purple(LANG("mob.a625e2c0af47008c", list(src))), span_purple(LANG("mob.82adda6cbd08182d", null)))
 		return FALSE
 	//SPLURT ADDITION END
 	refractory_period = REALTIMEOFDAY + 30 SECONDS
@@ -41,8 +42,8 @@
 		return
 
 	if(HAS_TRAIT(src, TRAIT_NEVERBONER) || has_status_effect(/datum/status_effect/climax_cooldown) || (!has_vagina() && !has_penis()))
-		visible_message(span_purple("[src] twitches, trying to cum, but with no result."), \
-			span_purple("You can't have an orgasm!"))
+		visible_message(span_purple(LANG("mob.65eb8f7ff62cbbf1", list(src))), \
+			span_purple(LANG("mob.59077c060edb0956", null)))
 		return TRUE
 
 	// Reduce pop-ups and make it slightly more frictionless (lewd).
@@ -57,7 +58,7 @@
 				genitals.Add(CLIMAX_BOTH)
 		else if(has_penis())
 			genitals.Add(CLIMAX_PENIS)
-		climax_choice = tgui_alert(src, "You are climaxing, choose which genitalia to climax with.", "Genitalia Preference!", genitals)
+		climax_choice = tgui_alert(src, LANG("mob.d2fdc32c9c731af9", null), LANG("mob.6136bced200ef277", null), genitals)
 	else if(istype(climax_interaction, /datum/interaction) && climax_interaction.cum_genital?.len && climax_interaction.cum_genital[interaction_position])
 		climax_choice = climax_interaction.cum_genital[interaction_position]
 	conditional_pref_sound(get_turf(src), 'modular_zzplurt/sound/interactions/end.ogg', 50, TRUE, pref_to_check = /datum/preference/toggle/erp/sounds)
@@ -85,19 +86,19 @@
 	if(climax_choice == CLIMAX_PENIS || climax_choice == CLIMAX_BOTH)
 		var/obj/item/organ/genital/penis/penis = get_organ_slot(ORGAN_SLOT_PENIS)
 		if(!(testicles || testicles?.reagents.total_volume < MIN_CUM_THRESHOLD) && ishuman(src)) //If we have no god damn balls, we can't cum anywhere... GET BALLS! , OR theres so little in your balls that nothing comes out... // SPLURT EDIT - Interactions
-			visible_message(span_userlove("[src] orgasms, but nothing comes out of [self_their] penis!"), \
-				span_userlove("You orgasm, it feels great, but nothing comes out of your penis!"))
+			visible_message(span_userlove(LANG("mob.6e0187edc6da1516", list(src, self_their))), \
+				span_userlove(LANG("mob.f8c5d54c781159d4", null)))
 
 		else if(is_wearing_condom())
 			var/obj/item/clothing/sextoy/condom/condom = src:penis // bruh 💀⚰️💀⚰️💀⚰️💀⚰️💀
 			condom.condom_use() // condoms probably should become reagent containers at some point
-			visible_message(span_userlove("[src] shoots [self_their] load into the [condom], filling it up!"), \
-				span_userlove("You shoot your thick load into the [condom] and it catches it all!"))
+			visible_message(span_userlove(LANG("mob.a1e08d66ff49d273", list(src, self_their, condom))), \
+				span_userlove(LANG("mob.02a031057c854063", list(condom))))
 			testicles?.reagents.remove_all(testicles.cumshot_size)
 
 		else if(!is_bottomless() && penis.visibility_preference != GENITAL_ALWAYS_SHOW)
-			visible_message(span_userlove("[src] cums inside [self_their] clothes!"), \
-				span_userlove("You shoot your load, but you weren't naked, so you mess up your clothes!"))
+			visible_message(span_userlove(LANG("mob.64e23146aa57ab55", list(src, self_their))), \
+				span_userlove(LANG("mob.d44b5efa0dc52cf0", null)))
 			self_orgasm = TRUE
 			testicles?.reagents.remove_all(testicles.cumshot_size)
 
@@ -127,22 +128,22 @@
 			if(istype(portal, /obj/structure/lewd_portal))
 				buttons += CLIMAX_PORTAL
 
-			var/penis_climax_choice = climax_interaction && !manual ? CLIMAX_IN_OR_ON : tgui_alert(src, "Choose where to shoot your load.", "Load preference!", buttons) //SPLURT EDIT CHANGE - Interactions
+			var/penis_climax_choice = climax_interaction && !manual ? CLIMAX_IN_OR_ON : tgui_alert(src, LANG("mob.7cd3302cd4ec9632", null), LANG("mob.328dbd2f47a0bbd0", null), buttons) //SPLURT EDIT CHANGE - Interactions
 
 			var/create_cum_decal = FALSE
 
 			if(!penis_climax_choice || penis_climax_choice == CLIMAX_ON_FLOOR)
 				create_cum_decal = TRUE
-				visible_message(span_userlove("[src] shoots [self_their] sticky load onto the floor!"), \
-					span_userlove("You shoot string after string of hot cum, hitting the floor!"))
+				visible_message(span_userlove(LANG("mob.47e60ad7a8ba60c4", list(src, self_their))), \
+					span_userlove(LANG("mob.28062261be0abaec", null)))
 				testicles?.reagents.remove_all(testicles.cumshot_size)
 
 			else if(penis_climax_choice == CLIMAX_OPEN_CONTAINER || ((!climax_interaction?.cum_target[interaction_position] || !partner) && climax_interaction?.fluid_transfer_objects.Find(REF(src)))) // SPLURT EDIT - Interactions - Added support for fluid transfer objects
-				target_choice = climax_interaction?.fluid_transfer_objects.Find(REF(src)) ? climax_interaction.fluid_transfer_objects[REF(src)].name : tgui_input_list(src, "Choose a container to cum into.", "Choose target!", interactable_inrange_open_containers) //SPLURT EDIT CHANGE - Interactions
+				target_choice = climax_interaction?.fluid_transfer_objects.Find(REF(src)) ? climax_interaction.fluid_transfer_objects[REF(src)].name : tgui_input_list(src, LANG("mob.78e89e0e585daf53", null), LANG("mob.93ab300d3b4b2851", null), interactable_inrange_open_containers) //SPLURT EDIT CHANGE - Interactions
 				if(!target_choice)
 					create_cum_decal = TRUE
-					visible_message(span_userlove("[src] shoots [self_their] sticky load onto the floor!"), \
-						span_userlove("You shoot string after string of hot cum, hitting the floor!"))
+					visible_message(span_userlove(LANG("mob.47e60ad7a8ba60c4", list(src, self_their))), \
+						span_userlove(LANG("mob.28062261be0abaec", null)))
 					testicles?.reagents.remove_all(testicles.cumshot_size)
 				else
 					var/obj/item/reagent_containers/cup/target_open_container = interactable_inrange_open_containers[target_choice] || climax_interaction.fluid_transfer_objects[REF(src)] // SPLURT EDIT - Interactions - Added support for fluid transfer objects
@@ -154,36 +155,36 @@
 						if(target_open_container.reagents.holder_full())
 							// its full already
 							add_cum_splatter_floor(get_turf(target_open_container))
-							visible_message(span_userlove("[src] tries to cum into the [target_open_container], but it's already full, spilling their hot load onto the floor!"), \
-								span_userlove("You try to cum into the [target_open_container], but it's already full, so it all hits the floor instead!"))
+							visible_message(span_userlove(LANG("mob.b19e3b70701833b5", list(src, target_open_container))), \
+								span_userlove(LANG("mob.30345c748f32c46b", list(target_open_container))))
 						else
 							testicles?.reagents.trans_to(target_open_container, testicles.cumshot_size, transferred_by = src)
 							if(total_volume_w_cum > target_open_container.volume)
 								// overflow, make the decal
 								add_cum_splatter_floor(get_turf(target_open_container))
-								visible_message(span_userlove("[src] shoots [self_their] sticky load into the [target_open_container], it's so full that it overflows!"), \
-									span_userlove("You shoot string after string of hot cum into the [target_open_container], making it overflow!"))
+								visible_message(span_userlove(LANG("mob.6c963fa1f443d537", list(src, self_their, target_open_container))), \
+									span_userlove(LANG("mob.de263d6cb4af9abc", list(target_open_container))))
 							else
-								visible_message(span_userlove("[src] shoots [self_their] sticky load into the [target_open_container]!"), \
-									span_userlove("You shoot string after string of hot cum into the [target_open_container]!"))
+								visible_message(span_userlove(LANG("mob.a9928d9e3c4424d8", list(src, self_their, target_open_container))), \
+									span_userlove(LANG("mob.00685b844c8fea1f", list(target_open_container))))
 					else
 						// cum fail
 						create_cum_decal = TRUE
-						visible_message(span_userlove("[src] shoots [self_their] sticky load onto the floor!"), \
-							span_userlove("You shoot string after string of hot cum, hitting the floor!"))
+						visible_message(span_userlove(LANG("mob.47e60ad7a8ba60c4", list(src, self_their))), \
+							span_userlove(LANG("mob.28062261be0abaec", null)))
 						testicles?.reagents.remove_all(testicles.cumshot_size)
 
 			else if(penis_climax_choice == CLIMAX_PORTAL)
-				to_chat(src, "You shoot string after string of hot cum, hitting whatever is on the other side!")
-				portal.relayed_body.visible_message("[portal.relayed_body] shoots its sticky load onto the floor!")
+				to_chat(src, LANG("mob.1628f71d700da119", null))
+				portal.relayed_body.visible_message(LANG("mob.ee477d961cef112d", list(portal.relayed_body)))
 				add_cum_splatter_floor(get_turf(portal.relayed_body))
 
 			else
-				target_choice = climax_interaction && !manual ? partner?.name : tgui_input_list(src, "Choose a person to cum in or on.", "Choose target!", interactable_inrange_mobs) //SPLURT EDIT CHANGE - Interactions
+				target_choice = climax_interaction && !manual ? partner?.name : tgui_input_list(src, LANG("mob.4beec21eb8965590", null), LANG("mob.93ab300d3b4b2851", null), interactable_inrange_mobs) //SPLURT EDIT CHANGE - Interactions
 				if(!target_choice)
 					create_cum_decal = TRUE
-					visible_message(span_userlove("[src] shoots [self_their] sticky load onto the floor!"), \
-						span_userlove("You shoot string after string of hot cum, hitting the floor!"))
+					visible_message(span_userlove(LANG("mob.47e60ad7a8ba60c4", list(src, self_their))), \
+						span_userlove(LANG("mob.28062261be0abaec", null)))
 				else
 					var/mob/living/target_mob = climax_interaction && !manual && partner ? partner : interactable_inrange_mobs[target_choice] //SPLURT EDIT CHANGE - Interactions
 					var/target_mob_them = target_mob.p_them()
@@ -221,7 +222,7 @@
 					if(climax_interaction && !manual && interaction_inside)
 						climax_into_choice = climax_interaction.cum_target[interaction_position]
 					else if(manual)
-						climax_into_choice = tgui_input_list(src, "Where on or in [target_mob] do you wish to cum?", "Final frontier!", target_buttons)
+						climax_into_choice = tgui_input_list(src, LANG("mob.a90ce281117696da", list(target_mob)), LANG("mob.57ec68b8384177b5", null), target_buttons)
 					else
 						climax_into_choice = "On [target_mob_them]"
 
@@ -230,19 +231,19 @@
 					else if(!climax_into_choice)
 					//SPLURT EDIT CHANGE END
 						create_cum_decal = TRUE
-						visible_message(span_userlove("[src] shoots their sticky load onto the floor!"), \
-							span_userlove("You shoot string after string of hot cum, hitting the floor!"))
+						visible_message(span_userlove(LANG("mob.c112e520b16cc327", list(src))), \
+							span_userlove(LANG("mob.28062261be0abaec", null)))
 						conditional_pref_sound(get_turf(src), 'modular_zzplurt/sound/interactions/endout.ogg', 50, TRUE, pref_to_check = /datum/preference/toggle/erp/sounds) //SPLURT EDIT CHANGE - Interactions
 					else if(climax_into_choice == "On [target_mob_them]")
 						create_cum_decal = TRUE
-						visible_message(span_userlove("[src] shoots their sticky load onto [target_mob]!"), \
-							span_userlove("You shoot string after string of hot cum onto [target_mob]!"))
+						visible_message(span_userlove(LANG("mob.82a775d2165fb8ab", list(src, target_mob))), \
+							span_userlove(LANG("mob.967166cec24ac1cb", list(target_mob))))
 						conditional_pref_sound(get_turf(src), 'modular_zzplurt/sound/interactions/endout.ogg', 50, TRUE, pref_to_check = /datum/preference/toggle/erp/sounds) //SPLURT EDIT CHANGE - Interactions
 					else
 						visible_message(
-							span_userlove("[src] hilts [self_their] cock into [target_mob]'s [climax_into_choice], shooting cum into [target_mob_them]!"),
-							span_userlove("You hilt your cock into [target_mob]'s [climax_into_choice], shooting cum into [target_mob_them]!"))
-						to_chat(target_mob, span_userlove("Your [climax_into_choice] fills with warm cum as [src] shoots [self_their] load into it."))
+							span_userlove(LANG("mob.98f8dc62fa355055", list(src, self_their, target_mob, climax_into_choice, target_mob_them))),
+							span_userlove(LANG("mob.8cccffb856944bd9", list(target_mob, climax_into_choice, target_mob_them))))
+						to_chat(target_mob, span_userlove(LANG("mob.a85881eb6949869a", list(climax_into_choice, src, self_their))))
 						conditional_pref_sound(get_turf(target_mob), climax_into_choice == "mouth" ? pick('modular_zzplurt/sound/interactions/mouthend (1).ogg', 'modular_zzplurt/sound/interactions/mouthend (2).ogg') : 'modular_zzplurt/sound/interactions/endout.ogg', 50, TRUE, pref_to_check = /datum/preference/toggle/erp/sounds) //SPLURT EDIT CHANGE - Interactions
 						//SPLURT EDIT ADDITION BEGIN - Genital Inflation and pregnancy
 						var/datum/component/interactable/interactable = target_mob.GetComponent(/datum/component/interactable)
@@ -320,13 +321,13 @@
 		if(!is_bottomless() && vagina?.visibility_preference != GENITAL_ALWAYS_SHOW)
 			if(vagina?.reagents.total_volume >= MIN_VAGINA_WETNESS_THRESHOLD)
 				visible_message(
-					span_userlove("[src] cums in [self_their] underwear from [self_their] vagina!"),
-					span_userlove("You cum in your underwear from your vagina! Eww."))
+					span_userlove(LANG("mob.945b0574d3346a04", list(src, self_their, self_their))),
+					span_userlove(LANG("mob.e799c6ce774a1f4a", null)))
 				self_orgasm = TRUE
 			else
 				visible_message(
-					span_userlove("[src] cums in [self_their] underwear from [self_their] vagina!"),
-					span_userlove("You cum in your underwear from your vagina, but you aren't wet enough to mess it up."))
+					span_userlove(LANG("mob.945b0574d3346a04", list(src, self_their, self_their))),
+					span_userlove(LANG("mob.839da9a6979ceff4", null)))
 		else
 			var/list/interactable_inrange_mobs = list()
 			var/list/interactable_inrange_open_containers = list()
@@ -350,20 +351,20 @@
 			if(istype(portal, /obj/structure/lewd_portal))
 				buttons += CLIMAX_PORTAL
 
-			var/vagina_climax_choice = climax_interaction && !manual ? CLIMAX_IN_OR_ON : tgui_alert(src, "Choose where to squirt.", "Squirt preference!", buttons)
+			var/vagina_climax_choice = climax_interaction && !manual ? CLIMAX_IN_OR_ON : tgui_alert(src, LANG("mob.6b8fffca5753c855", null), LANG("mob.8e08d34d00504ebc", null), buttons)
 
 			var/create_cum_decal = FALSE
 
 			if(!vagina_climax_choice || vagina_climax_choice == CLIMAX_ON_FLOOR)
 				create_cum_decal = TRUE
-				visible_message(span_userlove("[src] twitches and moans as [p_they()] squirt on the floor!"), \
-					span_userlove("You twitch and moan as you squirt on the floor!"))
+				visible_message(span_userlove(LANG("mob.7dbe182c029337a6", list(src, p_they()))), \
+					span_userlove(LANG("mob.8c04090367b18281", null)))
 			else if(vagina_climax_choice == CLIMAX_OPEN_CONTAINER || ((!climax_interaction?.cum_target[interaction_position] || !partner) && climax_interaction?.fluid_transfer_objects.Find(REF(src)))) // SPLURT EDIT - Interactions - Added support for fluid transfer objects
-				target_choice = climax_interaction?.fluid_transfer_objects.Find(REF(src)) ? climax_interaction.fluid_transfer_objects[REF(src)].name : tgui_input_list(src, "Choose a container to squirt into.", "Choose target!", interactable_inrange_open_containers) // SPLURT EDIT - Interactions - Added support for fluid transfer objects
+				target_choice = climax_interaction?.fluid_transfer_objects.Find(REF(src)) ? climax_interaction.fluid_transfer_objects[REF(src)].name : tgui_input_list(src, LANG("mob.c27260f083f05ef0", null), LANG("mob.93ab300d3b4b2851", null), interactable_inrange_open_containers) // SPLURT EDIT - Interactions - Added support for fluid transfer objects
 				if(!target_choice)
 					create_cum_decal = TRUE
-					visible_message(span_userlove("[src] squirts onto the floor!"), \
-						span_userlove("You squirt onto the floor!"))
+					visible_message(span_userlove(LANG("mob.e898bc143c681bf4", list(src))), \
+						span_userlove(LANG("mob.8544f48fd5bdbf66", null)))
 					vagina?.reagents.remove_all(vagina?.reagents.total_volume)
 				else
 					var/obj/item/reagent_containers/cup/target_open_container = interactable_inrange_open_containers[target_choice] || climax_interaction.fluid_transfer_objects[REF(src)] // SPLURT EDIT - Interactions - Added support for fluid transfer objects
@@ -373,33 +374,33 @@
 						conditional_pref_sound(get_turf(src), SFX_DESECRATION, 50, TRUE, pref_to_check = /datum/preference/toggle/erp/sounds)
 						if(target_open_container.reagents.holder_full())
 							add_cum_splatter_floor(get_turf(target_open_container), female = TRUE)
-							visible_message(span_userlove("[src] tries to squirt into the [target_open_container], but it's already full, spilling onto the floor!"), \
-								span_userlove("You try to squirt into the [target_open_container], but it's already full, so it all hits the floor instead!"))
+							visible_message(span_userlove(LANG("mob.fbe1b68a8985f3b0", list(src, target_open_container))), \
+								span_userlove(LANG("mob.7e80486f9b59a9a3", list(target_open_container))))
 						else
 							vagina?.reagents.trans_to(target_open_container, vagina?.reagents.total_volume, transferred_by = src)
 							if(total_volume_w_squirt > target_open_container.volume)
 								add_cum_splatter_floor(get_turf(target_open_container), female = TRUE)
-								visible_message(span_userlove("[src] squirts into the [target_open_container], it's so full that it overflows!"), \
-									span_userlove("You squirt into the [target_open_container], making it overflow!"))
+								visible_message(span_userlove(LANG("mob.49f5d03ded11b10e", list(src, target_open_container))), \
+									span_userlove(LANG("mob.6229dea5f4f084fa", list(target_open_container))))
 							else
-								visible_message(span_userlove("[src] squirts into the [target_open_container]!"), \
-									span_userlove("You squirt into the [target_open_container]!"))
+								visible_message(span_userlove(LANG("mob.70b360223ab5487f", list(src, target_open_container))), \
+									span_userlove(LANG("mob.82ae21b07e0b72dd", list(target_open_container))))
 					else
 						create_cum_decal = TRUE
-						visible_message(span_userlove("[src] squirts onto the floor!"), \
-							span_userlove("You squirt onto the floor!"))
+						visible_message(span_userlove(LANG("mob.e898bc143c681bf4", list(src))), \
+							span_userlove(LANG("mob.8544f48fd5bdbf66", null)))
 						vagina?.reagents.remove_all(vagina?.reagents.total_volume)
 			else if(vagina_climax_choice == CLIMAX_PORTAL)
-				to_chat(src, "You squirt through the portal, hitting whatever is on the other side!")
-				portal.relayed_body.visible_message("[portal.relayed_body] squirts onto the floor!")
+				to_chat(src, LANG("mob.652f8eed501fa626", null))
+				portal.relayed_body.visible_message(LANG("mob.e898bc143c681bf4", list(portal.relayed_body)))
 				add_cum_splatter_floor(get_turf(portal.relayed_body), female = TRUE)
 				vagina?.reagents.remove_all(vagina?.reagents.total_volume)
 			else
-				target_choice = climax_interaction && !manual ? partner.name : tgui_input_list(src, "Choose who to squirt on.", "Choose target!", interactable_inrange_mobs)
+				target_choice = climax_interaction && !manual ? partner.name : tgui_input_list(src, LANG("mob.7e60f515482972da", null), LANG("mob.93ab300d3b4b2851", null), interactable_inrange_mobs)
 				if(!target_choice)
 					create_cum_decal = TRUE
-					visible_message(span_userlove("[src] twitches and moans as [p_they()] squirt on the floor!"), \
-						span_userlove("You twitch and moan as you squirt on the floor!"))
+					visible_message(span_userlove(LANG("mob.7dbe182c029337a6", list(src, p_they()))), \
+						span_userlove(LANG("mob.8c04090367b18281", null)))
 				else
 					var/mob/living/target_mob = climax_interaction && !manual ? partner : interactable_inrange_mobs[target_choice]
 					var/target_mob_them = target_mob.p_them()
@@ -436,7 +437,7 @@
 					if(climax_interaction && !manual && interaction_inside)
 						climax_into_choice = climax_interaction.cum_target[interaction_position]
 					else if(manual)
-						climax_into_choice = tgui_input_list(src, "Where on or in [target_mob] do you wish to squirt?", "Final frontier!", target_buttons)
+						climax_into_choice = tgui_input_list(src, LANG("mob.c87c6177d4e40ed2", list(target_mob)), LANG("mob.57ec68b8384177b5", null), target_buttons)
 					else
 						climax_into_choice = "On [target_mob_them]"
 
@@ -444,18 +445,18 @@
 						create_cum_decal = !interaction_inside
 					else if(!climax_into_choice)
 						create_cum_decal = TRUE
-						visible_message(span_userlove("[src] squirts on the floor!"), \
-							span_userlove("You squirt on the floor!"))
+						visible_message(span_userlove(LANG("mob.c4ad354edaf85f8b", list(src))), \
+							span_userlove(LANG("mob.0c25fde30cf775d1", null)))
 						conditional_pref_sound(get_turf(src), 'modular_zzplurt/sound/interactions/endout.ogg', 50, TRUE, pref_to_check = /datum/preference/toggle/erp/sounds) //SPLURT EDIT CHANGE - Interactions
 					else if(climax_into_choice == "On [target_mob_them]")
 						create_cum_decal = TRUE
-						visible_message(span_userlove("[src] squirts all over [target_mob]!"), \
-							span_userlove("You squirt all over [target_mob]!"))
+						visible_message(span_userlove(LANG("mob.251ec9bf232c4268", list(src, target_mob))), \
+							span_userlove(LANG("mob.e3d3be627a3397ac", list(target_mob))))
 						conditional_pref_sound(get_turf(src), 'modular_zzplurt/sound/interactions/endout.ogg', 50, TRUE, pref_to_check = /datum/preference/toggle/erp/sounds) //SPLURT EDIT CHANGE - Interactions
 					else
-						visible_message(span_userlove("[src] squirts into [target_mob]'s [climax_into_choice]!"), \
-							span_userlove("You squirt into [target_mob]'s [climax_into_choice]!"))
-						to_chat(target_mob, span_userlove("Your [climax_into_choice] fills with [src]'s fluids."))
+						visible_message(span_userlove(LANG("mob.ef3226d3eb7130b0", list(src, target_mob, climax_into_choice))), \
+							span_userlove(LANG("mob.0d071cedc82c09e1", list(target_mob, climax_into_choice))))
+						to_chat(target_mob, span_userlove(LANG("mob.aafe48a0918eaa4c", list(climax_into_choice, src))))
 						conditional_pref_sound(get_turf(target_mob), climax_into_choice == "mouth" ? pick('modular_zzplurt/sound/interactions/mouthend (1).ogg', 'modular_zzplurt/sound/interactions/mouthend (2).ogg') : 'modular_zzplurt/sound/interactions/endout.ogg', 50, TRUE, pref_to_check = /datum/preference/toggle/erp/sounds) //SPLURT EDIT CHANGE - Interactions
 						//SPLURT EDIT ADDITION BEGIN - Genital Inflation
 						var/datum/component/interactable/interactable = target_mob.GetComponent(/datum/component/interactable)

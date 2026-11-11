@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define GBP_PUNCH_REWARD 150
 
 /obj/item/card/id
@@ -29,11 +30,11 @@
 		var/obj/item/modular_computer/pda/pda = attacking_item
 		is_valid_item = check_access(pda.stored_id)
 		if (!is_valid_item)
-			balloon_alert(user, "no access!")
+			balloon_alert(user, LANG("obj.ddafd75296a2dc2d", null))
 
 	if(is_valid_item)
 		if(!COOLDOWN_FINISHED(src, gbp_punch_cooldown))
-			balloon_alert(user, "cooldown! ([DisplayTimeText(COOLDOWN_TIMELEFT(src, gbp_punch_cooldown))])")
+			balloon_alert(user, LANG("obj.a417c9c943a864be", list(DisplayTimeText(COOLDOWN_TIMELEFT(src, gbp_punch_cooldown)))))
 			return
 		if(punches < max_punches)
 			punches++
@@ -43,9 +44,9 @@
 			playsound(attacking_item, 'sound/items/boxcutter_activate.ogg', 100)
 			if(punches == max_punches)
 				playsound(src, 'sound/items/party_horn.ogg', 100)
-				say("Congratulations, you have finished your punchcard!")
+				say(LANG("obj.aa40e1091b0c055a", null))
 		else
-			balloon_alert(user, "no room!")
+			balloon_alert(user, LANG("obj.ad6c6384cbc2d930", null))
 
 /obj/item/gbp_puncher
 	name = "Good Assistant Points puncher"
@@ -90,7 +91,7 @@
 		var/amount_to_reward = punchcard.punches * GBP_PUNCH_REWARD
 		if(!punchcard.punches)
 			playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 100)
-			say("You can't redeem an unpunched card!")
+			say(LANG("obj.ff9771260289cb4e", null))
 			return
 
 		var/obj/item/card/id/card_used
@@ -102,16 +103,16 @@
 			return
 
 		if(!COOLDOWN_FINISHED(card_used, gbp_redeem_cooldown))
-			balloon_alert(user, "cooldown! [DisplayTimeText(COOLDOWN_TIMELEFT(card_used, gbp_redeem_cooldown))]")
+			balloon_alert(user, LANG("obj.ca72a73e985e1a6b", list(DisplayTimeText(COOLDOWN_TIMELEFT(card_used, gbp_redeem_cooldown)))))
 			return
 
 		if(!card_used.registered_account || !istype(card_used.registered_account.account_job, /datum/job/assistant))
 			playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 100)
-			say("You cannot redeem a punchcard without a valid assistant bank account!")
+			say(LANG("obj.7c80db4e01f66a39", null))
 			return
 
 		if(punchcard.punches < punchcard.max_punches)
-			if(tgui_alert(user, "You haven't finished the punchcard! Are you sure you want to redeem, starting the 15 minute timer?", "A real goof effort right here", list("No", "Yes")) != "Yes")
+			if(tgui_alert(user, LANG("obj.13921cdc06a2c7da", null), LANG("obj.43fefaf3910974d5", null), list("No", "Yes")) != "Yes")
 				return
 
 		if(!punchcard.punches) // check to see if someone left the dialog open to redeem a card twice
@@ -122,7 +123,7 @@
 		playsound(src, 'sound/machines/printer.ogg', 100)
 		card_used.registered_account.adjust_money(amount_to_reward, "GAP: [validated_punches] punches")
 		log_econ("[amount_to_reward] credits were rewarded to [card_used.registered_account.account_holder]'s account for redeeming a GAP card.")
-		say("Rewarded [amount_to_reward] to your account, and dispensed a ration pack! Thank you for being a Good Assistant! Please take your new punchcard.")
+		say(LANG("obj.998ab81ff22482ea", list(amount_to_reward)))
 		COOLDOWN_START(card_used, gbp_redeem_cooldown, 12 MINUTES)
 		user.temporarilyRemoveItemFromInventory(punchcard)
 		qdel(punchcard)

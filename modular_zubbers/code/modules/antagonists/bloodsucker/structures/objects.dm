@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //////////////////////
 //     BLOODBAG     //
 //////////////////////
@@ -20,8 +21,8 @@
 			being_drunk = FALSE
 			return
 		attacker.visible_message(
-			span_notice("[attacker] forces [victim] to drink from the [src]."),
-			span_notice("You put the [src] up to [victim]'s mouth."))
+			span_notice(LANG("obj.b3bb80245649eb28", list(attacker, victim, src))),
+			span_notice(LANG("obj.41e3b93300c22c66", list(src, victim))))
 		reagents.trans_to(victim, BLOODBAG_GULP_SIZE, transferred_by = attacker, methods = INGEST)
 		playsound(victim.loc, 'sound/items/drink.ogg', 30, 1)
 		being_drunk = FALSE
@@ -29,8 +30,8 @@
 
 	while(do_after(victim, 1 SECONDS, timed_action_flags = IGNORE_USER_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(can_drink), attacker, victim)))
 		victim.visible_message(
-			span_notice("[victim] puts the [src] up to their mouth."),
-			span_notice("You take a sip from the [src]."),
+			span_notice(LANG("obj.8f16bc4b40a5bfbd", list(victim, src))),
+			span_notice(LANG("obj.7adc06892390bf7a", list(src))),
 		)
 		reagents.trans_to(victim, BLOODBAG_GULP_SIZE, transferred_by = attacker, methods = INGEST)
 		playsound(victim.loc, 'sound/items/drink.ogg', 30, 1)
@@ -43,7 +44,7 @@
 	if(!canconsume(victim, attacker))
 		return FALSE
 	if(!reagents || !reagents.total_volume)
-		to_chat(victim, span_warning("[src] is empty!"))
+		to_chat(victim, span_warning(LANG("obj.02d482cc1aef0cef", list(src))))
 		return FALSE
 	return TRUE
 
@@ -56,7 +57,7 @@
 /obj/item/reagent_containers/blood/o_minus/bloodsucker/examine(mob/user)
 	. = ..()
 	if(user.mind.has_antag_datum(/datum/antagonist/ex_ghoul) || user.mind.has_antag_datum(/datum/antagonist/ghoul/revenge))
-		. += span_notice("Seems to be just about the same color as your Master's...")
+		. += span_notice(LANG("obj.87ef18f83d04f1c8", null))
 
 //////////////////////
 //      STAKES      //
@@ -65,9 +66,9 @@
 	if(!item.get_sharpness())
 		return ..()
 	user.visible_message(
-		span_notice("[user] begins whittling [src] into a pointy object."),
-		span_notice("You begin whittling [src] into a sharp point at one end."),
-		span_hear("You hear wood carving."),
+		span_notice(LANG("obj.cbc8c4f220de722f", list(user, src))),
+		span_notice(LANG("obj.f7cccbd079eea9c0", list(src))),
+		span_hear(LANG("obj.a69f0992d2050a49", null)),
 	)
 	// 5 Second Timer
 	if(!do_after(user, 5 SECONDS, src, NONE, TRUE))
@@ -75,8 +76,8 @@
 	// Make Stake
 	var/obj/item/stake/new_item = new(user.loc)
 	user.visible_message(
-		span_notice("[user] finishes carving a stake out of [src]."),
-		span_notice("You finish carving a stake out of [src]."),
+		span_notice(LANG("obj.a6b24881e658b5e9", list(user, src))),
+		span_notice(LANG("obj.6113c6df4b6193c1", list(src))),
 	)
 	// Prepare to Put in Hands (if holding wood)
 	var/obj/item/stack/sheet/mineral/wood/wood_stack = src
@@ -133,9 +134,9 @@
 
 /obj/item/stake/examine_more(mob/user)
 	. = ..()
-	. += span_notice("You can use [src] to stake someone in the chest, if they are laying down or grabbed by the neck.")
+	. += span_notice(LANG("obj.2efe38388e3fdc15", list(src)))
 	if(IS_BLOODSUCKER(user))
-		. += span_warning("You feel a sense of dread as you look at the [src]...")
+		. += span_warning(LANG("obj.ce698ff22d8cdce2", list(src)))
 
 /obj/item/stake/attack(mob/living/target, mob/living/user, params)
 	. = ..()
@@ -147,20 +148,20 @@
 	if(target == user)
 		return
 	if(!target.can_be_staked()) // Oops! Can't.
-		to_chat(user, span_danger("You can't stake [target] when they are moving about! They have to be laying down or grabbed by the neck!"))
+		to_chat(user, span_danger(LANG("obj.aa47eef26afda469", list(target))))
 		return
 	if(HAS_TRAIT(target, TRAIT_PIERCEIMMUNE))
-		to_chat(user, span_danger("[target]'s chest resists the stake. It won't go in."))
+		to_chat(user, span_danger(LANG("obj.cb8e15408d4298b5", list(target))))
 		return
 
-	to_chat(user, span_notice("You put all your weight into embedding the stake into [target]'s chest..."))
+	to_chat(user, span_notice(LANG("obj.56c636790a19ba3c", list(target))))
 	playsound(user, 'sound/effects/magic/Demon_consume.ogg', 50, 1)
 	if(!do_after(user, staketime, target, extra_checks = CALLBACK(target, TYPE_PROC_REF(/mob/living/carbon, can_be_staked)))) // user / target / time / uninterruptable / show progress bar / extra checks
 		return
 	// Drop & Embed Stake
 	user.visible_message(
-		span_danger("[user.name] drives the [src] into [target]'s chest!"),
-		span_danger("You drive the [src] into [target]'s chest!"),
+		span_danger(LANG("obj.c3334307f3eae0cd", list(user.name, src, target))),
+		span_danger(LANG("obj.c83d3f655e418030", list(src, target))),
 	)
 	playsound(get_turf(target), 'sound/effects/splat.ogg', 40, 1)
 	if(force_embed(target, target.get_bodypart(BODY_ZONE_CHEST))) //and if it embeds successfully in their chest, cause a lot of pain
@@ -175,8 +176,8 @@
 	if(!heart)
 		return
 	target.visible_message(
-		span_danger("The [src.name] pierces [target]'s chest, destroying their [heart.name]!"),
-		span_userdanger("You feel a HORRIBLE pain as the [src.name] pierces your chest, destroying your [heart.name]!"),
+		span_danger(LANG("obj.a9ca382dec165f75", list(src.name, target, heart.name))),
+		span_userdanger(LANG("obj.08207bd4b2002ee4", list(src.name, heart.name))),
 	)
 	qdel(heart)
 
@@ -215,7 +216,7 @@
 
 /obj/item/stake/hardened/examine_more(mob/user)
 	. = ..()
-	. += span_notice("The [src] won't fall out by itself, if embedded in someone.")
+	. += span_notice(LANG("obj.28d881d260015c33", list(src)))
 
 /datum/embedding/stake/silver
 	embed_chance = 0 // we want it to only be embeddable manually
@@ -235,7 +236,7 @@
 
 /obj/item/stake/hardened/silver/examine_more(mob/user)
 	. = ..()
-	. += span_notice("You think that the [src] could destroy someone's heart if you really slam it in someone's ribs properly.")
+	. += span_notice(LANG("obj.fbd055132b2dbcd3", list(src)))
 
 //////////////////////
 //     ARCHIVES     //
@@ -274,7 +275,7 @@
 	SSpoints_of_interest.make_point_of_interest(src)
 
 /obj/item/book/kindred/carving_act(mob/living/user, obj/item/tool)
-	to_chat(user, span_notice("You feel the gentle whispers of a Librarian telling you not to cut [starting_title]."))
+	to_chat(user, span_notice(LANG("obj.3015b80ca90575d1", list(starting_title))))
 	return ITEM_INTERACT_BLOCKING
 
 ///Attacking someone with the book.
@@ -284,36 +285,36 @@
 		return
 	if(!HAS_TRAIT(user.mind, TRAIT_BLOODSUCKER_HUNTER))
 		if(IS_BLOODSUCKER(user))
-			to_chat(user, span_notice("[src] seems to be too complicated for you. It would be best to leave this for someone else to take."))
+			to_chat(user, span_notice(LANG("obj.b802618810e361c1", list(src))))
 			return
-		to_chat(user, span_warning("[src] burns your hands as you try to use it!"))
+		to_chat(user, span_warning(LANG("obj.2b668b8f27535b14", list(src))))
 		user.apply_damage(3, BURN, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM))
 		return
 
 	if(!COOLDOWN_FINISHED(src, bloodsucker_check_cooldown))
-		user.balloon_alert(user, "your head hurts, wait a minute ")
+		user.balloon_alert(user, LANG("obj.0f70cb20e7a15836", null))
 		addtimer(CALLBACK(user, TYPE_PROC_REF(/atom, balloon_alert), user, "You feel your head clear up."), cooldown_time)
 		return
-	user.balloon_alert_to_viewers(user, "reading book...")
-	user.balloon_alert(target, "looks at you and checks their [src]...")
+	user.balloon_alert_to_viewers(user, LANG("obj.5a22d862e94eb76b", null))
+	user.balloon_alert(target, LANG("obj.04618441d938e31c", list(src)))
 	if(!do_after(user, 3 SECONDS, target, timed_action_flags = NONE, show_progress = TRUE))
-		to_chat(user, span_notice("You quickly close [src]."))
+		to_chat(user, span_notice(LANG("obj.f97f81590c4a451d", list(src))))
 		return
 	COOLDOWN_START(src, bloodsucker_check_cooldown, cooldown_time)
 	var/datum/antagonist/bloodsucker/bloodsuckerdatum = IS_BLOODSUCKER(target)
 	// Are we a Bloodsucker | Are we on Masquerade. If one is true, they will fail.
 	if(IS_BLOODSUCKER(target) && !HAS_TRAIT(target, TRAIT_MASQUERADE))
 		if(bloodsuckerdatum.broke_masquerade)
-			to_chat(user, span_warning("[target], also known as '[bloodsuckerdatum.return_full_name()]', is indeed a Bloodsucker, but you already knew this."))
+			to_chat(user, span_warning(LANG("obj.ab8178ffc91a2ab7", list(target, bloodsuckerdatum.return_full_name()))))
 			return
-		to_chat(user, span_warning("[target], also known as '[bloodsuckerdatum.return_full_name()]', [bloodsuckerdatum.my_clan ? "is part of the [bloodsuckerdatum.my_clan]!" : "is not part of a clan."] You quickly note this information down, memorizing it."))
+		to_chat(user, span_warning(LANG("obj.6e0080d91bb52fe2", list(target, bloodsuckerdatum.return_full_name(), bloodsuckerdatum.my_clan ? "is part of the [bloodsuckerdatum.my_clan]!" : "is not part of a clan."))))
 		bloodsuckerdatum.break_masquerade()
 	else
-		to_chat(user, span_notice("You fail to draw any conclusions to [target] being a Bloodsucker."))
+		to_chat(user, span_notice(LANG("obj.99105d0fb50f53f9", list(target))))
 
 /obj/item/book/kindred/attack_self(mob/living/user)
 	if(user.mind && !(HAS_TRAIT(user.mind, TRAIT_BLOODSUCKER_HUNTER) || IS_BLOODSUCKER(user)))
-		to_chat(user, span_warning("You feel your eyes unable to read the boring texts..."))
+		to_chat(user, span_warning(LANG("obj.865ef58eb00a5d50", null)))
 		user.set_eye_blur_if_lower(10 SECONDS)
 		return
 	ui_interact(user)
@@ -353,6 +354,6 @@
 	if(!heart_thief)
 		return
 	if(heart_thief.check_if_valid_item(src))
-		. += span_notice("This [src.name] will do for your purposes...")
+		. += span_notice(LANG("obj.d89aaa8b4239089a", list(src.name)))
 	else
-		. += span_notice("This [src.name] is of lesser quality, it won't do...")
+		. += span_notice(LANG("obj.f179f561cb94bfc0", list(src.name)))

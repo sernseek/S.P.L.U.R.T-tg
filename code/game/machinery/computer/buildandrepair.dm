@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/frame/computer
 	name = "computer frame"
 	desc = "A frame for constructing your own computer. Or console. Whichever name you prefer."
@@ -76,23 +77,23 @@
 
 	switch(state)
 		if(FRAME_STATE_EMPTY)
-			. += span_notice("It can be [EXAMINE_HINT("anchored")] [anchored ? "loose." : "into place."]")
+			. += span_notice(LANG("obj.9315b531ec200166", list(EXAMINE_HINT("anchored"), anchored ? "loose." : "into place.")))
 			if(anchored)
-				. += span_warning("It's missing a circuit board!")
+				. += span_warning(LANG("obj.5cbee47b6e751023", null))
 			else
-				. += span_notice("It can be [EXAMINE_HINT("welded")] or [EXAMINE_HINT("screwed")] apart.")
+				. += span_notice(LANG("obj.a8e6c385fc246784", list(EXAMINE_HINT("welded"), EXAMINE_HINT("screwed"))))
 		if(FRAME_COMPUTER_STATE_BOARD_INSTALLED)
-			. += span_notice("The circuit board can be [EXAMINE_HINT("pried")] out.")
-			. += span_info("A circuit board is installed and should be [EXAMINE_HINT("screwed")] in place.")
+			. += span_notice(LANG("obj.9acc7fc47feae2dd", list(EXAMINE_HINT("pried"))))
+			. += span_info(LANG("obj.56a31c251465ab12", list(EXAMINE_HINT("screwed"))))
 		if(FRAME_COMPUTER_STATE_BOARD_SECURED)
-			. += span_notice("The circuit board can be [EXAMINE_HINT("screwed")] loose.")
-			. += span_info("It should be [EXAMINE_HINT("wired")] with 5 cables.")
+			. += span_notice(LANG("obj.6f63985c25225cc3", list(EXAMINE_HINT("screwed"))))
+			. += span_info(LANG("obj.1e6756696ebdbde2", list(EXAMINE_HINT("wired"))))
 		if(FRAME_COMPUTER_STATE_WIRED)
-			. += span_notice("Its wires can be [EXAMINE_HINT("cut")].")
-			. += span_info("It should be [EXAMINE_HINT("fitted")] with 2 glass panels.")
+			. += span_notice(LANG("obj.fccc9815126be362", list(EXAMINE_HINT("cut"))))
+			. += span_info(LANG("obj.18ea9037fe60ba4d", list(EXAMINE_HINT("fitted"))))
 		if(FRAME_COMPUTER_STATE_GLASSED)
-			. += span_notice("The screen can be [EXAMINE_HINT("pried")] out.")
-			. += span_info("The monitor should be [EXAMINE_HINT("screwed")] on to complete it.")
+			. += span_notice(LANG("obj.907c3a0f678eaa53", list(EXAMINE_HINT("pried"))))
+			. += span_info(LANG("obj.810e24e0f6206b74", list(EXAMINE_HINT("screwed"))))
 
 /obj/structure/frame/computer/circuit_added(obj/item/circuitboard/added)
 	state = FRAME_COMPUTER_STATE_BOARD_INSTALLED
@@ -104,7 +105,7 @@
 
 /obj/structure/frame/computer/install_board(mob/living/user, obj/item/circuitboard/computer/board, by_hand)
 	if(state != FRAME_COMPUTER_STATE_EMPTY)
-		balloon_alert(user, "circuit already installed!")
+		balloon_alert(user, LANG("obj.67103b9eaad4c44d", null))
 		return FALSE
 	. = ..()
 	if(. && !by_hand) // Installing via RPED auto-secures it
@@ -171,21 +172,21 @@
 	switch(state)
 		if(FRAME_COMPUTER_STATE_BOARD_INSTALLED)
 			tool.play_tool_sound(src)
-			balloon_alert(user, "circuit secured")
+			balloon_alert(user, LANG("obj.c5ab0826d6e51be3", null))
 			state = FRAME_COMPUTER_STATE_BOARD_SECURED
 			update_appearance(UPDATE_ICON_STATE)
 			return ITEM_INTERACT_SUCCESS
 
 		if(FRAME_COMPUTER_STATE_BOARD_SECURED)
 			tool.play_tool_sound(src)
-			balloon_alert(user, "circuit unsecured")
+			balloon_alert(user, LANG("obj.d67779af2365bbee", null))
 			state = FRAME_COMPUTER_STATE_BOARD_INSTALLED
 			update_appearance(UPDATE_ICON_STATE)
 			return ITEM_INTERACT_SUCCESS
 
 		if(FRAME_COMPUTER_STATE_WIRED)
 			if(!user.combat_mode)
-				balloon_alert(user, "no glass!")
+				balloon_alert(user, LANG("obj.57cb305df6dfa9d6", null))
 				return ITEM_INTERACT_BLOCKING
 
 		if(FRAME_COMPUTER_STATE_GLASSED)
@@ -200,22 +201,22 @@
 	switch(state)
 		if(FRAME_COMPUTER_STATE_BOARD_INSTALLED)
 			tool.play_tool_sound(src)
-			balloon_alert(user, "circuit removed")
+			balloon_alert(user, LANG("obj.6bf68b4883ef1d50", null))
 			circuit.add_fingerprint(user)
 			circuit.forceMove(drop_location())
 			return ITEM_INTERACT_SUCCESS
 
 		if(FRAME_COMPUTER_STATE_BOARD_SECURED)
-			balloon_alert(user, "unsecure the circuit!")
+			balloon_alert(user, LANG("obj.cbb665f74ba75029", null))
 			return ITEM_INTERACT_BLOCKING
 
 		if(FRAME_COMPUTER_STATE_WIRED)
-			balloon_alert(user, "remove the wiring!")
+			balloon_alert(user, LANG("obj.54ba1ec9c1262726", null))
 			return ITEM_INTERACT_BLOCKING
 
 		if(FRAME_COMPUTER_STATE_GLASSED)
 			tool.play_tool_sound(src)
-			balloon_alert(user, "glass removed")
+			balloon_alert(user, LANG("obj.480f94595c86366a", null))
 			state = FRAME_COMPUTER_STATE_WIRED
 			update_appearance(UPDATE_ICON_STATE)
 			var/obj/item/stack/sheet/glass/dropped_glass = new (drop_location(), 2)
@@ -231,7 +232,7 @@
 		return ITEM_INTERACT_BLOCKING
 
 	tool.play_tool_sound(src)
-	balloon_alert(user, "cables removed")
+	balloon_alert(user, LANG("obj.cc1d6a362f69664d", null))
 	state = FRAME_COMPUTER_STATE_BOARD_SECURED
 	update_appearance(UPDATE_ICON_STATE)
 
@@ -256,7 +257,7 @@
 	if(!cable.tool_start_check(user, amount = 5))
 		return FALSE
 	if(time > 0)
-		balloon_alert(user, "adding cables...")
+		balloon_alert(user, LANG("obj.a59792f9eab1ed31", null))
 	if(!cable.use_tool(src, user, time, volume = 50, amount = 5) || state != FRAME_COMPUTER_STATE_BOARD_SECURED)
 		return FALSE
 
@@ -281,7 +282,7 @@
 		return FALSE
 	if(time > 0)
 		playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
-		balloon_alert(user, "adding glass...")
+		balloon_alert(user, LANG("obj.87806593ba68bc0d", null))
 	if(!glass.use_tool(src, user, time, amount = 2) || state != FRAME_COMPUTER_STATE_WIRED)
 		return FALSE
 
@@ -291,12 +292,12 @@
 
 /obj/structure/frame/computer/finalize_construction(mob/living/user, obj/item/tool)
 	if(!anchored)
-		balloon_alert(user, "frame must be anchored!")
+		balloon_alert(user, LANG("obj.6b9690c56178f65a", null))
 		return FALSE
 
 	tool.play_tool_sound(src)
 	var/obj/machinery/new_machine = new circuit.build_path(loc)
-	new_machine.balloon_alert(user, "monitor connected")
+	new_machine.balloon_alert(user, LANG("obj.a5065fe1ee66616d", null))
 	new_machine.setDir(dir)
 	transfer_fingerprints_to(new_machine)
 	// BUBBER EDIT - Connecting Computers

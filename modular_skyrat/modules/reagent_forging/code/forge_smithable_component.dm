@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define ANVIL_HAMMER_HIT_GOOD 1
 #define ANVIL_HAMMER_HIT_BAD 0
 #define ANVIL_HAMMER_HIT_PERFECT 2
@@ -82,17 +83,17 @@
 
 /datum/component/forge_smithable/proc/on_examine(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
-	examine_list += span_notice("It can be safely picked up with tongs.")
-	examine_list += span_notice("It can be heated by being inserted into a forge.")
-	examine_list += span_notice("It can be quenched in any open container that's large enough.")
+	examine_list += span_notice(LANG("datum.0d88d1665b727968", null))
+	examine_list += span_notice(LANG("datum.272268d08e180b70", null))
+	examine_list += span_notice(LANG("datum.241218d2e814358c", null))
 	if(COOLDOWN_FINISHED(src, heating_remainder))
-		examine_list += span_notice("The metal needs to be reheated before it is malleable again.")
+		examine_list += span_notice(LANG("datum.dfcefca58437c4e2", null))
 	else if(USER_CAN_SEE_SMITHING_INFO(user))
-		examine_list += span_notice("The metal is hot enough to work.")
-		examine_list += span_notice("You'd estimate that it's about [round(get_completion_ratio() * 100)]% complete.")
-		examine_list += span_notice("The careful smithing makes it look about [round(get_perfect_ratio() * 100)]% perfected.")
+		examine_list += span_notice(LANG("datum.c7de3ffdc7512dbb", null))
+		examine_list += span_notice(LANG("datum.9e6faad631d2ae0c", list(round(get_completion_ratio() * 100))))
+		examine_list += span_notice(LANG("datum.3c6ea6d280fde311", list(round(get_perfect_ratio() * 100))))
 	else
-		examine_list += span_notice("If you were more skilled at smithing you could discern more information from it...")
+		examine_list += span_notice(LANG("datum.28500b00338105ff", null))
 
 
 /datum/component/forge_smithable/proc/good_hit(amount = 1, playsound = FALSE)
@@ -124,7 +125,7 @@
 	if(playsound)
 		conditional_pref_sound(parent_item, 'modular_skyrat/modules/reagent_forging/sound/forge.ogg', vol = 35, vary = TRUE, extrarange = MEDIUM_RANGE_SOUND_EXTRARANGE, ignore_walls = FALSE, pref_to_check = /datum/preference/numeric/volume/sound_ambience_volume)
 
-	parent_item.balloon_alert_to_viewers("the [parent_item] shattered!")
+	parent_item.balloon_alert_to_viewers(LANG("datum.26e49925b5edcb81", list(parent_item)))
 	qdel(parent_item)
 	qdel(src)
 
@@ -148,22 +149,22 @@
 	if(!HAS_TRAIT(user, TRAIT_DEAF))
 		switch(hit_quality)
 			if(ANVIL_HAMMER_HIT_CANNOT_WORK)
-				parent_item.balloon_alert(user,"can't work!")
+				parent_item.balloon_alert(user,LANG("datum.969686c007a754cd", null))
 			if(ANVIL_HAMMER_HIT_BAD)
-				parent_item.balloon_alert(user,"bad hit")
+				parent_item.balloon_alert(user,LANG("datum.bf451335cb0700b9", null))
 			if(ANVIL_HAMMER_HIT_GOOD)
 				if(is_finished_smithing())
 					if(is_perfected())
-						parent_item.balloon_alert(user,"[parent_item] is perfected!")
+						parent_item.balloon_alert(user,LANG("datum.65465c648d5c9d63", list(parent_item)))
 					else
-						parent_item.balloon_alert(user,"[parent_item] sounds done")
+						parent_item.balloon_alert(user,LANG("datum.552d0594127a4928", list(parent_item)))
 				else
-					parent_item.balloon_alert(user, "good hit")
+					parent_item.balloon_alert(user, LANG("datum.8d9389abc3640618", null))
 			if(ANVIL_HAMMER_HIT_PERFECT)
 				if(is_finished_smithing() && is_perfected())
-					parent_item.balloon_alert(user,"[parent_item] is perfected!")
+					parent_item.balloon_alert(user,LANG("datum.65465c648d5c9d63", list(parent_item)))
 				else
-					parent_item.balloon_alert(user, "perfect hit!")
+					parent_item.balloon_alert(user, LANG("datum.0acd3c3d45aab926", null))
 
 /datum/component/forge_smithable/proc/get_hit_quality(mob/living/user, obj/item/forging/hammer/tool)
 	if(parent_item.GetComponent(/datum/component/reagent_imbued))
@@ -215,7 +216,7 @@
 /datum/component/forge_smithable/proc/anvil_work(mob/living/user, obj/item/tool)
 	if(COOLDOWN_FINISHED(src, heating_remainder))
 		bad_hit()
-		user.balloon_alert(user, "metal too cool")
+		user.balloon_alert(user, LANG("datum.42c6fe1b869d33fd", null))
 		return ITEM_INTERACT_SUCCESS
 
 	var/quality_points_to_give = get_quality_points(user, tool)
@@ -223,7 +224,7 @@
 	switch(hit_quality)
 		if(ANVIL_HAMMER_HIT_CANNOT_WORK)
 			bad_hit(playsound = TRUE)
-			to_chat(user, span_warning("You don't know how to work with reagent imbued items!"))
+			to_chat(user, span_warning(LANG("datum.e2d5944580a026cf", null)))
 		if(ANVIL_HAMMER_HIT_BAD)
 			bad_hit(playsound = TRUE)
 		if(ANVIL_HAMMER_HIT_GOOD)
@@ -251,19 +252,19 @@
 /datum/component/forge_smithable/proc/try_quench(datum/reagents/dunk_reagents, dunk_object, mob/living/user, show_message = TRUE)
 	if(COOLDOWN_FINISHED(src, heating_remainder))
 		if(show_message)
-			parent_item.balloon_alert(user, "[parent_item] is too cool to successfully quench!")
+			parent_item.balloon_alert(user, LANG("datum.9314e1df55ab575b", list(parent_item)))
 		return FALSE
 	if(!(dunk_reagents.flags & DUNKABLE))
 		if(show_message)
-			parent_item.balloon_alert(user, "[dunk_object] doesn't have a large enough hole to immerse [parent_item]!")
+			parent_item.balloon_alert(user, LANG("datum.369614880eb3339b", list(dunk_object, parent_item)))
 		return FALSE
 	if(dunk_reagents.chem_temp > MAX_QUENCH_HEAT)
 		if(show_message)
-			parent_item.balloon_alert(user, "[dunk_object] is too hot to cool [parent_item]!")
+			parent_item.balloon_alert(user, LANG("datum.8a671af0e4c65de7", list(dunk_object, parent_item)))
 		return FALSE
 	if(dunk_reagents.total_volume < MIN_VOLUME_TO_QUENCH)
 		if(show_message)
-			parent_item.balloon_alert(user, "[dunk_object] doesn't contain enough fluid to immerse [parent_item]!")
+			parent_item.balloon_alert(user, LANG("datum.7a5d4c9739211b33", list(dunk_object, parent_item)))
 		return FALSE
 
 	dunk_reagents.expose_temperature(HEAT_GIVEN_FROM_QUENCHING_METAL)
@@ -277,9 +278,9 @@
 		if(!isnull(my_imbue))
 			my_imbue.set_reagent_imbue(dunk_reagents, FALSE, TRUE)
 			if(show_message)
-				parent_item.balloon_alert(user, "[parent_item] is imbued!")
+				parent_item.balloon_alert(user, LANG("datum.0d6cc6e9827c7426", list(parent_item)))
 	else if(show_message)
-		parent_item.balloon_alert(user, "[parent_item] is quenched!")
+		parent_item.balloon_alert(user, LANG("datum.a2c0c13b3151a01a", list(parent_item)))
 
 	if(!isnull(quench_callback))
 		quench_callback.Invoke(dunk_reagents, dunk_object, user)

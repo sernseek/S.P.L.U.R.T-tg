@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //////
 //
 // BUBBER Override - prevents people from using modular computers while they're in the ghost cafe
@@ -8,6 +9,6 @@
 	if(HAS_TRAIT_FROM(user, TRAIT_FREE_GHOST, TRAIT_GHOSTROLE))
 		if(ui)
 			ui.close()
-		balloon_alert(user, "ghost cafe visitors can't use this!")
+		balloon_alert(user, LANG("obj.4538c3c41f6e17c1", null))
 		return
 	return ..()

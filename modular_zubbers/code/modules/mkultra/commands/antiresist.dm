@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/mkultra_command/antiresist
 	name = "Anti-Resist"
 	description = "Make your victim unable to resist for a short time"
@@ -31,6 +32,6 @@
 /datum/mkultra_command/antiresist/proc/resist_command_block(mob/living/owner)
 	SIGNAL_HANDLER
 	if(resist)
-		to_chat(owner, span_warning("You find yourself incapable of resisting with the recent command permeating your thoughts."))
+		to_chat(owner, span_warning(LANG("datum.1afa417ae6d95b56", null)))
 		return COMPONENT_BLOCK_RESIST
 

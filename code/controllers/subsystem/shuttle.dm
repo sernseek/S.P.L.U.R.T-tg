@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MAX_TRANSIT_REQUEST_RETRIES 10
 /// How many turfs to allow before we stop blocking transit requests
 #define MAX_TRANSIT_TILE_COUNT (150 ** 2)
@@ -176,22 +177,33 @@ SUBSYSTEM_DEF(shuttle)
 			continue
 
 		//Adds access requirements to the end of each description.
+		// ZH EDIT START - I18N: this mutates pack.desc by appending the access suffix → runtime desc =
+		// "base catalog key + suffix", so a UI 落地点 exact-reverse misses (货物名翻了、描述不翻即此).
+		// i18n_cache 是 GLOBAL_LIST_INIT、早于 SS Initialize 已就绪 → 在此反查 base desc + 用「模板按值
+		// 反查再填充」本地化后缀（access 区域名也反查）。locale==en 时 lang_reverse_text 原样返回 = 零行为变化。
+		pack.desc = lang_reverse_text(pack.desc)
 		if(pack.access && pack.access_view)
+			var/access_name = lang_reverse_text(SSid_access.get_access_desc(pack.access))
 			if(pack.access == pack.access_view)
-				pack.desc += " Requires [SSid_access.get_access_desc(pack.access)] access to open or purchase."
+				// ORIGINAL: pack.desc += " Requires [SSid_access.get_access_desc(pack.access)] access to open or purchase."
+				pack.desc += replacetext(lang_reverse_text(" Requires {0} access to open or purchase."), "{0}", access_name)
 			else
-				pack.desc += " Requires [SSid_access.get_access_desc(pack.access)] access to open, or [SSid_access.get_access_desc(pack.access_view)] access to purchase."
+				// ORIGINAL: pack.desc += " Requires [...] access to open, or [...] access to purchase."
+				pack.desc += replacetext(replacetext(lang_reverse_text(" Requires {0} access to open, or {1} access to purchase."), "{0}", access_name), "{1}", lang_reverse_text(SSid_access.get_access_desc(pack.access_view)))
 		else if(pack.access)
-			pack.desc += " Requires [SSid_access.get_access_desc(pack.access)] access to open."
+			// ORIGINAL: pack.desc += " Requires [SSid_access.get_access_desc(pack.access)] access to open."
+			pack.desc += replacetext(lang_reverse_text(" Requires {0} access to open."), "{0}", lang_reverse_text(SSid_access.get_access_desc(pack.access)))
 		else if(pack.access_view)
-			pack.desc += " Requires [SSid_access.get_access_desc(pack.access_view)] access to purchase."
+			// ORIGINAL: pack.desc += " Requires [SSid_access.get_access_desc(pack.access_view)] access to purchase."
+			pack.desc += replacetext(lang_reverse_text(" Requires {0} access to purchase."), "{0}", lang_reverse_text(SSid_access.get_access_desc(pack.access_view)))
+		// ZH EDIT END
 
 		supply_packs[pack.id] = pack
 
 	setup_shuttles(stationary_docking_ports)
 	has_purchase_shuttle_access = init_has_purchase_shuttle_access()
 
-	if(!arrivals)
+	if(!arrivals && !(locate(/obj/docking_port/mobile/arrivals_skyrat) in mobile_docking_ports)) // ZH EDIT CHANGE - ORIGINAL: if(!arrivals)
 		log_mapping("No /obj/docking_port/mobile/arrivals placed on the map!")
 	if(!emergency)
 		log_mapping("No /obj/docking_port/mobile/emergency placed on the map!")
@@ -289,7 +301,7 @@ SUBSYSTEM_DEF(shuttle)
 		CRASH("Emergency shuttle block was called, but missing a value for the lockout duration")
 	if(admin_emergency_no_recall)
 		priority_announce(
-			text = "Emergency shuttle uplink interference detected, shuttle call disabled while the system reinitializes. Estimated restore in [DisplayTimeText(lockout_timer, round_seconds_to = 60)].",
+			text = LANG("datum.514b17c299f986bf", list(DisplayTimeText(lockout_timer, round_seconds_to = 60))),
 			title = "Uplink Interference",
 			sound = ANNOUNCER_SHUTTLE, // SKYRAT EDIT CHANGE - Announcer Sounds - ORIGINAL: sound = 'sound/announcer/announcement/announce_dig.ogg',
 			sender_override = "Emergency Shuttle Uplink Alert",
@@ -316,7 +328,8 @@ SUBSYSTEM_DEF(shuttle)
 	for(var/obj/docking_port/mobile/M in mobile_docking_ports)
 		if(M.shuttle_id == id)
 			return M
-	WARNING("couldn't find shuttle with id: [id]")
+	if(initialized) // ZH EDIT ADDITION - roundstart consoles can query before shuttles load
+		WARNING("couldn't find shuttle with id: [id]") // ZH EDIT CHANGE - ORIGINAL: WARNING("couldn't find shuttle with id: [id]")
 
 /datum/controller/subsystem/shuttle/proc/getDock(id)
 	for(var/obj/docking_port/stationary/S in stationary_docking_ports)
@@ -383,7 +396,7 @@ SUBSYSTEM_DEF(shuttle)
 		return
 
 	if(length(trim(call_reason)) < CALL_SHUTTLE_REASON_LENGTH && SSsecurity_level.get_current_level_as_number() > SEC_LEVEL_GREEN)
-		to_chat(user, span_alert("You must provide a reason."))
+		to_chat(user, span_alert(LANG("datum.a757e03469596e75", null)))
 		return
 
 	var/area/signal_origin = get_area(user)
@@ -516,8 +529,8 @@ SUBSYSTEM_DEF(shuttle)
 	if(admin_emergency_no_recall)
 		var/admin_no_recall_alert = tgui_alert(
 			user,
-			"An administrator has disabled the emergency shuttle recall function, are you sure you want to proceed with the recall?",
-			"Admin Level Recall Confirmation",
+			LANG("datum.8ddaa020e387116d", null),
+			LANG("datum.0e62521f11b7b078", null),
 			list("Yes", "No"),
 		)
 		if(admin_no_recall_alert == "Yes")
@@ -528,8 +541,8 @@ SUBSYSTEM_DEF(shuttle)
 	if(emergency_no_recall)
 		var/general_no_recall_alert = tgui_alert(
 			user,
-			"The emergency shuttle recall function is currently disabled by game code, are you sure you want to proceed with the recall?",
-			"Recall Confirmation",
+			LANG("datum.c67b0991a813011c", null),
+			LANG("datum.dbc06ac8c0ee09f7", null),
 			list("Yes", "No"),
 		)
 		if(general_no_recall_alert == "Yes")
@@ -622,7 +635,7 @@ SUBSYSTEM_DEF(shuttle)
 		emergency.mode = SHUTTLE_DOCKED
 		emergency.setTimer(emergency_dock_time)
 		priority_announce(
-			text = "You have [DisplayTimeText(emergency_dock_time)] to board the emergency shuttle.",
+			text = LANG("datum.3625392e25818743", list(DisplayTimeText(emergency_dock_time))),
 			title = "Hostile Environment Resolved",
 			sound = 'sound/announcer/announcement/announce_dig.ogg',
 			sender_override = "Emergency Shuttle Uplink Alert",
@@ -1215,7 +1228,7 @@ SUBSYSTEM_DEF(shuttle)
 					SSblackbox.record_feedback("text", "shuttle_manipulator", 1, "[mdp.name]")
 				shuttle_loading = FALSE
 				if(emergency == mdp) //you just changed the emergency shuttle, there are events in game + captains that can change your snowflake choice.
-					var/set_purchase = tgui_alert(usr, "Do you want to also disable shuttle purchases/random events that would change the shuttle?", "Butthurt Admin Prevention", list("Yes, disable purchases/events", "No, I want to possibly get owned"))
+					var/set_purchase = tgui_alert(usr, LANG("datum.b9394bcdd529a6d3", null), LANG("datum.aef9d77011943477", null), list("Yes, disable purchases/events", "No, I want to possibly get owned"))
 					if(set_purchase == "Yes, disable purchases/events")
 						SSshuttle.shuttle_purchased = SHUTTLEPURCHASE_FORCED
 

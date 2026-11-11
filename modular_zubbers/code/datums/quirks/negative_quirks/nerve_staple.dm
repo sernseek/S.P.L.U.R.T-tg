@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/equipping/nerve_staple
 	name = "Nerve Stapled"
 	desc = "You're a pacifist. Not because you want to be, but because of the device stapled into your eye."
@@ -19,5 +20,5 @@
 	. = ..()
 	if (!staple || staple != quirk_holder.get_item_by_slot(ITEM_SLOT_EYES))
 		return
-	to_chat(quirk_holder, span_warning("The nerve staple suddenly falls off your face and melts[istype(quirk_holder.loc, /turf/open/floor) ? " on the floor" : ""]!"))
+	to_chat(quirk_holder, span_warning(LANG("datum.7ef47fce6070d867", list(istype(quirk_holder.loc, /turf/open/floor) ? " on the floor" : ""))))
 	qdel(staple)

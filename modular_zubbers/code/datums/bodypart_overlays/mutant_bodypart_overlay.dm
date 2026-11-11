@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The greatest amount of colors that can be in a matrixed bodypart_overlay.
 #define MAX_MATRIXED_COLORS 3
 /// Default value for alpha, making it fully opaque.
@@ -63,7 +64,7 @@
 
 	// MOD overlays on mutant parts
 	if(modsuit_affected && sprite_datum?.mod_overlay_active(limb?.owner))
-		. += "MOD_[sprite_datum.get_hardlight_theme_key(limb?.owner)]"
+		. += LANG("datum.f0772d666a21dcf3", list(sprite_datum.get_hardlight_theme_key(limb?.owner)))
 
 	if(islist(draw_color))
 		for(var/sub_color in draw_color)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Szot Dynamica's officer revolver, built on the Bobr frame and priced accordingly
 
 /obj/item/ammo_box/magazine/internal/cylinder/aniolek
@@ -36,25 +37,16 @@
 
 /obj/item/gun/ballistic/revolver/aniolek/examine(mob/user)
 	. = ..()
-	. += span_notice("You can [EXAMINE_HINT("look closer")] to learn a little more about [src].")
+	. += span_notice(LANG("obj.443782c7961051dd", list(EXAMINE_HINT("look closer"), src)))
 
 /obj/item/gun/ballistic/revolver/aniolek/examine_more(mob/user)
 	. = ..()
 
-	. += "The 'Aniołek' began as a private-order refinement of the Bóbr, commissioned by officers who admired \
-		the shotgun revolver's durability and reliability but wanted something less crude hanging from a dress \
-		uniform. Szot Dynamica shortened the cylinder, tightened the action, and chambered the result in .310 \
-		Strilka. The extractor was deliberately left bright against the darkened cylinder, forming a pale ring \
-		around its five chambers."
+	. += LANG("obj.2dfd155f915b78ec", null)
 
-	. += "It was never formally standard issue. Aniołeks were awarded, purchased, inherited, and occasionally \
-		requisitioned by people with enough rank, reputation, or sheer force of personality that few cared to \
-		ask which. It became associated with officers expected to hold a line, settle an argument, or continue \
-		a mission after everyone more reasonable had cut and run."
+	. += LANG("obj.628b308923dcf55e", null)
 
-	. += "An Aniołek at the hip became shorthand for a particular kind of officer: one trusted to keep their \
-		head when command lost theirs, to hold when others folded, and to make the right thing happen whether \
-		or not procedure had kept up."
+	. += LANG("obj.1e3db97d9a6a1606", null)
 
 	return .
 

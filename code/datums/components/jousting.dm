@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///Amount of time each timer has, used to reset the jousting back, indicating that the person has stopped moving.
 #define MOVEMENT_RESET_COOLDOWN_TIME (0.3 SECONDS)
 
@@ -59,7 +60,7 @@
 
 /datum/component/jousting/proc/on_examine(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
-	examine_list += span_notice("It can be used on a vehicle for jousting, dealing potential knockdowns and additional damage.")
+	examine_list += span_notice(LANG("datum.45847321bbb4f8f8", null))
 
 /datum/component/jousting/proc/on_transform(obj/item/source, mob/user, active)
 	SIGNAL_HANDLER

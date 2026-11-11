@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * fleshmind basetype(abstract)
  */
@@ -130,7 +131,7 @@
 		return
 	if(prob(WIREWEED_HEAL_CHANCE))
 		entered_mob.heal_overall_damage(WIREWEED_HEAL_AMOUNT, WIREWEED_HEAL_AMOUNT)
-		to_chat(entered_mob, span_green("[src] heals you as you cross over it!"))
+		to_chat(entered_mob, span_green(LANG("obj.81bb56486fa4aa89", list(src))))
 	if(ishuman(entered_mob) && prob(WIREWEED_REPLACE_BODYPART_CHANCE))
 		var/mob/living/carbon/human/human_mob = moving_atom
 		for(var/zone in replacement_zones)
@@ -140,7 +141,7 @@
 			var/obj/item/bodypart/new_bodypart = new bodypart_type()
 			new_bodypart.replace_limb(human_mob, TRUE)
 			human_mob.update_body(TRUE)
-			to_chat(human_mob, span_green("[src] shoots a mechanical limb right into your missing limb!"))
+			to_chat(human_mob, span_green(LANG("obj.278255ed3baf4f36", list(src))))
 
 /obj/effect/temp_visual/wireweed_spread
 	icon = 'modular_zubbers/icons/fleshmind/wireweed_floor.dmi'

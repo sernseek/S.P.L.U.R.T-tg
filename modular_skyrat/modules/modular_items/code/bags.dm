@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Base pouch type. Fits in pockets, as its main gimmick.
 /obj/item/storage/pouch
 	name = "storage pouch"
@@ -45,7 +46,7 @@
 	SIGNAL_HANDLER
 	if(icon_state == "casingpouch")
 		name = "casing pouch"
-		desc = "A pouch for your ammo that goes in your pocket, carefully segmented for holding shell casings and nothing else."
+		desc = LANG("obj.ca1e54cac083ad1a", null)
 		atom_storage.can_hold = typecacheof(list(/obj/item/ammo_casing))
 		atom_storage.max_specific_storage = WEIGHT_CLASS_TINY
 		atom_storage.numerical_stacking = TRUE

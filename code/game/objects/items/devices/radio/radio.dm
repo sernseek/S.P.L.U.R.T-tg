@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define FREQ_LISTENING (1<<0)
 
 /obj/item/radio
@@ -103,6 +104,13 @@
 
 	if(ispath(keyslot))
 		keyslot = new keyslot(src)
+	// ZH EDIT ADDITION START - 密钥必须在 contents 里，否则拆不干净
+	// 有些定义直接在变量初值里写 `keyslot = new /obj/...`（不带 loc），实例 loc 为 null、
+	// 根本不在 contents 中 → 螺丝刀拆下时把它放进手里，但 Exited() 永不触发 → keyslot 不置空、
+	// recalculateChannels() 不跑 → 频道照旧可用，而拆出来的密钥还被原耳机引用着。
+	else if(istype(keyslot) && keyslot.loc != src)
+		keyslot.forceMove(src)
+	// ZH EDIT ADDITION END
 		recalculateChannels()
 
 	perform_update_icon = FALSE
@@ -562,11 +570,11 @@
 /obj/item/radio/examine(mob/user)
 	. = ..()
 	if (frequency && in_range(src, user))
-		. += span_notice("It is set to broadcast over the [span_radio("[frequency/10]")] frequency.")
+		. += span_notice(LANG("obj.3ae86b232df12ba8", list(span_radio("[frequency/10]"))))
 	if (unscrewed)
-		. += span_notice("It can be attached and modified.")
+		. += span_notice(LANG("obj.99b57f8410b7e835", null))
 	else
-		. += span_notice("It cannot be modified or attached.")
+		. += span_notice(LANG("obj.afa1344ef71c169f", null))
 
 /obj/item/radio/update_overlays()
 	. = ..()
@@ -589,27 +597,27 @@
 	unscrewed = !unscrewed
 	tool.play_tool_sound(src, 10)
 	if(unscrewed)
-		to_chat(user, span_notice("[src] can now be attached and modified!"))
+		to_chat(user, span_notice(LANG("obj.9b983d2b5fe9be87", list(src))))
 	else
-		to_chat(user, span_notice("[src] can no longer be modified or attached!"))
+		to_chat(user, span_notice(LANG("obj.65612a44bf5a20a6", list(src))))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/radio/screwdriver_act(mob/living/user, obj/item/tool)
 	switch(keylock)
 		if(RADIO_KEYSLOT_LOCKED)
-			to_chat(user, span_warning("The screws locking [src]'s keyslot are stripped, and can't be removed."))
+			to_chat(user, span_warning(LANG("obj.873bb41d31911db4", list(src))))
 			return ITEM_INTERACT_BLOCKING
 		if(RADIO_KEYSLOT_EMAGGABLE_LOCK)
-			to_chat(user, span_warning("The screws locking [src]'s keyslot are fastened tight, and likely can't be removed without some kind of magnet..."))
+			to_chat(user, span_warning(LANG("obj.be62367de27073ea", list(src))))
 			return ITEM_INTERACT_BLOCKING
 
 	var/list/removed_keys = remove_keys(user)
 	if(length(removed_keys) > 1)
-		to_chat(user, span_notice("You remove the encryption keys from [src]."))
+		to_chat(user, span_notice(LANG("obj.142b0102e289e690", list(src))))
 	else if(length(removed_keys) == 1)
-		to_chat(user, span_notice("You remove [removed_keys[1]] from [src]."))
+		to_chat(user, span_notice(LANG("obj.cbed32661d4c054a", list(removed_keys[1], src))))
 	else
-		to_chat(user, span_warning("[src] doesn't have any unique encryption keys! How useless..."))
+		to_chat(user, span_warning(LANG("obj.f62ac91324bd5f4d", list(src))))
 	tool.play_tool_sound(src, 10)
 	return TRUE
 
@@ -633,20 +641,20 @@
 /// Attempts to install the given encryption key into the radio
 /obj/item/radio/proc/install_key(mob/living/user, obj/item/encryptionkey/key)
 	if(keyslot)
-		loc.balloon_alert(user, "cannot hold a second key!")
+		loc.balloon_alert(user, LANG("obj.f9866fda8950bd01", null))
 		return ITEM_INTERACT_BLOCKING
 	if(freqlock || keylock)
-		loc.balloon_alert(user, "keyslot is locked!")
+		loc.balloon_alert(user, LANG("obj.77ed1723414d887b", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!user.transferItemToLoc(key, src))
-		loc.balloon_alert(user, "cannot install!")
+		loc.balloon_alert(user, LANG("obj.b3c67530261e2e10", null))
 		return ITEM_INTERACT_BLOCKING
 
 	keyslot = key
 	recalculateChannels()
 	playsound(src, 'sound/machines/click.ogg', 50, TRUE)
-	loc.balloon_alert(user, "encryption key installed")
+	loc.balloon_alert(user, LANG("obj.40711314e0f6385a", null))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/radio/emp_act(severity)
@@ -656,14 +664,14 @@
 	emped++ //There's been an EMP; better count it
 	var/curremp = emped //Remember which EMP this was
 	if (listening && ismob(loc)) // if the radio is turned on and on someone's person they notice
-		to_chat(loc, span_warning("\The [src] overloads."))
+		to_chat(loc, span_warning(LANG("obj.7953334c1b87261e", list(src))))
 	for (var/ch_name in channels)
 		channels[ch_name] = 0
 	set_on(FALSE)
 	addtimer(CALLBACK(src, PROC_REF(end_emp_effect), curremp), 20 SECONDS)
 
 /obj/item/radio/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] starts bouncing [src] off [user.p_their()] head! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.83e700137f03028a", list(user, src, user.p_their(), user.p_theyre()))))
 	return BRUTELOSS
 
 /obj/item/radio/proc/end_emp_effect(curremp)
@@ -676,7 +684,7 @@
 /obj/item/radio/proc/make_silly()
 	name = "\improper Little-Crew: Assistant's First Radio"
 	icon_state = "walkieian"
-	desc = "A Little-Crew branded toy radio in the shape of a lovable pet. After Little-Crew HQ was hit with a Donksoft Nuke, these have become collector's items!"
+	desc = LANG("obj.0a5eb76e3d0258de", null)
 	overlay_speaker_idle = null
 	overlay_mic_idle = null
 	overlay_mic_active = null

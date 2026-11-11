@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**Disfiguration
  * Increases stealth
  * No change to resistance
@@ -31,9 +32,9 @@
 	switch(disease.stage)
 		if(5)
 			ADD_TRAIT(head, TRAIT_DISFIGURED, DISEASE_TRAIT)
-			victim.visible_message(span_warning("[victim]'s face appears to cave in!"), span_notice("You feel your face crumple and cave in!"))
+			victim.visible_message(span_warning(LANG("datum.1fe1ec9ba8cd46c9", list(victim))), span_notice(LANG("datum.ec546e6a7d99f589", null)))
 		else
-			victim.visible_message(span_warning("[victim]'s face begins to contort..."), span_notice("Your face feels wet and malleable..."))
+			victim.visible_message(span_warning(LANG("datum.988e04d6021c632f", list(victim))), span_notice(LANG("datum.098e19b164ef3c8e", null)))
 
 
 /datum/symptom/disfiguration/End(datum/disease/advance/disease)

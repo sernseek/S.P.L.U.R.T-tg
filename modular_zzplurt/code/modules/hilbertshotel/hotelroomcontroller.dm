@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define ACTION_ADD "add"
 #define ACTION_REMOVE "remove"
 #define ACTION_CLEAR "clear"
@@ -43,7 +44,7 @@
 
 /obj/machinery/room_controller/examine(mob/user)
 	. = ..()
-	. += span_info("The screen displays [!room_number ? "the word \"Error\". Nothing else." : "some small text and a large number [room_number]."]")
+	. += span_info(LANG("obj.204c6e2059e4421e", list(!room_number ? "the word \"Error\". Nothing else." : "some small text and a large number [room_number].")))
 
 /obj/machinery/room_controller/Initialize(mapload)
 	. = ..()
@@ -149,7 +150,7 @@
 		if("depart")
 			if(!inserted_id || !can_depart(usr))
 				playsound(src, 'sound/machines/terminal/terminal_error.ogg', 50, TRUE)
-				say("Access denied.")
+				say(LANG("obj.077f9b52c530e7f8", null))
 				addtimer(CALLBACK(src, TYPE_PROC_REF(/atom/movable, say), "Please contact the hotel staff for further assistance."), 3 SECONDS)
 				return FALSE
 			depart_user(usr)
@@ -157,7 +158,7 @@
 
 	if(!room_number || !SScondos.splurt_room_data["[room_number]"])
 		playsound(src, 'sound/machines/terminal/terminal_error.ogg', 50, TRUE)
-		say("Room number out of array range.")
+		say(LANG("obj.99a84089cfb32810", null))
 		addtimer(CALLBACK(src, TYPE_PROC_REF(/atom/movable, say), "Please contact the hotel staff for further assistance."), 3 SECONDS)
 		return
 
@@ -213,7 +214,7 @@
 /obj/machinery/room_controller/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
 	if(istype(item, /obj/item/card/id))
 		if(inserted_id)
-			to_chat(user, span_warning("There's already an ID card inside!"))
+			to_chat(user, span_warning(LANG("obj.aebf08543ce6caa6", null)))
 			return
 		if(!user.transferItemToLoc(item, src))
 			return
@@ -263,7 +264,7 @@
 
 /obj/machinery/computer/cryopod/announce(message_type, user, rank)
 	if(message_type == "CRYO_DEPART")
-		radio.talk_into(src, "[user][rank ? ", [rank]" : ""] has departed from the station.", announcement_channel)
+		radio.talk_into(src, LANG("obj.37ea8c59d5959fb3", list(user, rank ? ", [rank]" : "")), announcement_channel)
 	..()
 
 /obj/machinery/room_controller/proc/depart_user(mob/living/departing_mob)
@@ -279,7 +280,7 @@
 	if(!length(GLOB.cryopod_computers))
 		message_admins("Attention: [ADMIN_VERBOSEJMP(src)] at room [room_number] failed to locate the station cryopod computer!")
 		playsound(src, 'sound/machines/terminal/terminal_error.ogg', 10, TRUE)
-		say("No valid destination points specified.")
+		say(LANG("obj.248729acff474bd5", null))
 		addtimer(CALLBACK(src, TYPE_PROC_REF(/atom/movable, say), "Please contact the hotel staff for further assistance."), 2 SECONDS)
 		return
 	var/obj/machinery/computer/cryopod/control_computer = GLOB.cryopod_computers[1] // locating the station cryopod computer
@@ -292,9 +293,9 @@
 	control_computer.frozen_item += bluespace_box
 	if(departing_mob.mind)
 		departing_mob.mind.objectives = list()
-	visible_message(span_notice("[src] whizzes as it swallows the ID card."))
+	visible_message(span_notice(LANG("obj.c8e2c6ea89227493", list(src))))
 	playsound(src, 'sound/machines/terminal/terminal_success.ogg', 50, TRUE)
-	say("Transfer successful.")
+	say(LANG("obj.e6644a0944bb335a", null))
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/atom/movable, say), "Thank you for your stay!"), 2 SECONDS)
 	message_admins("[departing_mob.ckey]/[departing_mob.real_name] departed from room [room_number] as [departing_mob.job].")
 
@@ -317,7 +318,7 @@
 		return FALSE
 	playsound(src, 'sound/machines/terminal/terminal_processing.ogg', 50, TRUE)
 	if(action == ACTION_TRANSFER)
-		say("Room ownership transferred.")
+		say(LANG("obj.4e6867fdf1351e2a", null))
 	return TRUE
 
 #undef ACTION_ADD

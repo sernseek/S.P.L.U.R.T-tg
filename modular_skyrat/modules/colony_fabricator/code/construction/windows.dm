@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/window/fulltile/colony_fabricator
 	name = "prefabricated window"
 	desc = "A conservatively built metal frame with a thick sheet of space-grade glass slotted into it."
@@ -17,18 +18,18 @@
 		return
 	var/obj/item/stack/stack_in_question = item_in_question
 	if(stack_in_question.get_amount() < 1)
-		to_chat(user, span_warning("You need at least one plastic panel for that!"))
+		to_chat(user, span_warning(LANG("obj.9f79a16eacba52b1", null)))
 		return
 	var/dir_to_set = SOUTHWEST
 	if(!anchored)
-		to_chat(user, span_warning("[src] needs to be fastened to the floor first!"))
+		to_chat(user, span_warning(LANG("obj.79102fe36de4f058", list(src))))
 		return
 	for(var/obj/structure/window/window_on_turf in loc)
-		to_chat(user, span_warning("There is already a window there!"))
+		to_chat(user, span_warning(LANG("obj.a3c6a7b7ec1e883d", null)))
 		return
 	if(!clear_tile(user))
 		return
-	to_chat(user, span_notice("You start placing the window..."))
+	to_chat(user, span_notice(LANG("obj.1c659472f7175207", null)))
 	if(!do_after(user, 1 SECONDS, target = src))
 		return
 	if(!src.loc || !anchored) //Grille broken or unanchored while waiting
@@ -41,4 +42,4 @@
 	new_window.setDir(dir_to_set)
 	new_window.state = 0
 	stack_in_question.use(1)
-	to_chat(user, span_notice("You place [new_window] on [src]."))
+	to_chat(user, span_notice(LANG("obj.7a67ae81e5981d09", list(new_window, src))))

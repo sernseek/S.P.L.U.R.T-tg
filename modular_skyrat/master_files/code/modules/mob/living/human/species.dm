@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/proc/allows_food_preferences()
 	return TRUE
 
@@ -40,6 +41,6 @@
 		. += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = FA_ICON_FISH,
-			SPECIES_PERK_NAME = "Waterbreathing",
-			SPECIES_PERK_DESC = "[plural_form] can breathe in water, making pools a lot safer to be in!",
+			SPECIES_PERK_NAME = LANG("datum.809c77334ee07a1d", null),
+			SPECIES_PERK_DESC = LANG("datum.ad0e070115a8d32a", list(plural_form)),
 		))

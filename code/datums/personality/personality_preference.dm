@@ -12,7 +12,8 @@
 		return
 	for(var/personality_key in value)
 		var/datum/personality/personality = SSpersonalities.personalities_by_key[personality_key]
-		personality.apply_to_mob(target)
+		if(istype(personality)) // ZH EDIT ADDITION - PERSONALITY_CLEANUP
+			target.add_personality(personality.type) // ZH EDIT CHANGE - ORIGINAL: personality.apply_to_mob(target)
 
 /datum/preference/personality/is_valid(value, datum/preferences/preferences)
 	return islist(value) || isnull(value)

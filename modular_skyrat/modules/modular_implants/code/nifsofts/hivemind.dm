@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///A list containing users of the Hivemind NIFSoft
 GLOBAL_LIST_EMPTY(hivemind_users)
 
@@ -58,8 +59,8 @@ GLOBAL_LIST_EMPTY(hivemind_users)
 		hivemind.linked_mobs -= linked_mob
 		var/mob/living/hivemind_owner = hivemind.parent
 
-		to_chat(hivemind_owner, span_abductor("[linked_mob] has left your Hivemind."))
-		to_chat(linked_mob, span_abductor("You have left [hivemind_owner]'s Hivemind."))
+		to_chat(hivemind_owner, span_abductor(LANG("datum.2916382758a81abf", list(linked_mob))))
+		to_chat(linked_mob, span_abductor(LANG("datum.d897134b744447c1", list(hivemind_owner))))
 
 	qdel(user_network)
 	return ..()
@@ -78,7 +79,7 @@ GLOBAL_LIST_EMPTY(hivemind_users)
 	linked_mob.put_in_hands(linked_keyboard)
 	linked_keyboard.source_user = linked_mob
 
-	linked_mob.visible_message(span_notice("The [linked_keyboard] materializes in [linked_mob]'s hands."), span_notice("The [linked_keyboard] appears in your hands."))
+	linked_mob.visible_message(span_notice(LANG("datum.1e0f209910d9900b", list(linked_keyboard, linked_mob))), span_notice(LANG("datum.bf8a0a3813760eeb", list(linked_keyboard))))
 	return TRUE
 
 /datum/action/innate/hivemind_config
@@ -92,7 +93,7 @@ GLOBAL_LIST_EMPTY(hivemind_users)
 	. = ..()
 	var/datum/component/mind_linker/active_linking/nif/link = target
 
-	var/choice = tgui_input_list(owner, "Chose your option", "Hivemind Configuration Menu", list("Link a user","Remove a user","Change Hivemind color","Change active Hivemind","Leave a Hivemind", "Toggle invites"))
+	var/choice = tgui_input_list(owner, LANG("datum.2c5f94cd3efaf5de", null), LANG("datum.ea227845e8f07ae1", null), list("Link a user","Remove a user","Change Hivemind color","Change active Hivemind","Leave a Hivemind", "Toggle invites"))
 	if(!choice)
 		return
 
@@ -119,12 +120,12 @@ GLOBAL_LIST_EMPTY(hivemind_users)
 	var/mob/living/carbon/human/user = owner
 	var/datum/nifsoft/hivemind/hivemind = user.find_nifsoft(/datum/nifsoft/hivemind)
 
-	var/datum/component/mind_linker/active_linking/nif/new_active_hivemind = tgui_input_list(user, "Choose a Hivemind to set as active.", "Switch Hivemind", hivemind.network_list)
+	var/datum/component/mind_linker/active_linking/nif/new_active_hivemind = tgui_input_list(user, LANG("datum.f358e8a870e3b378", null), LANG("datum.4dec7afb2fd28ffd", null), hivemind.network_list)
 	if(!new_active_hivemind)
 		return FALSE
 
 	hivemind.active_network = new_active_hivemind
-	to_chat(user, span_abductor("You are now sending messages to [new_active_hivemind.name]."))
+	to_chat(user, span_abductor(LANG("datum.cb102324c7626848", list(new_active_hivemind.name))))
 
 	if(hivemind.active)
 		hivemind.activate()
@@ -137,12 +138,12 @@ GLOBAL_LIST_EMPTY(hivemind_users)
 	var/list/network_list = hivemind.network_list
 	network_list -= hivemind.user_network
 
-	var/datum/component/mind_linker/active_linking/nif/hivemind_to_leave = tgui_input_list(user, "Choose a Hivemind to disconnect from.", "Remove Hivemind", network_list)
+	var/datum/component/mind_linker/active_linking/nif/hivemind_to_leave = tgui_input_list(user, LANG("datum.ed9400eb15f499df", null), LANG("datum.407f8a5ca4ed47e6", null), network_list)
 	if(!hivemind_to_leave)
 		return FALSE
 
-	to_chat(hivemind_to_leave.parent, span_abductor("[user] has been removed from your Hivemind."))
-	to_chat(user, span_abductor("You have left [hivemind_to_leave.parent]'s Hivemind."))
+	to_chat(hivemind_to_leave.parent, span_abductor(LANG("datum.db0c11d355048c38", list(user))))
+	to_chat(user, span_abductor(LANG("datum.d897134b744447c1", list(hivemind_to_leave.parent))))
 
 	hivemind.network_list -= hivemind_to_leave
 	hivemind_to_leave.linked_mobs -= user
@@ -152,11 +153,11 @@ GLOBAL_LIST_EMPTY(hivemind_users)
 	var/mob/living/carbon/human/user = owner
 	if(user in GLOB.hivemind_users)
 		GLOB.hivemind_users -= user
-		to_chat(user, span_abductor("You are now unable to receive invites."))
+		to_chat(user, span_abductor(LANG("datum.99a968ca2c6b961a", null)))
 		return
 
 	GLOB.hivemind_users += user
-	to_chat(user, span_abductor("You are now able to receive invites."))
+	to_chat(user, span_abductor(LANG("datum.e60b5c9b62d99a35", null)))
 
 /datum/action/innate/hivemind_keyboard
 	name = "Hivemind Keyboard"
@@ -206,12 +207,12 @@ GLOBAL_LIST_EMPTY(hivemind_users)
 
 	hivemind_users -= owner
 
-	var/mob/living/carbon/human/person_to_add = tgui_input_list(owner, "Choose a person to invite to your Hivemind.", "Invite User", hivemind_users)
+	var/mob/living/carbon/human/person_to_add = tgui_input_list(owner, LANG("datum.a322720fb52e46be", null), LANG("datum.f1ab09ffbea477a0", null), hivemind_users)
 	if(!person_to_add)
 		return
 
-	if(tgui_alert(person_to_add, "[owner] wishes to add you to their Hivemind, do you accept?", "Incoming Hivemind Invite", list("Accept", "Reject")) != "Accept")
-		to_chat(owner, span_warning("[person_to_add] denied the request to join your Hivemind."))
+	if(tgui_alert(person_to_add, LANG("datum.80f5af116321ab99", list(owner)), LANG("datum.e8c8c15350c48b60", null), list("Accept", "Reject")) != "Accept")
+		to_chat(owner, span_warning(LANG("datum.43ce1eb727a1346c", list(person_to_add))))
 		return
 
 	linked_mobs += person_to_add
@@ -222,13 +223,13 @@ GLOBAL_LIST_EMPTY(hivemind_users)
 		return FALSE
 
 	target_hivemind.network_list += src
-	to_chat(person_to_add, span_abductor("You have now been added to [owner]'s Hivemind"))
-	to_chat(owner, span_abductor("[person_to_add] has now been added to your Hivemind"))
+	to_chat(person_to_add, span_abductor(LANG("datum.985ebf23bfa747ac", list(owner))))
+	to_chat(owner, span_abductor(LANG("datum.2878dd819edfe5da", list(person_to_add))))
 
 ///Removes a user from the list of connected people within a hivemind
 /datum/component/mind_linker/active_linking/nif/proc/remove_user()
 	var/mob/living/carbon/human/owner = parent
-	var/mob/living/carbon/human/person_to_remove = tgui_input_list(owner, "Choose a person to remove from your Hivemind.", "Remove User", linked_mobs)
+	var/mob/living/carbon/human/person_to_remove = tgui_input_list(owner, LANG("datum.01e1b6e44a97139a", null), LANG("datum.ebb9838f32af4345", null), linked_mobs)
 
 	if(!person_to_remove)
 		return
@@ -241,12 +242,12 @@ GLOBAL_LIST_EMPTY(hivemind_users)
 
 	linked_mobs -= person_to_remove
 	target_hivemind.network_list -= src
-	to_chat(person_to_remove, span_abductor("You have now been removed from [owner]'s Hivemind."))
-	to_chat(owner, span_abductor("[person_to_remove] has now been removed from your Hivemind."))
+	to_chat(person_to_remove, span_abductor(LANG("datum.5d85f034a44702ab", list(owner))))
+	to_chat(owner, span_abductor(LANG("datum.1d9638967fdbd6d1", list(person_to_remove))))
 
 /datum/component/mind_linker/active_linking/nif/proc/change_chat_color()
 	var/mob/living/carbon/human/owner = parent
-	var/new_chat_color = tgui_color_picker(owner, "Pick new color", COLOR_ASSEMBLY_GREEN) // BUBBERSTATION EDIT: TGUI COLOR PICKER
+	var/new_chat_color = tgui_color_picker(owner, LANG("datum.d23daf0bdf35b7be", null), COLOR_ASSEMBLY_GREEN) // BUBBERSTATION EDIT: TGUI COLOR PICKER
 
 	if(!new_chat_color)
 		return FALSE
@@ -277,12 +278,12 @@ GLOBAL_LIST_EMPTY(hivemind_users)
 /obj/item/hivemind_keyboard/proc/send_message(mob/living/carbon/human/user)
 	var/mob/living/carbon/human/kebyoard_owner = source_user
 	var/mob/living/carbon/human/network_owner = connected_network.parent
-	var/message = tgui_input_text(user, "Enter a message to transmit.", "[connected_network.network_name] Telepathy")
+	var/message = tgui_input_text(user, LANG("obj.3006d3ea8efe7701", null), LANG("obj.df0464a537e2f854", list(connected_network.network_name)))
 	if(!message || QDELETED(src) || QDELETED(user) || user.stat == DEAD)
 		return
 
 	if(QDELETED(connected_network))
-		to_chat(user, span_warning("The link seems to have been severed."))
+		to_chat(user, span_warning(LANG("obj.446f0cd735f2d4d8", null)))
 		return
 
 	var/datum/asset/spritesheet_batched/sheet = get_asset_datum(/datum/asset/spritesheet_batched/chat)

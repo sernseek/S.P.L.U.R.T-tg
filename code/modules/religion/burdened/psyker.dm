@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/brain/psyker
 	name = "psyker brain"
 	desc = "This brain is blue, split into two hemispheres, and aflush with psychic power. What kind of monstrosity would use this?"
@@ -32,7 +33,7 @@
 		return
 	if(!SPT_PROB(2, seconds_per_tick))
 		return
-	to_chat(owner, span_userdanger("Your head hurts... It can't fit your brain!"))
+	to_chat(owner, span_userdanger(LANG("obj.61e8abb87d8f80c5", null)))
 	owner.adjust_disgust(33 * seconds_per_tick)
 	apply_organ_damage(5 * seconds_per_tick, 199)
 
@@ -51,19 +52,19 @@
 /mob/living/carbon/human/proc/slow_psykerize()
 	if(stat == DEAD || !get_bodypart(BODY_ZONE_HEAD) || istype(get_bodypart(BODY_ZONE_HEAD), /obj/item/bodypart/head/psyker))
 		return
-	to_chat(src, span_userdanger("You feel unwell..."))
+	to_chat(src, span_userdanger(LANG("mob.74657ade02003f1e", null)))
 	sleep(5 SECONDS)
 	if(stat == DEAD || !get_bodypart(BODY_ZONE_HEAD))
 		return
-	to_chat(src, span_userdanger("You feel your skin ripping off!"))
+	to_chat(src, span_userdanger(LANG("mob.017f4efef191877c", null)))
 	emote("scream")
 	apply_damage(30, BRUTE, BODY_ZONE_HEAD)
 	sleep(5 SECONDS)
 	if(!psykerize())
-		to_chat(src, span_warning("The transformation subsides..."))
+		to_chat(src, span_warning(LANG("mob.ef0f2b31c98828f3", null)))
 		return
 	apply_damage(50, BRUTE, BODY_ZONE_HEAD)
-	to_chat(src, span_userdanger("Your head splits open! Your brain mutates!"))
+	to_chat(src, span_userdanger(LANG("mob.4d31a5a70b62f731", null)))
 	new /obj/effect/gibspawner/generic(drop_location(), src, get_blood_dna_list())
 	emote("scream")
 
@@ -101,13 +102,13 @@
 	var/mob/living/carbon/human/human_user = user
 	var/datum/brain_trauma/special/burdened/burden = human_user.has_trauma_type(/datum/brain_trauma/special/burdened)
 	if(!burden || burden.burden_level < 9)
-		to_chat(human_user, span_warning("You aren't burdened enough."))
+		to_chat(human_user, span_warning(LANG("datum.011eae70b0e8ae57", null)))
 		return FALSE
 	for(var/obj/item/possible_rod in get_turf(religious_tool))
 		if(HAS_TRAIT(possible_rod, TRAIT_NULLROD_ITEM))
 			transformation_target = possible_rod
 			return ..()
-	to_chat(human_user, span_warning("You need to place a null rod on [religious_tool] to do this!"))
+	to_chat(human_user, span_warning(LANG("datum.99e521da08ef146e", list(religious_tool))))
 	return FALSE
 
 /datum/religion_rites/nullrod_transformation/invoke_effect(mob/living/user, atom/movable/religious_tool)
@@ -115,9 +116,9 @@
 	var/obj/item/null_rod = transformation_target
 	transformation_target = null
 	if(QDELETED(null_rod) || null_rod.loc != get_turf(religious_tool))
-		to_chat(user, span_warning("Your target left the altar!"))
+		to_chat(user, span_warning(LANG("datum.a4aeac01f2519693", null)))
 		return FALSE
-	to_chat(user, span_warning("[null_rod] turns into a gun!"))
+	to_chat(user, span_warning(LANG("datum.d7a9170a0531e001", list(null_rod))))
 	user.emote("smile")
 	qdel(null_rod)
 	new /obj/item/gun/ballistic/revolver/chaplain(get_turf(religious_tool))
@@ -182,14 +183,14 @@
 /obj/item/gun/ballistic/revolver/chaplain/suicide_act(mob/living/user)
 	. = ..()
 	name = "Habemus Papam"
-	desc = "I announce to you a great joy."
+	desc = LANG("obj.7737800caa3fd87c", null)
 
 /obj/item/gun/ballistic/revolver/chaplain/attack_self(mob/living/user)
 	pray_refill(user)
 
 /obj/item/gun/ballistic/revolver/chaplain/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if (isammocasing(tool) || istype(tool, /obj/item/ammo_box))
-		user.balloon_alert(user, "no manual reloads!")
+		user.balloon_alert(user, LANG("obj.7d7e46a8db358863", null))
 		return ITEM_INTERACT_BLOCKING
 
 	return ..()
@@ -199,13 +200,13 @@
 		return
 	var/datum/brain_trauma/special/burdened/burden = user.has_trauma_type(/datum/brain_trauma/special/burdened)
 	if(needs_burden && (!burden || burden.burden_level < 9))
-		to_chat(user, span_warning("You aren't burdened enough."))
+		to_chat(user, span_warning(LANG("obj.011eae70b0e8ae57", null)))
 		return
-	user.manual_emote("presses [user.p_their()] palms together...")
+	user.manual_emote(LANG("obj.d8a191ee5125e599", list(user.p_their())))
 	if(!do_after(user, 5 SECONDS, src))
-		balloon_alert(user, "interrupted!")
+		balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 		return
-	user.say("#Oh great [GLOB.deity], give me the ammunition I need!", forced = "ammo prayer")
+	user.say(LANG("obj.49b2f7550e11bf85", list(GLOB.deity)), forced = "ammo prayer")
 	magazine.top_off()
 	user.playsound_local(get_turf(src), 'sound/effects/magic/magic_block_holy.ogg', 50, TRUE)
 	chamber_round()
@@ -272,10 +273,10 @@
 /datum/action/cooldown/spell/pointed/psychic_projection/cast(mob/living/cast_on)
 	. = ..()
 	if(cast_on.can_block_magic(antimagic_flags))
-		to_chat(cast_on, span_notice("Your mind feels weird, but it passes momentarily."))
-		to_chat(owner, span_warning("The spell had no effect!"))
+		to_chat(cast_on, span_notice(LANG("datum.314a01913ee8c84a", null)))
+		to_chat(owner, span_warning(LANG("datum.2ce7047e239a5e7e", null)))
 		return FALSE
-	to_chat(cast_on, span_userdanger("Your mind gets twisted!"))
+	to_chat(cast_on, span_userdanger(LANG("datum.e029806176523023", null)))
 	cast_on.emote("scream")
 	cast_on.apply_status_effect(/datum/status_effect/psychic_projection, projection_duration)
 	return TRUE
@@ -361,14 +362,14 @@
 	if(boosted)
 		return
 	boosted = TRUE
-	to_chat(owner, span_boldnotice("Your trigger fingers feel stronger."))
+	to_chat(owner, span_boldnotice(LANG("datum.cacc16052531d28d", null)))
 	ADD_TRAIT(cast_on, TRAIT_DOUBLE_TAP, type)
 	RegisterSignal(cast_on, COMSIG_PROJECTILE_FIRER_BEFORE_FIRE, PROC_REF(modify_projectile))
 	addtimer(CALLBACK(src, PROC_REF(stop_effects)), effect_time)
 
 /datum/action/cooldown/spell/charged/psychic_booster/proc/stop_effects()
 	boosted = FALSE
-	to_chat(owner, span_danger("Your trigger fingers feel weaker."))
+	to_chat(owner, span_danger(LANG("datum.a95d82b3d2f545cc", null)))
 	REMOVE_TRAIT(owner, TRAIT_DOUBLE_TAP, type)
 	UnregisterSignal(owner, COMSIG_PROJECTILE_FIRER_BEFORE_FIRE)
 

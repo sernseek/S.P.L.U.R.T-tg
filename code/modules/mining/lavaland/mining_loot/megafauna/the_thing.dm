@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/innate/brain_undeployment
 	name = "Disconnect from shell"
 	desc = "Stop controlling your shell and resume normal core operations."
@@ -116,13 +117,13 @@
 	if(isnull(AI))
 		return
 	if(AI.controlled_equipment)
-		to_chat(AI, span_warning("You are already loaded into an onboard computer!"))
+		to_chat(AI, span_warning(LANG("obj.c238d61401451162", null)))
 		return
 	if(!SScameras.is_visible_by_cameras(owner))
-		to_chat(AI, span_warning("Target is no longer near active cameras."))
+		to_chat(AI, span_warning(LANG("obj.f78d90261d9da8f9", null)))
 		return
 	if(!isturf(AI.loc))
-		to_chat(AI, span_warning("You aren't in your core!"))
+		to_chat(AI, span_warning(LANG("obj.d46a842079130d39", null)))
 		return
 
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(undeploy))
@@ -131,7 +132,7 @@
 	ADD_TRAIT(AI.mind, TRAIT_UNCONVERTABLE, REF(src))
 	ADD_TRAIT(AI, TRAIT_MIND_TEMPORARILY_GONE, REF(src))
 	AI.mind.transfer_to(owner)
-	to_chat(owner, span_boldbig("You are still considered a silicon/cyborg/AI. Follow your laws."))
+	to_chat(owner, span_boldbig(LANG("obj.d49181ab44c46f41", null)))
 
 /obj/item/organ/brain/cybernetic/ai/proc/deploy_init(mob/living/silicon/ai/AI)
 	//todo camera maybe
@@ -194,10 +195,10 @@
 /obj/item/organ/brain/cybernetic/ai/proc/on_organ_gain(datum/source, obj/item/organ/new_organ, special)
 	SIGNAL_HANDLER
 	if(!is_sufficiently_augmented())
-		to_chat(owner, span_danger("Connection failure. Organics detected."))
+		to_chat(owner, span_danger(LANG("obj.836de6d1fc29c7c8", null)))
 		undeploy()
 
 /obj/item/organ/brain/cybernetic/ai/proc/ai_deleted(datum/source)
 	SIGNAL_HANDLER
-	to_chat(owner, span_danger("Your core has been rendered inoperable..."))
+	to_chat(owner, span_danger(LANG("obj.add7180e222650db", null)))
 	undeploy()

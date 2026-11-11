@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_LIST_INIT(valid_blobstrains, subtypesof(/datum/blobstrain) - list(/datum/blobstrain/reagent, /datum/blobstrain/multiplex))
 
 /datum/blobstrain
@@ -98,8 +99,8 @@ GLOBAL_LIST_INIT(valid_blobstrains, subtypesof(/datum/blobstrain) - list(/datum/
 		blob_mob.maxHealth *= max_mob_health_multiplier
 		blob_mob.health *= max_mob_health_multiplier
 		blob_mob.update_icons() //If it's getting a new strain, tell it what it does!
-		to_chat(blob_mob, "Your overmind's blob strain is now: <b><font color=\"[color]\">[name]</b></font>!")
-		to_chat(blob_mob, "The <b><font color=\"[color]\">[name]</b></font> strain [shortdesc ? "[shortdesc]" : "[description]"]")
+		to_chat(blob_mob, LANG("datum.a5c98ff862d84699", list(color, name)))
+		to_chat(blob_mob, LANG("datum.085481ce4f52a4d6", list(color, name, shortdesc ? "[shortdesc]" : "[description]")))
 
 /datum/blobstrain/proc/on_lose()
 	if(overmind.blob_core)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// A tentacle which grabs you if you don't get away from it
 /obj/effect/goliath_tentacle
 	name = "goliath tentacle"
@@ -68,8 +69,8 @@
 		var/obj/item/restraints/legcuffs/goliath_tentacle/trap = new trap_type(loc, victim, src)
 		if (QDELETED(trap))
 			continue
-		balloon_alert(victim, "grabbed")
-		visible_message(span_danger("[src] grabs hold of [victim]!"))
+		balloon_alert(victim, LANG("obj.bb1cd6951dbbbb98", null))
+		visible_message(span_danger(LANG("obj.599446dc56b7a809", list(src, victim))))
 		victim.apply_damage(rand(min_damage, max_damage), BRUTE, pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG), wound_bonus = CANT_WOUND)
 		trapped_mobs = TRUE
 
@@ -197,7 +198,7 @@
 		return
 
 	if (!user.can_perform_action(nearest_turf))
-		nearest_turf.balloon_alert(user, "cannot reach!")
+		nearest_turf.balloon_alert(user, LANG("obj.05f392ea69387f7d", null))
 		return
 
 	held_thing.melee_attack_chain(user, src, params2list(params))

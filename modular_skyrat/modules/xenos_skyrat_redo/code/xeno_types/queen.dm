@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// SKYRAT MODULE SKYRAT_XENO_REDO
 
 /mob/living/carbon/alien/adult/skyrat/queen
@@ -81,7 +82,7 @@
 	for(var/mob/living/carbon/human/screech_target in get_hearers_in_view(7, get_turf(queenie)))
 		screech_target.soundbang_act(intensity = 3, stun_pwr = 80, damage_pwr = 5, deafen_pwr = 10) // Only being deaf or in space with protection will save you
 		shake_camera(screech_target, 4, 3)
-		to_chat(screech_target, span_doyourjobidiot("[queenie] lets out a deafening screech!"))
+		to_chat(screech_target, span_doyourjobidiot(LANG("datum.988e2496a2f53a82", list(queenie))))
 
 	return TRUE
 

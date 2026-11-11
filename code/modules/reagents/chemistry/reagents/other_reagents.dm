@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/reagent/blood
 	name = "Blood"
 	description  = "Blood cells suspended in plasma, the most abundant of which being the hemoglobin-containing red blood cells."
@@ -201,7 +202,7 @@
 		//BUBBER EDIT ADDITION START - Species quirks; Hydrophilic trait
 		if(HAS_TRAIT(exposed_mob, TRAIT_HYDROPHILIC))
 			exposed_mob.blood_volume = max(exposed_mob.blood_volume - 30, 0) //So we don't end up with slimes going to -2535% blood.
-			to_chat(exposed_mob, span_warning("The water causes you to melt away!"))
+			to_chat(exposed_mob, span_warning(LANG("datum.12d5ea48c130b40f", null)))
 			return
 		//BUBBER EDIT ADDITION END
 
@@ -306,18 +307,18 @@
 
 /datum/wound/pierce/bleed/on_saltwater(reac_volume, mob/living/carbon/carbies)
 	adjust_blood_flow(-0.06 * reac_volume, initial_flow * 0.6)
-	to_chat(carbies, span_notice("The salt water splashes over [LOWER_TEXT(src)], soaking up the blood."))
+	to_chat(carbies, span_notice(LANG("datum.2d632629d074fccd", list(LOWER_TEXT(src)))))
 
 /datum/wound/slash/flesh/on_saltwater(reac_volume, mob/living/carbon/carbies)
 	adjust_blood_flow(-0.1 * reac_volume, initial_flow * 0.5)
-	to_chat(carbies, span_notice("The salt water splashes over [LOWER_TEXT(src)], soaking up the blood."))
+	to_chat(carbies, span_notice(LANG("datum.2d632629d074fccd", list(LOWER_TEXT(src)))))
 
 /datum/wound/burn/flesh/on_saltwater(reac_volume)
 	// Similar but better stats from normal salt.
 	sanitization += VALUE_PER(0.6, 30) * reac_volume
 	infection -= max(VALUE_PER(0.5, 30) * reac_volume, 0)
 	infection_rate += VALUE_PER(0.07, 30) * reac_volume
-	to_chat(victim, span_notice("The salt water splashes over [LOWER_TEXT(src)], soaking up the... miscellaneous fluids. It feels somewhat better afterwards."))
+	to_chat(victim, span_notice(LANG("datum.38a94172d0bdaa45", list(LOWER_TEXT(src)))))
 	return
 
 /datum/reagent/water/holywater
@@ -356,7 +357,7 @@
 /datum/reagent/water/holywater/on_mob_add(mob/living/affected_mob, amount)
 	. = ..()
 	if(IS_CULTIST(affected_mob))
-		to_chat(affected_mob, span_userdanger("A vile holiness begins to spread its shining tendrils through your mind, purging the Geometer of Blood's influence!"))
+		to_chat(affected_mob, span_userdanger(LANG("datum.ebe70ee2b74b3473", null)))
 
 /datum/reagent/water/holywater/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
 	. = ..()
@@ -374,7 +375,7 @@
 					removed_any = TRUE
 					qdel(BS)
 				if(removed_any)
-					to_chat(affected_mob, span_cult_large("Your blood rites falter as holy water scours your body!"))
+					to_chat(affected_mob, span_cult_large(LANG("datum.9e5484f25c62d83e", null)))
 					COOLDOWN_START(src, spell_clear_cd, 3 SECONDS)
 
 		if(IS_HERETIC(affected_mob))
@@ -384,7 +385,7 @@
 				if(spell.remove_charges(ceil(spell.max_charges * spell.holywater_drain_amount)))
 					removed_any = TRUE
 			if(removed_any)
-				to_chat(affected_mob, span_mansus("Your intricate rituals are distrupted by the holy water scouring your body!"))
+				to_chat(affected_mob, span_mansus(LANG("datum.e0377bfbcbc20714", null)))
 				COOLDOWN_START(src, spell_clear_cd, 3 SECONDS)
 
 	if(data["deciseconds_metabolized"] >= (25 SECONDS)) // 10 units
@@ -393,7 +394,7 @@
 		if(IS_CULTIST(affected_mob) && SPT_PROB(10, seconds_per_tick))
 			affected_mob.say(pick("Av'te Nar'Sie","Pa'lid Mors","INO INO ORA ANA","SAT ANA!","Daim'niodeis Arc'iai Le'eones","R'ge Na'sie","Diabo us Vo'iscum","Eld' Mon Nobis"), forced = "holy water")
 			if(prob(10))
-				affected_mob.visible_message(span_danger("[affected_mob] starts having a seizure!"), span_userdanger("You have a seizure!"))
+				affected_mob.visible_message(span_danger(LANG("datum.e46c3046f38e3382", list(affected_mob))), span_userdanger(LANG("datum.1d7bf17c01ab796d", null)))
 				affected_mob.Unconscious(12 SECONDS)
 				to_chat(affected_mob, span_cult_large("[pick("Your blood is your bond - you are nothing without it", "Do not forget your place", \
 					"All that power, and you still fail?", "If you cannot scour this poison, I shall scour your meager life!")]."))
@@ -658,7 +659,7 @@
 			exposed_human.update_body(is_creating = TRUE)
 
 		if((methods & INGEST) && show_message)
-			to_chat(exposed_mob, span_notice("That tasted horrible."))
+			to_chat(exposed_mob, span_notice(LANG("datum.582eb863bfde2048", null)))
 
 /datum/reagent/spraytan/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
 	. = ..()
@@ -684,7 +685,7 @@
 			if(affected_human.w_uniform)
 				affected_mob.visible_message(pick("<b>[affected_mob]</b>'s collar pops up without warning.</span>", "<b>[affected_mob]</b> flexes [affected_mob.p_their()] arms."))
 			else
-				affected_mob.visible_message("<b>[affected_mob]</b> flexes [affected_mob.p_their()] arms.")
+				affected_mob.visible_message(LANG("datum.efe73f61755d81eb", list(affected_mob, affected_mob.p_their())))
 	if(SPT_PROB(5, seconds_per_tick))
 		affected_mob.say(pick("Shit was SO cash.", "You are everything bad in the world.", "What sports do you play, other than 'jack off to naked drawn Japanese people?'", "Don???t be a stranger. Just hit me with your best shot.", "My name is John and I hate every single one of you."), forced = /datum/reagent/spraytan)
 
@@ -741,7 +742,7 @@
 		//affected_human.set_species(species_type) //ORIGINAL
 		affected_human.set_species(species_type, icon_update = TRUE, pref_load = FALSE) //SKYRAT EDIT CHANGE - CUSTOMIZATION
 		holder.del_reagent(type)
-		to_chat(affected_human, span_warning("You've become \a [LOWER_TEXT(initial(species_type.name))]!"))
+		to_chat(affected_human, span_warning(LANG("datum.f4b118b915979236", list(LOWER_TEXT(initial(species_type.name))))))
 		return
 
 /datum/reagent/mutationtoxin/classic //The one from plasma on green slimes
@@ -823,7 +824,7 @@
 		//affected_human.set_species(species_type) //ORIGINAL
 		affected_human.set_species(species_type, icon_update = TRUE, pref_load = FALSE) //SKYRAT EDIT CHANGE - CUSTOMIZATION
 		holder.del_reagent(type)
-		to_chat(affected_human, span_warning("Your jelly shifts and morphs, turning you into another subspecies!"))
+		to_chat(affected_human, span_warning(LANG("datum.1397fb9d9855dffc", null)))
 		return UPDATE_MOB_HEALTH
 	if(current_cycle < CYCLES_TO_TURN) //overwrite since we want subtypes of jelly
 		return ..()
@@ -831,7 +832,7 @@
 	//affected_human.set_species(species_type) //ORIGINAL
 	affected_human.set_species(species_type, icon_update = TRUE, pref_load = FALSE) //SKYRAT EDIT CHANGE - CUSTOMIZATION
 	holder.del_reagent(type)
-	to_chat(affected_human, span_warning("You've become \a [initial(species_type.name)]!"))
+	to_chat(affected_human, span_warning(LANG("datum.f4b118b915979236", list(initial(species_type.name)))))
 	return UPDATE_MOB_HEALTH
 
 
@@ -940,8 +941,8 @@
 	if(!ishuman(affected_mob))
 		return
 	var/mob/living/carbon/human/affected_human = affected_mob
-	to_chat(affected_human, span_boldwarning("You grit your teeth in pain as your body rapidly mutates!"))
-	affected_human.visible_message("<b>[affected_human]</b> suddenly transforms!")
+	to_chat(affected_human, span_boldwarning(LANG("datum.3d98ff4485c29939", null)))
+	affected_human.visible_message(LANG("datum.c034537ec98a77ee", list(affected_human)))
 	randomize_human_normie(affected_human)
 
 /datum/reagent/aslimetoxin
@@ -1353,7 +1354,7 @@
 /datum/reagent/bluespace/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
 	. = ..()
 	if(current_cycle > 10 && SPT_PROB(7.5, seconds_per_tick))
-		to_chat(affected_mob, span_warning("You feel unstable..."))
+		to_chat(affected_mob, span_warning(LANG("datum.5123d0ff035183c9", null)))
 		affected_mob.set_jitter_if_lower(2 SECONDS)
 		current_cycle = 1
 		addtimer(CALLBACK(affected_mob, TYPE_PROC_REF(/mob/living, bluespace_shuffle)), 3 SECONDS)
@@ -1475,7 +1476,7 @@
 /datum/reagent/space_cleaner/on_burn_wound_processing(datum/wound/burn/flesh/burn_wound)
 	burn_wound.sanitization += 0.3
 	if(prob(5))
-		to_chat(burn_wound.victim, span_notice("Your [burn_wound] stings and burns from [src] covering it! It <i>does</i> look pretty clean though."))
+		to_chat(burn_wound.victim, span_notice(LANG("datum.7e97188e35c409b2", list(burn_wound, src))))
 		burn_wound.victim.apply_damage(0.5, TOX)
 		burn_wound.victim.apply_damage(0.5, BURN, burn_wound.limb, wound_bonus = CANT_WOUND)
 
@@ -2102,14 +2103,14 @@
 		// Heads of staff and the captain have a "royal metabolism"
 		if(HAS_TRAIT(liver, TRAIT_ROYAL_METABOLISM))
 			if(SPT_PROB(5, seconds_per_tick))
-				to_chat(affected_mob, "You feel like royalty.")
+				to_chat(affected_mob, LANG("datum.7736d7d0da45ecbd", null))
 			if(SPT_PROB(2.5, seconds_per_tick))
 				affected_mob.say(pick("Peasants..","This carpet is worth more than your contracts!","I could fire you at any time..."), forced = "royal carpet")
 
 		// The quartermaster, as a semi-head, has a "pretender royal" metabolism
 		else if(HAS_TRAIT(liver, TRAIT_PRETENDER_ROYAL_METABOLISM))
 			if(SPT_PROB(8, seconds_per_tick))
-				to_chat(affected_mob, "You feel like an impostor...")
+				to_chat(affected_mob, LANG("datum.24af758de806e7ae", null))
 
 /datum/reagent/carpet/royal/black
 	name = "Royal Black Carpet"
@@ -2490,7 +2491,7 @@
 	if(!HAS_TRAIT(exposed_human, TRAIT_BALD))
 		var/datum/sprite_accessory/hair/picked_hair = pick(SSaccessories.hairstyles_list)
 		exposed_human.set_hairstyle(picked_hair, update = TRUE)
-	to_chat(exposed_human, span_notice("Hair starts sprouting from your [HAS_TRAIT(exposed_human, TRAIT_BALD) ? "face" : "scalp"]."))
+	to_chat(exposed_human, span_notice(LANG("datum.987bf3f1d4b7f570", list(HAS_TRAIT(exposed_human, TRAIT_BALD) ? "face" : "scalp"))))
 
 /datum/reagent/concentrated_barbers_aid
 	name = "Concentrated Barber's Aid"
@@ -2515,7 +2516,7 @@
 		exposed_human.set_facial_hairstyle("Beard (Very Long)", update = FALSE)
 	if(!HAS_TRAIT(exposed_human, TRAIT_BALD))
 		exposed_human.set_hairstyle("Very Long Hair", update = TRUE)
-	to_chat(exposed_human, span_notice("Your[HAS_TRAIT(exposed_human, TRAIT_BALD) ? " facial" : ""] hair starts growing at an incredible speed!"))
+	to_chat(exposed_human, span_notice(LANG("datum.cf1b1d0876422f60", list(HAS_TRAIT(exposed_human, TRAIT_BALD) ? " facial" : ""))))
 
 /datum/reagent/concentrated_barbers_aid/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, metabolization_ratio)
 	. = ..()
@@ -2530,9 +2531,9 @@
 			return
 		head.head_flags |= HEAD_HAIR
 		if(HAS_TRAIT(affected_mob, TRAIT_BALD))
-			to_chat(affected_mob, span_warning("You feel your scalp mutate, but you are still hopelessly bald."))
+			to_chat(affected_mob, span_warning(LANG("datum.336572ac5a2a71b4", null)))
 		else
-			to_chat(affected_mob, span_notice("Your scalp mutates, a full head of hair sprouting from it."))
+			to_chat(affected_mob, span_notice(LANG("datum.49b95dddeb9f4d85", null)))
 			human_mob.update_body_parts()
 
 /datum/reagent/baldium
@@ -2556,7 +2557,7 @@
 		return
 
 	var/mob/living/carbon/human/exposed_human = exposed_mob
-	to_chat(exposed_human, span_danger("Your hair is falling out in clumps!"))
+	to_chat(exposed_human, span_danger(LANG("datum.63c1c80411a3c970", null)))
 	exposed_human.set_facial_hairstyle("Shaved", update = FALSE)
 	exposed_human.set_hairstyle("Bald", update = TRUE)
 
@@ -2924,7 +2925,7 @@
 	affected_mob.adjust_dizzy_up_to(2 SECONDS * metabolization_ratio * seconds_per_tick, 12 SECONDS)
 
 	if(SPT_PROB(10, seconds_per_tick))
-		to_chat(affected_mob, "You feel confused and disoriented.")
+		to_chat(affected_mob, LANG("datum.826c89458c575a02", null))
 
 /datum/reagent/peaceborg/tire
 	name = "Tiring Solution"
@@ -2942,7 +2943,7 @@
 		if(affected_mob.adjust_stamina_loss(3.34 * metabolization_ratio * seconds_per_tick, updating_stamina = FALSE))
 			. = UPDATE_MOB_HEALTH
 	if(SPT_PROB(16, seconds_per_tick))
-		to_chat(affected_mob, "You should sit down and take a rest...")
+		to_chat(affected_mob, LANG("datum.510abb436c18956a", null))
 
 /datum/reagent/gondola_mutation_toxin
 	name = "Tranquility"
@@ -3295,7 +3296,7 @@
 		return
 	if(SPT_PROB(5, seconds_per_tick))
 		if(SPT_PROB(5, seconds_per_tick)) //Super rare statement
-			victim.say("AUGH NO NOT THE ANTS! NOT THE ANTS! AAAAUUGH THEY'RE IN MY EYES! MY EYES! AUUGH!!", forced = type)
+			victim.say(LANG("datum.6ada3ec11f912292", null), forced = type)
 		else
 			victim.say(pick(ant_screams), forced = type)
 	if(SPT_PROB(15, seconds_per_tick))
@@ -3306,7 +3307,7 @@
 /datum/reagent/ants/on_mob_end_metabolize(mob/living/living_anthill)
 	. = ..()
 	ant_ticks = 0
-	to_chat(living_anthill, span_notice("You feel like the last of \the [src] are out of your system."))
+	to_chat(living_anthill, span_notice(LANG("datum.1b757d2f72155268", list(src))))
 
 /datum/reagent/ants/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE, touch_protection = 0)
 	. = ..()
@@ -3476,7 +3477,7 @@
 
 /datum/reagent/hauntium/on_mob_metabolize(mob/living/carbon/affected_mob, seconds_per_tick)
 	. = ..()
-	to_chat(affected_mob, span_userdanger("You feel an evil presence inside you!"))
+	to_chat(affected_mob, span_userdanger(LANG("datum.a6bcf3eb6827524c", null)))
 	if(affected_mob.mob_biotypes & MOB_UNDEAD || HAS_MIND_TRAIT(affected_mob, TRAIT_MORBID))
 		affected_mob.add_mood_event("morbid_hauntium", /datum/mood_event/morbid_hauntium, name) //8 minutes of slight mood buff if undead or morbid
 	else

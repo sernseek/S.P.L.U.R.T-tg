@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/smelling_salts
 	name = "smelling salts"
 	desc = "A small pile of a salt-like substance that smells absolutely repulsive. Rumor has it that the smell is so pungent that even the dead will come back to life to escape it."
@@ -10,15 +11,15 @@
 /obj/item/smelling_salts/attack(mob/living/mob_attacked, mob/user)
 	. = ..()
 	if(!iscarbon(mob_attacked))
-		to_chat(user, span_warning("On second thought, maybe [src] won't work on [mob_attacked]."))
+		to_chat(user, span_warning(LANG("obj.842865974a618b22", list(src, mob_attacked))))
 		return
 
 	if(mob_attacked == user)
-		to_chat(user, span_warning("You can't bring yourself to get [src] anywhere near your face."))
+		to_chat(user, span_warning(LANG("obj.0b8fd1318701feac", list(src))))
 		return
 
 	if(mob_attacked.stat != DEAD)
-		to_chat(user, span_warning("On second thought, maybe you shouldn't use this on [mob_attacked] if they're not <b>dead</b>."))
+		to_chat(user, span_warning(LANG("obj.2a2ebd59277df598", list(mob_attacked))))
 		return
 
 	try_revive(mob_attacked, user)
@@ -28,15 +29,15 @@
 	carbon_target.grab_ghost()
 
 	if(!do_after(user, 3 SECONDS, carbon_target))
-		user.balloon_alert(user, "stopped reviving [carbon_target]")
+		user.balloon_alert(user, LANG("obj.09a569c9e8909eab", list(carbon_target)))
 		return
 
 	if(carbon_target.stat != DEAD)
-		to_chat(user, span_warning("Wait, [carbon_target] isn't actually <b>dead</b>!"))
+		to_chat(user, span_warning(LANG("obj.05e0ce5f9f3b11a5", list(carbon_target))))
 		return
 	carbon_target.notify_revival("You are being brought back to life!")
 
-	user.balloon_alert_to_viewers("trying to revive [carbon_target]")
+	user.balloon_alert_to_viewers(LANG("obj.fce22e569d26c4d4", list(carbon_target)))
 
 	var/defib_result = carbon_target.can_defib()
 	var/fail_reason

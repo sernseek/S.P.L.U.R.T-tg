@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * # mobs that can wear hats!
  */
@@ -76,7 +77,7 @@
 
 	for(var/trait_check in traits_prevent_checks)
 		if(HAS_TRAIT(source, trait_check))
-			source.balloon_alert(attacker, "not possible right now!")
+			source.balloon_alert(attacker, LANG("datum.075ee12857597a7a", null))
 			return COMPONENT_NO_AFTERATTACK
 
 	INVOKE_ASYNC(src, PROC_REF(place_hat), source, item, attacker)
@@ -84,7 +85,7 @@
 
 /datum/element/hat_wearer/proc/place_hat(atom/movable/source, obj/item/item, mob/living/attacker)
 	if(!do_after(attacker, delay = 3 SECONDS, target = source))
-		source.balloon_alert(attacker, "must stay still!")
+		source.balloon_alert(attacker, LANG("datum.9d0f5eb3ec0715d7", null))
 		return
 	item.forceMove(source)
 

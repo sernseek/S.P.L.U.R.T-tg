@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/suit/baroness
 	name = "Baroness Dress"
 	desc = "This dress is stained red due to the bloody history of its previous owner"
@@ -250,7 +251,7 @@
 	armor_type = /datum/armor/none
 	var/unbuttoned = FALSE
 
-GAME_VERB_SRC(/obj/item/clothing/suit/storage/fluff/fedcoat, toggle, usr, "Toggle coat buttons", "Object")
+GAME_VERB_SRC(/obj/item/clothing/suit/storage/fluff/fedcoat, toggle, usr, "切换外套纽扣", "Object")
 	var/mob/living/L = usr
 	if(!istype(L) || L.stat != STABLE)
 		return FALSE
@@ -259,11 +260,11 @@ GAME_VERB_SRC(/obj/item/clothing/suit/storage/fluff/fedcoat, toggle, usr, "Toggl
 		if(FALSE)
 			icon_state = "[initial(icon_state)]_open"
 			unbuttoned = TRUE
-			to_chat(usr,"You unbutton the coat.")
+			to_chat(usr,LANG("obj.58b5a070241419f7", null))
 		if(TRUE)
 			icon_state = "[initial(icon_state)]"
 			unbuttoned = FALSE
-			to_chat(usr,"You button up the coat.")
+			to_chat(usr,LANG("obj.a3882654c83fc9e7", null))
 
 	usr.update_worn_oversuit()
 

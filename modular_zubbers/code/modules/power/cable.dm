@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/stack/cable_coil/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!ishuman(interacting_with))
 		return NONE
@@ -17,7 +18,7 @@
 	if(isnull(preferred_limb) || !IS_ROBOTIC_LIMB(preferred_limb))
 		return NONE
 	if(!(preferred_limb.burn_dam > 0))
-		balloon_alert(user, "limb not damaged")
+		balloon_alert(user, LANG("obj.aca69bd8ad34eb10", null))
 		return ITEM_INTERACT_BLOCKING
 	var/list/damaged_limbs = list()
 	for(var/obj/item/bodypart/limb as anything in carbon_patient.bodyparts)
@@ -33,14 +34,14 @@
 		var/list/updated_damaged_limbs = damaged_limbs
 		updated_damaged_limbs.Remove(repaired)
 		if(!length(damaged_limbs))
-			user.balloon_alert(user, "fully repaired")
+			user.balloon_alert(user, LANG("obj.e1212a63fd027dd4", null))
 			return ITEM_INTERACT_SUCCESS
-		user.balloon_alert(user, "repairing [updated_damaged_limbs[1]]")
+		user.balloon_alert(user, LANG("obj.cb8f1b84c12d115a", list(updated_damaged_limbs[1])))
 		INVOKE_ASYNC(src, PROC_REF(try_auto_heal), interacting_with, user, updated_damaged_limbs, preferred_limb)
 		return
 
-	user.visible_message(span_notice("[user] starts to fix some of the wires in [attacked_humanoid == user ? user.p_their() : "[attacked_humanoid]'s"] [repaired.name]."),
-		span_notice("You start fixing some of the wires in [attacked_humanoid == user ? "your" : "[attacked_humanoid]'s"] [repaired.name]."))
+	user.visible_message(span_notice(LANG("obj.78934db067cefedc", list(user, attacked_humanoid == user ? user.p_their() : "[attacked_humanoid]'s", repaired.name))),
+		span_notice(LANG("obj.ddb7d553243966bb", list(attacked_humanoid == user ? "your" : "[attacked_humanoid]'s", repaired.name))))
 	var/use_delay = 1 SECONDS
 	if(user == attacked_humanoid)
 		use_delay = 5 SECONDS
@@ -49,8 +50,8 @@
 		return ITEM_INTERACT_BLOCKING
 
 	repaired.heal_damage(brute = 0, burn = 15, required_bodytype = BODYTYPE_ROBOTIC)
-	user.visible_message(span_notice("[user] fixes some of the burnt wires on [attacked_humanoid]'s [repaired.name]."), \
-		span_notice("You fix some of the burnt wires on [attacked_humanoid == user ? "your" : "[attacked_humanoid]'s"] [repaired.name]."))
+	user.visible_message(span_notice(LANG("obj.ee4cc5e5a120f9cd", list(user, attacked_humanoid, repaired.name))), \
+		span_notice(LANG("obj.6fc0446008d1eaaf", list(attacked_humanoid == user ? "your" : "[attacked_humanoid]'s", repaired.name))))
 
 	if (use(1) && amount > 0)
 		INVOKE_ASYNC(src, PROC_REF(try_auto_heal), interacting_with, user, damaged_limbs, preferred_limb)

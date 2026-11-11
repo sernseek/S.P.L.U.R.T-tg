@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //This component makes the ckey be moved to a target body on death
 /datum/component/return_on_death
 	var/mob/sourcemob
@@ -14,12 +15,12 @@
 	SIGNAL_HANDLER
 	var/mob/currentmob = parent
 	if(currentmob && sourcemob && !(QDELETED(sourcemob)) && !(QDELETED(currentmob)))
-		to_chat(currentmob, span_warning("Your current body no longer anchoring you, your soul returns to your original body."))
+		to_chat(currentmob, span_warning(LANG("datum.ef5fcd41cbb623d4", null)))
 		sourcemob.ckey = currentmob.ckey
 		if(HAS_TRAIT_FROM(sourcemob, TRAIT_SACRIFICED, "sacrificed"))
 			REMOVE_TRAIT(sourcemob, TRAIT_SACRIFICED, "sacrificed")
 	else
-		to_chat(currentmob, span_warning("You were unable to return to your old body as it was destroyed."))
+		to_chat(currentmob, span_warning(LANG("datum.61d6e60d44907f82", null)))
 	if(!QDELETED(src) && !deleting)
 		qdel(src)
 		deleting = TRUE

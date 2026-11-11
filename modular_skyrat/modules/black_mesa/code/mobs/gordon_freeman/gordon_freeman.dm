@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Gordon Freeman - Xen boss
  *
@@ -73,7 +74,7 @@
 				new item_type(T)
 
 		// Create death effect
-		T.visible_message(span_warning("[src] violently dissolves into a pile of flesh!"))
+		T.visible_message(span_warning(LANG("mob.1cf43bb752bc5320", list(src))))
 		new /obj/effect/gibspawner/generic(T)
 
 	// Clean up the mob

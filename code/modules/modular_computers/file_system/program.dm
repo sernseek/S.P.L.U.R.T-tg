@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // /program/ files are executable programs that do things.
 /datum/computer_file/program
 	filetype = "PRG"
@@ -137,7 +138,7 @@
 /datum/computer_file/program/proc/is_supported_by_hardware(hardware_flag = NONE, loud = FALSE, mob/user)
 	if(!(hardware_flag & can_run_on_flags))
 		if(loud && computer && user)
-			to_chat(user, span_danger("\The [computer] flashes a \"Hardware Error - Incompatible software\" warning."))
+			to_chat(user, span_danger(LANG("datum.cdff91ed950c5ce8", list(computer))))
 		return FALSE
 	return TRUE
 
@@ -181,7 +182,7 @@
 
 		if(!accesscard)
 			if(loud && user)
-				to_chat(user, span_danger("\The [computer] flashes an \"RFID Error - Unable to scan ID\" warning."))
+				to_chat(user, span_danger(LANG("datum.88d28099f0a24de6", list(computer))))
 			return FALSE
 		access = accesscard.GetAccess()
 
@@ -190,7 +191,7 @@
 			return TRUE
 
 	if(loud && user)
-		to_chat(user, span_danger("\The [computer] flashes an \"Access Denied\" warning."))
+		to_chat(user, span_danger(LANG("datum.167113b9190ac15f", list(computer))))
 	return FALSE
 
 /**

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/pet/chinchilla
 	name = "chinchilla"
 	desc = "They're like a mouse, but Australian."
@@ -77,7 +78,7 @@
 	hunt_cooldown = 20 SECONDS
 
 /datum/bt_node/ai_behavior/hunt_target/dust_roll/target_caught(mob/living/basic/pet/hunter, obj/effect/decal/cleanable/dust)
-	hunter.balloon_alert_to_viewers("rolls in dust", null, 5)
+	hunter.balloon_alert_to_viewers(LANG("datum.87daf68993f3bb17", null), null, 5)
 	hunter.spin(10, 1)
 	qdel(dust)
 

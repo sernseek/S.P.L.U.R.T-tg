@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * StonedMC
  *
@@ -143,7 +144,7 @@ GLOBAL_REAL(Master, /datum/controller/master)
 		ss.Shutdown()
 	log_world("Shutdown complete")
 
-ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "View the current states of the Subsystem Controllers.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "控制器概览", "View the current states of the Subsystem Controllers.", ADMIN_CATEGORY_DEBUG)
 	Master.ui_interact(user.mob)
 
 /datum/controller/master/ui_status(mob/user, datum/ui_state/state)
@@ -230,7 +231,7 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 
 			var/datum/controller/subsystem/subsystem = locate(params["ref"]) in subsystems
 			if(isnull(subsystem))
-				to_chat(ui.user, span_warning("Failed to locate subsystem."))
+				to_chat(ui.user, span_warning(LANG("datum.72f94059a627a27c", null)))
 				return
 
 			ui.user.client.debug_variables(subsystem)
@@ -315,7 +316,7 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 		current_runlevel = Master.current_runlevel
 		StartProcessing(10)
 	else
-		to_chat(world, span_boldannounce("The Master Controller is having some issues, we will need to re-initialize EVERYTHING"))
+		to_chat(world, span_boldannounce(LANG("datum.630355d0afbfdd7a", null)))
 		Initialize(20, TRUE, FALSE)
 
 // Please don't stuff random bullshit here,
@@ -420,7 +421,7 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 
 		// Can't initialize them if they have circular dependencies, there's no real failsafe here.
 		stack_trace("ERROR: CRITICAL: MC: The following subsystems have circular dependencies: [jointext(debug_msg, " -> ")]")
-		to_chat(world, span_bolddanger("CRITICAL: Failed to initialize [jointext(usr_msg, ", ")]"), MESSAGE_TYPE_DEBUG)
+		to_chat(world, span_bolddanger(LANG("datum.478b802c5f7fb903", list(jointext(usr_msg, ", ")))), MESSAGE_TYPE_DEBUG)
 
 	for (var/datum/controller/subsystem/subsystem as anything in sorted_subsystems)
 		var/subsystem_init_stage = subsystem.init_stage
@@ -461,6 +462,7 @@ ADMIN_VERB(cmd_controller_view_ui, R_SERVER|R_DEBUG, "Controller Overview", "Vie
 	to_chat(world, span_boldannounce("[msg]"), MESSAGE_TYPE_DEBUG)
 	log_world(msg)
 	SSticker.timeLeft = SSticker.start_at
+	SSmapping.start_deferred_offstation_load() // ZH EDIT ADDITION - DEFERRED_OFFSTATION
 
 
 	if(world.system_type == MS_WINDOWS && CONFIG_GET(flag/toast_notification_on_init) && !length(GLOB.clients))

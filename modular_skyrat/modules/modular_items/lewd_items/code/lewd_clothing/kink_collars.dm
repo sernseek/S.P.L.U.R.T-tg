@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 *	NORMAL COLLAR
 */
@@ -111,7 +112,7 @@
 //rename collar code
 
 /obj/item/clothing/neck/kink_collar/attack_self(mob/user)
-	tagname = stripped_input(user, "Would you like to change the name on the tag?", "Name your new pet", "Spot", MAX_NAME_LEN)
+	tagname = stripped_input(user, LANG("obj.caff9b8cf4adcde9", null), LANG("obj.f428d0a3eb8ed8ce", null), "Spot", MAX_NAME_LEN)
 	name = "[initial(name)] - [tagname]"
 
 /*
@@ -195,7 +196,7 @@
 		if(!to_lock)
 			REMOVE_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
 		return
-	to_chat(user, span_warning("It looks like the lock is broken - now it's just an ordinary old collar."))
+	to_chat(user, span_warning(LANG("obj.bfcd3e96fd0adb5c", null)))
 	locked = FALSE
 	REMOVE_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
 
@@ -205,27 +206,27 @@
 	if(attack_item.key_id == REF(src))
 		IsLocked((locked ? FALSE : TRUE), user)
 		return
-	to_chat(user, span_warning("This isn't the correct key!"))
+	to_chat(user, span_warning(LANG("obj.9500650e66c9c240", null)))
 
 /obj/item/clothing/neck/kink_collar/locked/equipped(mob/living/carbon/human/user, slot)
 	. = ..()
 	if(!(locked && src == user.wear_neck))
 		return
 	ADD_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
-	to_chat(user, span_warning("You hear a suspicious click around your neck - it seems the collar is now locked!"))
+	to_chat(user, span_warning(LANG("obj.5731053641199d60", null)))
 
 //this code prevents wearer from taking collar off if it's locked. Have fun!
 
 /obj/item/clothing/neck/kink_collar/locked/attack_hand(mob/user)
 	if(loc == user && user.get_item_by_slot(ITEM_SLOT_NECK) && locked)
-		to_chat(user, span_warning("The collar is locked! You'll need to unlock it before you can take it off!"))
+		to_chat(user, span_warning(LANG("obj.2c098e5e4e35c56f", null)))
 		return
 	add_fingerprint(usr)
 	return ..()
 
 /obj/item/clothing/neck/kink_collar/locked/mouse_drop_dragged(atom/over_object, mob/user, src_location, over_location, params)
 	if(loc == user && user.get_item_by_slot(ITEM_SLOT_NECK) && locked && istype(over_object, /atom/movable/screen/inventory/hand))
-		to_chat(user, span_warning("The collar is locked! You'll need to unlock it before you can take it off!"))
+		to_chat(user, span_warning(LANG("obj.2c098e5e4e35c56f", null)))
 		return
 	var/atom/movable/screen/inventory/hand/inv_hand = over_object
 	if(user.putItemFromInventoryInHandIfPossible(src, inv_hand.held_index))
@@ -301,7 +302,7 @@
 
 //changing name of key in case if we using multiple collars with same color
 /obj/item/key/kink_collar/attack_self(mob/user)
-	keyname = stripped_input(user, "Would you like to change the name on the key?", "Renaming key", "Key", MAX_NAME_LEN)
+	keyname = stripped_input(user, LANG("obj.4e509f0fdf03a5c8", null), LANG("obj.08bfa2621d949d92", null), "Key", MAX_NAME_LEN)
 	name = "[initial(name)] - [keyname]"
 
 //we checking if we can open collar with THAT KEY with SAME ID as the collar.
@@ -315,7 +316,7 @@
 	if(REF(collar) == src.key_id)
 		collar.IsLocked((collar.locked ? FALSE : TRUE), user)
 	else
-		to_chat(user, span_warning("This isn't the correct key!"))
+		to_chat(user, span_warning(LANG("obj.9500650e66c9c240", null)))
 
 /obj/item/circular_saw/attack(mob/living/carbon/human/target, mob/living/user, params)
 	if(!istype(target))
@@ -324,29 +325,29 @@
 		return ..()
 	var/obj/item/clothing/neck/kink_collar/locked/collar = target.wear_neck
 	if(collar.broken)
-		to_chat(user, span_warning("The lock is already broken!"))
+		to_chat(user, span_warning(LANG("obj.61e29706e625bf77", null)))
 		return
-	to_chat(user, span_warning("You try to cut the lock right off!"))
+	to_chat(user, span_warning(LANG("obj.53a1b35e13ee9b3c", null)))
 	if(target != user)
 		if(!do_after(user, 2 SECONDS, target))
 			return
 		collar.broken = TRUE
 		collar.IsLocked(FALSE, user)
 		if(prob(33)) //chance to get damage
-			to_chat(user, span_warning("You successfully cut away the lock, but gave [target.name] several cuts in the process!"))
+			to_chat(user, span_warning(LANG("obj.730b5908fb1ab1d5", list(target.name))))
 			target.apply_damage(rand(1, 4), BRUTE, BODY_ZONE_HEAD, wound_bonus = 10)
 		else
-			to_chat(user, span_warning("You successfully cut away the lock!"))
+			to_chat(user, span_warning(LANG("obj.4b83ba6c54ece336", null)))
 	else
 		if(!do_after(user, 3 SECONDS, target))
 			return
 		if(prob(33))
-			to_chat(user, span_warning("You successfully cut away the lock, but gave yourself several cuts in the process!"))
+			to_chat(user, span_warning(LANG("obj.3a8b940fbe7b5269", null)))
 			collar.broken = TRUE
 			collar.IsLocked(FALSE, user)
 			target.apply_damage(rand(2, 4), BRUTE, BODY_ZONE_HEAD, wound_bonus = 10)
 		else
-			to_chat(user, span_warning("You fail to cut away the lock, cutting yourself in the process!"))
+			to_chat(user, span_warning(LANG("obj.c6dd239416e65c1e", null)))
 			target.apply_damage(rand(3, 5), BRUTE, BODY_ZONE_HEAD, wound_bonus = 30)
 
 /*
@@ -379,7 +380,7 @@
 /obj/item/mind_controller/attack_self(mob/user)
 	if(!collar)
 		return
-	collar.emoting = tgui_input_text(user, "Change the emotion pattern.", max_length = MAX_MESSAGE_LEN)
+	collar.emoting = tgui_input_text(user, LANG("obj.8447a6fe1d04cb69", null), max_length = MAX_MESSAGE_LEN)
 	collar.emoting_proc()
 
 //Collar stuff

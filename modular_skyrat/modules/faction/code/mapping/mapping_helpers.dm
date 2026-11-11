@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/computer/shuttle/trader
 	name = "trader shuttle console"
 	shuttleId = "tradership"
@@ -76,7 +77,7 @@
 			new /obj/item/tank/internals/plasmaman/belt/full(src)
 			for(var/i in 1 to 7)
 				new /obj/item/clothing/mask/breath()
-			desc = "An internals crate."
+			desc = LANG("obj.6ceb8232b8140324", null)
 			name = "internals crate"
 			icon_state = "o2crate"
 		if(4)
@@ -85,7 +86,7 @@
 			new /obj/item/storage/medkit/toxin(src)
 			new /obj/item/reagent_containers/hypospray/medipen(src)
 			new /obj/item/reagent_containers/hypospray/medipen/ekit(src)
-			desc = "A medical crate."
+			desc = LANG("obj.3cc494cf9c8eb7dd", null)
 			name = "medical crate"
 			icon_state = "medicalcrate"
 		if(5)

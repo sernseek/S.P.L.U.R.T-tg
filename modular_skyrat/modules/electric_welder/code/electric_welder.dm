@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/weldingtool/electric
 	name = "electrical welding tool"
 	desc = "An experimental welding tool capable of welding functionality through the use of electricity. The flame seems almost cold."
@@ -26,10 +27,10 @@
 	powered = !powered
 	playsound(src, 'sound/effects/sparks/sparks4.ogg', 100, TRUE)
 	if(powered)
-		to_chat(user, span_notice("You turn [src] on."))
+		to_chat(user, span_notice(LANG("obj.303771eb31e94e69", list(src))))
 		switched_on()
 		return
-	to_chat(user, span_notice("You turn [src] off."))
+	to_chat(user, span_notice(LANG("obj.b0e072ec9233aa9f", list(src))))
 	switched_off()
 
 /obj/item/weldingtool/electric/switched_on(mob/user)
@@ -73,7 +74,7 @@
 
 /obj/item/weldingtool/electric/examine()
 	. = ..()
-	. += "[src] is currently [powered ? "powered" : "unpowered"]."
+	. += LANG("obj.3d8854c23bddabfc", list(src, powered ? "powered" : "unpowered"))
 
 /obj/item/weldingtool/electric/update_icon_state()
 	if(powered)

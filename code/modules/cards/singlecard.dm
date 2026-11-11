@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/toy/singlecard
 	name = "card"
 	desc = "A playing card used to play card games like poker."
@@ -59,17 +60,17 @@
 		return
 
 	if(user.is_holding(src))
-		user.visible_message(span_notice("[user] checks [user.p_their()] card."), span_notice("The card reads: [cardname]."))
+		user.visible_message(span_notice(LANG("obj.4609dcedaa2a24b8", list(user, user.p_their()))), span_notice(LANG("obj.950390d43735831d", list(cardname))))
 		if(blank)
-			. += span_notice("The card is blank. Write on it with a pen.")
+			. += span_notice(LANG("obj.3d65578b0848b55e", null))
 	else if(HAS_TRAIT(user, TRAIT_XRAY_VISION))
-		. += span_notice("You scan the card with your x-ray vision and it reads: [cardname].")
+		. += span_notice(LANG("obj.4ab82a8931bc523b", list(cardname)))
 	else
-		. += span_warning("You need to have the card in your hand to check it!")
+		. += span_warning(LANG("obj.2d74c8c725c1961b", null))
 
 	var/marked_color = getMarkedColor(user)
 	if(marked_color)
-		. += span_notice("The card has a [marked_color] mark on the corner!")
+		. += span_notice(LANG("obj.d13571f6d3ef33e6", list(marked_color)))
 
 /obj/item/toy/singlecard/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
 	if(isnull(held_item) || src == held_item)
@@ -102,7 +103,7 @@
 	return NONE
 
 /obj/item/toy/singlecard/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] is slitting [user.p_their()] wrists with \the [src]! It looks like [user.p_they()] [user.p_have()] an unlucky card!"))
+	user.visible_message(span_suicide(LANG("obj.efda23f034745dc8", list(user, user.p_their(), src, user.p_they(), user.p_have()))))
 	playsound(src, 'sound/items/weapons/bladeslice.ogg', 50, TRUE)
 	return BRUTELOSS
 
@@ -154,10 +155,10 @@
 		var/obj/item/toy/cards/deck/dealer_deck = tool
 		if(!HAS_TRAIT(dealer_deck, TRAIT_WIELDED)) // recycle card into deck (if unwielded)
 			if(dealer_deck.insert(src))
-				user.balloon_alert_to_viewers("puts card in deck")
+				user.balloon_alert_to_viewers(LANG("obj.f9852041e2a1f995", null))
 				return ITEM_INTERACT_SUCCESS
 
-			to_chat(user, span_warning("\The [dealer_deck] is stacked too high!"))
+			to_chat(user, span_warning(LANG("obj.64e89a57828326e1", list(dealer_deck))))
 			return ITEM_INTERACT_BLOCKING
 
 		card = dealer_deck.draw(user)
@@ -171,7 +172,7 @@
 
 		if(istype(tool, /obj/item/toy/cards/deck))
 			// only decks cause a balloon alert
-			user.balloon_alert_to_viewers("deals a card")
+			user.balloon_alert_to_viewers(LANG("obj.fdb6d5a22f7a17f3", null))
 
 		var/obj/item/toy/cards/cardhand/new_cardhand = new (drop_location())
 		new_cardhand.pixel_x = pixel_x
@@ -200,13 +201,13 @@
 
 	if(marked_cheating_color && !blank && IS_WRITING_UTENSIL(tool)) // You cheated not only the game, but yourself
 		marked_color = marked_cheating_color
-		to_chat(user, span_notice("You put a [marked_color] mark in the corner of [src] with the [tool]. Cheat to win!"))
+		to_chat(user, span_notice(LANG("obj.86be374a2ae0b502", list(marked_color, src, tool))))
 		return ITEM_INTERACT_SUCCESS
 
 	if(!user.can_write(tool))
 		return NONE
 
-	var/cardtext = stripped_input(user, "What do you wish to write on the card?", "Card Writing", "", 50)
+	var/cardtext = stripped_input(user, LANG("obj.090f5f11dec83203", null), LANG("obj.915e4b3fb6e6fb9e", null), "", 50)
 	if(!cardtext || !user.can_perform_action(src))
 		return ITEM_INTERACT_BLOCKING
 
@@ -225,7 +226,7 @@
 
 	Flip()
 	if(isturf(src.loc)) // only display this message when flipping in a visible spot like on a table
-		user.balloon_alert_to_viewers("flips a card")
+		user.balloon_alert_to_viewers(LANG("obj.9d29a000463838dc", null))
 
 /obj/item/toy/singlecard/click_alt(mob/living/carbon/human/user)
 	transform = turn(transform, 90)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CUFF_MAXIMUM 3
 #define BONUS_STAMINA_DAM 35
 #define BONUS_STUTTER 10
@@ -20,7 +21,7 @@
 	. = ..()
 	if(istype(attacking_item, /obj/item/baton_upgrade))
 		add_upgrade(attacking_item)
-		balloon_alert(user, "[attacking_item] attached")
+		balloon_alert(user, LANG("obj.c7ee947cf89aa0e0", list(attacking_item)))
 	if(!(upgrade_flags & BATON_CUFF_UPGRADE))
 		return
 	if(!istype(attacking_item, /obj/item/restraints/handcuffs/cable))
@@ -29,10 +30,10 @@
 	for(var/obj/item/restraints/handcuffs/cuff in src.contents)
 		cuffcount++
 	if(cuffcount >= CUFF_MAXIMUM)
-		balloon_alert(user, "baton at maximum cuffs")
+		balloon_alert(user, LANG("obj.aaa731042318849d", null))
 		return
 	attacking_item.forceMove(src)
-	balloon_alert(user, "[attacking_item] inserted")
+	balloon_alert(user, LANG("obj.048c1f348d556f2c", list(attacking_item)))
 
 /obj/item/melee/baton/telescopic/contractor_baton/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()

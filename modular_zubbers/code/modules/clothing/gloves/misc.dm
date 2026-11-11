@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/gloves/misc/diver //Donor item for patriot210
 	icon = 'modular_zubbers/icons/obj/clothing/gloves.dmi'
 	worn_icon = 'modular_zubbers/icons/mob/clothing/hands.dmi'
@@ -54,7 +55,7 @@
 
 /obj/item/clothing/gloves/cat/examine(mob/user)
 	. = ..()
-	. += span_notice("There's a small switch on the wrist. It's currently <b>[lights_on ? "ON" : "OFF"]</b>. <a href='byond://?src=[REF(src)];toggle_lights=1'>\[Toggle\]</a>")
+	. += span_notice(LANG("obj.5c5ae00f3a66f53c", list(lights_on ? "ON" : "OFF", REF(src))))
 
 /obj/item/clothing/gloves/cat/Topic(href, href_list)
 	. = ..()
@@ -66,23 +67,23 @@
 			return
 		lights_on = !lights_on
 		playsound(src, 'sound/machines/click.ogg', 30, FALSE)
-		to_chat(usr, span_notice("You turn the accent lighting [lights_on ? "on" : "off"]."))
+		to_chat(usr, span_notice(LANG("obj.3546fb8cfecaf848", list(lights_on ? "on" : "off"))))
 		update_appearance()
 
 /obj/item/clothing/gloves/cat/attackby(obj/item/item, mob/living/user, params)
 	if(!istype(item, /obj/item/clothing/gloves/color/yellow))
 		return ..()
 	if(siemens_coefficient == 0)
-		to_chat(user, span_warning("[src] are already insulated."))
+		to_chat(user, span_warning(LANG("obj.47985bc138baafe5", list(src))))
 		return
 	user.visible_message(
-		span_notice("[user] awkwardly crams [item] inside [src]."),
-		span_notice("You press [item] against [src], after some time you succeed at inserting [item] inside.")
+		span_notice(LANG("obj.28a366e9ab3087ce", list(user, item, src))),
+		span_notice(LANG("obj.16ac33dfc6316239", list(item, src, item)))
 	)
 	siemens_coefficient = 0
 	name = "insulated [name]"
 	if(desc == initial(desc))
-		desc = "A pair of cat gloves with a pair of insulated gloves awkwardly crammed inside them. Somehow this works."
+		desc = LANG("obj.a1d3a3b594b84b58", null)
 	qdel(item)
 	update_appearance()
 	return TRUE

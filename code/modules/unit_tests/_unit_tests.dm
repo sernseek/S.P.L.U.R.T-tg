@@ -385,6 +385,30 @@
 #include "~splurt\underwear_items.dm"
 #include "~zubbers\vitezstvi_turret_flags.dm"
 // SPLURT EDIT END
+// ZH EDIT START - localization tests
+#include "~zh\i18n_chat_layers.dm"
+#include "~zh\i18n_display_boundary.dm"
+#include "~zh\i18n_display_leaks.dm"
+#include "~zh\i18n_html_tag_keys.dm"
+#include "~zh\i18n_interpolate.dm"
+#include "~zh\i18n_miss_log.dm"
+#include "~zh\i18n_payload_overlay.dm"
+#include "~zh\i18n_phobia.dm"
+#include "~zh\i18n_prod_misses.dm"
+#include "~zh\i18n_real_catalog.dm"
+#include "~zh\i18n_roleban.dm"
+#include "~zh\i18n_speech_effects.dm"
+#include "~zh\i18n_suffixed.dm"
+#include "~zh\i18n_template.dm"
+#include "~zh\i18n_type_labels.dm"
+#include "~zh\i18n_unreverse.dm"
+#include "~zh\localization_changelog.dm"
+#include "~zh\test_sharding.dm"
+#include "~zh\slime_naming.dm"
+#include "~zh\vore_default_i18n.dm"
+#include "~zh\tts_controls.dm"
+#include "~zh\splurt_i18n.dm"
+// ZH EDIT END
 // END_INCLUDE
 #ifdef REFERENCE_TRACKING_DEBUG //Don't try and parse this file if ref tracking isn't turned on. IE: don't parse ref tracking please mr linter
 #include "find_reference_sanity.dm"

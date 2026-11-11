@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  *
  * Allows the parent to act similarly to the Altar of Gods with modularity. Invoke and Sect Selection is done via attacking with a bible. This means you cannot sacrifice Bibles (you shouldn't want to do this anyways although now that I mentioned it you probably will want to).
@@ -148,10 +149,10 @@
 /// Select the sect, called from [/datum/component/religious_tool/proc/AttemptActions]
 /datum/component/religious_tool/proc/select_sect(mob/living/user, path)
 	if(user.mind.holy_role != HOLY_ROLE_HIGHPRIEST)
-		to_chat(user, span_warning("You are not the high priest, and therefore cannot select a religious sect."))
+		to_chat(user, span_warning(LANG("datum.bf57a46e1d5af18d", null)))
 		return
 	if(!user.can_perform_action(parent, FORBID_TELEKINESIS_REACH))
-		to_chat(user,span_warning("You cannot select a sect at this time."))
+		to_chat(user,span_warning(LANG("datum.b6e521a08f235dbd", null)))
 		return
 	set_new_religious_sect(text2path(path))
 
@@ -159,15 +160,15 @@
 /datum/component/religious_tool/proc/perform_rite(mob/living/user, path)
 	if(user.mind.holy_role < HOLY_ROLE_PRIEST)
 		if(user.mind.holy_role == HOLY_ROLE_DEACON)
-			to_chat(user, span_warning("You are merely a deacon of [GLOB.deity], and therefore cannot perform rites."))
+			to_chat(user, span_warning(LANG("datum.491ec878ba1dc222", list(GLOB.deity))))
 		else
-			to_chat(user, span_warning("You are not holy, and therefore cannot perform rites."))
+			to_chat(user, span_warning(LANG("datum.db8860ee1786ddf7", null)))
 		return
 	if(rite_types_allowlist && !is_path_in_list(path, rite_types_allowlist))
-		to_chat(user, span_warning("This cannot perform that kind of rite."))
+		to_chat(user, span_warning(LANG("datum.e52683c5ff7802ed", null)))
 		return
 	if(!user.can_perform_action(parent, FORBID_TELEKINESIS_REACH))
-		to_chat(user,span_warning("You are not close enough to perform the rite."))
+		to_chat(user,span_warning(LANG("datum.3410604474d9a0a5", null)))
 		return
 	//we have a rite already, but we want to do a new one.
 	if(performing_rite && !ispath(performing_rite.type, path))
@@ -259,12 +260,12 @@
 
 	if(!can_i_see)
 		return
-	examine_list += span_notice("Use a [catalyst_type::name] to interact with this.")
+	examine_list += span_notice(LANG("datum.d28722e72c20468a", list(catalyst_type::name)))
 	if(isnull(easy_access_sect))
 		if(operation_flags & RELIGION_TOOL_SECTSELECT)
-			examine_list += span_notice("This looks like it can be used to select a sect.")
+			examine_list += span_notice(LANG("datum.dea5dddb6e6fa966", null))
 			return
 	if(operation_flags & RELIGION_TOOL_SACRIFICE)//this can be moved around if things change but usually no rites == no sacrifice
-		examine_list += span_notice("Desired items can be used on this to increase favor.")
+		examine_list += span_notice(LANG("datum.18d77425de8b945f", null))
 	if(easy_access_sect.rites_list && operation_flags & RELIGION_TOOL_INVOKE)
-		examine_list += span_notice("You can invoke rites from this.")
+		examine_list += span_notice(LANG("datum.0759faf60e4f0e39", null))

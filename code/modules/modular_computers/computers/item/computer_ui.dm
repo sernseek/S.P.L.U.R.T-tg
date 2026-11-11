@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * update_tablet_open_uis
  *
@@ -135,7 +136,7 @@
 	if(ishuman(usr) && !allow_chunky)
 		var/mob/living/carbon/human/human_user = usr
 		if(human_user.check_chunky_fingers())
-			balloon_alert(human_user, "fingers are too big!")
+			balloon_alert(human_user, LANG("obj.97cabc49707aa840", null))
 			return TRUE
 
 	switch(action)
@@ -161,7 +162,7 @@
 				return
 
 			killed_program.kill_program(usr)
-			to_chat(usr, span_notice("Program [killed_program.filename].[killed_program.filetype] with PID [rand(100,999)] has been killed."))
+			to_chat(usr, span_notice(LANG("obj.0041f6c4a7f7bd2e", list(killed_program.filename, killed_program.filetype, rand(100,999)))))
 			return TRUE
 
 		if("PC_runprogram")
@@ -176,11 +177,11 @@
 			var/mob/user = usr
 			var/new_color
 			while(!new_color)
-				new_color = tgui_color_picker(user, "Choose a new color for [src]'s flashlight.", "Light Color",light_color)
+				new_color = tgui_color_picker(user, LANG("obj.ac2f5f7d0ef14413", list(src)), LANG("obj.ffbd2b7ef3a4e2ff", null),light_color)
 				if(!new_color)
 					return
 				if(is_color_dark(new_color, 50) ) //Colors too dark are rejected
-					to_chat(user, span_warning("That color is too dark! Choose a lighter one."))
+					to_chat(user, span_warning(LANG("obj.c385c4f14f4df834", null)))
 					new_color = null
 			set_flashlight_color(new_color)
 			return TRUE

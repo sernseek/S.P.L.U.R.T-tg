@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /* SPLURT EDIT REMOVAL - Interactions subsystem
 GLOBAL_LIST_EMPTY_TYPED(interaction_instances, /datum/interaction)
@@ -99,6 +100,7 @@ GLOBAL_LIST_EMPTY_TYPED(interaction_instances, /datum/interaction)
 		message_admins("Deprecated message handling for '[name]'. Correct format is a list with one entry. This message will only show once.")
 		message = list(message)
 	var/msg = pick(message)
+	msg = lang_reverse_text(msg) // ZH EDIT - translate the template before replacing its tokens
 	if(!isnull(body_relay))
 		msg = replacetext(msg, "%TARGET%", "\the [body_relay.name]")
 	var/knot = "knot"
@@ -119,12 +121,14 @@ GLOBAL_LIST_EMPTY_TYPED(interaction_instances, /datum/interaction)
 		user.manual_emote(msg)
 	if(user_messages.len)
 		var/user_msg = pick(user_messages)
+		user_msg = lang_reverse_text(user_msg) // ZH EDIT - preserve player names when substituting tokens
 		if(!isnull(body_relay))
 			user_msg = replacetext(user_msg, "%TARGET%", "\the [body_relay.name]")
 		user_msg = replacetext(replacetext(replacetext(user_msg, "%TARGET%", "[target]"), "%USER%", "[user]"), "%KNOT%", "[knot]")
 		to_chat(user, user_msg)
 	if(target_messages.len)
 		var/target_msg = pick(target_messages)
+		target_msg = lang_reverse_text(target_msg) // ZH EDIT - preserve player names when substituting tokens
 		if(!isnull(body_relay))
 			target_msg = replacetext(target_msg, "%USER%", "Unknown")
 		target_msg = replacetext(replacetext(replacetext(target_msg, "%TARGET%", "[target]"), "%USER%", "[user]"), "%KNOT%", "[knot]")
@@ -298,5 +302,5 @@ GLOBAL_LIST_EMPTY_TYPED(interaction_instances, /datum/interaction)
 
 		SSinteractions.interactions[iname] = interaction //SPLURT EDIT - Interactions subsystem - Original: GLOB.interaction_instances[iname] = interaction
 
-ADMIN_VERB(reload_interactions, R_DEBUG, "Reload Interactions", "Force reload interactions.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(reload_interactions, R_DEBUG, "重新加载互动", "Force reload interactions.", ADMIN_CATEGORY_DEBUG)
 	SSinteractions.prepare_interactions() //SPLURT EDIT - Interactions subsystem - Original: populate_interaction_instances()

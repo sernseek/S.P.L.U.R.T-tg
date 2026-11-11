@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/chem_heater
 	name = "reaction chamber" //Maybe this name is more accurate?
 	density = TRUE
@@ -65,19 +66,19 @@
 /obj/machinery/chem_heater/examine(mob/user)
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("The status display reads: Heating reagents at <b>[heater_coefficient * 1000]%</b> speed.")
+		. += span_notice(LANG("obj.827df9e9e1de41b7", list(heater_coefficient * 1000)))
 		if(!QDELETED(beaker))
-			. += span_notice("It has a beaker of [beaker.reagents.total_volume] units capacity.")
+			. += span_notice(LANG("obj.26796692a3f28402", list(beaker.reagents.total_volume)))
 			if(beaker.reagents.is_reacting)
-				. += span_notice("Its contents are currently reacting.")
+				. += span_notice(LANG("obj.92d004e1e1aa5895", null))
 		else
-			. += span_warning("There is no beaker inserted.")
-		. += span_notice("Its heating is turned [on ? "On" : "Off"].")
-		. += span_notice("The status display reads: Heating reagents at <b>[heater_coefficient * 1000]%</b> speed.")
+			. += span_warning(LANG("obj.801e64225f4fde6e", null))
+		. += span_notice(LANG("obj.b913d455d8e61a48", list(on ? "On" : "Off")))
+		. += span_notice(LANG("obj.827df9e9e1de41b7", list(heater_coefficient * 1000)))
 		if(panel_open)
-			. += span_notice("Its panel is open and can now be [EXAMINE_HINT("pried")] apart.")
+			. += span_notice(LANG("obj.7d0f2c5837377ceb", list(EXAMINE_HINT("pried"))))
 		else
-			. += span_notice("Its panel can be [EXAMINE_HINT("pried")] open")
+			. += span_notice(LANG("obj.c87fbeb5b7e7fde9", list(EXAMINE_HINT("pried"))))
 
 /obj/machinery/chem_heater/update_icon_state()
 	icon_state = "[base_icon_state][(beaker && !panel_open) ? 1 : 0]b"
@@ -103,7 +104,7 @@
 		return ITEM_INTERACT_BLOCKING
 
 	ui_interact(user)
-	balloon_alert(user, "beaker added")
+	balloon_alert(user, LANG("obj.254f5a24e45dd1e5", null))
 
 	return ITEM_INTERACT_SUCCESS
 
@@ -221,7 +222,7 @@
 		var/list/beakerContents = list()
 		if(length(beaker.reagents.reagent_list))
 			for(var/datum/reagent/reagent in beaker.reagents.reagent_list)
-				beakerContents += list(list("name" = reagent.name, "volume" = round(reagent.volume, CHEMICAL_VOLUME_ROUNDING))) // list in a list because Byond merges the first list...
+				beakerContents += list(list("name" = lang_localize_display_name(reagent.name), "volume" = round(reagent.volume, CHEMICAL_VOLUME_ROUNDING))) // list in a list because Byond merges the first list... // ZH EDIT - I18N: 试剂名纯显示。ORIGINAL: "name" = reagent.name
 		beaker_data["contents"] = beakerContents
 		chem_temp = beaker.reagents.chem_temp
 	.["beaker"] = beaker_data
@@ -258,7 +259,7 @@
 
 		//create ui data
 		active_reactions += list(list(
-			"name" = reagent.name,
+			"name" = lang_localize_display_name(reagent.name), // ZH EDIT - I18N: 试剂名纯显示。ORIGINAL: "name" = reagent.name,
 			"danger" = danger,
 			"overheat" = overheat,
 			"purityAlert" = purity_alert,
@@ -361,14 +362,14 @@
 
 	//no beaker
 	if(QDELETED(beaker))
-		say("No beaker found!")
+		say(LANG("obj.ce184d8af7fe7152", null))
 		return FALSE
 
 	//trying to absorb buffer from currently inserted beaker
 	if(volume < 0)
 		if(!beaker.reagents.has_reagent(buffer_type))
 			var/name = initial(buffer_type.name)
-			say("Unable to find [name] in beaker to draw from! Please insert a beaker containing [name].")
+			say(LANG("obj.7f146f64bbbcd671", list(name, name)))
 			return FALSE
 		beaker.reagents.trans_to(src, (reagents.maximum_volume / 2) - reagents.get_reagent_amount(buffer_type), target_id = buffer_type)
 		return TRUE

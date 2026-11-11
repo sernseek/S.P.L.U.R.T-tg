@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/glitch
 	/// Ref of the spawning forge
 	var/datum/weakref/forge_ref
@@ -39,7 +40,7 @@
 		return
 
 	var/mob/living/owner = parent
-	to_chat(owner, span_userdanger("You feel a strange sensation..."))
+	to_chat(owner, span_userdanger(LANG("datum.6128d01b17702a9e", null)))
 
 	var/obj/machinery/byteforge/forge = forge_ref?.resolve()
 	forge?.setup_particles()
@@ -63,7 +64,7 @@
 		return
 
 	player.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/glitch_slowdown)
-	to_chat(player, span_danger("Your body feels sluggish..."))
+	to_chat(player, span_danger(LANG("datum.0ebc05531932da0b", null)))
 
 /// Power restored
 /datum/component/glitch/proc/on_forge_power_restored(datum/source)

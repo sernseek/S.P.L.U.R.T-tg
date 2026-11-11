@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Any proc that communicates text to/from a blood worm goes here.
 // These procs are usually pretty big and there are quite a few of them.
 
@@ -81,11 +82,11 @@
 	var/total_required = cocoon_action?.total_blood_required
 
 	if (total_required > 0)
-		. += "Growth: [FLOOR(total / total_required * 100, 1)]%"
-	. += "Blood Consumed"
-	. += "- Normal: [ceil(normal)]u"
-	. += "- Synthetic: [ceil(synth)]u (MAX: [maximum_synth_blood]u)"
-	. += "- Total: [ceil(total)]u (REQ: [total_required]u)"
+		. += LANG("mob.92b8912b03b13f62", list(FLOOR(total / total_required * 100, 1)))
+	. += LANG("mob.44aa35a721df178a", null)
+	. += LANG("mob.b90295d56377737d", list(ceil(normal)))
+	. += LANG("mob.501f03000d085b9e", list(ceil(synth), maximum_synth_blood))
+	. += LANG("mob.e28ede9df894f17e", list(ceil(total), total_required))
 
 /// Sends text to the blood worm, whether they are possessing a host or not.
 /mob/living/basic/blood_worm/proc/to_chat_self(text)

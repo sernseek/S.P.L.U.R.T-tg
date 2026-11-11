@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/sextoy/buttplug
 	name = "buttplug"
 	desc = "I'm meant to put that WHERE?!"
@@ -43,9 +44,9 @@
 /obj/item/clothing/sextoy/buttplug/examine(mob/user)
 	. = ..()
 	if(!color_changed)
-		. += span_notice("Alt-click to change it's colors.")
+		. += span_notice(LANG("obj.d9cfd308047ba719", null))
 	else if(!form_changed)
-		. += span_notice("Alt-click to change it's size.")
+		. += span_notice(LANG("obj.e4adb7a5e1021e26", null))
 
 /obj/item/clothing/sextoy/buttplug/click_alt(mob/user)
 	if(!color_changed)

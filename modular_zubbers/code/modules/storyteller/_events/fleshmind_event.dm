@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/fleshmind
 	name = "Fleshmind"
 	typepath = /datum/round_event/fleshmind
@@ -14,7 +15,7 @@
 	end_when = 201
 
 /datum/round_event/fleshmind/announce(fake)
-	priority_announce("Confirmed outbreak of level CLASSIFIED biohazard aboard [station_name()]. Station quarantine subroutines activated.", "Critical Biohazard Alert", ANNOUNCER_MUTANTS)
+	priority_announce(LANG("datum.145817e9632f19d5", list(station_name())), "Critical Biohazard Alert", ANNOUNCER_MUTANTS)
 
 /datum/round_event/fleshmind/start()
 	var/turf/current_turf = get_turf(src)

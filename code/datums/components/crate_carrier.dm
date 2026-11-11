@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Component for simplemobs and basicmobs that allow them to carry crates.
  */
@@ -41,7 +42,7 @@
 
 	var/num_crates = LAZYLEN(crates_in_hand)
 	if(num_crates > 0)
-		examine_list += span_notice("[source.p_Theyre()] carrying [num_crates == 1 ? "a crate":"[num_crates] crates"].")
+		examine_list += span_notice(LANG("datum.15756cd319598116", list(source.p_Theyre(), num_crates == 1 ? "a crate":"[num_crates] crates")))
 
 /// Signal proc for [COMSIG_LIVING_UNARMED_ATTACK] to allow mobs to pick up or drop crates
 /datum/component/crate_carrier/proc/on_unarm_attack(mob/living/source, atom/target, proximity, modifiers)
@@ -53,23 +54,23 @@
 	if(is_type_in_typecache(target, carriable_cache))
 		var/atom/movable/movable_target = target
 		if(LAZYLEN(crates_in_hand) >= crate_limit)
-			source.balloon_alert(source, "too many crates!")
+			source.balloon_alert(source, LANG("datum.5c6e040ee8ff6023", null))
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 
 		for(var/mob/living/inside_mob in movable_target.get_all_contents())
 			if(inside_mob.mob_size < MOB_SIZE_HUMAN)
 				continue
-			source.balloon_alert(source, "crate too heavy!")
+			source.balloon_alert(source, LANG("datum.ec1b7b197a01c950", null))
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 
 		LAZYADD(crates_in_hand, target)
 		movable_target.forceMove(source)
-		source.balloon_alert(source, "grabbed crate")
+		source.balloon_alert(source, LANG("datum.f3dc15ca02b42acc", null))
 		return COMPONENT_CANCEL_ATTACK_CHAIN
 
 	if(isopenturf(target) && LAZYLEN(crates_in_hand))
 		drop_all_crates(target)
-		source.balloon_alert(source, "dropped crate")
+		source.balloon_alert(source, LANG("datum.cf5be3c6891b5055", null))
 		return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /// Signal proc for [COMSIG_LIVING_DEATH], so we drop crates on death or gib

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/disease/magnitis
 	name = "Magnitis"
 	max_stages = 4
@@ -24,7 +25,7 @@
 	switch(stage)
 		if(2)
 			if(SPT_PROB(1, seconds_per_tick))
-				to_chat(affected_mob, span_danger("Your skin tingles with energy."))
+				to_chat(affected_mob, span_danger(LANG("datum.a0c14b551ef62577", null)))
 			if(SPT_PROB(1, seconds_per_tick))
 				for(var/obj/nearby_object in orange(2, affected_mob))
 					if(nearby_object.anchored || !(nearby_object.obj_flags & CONDUCTS_ELECTRICITY))
@@ -38,9 +39,9 @@
 					nearby_silicon.Move(get_step(nearby_silicon, move_dir), move_dir)
 		if(3)
 			if(SPT_PROB(1, seconds_per_tick))
-				to_chat(affected_mob, span_danger("Your hair stands on end."))
+				to_chat(affected_mob, span_danger(LANG("datum.60f88d8fa0aa86c7", null)))
 			if(SPT_PROB(2, seconds_per_tick))
-				to_chat(affected_mob, span_danger("You feel a light shock course through your body."))
+				to_chat(affected_mob, span_danger(LANG("datum.dffdf60ee9ae2ee2", null)))
 				for(var/obj/nearby_object in orange(4, affected_mob))
 					if(nearby_object.anchored || !(nearby_object.obj_flags & CONDUCTS_ELECTRICITY))
 						continue
@@ -53,9 +54,9 @@
 						nearby_silicon.throw_at(affected_mob, 4, 3)
 		if(4)
 			if(SPT_PROB(1, seconds_per_tick))
-				to_chat(affected_mob, span_danger("You query upon the nature of miracles."))
+				to_chat(affected_mob, span_danger(LANG("datum.d05da4f52dabf7e1", null)))
 			if(SPT_PROB(4, seconds_per_tick))
-				to_chat(affected_mob, span_danger("You feel a powerful shock course through your body."))
+				to_chat(affected_mob, span_danger(LANG("datum.8b3e917bc1497be8", null)))
 				for(var/obj/nearby_object in orange(6, affected_mob))
 					if(nearby_object.anchored || !(nearby_object.obj_flags & CONDUCTS_ELECTRICITY))
 						continue

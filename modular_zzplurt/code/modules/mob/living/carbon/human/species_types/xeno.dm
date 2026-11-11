@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/xeno
 	heatmod = 1.5
 	bodypart_overrides = list(
@@ -50,17 +51,17 @@
 	switch(action_state)
 		if(ACTION_STATE_STANDBY)
 			if(!COOLDOWN_FINISHED(src, revive_cd))
-				to_chat(owner, span_warning("You can't use that ability again so soon! It will be ready in [DisplayTimeText(COOLDOWN_TIMELEFT(src, revive_cd))]."))
+				to_chat(owner, span_warning(LANG("datum.b9bb7aeb5e95dc4a", list(DisplayTimeText(COOLDOWN_TIMELEFT(src, revive_cd))))))
 				return FALSE
 
 			is_dead = (owner.stat == DEAD)
 			var/time = is_dead ? 5 MINUTES : 30 SECONDS
-			var/alert = is_dead ? "Are you sure you want to regenerate? This will take 5 minutes to prepare, then automatically trigger." : "Are you sure you want to actualize your form? This will take 30 seconds to prepare, then automatically trigger."
+			var/alert = is_dead ? LANG("datum.87c8715f072e2b96", null) : LANG("datum.2ba8e3a0b4c253f1", null)
 
-			if(tgui_alert(owner, alert, "Confirm Reconstitution", list("Yes", "No")) != "Yes")
+			if(tgui_alert(owner, alert, LANG("datum.397d97d731c620a0", null), list("Yes", "No")) != "Yes")
 				return FALSE
 
-			to_chat(owner, span_notice("You begin preparing to reconstitute your form. This will take [DisplayTimeText(time)]. You will not be able to move during this time. The reconstitution will automatically trigger when ready."))
+			to_chat(owner, span_notice(LANG("datum.850f714723436b70", list(DisplayTimeText(time)))))
 
 			if(is_dead)
 				RegisterSignal(owner, COMSIG_LIVING_REVIVE, PROC_REF(on_revive))
@@ -75,7 +76,7 @@
 			return TRUE
 
 		if(ACTION_STATE_PREPARING)
-			to_chat(owner, span_warning("You are already preparing to reconstitute! The process will automatically complete in [DisplayTimeText(timeleft(revive_timer))]."))
+			to_chat(owner, span_warning(LANG("datum.a923eda8e789831c", list(DisplayTimeText(timeleft(revive_timer))))))
 			return FALSE
 
 /datum/action/innate/reconstitute_form/proc/on_revive(mob/living/source, full_heal_flags)
@@ -85,7 +86,7 @@
 		deltimer(revive_timer)
 		revive_timer = 0
 
-	to_chat(owner, span_notice("Your body has recovered from its ordeal, ready to regenerate itself again."))
+	to_chat(owner, span_notice(LANG("datum.7c10391d68cdd996", null)))
 	UnregisterSignal(owner, COMSIG_LIVING_REVIVE)
 	action_state = ACTION_STATE_STANDBY
 	button_icon_state = "stasis"
@@ -114,17 +115,17 @@
 	new /obj/effect/gibspawner/human(get_turf(owner), owner)
 
 	if(is_dead)
-		to_chat(owner, span_notice("Your new body awakens, bursting free from your old skin."))
+		to_chat(owner, span_notice(LANG("datum.15be8141d578eb51", null)))
 		owner.revive(HEAL_ALL)
-		owner.visible_message(span_danger("<p><font size=4>The lifeless husk of [owner] bursts open, revealing a new, intact copy in the pool of viscera.</font></p>"))
-		owner.visible_message("The former corpse staggers to its feet, all its former wounds having vanished...")
+		owner.visible_message(span_danger(LANG("datum.b558e9a8cb97ac97", list(owner))))
+		owner.visible_message(LANG("datum.60b171338a41ce8d", null))
 
 		UnregisterSignal(owner, COMSIG_LIVING_REVIVE)
 		COOLDOWN_START(src, revive_cd, 5 MINUTES)
 		is_dead = FALSE
 	else
-		to_chat(owner, span_notice("Your body shifts and tears, reconstituting into your ideal form."))
-		owner.visible_message(span_danger("[owner]'s form violently shifts, bursting free from [owner.p_their()] old skin in a shower of viscera!"))
+		to_chat(owner, span_notice(LANG("datum.61943fec4de780fe", null)))
+		owner.visible_message(span_danger(LANG("datum.26150344506e209b", list(owner, owner.p_their()))))
 		COOLDOWN_START(src, revive_cd, 30 SECONDS)
 
 	action_state = ACTION_STATE_STANDBY

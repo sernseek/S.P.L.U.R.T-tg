@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define FORTITUDE_STUN_IMMUNITY_LEVEL 4
 /datum/action/cooldown/bloodsucker/fortitude
 	name = "Fortitude"
@@ -16,12 +17,12 @@
 
 /datum/action/cooldown/bloodsucker/fortitude/get_power_explanation_extended()
 	. = list()
-	. += "Fortitude will provide pierce, stun and dismember immunity."
-	. += "You will additionally gain resistance to both brute, burn and stamina damage, scaling with level."
-	. += "Fortitude will make you receive [GetFortitudeResist() * 10]% less brute and and stamina and [GetBurnResist() * 10]% less burn damage."
-	. += "While using Fortitude, attempting to run will crush you."
-	. += "At level [FORTITUDE_STUN_IMMUNITY_LEVEL], you gain complete stun immunity while [src] is active."
-	. += "Higher levels will increase Brute and Stamina resistance."
+	. += LANG("datum.e50a5a17219d4f48", null)
+	. += LANG("datum.3db0867a1f9fabc3", null)
+	. += LANG("datum.e04cf1109c3fcc41", list(GetFortitudeResist() * 10, GetBurnResist() * 10))
+	. += LANG("datum.95544f35aff7fa29", null)
+	. += LANG("datum.ef44fcfcef2aea7f", list(FORTITUDE_STUN_IMMUNITY_LEVEL, src))
+	. += LANG("datum.4a0bdd774e8e2ebe", null)
 
 /datum/action/cooldown/bloodsucker/fortitude/upgrade_power()
 	. = ..()
@@ -29,8 +30,8 @@
 		traits_to_add |= TRAIT_STUNIMMUNE
 
 /datum/action/cooldown/bloodsucker/fortitude/ActivatePower(atom/target)
-	owner.balloon_alert(owner, "fortitude turned on.")
-	to_chat(owner, span_notice("Your flesh, skin, and muscles become as steel."))
+	owner.balloon_alert(owner, LANG("datum.1ce09de37de5d26f", null))
+	to_chat(owner, span_notice(LANG("datum.bd917e9b5f09754b", null)))
 	// Traits & Effects
 	owner.add_traits(traits_to_add, BLOODSUCKER_TRAIT)
 
@@ -80,7 +81,7 @@
 	/// Prevents running while on Fortitude
 	if(user.move_intent != MOVE_INTENT_WALK)
 		user.toggle_move_intent()
-		user.balloon_alert(user, "you attempt to run, crushing yourself.")
+		user.balloon_alert(user, LANG("datum.8b6cebf428d0b4ec", null))
 		user.adjust_brute_loss(rand(5,15))
 	/// We don't want people using fortitude being able to use vehicles
 	if(user.buckled && istype(user.buckled, /obj/vehicle))
@@ -104,7 +105,7 @@
 
 	if(was_running && bloodsucker_user.move_intent == MOVE_INTENT_WALK)
 		bloodsucker_user.toggle_move_intent()
-	owner.balloon_alert(owner, "fortitude turned off.")
+	owner.balloon_alert(owner, LANG("datum.06ce0f2c316d5924", null))
 	fortitude_resist = 1
 	UnregisterSignal(owner, list(COMSIG_LIVING_ADJUST_BRUTE_DAMAGE, COMSIG_LIVING_ADJUST_BURN_DAMAGE))
 	return ..()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define HONK_CURSE_COOLDOWN (90 SECONDS)
 #define HONK_CURSE_EMAGGED_COOLDOWN (30 SECONDS)
 #define HONK_CURSE_DURATION (5 MINUTES)
@@ -194,15 +195,15 @@
 /obj/item/clothing/glasses/hud/security/sunglasses/guard/command/examine(mob/user)
 	. = ..()
 	if(depleted)
-		. += span_warning("The battery is dead; you can remove the cell with a <b>screwdriver</b>.")
+		. += span_warning(LANG("obj.a78bb20fe0543ecf", null))
 		return
-	. += span_notice("Auxiliary suite: [get_mode_name()].")
+	. += span_notice(LANG("obj.3984206b3d7962cd", list(get_mode_name())))
 	if(cell)
-		. += span_notice("The glasses' battery level is [round(cell.percent())]%. You can eject the cell with a <b>screwdriver</b>.")
+		. += span_notice(LANG("obj.44b535b3a386ceaf", list(round(cell.percent()))))
 	else
-		. += span_warning("There is no cell installed!")
+		. += span_warning(LANG("obj.93d236bc7e35faa7", null))
 	if(malfunctioning)
-		. += span_warning("The suite selector is glitching out...")
+		. += span_warning(LANG("obj.6b443ae5eb7ba8a8", null))
 
 /obj/item/clothing/glasses/hud/security/sunglasses/guard/command/proc/get_mode_name()
 	switch(mode)
@@ -313,10 +314,10 @@
 
 /obj/item/clothing/glasses/hud/security/sunglasses/guard/command/proc/on_action(mob/living/carbon/wearer)
 	if(depleted)
-		balloon_alert(wearer, "cell flat!")
+		balloon_alert(wearer, LANG("obj.a005aaef446f171f", null))
 		return
 	if(malfunctioning)
-		balloon_alert(wearer, "selector glitching!")
+		balloon_alert(wearer, LANG("obj.72e1c224b78b7387", null))
 		return
 	if(!COOLDOWN_FINISHED(src, switch_cooldown))
 		return
@@ -336,7 +337,7 @@
 	playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 40, vary = TRUE)
 	var/mob/living/carbon/human/wearer = loc
 	if(istype(wearer) && wearer.glasses == src)
-		to_chat(wearer, span_warning("[src] fizzes and starts flipping through suites on its own."))
+		to_chat(wearer, span_warning(LANG("obj.11b68750fd82d48a", list(src))))
 	addtimer(CALLBACK(src, PROC_REF(settle)), EXECUTIVE_MALFUNCTION_TIME)
 
 /obj/item/clothing/glasses/hud/security/sunglasses/guard/command/proc/settle()
@@ -345,7 +346,7 @@
 	malfunctioning = FALSE
 	var/mob/living/carbon/human/wearer = loc
 	if(istype(wearer) && wearer.glasses == src)
-		balloon_alert(wearer, "selector settled")
+		balloon_alert(wearer, LANG("obj.c54fc3afc6079ae7", null))
 
 /obj/item/clothing/glasses/hud/security/sunglasses/guard/command/process(seconds_per_tick)
 	var/mob/living/carbon/human/wearer = loc
@@ -376,20 +377,20 @@
 		clear_extras(wearer)
 		for(var/trait in clothing_traits)
 			REMOVE_CLOTHING_TRAIT(wearer, trait)
-		balloon_alert(wearer, "cell flat")
-		to_chat(wearer, span_warning("[src] powers down. They're just sunglasses until you replace the cell."))
+		balloon_alert(wearer, LANG("obj.7f24e48628e01707", null))
+		to_chat(wearer, span_warning(LANG("obj.15e1cd8ef73323c9", list(src))))
 
 /obj/item/clothing/glasses/hud/security/sunglasses/guard/command/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ITEM_INTERACT_BLOCKING
 	if(!cell)
-		balloon_alert(user, "no cell to remove!")
+		balloon_alert(user, LANG("obj.5d4b70bc11984414", null))
 		return
 	tool.play_tool_sound(src)
 	var/obj/item/stock_parts/power_store/cell/removed = cell
 	cell = null
 	removed.forceMove(drop_location())
 	if(user.put_in_hands(removed))
-		balloon_alert(user, "cell removed")
+		balloon_alert(user, LANG("obj.0dfdca6e675f39e2", null))
 	var/mob/living/carbon/human/wearer = loc
 	if(istype(wearer) && wearer.glasses == src)
 		update_extras(wearer)
@@ -399,12 +400,12 @@
 	if(!istype(attacking_item, /obj/item/stock_parts/power_store/cell))
 		return ..()
 	if(cell)
-		balloon_alert(user, "already has a cell!")
+		balloon_alert(user, LANG("obj.62f73cd529e01ae3", null))
 		return TRUE
 	if(!user.transferItemToLoc(attacking_item, src))
 		return TRUE
 	cell = attacking_item
-	balloon_alert(user, "cell installed")
+	balloon_alert(user, LANG("obj.0e9b65ee8bac5441", null))
 	if(cell.charge > 0)
 		depleted = FALSE
 	var/mob/living/carbon/human/wearer = loc
@@ -418,7 +419,7 @@
 	if(heat_unlocked)
 		return .
 	heat_unlocked = TRUE
-	balloon_alert(user, "thermal suite unlocked")
+	balloon_alert(user, LANG("obj.44c93cc45d68826c", null))
 	playsound(src, 'sound/machines/terminal/terminal_select.ogg', 25, vary = TRUE)
 	return TRUE
 
@@ -553,7 +554,7 @@ GLOBAL_LIST_EMPTY(executive_valuables)
 
 /obj/item/clothing/glasses/hud/security/sunglasses/guard/blueshield/examine(mob/user)
 	. = ..()
-	. += span_notice("The threat detection suite is [threat_detection ? "armed" : "standing down"].")
+	. += span_notice(LANG("obj.11dadccd7874d7df", list(threat_detection ? "armed" : "standing down")))
 
 /obj/item/clothing/glasses/hud/security/sunglasses/guard/blueshield/update_extras(mob/living/wearer)
 	if(!display_active || !threat_detection)
@@ -597,23 +598,23 @@ GLOBAL_LIST_EMPTY(executive_valuables)
 	. = ..()
 	if(!.)
 		return
-	balloon_alert(user, "safety interlock removed")
+	balloon_alert(user, LANG("obj.5d16b2c4fbe53797", null))
 
 /obj/item/clothing/glasses/hud/security/sunglasses/guard/silly/attack_self(mob/user, modifiers)
 	. = ..()
 	playsound(src, 'sound/items/bikehorn.ogg', 50, vary = TRUE)
-	user.visible_message(span_warning("[user] adjusts [src]. The lenses honk."), span_notice("You adjust [src]. The lenses honk. This is, somehow, load-bearing."))
+	user.visible_message(span_warning(LANG("obj.60ede054c936401b", list(user, src))), span_notice(LANG("obj.d6761013fcaf5c96", list(src))))
 
 // the sechud status field routes here while these are worn
 /obj/item/clothing/glasses/hud/security/sunglasses/guard/silly/proc/issue_gag(mob/living/clown, mob/living/victim)
 	if(!display_active)
-		balloon_alert(clown, "hud disabled")
+		balloon_alert(clown, LANG("obj.8f3da78925e2f1b3", null))
 		return
 	if(!COOLDOWN_FINISHED(src, honk_cooldown))
-		balloon_alert(clown, "recharging")
+		balloon_alert(clown, LANG("obj.55042ac2e98fce15", null))
 		return
 
-	var/chosen_gag = tgui_input_list(clown, "Specify a new criminal status for this person.", "Security HUD", list(HONK_GAG_HONK, HONK_GAG_SLIP))
+	var/chosen_gag = tgui_input_list(clown, LANG("obj.35dee82b547d08ac", null), LANG("obj.3397c83fa462ca39", null), list(HONK_GAG_HONK, HONK_GAG_SLIP))
 	if(!chosen_gag || !COOLDOWN_FINISHED(src, honk_cooldown))
 		return
 	if(QDELETED(victim) || !(victim in view(clown)))
@@ -660,9 +661,9 @@ GLOBAL_LIST_EMPTY(executive_valuables)
 	playsound(owner, 'sound/items/bikehorn.ogg', 70, vary = TRUE)
 	if(gag == HONK_GAG_SLIP)
 		owner.slip(HONK_CURSE_KNOCKDOWN, lube_flags = SLIDE | GALOSHES_DONT_HELP, paralyze = HONK_CURSE_PARALYZE, force_drop = TRUE)
-		owner.visible_message(span_warning("[owner] slips on absolutely nothing."), span_userdanger("You slip on absolutely nothing."))
+		owner.visible_message(span_warning(LANG("datum.8807622af3521235", list(owner))), span_userdanger(LANG("datum.01e39eef6ae37ba9", null)))
 	else
-		owner.visible_message(span_warning("[owner] honks. Involuntarily. From somewhere."), span_userdanger("You honk. You do not know how, and you do not know why."))
+		owner.visible_message(span_warning(LANG("datum.16f1e01e5b1a3b41", list(owner))), span_userdanger(LANG("datum.cedf6e031da764ba", null)))
 	qdel(src)
 
 // flags anyone in view holding a gun, wearer only. the clown is always a threat
@@ -725,11 +726,11 @@ GLOBAL_LIST_EMPTY(executive_valuables)
 
 	var/obj/examined_obj = target
 	if(HAS_TRAIT(examined_obj, TRAIT_CONTRABAND))
-		to_chat(parent, span_danger("Warning: contraband detected. Document this item and surrender it to Security immediately."))
+		to_chat(parent, span_danger(LANG("datum.a7478abae9749a4b", null)))
 		return
 
 	if(isgun(examined_obj))
-		to_chat(parent, span_warning("Firearm detected. Check the registration against the manifest."))
+		to_chat(parent, span_warning(LANG("datum.42a12bae07bc3ac8", null)))
 		return
 
 	var/contraband_inside = FALSE
@@ -745,9 +746,9 @@ GLOBAL_LIST_EMPTY(executive_valuables)
 			break
 
 	if(contraband_inside)
-		to_chat(parent, span_danger("Warning: contraband detected inside [examined_obj]. Document the container and surrender it to Security immediately."))
+		to_chat(parent, span_danger(LANG("datum.e275fc275e955def", list(examined_obj))))
 	if(firearm_inside)
-		to_chat(parent, span_warning("Firearm detected inside [examined_obj]. Check the registration against the manifest."))
+		to_chat(parent, span_warning(LANG("datum.9d1d86b41c544858", list(examined_obj))))
 
 /datum/crafting_recipe/hudsunguardmed
 	name = "Medsec HUDsunglasses"

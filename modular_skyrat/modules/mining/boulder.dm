@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/boulder/proc/manual_process(obj/item/weapon, mob/living/user, override_speed_multiplier, continued = FALSE)
 	var/process_speed = 0
 	var/skill_modifier = user.mind?.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) || 1
@@ -9,7 +10,7 @@
 		process_speed = weapon.toolspeed
 		weapon.play_tool_sound(src, 50)
 		if(!continued)
-			to_chat(user, span_notice("You swing at \the [src]..."))
+			to_chat(user, span_notice(LANG("obj.a97c94632e6ff31b", list(src))))
 
 	// Handle user conditions/override conditions.
 	else if (override_speed_multiplier || HAS_TRAIT(user, TRAIT_BOULDER_BREAKER))
@@ -25,7 +26,7 @@
 
 		playsound(src, 'sound/effects/rock/rocktap1.ogg', 50)
 		if(!continued)
-			to_chat(user, span_notice("You scrape away at \the [src]... speed is [process_speed]."))
+			to_chat(user, span_notice(LANG("obj.8b50f581ecaa8429", list(src, process_speed))))
 
 	else
 		CRASH("No weapon, acceptable user, or override speed multiplier passed to manual_process()")
@@ -42,12 +43,12 @@
 
 	if(durability <= 0)
 		convert_to_ore()
-		to_chat(user, span_notice("You finish working on \the [src], and it crumbles into ore."))
+		to_chat(user, span_notice(LANG("obj.20b7e847850b30ac", list(src))))
 		playsound(src, 'sound/effects/rock/rock_break.ogg', 50)
 		user.mind?.adjust_experience(/datum/skill/mining, MINING_SKILL_BOULDER_SIZE_XP * 0.5)
 		qdel(src)
 		return
 
 	var/msg = (durability == 1 ? "is crumbling!" : "looks weaker!")
-	to_chat(user, span_notice("\The [src] [msg]"))
+	to_chat(user, span_notice(LANG("obj.a3b2fc1ffbf777e4", list(src, msg))))
 	manual_process(weapon, user, override_speed_multiplier, continued = TRUE)

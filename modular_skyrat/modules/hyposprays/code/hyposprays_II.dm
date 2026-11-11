@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define HYPO_INJECT 1
 #define HYPO_SPRAY 0
 
@@ -88,10 +89,10 @@
 /obj/item/custom_kit/deluxe_hypo2/pre_convert_check(obj/target_obj, mob/user)
 	var/obj/item/hypospray/mkii/our_hypo = target_obj
 	if(our_hypo.type in subtypesof(/obj/item/hypospray/mkii/))
-		balloon_alert(user, "only works on basic mk. ii hypos!")
+		balloon_alert(user, LANG("obj.fbac7411d7d119d1", null))
 		return FALSE
 	if(our_hypo.vial != null)
-		balloon_alert(user, "unload the vial first!")
+		balloon_alert(user, LANG("obj.6a688e675493ee68", null))
 		return FALSE
 	return TRUE
 
@@ -162,13 +163,13 @@
 /obj/item/hypospray/mkii/examine(mob/user)
 	. = ..()
 	if(vial)
-		. += "[vial] has [vial.reagents.total_volume]u remaining."
+		. += LANG("obj.9a35887345fb5d75", list(vial, vial.reagents.total_volume))
 	else
-		. += "It has no vial loaded in."
-	. += span_notice("Ctrl-Shift-Click to change up the colors or reset them.")
+		. += LANG("obj.d3cd4f5490e51d0b", null)
+	. += span_notice(LANG("obj.f361af00678e42b3", null))
 
 /obj/item/hypospray/mkii/click_ctrl_shift(mob/user)
-	var/choice = tgui_input_list(user, "GAGSify the hypo or reset to default?", "Fashion", list("GAGS", "Nope"))
+	var/choice = tgui_input_list(user, LANG("obj.87717fa72730ba0f", null), LANG("obj.2767631db7d98ca4", null), list("GAGS", "Nope"))
 	if(choice == "GAGS")
 		icon_state = gags_bodystate
 		//choices go here
@@ -188,19 +189,19 @@
 
 /obj/item/hypospray/mkii/proc/unload_hypo(obj/item/hypo, mob/user)
 	if(!hypo)
-		to_chat(user, span_notice("This hypo isn't loaded!"))
+		to_chat(user, span_notice(LANG("obj.8aa8b107f5cfdffa", null)))
 		return
 
 	hypo.forceMove(user.loc)
 	user.put_in_hands(hypo)
-	to_chat(user, span_notice("You remove [vial] from [src]."))
+	to_chat(user, span_notice(LANG("obj.cbed32661d4c054a", list(vial, src))))
 	vial = null
 	update_icon()
 	playsound(loc, 'sound/items/weapons/empty.ogg', 50, 1)
 
 /obj/item/hypospray/mkii/proc/insert_vial(obj/item/new_vial, mob/living/user)
 	if(!is_type_in_list(new_vial, allowed_containers))
-		to_chat(user, span_notice("[src] doesn't accept this type of vial."))
+		to_chat(user, span_notice(LANG("obj.61106af5c06a8539", list(src))))
 		return FALSE
 	var/atom/quickswap_loc = new_vial.loc
 	if(!user.transferItemToLoc(new_vial, src))
@@ -211,7 +212,7 @@
 		else
 			vial.forceMove(quickswap_loc)
 	vial = new_vial
-	user.visible_message(span_notice("[user] has loaded a vial into [src]."), span_notice("You have loaded [vial] into [src]."))
+	user.visible_message(span_notice(LANG("obj.39f29924a47d0632", list(user, src))), span_notice(LANG("obj.cca0f3fd45fd3903", list(vial, src))))
 	playsound(loc, 'sound/items/weapons/autoguninsert.ogg', 35, 1)
 	update_appearance()
 
@@ -221,7 +222,7 @@
 	if(isnull(vial) || quickload)
 		insert_vial(tool, user)
 		return ITEM_INTERACT_SUCCESS
-	to_chat(user, span_warning("[src] can not hold more than one vial!"))
+	to_chat(user, span_warning(LANG("obj.9476963a231d5d29", list(src))))
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/hypospray/mkii/attack_self(mob/user)
@@ -239,7 +240,7 @@
 /obj/item/hypospray/mkii/emag_act(mob/user)
 	. = ..()
 	if(obj_flags & EMAGGED)
-		to_chat(user, "[src] happens to be already overcharged.")
+		to_chat(user, LANG("obj.3eff8dec94f9e783", list(src)))
 		return FALSE
 	//all these are 0
 	inject_wait = COMBAT_WAIT_INJECT
@@ -247,7 +248,7 @@
 	spray_self = COMBAT_SELF_INJECT
 	inject_self = COMBAT_SELF_SPRAY
 	penetrates = INJECT_CHECK_PENETRATE_THICK
-	to_chat(user, "You overcharge [src]'s control circuit.")
+	to_chat(user, LANG("obj.3309dd5e5dcd88a4", list(src)))
 	obj_flags |= EMAGGED
 	return TRUE
 
@@ -270,24 +271,24 @@
 	if(iscarbon(injectee))
 		var/obj/item/bodypart/affecting = injectee.get_bodypart(check_zone(user.zone_selected))
 		if(!affecting)
-			to_chat(user, span_warning("The limb is missing!"))
+			to_chat(user, span_warning(LANG("obj.fc2e5421ecac7cb8", null)))
 			return ITEM_INTERACT_BLOCKING
 	//Always log attemped injections for admins
 	var/contained = vial.reagents.get_reagent_log_string()
 	log_combat(user, injectee, "attemped to inject", src, addition="which had [contained]")
 
 	if(!vial)
-		to_chat(user, span_notice("[src] doesn't have any vial installed!"))
+		to_chat(user, span_notice(LANG("obj.2584595bd65d2efe", list(src))))
 		return ITEM_INTERACT_BLOCKING
 	if(!vial.reagents.total_volume)
-		to_chat(user, span_notice("[src]'s vial is empty!"))
+		to_chat(user, span_notice(LANG("obj.7c0822bf7a02f09c", list(src))))
 		return ITEM_INTERACT_BLOCKING
 
 	var/fp_verb = mode == HYPO_SPRAY ? "spray" : "inject"
 
 	if(injectee != user)
-		injectee.visible_message(span_danger("[user] is trying to [fp_verb] [injectee] with [src]!"), \
-						span_userdanger("[user] is trying to [fp_verb] you with [src]!"))
+		injectee.visible_message(span_danger(LANG("obj.21830231cd238438", list(user, fp_verb, injectee, src))), \
+						span_userdanger(LANG("obj.32ec203bf309fdf3", list(user, fp_verb, src))))
 
 	var/selected_wait_time
 	if(injectee == user)
@@ -301,8 +302,8 @@
 		return ITEM_INTERACT_BLOCKING
 	log_attack("<font color='red'>[user.name] ([user.ckey]) applied [src] to [injectee.name] ([injectee.ckey]), which had [contained] (COMBAT MODE: [uppertext(user.combat_mode)]) (MODE: [mode])</font>")
 	if(injectee != user)
-		injectee.visible_message(span_danger("[user] uses the [src] on [injectee]!"), \
-						span_userdanger("[user] uses the [src] on you!"))
+		injectee.visible_message(span_danger(LANG("obj.8a9ddbdccca2b9ba", list(user, src, injectee))), \
+						span_userdanger(LANG("obj.2e71c97bce7e420c", list(user, src))))
 	else
 		injectee.log_message("<font color='orange'>applied [src] to themselves ([contained]).</font>", LOG_ATTACK)
 
@@ -314,7 +315,7 @@
 
 	var/long_sound = vial.amount_per_transfer_from_this >= 15
 	playsound(loc, long_sound ? 'modular_skyrat/modules/hyposprays/sound/hypospray_long.ogg' : pick('modular_skyrat/modules/hyposprays/sound/hypospray.ogg','modular_skyrat/modules/hyposprays/sound/hypospray2.ogg'), 50, 1, -1)
-	to_chat(user, span_notice("You [fp_verb] [vial.amount_per_transfer_from_this] units of the solution. The hypospray's cartridge now contains [vial.reagents.total_volume] units."))
+	to_chat(user, span_notice(LANG("obj.7481ff5dd7beae78", list(fp_verb, vial.amount_per_transfer_from_this, vial.reagents.total_volume))))
 	update_appearance()
 	return ITEM_INTERACT_SUCCESS
 
@@ -332,7 +333,7 @@
 
 /obj/item/hypospray/mkii/examine(mob/user)
 	. = ..()
-	. += span_notice("<b>Left-Click</b> on patients to spray, <b>Right-Click</b> to inject.")
+	. += span_notice(LANG("obj.522be2779106f0ed", null))
 
 #undef HYPO_INJECT
 #undef HYPO_SPRAY

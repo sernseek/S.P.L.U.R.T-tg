@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Allows developers to see a breakdown of an atom or a specific target and edit some of the values
 /datum/appearance_debugger
 	var/datum/admins/owner

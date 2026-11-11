@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/mob_spawn
 	name = "Mob Spawner"
 	density = TRUE
@@ -189,7 +190,7 @@
 	if(LAZYFIND(ckeys_trying_to_spawn, user.ckey))
 		return
 	if(uses <= 0 && !infinite_use)
-		to_chat(user, span_warning("This spawner is out of charges!"))
+		to_chat(user, span_warning(LANG("obj.3f72bc171878f493", null)))
 		return FALSE
 	if(!can_ghost_take(user))
 		return FALSE
@@ -202,7 +203,7 @@
 	var/apply_prefs = FALSE
 	// SKYRAT EDIT ADDITION START
 	if(restricted_species && !(user.client?.prefs?.read_preference(/datum/preference/choiced/species) in restricted_species))
-		var/incorrect_species = tgui_alert(user, "Current species preference incompatible, proceed with random appearance?", "Incompatible Species", list("Yes", "No"))
+		var/incorrect_species = tgui_alert(user, LANG("obj.55d5304862a0c9e4", null), LANG("obj.ecb1db7795dfed98", null), list("Yes", "No"))
 		if(incorrect_species != "Yes")
 			LAZYREMOVE(ckeys_trying_to_spawn, user_ckey)
 			return
@@ -220,7 +221,7 @@
 		var/static_prompt = "Because you haven't taken a role so far, you may spawn in as \
 			[((allow_custom_character & GHOSTROLE_TAKE_PREFS_SPECIES) || species_pref == /datum/species/human) ? "" : "a human version of"] \
 			your customized character with a random name. Would you like to?"
-		apply_prefs = tgui_alert(user, static_prompt, "Custom Character", list("Yes", "No"), 10 SECONDS) == "Yes"
+		apply_prefs = tgui_alert(user, static_prompt, LANG("obj.03083561daffa6f3", null), list("Yes", "No"), 10 SECONDS) == "Yes"
 
 	if(!prompt_fail && !pre_ghost_take(user))
 		prompt_fail = TRUE
@@ -238,14 +239,14 @@
 /// Checks if a ghost can take this ghost role.
 /obj/effect/mob_spawn/ghost_role/proc/can_ghost_take(mob/dead/observer/user)
 	if(is_banned_from(user.ckey, role_ban))
-		to_chat(user, span_warning("You are banned from this role!"))
+		to_chat(user, span_warning(LANG("obj.8b2c3968dacddd7b", null)))
 		return FALSE
 	if(!(GLOB.ghost_role_flags & GHOSTROLE_SPAWNER) && !(flags_1 & ADMIN_SPAWNED_1))
-		to_chat(user, span_warning("An admin has temporarily disabled non-admin ghost roles!"))
+		to_chat(user, span_warning(LANG("obj.2e1b465d0319156e", null)))
 		return FALSE
 	// SKYRAT EDIT ADDITION START
 	if(is_banned_from(user.ckey, BAN_GHOST_ROLE_SPAWNER)) // Ghost role bans
-		to_chat(user, span_warning("Error, you are banned from playing ghost roles!"))
+		to_chat(user, span_warning(LANG("obj.6eeb0d8dbba25f68", null)))
 		return FALSE
 	// SKYRAT EDIT ADDITION END
 	if(QDELETED(src) || QDELETED(user))

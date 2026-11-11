@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/dominant_aura
 	name = "Dominant Aura"
 	desc = "You are assertive enough to command your more obedient cohorts. At a snap of your fingers, you can compel their attention-- or send them to the floor."
@@ -112,7 +113,7 @@
 		return
 	if(sub.stat == DEAD)
 		return
-	examine_list += span_purple("[sub.p_They()] seem[sub.p_s()] submissive towards you.")
+	examine_list += span_purple(LANG("datum.34a3dfad3b37d149", list(sub.p_They(), sub.p_s())))
 
 /datum/quirk/dominant_aura/proc/on_snap(atom/source, datum/emote/emote_args)
 	SIGNAL_HANDLER
@@ -149,7 +150,7 @@
 				if(quirk_holder.client.prefs.read_preference(/datum/preference/toggle/dominant_aura/snap) && sub.client.prefs.read_preference(/datum/preference/toggle/well_trained/snap))
 					sub.dir = get_dir(sub, quirk_holder)
 					sub.emote("me", 1, "faces towards <b>[quirk_holder]</b> at attention!", TRUE)
-					to_chat(sub, span_purple("<b>[quirk_holder]</b>'s snap shoots down your spine and puts you at attention."))
+					to_chat(sub, span_purple(LANG("datum.d26b6bad57333463", list(quirk_holder))))
 					. = TRUE
 
 			if("snap2")
@@ -157,7 +158,7 @@
 					sub.dir = get_dir(sub, quirk_holder)
 					sub.Immobilize(0.3 SECONDS)
 					sub.emote("me",1,"hunches down in response to <b>[quirk_holder]'s</b> snapping.", TRUE)
-					to_chat(sub, span_purple("You hunch down and freeze in place in response to <b>[quirk_holder]</b> snapping their fingers."))
+					to_chat(sub, span_purple(LANG("datum.b3c3194248c228b6", list(quirk_holder))))
 					. = TRUE
 
 			if("snap3")
@@ -167,7 +168,7 @@
 					step(sub, get_dir(sub, quirk_holder))
 					sub.emote("me",1,"falls to the floor and crawls closer to <b>[quirk_holder]</b>, following their command.",TRUE)
 					sub.do_jitter_animation(0.1 SECONDS)
-					to_chat(sub, span_purple("You throw yourself on the floor like a pathetic beast and crawl towards <b>[quirk_holder]</b> like a good, submissive [good_x]."))
+					to_chat(sub, span_purple(LANG("datum.dae4b2ec9592323d", list(quirk_holder, good_x))))
 					. = TRUE
 
 
@@ -189,7 +190,7 @@
 				if(quirk_holder.client.prefs.read_preference(/datum/preference/toggle/dominant_aura/snap) && borg_sub.client.prefs.read_preference(/datum/preference/toggle/well_trained/snap))
 					borg_sub.dir = get_dir(borg_sub, quirk_holder)
 					borg_sub.emote("me", 1, "faces towards <b>[quirk_holder]</b> at attention!", TRUE)
-					to_chat(borg_sub, span_purple("<b>[quirk_holder]</b>'s snap shoots down your spine and puts you at attention."))
+					to_chat(borg_sub, span_purple(LANG("datum.d26b6bad57333463", list(quirk_holder))))
 					. = TRUE
 
 			if("snap2")
@@ -198,7 +199,7 @@
 					borg_sub.robot_lay_down()
 					borg_sub.Stun(0.3 SECONDS)
 					borg_sub.emote("me",1,"hunches down in response to <b>[quirk_holder]'s</b> snapping.", TRUE)
-					to_chat(borg_sub, span_purple("You hunch down and freeze in place in response to <b>[quirk_holder]</b> snapping their fingers."))
+					to_chat(borg_sub, span_purple(LANG("datum.b3c3194248c228b6", list(quirk_holder))))
 					. = TRUE
 
 			if("snap3")
@@ -208,7 +209,7 @@
 					borg_sub.Stun(0.3 SECONDS)
 					borg_sub.emote("me",1,"crawls closer to <b>[quirk_holder]</b> and lays down, following their command.",TRUE)
 					borg_sub.do_jitter_animation(0.1 SECONDS)
-					to_chat(borg_sub, span_purple("You crawl towards <b>[quirk_holder]</b> and lay down like a good, submissive [good_x]."))
+					to_chat(borg_sub, span_purple(LANG("datum.ac2d3f4d9b841889", list(quirk_holder, good_x))))
 					. = TRUE
 
 	if(.)

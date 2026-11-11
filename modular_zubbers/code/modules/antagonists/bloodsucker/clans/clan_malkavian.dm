@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/bloodsucker_clan/malkavian
 	name = CLAN_MALKAVIAN
 	description = "Little is documented about Malkavians. Complete insanity is the most common theme. \n\
@@ -27,7 +28,7 @@
 	owner_datum.owner.current.update_sight()
 
 	bloodsuckerdatum.owner.current.playsound_local(get_turf(bloodsuckerdatum.owner.current), 'sound/music/antag/creepalert.ogg', 80, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
-	to_chat(bloodsuckerdatum.owner.current, span_hypnophrase("Welcome to the Malkavian..."))
+	to_chat(bloodsuckerdatum.owner.current, span_hypnophrase(LANG("datum.2ea984d580db8060", null)))
 
 /datum/bloodsucker_clan/malkavian/Destroy(force)
 	UnregisterSignal(SSdcs, COMSIG_BLOODSUCKER_BROKE_MASQUERADE)
@@ -63,7 +64,7 @@
 		carbonowner.gain_trauma(/datum/brain_trauma/special/bluespace_prophet/phobetor, TRAUMA_RESILIENCE_ABSOLUTE)
 	var/datum/martial_art/psychotic_brawling/psychotic_brawling = new(null)
 	psychotic_brawling.teach(ghouldatum.owner.current, TRUE)
-	to_chat(ghouldatum.owner.current, span_notice("Additionally, you now suffer the same fate as your Master, while also gaining the ability to tap into the madness when fighting."))
+	to_chat(ghouldatum.owner.current, span_notice(LANG("datum.9edd67a94eb8d92d", null)))
 
 /datum/bloodsucker_clan/malkavian/favorite_ghoul_loss(datum/antagonist/bloodsucker/source, datum/antagonist/ghoul/ghouldatum)
 	var/mob/living/carbon/carbonowner = ghouldatum.owner.current
@@ -98,7 +99,7 @@
 
 /datum/bloodsucker_clan/malkavian/proc/on_bloodsucker_broke_masquerade(datum/source, datum/antagonist/bloodsucker/masquerade_breaker)
 	SIGNAL_HANDLER
-	to_chat(bloodsuckerdatum.owner.current, span_userdanger("[masquerade_breaker.owner.current] has broken the Masquerade! Ensure [masquerade_breaker.owner.current.p_they()] [masquerade_breaker.owner.current.p_are()] eliminated at all costs!"))
+	to_chat(bloodsuckerdatum.owner.current, span_userdanger(LANG("datum.7f8874c8dc09b876", list(masquerade_breaker.owner.current, masquerade_breaker.owner.current.p_they(), masquerade_breaker.owner.current.p_are()))))
 	var/datum/objective/assassinate/masquerade_objective = new()
 	masquerade_objective.target = masquerade_breaker.owner.current
 	masquerade_objective.objective_name = "Clan Objective"

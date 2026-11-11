@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// What's the maximum range of the field?
 #define SUPERPARTICLE_MAX_RANGE (20)
 /// What's the maximum internal power? If its above this value, the field will affect everyone on same Z level
@@ -102,17 +103,17 @@
 
 /obj/machinery/power/superparticlegen/examine(mob/user)
 	. = ..()
-	. += "It is [on ? "on" : "off"]."
+	. += LANG("obj.62eee539c1582dc1", list(on ? "on" : "off"))
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("<b>Right-click</b> to toggle [on ? "off" : "on"].")
+		. += span_notice(LANG("obj.a322e9c4d26091f5", list(on ? "off" : "on")))
 		if(connected_supermatter.internal_energy < SUPERPARTICLE_MAX_POWER)
-			. += span_notice("Current range of the field: [range] tiles.")
+			. += span_notice(LANG("obj.b408604548e94fba", list(range)))
 		else
-			. += span_notice("The superparticle fields effect is extending over the entire area around the projector!")
-		. += span_notice("<b>Carbon Dioxide</b> effect is <b>[superparticle_gas_flags & SP_GAS_FLAG_CARBON ? "active" : "not active"]</b>.")
-		. += span_notice("<b>Healium</b> effect is <b>[superparticle_gas_flags & SP_GAS_FLAG_HEALIUM ? "active" : "not active"]</b>.")
+			. += span_notice(LANG("obj.2308870fcf380b38", null))
+		. += span_notice(LANG("obj.ee6b50a5365813cb", list(superparticle_gas_flags & SP_GAS_FLAG_CARBON ? "active" : "not active")))
+		. += span_notice(LANG("obj.88575b61c62f1270", list(superparticle_gas_flags & SP_GAS_FLAG_HEALIUM ? "active" : "not active")))
 		if (connected_supermatter.internal_energy >= SUPERPARTICLE_STOP_POWER)
-			. += span_warning("The connected crystal is overloaded, disabling the superparticle field!")
+			. += span_warning(LANG("obj.77aa439724a55282", null))
 
 /obj/machinery/power/superparticlegen/attack_hand_secondary(mob/user, list/modifiers)
 	if(!can_interact(user))
@@ -125,7 +126,7 @@
 	for(var/obj/machinery/power/supermatter_crystal/sm as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/power/supermatter_crystal))
 		if((loc.z == sm.z) | (is_station_level(loc.z) & is_station_level(sm.z)))
 			supermatters += sm
-	connected_supermatter = tgui_input_list(user, "Which engine would you like to link to?", "Select an engine!", supermatters)
+	connected_supermatter = tgui_input_list(user, LANG("obj.75ed7f54a3902a7d", null), LANG("obj.14a97678ebdd562e", null), supermatters)
 	turn_on(user)
 
 /obj/machinery/power/superparticlegen/proc/toggle_on(mob/user)
@@ -135,11 +136,11 @@
 	if(anchored)
 		display_options(user)
 	else
-		balloon_alert(user, "anchor first")
+		balloon_alert(user, LANG("obj.0f071df1af00a138", null))
 
 /obj/machinery/power/superparticlegen/proc/turn_on(mob/user)
 	if(!isnull(user))
-		balloon_alert(user, "turned on")
+		balloon_alert(user, LANG("obj.9fae209bc47e34ea", null))
 	on = TRUE
 	START_PROCESSING(SSmachines, src)
 	update_appearance()
@@ -147,16 +148,16 @@
 /obj/machinery/power/superparticlegen/proc/turn_off(mob/user)
 	on = FALSE
 	if(!isnull(user))
-		balloon_alert(user, "turned off")
+		balloon_alert(user, LANG("obj.49613fe46788cb6a", null))
 	STOP_PROCESSING(SSmachines, src)
 	update_appearance()
 
 /obj/machinery/power/superparticlegen/screwdriver_act(mob/living/user, obj/item/tool)
 	if(on)
-		balloon_alert(user, "turn off!")
+		balloon_alert(user, LANG("obj.55d6a7ad89ca7417", null))
 		return ITEM_INTERACT_SUCCESS
 	if(!anchored)
-		balloon_alert(user, "anchor!")
+		balloon_alert(user, LANG("obj.87501e909cb834b9", null))
 		return ITEM_INTERACT_SUCCESS
 
 	return default_deconstruction_screwdriver(user, tool)
@@ -167,7 +168,7 @@
 /obj/machinery/power/superparticlegen/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	if(on)
-		balloon_alert(user, "turn off first!")
+		balloon_alert(user, LANG("obj.19a396d6413f5298", null))
 		return
 	default_unfasten_wrench(user, tool)
 	if(anchored)

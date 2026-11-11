@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Corn
 /obj/item/seeds/corn
 	name = "corn seed pack"
@@ -57,7 +58,7 @@
 	if(!tool.get_sharpness())
 		return NONE
 
-	to_chat(user, span_notice("You use [tool] to fashion a pipe out of the corn cob!"))
+	to_chat(user, span_notice(LANG("obj.5d3a4a5f9ffbed4d", list(tool))))
 	new /obj/item/cigarette/pipe/cobpipe (user.loc)
 	qdel(src)
 	return ITEM_INTERACT_SUCCESS
@@ -91,7 +92,7 @@
 
 /obj/item/grown/snapcorn/attack_self(mob/user)
 	..()
-	to_chat(user, span_notice("You pick a snap pop from the cob."))
+	to_chat(user, span_notice(LANG("obj.92fcb7088c1cb256", null)))
 	var/obj/item/toy/snappop/S = new /obj/item/toy/snappop(user.loc)
 	if(ishuman(user))
 		user.put_in_hands(S)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/ghoul
 	name = "\improper Ghoul"
 	id = SPECIES_GHOUL
@@ -79,19 +80,19 @@
 		return ..()
 
 	if (user.handcuffed)
-		to_chat(user, span_alert("You can't get a good enough grip with your hands bound."))
+		to_chat(user, span_alert(LANG("datum.ac619cad1cefbd49", null)))
 		return FALSE
 
 	// Robotic limbs cannot be detatched this way.
 	if (!IS_ORGANIC_LIMB(affecting))
-		to_chat(user, "That thing is on there good. It's not coming off with a gentle tug.")
+		to_chat(user, LANG("datum.f64eacb9d2a0ffab", null))
 		return FALSE
 
-	user.visible_message("[user] grabs onto [p_their()] own [affecting.name] and pulls.", span_notice("You grab hold of your [affecting.name] and yank hard."))
+	user.visible_message(LANG("datum.5f800618f1300c64", list(user, p_their(), affecting.name)), span_notice(LANG("datum.b7e14cd9775bd44f", list(affecting.name))))
 	if (!do_after(user, 3 SECONDS, target))
 		return FALSE
 
-	user.visible_message("[user]'s [affecting.name] comes right off in their hand.", span_notice("Your [affecting.name] pops right off."))
+	user.visible_message(LANG("datum.9550d59999df9690", list(user, affecting.name)), span_notice(LANG("datum.0c8a4ff0c5c24ae3", list(affecting.name))))
 	playsound(get_turf(user), 'sound/effects/meatslap.ogg', 40, 1)
 
 	var/obj/item/I = affecting.drop_limb()
@@ -121,12 +122,12 @@
 	if(!(target_zone in swappable_parts))
 		return NONE
 
-	user.visible_message("[user] begins mashing [tool] into [target]'s torso.", span_notice("You begin mashing [tool] into [target == user ? "your" : "[target]'s"] torso."))
+	user.visible_message(LANG("datum.a00150e51d0c9bc4", list(user, tool, target)), span_notice(LANG("datum.a7d6a4cadc2240ec", list(tool, target == user ? "your" : "[target]'s"))))
 
 	ASYNC
 		if(do_after(user, 3 SECONDS, target))
 			var/obj/item/bodypart/new_limb = target.newBodyPart(target_zone, FALSE)
-			target.visible_message("The meat sprouts digits and becomes [target]'s new [new_limb.name]!", span_notice("The meat sprouts digits and becomes your new [new_limb.name]!"))
+			target.visible_message(LANG("datum.436af93d600b1a01", list(target, new_limb.name)), span_notice(LANG("datum.997dc0b98a24bc09", list(new_limb.name))))
 			new_limb.try_attach_limb(target)
 			qdel(tool)
 			playsound(get_turf(target), 'sound/effects/meatslap.ogg', 50, 1)

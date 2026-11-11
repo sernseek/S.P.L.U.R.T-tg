@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define COMBAT_NOTICE_COOLDOWN (10 SECONDS)
 GLOBAL_VAR_INIT(combat_indicator_overlay, GenerateCombatOverlay())
 
@@ -31,7 +32,7 @@ GLOBAL_VAR_INIT(combat_indicator_overlay, GenerateCombatOverlay())
 			vehicle_next_combat_popup = world.time + COMBAT_NOTICE_COOLDOWN
 			playsound(src, 'sound/machines/chime.ogg', vol = 10, vary = FALSE, extrarange = -6, falloff_exponent = 4, frequency = null, channel = 0, pressure_affected = FALSE, ignore_walls = FALSE, falloff_distance = 1)
 			flick_emote_popup_on_obj("combat", 20)
-			visible_message(span_boldwarning("[src] prepares for combat!"))
+			visible_message(span_boldwarning(LANG("obj.6ec65a2e5ebc0e47", list(src))))
 		combat_indicator_vehicle = TRUE
 	else
 		combat_indicator_vehicle = FALSE
@@ -85,18 +86,18 @@ GLOBAL_VAR_INIT(combat_indicator_overlay, GenerateCombatOverlay())
 			if(get_active_held_item())
 				ciweapon = get_active_held_item()
 				if(istype(ciweapon, /obj/item/gun))
-					visible_message(span_boldwarning("[src] raises \the [ciweapon] with their finger on the trigger, ready for combat!"))
+					visible_message(span_boldwarning(LANG("mob.cd48d61855f02b57", list(src, ciweapon))))
 				else
-					visible_message(span_boldwarning("[src] readies \the [ciweapon] with a tightened grip and offensive stance, ready for combat!"))
+					visible_message(span_boldwarning(LANG("mob.a5772160172f81a9", list(src, ciweapon))))
 			else
 				if(issilicon(src))
-					visible_message(span_boldwarning("<b>[src] shifts its armour plating into a defensive stance, ready for combat!"))
+					visible_message(span_boldwarning(LANG("mob.63cb54453cacae23", list(src))))
 				if(ishuman(src))
-					visible_message(span_boldwarning("[src] raises [p_their()] fists in an offensive stance, ready for combat!"))
+					visible_message(span_boldwarning(LANG("mob.e1bed157986dc723", list(src, p_their()))))
 				if(isalien(src))
-					visible_message(span_boldwarning("[src] hisses in a terrifying stance, claws raised and ready for combat!"))
+					visible_message(span_boldwarning(LANG("mob.9c4fa99dc34180d2", list(src))))
 				else
-					visible_message(span_boldwarning("[src] gets ready for combat!"))
+					visible_message(span_boldwarning(LANG("mob.3c764503aab10828", list(src))))
 		combat_indicator = TRUE
 		apply_status_effect(/datum/status_effect/grouped/surrender, src)
 		log_message("<font color='red'>has turned ON the combat indicator!</font>", LOG_ATTACK)

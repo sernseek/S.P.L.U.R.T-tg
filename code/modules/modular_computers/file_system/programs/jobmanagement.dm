@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The time since the last job opening was created
 GLOBAL_VAR_INIT(time_last_changed_position, 0)
 
@@ -98,7 +99,7 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 				if(length(SSjob.prioritized_jobs) < 5)
 					SSjob.prioritized_jobs += j
 				else
-					computer.say("Error: CentCom employment protocols restrict prioritising more than 5 jobs.")
+					computer.say(LANG("datum.9a113b587314d416", null))
 			playsound(computer, 'sound/machines/terminal/terminal_prompt_confirm.ogg', 50, FALSE)
 			return TRUE
 

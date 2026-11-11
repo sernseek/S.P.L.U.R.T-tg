@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Packaged whole meals and sides for the 'meals' tab of vendors
 
 /* TRASH */
@@ -59,10 +60,10 @@
 
 /obj/item/food/vendor_tray_meal/examine_more(mob/user)
 	. = ..()
-	. += span_notice("<i>You browse the back of the box...</i>")
-	. += "\t[span_warning("Warning: Packaged in a factory where every allergen known is present.")]"
-	. += "\t[span_warning("Warning: Contents might be hot.")]"
-	. += "\t[span_info("Per 200g serving contains: 8g Sodium; 25g Fat, of which 22g are saturated; 2g Sugar.")]"
+	. += span_notice(LANG("obj.f592481c4e76bf14", null))
+	. += LANG("obj.294efb1fdb8925bb", list(span_warning("Warning: Packaged in a factory where every allergen known is present.")))
+	. += LANG("obj.294efb1fdb8925bb", list(span_warning("Warning: Contents might be hot.")))
+	. += LANG("obj.294efb1fdb8925bb", list(span_info("Per 200g serving contains: 8g Sodium; 25g Fat, of which 22g are saturated; 2g Sugar.")))
 	return .
 
 /obj/item/food/vendor_tray_meal/burger

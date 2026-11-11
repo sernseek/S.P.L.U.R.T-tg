@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/bloodsucker_clan/gangrel
 	name = CLAN_GANGREL
 	description = "Closer to Animals than Bloodsuckers, known as Werewolves waiting to happen, \n\
@@ -17,7 +18,7 @@
 	. = ..()
 	var/area/current_area = get_area(bloodsuckerdatum.owner.current)
 	if(istype(current_area, /area/station/service/chapel))
-		to_chat(bloodsuckerdatum.owner.current, span_warning("You don't belong in holy areas! The Faith burns you to a crisp!"))
+		to_chat(bloodsuckerdatum.owner.current, span_warning(LANG("datum.7016c65fe56ef950", null)))
 		bloodsuckerdatum.owner.current.adjust_fire_loss(20)
 		bloodsuckerdatum.owner.current.adjust_fire_stacks(2)
 		bloodsuckerdatum.owner.current.ignite_mob()

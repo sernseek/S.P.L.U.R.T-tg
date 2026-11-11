@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BEAST_FORM_EXPOSITION_LINK "beast_form_exposition_link"
 
 /datum/status_effect/beast_form
@@ -24,7 +25,7 @@
 	if(!istype(current_wolf))
 		return FALSE
 
-	human_owner.visible_message(span_warning("[human_owner] turns [human_owner.p_their()] head to the sky and howls, rapidly growing and transforming into a horrible beast!"))
+	human_owner.visible_message(span_warning(LANG("datum.f7058ab91c345f3a", list(human_owner, human_owner.p_their()))))
 
 	var/client/target_client = human_owner.client
 	if (!isnull(target_client))
@@ -35,7 +36,7 @@
 			lycan_brain.last_slot = target_client.prefs.savefile.get_entry("default_slot")
 		target_client.prefs.load_character(slot)
 		if (!ispath(target_client.prefs.read_preference(/datum.preference/choiced/species), current_wolf.lycanthropy_species))
-			to_chat(human_owner, span_warning("Your selected slot is not a lycan! Defaulting to simply changing your species..."))
+			to_chat(human_owner, span_warning(LANG("datum.3a13b8e9d320fe96", null)))
 			target_client.prefs.load_character(lycan_brain.last_slot)
 			human_owner.set_species(current_wolf.lycanthropy_species, TRUE, TRUE, FALSE)
 			lycan_brain.last_slot = null // allows for easier switching in later procs
@@ -64,7 +65,7 @@
 	if (!istype(lycan_brain))
 		return
 
-	human_owner.visible_message(span_warning("[human_owner] shrinks down, their fur receding!"))
+	human_owner.visible_message(span_warning(LANG("datum.546643253e4342bc", list(human_owner))))
 
 	if (lycan_brain.last_slot)
 		var/client/target_client = human_owner.client

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/pet_food
 	name = "Generic pet treat"
 	desc = "Far too bland for your pet OR reality. You shouldn't be seeing this."
@@ -9,10 +10,10 @@
 	if(user.combat_mode)
 		return
 	if(!istype(target_pet, /mob/living/basic))
-		to_chat(user, span_warning("This treat can only be fed to basic pets!"))
+		to_chat(user, span_warning(LANG("obj.9b9ae8e0b5dc20ed", null)))
 		return
 	if(target_pet.stat)
-		to_chat(user, span_warning("The pet is dead!"))
+		to_chat(user, span_warning(LANG("obj.f67aaf52961737e1", null)))
 		return
 
 
@@ -26,10 +27,10 @@
 /obj/item/pet_food/pet_space_treat/attack(mob/living/basic/target_pet, mob/user)
 	..()
 	if(HAS_TRAIT(target_pet, TRAIT_PET_SPACE_TREAT))
-		to_chat(user, span_warning("This pet has already eaten a space treat!"))
+		to_chat(user, span_warning(LANG("obj.c5911dfe16681c37", null)))
 		return
 	if(!target_pet.unsuitable_atmos_damage || !target_pet.minimum_survivable_temperature || !target_pet.maximum_survivable_temperature)
-		to_chat(user, span_warning("This treat is unsuitable for this pet!"))
+		to_chat(user, span_warning(LANG("obj.9857169303c077c7", null)))
 		return
 	ADD_TRAIT(target_pet, TRAIT_PET_SPACE_TREAT, user)
 	target_pet.RemoveElement(/datum/element/atmos_requirements, target_pet.habitable_atmos, target_pet.unsuitable_atmos_damage)
@@ -40,6 +41,6 @@
 	target_pet.apply_atmos_requirements(TRUE)
 	target_pet.apply_temperature_requirements(TRUE)
 	target_pet.desc += span_notice("\n[target_pet.p_They()] seem[target_pet.p_s()] hardier against the void of space.")
-	to_chat(user, span_notice("You feed the treat to the [target_pet], which they quickly gobble up."))
+	to_chat(user, span_notice(LANG("obj.cc55a47594288197", list(target_pet))))
 	qdel(src)
 	return

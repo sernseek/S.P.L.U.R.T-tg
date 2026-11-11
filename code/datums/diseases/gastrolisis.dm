@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/disease/gastrolosis
 	name = "Invasive Gastrolosis"
 	desc = "A bizarre disease that causes the host to grow snail-like features, eventually turning into a human-snail hybrid."
@@ -42,8 +43,8 @@
 			if(!eyes && SPT_PROB(2.5, seconds_per_tick))
 				var/obj/item/organ/eyes/snail/new_eyes = new()
 				new_eyes.Insert(affected_mob)
-				affected_mob.visible_message(span_warning("[affected_mob]'s eyes fall out, with snail eyes taking its place!"), \
-				span_userdanger("You scream in pain as your eyes are pushed out by your new snail eyes!"))
+				affected_mob.visible_message(span_warning(LANG("datum.4110b2346415605e", list(affected_mob))), \
+				span_userdanger(LANG("datum.dc9c2f812d475a08", null)))
 				affected_mob.emote("scream")
 				return
 
@@ -53,8 +54,8 @@
 			if(!shell && SPT_PROB(2.5, seconds_per_tick))
 				if(affected_mob.dropItemToGround(affected_mob.get_item_by_slot(ITEM_SLOT_BACK)))
 					affected_mob.equip_to_slot_or_del(new /obj/item/storage/backpack/snail(affected_mob), ITEM_SLOT_BACK)
-					affected_mob.visible_message(span_warning("[affected_mob] grows a grotesque shell on their back!"), \
-					span_userdanger("You scream in pain as a shell pushes itself out from under your skin!"))
+					affected_mob.visible_message(span_warning(LANG("datum.20121869e8941963", list(affected_mob))), \
+					span_userdanger(LANG("datum.39d0a6fd0b12e207", null)))
 					affected_mob.emote("scream")
 					return
 
@@ -62,14 +63,14 @@
 			if(!tongue && SPT_PROB(2.5, seconds_per_tick))
 				var/obj/item/organ/tongue/snail/new_tongue = new()
 				new_tongue.Insert(affected_mob)
-				to_chat(affected_mob, span_userdanger("You feel your speech slow down..."))
+				to_chat(affected_mob, span_userdanger(LANG("datum.13dae63613ebc2cd", null)))
 				return
 
 			if(shell && eyes && tongue && SPT_PROB(2.5, seconds_per_tick))
 				affected_mob.set_species(/datum/species/snail)
 				affected_mob.client?.give_award(/datum/award/achievement/jobs/snail, affected_mob)
-				affected_mob.visible_message(span_warning("[affected_mob] turns into a snail!"), \
-				span_boldnotice("You turned into a snail person! You feel an urge to cccrrraaawwwlll..."))
+				affected_mob.visible_message(span_warning(LANG("datum.4d88f6a3a84d9db3", list(affected_mob))), \
+				span_boldnotice(LANG("datum.3d0200040725fddd", null)))
 				cure()
 				return FALSE
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/destructible/clockwork/gear_base/powered
 	/// If the structure has its "on" switch flipped. Does not mean it's on, necessarily (needs power and anchoring, too)
 	var/enabled = FALSE
@@ -40,18 +41,18 @@
 		return ..()
 
 	if(!anchored)
-		balloon_alert(user, "not fastened!")
+		balloon_alert(user, LANG("obj.7c2f76c2bd88e3dc", null))
 		return
 
 	if(!has_power_toggle)
 		return
 
 	if(!update_power() && !enabled)
-		balloon_alert(user, "not enough power!")
+		balloon_alert(user, LANG("obj.7005f2d2db44de44", null))
 		return
 
 	enabled = !enabled
-	balloon_alert(user, "turned [enabled ? "on" : "off"]")
+	balloon_alert(user, LANG("obj.8fcfde3cd8c5cffd", list(enabled ? "on" : "off")))
 
 	if(enabled)
 		turn_on()
@@ -106,7 +107,7 @@
 	if(!anchored)
 		turn_off()
 		update_icon_state()
-		visible_message("[src] powers down as it becomes unanchored from the ground.")
+		visible_message(LANG("obj.4c7adb128ca5e65c", list(src)))
 		return FALSE
 
 	return TRUE

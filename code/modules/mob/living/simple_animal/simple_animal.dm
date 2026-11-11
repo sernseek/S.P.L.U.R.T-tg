@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Simple, mostly AI-controlled critters, such as pets, bots, and drones.
 /mob/living/simple_animal
 	name = "animal"
@@ -223,9 +224,9 @@
 	. = ..()
 	if(stat == DEAD)
 		if(HAS_MIND_TRAIT(user, TRAIT_NAIVE))
-			. += span_deadsay("Upon closer examination, [p_they()] appear[p_s()] to be asleep.")
+			. += span_deadsay(LANG("mob.e912a0a244450ce0", list(p_they(), p_s())))
 		else
-			. += span_deadsay("Upon closer examination, [p_they()] appear[p_s()] to be dead.")
+			. += span_deadsay(LANG("mob.113d960183997649", list(p_they(), p_s())))
 
 /mob/living/simple_animal/update_stat()
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
@@ -351,8 +352,8 @@
 
 /mob/living/simple_animal/get_status_tab_items()
 	. = ..()
-	. += "Health: [round((health / maxHealth) * 100)]% ([health]/[maxHealth])"
-	. += "Combat Mode: [combat_mode ? "On" : "Off"]"
+	. += LANG("mob.583ca53d95e92727", list(round((health / maxHealth) * 100), health, maxHealth))
+	. += LANG("mob.00f6df3270303ffd", list(combat_mode ? "On" : "Off"))
 
 /mob/living/simple_animal/proc/drop_loot(drop_loc)
 	if (!length(loot))
@@ -544,18 +545,18 @@
 	if(isliving(hunted)) // Are we hunting a living mob?
 		var/mob/living/prey = hunted
 		if(inept_hunter) // Make your hunter inept to have them unable to catch their prey.
-			visible_message(span_warning("[src] chases [prey] around, to no avail!"))
+			visible_message(span_warning(LANG("mob.5d04056948f3a747", list(src, prey))))
 			step(prey, pick(GLOB.cardinals))
 			COOLDOWN_START(src, emote_cooldown, 1 MINUTES)
 			return
 		if(!IS_UNCONSCIOUS_OR_CRIT(prey))
-			manual_emote("chomps [prey]!")
+			manual_emote(LANG("mob.abe45ebf6b325254", list(prey)))
 			prey.death()
 			prey = null
 			COOLDOWN_START(src, emote_cooldown, 1 MINUTES)
 			return
 	else // We're hunting an object, and should delete it instead of killing it. Mostly useful for decal bugs like ants or spider webs.
-		manual_emote("chomps [hunted]!")
+		manual_emote(LANG("mob.abe45ebf6b325254", list(hunted)))
 		qdel(hunted)
 		hunted = null
 		COOLDOWN_START(src, emote_cooldown, 1 MINUTES)

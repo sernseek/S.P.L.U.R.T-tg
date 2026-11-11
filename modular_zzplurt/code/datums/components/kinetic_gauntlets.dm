@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*!
  * Kinetic Gauntlets Component
  *
@@ -59,11 +60,11 @@
 	var/total_force = source.force + detonation_damage
 	var/backstab_force = total_force + backstab_bonus
 
-	examine_list += span_notice("Mark a large creature with a destabilizing force with right-click, then hit them in melee to do <b>[total_force]</b> damage.")
-	examine_list += span_notice("Does <b>[backstab_force]</b> damage if the target is backstabbed, instead of <b>[total_force]</b>.")
+	examine_list += span_notice(LANG("datum.1cb50b13ef183abe", list(total_force)))
+	examine_list += span_notice(LANG("datum.11e005157a49abb4", list(backstab_force, total_force)))
 
 	for(var/obj/item/crusher_trophy/trophy as anything in trophies)
-		examine_list += span_notice("It has \a [trophy] attached, which causes [trophy.effect_desc()].")
+		examine_list += span_notice(LANG("datum.52fd13ba2570b10a", list(trophy, trophy.effect_desc())))
 
 /datum/component/kinetic_gauntlets/proc/on_update_overlays(atom/source, list/overlays)
 	SIGNAL_HANDLER
@@ -76,10 +77,10 @@
 
 	if(attacking_item.tool_behaviour == TOOL_CROWBAR)
 		if(!LAZYLEN(trophies))
-			to_chat(user, span_warning("There are no trophies on [source]."))
+			to_chat(user, span_warning(LANG("datum.154c7d6a1a639963", list(source))))
 			return COMPONENT_NO_AFTERATTACK
 
-		to_chat(user, span_notice("You remove [source]'s trophies."))
+		to_chat(user, span_notice(LANG("datum.d4a142f33871ecfa", list(source))))
 		attacking_item.play_tool_sound(source)
 		for(var/obj/item/crusher_trophy/trophy as anything in trophies)
 			trophy.remove_from(parent, user)
@@ -90,14 +91,14 @@
 
 		for(var/obj/item/crusher_trophy/existing_trophy as anything in trophies)
 			if(istype(existing_trophy, trophy.denied_type) || istype(trophy, existing_trophy.denied_type))
-				to_chat(user, span_warning("You can't seem to attach [trophy] to [source]. Maybe remove a few trophies?"))
+				to_chat(user, span_warning(LANG("datum.e6071d2474391415", list(trophy, source))))
 				return COMPONENT_NO_AFTERATTACK
 
 		if(!user.transferItemToLoc(trophy, parent))
 			return COMPONENT_NO_AFTERATTACK
 
 		trophies += trophy
-		to_chat(user, span_notice("You attach [trophy] to [source]."))
+		to_chat(user, span_notice(LANG("datum.c1fbc99dd596332a", list(trophy, source))))
 		return COMPONENT_NO_AFTERATTACK
 
 /datum/component/kinetic_gauntlets/proc/on_attack(obj/item/source, mob/living/target, mob/living/user)

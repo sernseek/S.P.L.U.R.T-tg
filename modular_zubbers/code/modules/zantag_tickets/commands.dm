@@ -1,20 +1,21 @@
-GAME_VERB(/client, check_antag_tickets, "Check Antag Tickets", "OOC")
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+GAME_VERB(/client, check_antag_tickets, "查看反派工单", "OOC")
 	var/antag_ticket_rate = CONFIG_GET(number/antag_tickets_per_update)
 
 	if(!antag_ticket_rate)
-		to_chat(src,span_notice("Antag tickets are currently disabled."))
+		to_chat(src,span_notice(LANG("client.7d4c251377aa8356", null)))
 		return
 
 	var/antag_ticket_count = get_antag_tickets()
 	var/antag_ticket_gain = antag_ticket_multiplier()*antag_ticket_rate
 
-	to_chat(src,span_notice("You currently have <b>[antag_ticket_count]</b> antag tickets, and are [antag_ticket_gain >= 0 ? "gaining" : "losing"] <b>[abs(antag_ticket_gain)]</b> antag tickets every [DisplayTimeText(SSblackbox.wait,1)]."))
+	to_chat(src,span_notice(LANG("client.fcc07b597e33fb99", list(antag_ticket_count, antag_ticket_gain >= 0 ? "gaining" : "losing", abs(antag_ticket_gain), DisplayTimeText(SSblackbox.wait,1)))))
 
-GAME_VERB(/client, antag_tickets_info, "What are antag tickets?", "OOC")
+GAME_VERB(/client, antag_tickets_info, "什么是反派工单？", "OOC")
 	var/antag_ticket_rate = CONFIG_GET(number/antag_tickets_per_update)
 
 	if(!antag_ticket_rate)
-		to_chat(span_notice("Antag tickets are currently disabled, so you don't have to worry about them."))
+		to_chat(src, span_notice(LANG("client.e4dd55bae34246ac", null)))
 		return
 
 	var/information = "\

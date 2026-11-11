@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///Global list containing any and all soulcatchers
 GLOBAL_LIST_EMPTY(soulcatchers)
 
@@ -140,7 +141,7 @@ GLOBAL_LIST_EMPTY(soulcatchers)
 	if(!carrier_owner)
 		return FALSE
 
-	if(tgui_alert(carrier_owner, "Do you wish to allow [joiner_name] into your soulcatcher?", name, list("Yes", "No"), autofocus = FALSE) != "Yes")
+	if(tgui_alert(carrier_owner, LANG("datum.77f800aa89f76292", list(joiner_name)), name, list("Yes", "No"), autofocus = FALSE) != "Yes")
 		return FALSE
 
 	return TRUE
@@ -198,7 +199,7 @@ GLOBAL_LIST_EMPTY(soulcatchers)
 	target_room.current_mobs += target_soul
 
 	target_soul.clear_fullscreen("carrier", FALSE)
-	to_chat(target_soul, span_cyan("you've been transferred to [target_room]!"))
+	to_chat(target_soul, span_cyan(LANG("datum.e4e264c83d7e7edc", list(target_room))))
 	to_chat(target_soul, span_notice(target_room.room_description))
 
 	return TRUE
@@ -269,7 +270,7 @@ GLOBAL_LIST_EMPTY(soulcatchers)
 	carrier_component.current_room = WEAKREF(src)
 	mob_to_add.forceMove(parent_carrier.parent)
 
-	to_chat(mob_to_add, span_cyan("You find yourself now inside of: [name]"))
+	to_chat(mob_to_add, span_cyan(LANG("datum.c58d3494aa234e65", list(name))))
 	to_chat(mob_to_add, span_notice(room_description))
 
 	var/atom/parent_atom = parent_object

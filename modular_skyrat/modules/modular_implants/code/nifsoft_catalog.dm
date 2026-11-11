@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_LIST_INIT(purchasable_nifsofts, list(
 	/datum/nifsoft/hivemind,
 	/datum/nifsoft/summoner,
@@ -112,7 +113,7 @@ GLOBAL_LIST_INIT(purchasable_nifsofts, list(
 
 			//SPLURT ADDITION START - TELLS THE USER THEY NEED A NIF TO BUY NIFSOFTs (FIXES NULL RUNTIME)
 			if(!buyer_nif)
-				paying_account.bank_card_talk("You are unable to buy this. A NIF implant is required to purchase NIFSofts.")
+				paying_account.bank_card_talk(LANG("datum.3dfbe832d6ffb94e", null))
 				return FALSE
 			//SPLURT ADDITION END
 
@@ -122,16 +123,16 @@ GLOBAL_LIST_INIT(purchasable_nifsofts, list(
 					return FALSE
 
 			else if(!paying_account.has_money(amount_to_charge))
-				paying_account.bank_card_talk("You lack the money to make this purchase.")
+				paying_account.bank_card_talk(LANG("datum.1b897e7ac4ab218d", null))
 				return FALSE
 
 			if(!ispath(product_to_buy, /datum/nifsoft) || !buyer_nif)
-				paying_account.bank_card_talk("You are unable to buy this.")
+				paying_account.bank_card_talk(LANG("datum.a96f668522cc36c4", null))
 				return FALSE
 
 			var/datum/nifsoft/installed_nifsoft = new product_to_buy(buyer_nif, rewards_purchase)
 			if(!installed_nifsoft.parent_nif)
-				paying_account.bank_card_talk("Install failed, your purchase has been refunded.")
+				paying_account.bank_card_talk(LANG("datum.55a4e7023e91f176", null))
 				return FALSE
 
 			if(rewards_purchase)
@@ -139,6 +140,6 @@ GLOBAL_LIST_INIT(purchasable_nifsofts, list(
 				buyer_nif.send_message("Purchase completed, [amount_to_charge] reward points have been removed from your NIF")
 			else
 				paying_account.adjust_money(-amount_to_charge, "NIFSoft purchase")
-				paying_account.bank_card_talk("Transaction complete, you have been charged [amount_to_charge]cr.")
+				paying_account.bank_card_talk(LANG("datum.703535da93b14d7f", list(amount_to_charge)))
 
 			return TRUE

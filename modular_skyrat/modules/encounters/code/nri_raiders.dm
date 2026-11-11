@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Possible places/departments to inspect
 #define INSPECTION_LIST list( \
 	"Cargo", \
@@ -238,9 +239,7 @@ GLOBAL_VAR(first_officer)
 	// if this is the first officer, keep a reference to them
 	if(!GLOB.first_officer)
 		GLOB.first_officer = spawned_human
-		to_chat(spawned_human, span_bold("With you being the leader of the group and having a special designation, 'Actual', it's your duty to make sure this entire operation \
-			goes smoothly. As in, doesn't result in an intergalactic political scandal, or an unneecessary shooting. It's also very likely expected for you to be performing \
-			all the necessary negotiations, so do prepare yourself for that."))
+		to_chat(spawned_human, span_bold(LANG("obj.b3130a2c151df463", null)))
 
 	to_chat(spawned_human, "[span_bold("The station has overriden the response system for the reasons unknown, keep the ship intact, communicate with the station, \
 		perform an inspection to determine the legitimacy of the fine, and try to get the funds yourself, if it's legitimate. \
@@ -478,8 +477,8 @@ GLOBAL_VAR(first_officer)
 	SSshuttle.registerTradeBlockade(src)
 	AddComponent(/datum/component/gps, "NRI Starship")
 	active = TRUE
-	to_chat(user,span_notice("You toggle [src] [active ? "on":"off"]."))
-	to_chat(user,span_warning("The scrambling signal can be now tracked by GPS."))
+	to_chat(user,span_notice(LANG("obj.baabf8b352cb3e9d", list(src, active ? "on":"off"))))
+	to_chat(user,span_warning(LANG("obj.2a5c5f0321b7abc8", null)))
 	START_PROCESSING(SSobj,src)
 
 /obj/machinery/shuttle_scrambler/nri/process()
@@ -497,7 +496,7 @@ GLOBAL_VAR(first_officer)
 
 /obj/machinery/shuttle_scrambler/nri/interact(mob/user)
 	if(active)
-		var/deactivation_response = tgui_alert(user,"Turn the crasher off?", "Crasher", list("Yes", "Cancel"))
+		var/deactivation_response = tgui_alert(user,LANG("obj.7b7115fc2d38b105", null), LANG("obj.a2534f9aeb4fea56", null), list("Yes", "Cancel"))
 		if(deactivation_response != "Yes")
 			return
 		if(!active|| !user.can_perform_action(src))
@@ -505,9 +504,9 @@ GLOBAL_VAR(first_officer)
 		toggle_off(user)
 		update_appearance()
 		send_notification()
-		to_chat(user,span_notice("You toggle [src] [active ? "on":"off"]."))
+		to_chat(user,span_notice(LANG("obj.baabf8b352cb3e9d", list(src, active ? "on":"off"))))
 		return
-	var/scramble_response = tgui_alert(user, "Turning the crasher on might alienate the population and will make the shuttle trackable by GPS. Are you sure you want to do it?", "Crasher", list("Yes", "Cancel"))
+	var/scramble_response = tgui_alert(user, LANG("obj.4c10b8af962019ff", null), LANG("obj.a2534f9aeb4fea56", null), list("Yes", "Cancel"))
 	if(scramble_response != "Yes")
 		return
 	if(active || !user.can_perform_action(src))
@@ -515,7 +514,7 @@ GLOBAL_VAR(first_officer)
 	toggle_on(user)
 	update_appearance()
 	send_notification()
-	to_chat(user,span_notice("You toggle [src] [active ? "on":"off"]."))
+	to_chat(user,span_notice(LANG("obj.baabf8b352cb3e9d", list(src, active ? "on":"off"))))
 	return
 
 

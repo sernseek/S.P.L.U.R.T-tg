@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /obj/item/holosign_creator/security
 	desc = "A holographic projector that creates holographic security barriers and restraints. You can remotely open barriers with it.\
@@ -8,17 +9,17 @@
 		return ..()
 	var/mob/living/carbon/human = interacting_with
 	if(human.handcuffed) // is our target already handcuffed?
-		user.balloon_alert(user, "already cuffed")
+		user.balloon_alert(user, LANG("obj.965ccf4dfc3ac7c9", null))
 		return ITEM_INTERACT_BLOCKING
 	if(!human.canBeHandcuffed()) // does he actually have arms?
-		user.balloon_alert(user, "needs two hands")
+		user.balloon_alert(user, LANG("obj.7ba3e2eb66400a18", null))
 		return ITEM_INTERACT_BLOCKING
 	if(DOING_INTERACTION_WITH_TARGET(user, human))
 		return ITEM_INTERACT_BLOCKING
 	log_combat(user, human, "attempted to handcuff")
 	playsound(src, 'sound/items/weapons/cablecuff.ogg', 30, TRUE, -2)
-	human.visible_message(span_danger("[user] begins restraining [human] with [src]!"), \
-	span_userdanger("[user] begins shaping a holographic field around your hands!"))
+	human.visible_message(span_danger(LANG("obj.a46fbd1b786d92a7", list(user, human, src))), \
+	span_userdanger(LANG("obj.29b25b4486ac186c", list(user))))
 	if(!do_after(user, 4.5 SECONDS, human, extra_checks = CALLBACK(src, PROC_REF(can_handcuff), user))) // he is up for grabs, so lets handcuff them
 		return ITEM_INTERACT_BLOCKING
 	human.set_handcuffed(new /obj/item/restraints/handcuffs/holographic/used(human))
@@ -27,7 +28,7 @@
 		ourcuffs.our_projector = src
 		ourcuffs.our_guy = human
 		human.apply_status_effect(/datum/status_effect/holocuff_distance)
-	to_chat(user, span_notice("You restrain [human]."))
+	to_chat(user, span_notice(LANG("obj.1defe35298f0b0b3", list(human))))
 	log_combat(user, human, "handcuffed")
 	return ITEM_INTERACT_SUCCESS
 
@@ -74,7 +75,7 @@
 
 /obj/item/restraints/handcuffs/holographic/on_uncuffed(datum/source, mob/living/wearer)
 	. = ..()
-	wearer.visible_message(span_danger("[wearer]'s [name] breaks in a discharge of energy!"), span_userdanger("[wearer]'s [name] breaks in a discharge of energy!"))
+	wearer.visible_message(span_danger(LANG("obj.f045755b262dc31e", list(wearer, name))), span_userdanger(LANG("obj.f045755b262dc31e", list(wearer, name))))
 	do_sparks(2, TRUE, src)
 	wearer.remove_status_effect(/datum/status_effect/holocuff_distance)
 	qdel(src)
@@ -107,6 +108,6 @@
 		if(dist > 9)
 			do_sparks(2, TRUE, owner)
 			owner.dropItemToGround(ourcuffs, TRUE)
-			owner.visible_message(span_danger("[owner]'s holographic energy field breaks in a discharge of energy!"), span_userdanger("[owner]'s holographic energy field breaks in a discharge of energy!"))
+			owner.visible_message(span_danger(LANG("datum.7ec90d2366f71c1f", list(owner))), span_userdanger(LANG("datum.7ec90d2366f71c1f", list(owner))))
 			Destroy()
 

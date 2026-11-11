@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define GLORYHOLE "gloryhole"
 #define WALLSTUCK "wallstuck"
 #define PORTAL_SIGNAL_LIST list( \
@@ -43,7 +44,7 @@
 	register_context()
 
 /obj/structure/lewd_portal/Destroy()
-	visible_message("[src] vanishes!")
+	visible_message(LANG("obj.60f2b4e8e6f16d22", list(src)))
 	linked_portal?.linked_portal = null
 	if(linked_portal)
 		qdel(linked_portal)
@@ -54,8 +55,8 @@
 	var/inspect_mode = "gloryhole"
 	if(portal_mode == WALLSTUCK)
 		inspect_mode = "stuck in wall"
-	. += span_notice("Its currently in [inspect_mode] mode.")
-	. += span_notice("Right click to change modes.")
+	. += span_notice(LANG("obj.a6a0a83b62b23788", list(inspect_mode)))
+	. += span_notice(LANG("obj.5c555fb03da9ba32", null))
 
 /obj/structure/lewd_portal/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
 	if(portal_mode == GLORYHOLE)
@@ -67,24 +68,24 @@
 
 /obj/structure/lewd_portal/user_buckle_mob(mob/living/M, mob/user, check_loc)
 	if(!M.check_erp_prefs(/datum/preference/toggle/erp/sex_toy, user, src))
-		to_chat(user, span_danger("Looks like [M] doesn't want you to do that."))
+		to_chat(user, span_danger(LANG("obj.f3f1a07e3d5002f8", list(M))))
 		return FALSE
 	if (!ishuman(M))
-		balloon_alert(user, "[M.p_they()] does not fit!")
+		balloon_alert(user, LANG("obj.8003c77cacb0f1fa", list(M.p_they())))
 		return FALSE
 	if(portal_mode == GLORYHOLE)
 		var/mob/living/carbon/human/penis_inspection = M
 		var/obj/item/organ/genital/penis/penis_reference = M.get_organ_slot(ORGAN_SLOT_PENIS)
 		if(!penis_inspection.has_penis(REQUIRE_GENITAL_EXPOSED) || penis_reference?.visibility_preference == GENITAL_NEVER_SHOW)
-			balloon_alert(user, "a penis is required to operate!")
+			balloon_alert(user, LANG("obj.00f79ae0deceff18", null))
 			return FALSE
 	if (!linked_portal)
-		balloon_alert(user, "portal not linked!")
+		balloon_alert(user, LANG("obj.80ac4351fabbee31", null))
 		return FALSE
 	if (!isnull(linked_portal.current_mob))
-		balloon_alert(user, "portal already occupied!")
+		balloon_alert(user, LANG("obj.61b8e985943c982e", null))
 		return FALSE
-	visible_message("[user] slots [M] into the [src]!")
+	visible_message(LANG("obj.270e2aa620db624d", list(user, M, src)))
 	return ..(M, user, check_loc = FALSE)
 
 /obj/structure/lewd_portal/post_buckle_mob(mob/living/buckled_mob)
@@ -196,7 +197,7 @@
 
 /obj/structure/lewd_portal/post_unbuckle_mob(mob/living/unbuckled_mob)
 	UnregisterSignal(current_mob, PORTAL_SIGNAL_LIST)
-	visible_message("[current_mob] exits the [src]")
+	visible_message(LANG("obj.e22dd0a8964c101d", list(current_mob, src)))
 	current_mob = null
 	mob_scale_manager = null
 	QDEL_NULL(relayed_body)
@@ -245,20 +246,20 @@
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
 	if(isnull(linked_portal))
-		balloon_alert(user, "portal not linked")
+		balloon_alert(user, LANG("obj.072cdeb51cf3ba3d", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	if(!isnull(current_mob) || !isnull(linked_portal.current_mob))
-		balloon_alert(user, "portal occupied")
+		balloon_alert(user, LANG("obj.6fa168ac6620bc15", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	if(portal_mode == GLORYHOLE)
 		portal_mode = WALLSTUCK
 		linked_portal.portal_mode = WALLSTUCK
-		balloon_alert(user, "switched to stuck in wall mode")
+		balloon_alert(user, LANG("obj.275e51615924a598", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	else
 		portal_mode = GLORYHOLE
 		linked_portal.portal_mode = GLORYHOLE
-		balloon_alert(user, "switched to gloryhole mode")
+		balloon_alert(user, LANG("obj.0beaaa6f6acffe8a", null))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 
@@ -282,8 +283,8 @@
 	var/inspect_mode = "gloryhole"
 	if(creation_mode == WALLSTUCK)
 		inspect_mode = "stuck in wall"
-	. += span_notice("Its currently in [inspect_mode] mode.")
-	. += span_notice("Use in hand to change modes.")
+	. += span_notice(LANG("obj.a6a0a83b62b23788", list(inspect_mode)))
+	. += span_notice(LANG("obj.8971f948d0b877d8", null))
 
 /obj/item/wallframe/lewd_portal/after_attach(obj/attached_to)
 	var/obj/structure/lewd_portal/portal_result = attached_to
@@ -298,14 +299,14 @@
 
 /obj/item/wallframe/lewd_portal/attack_self(mob/user)
 	if(previous_portal)
-		balloon_alert(user, "portals must match")
+		balloon_alert(user, LANG("obj.853d9e7ca91f7292", null))
 		return
 	if(creation_mode == GLORYHOLE)
 		creation_mode = WALLSTUCK
-		balloon_alert(user, "switched to stuck in wall mode")
+		balloon_alert(user, LANG("obj.275e51615924a598", null))
 	else
 		creation_mode = GLORYHOLE
-		balloon_alert(user, "switched to gloryhole mode")
+		balloon_alert(user, LANG("obj.0beaaa6f6acffe8a", null))
 
 /obj/lewd_portal_relay
 	name = "portal relay"
@@ -331,7 +332,7 @@
 		var/obj/item/organ/genital/penis/penis_reference = owner.get_organ_slot(ORGAN_SLOT_PENIS)
 		var/penis_type = penis_reference.genital_name
 		name = LOWER_TEXT("[penis_type] penis")
-		desc = "Someone's penis hanging out from a portal."
+		desc = LANG("obj.82adcf1410f8effb", null)
 		dir = SOUTH
 		if (owning_portal.dir == EAST || owning_portal.dir == WEST)
 			dir = REVERSE_DIR(owning_portal.dir)
@@ -356,7 +357,7 @@
 		owner = null
 		owning_portal = null
 		interact_component?.body_relay = null
-	visible_message("[src] vanishes into the portal!")
+	visible_message(LANG("obj.8e5e864e5c8a507a", list(src)))
 	lose_hearing_sensitivity(ROUNDSTART_TRAIT)
 	return ..()
 
@@ -369,14 +370,14 @@
 			var/datum/sprite_accessory/genital/gential_sprite = SSaccessories.sprite_accessories[genital][owner.dna.species.mutant_bodyparts[genital][MUTANT_INDEX_NAME]]
 			if(gential_sprite)
 				if(!(gential_sprite.is_hidden(owner)))
-					. += "<span class='notice'>It has exposed genitals... <a href='byond://?src=[REF(src)];lookup_info=genitals'>\[Look closer...\]</a></span>"
+					. += LANG("obj.e26919ca6d1bc5ab", list(REF(src)))
 					break
 	if(!CONFIG_GET(flag/check_vetted))
 		return
 	if(!owner?.client || !SSplayer_ranks.initialized)
 		return
 	if(SSplayer_ranks.is_vetted(owner?.client, admin_bypass = FALSE))
-		. += span_greenannounce("This player has been vetted as 18+ by staff.")
+		. += span_greenannounce(LANG("obj.d254c798364058e6", null))
 
 /obj/lewd_portal_relay/Topic(href, href_list)
 	. = ..()
@@ -460,8 +461,8 @@
 		dir = SOUTH
 	else
 		dir = NORTH
-	to_chat(user, span_info("You flip \the [name] over."))
-	to_chat(owner, span_info("You feel your behind flip over."))
+	to_chat(user, span_info(LANG("obj.509ef8479a1d1fc6", list(name))))
+	to_chat(owner, span_info(LANG("obj.3d50543df4b49319", null)))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/lewd_portal_relay/click_ctrl_shift(mob/user)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/nanite_programmer
 	name = "nanite programmer"
 	desc = "A device that can edit nanite program disks to adjust their functionality."
@@ -35,7 +36,7 @@
 	var/obj/item/disk/nanite_program/new_disk = tool
 	if(!user.transferItemToLoc(new_disk, src))
 		return NONE
-	to_chat(user, span_notice("You insert [new_disk] into [src]"))
+	to_chat(user, span_notice(LANG("obj.a0235cf5996a0849", list(new_disk, src))))
 	playsound(src, 'sound/machines/terminal/terminal_insert_disc.ogg', 50, FALSE)
 	if(disk)
 		eject(user)
@@ -65,7 +66,7 @@
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
 	if(disk && user.can_perform_action(src, !issilicon(user)))
-		to_chat(user, span_notice("You take out [disk] from [src]."))
+		to_chat(user, span_notice(LANG("obj.0b17bc8467640555", list(disk, src))))
 		eject(user)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
@@ -181,4 +182,4 @@
 	. = ..()
 	var/static/regex/when = regex("(?:^\\W*when|when\\W*$)", "i") //starts or ends with when
 	if(findtext(raw_message, when) && !istype(speaker, /obj/machinery/nanite_programmer))
-		say("When you code it!!")
+		say(LANG("obj.b31356cf2d7ea137", null))

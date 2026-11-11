@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Phrases said in chat by the holder while "dreaming"
  * These should be in first person
@@ -221,7 +222,7 @@
 	// Trigger a seisure
 
 	// Alert in chat
-	owner.visible_message(span_danger("[owner] starts having a seizure!"), span_userdanger("You have a seizure!"))
+	owner.visible_message(span_danger(LANG("datum.e46c3046f38e3382", list(owner))), span_userdanger(LANG("datum.1d7bf17c01ab796d", null)))
 
 	// Set unconscious
 	owner.Unconscious(CURSEDBLOOD_DREAM_TIME_UNCONSCIOUS)

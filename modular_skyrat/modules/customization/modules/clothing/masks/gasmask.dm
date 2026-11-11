@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/mask/gas/glass
 	icon = 'modular_skyrat/master_files/icons/obj/clothing/masks.dmi'
 	worn_icon = 'modular_skyrat/master_files/icons/mob/clothing/mask.dmi'
@@ -97,16 +98,16 @@
 
 /obj/item/clothing/mask/gas/respirator/examine(mob/user)
 	. = ..()
-	. += span_notice("You can toggle its ability to muffle your TTS voice with <b>control click</b>.")
+	. += span_notice(LANG("obj.c9e604298df2e5c6", null))
 
 /obj/item/clothing/mask/gas/respirator/item_ctrl_click(mob/living/user)
 	if(!isliving(user))
 		return
 	if(user.get_active_held_item() != src)
-		to_chat(user, span_warning("You must hold the [src] in your hand to do this!"))
+		to_chat(user, span_warning(LANG("obj.a549c0e7962c6f91", list(src))))
 		return
 	voice_filter = voice_filter ? null : initial(voice_filter)
-	to_chat(user, span_notice("Mask voice muffling [voice_filter ? "enabled" : "disabled"]."))
+	to_chat(user, span_notice(LANG("obj.51325fc98b4b1c02", list(voice_filter ? "enabled" : "disabled"))))
 
 /obj/item/clothing/mask/gas/clown_hat/vox
 	desc = "A true prankster's facial attire. A clown is incomplete without his wig and mask. This one's got an easily accessible feeding port to be more suitable for the Vox crewmembers."
@@ -147,7 +148,7 @@
 		icon_state = options[choice]
 		user.update_worn_mask()
 		update_item_action_buttons()
-		to_chat(user, span_notice("Your Clown Mask has now morphed into [choice], all praise the Honkmother!"))
+		to_chat(user, span_notice(LANG("obj.b3ec1c05db7ca0c7", list(choice))))
 		return TRUE
 
 /obj/item/clothing/mask/gas/mime/vox
@@ -197,7 +198,7 @@
 
 		user.update_worn_mask()
 		update_item_action_buttons()
-		to_chat(user, span_notice("Your Mime Mask has now morphed into [choice]!"))
+		to_chat(user, span_notice(LANG("obj.722fda20674e88da", list(choice))))
 		return TRUE
 
 /obj/item/clothing/mask/gas/atmos/vox

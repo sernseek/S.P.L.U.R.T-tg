@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/spaceship_navigation_beacon
 	name = "radio navigation gigabeacon"
 	desc = "A device that constantly transmits its position over several different commonly used maritime navigation frequencies. Used to create shuttle navigation waypoints in unexplored or undeveloped areas."
@@ -54,14 +55,14 @@
 /obj/machinery/spaceship_navigation_beacon/multitool_act(mob/living/user, obj/item/tool)
 	..()
 
-	var/chosen_tag = tgui_input_text(user, "Enter the custom name for this beacon", "Beacon Reclassification", max_length = MAX_NAME_LEN)
+	var/chosen_tag = tgui_input_text(user, LANG("obj.85af715c05297674", null), LANG("obj.e461ea590b47a312", null), max_length = MAX_NAME_LEN)
 	if(!chosen_tag)
 		return
 
 	var/new_name = "[initial(src.name)] [chosen_tag]"
 	if(new_name && Adjacent(user))
 		name = new_name
-		balloon_alert_to_viewers("beacon renamed")
+		balloon_alert_to_viewers(LANG("obj.ca23ac385012978f", null))
 
 	return TRUE
 
@@ -77,17 +78,20 @@
 
 /obj/machinery/spaceship_navigation_beacon/examine()
 	.=..()
-	. += span_notice("'[FREQ_RADIO_NAV_BEACON / 10] kHz' is printed on the side.")
+	. += span_notice(LANG("obj.e5d986b71c3a9abc", list(FREQ_RADIO_NAV_BEACON / 10)))
 	if(locked)
-		. += span_warning("The blinking red light on the front indicates that this beacon is LOCKED.")
+		. += span_warning(LANG("obj.f2195955d6ca54db", null))
 	else
-		. += span_notice("The blinking green light on the front indicates that this beacon is operating normally.")
+		. += span_notice(LANG("obj.79fdbc01b478545a", null))
 
 /obj/machinery/spaceship_navigation_beacon/process(seconds_per_tick)
 	if(COOLDOWN_FINISHED(src, next_automatic_message_time) && radio)
-		var/automatic_nav_message = "[src], Sector [z], [locked ? "Beacon Locked" : "Beacon Operational"], Grid Coordinates, [x] East, [y] North."
-
-		radio.talk_into(src, "[automatic_nav_message]")
+		// ZH EDIT CHANGE START - I18N: 整句直接交给汇聚点，rewrite 才能把它连同三元分支一起 LANG 化
+		// （经局部变量转一手时，模板译了、「Beacon Operational」与带编号的信标名都留在英文）。
+		// ORIGINAL: var/automatic_nav_message = "[src], Sector [z], [locked ? "Beacon Locked" : "Beacon Operational"], Grid Coordinates, [x] East, [y] North."
+		// ORIGINAL: radio.talk_into(src, "[automatic_nav_message]")
+		radio.talk_into(src, LANG("obj.5f46264b52bda70a", list(src, z, locked ? "Beacon Locked" : "Beacon Operational", x, y)))
+		// ZH EDIT CHANGE END
 
 		COOLDOWN_START(src, next_automatic_message_time, automatic_message_cooldown)
 
@@ -106,5 +110,5 @@
 
 /obj/item/folded_navigation_gigabeacon/examine()
 	.=..()
-	. += span_notice("The backside has instructions in various galactic languages detailing how this can be deployed <b>in hand</b> without any special tools.")
-	. += span_notice("'[FREQ_RADIO_NAV_BEACON / 10] kHz' is printed on the side.")
+	. += span_notice(LANG("obj.c3fb1fb252992ae7", null))
+	. += span_notice(LANG("obj.e5d986b71c3a9abc", list(FREQ_RADIO_NAV_BEACON / 10)))

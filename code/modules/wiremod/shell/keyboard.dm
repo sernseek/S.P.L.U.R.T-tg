@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/keyboard_shell
 	name = "Keyboard Shell"
 	icon = 'icons/obj/science/circuits.dmi'
@@ -47,10 +48,10 @@
 
 /obj/item/circuit_component/keyboard_shell/proc/use_keyboard(mob/user)
 	if(HAS_TRAIT(user, TRAIT_ILLITERATE))
-		to_chat(user, span_warning("You start mashing keys at random!"))
+		to_chat(user, span_warning(LANG("obj.203c357f63a6a74a", null)))
 		return
 
-	var/message = tgui_input_text(user, "Input your text", "Keyboard", max_length = MAX_MESSAGE_LEN)
+	var/message = tgui_input_text(user, LANG("obj.e647e6d02dfe3fa7", null), LANG("obj.28a551f5cc7a8b36", null), max_length = MAX_MESSAGE_LEN)
 	entity.set_output(user)
 	output.set_output(message)
 	signal.set_output(COMPONENT_SIGNAL)

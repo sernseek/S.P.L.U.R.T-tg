@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/taur_body/fishlike
 	left_leg_name = "upper body"
 	right_leg_name = "lower body"
@@ -47,7 +48,7 @@
 		desc = initial(desc)
 	else
 		name = "Mermaid Transform"
-		desc = "Return to your mermaid form."
+		desc = LANG("datum.45e09b3519b04339", null)
 	return ..()
 
 /datum/action/cooldown/spell/mermaid_toggle/apply_button_icon(atom/movable/screen/movable/action_button/current_button, force = FALSE)

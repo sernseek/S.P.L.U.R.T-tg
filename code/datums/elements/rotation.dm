@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/element/simple_rotation
 	element_flags = ELEMENT_BESPOKE
 	argument_hash_start_idx = 2
@@ -42,7 +43,7 @@
 /datum/element/simple_rotation/proc/ExamineMessage(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 	if(rotation_flags & ROTATION_REQUIRE_WRENCH)
-		examine_list += span_notice("This requires a wrench to be rotated.")
+		examine_list += span_notice(LANG("datum.9f200911daafbd54", null))
 
 /datum/element/simple_rotation/proc/rotate_right(datum/source, mob/user)
 	SIGNAL_HANDLER
@@ -89,14 +90,14 @@
 		var/obj/item/tool = user.get_active_held_item()
 		if(!tool || tool.tool_behaviour != TOOL_WRENCH)
 			if(!silent)
-				object_to_rotate.balloon_alert(user, "need a wrench!")
+				object_to_rotate.balloon_alert(user, LANG("datum.892f0fd3b111926b", null))
 			return FALSE
 
 	if(!(rotation_flags & ROTATION_IGNORE_ANCHORED) && object_to_rotate.anchored)
 		if(istype(object_to_rotate, /obj/structure/window) && !silent)
-			object_to_rotate.balloon_alert(user, "need to unscrew!")
+			object_to_rotate.balloon_alert(user, LANG("datum.c85dadb6d0e078bf", null))
 		else if(!silent)
-			object_to_rotate.balloon_alert(user, "need to unwrench!")
+			object_to_rotate.balloon_alert(user, LANG("datum.b2f60ea59712b190", null))
 		return FALSE
 
 	if(rotation_flags & ROTATION_NEEDS_ROOM)
@@ -105,14 +106,14 @@
 		var/fulltile = istype(window_to_rotate) ? window_to_rotate.fulltile : FALSE
 		if(!valid_build_direction(object_to_rotate.loc, target_dir, is_fulltile = fulltile))
 			if(!silent)
-				object_to_rotate.balloon_alert(user, "can't rotate in that direction!")
+				object_to_rotate.balloon_alert(user, LANG("datum.165a02e2e204918a", null))
 			return FALSE
 
 	if(rotation_flags & ROTATION_NEEDS_UNBLOCKED)
 		var/turf/rotate_turf = get_turf(object_to_rotate)
 		if(rotate_turf.is_blocked_turf(source_atom = object_to_rotate))
 			if(!silent)
-				object_to_rotate.balloon_alert(user, "rotation is blocked!")
+				object_to_rotate.balloon_alert(user, LANG("datum.2800bfa3623a451e", null))
 			return FALSE
 
 	return TRUE

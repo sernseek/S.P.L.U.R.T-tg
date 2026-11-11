@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/implant/hide_backpack
 	name = "storage concealment implant"
 	desc = "Prevents your backpack from being observable by the naked eye."
@@ -98,7 +99,7 @@
 	var/implant_toggle_text_2 = (!ability_active ? "dis" : "") // Engage or Disengage
 
 	// Display a chat message
-	action_owner.visible_message(span_notice("The equipment worn on [action_owner]'s back-region flickers momentarily, before becoming [implant_toggle_text]."), span_notice("You [implant_toggle_text_2]engage the Storage Concealment Implant, causing your backpack to be [implant_toggle_text]."))
+	action_owner.visible_message(span_notice(LANG("datum.081f2af04a848d27", list(action_owner, implant_toggle_text))), span_notice(LANG("datum.3025a01c431f4413", list(implant_toggle_text_2, implant_toggle_text))))
 	return TRUE
 
 /*

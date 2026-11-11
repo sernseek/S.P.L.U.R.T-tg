@@ -1,17 +1,18 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/slime
 	var/obj/item/clothing/head/costume/crown/slime_crown
 
 /mob/living/basic/slime/attackby(obj/item/attacking_item, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(istype(attacking_item, /obj/item/clothing/head/costume/crown))
 		if(slime_crown)
-			to_chat(user, span_warning("[src] is already wearing a crown!"))
+			to_chat(user, span_warning(LANG("mob.3e9b55eddf03b55c", list(src))))
 			return
 
 		if(!user.temporarilyRemoveItemFromInventory(attacking_item, force = TRUE, newloc = src))
 			return
 
 		slime_crown = attacking_item
-		visible_message(span_notice("[user] crowns [src]!"))
+		visible_message(span_notice(LANG("mob.391c2b7ed26dbf77", list(user, src))))
 		regenerate_icons()
 		return
 

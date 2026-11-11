@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  *	# Auspex
  *
@@ -37,24 +38,24 @@
 	. = "Hide yourself within a Cloak of Darkness, click on a tile to teleport"
 	. = "Costs [AUSPEX_BLOOD_COST_PER_TILE] blood per tile teleported."
 	if(target_range)
-		. += " up to [target_range] tiles away."
+		. += LANG("datum.2876301a1c717091", list(target_range))
 	else
-		. += " anywhere you can see."
+		. += LANG("datum.afb68ec47edbbbcf", null)
 	if(level_current >= AUSPEX_BLEED_LEVEL)
 		if(level_current >= AUSPEX_KNOCKDOWN_LEVEL)
-			. += " This will cause people at your destination to start bleeding and fall asleep."
+			. += LANG("datum.fb1c1a085ba6d458", null)
 		else
-			. += " This will cause people at your destination to start bleeding."
+			. += LANG("datum.f2c93e974ec1b173", null)
 
 /datum/action/cooldown/bloodsucker/targeted/tremere/auspex/get_power_explanation_extended()
 	. = list()
-	. += "When Activated, you will be hidden in a Cloak of Darkness."
+	. += LANG("datum.dd8f46dddb5b2e47", null)
 	. += "[target_range ? "Click to teleport up to [target_range] tiles away, as long as you can see it" : "You can teleport anywhere you can see"]."
-	. += "Teleporting will refill your stamina to full."
-	. += "At level [AUSPEX_BLEED_LEVEL] you will cause people at your end location to start bleeding."
-	. += "At level [AUSPEX_KNOCKDOWN_LEVEL] you will cause people at your end location to be knocked down."
-	. += "At level [AUSPEX_ANYWHERE_LEVEL] you will be able to teleport anywhere, even if you cannot properly see the tile."
-	. += "The power will cost [AUSPEX_BLOOD_COST_PER_TILE] blood per tile that you teleport."
+	. += LANG("datum.34e5dde670033858", null)
+	. += LANG("datum.d4b2bb4e17aa9bfb", list(AUSPEX_BLEED_LEVEL))
+	. += LANG("datum.3bc0e2db5edfa9ed", list(AUSPEX_KNOCKDOWN_LEVEL))
+	. += LANG("datum.304d03cd58e07ea5", list(AUSPEX_ANYWHERE_LEVEL))
+	. += LANG("datum.5598f25e22ba8ad1", list(AUSPEX_BLOOD_COST_PER_TILE))
 
 /datum/action/cooldown/bloodsucker/targeted/tremere/auspex/CheckValidTarget(atom/target_atom)
 	. = ..()
@@ -66,7 +67,7 @@
 	if(target_turf.is_blocked_turf_ignore_climbable())
 		return FALSE
 	if(level_current < AUSPEX_ANYWHERE_LEVEL && !(target_turf in view(owner.client.view, owner.client)))
-		owner.balloon_alert(owner, "out of view!")
+		owner.balloon_alert(owner, LANG("datum.1af2801026ce2def", null))
 		return FALSE
 	return TRUE
 
@@ -92,7 +93,7 @@
 /datum/action/cooldown/bloodsucker/targeted/tremere/auspex/proc/auspex_blink(mob/living/user, turf/targeted_turf)
 	var/blood_cost = AUSPEX_BLOOD_COST_PER_TILE * get_dist(user, targeted_turf)
 	if(!can_pay_blood(blood_cost))
-		owner.balloon_alert(owner, "not enough blood!")
+		owner.balloon_alert(owner, LANG("datum.bd9ee67cd3b559be", null))
 		return
 	playsound(user, 'sound/effects/magic/summon_karp.ogg', 60)
 	playsound(targeted_turf, 'sound/effects/magic/summon_karp.ogg', 60)

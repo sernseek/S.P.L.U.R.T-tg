@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/sextoy/vibroring
 	name = "vibrating ring"
 	desc = "A ring toy used to keep your erection going strong."
@@ -20,7 +21,7 @@
 
 /obj/item/clothing/sextoy/vibroring/attack_self(mob/user)
 	toy_on = !toy_on
-	to_chat(user, span_notice("You turn the vibroring [toy_on ? "on. Brrrr..." : "off."]"))
+	to_chat(user, span_notice(LANG("obj.3fd788e4c3b76fe1", list(toy_on ? "on. Brrrr..." : "off."))))
 	conditional_pref_sound(user, toy_on ? 'sound/items/weapons/magin.ogg' : 'sound/items/weapons/magout.ogg', 40, TRUE)
 	update_icon_state()
 	update_icon()
@@ -39,7 +40,7 @@
 /obj/item/clothing/sextoy/vibroring/examine(mob/user)
 	. = ..()
 	if(!color_changed)
-		. += span_notice("Alt-click to change it's color.")
+		. += span_notice(LANG("obj.ffa2b27c6831e98e", null))
 
 /obj/item/clothing/sextoy/vibroring/click_alt(mob/user)
 	if(color_changed)

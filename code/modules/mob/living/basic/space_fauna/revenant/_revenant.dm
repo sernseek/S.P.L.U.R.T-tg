@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Source for a trait we get when we're stunned
 #define REVENANT_STUNNED_TRAIT "revenant_got_stunned"
 
@@ -185,10 +186,10 @@
 
 /mob/living/basic/revenant/get_status_tab_items()
 	. = ..()
-	. += "Current Essence: [essence >= max_essence ? essence : "[essence] / [max_essence]"] E"
-	. += "Total Essence Stolen: [essence_accumulated] SE"
-	. += "Unused Stolen Essence: [essence_excess] SE"
-	. += "Perfect Souls Stolen: [perfectsouls]"
+	. += LANG("mob.af38c7c6f43c8a7e", list(essence >= max_essence ? essence : "[essence] / [max_essence]"))
+	. += LANG("mob.8f7bf93d76da6e9f", list(essence_accumulated))
+	. += LANG("mob.b11c561f42efd271", list(essence_excess))
+	. += LANG("mob.e3158766e9c2badf", list(perfectsouls))
 
 /mob/living/basic/revenant/update_health_hud()
 	if(isnull(hud_used))
@@ -219,7 +220,7 @@
 
 	if(client)
 		if(client.prefs.muted & MUTE_IC)
-			to_chat(src, span_boldwarning("You cannot send IC messages (muted)."))
+			to_chat(src, span_boldwarning(LANG("mob.edad7622f650b603", null)))
 			return
 		if (!(ignore_spam || forced) && client.handle_spam_prevention(message, MUTE_IC))
 			return
@@ -346,8 +347,8 @@
 	update_ability_status()
 
 	visible_message(
-		span_warning("[src] lets out a waning screech as violet mist swirls around its dissolving body!"),
-		span_revendanger("NO! No... it's too late, you can feel your essence [pick("breaking apart", "drifting away")]..."),
+		span_warning(LANG("mob.57274ae99ee3145a", list(src))),
+		span_revendanger(LANG("mob.d1d7ccbdfd6bb991", list(pick("breaking apart", "drifting away")))),
 	)
 
 	SetInvisibility(INVISIBILITY_NONE, id=type)
@@ -362,14 +363,14 @@
 	if(QDELETED(src) || !dormant) // something fucky happened, abort. we MUST be dormant to go inside the ectoplasm.
 		return
 
-	visible_message(span_danger("[src]'s body breaks apart into a fine pile of blue dust."))
+	visible_message(span_danger(LANG("mob.0ecdfe2c0efa659d", list(src))))
 
 	new /obj/item/ectoplasm/revenant(get_turf(src), src) // the ectoplasm will handle moving us out of dormancy
 
 /mob/living/basic/revenant/proc/on_move(datum/source, atom/entering_loc)
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM)) // just in case it occurs, need to provide some feedback
-		balloon_alert(src, "can't move!")
+		balloon_alert(src, LANG("mob.b5c8ce04aa8e539a", null))
 		return
 
 	if(isnull(orbiting) || incorporeal_move_check(entering_loc))
@@ -403,8 +404,8 @@
 /mob/living/basic/revenant/proc/on_baned(obj/item/weapon, mob/living/user)
 	SIGNAL_HANDLER
 	visible_message(
-		span_warning("[src] violently flinches!"),
-		span_revendanger("As [weapon] passes through you, you feel your essence draining away!"),
+		span_warning(LANG("mob.0948d002c6bf01dc", list(src))),
+		span_revendanger(LANG("mob.1e3b9aef833c2a39", list(weapon))),
 	)
 	apply_status_effect(/datum/status_effect/revenant/inhibited, 3 SECONDS)
 
@@ -415,17 +416,17 @@
 		return TRUE // what? whatever let it happen
 
 	if(step_turf.turf_flags & NOJAUNT)
-		to_chat(src, span_warning("Some strange aura is blocking the way."))
+		to_chat(src, span_warning(LANG("mob.570f77d7c2b7eea1", null)))
 		return FALSE
 
 	if(locate(/obj/effect/decal/cleanable/food/salt) in step_turf)
-		balloon_alert(src, "blocked by salt!")
+		balloon_alert(src, LANG("mob.92f287f7db926bf9", null))
 		apply_status_effect(/datum/status_effect/revenant/revealed, 2 SECONDS)
 		apply_status_effect(/datum/status_effect/incapacitating/paralyzed/revenant, 2 SECONDS)
 		return FALSE
 
 	if(HAS_TRAIT(step_turf, TRAIT_TURF_BLESSED))
-		to_chat(src, span_warning("Holy energies block your path!"))
+		to_chat(src, span_warning(LANG("mob.1fa443913aa8cb49", null)))
 		return FALSE
 
 	return TRUE
@@ -443,17 +444,17 @@
 	essence_cost = abs(essence_cost) * -1
 	if(-essence_cost > essence)
 		if(!silent)
-			to_chat(src, span_revenwarning("You lack the essence to use that ability!"))
+			to_chat(src, span_revenwarning(LANG("mob.8b32b367a2d0fc9c", null)))
 		return FALSE
 
 	if(dormant)
 		if(!silent)
-			to_chat(src, span_revenwarning("Your powers lie dormant right now!"))
+			to_chat(src, span_revenwarning(LANG("mob.cc95bcd729eec939", null)))
 		return SPELL_CANCEL_CAST
 
 	if(HAS_TRAIT(src, TRAIT_REVENANT_INHIBITED))
 		if(!silent)
-			to_chat(src, span_revenwarning("Your powers have been suppressed by a nullifying energy!"))
+			to_chat(src, span_revenwarning(LANG("mob.e821d86c11678667", null)))
 		return FALSE
 
 	if(ability_density_locked)
@@ -471,14 +472,14 @@
 	var/turf/current = get_turf(src)
 	if(isclosedturf(current))
 		if(!silent)
-			to_chat(src, span_revenwarning("You cannot use abilities from inside of a wall."))
+			to_chat(src, span_revenwarning(LANG("mob.d2370354a2bcea74", null)))
 		return TRUE
 
 	for(var/obj/thing in current)
 		if(!thing.density || thing.CanPass(src, get_dir(current, src)))
 			continue
 		if(!silent)
-			to_chat(src, span_revenwarning("You cannot use abilities inside of a dense object."))
+			to_chat(src, span_revenwarning(LANG("mob.0a549c0b02838e54", null)))
 		return TRUE
 	return FALSE
 
@@ -520,9 +521,9 @@
 	update_ability_status()
 	if(!silent)
 		if(essence_to_change_by > 0)
-			to_chat(src, span_revennotice("Gained [essence_to_change_by]E [source ? "from [source]":""]."))
+			to_chat(src, span_revennotice(LANG("mob.78c53d1394bd7ce8", list(essence_to_change_by, source ? "from [source]":""))))
 		else
-			to_chat(src, span_revenminor("Lost [essence_to_change_by]E [source ? "from [source]":""]."))
+			to_chat(src, span_revenminor(LANG("mob.238e3ed389a66edf", list(essence_to_change_by, source ? "from [source]":""))))
 	return TRUE
 
 /mob/living/basic/revenant/mob_negates_gravity()
@@ -554,10 +555,10 @@
 
 /mob/living/basic/revenant/proc/get_new_user()
 	message_admins("A poll for the reforming revenant was created.")
-	var/mob/chosen_one = SSpolling.poll_ghosts_for_target("Do you want to be [span_notice(name)] (reforming)?", check_jobban = ROLE_REVENANT, role = ROLE_REVENANT, poll_time = 5 SECONDS, checked_target = src, alert_pic = src, role_name_text = "reforming revenant", chat_text_border_icon = src)
+	var/mob/chosen_one = SSpolling.poll_ghosts_for_target(LANG("mob.5e33c6bf6552e392", list(span_notice(name))), check_jobban = ROLE_REVENANT, role = ROLE_REVENANT, poll_time = 5 SECONDS, checked_target = src, alert_pic = src, role_name_text = "reforming revenant", chat_text_border_icon = src)
 	if(!chosen_one)
 		message_admins("No candidates were found for the new revenant.")
-		visible_message(span_revenwarning("A blue dust appears from thin air and settles down."))
+		visible_message(span_revenwarning(LANG("mob.8e01a1383507db21", null)))
 		new /obj/item/ectoplasm/revenant(get_turf(src)) // inert
 		qdel(src)
 		return

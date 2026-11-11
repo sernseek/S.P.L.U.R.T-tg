@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// File location for the long gun's speech
 #define LONG_MOD_LASER_SPEECH "saibasan/long_modular_laser.json"
 /// File location for the short gun's speech
@@ -92,8 +93,8 @@
 
 /obj/item/gun/energy/modular_laser_rifle/examine(mob/user)
 	. = ..()
-	. += span_notice("You can <b>examine closer</b> to learn a little more about this weapon.")
-	. += span_notice("You can <b>Alt-Click</b> this gun to access the <b>internal soulcatcher</b>.")
+	. += span_notice(LANG("obj.b663717df67087e6", null))
+	. += span_notice(LANG("obj.3cc4ac88f3bf3421", null))
 
 /obj/item/gun/energy/modular_laser_rifle/examine_more(mob/user)
 	. = ..()

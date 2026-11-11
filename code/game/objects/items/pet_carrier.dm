@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define pet_carrier_full(carrier) carrier.occupants.len >= carrier.max_occupants || carrier.occupant_weight >= carrier.max_occupant_weight
 
 //Used to transport little animals without having to drag them across the station.
@@ -67,25 +68,25 @@
 	if(occupants.len)
 		for(var/V in occupants)
 			var/mob/living/L = V
-			. += span_notice("It has [L] inside.")
+			. += span_notice(LANG("obj.d4be8cd2a33ceba0", list(L)))
 	else
-		. += span_notice("It has nothing inside.")
+		. += span_notice(LANG("obj.77fc42cd179df6ed", null))
 
 	// At some point these need to be converted to contextual screentips
-	. += span_notice("Activate it in your hand to [open ? "close" : "open"] its door. Click-drag onto floor to release its occupants.")
+	. += span_notice(LANG("obj.e0f549c4b2a0964c", list(open ? "close" : "open")))
 	if(!open && allows_locking)
-		. += span_notice("Alt-click to [locked ? "unlock" : "lock"] its door.")
+		. += span_notice(LANG("obj.fdd643c69fb844c2", list(locked ? "unlock" : "lock")))
 
 /obj/item/pet_carrier/attack_self(mob/living/user)
 	if(open)
-		to_chat(user, span_notice("You close [src]'s door."))
+		to_chat(user, span_notice(LANG("obj.d63afb955a606b5b", list(src))))
 		playsound(user, close_sound, 50, TRUE)
 		open = FALSE
 	else
 		if(locked)
-			to_chat(user, span_warning("[src] is locked!"))
+			to_chat(user, span_warning(LANG("obj.9d5df8cebbee16e7", list(src))))
 			return
-		to_chat(user, span_notice("You open [src]'s door."))
+		to_chat(user, span_notice(LANG("obj.0cb0e5bf64f20d70", list(src))))
 		playsound(user, open_sound, 50, TRUE)
 		open = TRUE
 	update_appearance()
@@ -94,7 +95,7 @@
 	if(open || !allows_locking)
 		return CLICK_ACTION_BLOCKING
 	locked = !locked
-	to_chat(user, span_notice("You flip the lock switch [locked ? "down" : "up"]."))
+	to_chat(user, span_notice(LANG("obj.f34132e60c14157a", list(locked ? "down" : "up"))))
 	if(locked)
 		playsound(user, 'sound/machines/airlock/boltsdown.ogg', 30, TRUE)
 	else
@@ -106,33 +107,33 @@
 	if(user.combat_mode || !isliving(interacting_with))
 		return NONE
 	if(!open)
-		to_chat(user, span_warning("You need to open [src]'s door!"))
+		to_chat(user, span_warning(LANG("obj.1f3745b2210ae06b", list(src))))
 		return ITEM_INTERACT_BLOCKING
 	var/mob/living/target = interacting_with
 	if(target.mob_size > max_occupant_weight)
 		if(ishuman(target))
 			if(HAS_TRAIT(target, TRAIT_CATLIKE_INSTINCT))
-				to_chat(user, span_warning("You'd need a lot of catnip and treats, plus maybe a laser pointer, for that to work."))
+				to_chat(user, span_warning(LANG("obj.6dd75ce05d216adf", null)))
 			else
-				to_chat(user, span_warning("Humans, generally, do not fit into pet carriers."))
+				to_chat(user, span_warning(LANG("obj.6b4e5a5ebc75cd82", null)))
 		else
-			to_chat(user, span_warning("You get the feeling [target] isn't meant for a [name]."))
+			to_chat(user, span_warning(LANG("obj.7e7df86849d062bb", list(target, name))))
 		return ITEM_INTERACT_BLOCKING
 	if(user == target)
-		to_chat(user, span_warning("Why would you ever do that?"))
+		to_chat(user, span_warning(LANG("obj.ab1d9db7f6d9b0c4", null)))
 		return ITEM_INTERACT_BLOCKING
 	load_occupant(user, target)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/pet_carrier/relaymove(mob/living/user, direction)
 	if(open)
-		loc.visible_message(span_notice("[user] climbs out of [src]!"), \
-		span_warning("[user] jumps out of [src]!"))
+		loc.visible_message(span_notice(LANG("obj.dc5ea840c345fada", list(user, src))), \
+		span_warning(LANG("obj.76224ddbbc305a56", list(user, src))))
 		remove_occupant(user)
 		return
 	else if(!locked)
-		loc.visible_message(span_notice("[user] pushes open the door to [src]!"), \
-		span_warning("[user] pushes open the door of [src]!"))
+		loc.visible_message(span_notice(LANG("obj.50131e720a2bd904", list(user, src))), \
+		span_warning(LANG("obj.bd4c23e08a0c4384", list(user, src))))
 		open = TRUE
 		update_appearance()
 		return
@@ -143,22 +144,22 @@
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	if(user.mob_size <= MOB_SIZE_SMALL)
-		to_chat(user, span_notice("You poke a limb through [src]'s bars and start fumbling for the lock switch... (This will take some time.)"))
-		to_chat(loc, span_warning("You see [user] reach through the bars and fumble for the lock switch!"))
+		to_chat(user, span_notice(LANG("obj.58a79025217e7035", list(src))))
+		to_chat(loc, span_warning(LANG("obj.8c3cd2c566e8b34c", list(user))))
 		if(!do_after(user, rand(300, 400), target = user) || open || !locked || !(user in occupants))
 			return
-		loc.visible_message(span_warning("[user] flips the lock switch on [src] by reaching through!"), null, null, null, user)
-		to_chat(user, span_bolddanger("Bingo! The lock pops open!"))
+		loc.visible_message(span_warning(LANG("obj.90127c57dc2de8a8", list(user, src))), null, null, null, user)
+		to_chat(user, span_bolddanger(LANG("obj.dbbc7e43994b844a", null)))
 		locked = FALSE
 		playsound(src, 'sound/machines/airlock/boltsup.ogg', 30, TRUE)
 		update_appearance()
 	else
-		loc.visible_message(span_warning("[src] starts rattling as something pushes against the door!"), null, null, null, user)
-		to_chat(user, span_notice("You start pushing out of [src]... (This will take about 20 seconds.)"))
+		loc.visible_message(span_warning(LANG("obj.2e27f495250491b1", list(src))), null, null, null, user)
+		to_chat(user, span_notice(LANG("obj.50248e7ec936f847", list(src))))
 		if(!do_after(user, 20 SECONDS, target = user) || open || !locked || !(user in occupants))
 			return
-		loc.visible_message(span_warning("[user] shoves out of [src]!"), null, null, null, user)
-		to_chat(user, span_notice("You shove open [src]'s door against the lock's resistance and fall out!"))
+		loc.visible_message(span_warning(LANG("obj.a10af49b1106c914", list(user, src))), null, null, null, user)
+		to_chat(user, span_notice(LANG("obj.f3b47c38bba1a512", list(src))))
 		locked = FALSE
 		open = TRUE
 		update_appearance()
@@ -173,8 +174,8 @@
 
 /obj/item/pet_carrier/mouse_drop_dragged(atom/over_atom, mob/user, src_location, over_location, params)
 	if(isopenturf(over_atom) && open && occupants.len)
-		user.visible_message(span_notice("[user] unloads [src]."), \
-		span_notice("You unload [src] onto [over_atom]."))
+		user.visible_message(span_notice(LANG("obj.13965714e4bd9116", list(user, src))), \
+		span_notice(LANG("obj.0293051b28a7b380", list(src, over_atom))))
 		for(var/V in occupants)
 			remove_occupant(V, over_atom)
 
@@ -190,21 +191,21 @@
 
 /obj/item/pet_carrier/proc/load_occupant(mob/living/user, mob/living/target)
 	if(pet_carrier_full(src))
-		to_chat(user, span_warning("[src] is already carrying too much!"))
+		to_chat(user, span_warning(LANG("obj.c110f18eee5ee2a1", list(src))))
 		return
-	user.visible_message(span_notice("[user] starts loading [target] into [src]."), \
-	span_notice("You start loading [target] into [src]..."), null, null, target)
-	to_chat(target, span_userdanger("[user] starts loading you into [user.p_their()] [name]!"))
+	user.visible_message(span_notice(LANG("obj.1693085c7c8f31b2", list(user, target, src))), \
+	span_notice(LANG("obj.2b7d648dc3fa7e76", list(target, src))), null, null, target)
+	to_chat(target, span_userdanger(LANG("obj.db00533d94761401", list(user, user.p_their(), name))))
 	if(!do_after(user, 3 SECONDS, target))
 		return
 	if(target in occupants)
 		return
 	if(pet_carrier_full(src)) //Run the checks again, just in case
-		to_chat(user, span_warning("[src] is already carrying too much!"))
+		to_chat(user, span_warning(LANG("obj.c110f18eee5ee2a1", list(src))))
 		return
-	user.visible_message(span_notice("[user] loads [target] into [src]!"), \
-	span_notice("You load [target] into [src]."), null, null, target)
-	to_chat(target, span_userdanger("[user] loads you into [user.p_their()] [name]!"))
+	user.visible_message(span_notice(LANG("obj.049974f6709e6256", list(user, target, src))), \
+	span_notice(LANG("obj.91f1966485f25dd2", list(target, src))), null, null, target)
+	to_chat(target, span_userdanger(LANG("obj.fd3be8b5d23a770a", list(user, user.p_their(), name))))
 	add_occupant(target)
 
 /obj/item/pet_carrier/proc/add_occupant(mob/living/occupant)

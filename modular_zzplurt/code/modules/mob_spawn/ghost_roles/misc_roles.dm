@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/mob_spawn/ghost_role/human/lostcargoqm
 	prompt_name = "a lost freighter Captain"
 	mob_name = "Freighter Captain"
@@ -43,14 +44,14 @@
 	// Check shuttle mode/state
 	if(SSshuttle.emergency.mode != SHUTTLE_DOCKED)
 		if(!silent)
-			to_chat(user, span_warning("You can only take this role once the emergency shuttle has docked!"))
+			to_chat(user, span_warning(LANG("obj.6f2d7444ccbde0ac", null)))
 		return FALSE
 
 	return TRUE
 
 /obj/effect/mob_spawn/ghost_role/human/vortex_bartender/proc/announce_role_available()
 	for(var/mob/dead/observer/G in GLOB.dead_mob_list)
-		to_chat(G, span_notice("A new ghost role is now available: [prompt_name]! (Emergency shuttle has docked)"))
+		to_chat(G, span_notice(LANG("obj.c22482cbc361968b", list(prompt_name))))
 
 /datum/outfit/vortex_bartender
 	name = "Vortex-Class CentCom Bartender"

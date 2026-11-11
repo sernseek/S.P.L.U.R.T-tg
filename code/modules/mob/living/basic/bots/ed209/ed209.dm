@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/bot/secbot/ed209
 	name = "\improper ED-209 Security Robot"
 	desc = "A security robot. He looks less than thrilled."
@@ -67,7 +68,7 @@
 	if(!sheriffized || !COOLDOWN_FINISHED(src, shoot_cry))
 		return
 	COOLDOWN_START(src, shoot_cry, 30 SECONDS)
-	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, say), "YIPPIE-KI-YAY!")
+	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, say), LANG("mob.c5ed2013fa3f62b5", null))
 
 /mob/living/basic/bot/secbot/ed209/Exited(atom/movable/gone, direction)
 	. = ..()
@@ -76,7 +77,7 @@
 /mob/living/basic/bot/secbot/ed209/examine(mob/user)
 	. = ..()
 	if(sheriffized)
-		. += span_notice("Fastest hand in the west.")
+		. += span_notice(LANG("mob.66bbda09eceb4f3d", null))
 
 /mob/living/basic/bot/secbot/ed209/bot_reset(bypass_ai_reset = FALSE)
 	. = ..()
@@ -90,8 +91,8 @@
 	. = ..()
 	icon_state = "ed209[bot_mode_flags & BOT_MODE_ON]"
 	set_weapon()
-	balloon_alert(user, "safeties disabled")
-	audible_message(span_bolddanger("[src] buzzes menacingly!"))
+	balloon_alert(user, LANG("mob.42074643f1699068", null))
+	audible_message(span_bolddanger(LANG("mob.ece108f83c5e1d8d", list(src))))
 	return TRUE
 
 /mob/living/basic/bot/secbot/ed209/proc/set_weapon()

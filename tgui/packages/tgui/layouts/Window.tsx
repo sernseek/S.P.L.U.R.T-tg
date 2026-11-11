@@ -59,6 +59,16 @@ export function Window(props: Props) {
   const { config, suspended, debug } = useBackend();
 
   const [isReadyToRender, setIsReadyToRender] = useState(false);
+  // ZH EDIT ADDITION START - Window resume fix: re-show on every resume, see events/handlers/update.ts
+  const [resumeCount, setResumeCount] = useState(0);
+  useEffect(() => {
+    const onResume = () => setResumeCount((count) => count + 1);
+    globalEvents.on('tgui-resumed', onResume);
+    return () => {
+      globalEvents.off('tgui-resumed', onResume);
+    };
+  }, []);
+  // ZH EDIT ADDITION END
 
   // We need to set the window to be invisible before we can set its geometry
   // Otherwise, we get a flicker effect when the window is first rendered
@@ -104,7 +114,7 @@ export function Window(props: Props) {
     return () => {
       logger.log('unmounting');
     };
-  }, [isReadyToRender, width, height, scale]);
+  }, [isReadyToRender, suspended, width, height, scale, resumeCount]);
 
   // Determine when to show dimmer
   const showDimmer =
@@ -162,8 +172,29 @@ function WindowContent(props: ContentProps) {
   const { className, fitted, children, ...rest } = props;
   const [altDown, setAltDown] = useState(false);
 
+  // ZH EDIT ADDITION START - alt+tab 卡住 altDown 导致弹窗文本无法选中
+  // Alt+Tab 时 Alt 的 keydown 到得了窗口，keyup 却发生在焦点已经离开之后 —— KeyListener 收不到，
+  // altDown 永久卡在 true。回到窗口后在内容区任意位置按下都会命中 dragStartIfAltHeld，整窗跟着鼠标走，
+  // 且 dragMoveHandler 的 preventDefault 吃掉文本选取 → 玩家表现为「弹窗哪里都能拖、文本复制不了」。
+  // 失焦即清掉修饰键状态：焦点不在窗口时本就收不到后续 keyup，缓存的按下状态一定是脏的。
+  useEffect(() => {
+    function clearModifiers(): void {
+      setAltDown(false);
+    }
+    window.addEventListener('blur', clearModifiers);
+    document.addEventListener('visibilitychange', clearModifiers);
+    return () => {
+      window.removeEventListener('blur', clearModifiers);
+      document.removeEventListener('visibilitychange', clearModifiers);
+    };
+  }, []);
+  // ZH EDIT ADDITION END
+
   function dragStartIfAltHeld(event: React.MouseEvent<HTMLDivElement>): void {
-    if (altDown) {
+    // ZH EDIT CHANGE - ORIGINAL: if (altDown) {
+    // event.altKey 是本次按下时的真实修饰键状态，作为缓存态的兜底：即便 blur 没有送达（嵌入式浏览器
+    // 差异），也不会拿一个过期的 altDown 触发拖动。
+    if (altDown && event.altKey) {
       dragStartHandler(event);
     }
   }

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 SUBSYSTEM_DEF(atoms)
 	name = "Atoms"
 	dependencies = list(
@@ -199,16 +200,16 @@ SUBSYSTEM_DEF(atoms)
 /datum/controller/subsystem/atoms/proc/InitLog()
 	. = ""
 	for(var/path in BadInitializeCalls)
-		. += "Path : [path] \n"
+		. += LANG("datum.ffc8cf7d9d9fb91e", list(path))
 		var/fails = BadInitializeCalls[path]
 		if(fails & BAD_INIT_DIDNT_INIT)
-			. += "- Didn't call atom/Initialize(mapload)\n"
+			. += LANG("datum.da73789a77ead2ec", null)
 		if(fails & BAD_INIT_NO_HINT)
-			. += "- Didn't return an Initialize hint\n"
+			. += LANG("datum.6db7867c09cfdb0e", null)
 		if(fails & BAD_INIT_QDEL_BEFORE)
-			. += "- Qdel'd before Initialize proc ran\n"
+			. += LANG("datum.5ac3b22438c73eb1", null)
 		if(fails & BAD_INIT_SLEPT)
-			. += "- Slept during Initialize()\n"
+			. += LANG("datum.6d5eb86ca468e587", null)
 
 /// Prepares an atom to be deleted once the atoms SS is initialized.
 /datum/controller/subsystem/atoms/proc/prepare_deletion(atom/target)

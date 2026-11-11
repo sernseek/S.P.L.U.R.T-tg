@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BODYMORPHER_PRESET_BASE_KEY "base"
 #define BODYMORPHER_PRESET_CUSTOM_KEY "custom"
 #define BODYMORPHER_PRESET_BASE_NAME "Base Character"
@@ -29,7 +30,7 @@
 		return
 	alterer.visible_message(
 		span_notice("[owner] [shapeshift_text]"),
-		span_notice("You focus intently on altering your body while standing perfectly still...")
+		span_notice(LANG("datum.77be045a4c9de2e2", null))
 	)
 	ui_interact(alterer)
 
@@ -206,20 +207,20 @@
 /datum/action/innate/alter_form/proc/prompt_save_bodymorpher_preset(mob/living/carbon/human/alterer)
 	var/list/store = get_bodymorpher_preset_store(alterer)
 	var/list/custom_presets = store[BODYMORPHER_PRESET_CUSTOM_KEY]
-	var/preset_name = tgui_input_text(alterer, "Name this bodymorph preset.", "Save Preset", max_length = BODYMORPHER_PRESET_NAME_MAX)
+	var/preset_name = tgui_input_text(alterer, LANG("datum.e3037d3d57e62f89", null), LANG("datum.6612551c4f68df53", null), max_length = BODYMORPHER_PRESET_NAME_MAX)
 	if(!preset_name)
 		return FALSE
 	preset_name = copytext_char(preset_name, 1, BODYMORPHER_PRESET_NAME_MAX + 1)
 	if(!length(preset_name))
 		return FALSE
 	if(preset_name == BODYMORPHER_PRESET_BASE_NAME)
-		to_chat(alterer, span_warning("That preset name is reserved."))
+		to_chat(alterer, span_warning(LANG("datum.6a6f1b406af7fb3e", null)))
 		return FALSE
 	if(!(preset_name in custom_presets) && length(custom_presets) >= BODYMORPHER_PRESET_LIMIT)
-		to_chat(alterer, span_warning("You can only save up to [BODYMORPHER_PRESET_LIMIT] bodymorph presets."))
+		to_chat(alterer, span_warning(LANG("datum.68bacab422f1b062", list(BODYMORPHER_PRESET_LIMIT))))
 		return FALSE
 	if(preset_name in custom_presets)
-		var/overwrite = tgui_alert(alterer, "Overwrite the existing preset '[preset_name]'?", "Overwrite Preset", list("Yes", "No"))
+		var/overwrite = tgui_alert(alterer, LANG("datum.0b02eed84b8b424e", list(preset_name)), LANG("datum.585cd578f93a7897", null), list("Yes", "No"))
 		if(overwrite != "Yes")
 			return FALSE
 	custom_presets[preset_name] = capture_bodymorpher_snapshot(alterer, preset_name, FALSE)
@@ -246,7 +247,7 @@
 	var/list/custom_presets = store[BODYMORPHER_PRESET_CUSTOM_KEY]
 	if(!(preset_key in custom_presets))
 		return FALSE
-	var/delete_choice = tgui_alert(alterer, "Delete the preset '[preset_key]'?", "Delete Preset", list("Delete", "Cancel"))
+	var/delete_choice = tgui_alert(alterer, LANG("datum.427f50631e658b11", list(preset_key)), LANG("datum.d44f52b4e9d01a45", null), list("Delete", "Cancel"))
 	if(delete_choice != "Delete")
 		return FALSE
 	custom_presets -= preset_key

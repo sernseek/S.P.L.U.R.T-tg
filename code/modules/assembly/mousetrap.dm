@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/assembly/mousetrap
 	name = "mousetrap"
 	desc = "A handy little spring-loaded trap for catching pesty rodents."
@@ -77,7 +78,7 @@
 
 /obj/item/assembly/mousetrap/examine(mob/user)
 	. = ..()
-	. += span_notice("The pressure plate is [armed?"primed":"safe"].")
+	. += span_notice(LANG("obj.13e34a029a417c21", list(armed?"primed":"safe")))
 
 /obj/item/assembly/mousetrap/activate()
 	if(..())
@@ -86,7 +87,7 @@
 			if(ishuman(usr))
 				var/mob/living/carbon/human/user = usr
 				if((HAS_TRAIT(user, TRAIT_DUMB) || HAS_TRAIT(user, TRAIT_CLUMSY)) && prob(50))
-					to_chat(user, span_warning("Your hand slips, setting off the trigger!"))
+					to_chat(user, span_warning(LANG("obj.b686046c3486e615", null)))
 					pulse()
 		update_appearance()
 		playsound(loc, 'sound/items/weapons/handcuffs.ogg', 30, TRUE, -3)
@@ -125,22 +126,22 @@
 					affecting = victim.get_bodypart(pick(GLOB.leg_zones))
 					victim.Paralyze(6 SECONDS)
 				else
-					to_chat(victim, span_notice("Your [victim.shoes.name] protects you from [src]."))
+					to_chat(victim, span_notice(LANG("obj.222eddfbb399a68b", list(victim.shoes.name, src))))
 			if(BODY_ZONE_PRECISE_L_HAND, BODY_ZONE_PRECISE_R_HAND)
 				if(!victim.gloves)
 					affecting = victim.get_bodypart(type)
 					victim.Stun(6 SECONDS)
 				else
-					to_chat(victim, span_notice("Your [victim.gloves.name] protects you from [src]."))
+					to_chat(victim, span_notice(LANG("obj.222eddfbb399a68b", list(victim.gloves.name, src))))
 		if(affecting)
 			victim.apply_damage(1, BRUTE, affecting, wound_bonus = CANT_WOUND)
 	else if(ismouse(target))
 		var/mob/living/basic/mouse/splatted = target
-		visible_message(span_bolddanger("SPLAT!"))
+		visible_message(span_bolddanger(LANG("obj.e0a3d723fef47785", null)))
 		splatted.splat() // mousetraps are instadeath for mice
 
 	else if(isregalrat(target))
-		visible_message(span_bolddanger("Skreeeee!")) //He's simply too large to be affected by a tiny mouse trap.
+		visible_message(span_bolddanger(LANG("obj.f19c30235bf174a4", null))) //He's simply too large to be affected by a tiny mouse trap.
 
 	playsound(src, 'sound/effects/snap.ogg', 50, TRUE)
 	pulse()
@@ -159,18 +160,18 @@
 		if(IS_RIGHT_INDEX(user.active_hand_index))
 			which_hand = BODY_ZONE_PRECISE_R_HAND
 		triggered(user, which_hand)
-		user.visible_message(span_warning("[user] accidentally sets off [src], breaking their fingers."), \
-			span_warning("You accidentally trigger [src]!"))
+		user.visible_message(span_warning(LANG("obj.93362712a8243f2b", list(user, src))), \
+			span_warning(LANG("obj.231d864a22d85742", list(src))))
 		return TRUE
 	return FALSE
 
 /obj/item/assembly/mousetrap/attack_self(mob/living/carbon/human/user)
 	if(!armed)
-		to_chat(user, span_notice("You arm [src]."))
+		to_chat(user, span_notice(LANG("obj.f553c3134072d4e8", list(src))))
 	else
 		if(clumsy_check(user))
 			return
-		to_chat(user, span_notice("You disarm [src]."))
+		to_chat(user, span_notice(LANG("obj.45e3f2288b1a416f", list(src))))
 	armed = !armed
 	update_appearance()
 	playsound(src, 'sound/items/weapons/handcuffs.ogg', 30, TRUE, -3)
@@ -193,8 +194,8 @@
 					var/mob/living/carbon/H = AM
 					if(H.move_intent == MOVE_INTENT_RUN)
 						INVOKE_ASYNC(src, PROC_REF(triggered), H)
-						H.visible_message(span_warning("[H] accidentally steps on [src]."), \
-							span_warning("You accidentally step on [src]."))
+						H.visible_message(span_warning(LANG("obj.1cbefcee9924f72c", list(H, src))), \
+							span_warning(LANG("obj.e980190942444cad", list(src))))
 				else if(ismouse(MM) || isregalrat(MM))
 					INVOKE_ASYNC(src, PROC_REF(triggered), MM)
 		else if(AM.density) // For mousetrap grenades, set off by anything heavy
@@ -203,12 +204,12 @@
 /obj/item/assembly/mousetrap/on_found(mob/finder)
 	if(armed)
 		if(finder)
-			finder.visible_message(span_warning("[finder] accidentally sets off [src], breaking their fingers."), \
-							   span_warning("You accidentally trigger [src]!"))
+			finder.visible_message(span_warning(LANG("obj.93362712a8243f2b", list(finder, src))), \
+							   span_warning(LANG("obj.231d864a22d85742", list(src))))
 			triggered(finder, (IS_RIGHT_INDEX(finder.active_hand_index)) ? BODY_ZONE_PRECISE_R_HAND : BODY_ZONE_PRECISE_L_HAND)
 			return TRUE //end the search!
 		else
-			visible_message(span_warning("[src] snaps shut!"))
+			visible_message(span_warning(LANG("obj.fe5c86763a8c0708", list(src))))
 			triggered(loc)
 			return FALSE
 	return FALSE
@@ -217,7 +218,7 @@
 /obj/item/assembly/mousetrap/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	if(!armed)
 		return ..()
-	visible_message(span_warning("[src] is triggered by [AM]."))
+	visible_message(span_warning(LANG("obj.a439d23bdbcbf01f", list(src, AM))))
 	triggered(null)
 
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/nullrod/papal_staff
 	name = "papal staff"
 	desc = "A staff used by traditional bishops and popes."
@@ -138,10 +139,10 @@ means that you'll be forced to move carefully while it's on. Fits in pockets, an
 	if(!user.can_perform_action(src, SILENT_ADJACENCY) || hacked)
 		return
 	if(user.incapacitated || !istype(user))
-		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
+		to_chat(user, LANG("obj.34ed4b26dc0a3caa", null))
 		return
-	if(alert("Are you sure you want to recolor your blade?", "Confirm Repaint", "Yes", "No") == "Yes")
-		var/energy_color_input = tgui_color_picker(usr,"","Choose Energy Color",light_color) // BUBBERSTATION EDIT: TGUI COLOR PICKER
+	if(alert(LANG("obj.7b1ef80d6d633ad2", null), LANG("obj.2e300152f316784e", null), "Yes", "No") == "Yes")
+		var/energy_color_input = tgui_color_picker(usr,"",LANG("obj.45456d5bea84f02f", null),light_color) // BUBBERSTATION EDIT: TGUI COLOR PICKER
 		if(!energy_color_input || !user.can_perform_action(src, SILENT_ADJACENCY) || hacked)
 			return
 		set_light_color(energy_color_input)
@@ -171,10 +172,9 @@ means that you'll be forced to move carefully while it's on. Fits in pockets, an
 
 /obj/item/dualsaber/chaplain/examine(mob/user)
 	. = ..()
-	. += "<span class='notice'>Alt-click to recolor it.</span>"
+	. += LANG("obj.d68378987d2aa536", null)
 	if (!IS_CULTIST(user) || !GET_ATOM_BLOOD_DNA_LENGTH(src))
 		return
 
 	var/num_slain = LAZYLEN(cultists_slain)
-	. += span_cult_italic("It has the blood of [num_slain] fallen cultist[num_slain == 1 ? "" : "s"] on it. \
-		<b>Offering</b> it to Nar'sie will transform it into a [num_slain >= 3 ? "powerful" : "standard"] cult weapon.")
+	. += span_cult_italic(LANG("obj.f499ab5c8c75d5ed", list(num_slain, num_slain == 1 ? "" : "s", num_slain >= 3 ? "powerful" : "standard")))

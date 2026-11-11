@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /obj/item/toy/plush/Initialize(mapload)
 	. = ..()
@@ -9,13 +10,13 @@
 	if(!plappable)
 		return
 	if(locate(/obj/item/clothing/sextoy/dildo) in src)
-		. += span_notice("There is a wet dildo attached to it!")
+		. += span_notice(LANG("obj.14c08c0ce9d8ff22", null))
 	else if(locate(/obj/item/clothing/sextoy/fleshlight) in src)
-		. += span_notice("There is a wet fleshlight inserted in it!")
+		. += span_notice(LANG("obj.2ba20347eb290f47", null))
 	else if(locate(/obj/item/clothing/sextoy/portal_fleshlight) in src)
-		. += span_notice("There is real portal fleshlight inserted in it!")
+		. += span_notice(LANG("obj.9e6df31d0298178c", null))
 	else
-		. += span_notice("It looks like there's a slot for a sex toy.")
+		. += span_notice(LANG("obj.c0cee03c45d63eaf", null))
 
 /obj/item/toy/plush/attack(mob/living/target, mob/living/user, params)
 	if(!istype(target) || !plappable)

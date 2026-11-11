@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Somewhat durable guardian who can increase gravity in an area
 /mob/living/basic/guardian/gravitokinetic
 	guardian_type = GUARDIAN_GRAVITOKINETIC
@@ -44,16 +45,16 @@
 /mob/living/basic/guardian/gravitokinetic/recall_effects()
 	. = ..()
 	if (length(gravity_targets))
-		to_chat(src, span_bolddanger("You have released your gravitokinetic powers!"))
+		to_chat(src, span_bolddanger(LANG("mob.530aa333a40ec94f", null)))
 	clear_gravity()
 
 /mob/living/basic/guardian/gravitokinetic/melee_attack(atom/target, list/modifiers, ignore_cooldown)
 	. = ..()
 	if (!. || !isliving(target) || target == src || target == summoner || shares_summoner(target) || gravity_targets[target])
 		return
-	to_chat(src, span_bolddanger("Your punch has applied heavy gravity to [target]!"))
+	to_chat(src, span_bolddanger(LANG("mob.1accd90b123c0480", list(target))))
 	add_gravity(target, punch_gravity)
-	to_chat(target, span_userdanger("Everything feels really heavy!"))
+	to_chat(target, span_userdanger(LANG("mob.3781f5c9a1dcffeb", null)))
 	return TRUE
 
 /mob/living/basic/guardian/gravitokinetic/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
@@ -66,7 +67,7 @@
 /mob/living/basic/guardian/gravitokinetic/proc/slam_turf(turf/open/slammed)
 	if (!isopenturf(slammed) || isgroundlessturf(slammed))
 		return
-	visible_message(span_danger("[src] slams their fist into the [slammed]!"), span_notice("You amplify gravity around the [slammed]."))
+	visible_message(span_danger(LANG("mob.6c320480971e086a", list(src, slammed))), span_notice(LANG("mob.74d521f2c41d0b57", list(slammed))))
 	do_attack_animation(slammed)
 	add_gravity(slammed, turf_gravity)
 
@@ -89,7 +90,7 @@
 	if (isnull(gravity_targets[target]))
 		return
 	if (too_far)
-		to_chat(src, span_bolddanger("You are too far away from [target] to amplify gravity's hold on them!"))
+		to_chat(src, span_bolddanger(LANG("mob.604dd8949424a5bb", list(target))))
 	UnregisterSignal(target, COMSIG_MOVABLE_MOVED)
 	target.RemoveElement(/datum/element/forced_gravity, gravity_targets[target])
 	gravity_targets -= target

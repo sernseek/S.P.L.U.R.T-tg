@@ -1,10 +1,11 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/silicon/robot/crowbar_act(mob/living/user, obj/item/this_item)
 	var/validbreakout = FALSE
 	for(var/obj/item/dogborg/sleeper/this_sleeper in held_items)
 		if(!LAZYLEN(this_sleeper.contents))
 			continue
 		if(!validbreakout)
-			visible_message("<span class='notice'>[user] wedges [this_item] into the crevice separating [this_sleeper] from [src]'s chassis, and begins to pry...</span>", "<span class='notice'>You wedge [this_item] into the crevice separating [this_sleeper] from [src]'s chassis, and begin to pry...</span>")
+			visible_message(LANG("mob.3eb1b7d8d9de8f1b", list(user, this_item, this_sleeper, src)), LANG("mob.3d1d29253428d24b", list(this_item, this_sleeper, src)))
 		validbreakout = TRUE
 		this_sleeper.go_out()
 	if(validbreakout)

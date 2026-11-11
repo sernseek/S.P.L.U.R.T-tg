@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/spell/pointed/crimson_cleave
 	name = "Crimson Cleave"
 	desc = "A targeted spell that heals you while damaging the enemy. \
@@ -43,14 +44,14 @@
 			continue
 		if(victim.can_block_magic(antimagic_flags))
 			victim.visible_message(
-				span_danger("[victim]'s flashes in a firey glow, but repels the blaze!"),
-				span_danger("Your body begins to flash a firey glow, but you are protected!!")
+				span_danger(LANG("datum.35940b451c73969b", list(victim))),
+				span_danger(LANG("datum.69dd3ba26bca270e", null))
 			)
 			continue
 
 		victim.visible_message(
-			span_danger("[victim]'s veins are shredded from within as an unholy blaze erupts from [victim.p_their()] blood!"),
-			span_danger("Your veins burst from within and unholy flame erupts from your blood!")
+			span_danger(LANG("datum.45a570a0847b7f73", list(victim, victim.p_their()))),
+			span_danger(LANG("datum.cefd7c559d9568d1", null))
 		)
 
 		victim.apply_damage(15, BRUTE, wound_bonus = CANT_WOUND)

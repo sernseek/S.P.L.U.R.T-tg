@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 Prismatic extracts:
 	Becomes an infinite-use paintbrush.
@@ -115,7 +116,7 @@ Prismatic extracts:
 	colour = SLIME_TYPE_RAINBOW
 
 /obj/item/slimecross/prismatic/rainbow/attack_self(mob/user)
-	var/newcolor = tgui_color_picker(user, "Choose the slime color:", "Color change", paintcolor)
+	var/newcolor = tgui_color_picker(user, LANG("obj.5d6253e313238e98", null), LANG("obj.03e14fcb521f607a", null), paintcolor)
 	if(user.get_active_held_item() != src || IS_UNCONSCIOUS_OR_CRIT(user) || HAS_TRAIT(user, TRAIT_HANDS_BLOCKED))
 		return
 	if(!newcolor)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * # Phobetor Brain Trauma
  *
@@ -46,13 +47,13 @@
 
 	first.linked_to = second
 	first.seer = owner
-	first.desc += " This one leads to [get_area(second)]."
+	first.desc = "[lang_reverse_text(first.desc)][LANG("datum.149702e05149e29d", list(get_area(second)))]" // ZH EDIT CHANGE - ORIGINAL: first.desc += " This one leads to [get_area(second)]."
 	first.name += " ([get_area(second)])"
 	created_firsts += first
 
 	second.linked_to = first
 	second.seer = owner
-	second.desc += " This one leads to [get_area(first)]."
+	second.desc = "[lang_reverse_text(second.desc)][LANG("datum.149702e05149e29d", list(get_area(first)))]" // ZH EDIT CHANGE - ORIGINAL: second.desc += " This one leads to [get_area(first)]."
 	second.name += " ([get_area(first)])"
 
 	// Delete Next Portal if it's time (it will remove its partner)
@@ -152,18 +153,18 @@
 	if(user != seer || !linked_to)
 		return
 	if(user.loc != src.loc)
-		to_chat(user, "Step into the Tear before using it.")
+		to_chat(user, LANG("obj.b859c1157319228c", null))
 		return
 	for(var/obj/item/implant/tracking/imp in user.implants)
-		to_chat(user, span_warning("[imp] gives you the sense that you're being watched."))
+		to_chat(user, span_warning(LANG("obj.cc09d5a52acf094f", list(imp))))
 		return
 	// Is this, or linked, stream being watched?
 	if(check_location_seen(user, get_turf(user)))
-		to_chat(user, span_warning("Not while you're being watched."))
+		to_chat(user, span_warning(LANG("obj.3d39d68df67d9370", null)))
 		return
 	if(check_location_seen(user, get_turf(linked_to)))
-		to_chat(user, span_warning("Your destination is being watched."))
+		to_chat(user, span_warning(LANG("obj.d75a1ada50d8f31c", null)))
 		return
-	to_chat(user, span_notice("You slip unseen through [src]."))
+	to_chat(user, span_notice(LANG("obj.2a4b22f1ecfb0504", list(src))))
 	user.playsound_local(null, 'sound/effects/magic/wand_teleport.ogg', 30, FALSE, pressure_affected = FALSE)
 	user.forceMove(get_turf(linked_to))

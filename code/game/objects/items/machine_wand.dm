@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///When EMPed, how long the remote will be disabled for by default.
 #define EMP_TIMEOUT_DURATION (2 MINUTES)
 
@@ -46,11 +47,11 @@
 /obj/item/machine_remote/examine(mob/user)
 	. = ..()
 	if(controlling_machine_or_bot)
-		. += span_notice("It is currently controlling [controlling_machine_or_bot]. Use in-hand to interact with it.")
+		. += span_notice(LANG("obj.f2b0f44b2ed79246", list(controlling_machine_or_bot)))
 
 /obj/item/machine_remote/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	if(controlling_machine_or_bot)
-		context[SCREENTIP_CONTEXT_LMB] = "Use [controlling_machine_or_bot]"
+		context[SCREENTIP_CONTEXT_LMB] = LANG("obj.7b78dd124361cb2f", list(controlling_machine_or_bot))
 		context[SCREENTIP_CONTEXT_ALT_LMB] = "Flush Control"
 		return CONTEXTUAL_SCREENTIP_SET
 	return NONE
@@ -62,7 +63,7 @@
 /obj/item/machine_remote/ui_interact(mob/user, datum/tgui/ui)
 	if(!COOLDOWN_FINISHED(src, timeout_time))
 		playsound(src, 'sound/machines/synth/synth_no.ogg', 30 , TRUE)
-		say("Remote control disabled temporarily. Please try again soon.")
+		say(LANG("obj.87d9f604670a7158", null))
 		return FALSE
 	if(!controlling_machine_or_bot)
 		return
@@ -81,7 +82,7 @@
 		return CLICK_ACTION_BLOCKING
 	if(!controlling_machine_or_bot)
 		return CLICK_ACTION_BLOCKING
-	say("Remote control over [controlling_machine_or_bot] stopped.")
+	say(LANG("obj.7d0a3db1f8cf388e", list(controlling_machine_or_bot)))
 	remove_old_machine()
 	return CLICK_ACTION_SUCCESS
 
@@ -93,7 +94,7 @@
 /obj/item/machine_remote/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!COOLDOWN_FINISHED(src, timeout_time))
 		playsound(src, 'sound/machines/synth/synth_no.ogg', 30 , TRUE)
-		say("Remote control disabled temporarily. Please try again soon.")
+		say(LANG("obj.87d9f604670a7158", null))
 		return ITEM_INTERACT_BLOCKING
 	if(!ismachinery(interacting_with) && !isbot(interacting_with))
 		return NONE
@@ -112,12 +113,12 @@
 	if(istype(new_machine, /obj/machinery/power/apc))
 		var/obj/machinery/power/apc/new_apc = new_machine
 		if(new_apc.aidisabled)
-			say("AI wire cut, machine uncontrollable.")
+			say(LANG("obj.131fbd1013f2cd2f", null))
 			return
 	else if(istype(new_machine, /obj/machinery/door/airlock))
 		var/obj/machinery/door/airlock/new_airlock = new_machine
 		if(!new_airlock.canAIControl())
-			say("AI wire cut, machine uncontrollable.")
+			say(LANG("obj.131fbd1013f2cd2f", null))
 			return
 	controlling_machine_or_bot = new_machine
 	controlling_machine_or_bot.add_overlay(bug_appearance)

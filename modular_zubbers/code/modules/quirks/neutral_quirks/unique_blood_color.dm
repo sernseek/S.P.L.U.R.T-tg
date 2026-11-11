@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //i dont enjoy this implementation, but we're also not going to figure out how to write a proper do-all replace_blood_type() without |some| help....
 
 /datum/quirk/item_quirk/unique_blood_color
@@ -53,7 +54,7 @@
 	SIGNAL_HANDLER
 ///Check if new blood type is same as old. Jank, but it should prevent cases of special blood types made from relative normal blood
 	if(quirked.dna.blood_type.get_color() == color_code)
-		to_chat(quirked, span_notice("...but nothing had actually changed."))
+		to_chat(quirked, span_notice(LANG("datum.96a21ac3e9be3843", null)))
 		remove_from_current_holder()
 		WARNING("quirk 'unique_blood_color' automatically removed from [quirked.name]")
 		return

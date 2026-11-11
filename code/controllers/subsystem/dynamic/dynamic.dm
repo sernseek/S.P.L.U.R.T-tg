@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 SUBSYSTEM_DEF(dynamic)
 	name = "Dynamic"
 	ss_flags = SS_NO_INIT
@@ -123,10 +124,7 @@ SUBSYSTEM_DEF(dynamic)
 		for(var/job in job_prefs)
 			var/priority = job_prefs[job]
 			job_data += "[job]: [SSjob.job_priority_level_to_string(priority)]"
-		to_chat(player, span_danger("You were unable to qualify for any roundstart antagonist role this round \
-			because your job preferences presented a high chance of all of your selected jobs being unavailable, \
-			along with 'return to lobby if job is unavailable' enabled. \
-			Increase the number of roles set to medium or low priority to reduce the chances of this happening."))
+		to_chat(player, span_danger(LANG("datum.ec24b7aea520b79c", null)))
 		log_admin("[player.ckey] failed to qualify for any roundstart antagonist role \
 			because their job preferences presented a high chance of all of their selected jobs being unavailable, \
 			along with 'return to lobby if job is unavailable' enabled and has [player.client.prefs.be_special.len] antag preferences enabled. \
@@ -380,7 +378,7 @@ SUBSYSTEM_DEF(dynamic)
 	for(var/datum/mind/selected as anything in picked_ruleset.selected_minds)
 		message_admins("Midround ([range]): [ADMIN_LOOKUPFLW(selected.current)] has been selected for [picked_ruleset.config_tag].")
 		log_dynamic("Midround ([range]): [key_name(selected.current)] has been selected for [picked_ruleset.config_tag].")
-		notify_ghosts("[selected.name] has been picked for [picked_ruleset.config_tag]!", source = selected.current)
+		notify_ghosts(LANG("datum.818defe445ee6311", list(selected.name, picked_ruleset.config_tag)), source = selected.current)
 	// Clean up unused rulesets
 	QDEL_LIST(rulesets_weighted)
 	rulesets_to_spawn[range] -= 1
@@ -442,7 +440,7 @@ SUBSYSTEM_DEF(dynamic)
 	for(var/datum/mind/selected as anything in running.selected_minds)
 		message_admins("Midround (forced): [ADMIN_LOOKUPFLW(selected.current)] has been selected for [running.config_tag].")
 		log_dynamic("Midround (forced): [key_name(selected.current)] has been selected for [running.config_tag].")
-		notify_ghosts("[selected.name] has been picked for [running.config_tag]!", source = selected.current)
+		notify_ghosts(LANG("datum.818defe445ee6311", list(selected.name, running.config_tag)), source = selected.current)
 	return TRUE
 
 /**
@@ -658,7 +656,7 @@ SUBSYSTEM_DEF(dynamic)
 		if(!check_rights(R_ADMIN) || midround_admin_reroll)
 			return
 		if(COOLDOWN_FINISHED(src, midround_admin_cancel_period))
-			to_chat(usr, span_alert("Too late!"))
+			to_chat(usr, span_alert(LANG("datum.e7984e306343d622", null)))
 			return
 		midround_admin_reroll = TRUE
 		message_admins(span_adminnotice("[key_name_admin(usr)] rerolled the queued midround ruleset."))
@@ -669,7 +667,7 @@ SUBSYSTEM_DEF(dynamic)
 		if(!check_rights(R_ADMIN) || midround_admin_cancel)
 			return
 		if(COOLDOWN_FINISHED(src, midround_admin_cancel_period))
-			to_chat(usr, span_alert("Too late!"))
+			to_chat(usr, span_alert(LANG("datum.e7984e306343d622", null)))
 			return
 		midround_admin_cancel = TRUE
 		message_admins(span_adminnotice("[key_name_admin(usr)] cancelled the queued midround ruleset."))

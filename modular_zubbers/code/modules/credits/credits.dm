@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CREDIT_ROLL_SPEED 100
 #define CREDIT_SPAWN_SPEED 20
 #define CREDIT_ANIMATE_HEIGHT (14 * world.icon_size)
@@ -59,7 +60,7 @@ GLOBAL_LIST(end_titles)
 	ClearCredits()
 	verbs -= /client/proc/ClearCredits
 
-GAME_VERB_PROC(/client, ClearCredits, "Stop End Titles", "OOC")
+GAME_VERB_PROC(/client, ClearCredits, "停止片尾字幕", "OOC")
 	verbs -= /client/proc/ClearCredits
 	QDEL_LAZYLIST(credits)
 

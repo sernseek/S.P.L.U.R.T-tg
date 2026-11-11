@@ -1,0 +1,22 @@
+{
+	"zh-Hans": {
+		"ERROR - SYSTEM ALREADY ACTIVATING": "错误——系统正在启动",
+		"ERROR - SYSTEM ALREADY ACTIVATED": "错误——系统已经启动",
+		"ERROR - POWER SYSTEMS FAILURE - NO CELL INSERTED": "错误——供电系统故障——未安装电池",
+		"ERROR - POWER SYSTEMS FAILURE - NO CELL CHARGE": "错误——供电系统故障——电池电量不足",
+		"ERROR - POWER SYSTEMS FAILURE - GENERIC FAILURE": "错误——供电系统故障——未知故障",
+		"ERROR - SUIT HELMET NOT PRESENT": "错误——未检测到防护服头盔",
+		"ACTIVATING SYSTEMS": "正在启动系统",
+		"...ESTABLISHED": "……连接已建立",
+		"...CALIBRATED": "……校准完成",
+		"...FAILURE, NO TANK DETECTED": "……失败，未检测到气瓶",
+		"DISEASE CURED": "疾病已治愈",
+		"WOUND TREATED": "伤口已处理",
+		"ADRENALINE ADMINISTERED": "已注射肾上腺素",
+		"BRUTE MEDICAL ATTENTION ADMINISTERED": "已处理物理创伤",
+		"BURN MEDICAL ATTENTION ADMINISTERED": "已处理烧伤",
+		"TOXIN MEDICAL ATTENTION ADMINISTERED": "已处理毒素损伤",
+		"SYSTEMS DEACTIVATED": "系统已关闭",
+		"ALL SYSTEMS ONLINE, WELCOME ": "所有系统在线，欢迎 "
+	}
+}

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The controller for the ui in charge of all runtime greyscale configuration/debug.
 /// If `Unlock()` is not called the menu is safe for players to use.
 /datum/greyscale_modify_menu
@@ -132,8 +133,8 @@
 		if("select_config")
 			var/datum/greyscale_config/new_config = input(
 				usr,
-				"Choose a new greyscale configuration to use",
-				"Greyscale Modification Menu",
+				LANG("datum.d83b9063e73d5838", null),
+				LANG("datum.c79b1ba0fde9cbe6", null),
 				"[config.type]"
 			) as anything in allowed_configs
 			new_config = allowed_configs[new_config]
@@ -172,8 +173,8 @@
 			var/group = params["color_index"]
 			var/new_color = tgui_color_picker(
 				usr,
-				"Choose color for greyscale color group [group]:",
-				"Greyscale Modification Menu",
+				LANG("datum.269bdb7394deb333", list(group)),
+				LANG("datum.c79b1ba0fde9cbe6", null),
 				split_colors[group]
 			)
 			if(new_color)
@@ -206,9 +207,8 @@
 			if(length(GLOB.player_list) > 1)
 				var/check = alert(
 					user,
-{"Other players are connected to the server, are you sure you want to refresh all greyscale configurations?\n
-This is highly likely to cause a lag spike for a few seconds."},
-					"Refresh Greyscale Configurations",
+LANG("datum.dd33abcb8f780486", null),
+					LANG("datum.da9f59f232fb0d3a", null),
 					"Yes",
 					"Cancel"
 				)
@@ -234,9 +234,8 @@ This is highly likely to cause a lag spike for a few seconds."},
 			if(length(GLOB.player_list) > 1)
 				var/check = alert(
 					user,
-{"Other players are connected to the server, are you sure you want to automatically refresh all greyscale configurations?\n
-This is highly likely to cause massive amounts of lag as every object in the game will be iterated over every few seconds."},
-					"Auto-Refresh Greyscale Configurations",
+LANG("datum.ccfbba89e3c9cf08", null),
+					LANG("datum.aa93ae7c319e3be5", null),
 					"Yes",
 					"Cancel"
 				)

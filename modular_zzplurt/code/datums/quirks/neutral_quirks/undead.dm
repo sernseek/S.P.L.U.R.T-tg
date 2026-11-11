@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define QUIRK_HUNGER_UNDEAD 1.1
 #define QUIRK_TRAITS_UNDEAD list(TRAIT_BLOODY_MESS, TRAIT_EASILY_WOUNDED, TRAIT_EASYDISMEMBER, TRAIT_FAKEDEATH, TRAIT_NODEATH, TRAIT_NOCRITDAMAGE, TRAIT_NOHUNGER, TRAIT_SUCCUMB_OVERRIDE)
 
@@ -18,7 +19,7 @@
 	// Check if holder is inorganic
 	if(!(quirk_mob.mob_biotypes & MOB_ORGANIC))
 		// Warn holder
-		to_chat(quirk_mob, span_warning("You have failed to become undead due to incompatible biology!"))
+		to_chat(quirk_mob, span_warning(LANG("datum.11fc774056e2b656", null)))
 
 		// Do nothing
 		return FALSE

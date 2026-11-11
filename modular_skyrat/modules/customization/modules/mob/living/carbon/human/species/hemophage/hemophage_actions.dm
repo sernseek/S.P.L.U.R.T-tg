@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The message displayed in the hemophage's chat when they enter their dormant state.
 #define DORMANT_STATE_START_MESSAGE "You feel your tumor's pulse slowing down, as it enters a dormant state. You suddenly feel incredibly weak and vulnerable to everything, and exercise has become even more difficult, as only your most vital bodily functions remain."
 /// The message displayed in the hemophage's chat when they leave their dormant state.
@@ -33,10 +34,10 @@
 	if(!tumor || !istype(tumor)) // This shouldn't happen, but you can never be too careful.
 		return
 
-	owner.balloon_alert(owner, "[tumor.is_dormant ? "leaving" : "entering"] dormant state")
+	owner.balloon_alert(owner, LANG("datum.c3b43a81ef42b93e", list(tumor.is_dormant ? "leaving" : "entering")))
 
 	if(!do_after(owner, 3 SECONDS))
-		owner.balloon_alert(owner, "cancelled state change")
+		owner.balloon_alert(owner, LANG("datum.be74d0de71ab25f1", null))
 		return
 
 	to_chat(owner, span_notice("[tumor.is_dormant ? DORMANT_STATE_END_MESSAGE : DORMANT_STATE_START_MESSAGE]"))
@@ -48,7 +49,7 @@
 
 	if(tumor.is_dormant)
 		name = "Exit Dormant State"
-		desc =  "Causes the pitch-black mass living inside of you to awaken, allowing your circulation to return and blood to pump freely once again. It fills your legs to let you run again, and longs for the darkness as it did before. You start to feel strength rather than the weakness you felt before. However, the tumor giving you life is not on a switch, and it will take some time to subdue it again."
+		desc =  LANG("datum.2f896c32a8357d30", null)
 	else
 		name = initial(name)
 		desc = initial(desc)

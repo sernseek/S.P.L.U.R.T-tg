@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/banner
 	name = "banner"
 	desc = "A banner with Nanotrasen's logo on it."
@@ -23,16 +24,16 @@
 /obj/item/banner/examine(mob/user)
 	. = ..()
 	if(inspiration_available)
-		. += span_notice("Activate it in your hand to inspire nearby allies of this banner's allegiance!")
+		. += span_notice(LANG("obj.6bc2d9b664dfc6bb", null))
 
 /obj/item/banner/attack_self(mob/living/carbon/human/user)
 	if(!inspiration_available || flags_1 & HOLOGRAM_1)
 		return
 	if(morale_time > world.time)
-		to_chat(user, span_warning("You aren't feeling inspired enough to flourish [src] again yet."))
+		to_chat(user, span_warning(LANG("obj.e63257db07cf36b6", list(src))))
 		return
-	user.visible_message("<span class='big notice'>[user] flourishes [src]!</span>", \
-	span_notice("You raise [src] skywards, inspiring your allies!"))
+	user.visible_message(LANG("obj.8c916550c4c2e898", list(user, src)), \
+	span_notice(LANG("obj.7e332b57633accbe", list(src))))
 	playsound(src, SFX_RUSTLE, 100, FALSE)
 	if(warcry)
 		user.say("[warcry]", forced="banner")
@@ -59,7 +60,7 @@
 	for(var/V in inspired)
 		var/mob/living/carbon/human/H = V
 		if(H != user)
-			to_chat(H, span_notice("Your confidence surges as [user] flourishes [user.p_their()] [name]!"))
+			to_chat(H, span_notice(LANG("obj.423c1176f6b70f65", list(user, user.p_their(), name))))
 		inspiration(H)
 		special_inspiration(H)
 
@@ -350,7 +351,7 @@
 	if(staffcooldown + staffwait > world.time)
 		return ITEM_INTERACT_BLOCKING
 
-	user.visible_message(span_notice("[user] chants deeply and waves [user.p_their()] staff!"))
+	user.visible_message(span_notice(LANG("obj.5ac62c8f96ff9642", list(user, user.p_their()))))
 	if(do_after(user, 2 SECONDS, interacting_with))
 		interacting_with.add_atom_colour(conversion_color, WASHABLE_COLOUR_PRIORITY) //wololo
 	staffcooldown = world.time

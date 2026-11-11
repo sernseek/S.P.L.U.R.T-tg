@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/grenade/c4
 	name = "C-4 charge"
 	desc = "Used to put holes in specific areas without too much extra hole. A saboteur's favorite."
@@ -55,7 +56,7 @@
 	return ..()
 
 /obj/item/grenade/c4/screwdriver_act(mob/living/user, obj/item/tool)
-	to_chat(user, span_notice("The wire panel can be accessed without a screwdriver."))
+	to_chat(user, span_notice(LANG("obj.ead8cb91d097478a", null)))
 	return TRUE
 
 /obj/item/grenade/c4/attackby(obj/item/item, mob/user, list/modifiers, list/attack_modifiers)
@@ -97,11 +98,11 @@
 	detonate()
 
 /obj/item/grenade/c4/attack_self(mob/user)
-	var/newtime = tgui_input_number(user, "Please set the timer", "C4 Timer", minimum_timer, maximum_timer, minimum_timer)
+	var/newtime = tgui_input_number(user, LANG("obj.f519f046f55fd1b0", null), LANG("obj.1bbe1e8ebb164b90", null), minimum_timer, maximum_timer, minimum_timer)
 	if(!newtime || QDELETED(user) || QDELETED(src) || !usr.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return
 	det_time = newtime
-	to_chat(user, "Timer set for [det_time] seconds.")
+	to_chat(user, LANG("obj.c9fcdad33cc7afea", list(det_time)))
 
 /obj/item/grenade/c4/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	// Here lies C4 ghosts. We hardly knew ye
@@ -112,10 +113,10 @@
 
 /obj/item/grenade/c4/proc/plant_c4(atom/bomb_target, mob/living/user)
 	if(bomb_target != user && HAS_TRAIT(user, TRAIT_PACIFISM) && isliving(bomb_target))
-		to_chat(user, span_warning("You don't want to harm other living beings!"))
+		to_chat(user, span_warning(LANG("obj.c2a13fcc69a895f5", null)))
 		return FALSE
 
-	to_chat(user, span_notice("You start planting [src]. The timer is set to [det_time]..."))
+	to_chat(user, span_notice(LANG("obj.7bd060fbe47d02f0", list(src, det_time))))
 
 	if(!do_after(user, 3 SECONDS, target = bomb_target))
 		return FALSE
@@ -130,7 +131,7 @@
 	target_icon.Blend(icon(icon, icon_state), ICON_OVERLAY)
 	var/mutable_appearance/bomb_target_image = mutable_appearance(target_icon)
 	notify_ghosts(
-		"[user.real_name] has planted \a [src] on [target] with a [det_time] second fuse!",
+		LANG("obj.095de9d1b43187ee", list(user.real_name, src, target, det_time)),
 		source = bomb_target,
 		header = "Explosive Planted",
 		alert_overlay = bomb_target_image,
@@ -150,7 +151,7 @@
 		plastic_overlay.layer = ABOVE_OPEN_TURF_LAYER
 
 	target.add_overlay(plastic_overlay)
-	to_chat(user, span_notice("You plant the bomb. Timer counting down from [det_time]."))
+	to_chat(user, span_notice(LANG("obj.c6aadbff59f62a6a", list(det_time))))
 	addtimer(CALLBACK(src, PROC_REF(detonate)), det_time*10)
 	return TRUE
 
@@ -173,7 +174,7 @@
 	message_admins("[ADMIN_LOOKUPFLW(user)] suicided with [src] at [ADMIN_VERBOSEJMP(user)]")
 	user.log_message("suicided with [src].", LOG_ATTACK)
 	log_game("[key_name(user)] suicided with [src] at [AREACOORD(user)]")
-	user.visible_message(span_suicide("[user] activates [src] and holds it above [user.p_their()] head! It looks like [user.p_theyre()] going out with a bang!"))
+	user.visible_message(span_suicide(LANG("obj.0ebac9565a7df79b", list(user, src, user.p_their(), user.p_theyre()))))
 	shout_syndicate_crap(user)
 	explosion(user, heavy_impact_range = 2, explosion_cause = src) //Cheap explosion imitation because putting detonate() here causes runtimes
 	user.gib(DROP_BODYPARTS)

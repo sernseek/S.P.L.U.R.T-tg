@@ -1,5 +1,8 @@
 import { perf } from 'common/perf';
+import { globalEvents } from 'tgui-core/events'; // ZH EDIT ADDITION - Window resume fix
 import { setupDrag } from '../../drag';
+// ZH EDIT ADDITION - I18N
+import { mergeCatalogOverlay } from '../../i18n/catalog';
 import { logger } from '../../logging';
 import { resumeRenderer } from '../../renderer';
 import {
@@ -16,6 +19,8 @@ import type { BackendState } from '../types';
 
 type UpdatePayload = Omit<BackendState<Record<string, unknown>>, 'act'> & {
   static_data: Record<string, unknown>;
+  // ZH EDIT ADDITION - I18N: 负载 overlay（英文 → 译文），见 i18n/catalog.ts
+  i18n?: Record<string, string>;
 };
 
 export function update(payload: UpdatePayload): void {
@@ -34,6 +39,13 @@ function resume(payload: UpdatePayload): void {
   logger.log('Resuming:', payload);
   // Signal renderer that we have resumed
   resumeRenderer();
+  // ZH EDIT ADDITION START - Window resume fix
+  // Window shows itself when it sees `suspended` flip back to false. A suspend
+  // followed at once by the next UI's update (chained tgui_alerts reusing one
+  // window) flips it false -> true -> false before React re-renders, so the
+  // window stayed hidden. Tell Window about every resume explicitly.
+  globalEvents.emit('tgui-resumed');
+  // ZH EDIT ADDITION END
   // Setup drag
   setupDrag();
   // We schedule this for the next tick here because resizing and unhiding
@@ -64,6 +76,13 @@ function updateData(payload: UpdatePayload): void {
       ...payload.config,
     }));
   }
+
+  // ZH EDIT ADDITION START - I18N: 负载值保持 canonical English，译文走 overlay，渲染期查表。
+  // 必须在 data/static_data 落库**之前**合并：同一帧的渲染会立刻用到这批译文。
+  if (payload.i18n) {
+    mergeCatalogOverlay(payload.i18n);
+  }
+  // ZH EDIT ADDITION END
 
   if (payload.static_data) {
     store.set(gameStaticDataAtom, (prev) => ({

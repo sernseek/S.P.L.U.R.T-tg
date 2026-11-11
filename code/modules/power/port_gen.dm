@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Baseline portable generator. Has all the default handling. Not intended to be used on its own (since it generates unlimited power).
 /obj/machinery/power/port_gen
 	name = "portable generator"
@@ -73,7 +74,7 @@
 
 /obj/machinery/power/port_gen/examine(mob/user)
 	. = ..()
-	. += "It is[!active?"n't":""] running."
+	. += LANG("obj.e87ba4d7c50d0213", list(!active?"n't":""))
 
 /////////////////
 // P.A.C.M.A.N //
@@ -114,9 +115,9 @@
 
 /obj/machinery/power/port_gen/pacman/examine(mob/user)
 	. = ..()
-	. += span_notice("The generator has [sheets] units of [sheet_name] fuel left, producing [display_power(power_gen)].")
+	. += span_notice(LANG("obj.61edc3eaf2744790", list(sheets, sheet_name, display_power(power_gen))))
 	if(anchored)
-		. += span_notice("It is anchored to the ground.")
+		. += span_notice(LANG("obj.aff10b22ee4a0502", null))
 
 /obj/machinery/power/port_gen/pacman/HasFuel()
 	if(sheets >= 1 / (time_per_sheet / power_output) - sheet_left)
@@ -181,9 +182,9 @@
 	var/obj/item/stack/addstack = tool
 	var/amount = min((max_sheets - sheets), addstack.amount)
 	if(amount < 1)
-		to_chat(user, span_notice("\The [src] is full!"))
+		to_chat(user, span_notice(LANG("obj.ab597252187729c2", list(src))))
 		return ITEM_INTERACT_BLOCKING
-	to_chat(user, span_notice("You add [amount] sheets to \the [src]."))
+	to_chat(user, span_notice(LANG("obj.93e3f8c801ae880b", list(amount, src))))
 	sheets += amount
 	addstack.use(amount)
 	return ITEM_INTERACT_SUCCESS
@@ -193,7 +194,7 @@
 		return NONE
 	toggle_panel_open()
 	tool.play_tool_sound(src)
-	to_chat(user, span_notice("You [panel_open ? "open" : "close"] the access panel."))
+	to_chat(user, span_notice(LANG("obj.0e6ae97a17fd8a48", list(panel_open ? "open" : "close"))))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/port_gen/wrench_act(mob/living/user, obj/item/tool)
@@ -201,11 +202,11 @@
 		return NONE
 	if(!anchored && !isinspace())
 		set_anchored(TRUE)
-		to_chat(user, span_notice("You secure the generator to the floor."))
+		to_chat(user, span_notice(LANG("obj.2eaf2e96850ca00d", null)))
 		return ITEM_INTERACT_SUCCESS
 
 	set_anchored(FALSE)
-	to_chat(user, span_notice("You unsecure the generator from the floor."))
+	to_chat(user, span_notice(LANG("obj.88a2542386baecfb", null)))
 	playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
 	return ITEM_INTERACT_SUCCESS
 
@@ -218,7 +219,7 @@
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
-	balloon_alert(user, "maximum power output unlocked")
+	balloon_alert(user, LANG("obj.c29205c110acf9f6", null))
 	emp_act(EMP_HEAVY)
 	return TRUE
 

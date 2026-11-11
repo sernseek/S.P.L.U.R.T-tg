@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define NO_ANIMAL 0
 #define ANIMAL_ALIVE 1
 #define ANIMAL_DEAD 2
@@ -132,9 +133,9 @@
 	if(in_range(src, user) || isobserver(user))
 		. += "[readout()]"
 		if(!COOLDOWN_FINISHED(src, mute_pet))
-			. += span_notice("<b>Alt-click</b> to disable mute feature.")
+			. += span_notice(LANG("obj.dbb8661c1b58b639", null))
 		else
-			. += span_notice("<b>Alt-click</b> to temporarily mute notifications.")
+			. += span_notice(LANG("obj.cde6029870ed614a", null))
 
 /obj/item/toy/nyamagotchi/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
 	context[SCREENTIP_CONTEXT_LMB] = "Interact"
@@ -189,13 +190,13 @@
 
 	if(COOLDOWN_FINISHED(src, mute_pet))
 		COOLDOWN_START(src, mute_pet, update_rate * 5.75)
-		user.balloon_alert(user, "muted!")
-		to_chat(user, span_notice("You turn on [src]'s mute feature."))
+		user.balloon_alert(user, LANG("obj.94abb434b45053c2", null))
+		to_chat(user, span_notice(LANG("obj.63b96337ea61b72d", list(src))))
 
 	else
 		COOLDOWN_RESET(src, mute_pet)
-		user.balloon_alert(user, "unmuted!")
-		to_chat(user, span_notice("You turn off [src]'s mute feature."))
+		user.balloon_alert(user, LANG("obj.c95f3c1fa1f71155", null))
+		to_chat(user, span_notice(LANG("obj.20e893cac192dba8", list(src))))
 		be_known(sfx = MEOW_NORMAL)
 
 /obj/item/toy/nyamagotchi/proc/start()
@@ -293,7 +294,7 @@
 // Interactions
 /obj/item/toy/nyamagotchi/proc/action_check()
 	if(!isnull(last_task))
-		usr.balloon_alert(usr, "still [last_task]!")
+		usr.balloon_alert(usr, LANG("obj.23e35d314bd49d24", list(last_task)))
 		be_known(sfx = MEOW_SAD)
 		return FALSE
 	return TRUE
@@ -303,47 +304,47 @@
 		return
 	else if(hunger > 20)
 		hunger -= min(rand(30, 40), hunger)
-		to_chat(usr, span_purple("You fed [src]! Its hunger is now at [hunger]."))
+		to_chat(usr, span_purple(LANG("obj.5bb42c62683b9ee8", list(src, hunger))))
 		be_known(sfx = EAT_FOOD, speech = pick(feed_messages))
 		last_task = "eating"
 	else
-		usr.balloon_alert(usr, "not hungry!")
+		usr.balloon_alert(usr, LANG("obj.c8aeaa3fc00b2cb0", null))
 
 /obj/item/toy/nyamagotchi/proc/play()
 	if(!action_check())
 		return
 	else if(happiness < 80)
 		happiness += min(rand(30, 40), 100 - happiness)
-		to_chat(usr, span_purple("You play with [src]! Its happiness is now [happiness]."))
+		to_chat(usr, span_purple(LANG("obj.f3998846a3517bdf", list(src, happiness))))
 		be_known(sfx = PURR_PLAY, speech = pick(play_messages))
 		last_task = "playing"
 	else
-		usr.balloon_alert(usr, "not bored!")
+		usr.balloon_alert(usr, LANG("obj.5a6cdf58c11cc48a", null))
 
 /obj/item/toy/nyamagotchi/proc/rest()
 	if(!action_check())
 		return
 	else if(energy < 80)
 		energy += min(rand(30, 40), 100 - energy)
-		to_chat(usr, span_purple("[src] rests and regains energy. Its energy is now [energy]."))
+		to_chat(usr, span_purple(LANG("obj.9ac32a6705647f8f", list(src, energy))))
 		be_known(sfx = PURR_SLEEP, speech = pick(rest_messages))
 		last_task = "resting"
 	else
-		usr.balloon_alert(usr, "not tired!")
+		usr.balloon_alert(usr, LANG("obj.60ffb8e614f6826d", null))
 
 // Function for when the nyamagotchi dies
 /obj/item/toy/nyamagotchi/proc/die()
 	last_task = null
 	alive = ANIMAL_DEAD
-	audible_message(span_warning("[src] makes a weak, sad noise and then goes silent... Rest in peace."), hearing_distance = COMBAT_MESSAGE_RANGE)
+	audible_message(span_warning(LANG("obj.63514edca2d5e922", list(src))), hearing_distance = COMBAT_MESSAGE_RANGE)
 	if(ishuman(loc))
-		to_chat(loc, span_warning("[src] shows an x3 on its display. It's dead. You're a terrible person."))
+		to_chat(loc, span_warning(LANG("obj.b5c3749606c493e0", list(src))))
 	//src.icon_state = "dead"
 	be_known(sfx = 'sound/misc/sadtrombone.ogg', visible = "nyamagotchi died!")
 	update_available_icons()
 
 /obj/item/toy/nyamagotchi/proc/check_status()
-	balloon_alert(usr, "hunger: [hunger] happiness: [happiness] energy: [energy]")
+	balloon_alert(usr, LANG("obj.e7f6e9cf5af6605c", list(hunger, happiness, energy)))
 
 /datum/action/item_action/nyamagotchi_menu
 	name = "Check Nyamagotchi"

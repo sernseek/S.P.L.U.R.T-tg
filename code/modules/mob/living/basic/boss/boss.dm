@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //not quite simple animal megafauna but close enough
 // port actual megafauna stuff once it gets used for lavaland megafauna
 //im using it for stuff both of them get
@@ -108,8 +109,8 @@
 /// Small little taunt when we epically troll someone
 /mob/living/basic/boss/proc/celebrate_kill(mob/living/poor_sap)
 	visible_message(
-		span_danger("[src] disembowels [poor_sap]!"),
-		span_userdanger("You feast on [poor_sap]'s organs, restoring your health!"),
+		span_danger(LANG("mob.31196d7793b833f0", list(src, poor_sap))),
+		span_userdanger(LANG("mob.fbff77e5bf364e78", list(poor_sap))),
 	)
 
 /// Handles adding all relevant achievements when applicable (probably when we are defeated)

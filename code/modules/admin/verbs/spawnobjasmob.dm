@@ -1,4 +1,5 @@
-ADMIN_VERB(spawn_obj_as_mob, R_SPAWN, "Spawn Object-Mob", "Spawn an object as if it were a mob.", ADMIN_CATEGORY_DEBUG)
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+ADMIN_VERB(spawn_obj_as_mob, R_SPAWN, "生成物体-生物", "Spawn an object as if it were a mob.", ADMIN_CATEGORY_DEBUG)
 	VERB_ARG(object, VERB_ARG_TYPE_TYPEPATH, VERB_ARG_SOURCE_INPUT)
 	var/chosen = pick_closest_path(object, make_types_fancy(subtypesof(/obj)))
 
@@ -75,7 +76,7 @@ ADMIN_VERB(spawn_obj_as_mob, R_SPAWN, "Spawn Object-Mob", "Spawn an object as if
 
 	basemob = text2path(mainsettings["mobtype"]["value"])
 	if (!ispath(basemob, /mob/living/basic/mimic/copy) || !ispath(chosen_obj, /obj))
-		to_chat(user.mob, "Mob or object path invalid", confidential = TRUE)
+		to_chat(user.mob, LANG("datum.8ffd623a0c30c8e5", null), confidential = TRUE)
 
 	basemob = new basemob(get_turf(user.mob), new chosen_obj(get_turf(user.mob)), user.mob, mainsettings["dropitem"]["value"] == "Yes" ? FALSE : TRUE, (mainsettings["googlyeyes"]["value"] == "Yes" ? FALSE : TRUE))
 

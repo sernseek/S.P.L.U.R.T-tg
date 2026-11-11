@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define SPAWN_AT_BASE "Nuke base"
 #define SPAWN_AT_INFILTRATOR "Infiltrator"
 
@@ -146,15 +147,15 @@
 
 	var/infil_or_nukebase = tgui_alert(
 		admin,
-		"Spawn them at the nuke base, or in the Infiltrator?",
-		"Where to reinforce?",
+		LANG("datum.b40d91cb5be40c5c", null),
+		LANG("datum.070a27f3e4d06fdb", null),
 		list(SPAWN_AT_BASE, SPAWN_AT_INFILTRATOR, "Cancel"),
 	)
 
 	if(!infil_or_nukebase || infil_or_nukebase == "Cancel")
 		return
 
-	var/tc_to_spawn = tgui_input_number(admin, "How much TC to spawn with?", "TC", 0, 100)
+	var/tc_to_spawn = tgui_input_number(admin, LANG("datum.eaad7735fbd51d24", null), LANG("datum.b5443ee186db0e99", null), 0, 100)
 
 	var/mob/chosen_one = SSpolling.poll_ghost_candidates(
 		check_jobban = ROLE_OPERATIVE,
@@ -167,7 +168,7 @@
 	)
 
 	if(isnull(chosen_one))
-		tgui_alert(admin, "No candidates found.", "Recruitment Shortage", list("OK"))
+		tgui_alert(admin, LANG("datum.16705241f9153adc", null), LANG("datum.58e51fb07aaadc76", null), list("OK"))
 		return
 
 
@@ -214,7 +215,7 @@
 	playsound(spawn_loc, SFX_SPARKS, 50, TRUE)
 	playsound(spawn_loc, 'sound/effects/phasein.ogg', 50, TRUE)
 
-	tgui_alert(admin, "Reinforcement spawned at [infil_or_nukebase] with [tc_to_spawn].", "Reinforcements have arrived", list("God speed"))
+	tgui_alert(admin, LANG("datum.8a36870e02de6025", list(infil_or_nukebase, tc_to_spawn)), LANG("datum.d9933d75437b9248", null), list("God speed"))
 
 /datum/team/nuclear/proc/is_disk_rescued()
 	for(var/obj/item/disk/nuclear/nuke_disk in SSpoints_of_interest.real_nuclear_disks)

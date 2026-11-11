@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MOLDIES_SPAWN_LOWPOP_MIN 1
 #define MOLDIES_SPAWN_LOWPOP_MAX 1
 #define MOLDIES_SPAWN_HIGHPOP_MIN 1
@@ -24,7 +25,7 @@
 	if(!fake)
 		INVOKE_ASYNC(SSsecurity_level, TYPE_PROC_REF(/datum/controller/subsystem/security_level, minimum_security_level), SEC_LEVEL_VIOLET, FALSE, FALSE)
 
-	priority_announce("Confirmed outbreak of level 6 biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert", ANNOUNCER_OUTBREAK6)
+	priority_announce(LANG("datum.7c9a692442b096e3", list(station_name())), "Biohazard Alert", ANNOUNCER_OUTBREAK6)
 
 /datum/round_event/mold/start()
 	var/list/turfs = list() //list of all the empty floor turfs in the hallway areas

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// How much health super kitties have by default.
 #define SUPER_KITTY_HEALTH 50
 /// How much health syndicate super kitties have by default.
@@ -28,7 +29,7 @@
 /mob/living/basic/pet/cat/super/can_use_guns(obj/item/G)
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_NOGUNS)) // Who am I to stop admins from making them stronger?
-		balloon_alert(src, "your paws are too soft!")
+		balloon_alert(src, LANG("mob.bd9ce209cfcda327", null))
 		return FALSE
 
 /mob/living/basic/pet/cat/super/move_into_vent(obj/machinery/atmospherics/components/ventcrawl_target)
@@ -110,7 +111,7 @@
 /mob/living/basic/pet/cat/syndicat/super/can_use_guns(obj/item/G)
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_NOGUNS)) // Who am I to stop admins from making them stronger?
-		balloon_alert(src, "your paws are too weak!")
+		balloon_alert(src, LANG("mob.c49f67b68156938c", null))
 		return FALSE
 
 /mob/living/basic/pet/cat/syndicat/super/move_into_vent(obj/machinery/atmospherics/components/ventcrawl_target)

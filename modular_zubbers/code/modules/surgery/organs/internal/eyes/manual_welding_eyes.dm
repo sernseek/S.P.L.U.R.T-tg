@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Eyes that you can close
 /obj/item/organ/eyes/robotic/manuallyshield
 	name = "manually shielded robotic eyes"
@@ -18,7 +19,7 @@
 	currently_toggled = TRUE
 
 	if(!do_after(owner, 1 SECONDS))
-		to_chat(owner, span_notice("You fail to concentrate on the vision shield toggle."))
+		to_chat(owner, span_notice(LANG("obj.1301c07da6c798c0", null)))
 		currently_toggled = FALSE
 		return
 
@@ -60,7 +61,7 @@
 	currently_toggled = TRUE
 
 	if(!do_after(owner, 1 SECONDS))
-		to_chat(owner, span_notice("You fail to concentrate on the vision shield toggle."))
+		to_chat(owner, span_notice(LANG("obj.1301c07da6c798c0", null)))
 		currently_toggled = FALSE
 		return
 

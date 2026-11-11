@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Debug item, but plz leave it alone. It's unobtainable and could be used by me for some events. Or as reward from some weird god, who knows.
 /obj/item/lustwish_discount
 	name = "LustWish elite card"
@@ -10,4 +11,4 @@
 //code for showing that we have something IlLeGaL
 /obj/item/lustwish_discount/attack_self(mob/user, modifiers)
 	. = ..()
-	to_chat(loc, span_notice("[user] shows a lustwish elite card!"))
+	to_chat(loc, span_notice(LANG("obj.818b6e9489d32730", list(user))))

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/book/granter/action/spell/summonitem
 	granted_action = /datum/action/cooldown/spell/summonitem
 	action_name = "instant summons"
@@ -15,5 +16,5 @@
 
 /obj/item/book/granter/action/spell/summonitem/recoil(mob/living/user)
 	. = ..()
-	to_chat(user,span_warning("[src] suddenly vanishes!"))
+	to_chat(user,span_warning(LANG("obj.04d9e36cc032366d", list(src))))
 	qdel(src)

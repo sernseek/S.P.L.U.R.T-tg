@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define VISOR_MOUNT_DAMAGE 20
 #define VISOR_MOUNT_SLEEP_TIME 5 SECONDS
 
@@ -223,13 +224,13 @@
 /// The start of application of the actual effects, including eye damage
 /obj/item/clothing/glasses/clockwork/wraith_spectacles/proc/on_toggle_eyes()
 	wearer.update_sight()
-	to_chat(wearer, span_clockgray("You suddenly see so much more."))
+	to_chat(wearer, span_clockgray(LANG("obj.fb1bc77a5f019bbe", null)))
 
 
 /// The stopping of effect application, will remove the wearer's eye damage a minute after
 /obj/item/clothing/glasses/clockwork/wraith_spectacles/proc/de_toggle_eyes()
 	wearer.update_sight()
-	to_chat(wearer, span_clockgray("You feel your eyes slowly readjusting."))
+	to_chat(wearer, span_clockgray(LANG("obj.97c706583ffd2e2c", null)))
 
 
 /obj/item/clothing/glasses/clockwork/wraith_spectacles/equipped(mob/living/user, slot)
@@ -363,7 +364,7 @@
 			apply_to_wearer()
 
 		ADD_TRAIT(src, TRAIT_NODROP, CLOTHING_TRAIT)
-		to_chat(wearer, span_userdanger("You feel the cogs on the visor clamp to the sides of your head, drilling in!"))
+		to_chat(wearer, span_userdanger(LANG("obj.08a0756a609e7701", null)))
 		if(damaging)
 			wearer.emote("scream")
 			wearer.Sleeping(VISOR_MOUNT_SLEEP_TIME)

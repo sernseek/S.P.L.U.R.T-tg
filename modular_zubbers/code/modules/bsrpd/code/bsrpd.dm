@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BSRPD_CAPACITY_MAX 500
 #define BSRPD_CAPACITY_USE 10
 #define BSRPD_CAPACITY_NEW 250
@@ -21,36 +22,36 @@
 /obj/item/pipe_dispenser/bluespace/attackby(obj/item/item, mob/user, param)
 	if(istype(item, /obj/item/stack/sheet/bluespace_crystal))
 		if(BSRPD_CAPACITY_NEW > (BSRPD_CAPACITY_MAX - current_capacity) || ranged_use_cost == 0)
-			to_chat(user, span_warning("You cannot recharge [src] anymore!"))
+			to_chat(user, span_warning(LANG("obj.b3f1a1de932b62b9", list(src))))
 			return
 		item.use(1)
-		to_chat(user, span_notice("You recharge the bluespace capacitor inside of [src]"))
+		to_chat(user, span_notice(LANG("obj.bebb86e5953e4d83", list(src))))
 		current_capacity += BSRPD_CAPACITY_NEW
 		return
 	if(istype(item, /obj/item/assembly/signaler/anomaly/bluespace))
 		if(ranged_use_cost)
-			to_chat(user, span_notice("You slot [item] into [src]; supercharging the bluespace capacitor!"))
+			to_chat(user, span_notice(LANG("obj.3d75f84c5f2dcf2b", list(item, src))))
 			ranged_use_cost = 0
 			qdel(item)
 		else
-			to_chat(user, span_warning("You cannot improve the [src] further."))
+			to_chat(user, span_warning(LANG("obj.3ba6e8c16f6ecf4e", list(src))))
 		return
 	return ..()
 
 /obj/item/pipe_dispenser/bluespace/examine(mob/user)
 	. = ..()
 	if(user.Adjacent(src))
-		. += "Currently has [ranged_use_cost == 0 ? "infinite" : current_capacity / ranged_use_cost] charges remaining."
+		. += LANG("obj.97010a9ed391afbc", list(ranged_use_cost == 0 ? "infinite" : current_capacity / ranged_use_cost))
 		if(ranged_use_cost != 0)
-			. += "The Bluespace Anomaly Core slot is empty."
+			. += LANG("obj.687fe48c3ef7c0f0", null)
 	else
-		. += "You cannot see the charge capacity."
+		. += LANG("obj.d747a74c7f8f2a72", null)
 
-	. += span_notice("<b>Alt-Click</b> to toggle remote piping.")
+	. += span_notice(LANG("obj.786de939e9952848", null))
 
 /obj/item/pipe_dispenser/bluespace/click_alt(mob/user)
 	remote_piping_toggle = !remote_piping_toggle
-	balloon_alert(user, "remote piping [remote_piping_toggle ? "on" : "off"]")
+	balloon_alert(user, LANG("obj.c65037c187b24347", list(remote_piping_toggle ? "on" : "off")))
 	playsound(get_turf(src), 'sound/machines/click.ogg', 50, TRUE)
 	return CLICK_ACTION_SUCCESS
 
@@ -58,7 +59,7 @@
 	if(!remote_piping_toggle) // If we are in proximity to the target or have our safety on, don't use charge and don't call this shitcode.
 		return NONE
 	if(current_capacity < ranged_use_cost)
-		to_chat(user, span_warning("The [src] lacks the charge to do that."))
+		to_chat(user, span_warning(LANG("obj.cbc500142fc2c258", list(src))))
 		return ITEM_INTERACT_BLOCKING
 	if(!in_use)
 		user.Beam(interacting_with, icon_state = "rped_upgrade", time = 1 SECONDS)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///Max temperature allowed inside the cryotube, should break before reaching this heat
 #define MAX_TEMPERATURE 4000
 // Multiply factor is used with efficiency to multiply Tx quantity
@@ -165,8 +166,8 @@
 		beaker = null
 
 /obj/machinery/cryo_cell/add_context(atom/source, list/context, obj/item/held_item, mob/user)
-	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Turn [on ? "off" : "on"]"
-	context[SCREENTIP_CONTEXT_ALT_LMB] = "[state_open ? "Close" : "Open"] door"
+	context[SCREENTIP_CONTEXT_CTRL_LMB] = LANG("obj.fed2f8dfb3af5666", list(on ? "off" : "on"))
+	context[SCREENTIP_CONTEXT_ALT_LMB] = LANG("obj.d3ad1ed0d1a55d40", list(state_open ? "Close" : "Open"))
 	if(isnull(held_item))
 		return CONTEXTUAL_SCREENTIP_SET
 
@@ -176,7 +177,7 @@
 
 	switch(held_item.tool_behaviour)
 		if(TOOL_SCREWDRIVER)
-			context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] panel"
+			context[SCREENTIP_CONTEXT_LMB] = LANG("obj.45725a89b7fc8d2e", list(panel_open ? "Close" : "Open"))
 		if(TOOL_CROWBAR)
 			if(!state_open && !panel_open && !is_operational)
 				context[SCREENTIP_CONTEXT_LMB] = "Pry Open"
@@ -189,28 +190,28 @@
 /obj/machinery/cryo_cell/examine(mob/user) //this is leaving out everything but efficiency since they follow the same idea of "better beaker, better results"
 	. = ..()
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("The status display reads: Efficiency at <b>[efficiency * 100]</b>%.")
+		. += span_notice(LANG("obj.ffac399be536bcd1", list(efficiency * 100)))
 		if(occupant)
 			if(on)
-				. += span_notice("Someone's inside [src]!")
+				. += span_notice(LANG("obj.d5c6cb20fc5da655", list(src)))
 			else
-				. += span_notice("You can barely make out a form floating in [src].")
+				. += span_notice(LANG("obj.90d23a9811ecbee5", list(src)))
 		else
-			. += span_notice("[src] seems empty.")
+			. += span_notice(LANG("obj.2c36c513998fd1ce", list(src)))
 		if(beaker)
-			. += span_notice("A beaker of [beaker.reagents.maximum_volume]u capacity is located inside.")
+			. += span_notice(LANG("obj.0a93fdd72982267e", list(beaker.reagents.maximum_volume)))
 		else
-			. += span_warning("Its missing a beaker.")
+			. += span_warning(LANG("obj.020fb84c26daf622", null))
 
-		. += span_notice("Use [EXAMINE_HINT("Alt-Click")] to [state_open ? "Close" : "Open"] the machine.")
-		. += span_notice("Use [EXAMINE_HINT("Ctrl-Click")] to turn [on ? "Off" : "On"] the machine.")
+		. += span_notice(LANG("obj.c149d4ae71abf991", list(EXAMINE_HINT("Alt-Click"), state_open ? "Close" : "Open")))
+		. += span_notice(LANG("obj.92a10cd2516f5cca", list(EXAMINE_HINT("Ctrl-Click"), on ? "Off" : "On")))
 
-		. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] open.")
+		. += span_notice(LANG("obj.4f2c3146abd1b424", list(EXAMINE_HINT("screwed"))))
 		if(panel_open)
-			. += span_notice("[src] can be [EXAMINE_HINT("pried")] apart.")
-			. += span_notice("[src] can be rotated with a [EXAMINE_HINT("wrench")].")
+			. += span_notice(LANG("obj.6fb0d92589b6caf4", list(src, EXAMINE_HINT("pried"))))
+			. += span_notice(LANG("obj.61678dab01e7644d", list(src, EXAMINE_HINT("wrench"))))
 		else if(machine_stat & NOPOWER)
-			. += span_notice("[src] can be [EXAMINE_HINT("pried")] open.")
+			. += span_notice(LANG("obj.249a300d86c60419", list(src, EXAMINE_HINT("pried"))))
 
 /obj/machinery/cryo_cell/update_icon()
 	SET_PLANE_IMPLICIT(src, initial(plane))
@@ -236,30 +237,30 @@
 	if(!istype(tool, /obj/item/reagent_containers/cup))
 		return
 	if(!QDELETED(beaker))
-		balloon_alert(user, "beaker present!")
+		balloon_alert(user, LANG("obj.3f639ef925be76ba", null))
 		return ITEM_INTERACT_BLOCKING
 	if(!user.transferItemToLoc(tool, src))
 		return ITEM_INTERACT_BLOCKING
 
 	beaker = tool
-	balloon_alert(user, "beaker inserted")
+	balloon_alert(user, LANG("obj.eb9dfdb576f3aeec", null))
 	user.log_message("added \a [tool] to cryo containing [pretty_string_from_reagent_list(tool.reagents.reagent_list)].", LOG_GAME)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/cryo_cell/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ITEM_INTERACT_BLOCKING
 	if(on)
-		balloon_alert(user, "turn off!")
+		balloon_alert(user, LANG("obj.55d6a7ad89ca7417", null))
 		return ITEM_INTERACT_BLOCKING
 	if(occupant)
-		balloon_alert(user, "occupant inside!")
+		balloon_alert(user, LANG("obj.359117b84708160d", null))
 		return ITEM_INTERACT_BLOCKING
 
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/cryo_cell/crowbar_act(mob/living/user, obj/item/tool)
 	if(on)
-		balloon_alert(user, "turn off!")
+		balloon_alert(user, LANG("obj.55d6a7ad89ca7417", null))
 		return ITEM_INTERACT_BLOCKING
 
 	var/can_crowbar = FALSE
@@ -285,7 +286,7 @@
 
 	var/unsafe_release = FALSE
 	if(internal_pressure > 2 * ONE_ATMOSPHERE)
-		to_chat(user, span_warning("As you begin prying \the [src] a gush of air blows in your face... maybe you should reconsider?"))
+		to_chat(user, span_warning(LANG("obj.0492c52b2ded35a2", list(src))))
 		if(!do_after(user, 2 SECONDS, target = src))
 			return ITEM_INTERACT_BLOCKING
 		unsafe_release = TRUE
@@ -305,13 +306,13 @@
 /obj/machinery/cryo_cell/wrench_act(mob/living/user, obj/item/tool)
 	. = ITEM_INTERACT_BLOCKING
 	if(on)
-		balloon_alert(user, "turn off!")
+		balloon_alert(user, LANG("obj.55d6a7ad89ca7417", null))
 		return
 	if(occupant)
-		balloon_alert(user, "occupant inside!")
+		balloon_alert(user, LANG("obj.359117b84708160d", null))
 		return
 	if(state_open)
-		balloon_alert(user, "close first!")
+		balloon_alert(user, LANG("obj.33c8300c4f2d2178", null))
 		return
 
 	if(default_change_direction_wrench(user, tool))
@@ -519,14 +520,14 @@
 /obj/machinery/cryo_cell/container_resist_act(mob/living/user)
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
-	user.visible_message(span_notice("You see [user] kicking against the glass of [src]!"), \
-		span_notice("You struggle inside [src], kicking the release with your foot... (this will take about [DisplayTimeText(CRYO_BREAKOUT_TIME)].)"), \
-		span_hear("You hear a thump from [src]."))
+	user.visible_message(span_notice(LANG("obj.591d53545b6cf604", list(user, src))), \
+		span_notice(LANG("obj.907d1a299974ae72", list(src, DisplayTimeText(CRYO_BREAKOUT_TIME)))), \
+		span_hear(LANG("obj.a2fe6effec64bfb6", list(src))))
 	if(do_after(user, CRYO_BREAKOUT_TIME, target = src, cog_icon = null))
 		if(!user || IS_UNCONSCIOUS_OR_CRIT(user) || user.loc != src )
 			return
-		user.visible_message(span_warning("[user] successfully broke out of [src]!"), \
-			span_notice("You successfully break out of [src]!"))
+		user.visible_message(span_warning(LANG("obj.37696909131e91b5", list(user, src))), \
+			span_notice(LANG("obj.81c31f6b9b00625a", list(src))))
 		open_machine()
 
 /obj/machinery/cryo_cell/ui_state(mob/user)
@@ -582,7 +583,7 @@
 		var/list/beakerContents = list()
 		if(length(beaker.reagents.reagent_list))
 			for(var/datum/reagent/reagent in beaker.reagents.reagent_list)
-				beakerContents += list(list("name" = reagent.name, "volume" = round(reagent.volume, CHEMICAL_VOLUME_ROUNDING))) // list in a list because Byond merges the first list...
+				beakerContents += list(list("name" = lang_localize_display_name(reagent.name), "volume" = round(reagent.volume, CHEMICAL_VOLUME_ROUNDING))) // list in a list because Byond merges the first list... // ZH EDIT - I18N: 试剂名纯显示。ORIGINAL: "name" = reagent.name
 		beaker_data["contents"] = beakerContents
 	.["beaker"] = beaker_data
 
@@ -628,7 +629,7 @@
 /obj/machinery/cryo_cell/click_ctrl(mob/user)
 	if(is_operational && !state_open)
 		set_on(!on)
-		balloon_alert(user, "turned [on ? "on" : "off"]")
+		balloon_alert(user, LANG("obj.8fcfde3cd8c5cffd", list(on ? "on" : "off")))
 		return CLICK_ACTION_SUCCESS
 	return CLICK_ACTION_BLOCKING
 
@@ -641,7 +642,7 @@
 		close_machine()
 	else
 		open_machine()
-	balloon_alert(user, "door [state_open ? "opened" : "closed"]")
+	balloon_alert(user, LANG("obj.dbfc32e3272c58bf", list(state_open ? "opened" : "closed")))
 	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/cryo_cell/mouse_drop_receive(mob/target, mob/user, params)
@@ -654,7 +655,7 @@
 			close_machine(target)
 		return
 
-	user.visible_message(span_notice("[user] starts shoving [target] inside [src]."), span_notice("You start shoving [target] inside [src]."))
+	user.visible_message(span_notice(LANG("obj.4e7e17e61972f2d1", list(user, target, src))), span_notice(LANG("obj.d5024bc09c4901a4", list(target, src))))
 	if (do_after(user, 2.5 SECONDS, target=target))
 		close_machine(target)
 

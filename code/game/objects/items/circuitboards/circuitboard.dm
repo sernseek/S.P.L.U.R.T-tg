@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //File with the circuitboard and circuitboard/machine class definitions and procs
 
 
@@ -161,7 +162,7 @@ micro-manipulator, console screen, beaker, Microlaser, matter bin, power cells.
 /obj/item/circuitboard/machine/examine(mob/user)
 	. = ..()
 	if(!LAZYLEN(req_components))
-		. += span_info("It requires no components.")
+		. += span_info(LANG("obj.8f6117170c2fa23f", null))
 		return
 
 	var/list/nice_list = list()
@@ -199,6 +200,8 @@ micro-manipulator, console screen, beaker, Microlaser, matter bin, power cells.
 		//append decoded name to final result
 		if (isnull(component_name))
 			stack_trace("[component_path] was an invalid component")
-		nice_list += list("[component_amount] [component_name]\s")
+		// ZH EDIT CHANGE - i18n: 同 machine_frame.dm，部件名在显示点翻。
+		// ORIGINAL: nice_list += list("[component_amount] [component_name]\s")
+		nice_list += list(lang_component_tally(component_amount, component_name))
 
-	. += span_info("It requires [english_list(nice_list)].")
+	. += span_info(LANG("obj.e8c2a536c6afeae9", list(lang_english_list(nice_list))))

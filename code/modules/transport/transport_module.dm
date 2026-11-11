@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Base transport structure. A single tile that can form a modular set with neighbouring tiles
  * This type holds elevators and trams
@@ -332,7 +333,7 @@
 				playsound(hit_wall, 'sound/effects/meteorimpact.ogg', 100, TRUE)
 
 			for(var/mob/living/crushed in dest_turf.contents)
-				to_chat(crushed, span_userdanger("You are crushed by [src]!"))
+				to_chat(crushed, span_userdanger(LANG("obj.872dcdba4bdb623d", list(src))))
 				if(violent_landing)
 					// Violent landing = gibbed. But the nicest kind of gibbing, keeping everything intact.
 					crushed.investigate_log("has been gibbed by [src].", INVESTIGATE_DEATHS)
@@ -389,13 +390,13 @@
 				if(!is_type_in_typecache(victim_structure, transport_controller_datum.ignored_smashthroughs))
 					if((PLANE_TO_TRUE(victim_structure.plane) == FLOOR_PLANE && victim_structure.layer > TRAM_RAIL_LAYER) || (PLANE_TO_TRUE(victim_structure.plane) == GAME_PLANE && victim_structure.layer > LOW_OBJ_LAYER) )
 						if(victim_structure.anchored && initial(victim_structure.anchored) == TRUE)
-							visible_message(span_danger("[src] smashes through [victim_structure]!"))
+							visible_message(span_danger(LANG("obj.1a64b3afe71be66b", list(src, victim_structure))))
 							victim_structure.deconstruct(FALSE)
 
 						else
 							if(!throw_target)
 								throw_target = get_edge_target_turf(src, turn(travel_direction, pick(45, -45)))
-							visible_message(span_danger("[src] violently rams [victim_structure] out of the way!"))
+							visible_message(span_danger(LANG("obj.64171e7ae544ba2b", list(src, victim_structure))))
 							victim_structure.anchored = FALSE
 							victim_structure.take_damage(rand(20, 25) * collision_lethality)
 							victim_structure.throw_at(throw_target, 200 * collision_lethality, 4 * collision_lethality)
@@ -409,7 +410,7 @@
 					continue
 				if(victim_machine.layer >= LOW_OBJ_LAYER) //avoids stuff that is probably flush with the ground
 					playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
-					visible_message(span_danger("[src] smashes through [victim_machine]!"))
+					visible_message(span_danger(LANG("obj.1a64b3afe71be66b", list(src, victim_machine))))
 					qdel(victim_machine)
 
 			for(var/mob/living/victim_living in dest_turf.contents)
@@ -428,7 +429,7 @@
 
 				if(transport_controller_datum.ignored_smashthroughs[victim_living.type])
 					continue
-				to_chat(victim_living, span_userdanger("[src] collides into you!"))
+				to_chat(victim_living, span_userdanger(LANG("obj.b9d0dc815d5d617f", list(src))))
 				SEND_SIGNAL(victim_living, COMSIG_LIVING_HIT_BY_TRAM, src)
 				playsound(src, 'sound/effects/splat.ogg', 50, TRUE)
 				var/damage = 0
@@ -664,7 +665,7 @@
 
 	add_fingerprint(user)
 	if(!length(possible_directions))
-		balloon_alert(user, "elevator out of service!")
+		balloon_alert(user, LANG("obj.de46e5e4ea08b672", null))
 		return
 
 	LAZYADD(current_operators, REF(user))
@@ -682,7 +683,7 @@
 		return //nice try
 	if(!isnull(result) && result != "Cancel" && transport_controller_datum.controller_status & CONTROLS_LOCKED)
 		// Only show this message if they actually wanted to move
-		balloon_alert(user, "elevator controls locked!")
+		balloon_alert(user, LANG("obj.52b16862e801614d", null))
 		return
 	switch(result)
 		if("Up")
@@ -766,10 +767,10 @@
  */
 /obj/structure/transport/linear/proc/show_fluff_message(direction, mob/user)
 	if(direction == UP)
-		user.visible_message(span_notice("[user] moves the lift upwards."), span_notice("You move the lift upwards."))
+		user.visible_message(span_notice(LANG("obj.83cdae624dda983d", list(user))), span_notice(LANG("obj.2517ed5441605694", null)))
 
 	if(direction == DOWN)
-		user.visible_message(span_notice("[user] moves the lift downwards."), span_notice("You move the lift downwards."))
+		user.visible_message(span_notice(LANG("obj.1636dcb433746446", list(user))), span_notice(LANG("obj.955b533d5cedd5eb", null)))
 
 /obj/machinery/door/poddoor/lift
 	name = "elevator door"
@@ -829,7 +830,7 @@
 		return	// nice try
 	if(!isnull(result) && result != "Cancel" && transport_controller_datum.controller_status & CONTROLS_LOCKED)
 		// Only show this message if they actually wanted to move
-		balloon_alert(user, "elevator controls locked!")
+		balloon_alert(user, LANG("obj.52b16862e801614d", null))
 		return
 
 	switch(result)

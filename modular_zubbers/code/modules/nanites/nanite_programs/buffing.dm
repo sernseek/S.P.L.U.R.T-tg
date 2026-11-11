@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Programs that buff the host in generally passive ways.
 
 /datum/nanite_program/nervous
@@ -95,7 +96,7 @@
 	if(actual_damage >= nanites.nanite_volume)
 		playsound(host_mob, SFX_SHATTER)
 		host_mob.Knockdown(1 SECONDS)
-		to_chat(host_mob, span_warning("Something shatters under your skin, and you feel a sharp pain!"))
+		to_chat(host_mob, span_warning(LANG("datum.9ede8a05bc6f7e82", null)))
 		disable_passive_effect()
 		return
 

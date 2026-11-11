@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 #define CRACK_PROPAGATION_DELAY 0.1 SECONDS
 #define CRACK_TURN_CHANCE 50
@@ -65,10 +66,10 @@
 	qdel(src)
 
 /obj/effect/weakpoint/welder_act(mob/living/user, obj/item/tool)
-	to_chat(user, span_notice("You begin to strengthen [src]..."))
+	to_chat(user, span_notice(LANG("obj.3419c73185b8ac2b", list(src))))
 	if(!tool.use_tool(src, user, 4 SECONDS, amount = 1, volume=50))
 		return ITEM_INTERACT_BLOCKING
-	to_chat(user, span_notice("\The [src] is fully sealed, eliminating the risk of the weakpoint growing."))
+	to_chat(user, span_notice(LANG("obj.ed5cd50a1f61f695", list(src))))
 	qdel(src)
 	return ITEM_INTERACT_SUCCESS
 
@@ -77,7 +78,7 @@
 		var/obj/item/stack/medical/wrap/sticky_tape/duct_tape = tool
 		if(!duct_tape.use(1))
 			return ITEM_INTERACT_BLOCKING
-		to_chat(user, span_notice("\The [src] is sealed with a little elbow grease and a mound of [duct_tape]."))
+		to_chat(user, span_notice(LANG("obj.8d167dc0b813bdcd", list(src, duct_tape))))
 		qdel(src)
 		return ITEM_INTERACT_SUCCESS
 	return ..()
@@ -91,8 +92,8 @@
 
 /obj/effect/weakpoint/examine(mob/user)
 	. = ..()
-	. += span_notice("\The [src] could be repaired with a welder.")
-	. += span_warning("A strong enough explosion will cause [src] to expand.")
+	. += span_notice(LANG("obj.b5a61be063f04216", list(src)))
+	. += span_warning(LANG("obj.6ea60a414f123268", list(src)))
 
 /**
  * Generates a list of turfs from the start location meandering along a randomized set of turns.
@@ -177,7 +178,7 @@
 		active_count++
 
 	notify_ghosts(
-		"A new crack has been spawned in [get_area(src)].",
+		LANG("turf.1165d1e0956c5623", list(get_area(src))),
 		source = pick(new_cracks),
 		header = "Weakpoint created",
 		ghost_sound = 'sound/effects/hit_kick.ogg',

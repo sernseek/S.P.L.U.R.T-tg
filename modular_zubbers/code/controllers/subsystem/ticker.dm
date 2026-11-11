@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/controller/subsystem/ticker
 	var/list/job_estimation_list = list()
 
@@ -85,15 +86,15 @@
 				new /datum/tgs_message_content(generate_quote_of_the_round()),
 				channel_tag
 			)
-		to_chat(world, span_notice("A quote of the round was found, and should have been sent to discord."))
+		to_chat(world, span_notice(LANG("datum.27ac9bc2fe189da1", null)))
 		log_runtime("A quote of the round was found, and should have been sent to discord.")
 
 	else
 		if(world.time <= quote_of_the_round_record_start)
-			to_chat(world, span_notice("A quote of the round could not be found due to the round being too short."))
+			to_chat(world, span_notice(LANG("datum.a59686c352aec966", null)))
 			log_runtime("A quote of the round could not be found. The round ended too early.")
 		else
-			to_chat(world, span_notice("A quote of the round could not be found. Perhaps the crew should be more memorable."))
+			to_chat(world, span_notice(LANG("datum.bd2c2f581f1cbef3", null)))
 			log_runtime("A quote of the round could not be found. Perhaps the filters are too strict?")
 
 /datum/controller/subsystem/ticker/proc/generate_quote_of_the_round()

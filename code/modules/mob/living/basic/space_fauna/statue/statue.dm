@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // A mob which only moves when it isn't being watched by living beings.
 
 /mob/living/basic/statue
@@ -114,7 +115,7 @@
 	aoe_radius = 14
 
 /datum/action/cooldown/spell/aoe/blindness/cast(atom/cast_on)
-	cast_on.visible_message(span_danger("[cast_on] glares their eyes."))
+	cast_on.visible_message(span_danger(LANG("datum.bb68ff6fe7ca4f27", list(cast_on))))
 	return ..()
 
 /datum/action/cooldown/spell/aoe/blindness/get_things_to_cast_on(atom/center)

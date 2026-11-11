@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/synthetic
 	name = "Synthetic Humanoid"
 	id = SPECIES_SYNTH
@@ -76,7 +77,7 @@
 		human.adjust_fire_loss(1) //Still deal some damage in case a cold environment would be preventing us from the sweet release to robot heaven
 		human.adjust_bodytemperature(13) //We're overheating!!
 		if(prob(10))
-			to_chat(human, span_warning("Alert: Critical damage taken, all systems failing."))
+			to_chat(human, span_warning(LANG("datum.e3d28bcd91fe0133", null)))
 			do_sparks(3, TRUE, human)
 
 	var/obj/item/organ/lungs/lungs = human.get_organ_slot(ORGAN_SLOT_LUNGS)
@@ -85,7 +86,7 @@
 		human.adjust_bodytemperature(50)
 		human.adjust_fire_loss(1)
 		if(prob(10))
-			to_chat(human, span_warning("Alert: Cooling system is non-functional or missing, OVERHEATING is imminent."))
+			to_chat(human, span_warning(LANG("datum.5507a033b4fb3a29", null)))
 			do_sparks(3, TRUE, human)
 
 	var/obj/item/organ/heart/heart = human.get_organ_slot(ORGAN_SLOT_HEART)
@@ -93,19 +94,19 @@
 		// No heart or failing heart present, apply slowdown
 		human.adjust_staggered_up_to(STAGGERED_SLOWDOWN_LENGTH, 5 SECONDS)
 		if(prob(10))
-			to_chat(human, span_warning("Alert: Oil pump is non-functional or missing. Hydraulics efficiency reduced."))
+			to_chat(human, span_warning(LANG("datum.39bded602c87797e", null)))
 
 	var/obj/item/organ/liver/liver = human.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(!liver || (liver.organ_flags & ORGAN_FAILING))
 		// No liver or failing liver present, apply message informing of the missing liver
 		if(prob(10))
-			to_chat(human, span_warning("Alert: Reagent processing unit is non-functional or missing. Systems clogging."))
+			to_chat(human, span_warning(LANG("datum.66df5085767e7a81", null)))
 
 /datum/species/synthetic/spec_revival(mob/living/carbon/human/transformer)
 	switch_to_screen(transformer, "Console")
 	addtimer(CALLBACK(src, PROC_REF(switch_to_screen), transformer, saved_screen), 5 SECONDS)
 	playsound(transformer.loc, 'sound/machines/chime.ogg', 50, TRUE)
-	transformer.visible_message(span_notice("[transformer]'s [screen ? "monitor lights up" : "eyes flicker to life"]!"), span_notice("All systems nominal. You're back online!"))
+	transformer.visible_message(span_notice(LANG("datum.d3da1d8f29163415", list(transformer, screen ? "monitor lights up" : "eyes flicker to life"))), span_notice(LANG("datum.241670af6d7b5a69", null)))
 
 /datum/species/synthetic/on_species_gain(mob/living/carbon/human/human_who_gained_species, datum/species/old_species, pref_load, regenerate_icons = TRUE)
 	. = ..()
@@ -188,7 +189,7 @@
 		return
 	emag_effect = TRUE
 	playsound(source.loc, 'sound/misc/interference.ogg', 50)
-	to_chat(source, span_warning("Alert: Security breach detected in central processing unit. Error Code: 540-EXO"))
+	to_chat(source, span_warning(LANG("datum.d3bcbb5d0a57724d", null)))
 
 /**
  * Makes the IPC screen switch to BSOD followed by a blank screen
@@ -231,39 +232,36 @@
 	perk_descriptions += list(list( //tryin to keep traits minimal since synths will get a lot of traits when my upstream traits pr is merged
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "robot",
-		SPECIES_PERK_NAME = "Synthetic Benefits",
-		SPECIES_PERK_DESC = "Unlike organics, you DON'T explode when faced with a vacuum! Additionally, your chassis is built with such strength as to \
-		grant you immunity to OVERpressure! Just make sure that the extreme cold or heat doesn't fry your circuitry."
+		SPECIES_PERK_NAME = LANG("datum.961b341238b3efca", null),
+		SPECIES_PERK_DESC = LANG("datum.bbf8c0747b5e9f7e", null)
 	))
 
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "star-of-life",
-		SPECIES_PERK_NAME = "Unhuskable",
-		SPECIES_PERK_DESC = "[plural_form] can't be husked, disappointing changelings galaxy-wide.",
+		SPECIES_PERK_NAME = LANG("datum.8d371daf1312d82b", null),
+		SPECIES_PERK_DESC = LANG("datum.c271e17d7f78452f", list(plural_form)),
 	))
 
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 		SPECIES_PERK_ICON = "robot",
-		SPECIES_PERK_NAME = "Synthetic Oddities",
-		SPECIES_PERK_DESC = "[plural_form] are unable to gain nutrition from traditional foods. Instead, you must either consume welding fuel or extend a \
-		wire from your arm to draw power from an APC. In addition to this, welders and wires are your sutures and mesh and only specific chemicals even metabolize inside \
-		of you. This ranges from whiskey, to synthanol, to various obscure medicines. Finally, you suffer from a set of wounds exclusive to synthetics."
+		SPECIES_PERK_NAME = LANG("datum.45e4f320e23be05f", null),
+		SPECIES_PERK_DESC = LANG("datum.e5d203a323bf84f6", list(plural_form))
 	))
 
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "music",
-		SPECIES_PERK_NAME = "Tone Synthesizer",
-		SPECIES_PERK_DESC = "[plural_form] can sing musical tones using an internal synthesizer.",
+		SPECIES_PERK_NAME = LANG("datum.0029bd24562642e1", null),
+		SPECIES_PERK_DESC = LANG("datum.cc772e0657dec8ea", list(plural_form)),
 	))
 
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "band-aid",
-		SPECIES_PERK_NAME = "Structural Damage",
-		SPECIES_PERK_DESC = "[plural_form] are weak to blunt objects.",
+		SPECIES_PERK_NAME = LANG("datum.bc5fc488a9cada4d", null),
+		SPECIES_PERK_DESC = LANG("datum.c21c09eda825474a", list(plural_form)),
 	))
 
 	return perk_descriptions

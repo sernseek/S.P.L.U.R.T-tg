@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define SUBTLE_DEFAULT_DISTANCE world.view
 #define SUBTLE_ONE_TILE 1
 #define SUBTLE_SAME_TILE_DISTANCE 0
@@ -16,18 +17,18 @@
 
 /datum/emote/living/subtle/run_emote(mob/user, params, type_override = null)
 	if(!can_run_emote(user))
-		to_chat(user, span_warning("You can't emote at this time."))
+		to_chat(user, span_warning(LANG("datum.2fa88e98cb3fcf6a", null)))
 		return FALSE
 	var/subtle_message
 	var/subtle_emote = params
 	if(SSdbcore.IsConnected() && is_banned_from(user, "emote"))
-		to_chat(user, "You cannot send subtle emotes (banned).")
+		to_chat(user, LANG("datum.b71c017a5d2e9c38", null))
 		return FALSE
 	else if(user.client?.prefs.muted & MUTE_IC)
-		to_chat(user, "You cannot send IC messages (muted).")
+		to_chat(user, LANG("datum.edad7622f650b603", null))
 		return FALSE
 	else if(!params)
-		subtle_emote = tgui_input_text(user, "Choose an emote to display.", "Subtle", null, MAX_MESSAGE_LEN, TRUE)
+		subtle_emote = tgui_input_text(user, LANG("datum.b0c1d36db5b1dee5", null), LANG("datum.94ebb5ba30139b11", null), null, MAX_MESSAGE_LEN, TRUE)
 		if(!subtle_emote)
 			return FALSE
 		subtle_message = subtle_emote
@@ -37,7 +38,7 @@
 			emote_type = type_override
 
 	if(!can_run_emote(user))
-		to_chat(user, span_warning("You can't emote at this time."))
+		to_chat(user, span_warning(LANG("datum.2fa88e98cb3fcf6a", null)))
 		return FALSE
 
 	user.log_message(subtle_message, LOG_SUBTLE)
@@ -81,7 +82,7 @@
 
 /datum/emote/living/subtler/run_emote(mob/user, params, type_override = null)
 	if(!can_run_emote(user))
-		to_chat(user, span_warning("You can't emote at this time."))
+		to_chat(user, span_warning(LANG("datum.2fa88e98cb3fcf6a", null)))
 		return FALSE
 	var/subtler_message
 	var/subtler_emote = params
@@ -89,13 +90,13 @@
 	var/subtler_range = SUBTLE_DEFAULT_DISTANCE
 
 	if(SSdbcore.IsConnected() && is_banned_from(user, "emote"))
-		to_chat(user, span_warning("You cannot send subtle emotes (banned)."))
+		to_chat(user, span_warning(LANG("datum.b71c017a5d2e9c38", null)))
 		return FALSE
 	else if(user.client?.prefs.muted & MUTE_IC)
-		to_chat(user, span_warning("You cannot send IC messages (muted)."))
+		to_chat(user, span_warning(LANG("datum.edad7622f650b603", null)))
 		return FALSE
 	else if(!subtler_emote)
-		subtler_emote = tgui_input_text(user, "Choose an emote to display.", "Subtler Anti-Ghost" , null, MAX_MESSAGE_LEN, TRUE)
+		subtler_emote = tgui_input_text(user, LANG("datum.b0c1d36db5b1dee5", null), LANG("datum.f5a5e9c58a62f231", null) , null, MAX_MESSAGE_LEN, TRUE)
 		if(!subtler_emote)
 			return FALSE
 
@@ -119,7 +120,7 @@
 		var/obj/structure/lewd_portal/portal = user?.buckled
 		if(istype(portal, /obj/structure/lewd_portal))
 			targets.Insert(1, PORTAL_ONE_TILE_TEXT, PORTAL_SAME_TILE_TEXT)
-		target = tgui_input_list(user, "Pick a target", "Target Selection", targets)
+		target = tgui_input_list(user, LANG("datum.153e9cb537804b6c", null), LANG("datum.eb4c7c3f77033760", null), targets)
 		if(!target)
 			return FALSE
 
@@ -136,7 +137,7 @@
 			emote_type = type_override
 
 	if(!can_run_emote(user))
-		to_chat(user, span_warning("You can't emote at this time."))
+		to_chat(user, span_warning(LANG("datum.2fa88e98cb3fcf6a", null)))
 		return FALSE
 
 	user.log_message(subtler_message, LOG_SUBTLER)
@@ -153,7 +154,7 @@
 			target_mob.show_message(subtler_message, alt_msg = subtler_message)
 			subtler_sound(target_mob)
 		else
-			to_chat(user, span_warning("Your emote was unable to be sent to your target: Too far away."))
+			to_chat(user, span_warning(LANG("datum.ae2efd701c09ea61", null)))
 	else if(istype(target, /obj/effect/overlay/holo_pad_hologram))
 		var/obj/effect/overlay/holo_pad_hologram/hologram = target
 		if(hologram.Impersonation?.client)
@@ -214,14 +215,14 @@
 */
 
 /mob/living/proc/subtle_keybind()
-	var/message = input(src, "", "subtle") as text|null
+	var/message = input(src, "", LANG("mob.0bc1d054b43c0453", null)) as text|null
 	if(!length(message))
 		return
 	return subtle(message)
 
-GAME_VERB(/mob/living, subtle, "Subtle", "IC")
+GAME_VERB(/mob/living, subtle, "轻微动作", "IC")
 	if(GLOB.say_disabled) // This is here to try to identify lag problems
-		to_chat(usr, span_danger("Speech is currently admin-disabled."))
+		to_chat(usr, span_danger(LANG("mob.b79ad8a388d1b3a4", null)))
 		return
 	usr.emote("subtle")
 
@@ -229,9 +230,9 @@ GAME_VERB(/mob/living, subtle, "Subtle", "IC")
 *	VERB CODE 2
 */
 
-GAME_VERB(/mob/living, subtler, "Subtler Anti-Ghost", "IC")
+GAME_VERB(/mob/living, subtler, "轻微动作（幽灵不可见）", "IC")
 	if(GLOB.say_disabled) // This is here to try to identify lag problems
-		to_chat(usr, span_danger("Speech is currently admin-disabled."))
+		to_chat(usr, span_danger(LANG("mob.b79ad8a388d1b3a4", null)))
 		return
 	usr.emote("subtler")
 

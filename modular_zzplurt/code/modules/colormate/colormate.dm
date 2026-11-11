@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define COLORMATE_TINT 1
 #define COLORMATE_HSV 2
 #define COLORMATE_MATRIX 3
@@ -63,7 +64,7 @@
 
 /obj/machinery/gear_painter/attackby(obj/item/I, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(inserted)
-		to_chat(user, "<span class='warning'>The machine is already loaded.</span>")
+		to_chat(user, LANG("obj.60df73c9177dec50", null))
 		return
 	if(default_deconstruction_screwdriver(user, "colormate_open", "colormate", I))
 		return
@@ -75,7 +76,7 @@
 		var/obj/item/mob_holder/H = I
 		var/mob/victim = H.held_mob
 		if(!user.transferItemToLoc(I, src))
-			to_chat(user, "<span class='warning'>[I] is stuck to your hand!</span>")
+			to_chat(user, LANG("obj.6241fc8865c1817e", list(I)))
 			return
 		if(!QDELETED(H))
 			H.release()
@@ -85,11 +86,11 @@
 
 	if(is_type_in_list(I, allowed_types) && is_operational)
 		if(!user.transferItemToLoc(I, src))
-			to_chat(user, "<span class='warning'>[I] is stuck to your hand!</span>")
+			to_chat(user, LANG("obj.6241fc8865c1817e", list(I)))
 			return
 		if(QDELETED(I))
 			return
-		user.visible_message("<span class='notice'>[user] inserts [I] into [src]'s receptable.</span>")
+		user.visible_message(LANG("obj.b6546550aa620fa2", list(user, I, src)))
 
 		inserted = I
 		update_icon()
@@ -102,7 +103,7 @@
 	if(inserted)
 		return
 	if(user)
-		visible_message("<span class='warning'>[user] stuffs [victim] into [src]!</span>")
+		visible_message(LANG("obj.eae225a85d677400", list(user, victim, src)))
 	inserted = victim
 	inserted.forceMove(src)
 
@@ -123,7 +124,7 @@
 		return
 	if(!inserted)
 		return
-	to_chat(usr, "<span class='notice'>You remove [inserted] from [src]")
+	to_chat(usr, LANG("obj.d82cb58b686f224f", list(inserted, src)))
 	inserted.forceMove(drop_location())
 	var/mob/living/user = usr
 	if(istype(user))
@@ -180,7 +181,7 @@
 				active_mode = text2num(params["mode"])
 				return TRUE
 			if("choose_color")
-				var/chosen_color = tgui_color_picker(usr, "Choose a color: ", "Colormate color picking", activecolor)
+				var/chosen_color = tgui_color_picker(usr, LANG("obj.d83f959b02688a7b", null), LANG("obj.50ed775fa3039153", null), activecolor)
 				if(chosen_color)
 					activecolor = chosen_color
 				return TRUE
@@ -235,7 +236,7 @@
 			color_to_use = color_matrix_hsv(build_hue, build_sat, build_val)
 			color_matrix_last = color_to_use
 	if(!color_to_use || !check_valid_color(color_to_use, user))
-		to_chat(user, "<span class='notice'>Invalid color.</span>")
+		to_chat(user, LANG("obj.1889d4c890d65dfd", null))
 		return FALSE
 	inserted.add_atom_colour(color_to_use, FIXED_COLOUR_PRIORITY)
 	playsound(src, 'sound/effects/spray3.ogg', 50, 1)

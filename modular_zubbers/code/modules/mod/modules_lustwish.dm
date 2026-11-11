@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/mod/construction/plating/lustwish
 	icon = 'modular_zubbers/icons/mob/clothing/modsuit/mod_modules.dmi'
 	icon_state = "lustwish-plating"
@@ -22,17 +23,16 @@
 
 /obj/item/mod/module/hypno_visor/examine(mob/user)
 	. = ..()
-	. += span_info("It's currently programmed with the following directive: \"[hypno_message]\" Use it in-hand to rewrite it.")
-	. += span_info("Its visor will [visor_effect ? "" : "<b>not</b> "]display an external hypnotic effect. Use a screwdriver to toggle.")
-	. += span_info("Its control wire is currently [(module_type == MODULE_TOGGLE) ? \
+	. += span_info(LANG("obj.ca5e776f60653600", list(hypno_message)))
+	. += span_info(LANG("obj.0cc62161f32b77ce", list(visor_effect ? "" : "<b>not</b> ")))
+	. += span_info(LANG("obj.148477ac1ab50e8c", list((module_type == MODULE_TOGGLE) ? \
 						"<b>intact,</b> allowing for on-the-fly configuration via the MOD UI." \
 						: \
-						"<b>snipped,</b> forcing the module to be always-on when the helmet is activated."] \
-					Use wirecutters to toggle.")
+						"<b>snipped,</b> forcing the module to be always-on when the helmet is activated.")))
 
 /obj/item/mod/module/hypno_visor/attack_self(mob/user)
 	. = ..()
-	var/message_input = tgui_input_text(user, "Change the hypnotic phrase.", default = hypno_message, max_length = MAX_MESSAGE_LEN)
+	var/message_input = tgui_input_text(user, LANG("obj.ff9b72e4517130f8", null), default = hypno_message, max_length = MAX_MESSAGE_LEN)
 	if(message_input)
 		hypno_message = message_input
 	else
@@ -41,8 +41,8 @@
 /obj/item/mod/module/hypno_visor/screwdriver_act(mob/living/user, obj/item/tool)
 	visor_effect = !visor_effect
 	playsound(src, 'sound/machines/click.ogg', 30, TRUE)
-	to_chat(user, span_notice("You turn the visor display of [src] [visor_effect ? "on" : "off"]."))
-	balloon_alert(user, "visor effect [visor_effect ? "on" : "off"]")
+	to_chat(user, span_notice(LANG("obj.51564df6cb439464", list(src, visor_effect ? "on" : "off"))))
+	balloon_alert(user, LANG("obj.efc735adcb146b08", list(visor_effect ? "on" : "off")))
 	return TRUE
 
 /obj/item/mod/module/hypno_visor/wirecutter_act(mob/living/user, obj/item/tool)
@@ -51,8 +51,8 @@
 	else
 		module_type = MODULE_TOGGLE
 	playsound(src, 'sound/items/tools/wirecutter.ogg', 30, TRUE)
-	to_chat(user, span_notice("You [(module_type == MODULE_TOGGLE) ? "mend" : "snip"] the control wire on [src]."))
-	balloon_alert(user, "control wire [(module_type == MODULE_TOGGLE) ? "mend" : "snipp"]ed")
+	to_chat(user, span_notice(LANG("obj.2b80744427733d81", list((module_type == MODULE_TOGGLE) ? "mend" : "snip", src))))
+	balloon_alert(user, LANG("obj.f4c68b2f4e59787e", list((module_type == MODULE_TOGGLE) ? "mend" : "snipp")))
 	return TRUE
 
 /obj/item/mod/module/hypno_visor/on_install()
@@ -62,11 +62,11 @@
 		addtimer(CALLBACK(src, PROC_REF(say_visor_no_worky), usr), 0.5 SECONDS)
 
 /obj/item/mod/module/hypno_visor/proc/say_visor_no_worky(user)
-		balloon_alert(user, "visor effect unavailable for this plating!")
+		balloon_alert(user, LANG("obj.ecf93021cae8e210", null))
 
 /obj/item/mod/module/hypno_visor/proc/apply_hypnosis()
 	if(!(mod.wearer.client?.prefs?.read_preference(/datum/preference/toggle/erp/hypnosis) && mod.wearer.client.prefs.read_preference(/datum/preference/toggle/erp/sex_toy)))
-		return to_chat(mod.wearer, span_warning("Mind resilient to hypnotic effects: Shutting down"))
+		return to_chat(mod.wearer, span_warning(LANG("obj.447219bbf275f7af", null)))
 	if(hypno_message == "" || isnull(hypno_message))
 		hypno_message = "Obey"
 	mod.wearer.gain_trauma(new /datum/brain_trauma/very_special/induced_hypnosis(hypno_message), TRAUMA_RESILIENCE_MAGIC)
@@ -111,15 +111,15 @@
 /obj/item/mod/module/hypno_visor/configure_edit(key, value)
 	switch(key)
 		if("hypno_message")
-			hypno_message = tgui_input_text(usr, "Change the hypnotic phrase.", default = hypno_message, max_length = MAX_MESSAGE_LEN)
+			hypno_message = tgui_input_text(usr, LANG("obj.ff9b72e4517130f8", null), default = hypno_message, max_length = MAX_MESSAGE_LEN)
 			if(active)
-				balloon_alert(usr, "restart to finalize changes")
+				balloon_alert(usr, LANG("obj.522bcd5c51d468e8", null))
 		if("visor_effect")
 			if(mod.skin != "lustwish")
-				return balloon_alert(usr, "visor effect unavailable for this plating!")
+				return balloon_alert(usr, LANG("obj.ecf93021cae8e210", null))
 			visor_effect = text2num(value)
 			if(active)
-				balloon_alert(usr, "restart to finalize changes")
+				balloon_alert(usr, LANG("obj.522bcd5c51d468e8", null))
 
 
 /datum/storage/pockets/small/remote_module
@@ -155,7 +155,7 @@
 
 /obj/item/mod/module/remote_control/can_install(obj/item/mod/control/mod)
 	if(locate(/obj/item/remote_controller) in contents)
-		balloon_alert(usr, "remove remote from storage")
+		balloon_alert(usr, LANG("obj.7a8d28741aa2d27e", null))
 		return FALSE
 	return TRUE
 

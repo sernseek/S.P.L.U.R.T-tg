@@ -1,12 +1,13 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// For applying a normalization
 /obj/item/clothing/proc/normalize_mob_size(mob/living/carbon/human/resizer)
 	if(resizer.normalized)
-		to_chat(resizer, span_danger("This accessory buzzes, being overwritten by another."))
+		to_chat(resizer, span_danger(LANG("obj.421f5254e997d98d", null)))
 		playsound(resizer, 'sound/machines/buzz/buzz-sigh.ogg', 50, 1)
 		return
 	playsound(resizer, 'sound/effects/magic.ogg', 50, 1)
 	flash_lighting_fx(3, 3, LIGHT_COLOR_PURPLE)
-	resizer.visible_message(span_warning("A flash of purple light engulfs [resizer], before they change to normal!"), span_notice("You feel warm for a moment, before everything scales to your size..."))
+	resizer.visible_message(span_warning(LANG("obj.7dd9a6d076777735", list(resizer))), span_notice(LANG("obj.19f1a98c1d3d82d9", null)))
 	if(resizer.get_quirk(/datum/quirk/oversized))
 		resizer.remove_quirk(/datum/quirk/oversized)
 	else
@@ -21,7 +22,7 @@
 	if(resizer.normalized)
 		playsound(resizer,'sound/items/weapons/emitter2.ogg', 50, 1)
 		flash_lighting_fx(3, 3, LIGHT_COLOR_YELLOW)
-		resizer.visible_message(span_warning("Golden light engulfs [resizer], and they shoot back to their default height!"), span_notice("Energy rushes through your body, and you return to normal."))
+		resizer.visible_message(span_warning(LANG("obj.41c6d9b5e2d3570a", list(resizer))), span_notice(LANG("obj.44ce323eef39f139", null)))
 		for(var/quirk in resizer?.client?.prefs?.all_quirks)
 			if(quirk == "Oversized")
 				resizer.add_quirk(/datum/quirk/oversized, announce = FALSE)

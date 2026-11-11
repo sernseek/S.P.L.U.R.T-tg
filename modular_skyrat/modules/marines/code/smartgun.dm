@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/ballistic/automatic/smart_machine_gun
 	name = "\improper M63A4 \"Smartgun\""
 	desc = "A weapon with a blistering rate of fire, so heavy that it needs to be mounted on a modsuit to wield. \
@@ -51,9 +52,9 @@
 
 /obj/item/gun/ballistic/automatic/smart_machine_gun/examine(mob/user)
 	. = ..()
-	. += "<b>RMB with an empty hand</b> to [cover_open ? "close" : "open"] the dust cover."
+	. += LANG("obj.a7e31ec3870c0171", list(cover_open ? "close" : "open"))
 	if(cover_open && magazine)
-		. += span_notice("It seems like you could use an <b>empty hand</b> to remove the magazine.")
+		. += span_notice(LANG("obj.50e55fa813130bc1", null))
 
 /obj/item/gun/ballistic/automatic/smart_machine_gun/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()
@@ -62,26 +63,26 @@
 	if(!user.can_perform_action(src))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	cover_open = !cover_open
-	to_chat(user, span_notice("You [cover_open ? "open" : "close"] [src]'s cover."))
+	to_chat(user, span_notice(LANG("obj.503615b1235def03", list(cover_open ? "open" : "close", src))))
 	playsound(src, 'sound/items/weapons/gun/l6/l6_door.ogg', 60, TRUE)
 	update_appearance()
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/gun/ballistic/automatic/smart_machine_gun/can_shoot()
 	if(cover_open)
-		balloon_alert_to_viewers("cover open!")
+		balloon_alert_to_viewers(LANG("obj.b726018fdc5c7891", null))
 		return FALSE
 	return chambered
 
 /obj/item/gun/ballistic/automatic/smart_machine_gun/eject_magazine(mob/user, display_message = TRUE, obj/item/ammo_box/magazine/tac_load = null)
 	if(!cover_open)
-		to_chat(user, span_warning("The cover is closed! Open it before ejecting the magazine!"))
+		to_chat(user, span_warning(LANG("obj.3c4b2231f3be4483", null)))
 		return
 	return ..()
 
 /obj/item/gun/ballistic/automatic/smart_machine_gun/attackby(obj/item/attack_item, mob/user, params)
 	if(!cover_open && istype(attack_item, accepted_magazine_type))
-		to_chat(user, span_warning("[src]'s dust cover prevents a magazine from being fit."))
+		to_chat(user, span_warning(LANG("obj.a2a6c45daabeb285", list(src))))
 		return
 	..()
 

@@ -1,9 +1,10 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Wiki books that are linked to the configured wiki link.
 
 /// The size of the window that the wiki books open in.
 #define BOOK_WINDOW_BROWSE_SIZE "970x710"
 /// This macro will resolve to code that will open up the associated wiki page in the window.
-#define WIKI_PAGE_IFRAME(title, wikiurl, link_identifier) {"
+#define WIKI_PAGE_IFRAME(title, page_url) {" // ZH EDIT CHANGE - I18N - ORIGINAL: #define WIKI_PAGE_IFRAME(title, wikiurl, link_identifier) {"
 <html>
 	<head>
 		<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
@@ -33,7 +34,7 @@
 	</head>
 	<body>
 		<p>You start skimming through the manual...</p>
-		<iframe src="[wikiurl]/[link_identifier]?useskin=vector" onload="document.body.classList.add('loaded')"></iframe>
+		<iframe src="[page_url]" onload="document.body.classList.add('loaded')"></iframe>
 	</body>
 </html>
 "}
@@ -47,17 +48,17 @@
 	var/page_link = ""
 
 /obj/item/book/manual/wiki/display_content(mob/living/user)
-	var/wiki_url = CONFIG_GET(string/wikiurl)
+	var/wiki_url = wiki_page_url(page_link) // ZH EDIT CHANGE - I18N - ORIGINAL: var/wiki_url = CONFIG_GET(string/wikiurl)
 	if(!wiki_url)
-		user.balloon_alert(user, "this book is empty!")
+		user.balloon_alert(user, LANG("obj.b5b6d6960b6f2eca", null))
 		return
 	credit_book_to_reader(user)
 	if(user.client.byond_version < 516) //Remove this once 516 is stable
-		if(tgui_alert(user, "This book's page will open in your browser. Are you sure?", "Open The Wiki", list("Yes", "No")) != "Yes")
+		if(tgui_alert(user, LANG("obj.a29d550e320c8489", null), LANG("obj.f2d1a8c3556df9da", null), list("Yes", "No")) != "Yes")
 			return
-		DIRECT_OUTPUT(user, link("[wiki_url]/[page_link]"))
+		DIRECT_OUTPUT(user, link(wiki_url)) // ZH EDIT CHANGE - I18N - ORIGINAL: DIRECT_OUTPUT(user, link("[wiki_url]/[page_link]"))
 	else
-		DIRECT_OUTPUT(user, browse(WIKI_PAGE_IFRAME(name, wiki_url, page_link), "window=manual;size=[BOOK_WINDOW_BROWSE_SIZE]")) // if you change this GUARANTEE that it works.
+		DIRECT_OUTPUT(user, browse(WIKI_PAGE_IFRAME(name, wiki_page_url(page_link, "useskin=vector")), "window=manual;size=[BOOK_WINDOW_BROWSE_SIZE]")) // if you change this GUARANTEE that it works. // ZH EDIT CHANGE - I18N - ORIGINAL: DIRECT_OUTPUT(user, browse(WIKI_PAGE_IFRAME(name, wiki_url, page_link), "window=manual;size=[BOOK_WINDOW_BROWSE_SIZE]"))
 
 /obj/item/book/manual/wiki/chemistry
 	name = "Chemistry Textbook"
@@ -89,7 +90,7 @@
 	page_link = "Space_Law"
 
 /obj/item/book/manual/wiki/security_space_law/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] pretends to read \the [src] intently... then promptly dies of laughter!"))
+	user.visible_message(span_suicide(LANG("obj.567e38b0571650c9", list(user, src))))
 	return OXYLOSS
 
 /obj/item/book/manual/wiki/infections
@@ -200,7 +201,7 @@
 
 /obj/item/book/manual/wiki/ordnance/suicide_act(mob/living/user)
 	var/mob/living/carbon/human/H = user
-	user.visible_message(span_suicide("[user] starts dancing to the Rhumba Beat! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.33aba52d2276cb77", list(user, user.p_theyre()))))
 	playsound(loc, 'sound/effects/spray.ogg', 10, TRUE, -3)
 	if(QDELETED(H))
 		return

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/abstract/liquid_turf
 	name = "liquid"
 	icon = 'modular_skyrat/modules/liquids/icons/obj/effects/liquid.dmi'
@@ -415,7 +416,7 @@
 							if(!(shoes && shoes.clothing_flags))
 								step(carbon, dir)
 								if(prob(60) && carbon.body_position != LYING_DOWN)
-									to_chat(carbon, span_userdanger("The current knocks you down!"))
+									to_chat(carbon, span_userdanger(LANG("obj.3eb7591a3c2c9364", null)))
 									carbon.Knockdown(1 SECONDS)
 						else
 							step(AM, dir)
@@ -461,7 +462,7 @@
 
 			var/obj/item/clothing/mask/wear_mask = falling_carbon.get_item_by_slot(ITEM_SLOT_MASK)
 			if(wear_mask && wear_mask.flags_cover & MASKCOVERSMOUTH)
-				to_chat(falling_carbon, span_userdanger("You fall in the [reagents_to_text()]!"))
+				to_chat(falling_carbon, span_userdanger(LANG("obj.ccb6bfa8a8f3009e", list(reagents_to_text()))))
 			else
 				var/datum/reagents/tempr = take_reagents_flat(CHOKE_REAGENTS_INGEST_ON_FALL_AMOUNT)
 				tempr.trans_to(falling_carbon, tempr.total_volume, methods = INGEST)
@@ -469,9 +470,9 @@
 				falling_carbon.adjust_oxy_loss(5)
 				//C.emote("cough")
 				INVOKE_ASYNC(falling_carbon, TYPE_PROC_REF(/mob, emote), "cough")
-				to_chat(falling_carbon, span_userdanger("You fall in and swallow some [reagents_to_text()]!"))
+				to_chat(falling_carbon, span_userdanger(LANG("obj.511d79514851d525", list(reagents_to_text()))))
 		else
-			to_chat(M, span_userdanger("You fall in the [reagents_to_text()]!"))
+			to_chat(M, span_userdanger(LANG("obj.ccb6bfa8a8f3009e", list(reagents_to_text()))))
 
 /obj/effect/abstract/liquid_turf/Initialize(mapload)
 	. = ..()
@@ -572,21 +573,21 @@
 			var/reagent_name = initial(reagent_type.name)
 			var/volume = round(reagent_list[reagent_type], 0.01)
 
-			examine_list += span_notice("There is [replacetext(liquid_state_template, "$", "[volume] units of [reagent_name]")] here.")
+			examine_list += span_notice(LANG("obj.a69bd5a21f40005d", list(replacetext(liquid_state_template, "$", "[volume] units of [reagent_name]"))))
 		else
 			// Show each individual reagent
-			examine_list += "There is [replacetext(liquid_state_template, "$", "the following")] here:"
+			examine_list += LANG("obj.339eeede13f3ab82", list(replacetext(liquid_state_template, "$", "the following")))
 
 			for(var/datum/reagent/reagent_type as anything in reagent_list)
 				var/reagent_name = initial(reagent_type.name)
 				var/volume = round(reagent_list[reagent_type], 0.01)
-				examine_list += "&bull; [volume] units of [reagent_name]"
+				examine_list += LANG("obj.5b87b0e65d339f24", list(volume, reagent_name))
 
-		examine_list += span_notice("The solution has a temperature of [temp]K.[EXAMINE_SECTION_BREAK]")
+		examine_list += span_notice(LANG("obj.03a68d29a36e00a1", list(temp, EXAMINE_SECTION_BREAK)))
 		return
 
 	// Otherwise, just show the total volume
-	examine_list += span_notice("There is [replacetext(liquid_state_template, "$", "liquid")] here.[EXAMINE_SECTION_BREAK]")
+	examine_list += span_notice(LANG("obj.16c4132cde7c11e0", list(replacetext(liquid_state_template, "$", "liquid"), EXAMINE_SECTION_BREAK)))
 
 /**
  * Creates a string of the reagents that make up this liquid.

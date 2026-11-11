@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // POTIONS
 
 // CRUCIBLE SOUL
@@ -11,7 +12,7 @@
 	var/turf/location
 
 /datum/status_effect/crucible_soul/on_apply()
-	to_chat(owner,span_notice("You phase through reality, nothing is out of bounds!"))
+	to_chat(owner,span_notice(LANG("datum.8a17c2ebf6ce6616", null)))
 	owner.alpha = 180
 	owner.pass_flags |= PASSGLASS | PASSGRILLE | PASSMACHINE | PASSSTRUCTURE | PASSTABLE | PASSMOB | PASSDOORS | PASSVEHICLE // BUBBER EDIT CHANGE - removed PASSCLOSEDTURF
 	location = get_turf(owner)
@@ -20,7 +21,7 @@
 	return TRUE
 
 /datum/status_effect/crucible_soul/on_remove()
-	to_chat(owner,span_notice("You regain your physicality, returning you to your original location..."))
+	to_chat(owner,span_notice(LANG("datum.c73803f0564816d7", null)))
 	owner.alpha = initial(owner.alpha)
 	owner.pass_flags &= ~(PASSGLASS | PASSGRILLE | PASSMACHINE | PASSSTRUCTURE | PASSTABLE | PASSMOB | PASSDOORS | PASSVEHICLE) // BUBBER EDIT CHANGE - removed PASSCLOSEDTURF
 	owner.forceMove(location)
@@ -90,7 +91,7 @@
 			found_wound.remove_wound()
 	if(length(drinker.get_missing_limbs()))
 		drinker.regenerate_limbs()
-		to_chat(drinker, span_hypnophrase("The mansus has given you new limbs."))
+		to_chat(drinker, span_hypnophrase(LANG("datum.b0c15ef59b45b0ad", null)))
 	playsound(drinker, 'sound/effects/chemistry/ahaha.ogg', 50, TRUE, -1, extrarange = SILENCED_SOUND_EXTRARANGE, frequency = 0.5)
 
 /datum/status_effect/marshal/tick(seconds_between_ticks)
@@ -236,9 +237,9 @@
 
 	playsound(get_turf(source), 'sound/items/weapons/parry.ogg', 100, TRUE)
 	source.visible_message(
-		span_warning("[to_remove] orbiting [source] snaps in front of [attack_text], blocking it before vanishing!"),
-		span_warning("[to_remove] orbiting you snaps in front of [attack_text], blocking it before vanishing!"),
-		span_hear("You hear a clink."),
+		span_warning(LANG("datum.e2a1744320b3abda", list(to_remove, source, attack_text))),
+		span_warning(LANG("datum.eceba002bba9fd9b", list(to_remove, attack_text))),
+		span_hear(LANG("datum.9d4e541de39a79cb", null)),
 	)
 
 	qdel(to_remove)
@@ -314,8 +315,8 @@
 	UnregisterSignal(owner, COMSIG_CARBON_CUFF_ATTEMPTED)
 	UnregisterSignal(owner, COMSIG_BEING_STRIPPED)
 	owner.visible_message(
-		span_warning("The haze around [owner] disappears, leaving them materialized!"),
-		span_notice("You exit the refuge."),
+		span_warning(LANG("datum.b9d7932002166b3e", list(owner))),
+		span_notice(LANG("datum.55cc845d873fef04", null)),
 	)
 
 /datum/status_effect/caretaker_refuge/get_examine_text()
@@ -324,18 +325,18 @@
 /datum/status_effect/caretaker_refuge/proc/nullrod_handler(datum/source, obj/item/weapon)
 	SIGNAL_HANDLER
 	playsound(get_turf(owner), 'sound/effects/curse/curse1.ogg', 80, TRUE)
-	owner.visible_message(span_warning("[weapon] repels the haze around [owner]!"))
+	owner.visible_message(span_warning(LANG("datum.ceddfd89092ef27f", list(weapon, owner))))
 	owner.remove_status_effect(type)
 
 /datum/status_effect/caretaker_refuge/proc/no_strip(atom/source, mob/user, obj/item/equipping)
 	SIGNAL_HANDLER
-	to_chat(user, span_warning("You fail to put anything on [source] as they are incorporeal!"))
+	to_chat(user, span_warning(LANG("datum.bfb3b90b83962191", list(source))))
 	return COMPONENT_CANT_STRIP
 
 /datum/status_effect/caretaker_refuge/proc/prevent_spell_usage(datum/source, datum/spell)
 	SIGNAL_HANDLER
 	if(!istype(spell, /datum/action/cooldown/spell/caretaker))
-		owner.balloon_alert(owner, "may not cast spells in refuge!")
+		owner.balloon_alert(owner, LANG("datum.e4871913ba1fb5ef", null))
 		return SPELL_CANCEL_CAST
 
 /datum/status_effect/caretaker_refuge/proc/prevent_cuff(datum/source, mob/attemptee)
@@ -377,7 +378,7 @@
 
 /datum/status_effect/heretic_lastresort/on_apply()
 	ADD_TRAIT(owner, TRAIT_IGNORESLOWDOWN, TRAIT_STATUS_EFFECT(id))
-	to_chat(owner, span_userdanger("You won't give up that easily!"))
+	to_chat(owner, span_userdanger(LANG("datum.b97574405d2d3c8d", null)))
 	return TRUE
 
 /datum/status_effect/heretic_lastresort/on_remove()

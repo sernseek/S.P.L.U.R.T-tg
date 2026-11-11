@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * # Living Heart Component
  *
@@ -43,7 +44,7 @@
 /datum/component/living_heart/proc/on_organ_removed(obj/item/organ/source, mob/living/carbon/old_owner)
 	SIGNAL_HANDLER
 
-	to_chat(old_owner, span_userdanger("As your living [source.name] leaves your body, you feel less connected to the Mansus!"))
+	to_chat(old_owner, span_userdanger(LANG("datum.7f5d692d9d3e881a", list(source.name))))
 	qdel(src)
 
 /**
@@ -109,7 +110,7 @@
 	var/datum/heretic_knowledge/sac_knowledge = heretic_datum.get_knowledge(/datum/heretic_knowledge/hunt_and_sacrifice)
 
 	if(!LAZYLEN(heretic_datum.sac_targets))
-		owner.balloon_alert(owner, "no targets, visit a rune!")
+		owner.balloon_alert(owner, LANG("datum.7750be966d2a6ba9", null))
 		StartCooldown(1 SECONDS)
 		return TRUE
 
@@ -173,8 +174,7 @@
 	if(ismob(tracked_thing))
 		var/mob/tracked_mob = tracked_thing
 		if(tracked_mob.stat == DEAD)
-			to_chat(owner, span_mansus("[tracked_mob] is dead. Bring them to a transmutation rune \
-				and invoke \"[sac_knowledge.name]\" to sacrifice them!"))
+			to_chat(owner, span_mansus(LANG("datum.ac1f012409f45ee4", list(tracked_mob, sac_knowledge.name))))
 
 	StartCooldown()
 	return TRUE

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/mob_cooldown/blood_worm/spit
 	name = "Spit Blood"
 	desc = "Spit corrosive blood at your target in exchange for your own health. Right-click to melt restraints while in a host."
@@ -27,11 +28,11 @@
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/set_click_ability(mob/on_who)
 	. = ..()
 	var/right_click_message = ishuman(owner) ? ", right-click to melt restraints" : (burst_projectile_type ? ", right-click for a burst" : "")
-	to_chat(owner, span_notice("You fill your [ishuman(owner) ? "mouth" : "maw"] with blood. <b>Left-click to spit corrosive blood[right_click_message]!</b>"))
+	to_chat(owner, span_notice(LANG("datum.3549791b2185fb63", list(ishuman(owner) ? "mouth" : "maw", right_click_message))))
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/unset_click_ability(mob/on_who, refund_cooldown)
 	. = ..()
-	to_chat(owner, span_notice("You empty your [ishuman(owner) ? "mouth" : "maw"] of blood."))
+	to_chat(owner, span_notice(LANG("datum.32ee58ff350ceafe", list(ishuman(owner) ? "mouth" : "maw"))))
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/IsAvailable(feedback)
 	if (!ishuman(owner) && !istype(owner, /mob/living/basic/blood_worm))
@@ -41,11 +42,11 @@
 
 	if (worm.host?.is_mouth_covered())
 		if (feedback)
-			owner.balloon_alert(owner, "mouth is covered!")
+			owner.balloon_alert(owner, LANG("datum.290d96e84b1cc00c", null))
 		return FALSE
 	if (worm.get_worm_health() - health_cost < minimum_health)
 		if (feedback)
-			owner.balloon_alert(owner, "out of blood!")
+			owner.balloon_alert(owner, LANG("datum.663d6bcb874ca3b1", null))
 		return FALSE
 
 	return ..()
@@ -86,9 +87,9 @@
 		return
 
 	owner.visible_message(
-		message = span_danger("\The [owner] spit[owner.p_s()] corrosive blood!"),
-		self_message = span_danger("You spit corrosive blood!"),
-		blind_message = span_hear("You hear spitting.")
+		message = span_danger(LANG("datum.779bf5ca3ad634b1", list(owner, owner.p_s()))),
+		self_message = span_danger(LANG("datum.a87536b254ebcde3", null)),
+		blind_message = span_hear(LANG("datum.d458d707b5af98c2", null))
 	)
 
 	spit(target, modifiers, projectile_type)
@@ -103,13 +104,13 @@
 
 	var/mob/living/basic/blood_worm/worm = src.target
 	if (worm.get_worm_health() - health_cost * burst_count < minimum_health)
-		owner.balloon_alert(owner, "out of blood!")
+		owner.balloon_alert(owner, LANG("datum.663d6bcb874ca3b1", null))
 		return
 
 	owner.visible_message(
-		message = span_danger("\The [owner] spit[owner.p_s()] a burst of corrosive blood!"),
-		self_message = span_danger("You spit a burst of corrosive blood!"),
-		blind_message = span_hear("You hear spitting.")
+		message = span_danger(LANG("datum.2743656d48da7e27", list(owner, owner.p_s()))),
+		self_message = span_danger(LANG("datum.15be93be35ea5de6", null)),
+		blind_message = span_hear(LANG("datum.d458d707b5af98c2", null))
 	)
 
 	spit(target, modifiers, burst_projectile_type, count = burst_count, spread = 10)
@@ -164,7 +165,7 @@
 		playsound(host, SFX_SIZZLE, vol = 80, vary = TRUE, ignore_walls = FALSE)
 		StartCooldown(20 SECONDS)
 	if (!something_to_melt)
-		host.balloon_alert(host, "not restrained!")
+		host.balloon_alert(host, LANG("datum.68d8962274d73e7a", null))
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/melt_restraints_in_slot(mob/living/carbon/human/host, slot)
 	var/obj/restraints = host.get_item_by_slot(slot)
@@ -172,13 +173,13 @@
 	if (!istype(restraints))
 		return FALSE
 	if (restraints.resistance_flags & (INDESTRUCTIBLE | UNACIDABLE | ACID_PROOF))
-		host.balloon_alert(host, "\the [restraints] [restraints.p_are()] too tough!")
+		host.balloon_alert(host, LANG("datum.2dcb88ecafab632d", list(restraints, restraints.p_are())))
 		return FALSE
 
 	host.visible_message(
-		message = span_danger("\The [host] spit[host.p_s()] corrosive blood all over \the [restraints]!"),
-		self_message = span_danger("You spit corrosive blood all over \the [restraints]!"),
-		blind_message = span_hear("You hear sizzling.")
+		message = span_danger(LANG("datum.5be5dbb645100181", list(host, host.p_s(), restraints))),
+		self_message = span_danger(LANG("datum.b80100cbe999b8e5", list(restraints))),
+		blind_message = span_hear(LANG("datum.412380fd396e1185", null))
 	)
 
 	log_combat(host, restraints, "melted", addition = "(Spit Blood)")
@@ -187,22 +188,22 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/finish_melting_restraints(obj/restraints)
-	restraints.visible_message(span_danger("\The [restraints] melt[restraints.p_s()] into a pile of goopy blood!"))
+	restraints.visible_message(span_danger(LANG("datum.46d33bb47d5031f3", list(restraints, restraints.p_s()))))
 	new /obj/effect/decal/cleanable/blood/old(get_turf(restraints))
 	qdel(restraints)
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/melt_closet(mob/living/carbon/human/host, obj/structure/closet/closet)
 	if (closet.resistance_flags & (INDESTRUCTIBLE | UNACIDABLE | ACID_PROOF))
-		host.balloon_alert(host, "\the [closet] [closet.p_are()] too tough!")
+		host.balloon_alert(host, LANG("datum.2dcb88ecafab632d", list(closet, closet.p_are())))
 		return FALSE
 
 	closet.visible_message(
-		message = span_danger("\The [closet]'s hinges overflow with corrosive blood and begin to melt!"),
-		blind_message = span_hear("You hear sizzling."),
+		message = span_danger(LANG("datum.f45b2377ba60cab5", list(closet))),
+		blind_message = span_hear(LANG("datum.412380fd396e1185", null)),
 		ignored_mobs = host
 	)
 
-	to_chat(host, span_danger("You spit corrosive blood all over \the [closet]'s interior hinges!"))
+	to_chat(host, span_danger(LANG("datum.53ffdcec465b8fc3", list(closet))))
 
 	log_combat(host, closet, "melted", addition = "(Spit Blood)")
 
@@ -210,7 +211,7 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/finish_melting_closet(obj/structure/closet/closet)
-	closet.visible_message(span_danger("\The [closet]'s hinges melt into a pile of goopy blood!"))
+	closet.visible_message(span_danger(LANG("datum.81de3d9a4ed229bb", list(closet))))
 	new /obj/effect/decal/cleanable/blood/old(get_turf(closet))
 
 	closet.welded = FALSE
@@ -220,16 +221,16 @@
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/melt_cocoon(mob/living/carbon/human/host, obj/structure/spider/cocoon/cocoon)
 	if (cocoon.resistance_flags & (INDESTRUCTIBLE | UNACIDABLE | ACID_PROOF))
-		host.balloon_alert(host, "\the [cocoon] [cocoon.p_are()] too tough!")
+		host.balloon_alert(host, LANG("datum.2dcb88ecafab632d", list(cocoon, cocoon.p_are())))
 		return FALSE
 
 	cocoon.visible_message(
-		message = span_danger("\The [cocoon]'s threads begin to fall apart!"),
-		blind_message = span_hear("You hear sizzling."),
+		message = span_danger(LANG("datum.52ef92a36afb7c81", list(cocoon))),
+		blind_message = span_hear(LANG("datum.412380fd396e1185", null)),
 		ignored_mobs = host
 	)
 
-	to_chat(host, span_danger("You spit corrosive blood all over the inside of \the [cocoon]!"))
+	to_chat(host, span_danger(LANG("datum.2275c6ce9bd49cc1", list(cocoon))))
 
 	log_combat(host, cocoon, "melted", addition = "(Spit Blood)")
 
@@ -237,7 +238,7 @@
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/blood_worm/spit/proc/finish_melting_cocoon(obj/structure/spider/cocoon/cocoon)
-	cocoon.visible_message(span_danger("\The [cocoon] melt[cocoon.p_s()] into a pile of goopy blood!"))
+	cocoon.visible_message(span_danger(LANG("datum.46d33bb47d5031f3", list(cocoon, cocoon.p_s()))))
 	new /obj/effect/decal/cleanable/blood/old(get_turf(cocoon))
 	qdel(cocoon)
 

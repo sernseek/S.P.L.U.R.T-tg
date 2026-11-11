@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///This unique key decides how items are stacked on the UI. We separate them based on name, price & type
 #define ITEM_HASH(item)(sanitize_css_class_name("[item.name][item.custom_price][item.type]"))
 
@@ -61,7 +62,7 @@
 /obj/machinery/vending/custom/examine(mob/user)
 	. = ..()
 	if(linked_account)
-		. += span_warning("Machine is ID locked. Be sure to unlink before deconstructing the machine.")
+		. += span_warning(LANG("obj.6021c05ad04a83b9", null))
 
 /obj/machinery/vending/custom/Exited(obj/item/gone, direction)
 	. = ..()
@@ -87,15 +88,15 @@
 /obj/machinery/vending/custom/canLoadItem(obj/item/loaded_item, mob/user, send_message = TRUE)
 	if(loaded_item.flags_1 & HOLOGRAM_1)
 		if(send_message)
-			speak("This vendor cannot accept nonexistent items.")
+			speak(LANG("obj.de7f3ed5e22c2df3", null))
 		return FALSE
 	if(isstack(loaded_item))
 		if(send_message)
-			speak("Loose items may cause problems, try to use it inside wrapping paper.")
+			speak(LANG("obj.633e9f441ba2ad00", null))
 		return FALSE
 	if(!loaded_item.custom_price)
 		if(send_message)
-			speak("Item needs to have a custom price set.")
+			speak(LANG("obj.350befa47ab0a96c", null))
 		return FALSE
 	return TRUE
 
@@ -104,11 +105,11 @@
 		return FALSE
 
 	if(loaded_items() == max_loaded_items)
-		speak("There are too many items in stock.")
+		speak(LANG("obj.190129d476ac833f", null))
 		return FALSE
 
 	if(!user.transferItemToLoc(inserted_item, src))
-		to_chat(user, span_warning("[inserted_item] is stuck in your hand!"))
+		to_chat(user, span_warning(LANG("obj.015edaf0a69dffa2", list(inserted_item))))
 		return FALSE
 
 	//the hash key decides how items stack in the UI. We diffrentiate them based on name & price
@@ -163,22 +164,19 @@
 
 /obj/machinery/vending/custom/post_restock(mob/living/user, restocked)
 	if(!restocked)
-		to_chat(user, span_warning("There's nothing to restock!"))
+		to_chat(user, span_warning(LANG("obj.c4bb9a80a0a0b7cc", null)))
 		return
 
-	to_chat(user, span_notice("You loaded [restocked] items in [src]"))
+	to_chat(user, span_notice(LANG("obj.9d9268c75932990c", list(restocked, src))))
 
 /obj/machinery/vending/custom/crowbar_act(mob/living/user, obj/item/attack_item)
 	if(linked_account)
 		visible_message(
-			span_warning("Security warning"),
-			span_warning("Unauthorized deconstruction of vending machine is prohibited. Please read the warning alert")
+			span_warning(LANG("obj.aaf1845302003c0b", null)),
+			span_warning(LANG("obj.5aa4c7e6d7669b56", null))
 		)
-		if(tgui_alert(user, "Vending machine is ID locked.\
-		Deconstruction will result in an catrostrophic self destruct.\
-		If you are the owner of this machine please unlink your account with an ID swipe before proceeding.\
-		Still proceed?",
-		"Vandalism protection protocol",
+		if(tgui_alert(user, LANG("obj.dd71deafbca0b470", null),
+		LANG("obj.95c869a68d90698e", null),
 		list("Yes", "No")) == "No")
 			return ITEM_INTERACT_FAILURE
 
@@ -199,20 +197,20 @@
 		if(card_used?.registered_account)
 			if(!linked_account)
 				linked_account = card_used.registered_account
-				speak("\The [src] has been linked to [card_used].")
+				speak(LANG("obj.2bf10928dfd269eb", list(src, card_used)))
 				return ITEM_INTERACT_SUCCESS
 			else if(linked_account == card_used.registered_account)
 				linked_account = null
-				speak("account unlinked.")
+				speak(LANG("obj.e3254b556003b198", null))
 				return ITEM_INTERACT_SUCCESS
 			else
-				to_chat(user, "verification failed. unlinking process has been cancelled.")
+				to_chat(user, LANG("obj.992c417535f90be3", null))
 		return ITEM_INTERACT_FAILURE
 	return ..()
 
 /obj/machinery/vending/custom/descformat(input, mob/living/user)
 	. = input
-	var/new_slogan = reject_bad_text(tgui_input_text(user, "Set slogan", "Slogan", "Epic", max_length = 60))
+	var/new_slogan = reject_bad_text(tgui_input_text(user, LANG("obj.57f3b8a7ccabc083", null), LANG("obj.6295cf8826e26ae3", null), "Epic", max_length = 60))
 	if(!user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return
 	if (new_slogan)
@@ -239,7 +237,7 @@
 
 		. += list(list(
 			path = stocked_hash,
-			name = target.name,
+			name = target.lang_localize_name_for_display(target.name), // ZH EDIT - I18N: 售货名纯显示（act 走 ref）；atom 版守玩家改名。ORIGINAL: name = target.name,
 			price = target.custom_price,
 			category = "Products",
 			ref = stocked_hash,
@@ -250,7 +248,7 @@
 
 /obj/machinery/vending/custom/ui_interact(mob/user, datum/tgui/ui)
 	if(!linked_account)
-		balloon_alert(user, "no registered owner!")
+		balloon_alert(user, LANG("obj.49d79b32ecbc21cb", null))
 		return FALSE
 	return ..()
 
@@ -278,7 +276,7 @@
 
 	var/obj/item/card/id/id_card = user.get_idcard(TRUE)
 	if(QDELETED(id_card))
-		balloon_alert(user, "no card found!")
+		balloon_alert(user, LANG("obj.74aa11864f1282d2", null))
 		flick(icon_deny, src)
 		return
 
@@ -286,17 +284,16 @@
 	var/datum/bank_account/payee = id_card.registered_account
 	if(!compartmentLoadAccessCheck(user))
 		if(istype(id_card, /obj/item/card/id/departmental_budget))
-			balloon_alert(user, "invalid payment card")
-			to_chat(user, span_warning("You cannot use a departmental card for this."))
+			balloon_alert(user, LANG("obj.981ecc806c42dafb", null))
+			to_chat(user, span_warning(LANG("obj.78c322e8df86979b", null)))
 			return
 		if(!payee.has_money(dispensed_item.custom_price))
-			balloon_alert(user, "insufficient funds!")
+			balloon_alert(user, LANG("obj.c9e3dc6c17f5fe34", null))
 			return
 		/// Make the transaction
 		payee.adjust_money(-dispensed_item.custom_price, , "Vending: [dispensed_item]")
 		linked_account.adjust_money(dispensed_item.custom_price, "Vending: [dispensed_item] Bought")
-		linked_account.bank_card_talk("[payee.account_holder] made a [dispensed_item.custom_price] \
-		[MONEY_SYMBOL] purchase at your custom vendor.")
+		linked_account.bank_card_talk(LANG("obj.7b613a39d99c3b08", list(payee.account_holder, dispensed_item.custom_price, MONEY_SYMBOL)))
 		/// Log the transaction
 		SSblackbox.record_feedback("amount", "vending_spent", dispensed_item.custom_price)
 		log_econ("[dispensed_item.custom_price] [MONEY_NAME] were spent on [src] buying a \
@@ -304,7 +301,7 @@
 		/// Make an alert
 		var/ref = REF(user)
 		if(last_shopper != ref || purchase_message_cooldown < world.time)
-			speak("Thank you for your patronage [user]!")
+			speak(LANG("obj.69baa45e8ed72c63", list(user)))
 			purchase_message_cooldown = world.time + 5 SECONDS
 			last_shopper = ref
 
@@ -345,7 +342,7 @@
 	set_panel_open(TRUE)
 	//and references the deity
 	name = "[GLOB.deity]'s Consecrated Vendor"
-	desc = "A vending machine created by [GLOB.deity]."
+	desc = LANG("obj.8cb20186de3a6db9", list(GLOB.deity))
 	slogan_list = list("[GLOB.deity] says: It's your divine right to buy!")
 	add_filter("vending_outline", 9, list("type" = "outline", "color" = COLOR_VERY_SOFT_YELLOW))
 	add_filter("vending_rays", 10, list("type" = "rays", "size" = 35, "color" = COLOR_VIVID_YELLOW))

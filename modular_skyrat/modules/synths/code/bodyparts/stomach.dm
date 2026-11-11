@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/stomach/synth
 	name = "synthetic bio-reactor"
 	icon = 'modular_skyrat/master_files/icons/obj/surgery.dmi'
@@ -27,12 +28,12 @@
 			if(EMP_HEAVY)
 				owner.nutrition = max(0, owner.nutrition - SYNTH_STOMACH_HEAVY_EMP_CHARGE_LOSS)
 				apply_organ_damage(SYNTH_ORGAN_HEAVY_EMP_DAMAGE, maxHealth, required_organ_flag = ORGAN_ROBOTIC)
-				to_chat(owner, span_warning("Alert: Severe battery discharge!"))
+				to_chat(owner, span_warning(LANG("obj.2aa33b5ffd502479", null)))
 
 			if(EMP_LIGHT)
 				owner.nutrition = max(0, owner.nutrition - SYNTH_STOMACH_LIGHT_EMP_CHARGE_LOSS)
 				apply_organ_damage(SYNTH_ORGAN_LIGHT_EMP_DAMAGE, maxHealth, required_organ_flag = ORGAN_ROBOTIC)
-				to_chat(owner, span_warning("Alert: Minor battery discharge!"))
+				to_chat(owner, span_warning(LANG("obj.94d8276d4786e01f", null)))
 
 /datum/design/synth_stomach
 	name = "Synthetic Bio-Reactor"

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // This file is separate from telecommunications.dm to isolate the implementation
 // of basic interactions with the machines.
 
@@ -95,7 +96,7 @@
 		if("id")
 			if(params["value"])
 				if(length(params["value"]) > 32)
-					to_chat(current_user, span_warning("Error: Machine ID too long!"))
+					to_chat(current_user, span_warning(LANG("obj.9944ca91f4d17144", null)))
 					playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, TRUE)
 					return
 				else
@@ -105,7 +106,7 @@
 		if("network")
 			if(params["value"])
 				if(length(params["value"]) > 15)
-					to_chat(current_user, span_warning("Error: Network name too long!"))
+					to_chat(current_user, span_warning(LANG("obj.5ecc983044a6005b", null)))
 					playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, TRUE)
 					return
 				else
@@ -120,7 +121,7 @@
 				tempfreq = text2num(params["value"]) * 10
 		if("freq")
 			if(tempfreq in banned_frequencies)
-				to_chat(current_user, span_warning("Error: Interference preventing filtering frequency: \"[tempfreq / 10] kHz\""))
+				to_chat(current_user, span_warning(LANG("obj.619123c4fca2bb4c", list(tempfreq / 10))))
 				playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, TRUE)
 			else
 				if(!(tempfreq in freq_listening))
@@ -305,7 +306,7 @@
 			var/freq = params["freq"]
 			var/info = frequency_infos[freq]
 			if(info)
-				var/new_name = tgui_input_text(usr, "Please enter new frequency name", "Modifying Frequency Information", info["name"], MAX_NAME_LEN)
+				var/new_name = tgui_input_text(usr, LANG("obj.0cab98e0e5277b29", null), LANG("obj.5ee44816950e2c16", null), info["name"], MAX_NAME_LEN)
 				if(new_name)
 					for(var/list/channel in get_channels())
 						if(num2text(channel["freq"]) != freq && channel["name"] == new_name)
@@ -313,26 +314,26 @@
 				info["name"] = new_name
 				// No color changing for channels with theme settings
 				if(!GLOB.freqtospan["[freq]"])
-					var/new_color = tgui_color_picker(usr, "Choose color for frequency", "Modifying Frequency Information", info["color"])
+					var/new_color = tgui_color_picker(usr, LANG("obj.51477e124479f9db", null), LANG("obj.5ee44816950e2c16", null), info["color"])
 					if(new_color)
 						info["color"] = new_color
 				frequency_infos[params["freq"]] = info
 				. = TRUE
 		if("add_freq_info")
-			var/freq = tgui_input_number(usr, "Please enter frequency", "Adding Frequency Information", 145.9, 160, 120, round_value = FALSE)
+			var/freq = tgui_input_number(usr, LANG("obj.f60f674dd985b4eb", null), LANG("obj.ca1b3b3a661c7ce7", null), 145.9, 160, 120, round_value = FALSE)
 			if(!freq)
 				return
 			freq = round(freq*10)
 			if(!(freq in freq_listening))
 				return
-			var/name = tgui_input_text(usr, "Please enter frequency name", "Adding Frequency Information", max_length = MAX_NAME_LEN)
+			var/name = tgui_input_text(usr, LANG("obj.e41ab2ade29dcabd", null), LANG("obj.ca1b3b3a661c7ce7", null), max_length = MAX_NAME_LEN)
 			if(!name)
 				return
 
 			for(var/list/channel in get_channels())
 				if(channel["freq"] == freq || channel["name"] == name)
 					return
-			var/color = tgui_color_picker(usr, "Choose color for frequency", "Adding Frequency Information")
+			var/color = tgui_color_picker(usr, LANG("obj.51477e124479f9db", null), LANG("obj.ca1b3b3a661c7ce7", null))
 			if(!color)
 				return
 			frequency_infos[num2text(freq)] = list(

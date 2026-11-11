@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define WIRE_UNLINK "Unlink"
 #define WIRE_TEST "Test"
 #define WIRE_LINK "Link"
@@ -25,13 +26,13 @@
 /datum/wires/rbmk2_sniffer/get_status()
 	var/obj/machinery/rbmk2_sniffer/M = holder
 	. = list()
-	. += "The radio light is [M.radio_enabled ? "blinking red" : "off"]."
+	. += LANG("datum.7509b9e6e308a5fb", list(M.radio_enabled ? "blinking red" : "off"))
 	if(M.link_confirm)
-		. += "The LED display is displaying \"LINK CONFIRM?\"."
+		. += LANG("datum.057332b542979412", null)
 	else if(M.unlink_confirm)
-		. += "The LED display is displaying \"UNLINK CONFIRM?\"."
+		. += LANG("datum.0c471563ffbecfbd", null)
 	else
-		. += "The LED display is displaying nothing."
+		. += LANG("datum.688707d465f438d6", null)
 
 /datum/wires/rbmk2_sniffer/on_pulse(wire)
 	var/obj/machinery/rbmk2_sniffer/M = holder

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define SONIC_BLAST_COOLDOWN 5 SECONDS
 #define SONIC_BLAST_CHARGE_TIME 1.5 SECONDS
 
@@ -104,7 +105,7 @@
 		living_owner.Immobilize(SONIC_BLAST_CHARGE_TIME, TRUE)
 	living_owner.face_atom(target)
 
-	owner.visible_message(span_warning("[owner] begins to charge up energy!"))
+	owner.visible_message(span_warning(LANG("datum.078b371864f739af", list(owner))))
 
 	var/static/list/charge_sounds = list(
 		'modular_skyrat/modules/black_mesa/sound/mobs/houndeye/charge1.ogg',
@@ -134,7 +135,7 @@
 
 	// Play the blast sound
 	playsound(owner, 'sound/effects/explosion/explosioncreak2.ogg', 100, TRUE)
-	owner.visible_message(span_danger("[owner] releases a powerful sonic blast!"))
+	owner.visible_message(span_danger(LANG("datum.871561a9b4b6091b", list(owner))))
 
 /datum/action/cooldown/mob_cooldown/sonic_blast/proc/damage_turf(turf/turf_victim)
 	new /obj/effect/temp_visual/sonicblast(turf_victim)
@@ -147,7 +148,7 @@
 		living_victim.apply_damage(damage, STAMINA)
 		if(prob(50))
 			living_victim.Knockdown(1 SECONDS)
-		to_chat(living_victim, span_warning("You're hit by [owner]'s sonic blast!"))
+		to_chat(living_victim, span_warning(LANG("datum.13ab56917f5382b4", list(owner))))
 	for(var/obj/object_victim in turf_victim)
 		if(istype(object_victim, /obj/structure/window))
 			object_victim.take_damage(30)

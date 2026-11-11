@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/stock_parts/power_store/cell/crank
 	name = "crank cell"
 	desc = "Go ahead, wind it up to charge it."
@@ -12,7 +13,7 @@
 
 /obj/item/stock_parts/power_store/cell/crank/examine(mob/user)
 	. = ..()
-	. += span_notice("Click to start cranking the cell.")
+	. += span_notice(LANG("obj.e00729cdc2d4c866", null))
 
 /obj/item/stock_parts/power_store/cell/crank/Initialize(mapload, override_maxcharge)
 	. = ..()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/disease
 	//Flags
 	var/visibility_flags = NONE
@@ -59,6 +60,18 @@
 	var/copy_type = null //if this is null, copies will use the type of the instance being copied
 	var/bypasses_disease_recovery = FALSE // Does it skip self recovery process, such as event diseases // BUBBER EDIT ADDITION - DISEASE OUTBREAK UPDATES
 	var/half_stage = FALSE // Acts as a counter for half stages
+
+/datum/disease/New()
+	. = ..()
+	// ZH EDIT ADDITION START - i18n - 疾病名/描述/治疗/传播文本创建时整串反查（全服中文时；按感染实例化，gated 后开销小）
+	if(GLOB.i18n_server_locale != DEFAULT_UI_LOCALE)
+		name = lang_reverse_text(name)
+		desc = lang_reverse_text(desc)
+		cure_text = lang_reverse_text(cure_text)
+		spread_text = lang_reverse_text(spread_text)
+		form = lang_reverse_text(form)
+		agent = lang_reverse_text(agent)
+	// ZH EDIT ADDITION END
 
 /datum/disease/Destroy()
 	. = ..()
@@ -160,7 +173,7 @@
 			cure_mod = cure_mod * 2 * cure_status // Advanced diseases can be cured up to 2x as fast if all symptoms are remedied
 		if(disease_flags & CHRONIC && SPT_PROB(cure_mod, seconds_per_tick))
 			update_stage(1)
-			to_chat(affected_mob, span_notice("Your chronic illness is alleviated a little, though it can't be cured!"))
+			to_chat(affected_mob, span_notice(LANG("datum.51cb531f8017b49c", null)))
 			return
 		if(disease_flags & CURABLE && SPT_PROB(cure_mod, seconds_per_tick))
 			if(disease_flags & INCREMENTAL_CURE)

@@ -71,7 +71,8 @@ map boxstation
 	webmap_url https://webmap.affectedarc07.co.uk/maps/bubber/boxstation/
 endmap
 
-map PubbyStation
+# ZH EDIT - match the lowercase map config filename on Linux
+map pubbystation
 	votable
 	webmap_url https://webmap.affectedarc07.co.uk/maps/fulp/pubbystation/
 endmap
@@ -105,5 +106,6 @@ endmap
 map runtimestation_minimal
 endmap
 
-map eventmap
-endmap
+# ZH EDIT - eventmap has no map config in this checkout
+# map eventmap
+# endmap

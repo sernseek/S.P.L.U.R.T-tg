@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/dryer
 	name = "hand dryer"
 	desc = "The Breath Of Lizards-3000, an experimental dryer."
@@ -15,15 +16,15 @@
 		return
 
 	if(busy)
-		to_chat(user, span_warning("Someone's already drying here."))
+		to_chat(user, span_warning(LANG("obj.b57731975e3cfa60", null)))
 		return
 
-	to_chat(user, span_notice("You start drying your hands."))
+	to_chat(user, span_notice(LANG("obj.86c15bf3c9502cd4", null)))
 	playsound(src, 'modular_skyrat/modules/salon/sound/drying.ogg', 50)
 	add_fingerprint(user)
 	busy = TRUE
 	if(do_after(user, 4 SECONDS, src))
 		busy = FALSE
-		user.visible_message("[user] dried their hands using \the [src].")
+		user.visible_message(LANG("obj.8459c139308366fd", list(user, src)))
 	else
 		busy = FALSE

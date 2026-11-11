@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 	Changeling Mutations! ~By Miauw (ALL OF IT :V)
 	Contains:
@@ -55,29 +56,29 @@
 		user.temporarilyRemoveItemFromInventory(hand_item, TRUE) //DROPDEL will delete the item
 		if(!silent)
 			playsound(user, 'sound/effects/blob/blobattack.ogg', 30, TRUE)
-			user.visible_message(span_warning("With a sickening crunch, [user] reforms [user.p_their()] [weapon_name_simple] into an arm!"), span_notice("We assimilate the [weapon_name_simple] back into our body."), span_italics("You hear organic matter ripping and tearing!"))
+			user.visible_message(span_warning(LANG("datum.1f76d95a5c03dc82", list(user, user.p_their(), weapon_name_simple))), span_notice(LANG("datum.f00ab43eb945f050", list(weapon_name_simple))), span_italics(LANG("datum.581bebe73d25d191", null)))
 		user.update_held_items()
 		return TRUE
 
 /datum/action/changeling/weapon/sting_action(mob/living/carbon/user)
 	var/obj/item/held = user.get_active_held_item()
 	if(held && !user.dropItemToGround(held))
-		user.balloon_alert(user, "hand occupied!")
+		user.balloon_alert(user, LANG("datum.3c7d1ba91124b8a8", null))
 		return
 	if(!istype(user))
-		user.balloon_alert(user, "wrong shape!")
+		user.balloon_alert(user, LANG("datum.4792a73a119a22b8", null))
 		return
 	..()
 	var/limb_regen = 0
 	if(HAS_TRAIT_FROM_ONLY(user, TRAIT_PARALYSIS_L_ARM, CHANGELING_TRAIT) || HAS_TRAIT_FROM_ONLY(user, TRAIT_PARALYSIS_R_ARM, CHANGELING_TRAIT))
-		user.balloon_alert(user, "not enough muscle!") // no cheesing repuprosed glands
+		user.balloon_alert(user, LANG("datum.76b65511ee699deb", null)) // no cheesing repuprosed glands
 		return
 	if(IS_RIGHT_INDEX(user.active_hand_index)) //we regen the arm before changing it into the weapon
 		limb_regen = user.regenerate_limb(BODY_ZONE_R_ARM, 1)
 	else
 		limb_regen = user.regenerate_limb(BODY_ZONE_L_ARM, 1)
 	if(limb_regen)
-		user.visible_message(span_warning("[user]'s missing arm reforms, making a loud, grotesque sound!"), span_userdanger("Your arm regrows, making a loud, crunchy sound and giving you great pain!"), span_hear("You hear organic matter ripping and tearing!"))
+		user.visible_message(span_warning(LANG("datum.bdb01d6969c4f761", list(user))), span_userdanger(LANG("datum.5597ba050f6f3f50", null)), span_hear(LANG("datum.581bebe73d25d191", null)))
 		user.emote("scream")
 	var/obj/item/W = new weapon_type(user, silent)
 	user.put_in_hands(W)
@@ -133,7 +134,7 @@
 
 	if(istype(H.wear_suit, suit_type) || istype(H.head, helmet_type))
 		var/name_to_use = (isnull(suit_type) ? helmet_name_simple : suit_name_simple)
-		H.visible_message(span_warning("[H] casts off [H.p_their()] [name_to_use]!"), span_warning("We cast off our [name_to_use]."), span_hear("You hear the organic matter ripping and tearing!"))
+		H.visible_message(span_warning(LANG("datum.ddc12853cbe3a5e5", list(H, H.p_their(), name_to_use))), span_warning(LANG("datum.440dec3da3dbdd3b", list(name_to_use))), span_hear(LANG("datum.04b25393d2a1918d", null)))
 		if(!isnull(helmet_type))
 			H.temporarilyRemoveItemFromInventory(H.head, TRUE) //The qdel on dropped() takes care of it
 		if(!isnull(suit_type))
@@ -151,10 +152,10 @@
 
 /datum/action/changeling/suit/sting_action(mob/living/carbon/human/user)
 	if(!user.canUnEquip(user.wear_suit) && !isnull(suit_type))
-		user.balloon_alert(user, "body occupied!")
+		user.balloon_alert(user, LANG("datum.ecb5f08ad22cb411", null))
 		return
 	if(!user.canUnEquip(user.head) && !isnull(helmet_type))
-		user.balloon_alert(user, "head occupied!")
+		user.balloon_alert(user, LANG("datum.578e281c8540c45a", null))
 		return
 	..()
 	if(!isnull(suit_type))
@@ -216,7 +217,7 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 	if(ismob(loc) && !silent)
-		loc.visible_message(span_warning("A grotesque blade forms around [loc.name]\'s arm!"), span_warning("Our arm twists and mutates, transforming it into a deadly blade."), span_hear("You hear organic matter ripping and tearing!"))
+		loc.visible_message(span_warning(LANG("obj.4f914b98691c0007", list(loc.name))), span_warning(LANG("obj.f4917b16aaefc314", null)), span_hear(LANG("obj.581bebe73d25d191", null)))
 	if(synthetic)
 		can_drop = TRUE
 	alt_continuous = string_list(alt_continuous)
@@ -243,18 +244,18 @@
 		if((!opening.requiresID() || opening.allowed(user)) && opening.hasPower()) //This is to prevent stupid shit like hitting a door with an arm blade, the door opening because you have acces and still getting a "the airlocks motors resist our efforts to force it" message, power requirement is so this doesn't stop unpowered doors from being pried open if you have access
 			return
 		if(opening.locked)
-			opening.balloon_alert(user, "bolted!")
+			opening.balloon_alert(user, LANG("obj.6a3633c424772e6e", null))
 			return
 
 		if(opening.hasPower())
-			user.visible_message(span_warning("[user] jams [src] into the airlock and starts prying it open!"), span_warning("We start forcing the [opening] open."), \
-			span_hear("You hear a metal screeching sound."))
+			user.visible_message(span_warning(LANG("obj.573a3a084f4157fe", list(user, src))), span_warning(LANG("obj.a36e868f8c6d64dd", list(opening))), \
+			span_hear(LANG("obj.4e2b5bedec44f46d", null)))
 			playsound(opening, 'sound/machines/airlock/airlock_alien_prying.ogg', 100, TRUE)
 			if(!do_after(user, 10 SECONDS, target = opening))
 				return
 		//user.say("Heeeeeeeeeerrre's Johnny!")
-		user.visible_message(span_warning("[user] forces the airlock to open with [user.p_their()] [src]!"), span_warning("We force the [opening] to open."), \
-		span_hear("You hear a metal screeching sound."))
+		user.visible_message(span_warning(LANG("obj.ec05ee4ff87af269", list(user, user.p_their(), src))), span_warning(LANG("obj.e5ba660052a0fff1", list(opening))), \
+		span_hear(LANG("obj.4e2b5bedec44f46d", null)))
 		opening.open(BYPASS_DOOR_CHECKS)
 
 /obj/item/melee/arm_blade/dropped(mob/user)
@@ -312,13 +313,13 @@
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 	if(ismob(loc))
 		if(!silent)
-			loc.visible_message(span_warning("[loc.name]\'s arm starts stretching inhumanly!"), span_warning("Our arm twists and mutates, transforming it into a tentacle."), span_hear("You hear organic matter ripping and tearing!"))
+			loc.visible_message(span_warning(LANG("obj.e640f4292637cbe5", list(loc.name))), span_warning(LANG("obj.19fc251e5801d342", null)), span_hear(LANG("obj.581bebe73d25d191", null)))
 		else
-			to_chat(loc, span_notice("You prepare to extend a tentacle."))
+			to_chat(loc, span_notice(LANG("obj.993a95d3e310d176", null)))
 
 
 /obj/item/gun/magic/tentacle/shoot_with_empty_chamber(mob/living/user as mob|obj)
-	user.balloon_alert(user, "not ready!")
+	user.balloon_alert(user, LANG("obj.1125a29f654ba3e2", null))
 
 /obj/item/gun/magic/tentacle/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
 	var/obj/projectile/tentacle/tentacle_shot = chambered.loaded_projectile //Gets the actual projectile we will fire
@@ -328,7 +329,7 @@
 		qdel(src)
 
 /obj/item/gun/magic/tentacle/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] coils [src] tightly around [user.p_their()] neck! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.4790456210babe7d", list(user, src, user.p_their(), user.p_theyre()))))
 	return OXYLOSS
 
 /obj/item/ammo_casing/magic/tentacle
@@ -388,7 +389,7 @@
 
 	for(var/obj/item/weapon in user.held_items)
 		if(weapon.get_sharpness())
-			victim.visible_message(span_danger("[user] impales [victim] with [user.p_their()] [weapon.name]!"), span_userdanger("[user] impales you with [user.p_their()] [weapon.name]!"))
+			victim.visible_message(span_danger(LANG("obj.f05c9e14d5d04b48", list(user, victim, user.p_their(), weapon.name))), span_userdanger(LANG("obj.a97bb9a39eeaf47a", list(user, user.p_their(), weapon.name))))
 			victim.apply_damage(weapon.force, BRUTE, BODY_ZONE_CHEST, attacking_item = weapon)
 			user.do_item_attack_animation(victim, used_item = weapon, animation_type = ATTACK_ANIMATION_PIERCE)
 			user.add_blood_DNA_to_items(victim.get_blood_dna_list(), ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
@@ -409,7 +410,7 @@
 			return BULLET_ACT_BLOCK
 
 		var/mob/living/carbon/carbon_ling = ling
-		to_chat(carbon_ling, span_notice("You pull [catching] towards yourself."))
+		to_chat(carbon_ling, span_notice(LANG("obj.cec3355c3ad26de0", list(catching))))
 		carbon_ling.throw_mode_on(THROW_MODE_TOGGLE)
 		catching.throw_at(
 			target = carbon_ling,
@@ -431,8 +432,8 @@
 
 	if(!iscarbon(victim) || !ishuman(ling) || !ling.combat_mode)
 		victim.visible_message(
-			span_danger("[victim] is grabbed by [ling]'s [src]]!"),
-			span_userdanger("\A [src] grabs you and pulls you towards [ling]!"),
+			span_danger(LANG("obj.7f5eac5b25be6245", list(victim, ling, src))),
+			span_userdanger(LANG("obj.1377e1d08d2056ad", list(src, ling))),
 		)
 		victim.throw_at(
 			target = get_step_towards(ling, victim),
@@ -449,21 +450,21 @@
 		if(!isnull(stealing))
 			if(victim.dropItemToGround(stealing))
 				victim.visible_message(
-					span_danger("[stealing] is yanked off [victim]'s hand by [src]!"),
-					span_userdanger("\A [src] pulls [stealing] away from you!"),
+					span_danger(LANG("obj.0eb8a5236f047be7", list(stealing, victim, src))),
+					span_userdanger(LANG("obj.2a71e8ab18102211", list(src, stealing))),
 				)
 				return on_hit(stealing) //grab the item as if you had hit it directly with the tentacle
 
-			to_chat(ling, span_warning("You can't seem to pry [stealing] off [victim]'s hands!"))
+			to_chat(ling, span_warning(LANG("obj.ef47912eee992fdf", list(stealing, victim))))
 			return BULLET_ACT_BLOCK
 
-		to_chat(ling, span_danger("[victim] has nothing in hand to disarm!"))
+		to_chat(ling, span_danger(LANG("obj.75543fe38a61850e", list(victim))))
 		return BULLET_ACT_HIT
 
 	if(ling.combat_mode)
 		victim.visible_message(
-			span_danger("[victim] is thrown towards [ling] by \a [src]!"),
-			span_userdanger("\A [src] grabs you and throws you towards [ling]!"),
+			span_danger(LANG("obj.27b77beacdee9073", list(victim, ling, src))),
+			span_userdanger(LANG("obj.520cb41f0f765b81", list(src, ling))),
 		)
 		victim.throw_at(
 			target = get_step_towards(ling, victim),
@@ -525,7 +526,7 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 	if(ismob(loc))
-		loc.visible_message(span_warning("The end of [loc.name]\'s hand inflates rapidly, forming a huge shield-like mass!"), span_warning("We inflate our hand into a strong shield."), span_hear("You hear organic matter ripping and tearing!"))
+		loc.visible_message(span_warning(LANG("obj.429067d0259f985b", list(loc.name))), span_warning(LANG("obj.48d407c962f7ae95", null)), span_hear(LANG("obj.581bebe73d25d191", null)))
 
 /obj/item/shield/changeling/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
 	if(attack_type == OVERWHELMING_ATTACK)
@@ -534,7 +535,7 @@
 	if(remaining_uses < 1)
 		if(ishuman(loc))
 			var/mob/living/carbon/human/H = loc
-			H.visible_message(span_warning("With a sickening crunch, [H] reforms [H.p_their()] shield into an arm!"), span_notice("We assimilate our shield into our body"), span_italics("You hear organic matter ripping and tearing!"))
+			H.visible_message(span_warning(LANG("obj.63f865efbfbf4bef", list(H, H.p_their()))), span_notice(LANG("obj.b681019e1b882a2c", null)), span_italics(LANG("obj.581bebe73d25d191", null)))
 		qdel(src)
 		return 0
 	else
@@ -586,7 +587,7 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CHANGELING_TRAIT)
 	if(ismob(loc))
-		loc.visible_message(span_warning("[loc.name]\'s flesh turns black, quickly transforming into a hard, chitinous mass!"), span_warning("We harden our flesh, creating a suit of armor!"), span_hear("You hear organic matter ripping and tearing!"))
+		loc.visible_message(span_warning(LANG("obj.42dc9c3c4f4647d7", list(loc.name))), span_warning(LANG("obj.cfb404d895257455", null)), span_hear(LANG("obj.581bebe73d25d191", null)))
 
 /obj/item/clothing/head/helmet/changeling
 	name = "chitinous mass"
@@ -657,7 +658,7 @@
 /obj/item/clothing/head/helmet/changeling_hivehead/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(!istype(tool, /obj/item/organ/monster_core/regenerative_core/legion) || !holds_reagents)
 		return NONE
-	visible_message(span_boldwarning("As [user] shoves [tool] into [src], [src] begins to mutate."))
+	visible_message(span_boldwarning(LANG("obj.0e8de47d3c0be8f9", list(user, tool, src, src))))
 	var/mob/living/carbon/human/wearer = loc
 	playsound(wearer, 'sound/effects/blob/attackblob.ogg', 60, TRUE)
 	wearer.temporarilyRemoveItemFromInventory(src, TRUE)
@@ -680,7 +681,7 @@
 
 /datum/action/cooldown/hivehead_spawn_minions/PreActivate(atom/target)
 	if(owner.movement_type & VENTCRAWLING)
-		owner.balloon_alert(owner, "unavailable here")
+		owner.balloon_alert(owner, LANG("datum.d46dd981950fa0ce", null))
 		return FALSE
 	return ..()
 
@@ -698,7 +699,7 @@
 
 ///Our tell that we're using this ability. Usually a sound and a visible message.area
 /datum/action/cooldown/hivehead_spawn_minions/proc/do_tell()
-	owner.visible_message(span_warning("[owner]'s head begins to buzz as bees begin to pour out!"), span_warning("We release the bees."), span_hear("You hear a loud buzzing sound!"))
+	owner.visible_message(span_warning(LANG("datum.7a8f87c96ec25272", list(owner))), span_warning(LANG("datum.c6a266702156518d", null)), span_hear(LANG("datum.efe68d65558736c2", null)))
 	playsound(owner, 'sound/mobs/non-humanoids/bee/bee_swarm.ogg', 60, TRUE)
 
 ///Stuff we want to do to our minions. This is in its own proc so subtypes can override this behaviour.
@@ -725,7 +726,7 @@
 	spawn_count = 4
 
 /datum/action/cooldown/hivehead_spawn_minions/legion/do_tell()
-	owner.visible_message(span_warning("[owner]'s head begins to shake as legion begin to pour out!"), span_warning("We release the legion."), span_hear("You hear a loud squishing sound!"))
+	owner.visible_message(span_warning(LANG("datum.4798a072c293a5eb", list(owner))), span_warning(LANG("datum.94582c2df29574ca", null)), span_hear(LANG("datum.e667526a11926f86", null)))
 	playsound(owner, 'sound/effects/blob/attackblob.ogg', 60, TRUE)
 
 /datum/action/cooldown/hivehead_spawn_minions/legion/minion_additional_changes(mob/living/basic/minion)

@@ -1,11 +1,12 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/immovablerod/Bump(atom/clong)
 	var/should_self_destroy = FALSE
 	if(istype(clong, /obj/machinery/rodstopper))
 		should_self_destroy = TRUE
 	. = ..()
 	if(should_self_destroy)
-		visible_message(span_boldwarning("The rod tears into the rodstopper with a reality-rending screech!"))
+		visible_message(span_boldwarning(LANG("obj.cfc5fc1d72ec9792", null)))
 		playsound(src.loc,'sound/effects/supermatter.ogg', 200, TRUE)
-		visible_message(span_boldwarning("You have five seconds to move away before the localized reality-collapse!"))
+		visible_message(span_boldwarning(LANG("obj.f51ced3a03fa7e64", null)))
 		new/obj/reality_tear(src.loc)
 		qdel(src)

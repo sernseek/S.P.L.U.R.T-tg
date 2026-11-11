@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/loadout_item
 	var/donator_tier = DONATOR_TIER_NONE
 
@@ -56,7 +57,7 @@
 		return FALSE
 
 	var/current_color = loadout[item_path][INFO_COLOR] || "#FFFFFF"
-	var/new_color = tgui_color_picker(user, "Choose a color for [name]:", "Color Selection", current_color)
+	var/new_color = tgui_color_picker(user, LANG("datum.484957bb62d48032", list(name)), LANG("datum.503c427e2d0ff719", null), current_color)
 	if(!new_color)
 		return FALSE
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/trooper/cin_soldier
 	name = "Coalition Operative"
 	desc = "Death to SolFed."
@@ -29,7 +30,7 @@
 
 /mob/living/basic/trooper/cin_soldier/melee/bullet_act(obj/projectile/projectile)
 	if(prob(projectile_deflect_chance))
-		visible_message(span_danger("[src] blocks [projectile] with their shield!"))
+		visible_message(span_danger(LANG("mob.092e7dde7a6a1df8", list(src, projectile))))
 		return BULLET_ACT_BLOCK
 	return ..()
 
@@ -70,7 +71,7 @@
 
 /mob/living/basic/trooper/cin_soldier/ranged/shotgun_revolver/bullet_act(obj/projectile/projectile)
 	if(prob(projectile_deflect_chance))
-		visible_message(span_danger("[src] blocks [projectile] with their shield!"))
+		visible_message(span_danger(LANG("mob.092e7dde7a6a1df8", list(src, projectile))))
 		return BULLET_ACT_BLOCK
 	return ..()
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/closet/secure_closet/captains
 	name = "captain's locker"
 	icon_state = "cap"
@@ -229,7 +230,7 @@
 
 /obj/structure/closet/secure_closet/brig/genpop/examine(mob/user)
 	. = ..()
-	. += span_notice("<b>Right-click</b> with a Security-level ID to reset [src]'s registered ID.")
+	. += span_notice(LANG("obj.71f9e8f8cbe3c8ff", list(src)))
 
 /obj/structure/closet/secure_closet/brig/genpop/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(!secure || !istype(tool, /obj/item/card/id))
@@ -238,7 +239,7 @@
 	if(!isnull(id_card))
 		return ITEM_INTERACT_BLOCKING
 
-	say("Prisoner ID linked to locker.")
+	say(LANG("obj.81325c248c011c2e", null))
 	id_card = WEAKREF(tool)
 	name = "genpop storage locker - [astype(tool, /obj/item/card/id/advanced/prisoner).registered_name]"
 	return ITEM_INTERACT_SUCCESS
@@ -252,7 +253,7 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/closet/secure_closet/brig/genpop/proc/clear_access()
-	say("Authorized ID detected. Unlocking locker and resetting ID.")
+	say(LANG("obj.61d4bbdd5ab51d1e", null))
 	locked = FALSE
 	id_card = null
 	name = initial(name)

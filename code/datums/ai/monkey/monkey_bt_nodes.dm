@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /// Monkey's battle screech variant  louder and on a 5 second cooldown
 /datum/bt_node/ai_behavior/battle_screech/monkey
@@ -58,7 +59,7 @@
 		finish_action(controller, FALSE)
 		return
 
-	victim.visible_message(span_warning("[living_pawn] starts trying to take [target] from [victim]!"), span_danger("[living_pawn] tries to take [target]!"))
+	victim.visible_message(span_warning(LANG("datum.4c436cd82a686802", list(living_pawn, target, victim))), span_danger(LANG("datum.67d815043b4cf681", list(living_pawn, target))))
 	controller.set_blackboard_key(BB_MONKEY_PICKPOCKETING, TRUE)
 
 	var/success = FALSE
@@ -66,14 +67,14 @@
 	if(do_after(living_pawn, MONKEY_ITEM_SNATCH_DELAY, victim) && target && victim.IsReachableBy(living_pawn))
 		for(var/obj/item/I in victim.held_items)
 			if(I == target)
-				victim.visible_message(span_danger("[living_pawn] snatches [target] from [victim]."), span_userdanger("[living_pawn] snatched [target]!"))
+				victim.visible_message(span_danger(LANG("datum.61694db59c35a1bd", list(living_pawn, target, victim))), span_userdanger(LANG("datum.ef984e8ac8211261", list(living_pawn, target))))
 				if(victim.temporarilyRemoveItemFromInventory(target))
 					if(!QDELETED(target) && !equip_item(controller))
 						target.forceMove(living_pawn.drop_location())
 						success = TRUE
 						break
 				else
-					victim.visible_message(span_danger("[living_pawn] tried to snatch [target] from [victim], but failed!"), span_userdanger("[living_pawn] tried to grab [target]!"))
+					victim.visible_message(span_danger(LANG("datum.99c53414744b8aab", list(living_pawn, target, victim))), span_userdanger(LANG("datum.0782927d597f53e9", list(living_pawn, target))))
 
 	finish_action(controller, success)
 

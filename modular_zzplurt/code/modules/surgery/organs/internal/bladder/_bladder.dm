@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /obj/item/organ/bladder
 	name = "bladder"
@@ -51,11 +52,11 @@
 /obj/item/organ/bladder/proc/urinate(forced = FALSE)
 	if(owner.client?.prefs?.read_preference(/datum/preference/choiced/erp_status_unholy) == "No")
 		if(!forced)
-			to_chat(owner, span_notice("You must enable the unholy verbs preference to piss.")) // we cant have nice things
+			to_chat(owner, span_notice(LANG("obj.7e1cc9bfa0b706d9", null))) // we cant have nice things
 		return
 	if(stored_piss < piss_dosage * 2/3)
 		if(!forced)
-			to_chat(owner, span_notice("Try as you might you fail to piss."))
+			to_chat(owner, span_notice(LANG("obj.5809c05b508dc382", null)))
 		return
 
 	var/list/ignored_mobs = list()
@@ -76,7 +77,7 @@
 
 	playsound(owner, pick(GLOB.waterpiss_noises), 80, TRUE)
 	if(owner_turf.liquids?.height >= LIQUID_WAIST_LEVEL_HEIGHT)
-		owner.visible_message(span_notice("[owner] pisses into [istype(owner_turf, /turf/open/floor/iron/pool) ? "the pool" : "the surrounding water"].")) // wouldnt make sense in a pool of f.e tomato juice but shut up
+		owner.visible_message(span_notice(LANG("obj.6e9e135ae706e83a", list(owner, istype(owner_turf, /turf/open/floor/iron/pool) ? "the pool" : "the surrounding water")))) // wouldnt make sense in a pool of f.e tomato juice but shut up
 		owner_turf.add_liquid(pissed_reagent, remaining_piss, FALSE, piss_temperature)
 		return
 
@@ -87,28 +88,28 @@
 
 		remaining_piss = round(remaining_piss - held_container.reagents.add_reagent(pissed_reagent, remaining_piss, reagtemp = piss_temperature), CHEMICAL_QUANTISATION_LEVEL)
 		if(remaining_piss < 0)
-			owner.visible_message(span_notice("[owner] pisses into [held_container], without spilling a drop."), ignored_mobs = ignored_mobs)
+			owner.visible_message(span_notice(LANG("obj.71fcf8645ecd6bc7", list(owner, held_container))), ignored_mobs = ignored_mobs)
 			return
 		else if(remaining_piss == 0)
-			owner.visible_message(span_warning("[owner] pisses into [held_container], filling it to the brim."))
+			owner.visible_message(span_warning(LANG("obj.8808ba635bdab346", list(owner, held_container))))
 		else
-			owner.visible_message(span_warning("[owner] pisses into [held_container].. but it overflows!"))
+			owner.visible_message(span_warning(LANG("obj.7f92a2b6fe9cb0c3", list(owner, held_container))))
 			if(valid_toilet || valid_urinal)
-				owner.visible_message(span_warning("The excess urine drips over and into [valid_toilet || valid_urinal]. Whew."))
+				owner.visible_message(span_warning(LANG("obj.7e149a48b97d68f8", list(valid_toilet || valid_urinal))))
 			else
-				owner.visible_message(span_warning("The excess urine spills over onto the floor."))
+				owner.visible_message(span_warning(LANG("obj.f0f32c62c5617573", null)))
 				goto floor_piss
 			return
 
 	bathroom_checks:
 	if(valid_toilet)
-		owner.visible_message(span_notice("[owner] pisses into the toilet."), ignored_mobs = ignored_mobs)
+		owner.visible_message(span_notice(LANG("obj.051f8c1e12c709f2", list(owner))), ignored_mobs = ignored_mobs)
 		return
 	if(valid_urinal)
-		owner.visible_message(span_notice("[owner] carefully pisses into the urinal not spilling a drop."), ignored_mobs = ignored_mobs)
+		owner.visible_message(span_notice(LANG("obj.0b63ae99605abfab", list(owner))), ignored_mobs = ignored_mobs)
 		return
 
-	owner.visible_message(span_warning("[owner] pisses all over the floor!"), ignored_mobs = ignored_mobs)
+	owner.visible_message(span_warning(LANG("obj.30735cdb1841a969", list(owner))), ignored_mobs = ignored_mobs)
 	floor_piss: // below the msg bcuz earlier container check
 
 	owner_turf.add_liquid(pissed_reagent, remaining_piss, FALSE, piss_temperature)

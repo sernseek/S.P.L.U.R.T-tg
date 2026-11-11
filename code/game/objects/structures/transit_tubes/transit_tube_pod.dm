@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MOVE_ANIMATION_STAGE_ONE 1
 #define MOVE_ANIMATION_STAGE_TWO 2
 
@@ -32,8 +33,8 @@
 
 	tool.play_tool_sound(src)
 	if(contents.len)
-		user.visible_message(span_notice("[user] empties \the [src]."), \
-							span_notice("You empty \the [src]."))
+		user.visible_message(span_notice(LANG("obj.5ea779827d10d2ac", list(user, src))), \
+							span_notice(LANG("obj.b7f7de28dda0188e", list(src))))
 		empty_pod()
 	else
 		deconstruct(TRUE)
@@ -75,9 +76,9 @@
 	if(!moving)
 		user.changeNext_move(CLICK_CD_BREAKOUT)
 		user.last_special = world.time + CLICK_CD_BREAKOUT
-		to_chat(user, span_notice("You start trying to escape from the pod..."))
+		to_chat(user, span_notice(LANG("obj.1bf9509255f53a20", null)))
 		if(do_after(user, 1 MINUTES, target = src))
-			to_chat(user, span_notice("You manage to open the pod."))
+			to_chat(user, span_notice(LANG("obj.132b27b025f2c279", null)))
 			empty_pod()
 
 /obj/structure/transit_tube_pod/proc/empty_pod(atom/location)
@@ -155,7 +156,7 @@
 	var/list/savedcontents = contents.Copy()
 	var/saveddir = dir
 	var/turf/destination = get_edge_target_turf(src,saveddir)
-	visible_message(span_warning("[src] ejects its insides out!"))
+	visible_message(span_warning(LANG("obj.b07c99fb43d5e11b", list(src))))
 	deconstruct(FALSE)//we automatically deconstruct the pod
 	for(var/i in savedcontents)
 		var/atom/movable/AM = i

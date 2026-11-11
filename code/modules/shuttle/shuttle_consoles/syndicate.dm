@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define SYNDICATE_CHALLENGE_TIMER (20 MINUTES)
 
 /obj/machinery/computer/shuttle/syndicate
@@ -23,7 +24,7 @@
 		return FALSE
 	var/obj/item/circuitboard/computer/syndicate_shuttle/board = circuit
 	if(board?.challenge_start_time && world.time < board.challenge_start_time + SYNDICATE_CHALLENGE_TIMER)
-		to_chat(user, span_warning("You've issued a combat challenge to the station! You've got to give them at least [DisplayTimeText(board.challenge_start_time + SYNDICATE_CHALLENGE_TIMER - world.time)] more to allow them to prepare."))
+		to_chat(user, span_warning(LANG("obj.d16fdd7513fba1de", list(DisplayTimeText(board.challenge_start_time + SYNDICATE_CHALLENGE_TIMER - world.time)))))
 		return FALSE
 	board.moved = TRUE
 	return TRUE
@@ -50,7 +51,7 @@
 	if(!.)
 		return FALSE
 	if(!is_reserved_level(z))
-		to_chat(user, span_warning("Pods are one way!"))
+		to_chat(user, span_warning(LANG("obj.44173d0be738231b", null)))
 		return FALSE
 	return TRUE
 

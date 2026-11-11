@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define FEED_NOTICE_RANGE 2
 #define FEED_DEFAULT_TIMER (10 SECONDS)
 #define FEED_MIN_TIMER (1 SECONDS)
@@ -42,15 +43,15 @@
 
 /datum/action/cooldown/bloodsucker/feed/get_power_explanation_extended()
 	. = list()
-	. += "Activate Feed while next to someone and you will begin to feed blood off of them."
-	. += "The time needed before you start feeding is [DisplayTimeText(get_feed_start_time())]."
-	. += "Feeding off of someone while you have them aggressively grabbed will put them to sleep for [DisplayTimeText(get_sleep_time())]."
-	. += "While feeding, you can't speak, as you are using your mouth to drink blood."
-	. += "Feeding while nearby ([FEED_NOTICE_RANGE] tiles away from) a mortal who is unaware of Bloodsuckers' existence, will cause a Masquerade Infraction"
-	. += "If you get too many Masquerade Infractions, you will break the Masquerade."
-	. += "If you are in desperate need of blood, mice can be fed off of, at a cost to your humanity."
-	. += "If you are handcuffed, you can use feed to feed off whoever is grabbing you, however this is slower, and very obvious."
-	. += "You must use the ability again to stop sucking blood."
+	. += LANG("datum.fcfe05786a01fbf6", null)
+	. += LANG("datum.6b4b5e06a1109a9f", list(DisplayTimeText(get_feed_start_time())))
+	. += LANG("datum.b914a322876b8de5", list(DisplayTimeText(get_sleep_time())))
+	. += LANG("datum.f72ae4fb8ee6d2d2", null)
+	. += LANG("datum.f363e540a23afab4", list(FEED_NOTICE_RANGE))
+	. += LANG("datum.a15871b5646b9962", null)
+	. += LANG("datum.0e0ded72174ef6e9", null)
+	. += LANG("datum.7bc7b74e07ed813b", null)
+	. += LANG("datum.208ff246c9de1e66", null)
 
 /datum/action/cooldown/bloodsucker/feed/can_use(mob/living/carbon/user, trigger_flags)
 	. = ..()
@@ -62,10 +63,10 @@
 		if(!ContinueActive(user, target, aggro_feed))
 			target_ref = null
 		else
-			owner.balloon_alert(owner, "already feeding!")
+			owner.balloon_alert(owner, LANG("datum.7df97102320d2904", null))
 			return FALSE
 	if(user.is_mouth_covered() && !isplasmaman(user))
-		owner.balloon_alert(owner, "mouth covered!")
+		owner.balloon_alert(owner, LANG("datum.8b7fe4a7666bda72", null))
 		return FALSE
 	//Find target, it will alert what the problem is, if any.
 	if(!find_target())
@@ -98,7 +99,7 @@
 		log_combat(user, user, "fed on blood (target not found)", addition="(and took [blood_taken] blood)")
 	else
 		log_combat(user, feed_target, "fed on blood", addition="(and took [blood_taken] blood)")
-		to_chat(user, span_notice("You slowly release [feed_target]."))
+		to_chat(user, span_notice(LANG("datum.e1c088ef1b1512a0", list(feed_target))))
 		if(feed_target.client && feed_target.stat == DEAD)
 			user.add_mood_event("drankkilled", /datum/mood_event/drankkilled)
 			bloodsuckerdatum_power?.AddHumanityLost(5)
@@ -117,7 +118,7 @@
 		DeactivatePower()
 		return FALSE
 	if(istype(feed_target, /mob/living/basic/mouse))
-		to_chat(owner, span_notice("You recoil at the taste of a lesser lifeform."))
+		to_chat(owner, span_notice(LANG("datum.0747b05a16c90d2d", null)))
 		if(snobby_drinking_check())
 			var/mob/living/user = owner
 			user.add_mood_event("drankblood", /datum/mood_event/drankblood_bad)
@@ -127,10 +128,10 @@
 		StartCooldown()
 		return FALSE
 
-	owner.balloon_alert(owner, "feeding off [feed_target]...")
+	owner.balloon_alert(owner, LANG("datum.72ac0341c40ae8b8", list(feed_target)))
 	owner.face_atom(feed_target)
 	if(!do_after(owner, get_feed_start_time(), feed_target, show_progress = FALSE))
-		owner.balloon_alert(owner, "feed stopped")
+		owner.balloon_alert(owner, LANG("datum.75f6254470017230", null))
 		target_ref = null
 		return FALSE
 	if(check_aggro_feed(feed_target))
@@ -140,15 +141,15 @@
 		if(!feed_target.density)
 			feed_target.Move(owner.loc)
 		owner.visible_message(
-			span_warning("[owner] closes [owner.p_their()] mouth around [feed_target]'s neck!"),
-			span_warning("You sink your fangs into [feed_target]'s neck."))
+			span_warning(LANG("datum.5787f0b6031c8b77", list(owner, owner.p_their(), feed_target))),
+			span_warning(LANG("datum.ccc9d4ac8f9dd936", list(feed_target))))
 	else
 		aggressive_feed = FALSE
 		// Only people who AREN'T the target will notice this action.
 		var/dead_message = feed_target.stat != DEAD ? " <i>[feed_target.p_they(TRUE)] looks dazed, and will not notice this.</i>" : ""
 		owner.visible_message(
-			span_warning("[owner] puts [feed_target]'s wrist up to [owner.p_their()] mouth."),
-			span_notice("You slip your fangs into [feed_target]'s wrist.[dead_message]"),
+			span_warning(LANG("datum.ba5b4e95b01901a6", list(owner, feed_target, owner.p_their()))),
+			span_notice(LANG("datum.d31e5ce12a80d574", list(feed_target, dead_message))),
 			vision_distance = FEED_NOTICE_RANGE, ignored_mobs = feed_target
 		)
 
@@ -171,7 +172,7 @@
 			continue
 		if(IS_BLOODSUCKER(watchers) || IS_GHOUL(watchers) || HAS_TRAIT(watchers.mind, TRAIT_BLOODSUCKER_HUNTER))
 			continue
-		owner.balloon_alert(owner, "feed noticed!")
+		owner.balloon_alert(owner, LANG("datum.78c872bea4cba2db", null))
 		bloodsuckerdatum_power?.give_masquerade_infraction()
 		break
 
@@ -186,8 +187,8 @@
 	if(!ContinueActive(user, feed_target, aggressive_feed))
 		if(aggressive_feed)
 			user.visible_message(
-				span_warning("[user] is ripped from [feed_target]'s throat. [feed_target.p_Their(TRUE)] blood sprays everywhere!"),
-				span_warning("Your teeth are ripped from [feed_target]'s throat. [feed_target.p_Their(TRUE)] blood sprays everywhere!")
+				span_warning(LANG("datum.e51dd6f360d85b77", list(user, feed_target, feed_target.p_Their(TRUE)))),
+				span_warning(LANG("datum.51cb5016fea778f2", list(feed_target, feed_target.p_Their(TRUE))))
 			)
 			// Deal Damage to Target (should have been more careful!)
 			if(iscarbon(feed_target))
@@ -229,13 +230,13 @@
 
 	if(!IS_BLOODSUCKER(feed_target))
 		if(feed_target.blood_volume <= BLOOD_VOLUME_BAD && warning_target_bloodvol > BLOOD_VOLUME_BAD)
-			owner.balloon_alert(owner, "your victim's blood is fatally low!")
+			owner.balloon_alert(owner, LANG("datum.48ab1ab73abd9692", null))
 		else if(feed_target.blood_volume <= BLOOD_VOLUME_OKAY && warning_target_bloodvol > BLOOD_VOLUME_OKAY)
-			owner.balloon_alert(owner, "your victim's blood is dangerously low.")
+			owner.balloon_alert(owner, LANG("datum.6f30e02ec8814f8c", null))
 		else if(feed_target.blood_volume <= BLOOD_VOLUME_SAFE && warning_target_bloodvol > BLOOD_VOLUME_SAFE)
-			owner.balloon_alert(owner, "your victim's blood is at an unsafe level.")
+			owner.balloon_alert(owner, LANG("datum.89b99b93d2df167c", null))
 		else if(feed_target.blood_volume <= BLOOD_VOLUME_SAFE && owner.pulling != feed_target)
-			owner.balloon_alert(owner, "you cannot drink more without first getting a better grip!.")
+			owner.balloon_alert(owner, LANG("datum.20800f68528a7120", null))
 			DeactivatePower()
 			return
 		warning_target_bloodvol = feed_target.blood_volume
@@ -251,7 +252,7 @@
 			return
 		notified_overfeeding = TRUE
 	if(feed_target.blood_volume <= 0)
-		user.balloon_alert(owner, "no blood left!")
+		user.balloon_alert(owner, LANG("datum.944515c8a89dac25", null))
 		DeactivatePower()
 		return
 	owner.playsound_local(get_turf(owner), 'sound/effects/singlebeat.ogg', 40, TRUE)
@@ -328,11 +329,11 @@
 	if(safe_set_target(owner.pulledby))
 		return TRUE
 	if(bloodsuckerdatum_power?.is_frenzied())
-		owner.balloon_alert(owner, "beast active! must grab someone to feed!")
+		owner.balloon_alert(owner, LANG("datum.029f5d971c11dd15", null))
 		return FALSE
 	var/mob/living/carbon/carbon = owner
 	if(iscarbon(carbon) && carbon.handcuffed)
-		owner.balloon_alert(owner, "you cannot stealthily feed while handcuffed!")
+		owner.balloon_alert(owner, LANG("datum.393f0d31923a1cbe", null))
 		return FALSE
 	var/list/close_living_mobs = list()
 	var/list/close_dead_mobs = list()
@@ -380,7 +381,7 @@
 	if(istype(target, /mob/living/basic/mouse))
 		if(snobby_drinking_check())
 			if(give_warnings)
-				owner.balloon_alert(owner, "too disgusting!")
+				owner.balloon_alert(owner, LANG("datum.71b59281790e4a8a", null))
 			return FALSE
 		return TRUE
 	//Mice check done, only humans are otherwise allowed
@@ -390,23 +391,23 @@
 	var/mob/living/carbon/human/target_user = target
 	if(!(target_user.dna?.species) || !(target_user.mob_biotypes & MOB_ORGANIC) || HAS_TRAIT(target_user, TRAIT_NOBLOOD))
 		if(give_warnings)
-			owner.balloon_alert(owner, "no blood!")
+			owner.balloon_alert(owner, LANG("datum.ce2814af84b667b1", null))
 		return FALSE
 	if(!target_user.can_inject(owner, BODY_ZONE_HEAD, penetration))
 		if(give_warnings)
-			owner.balloon_alert(owner, "headgear too thick!")
+			owner.balloon_alert(owner, LANG("datum.5d7eb6fea30bf831", null))
 		return FALSE
 	if(!can_overfeed() && max_blood_reached(target_user))
 		if(give_warnings)
-			owner.balloon_alert(owner, "too full to drink more!")
+			owner.balloon_alert(owner, LANG("datum.d23add8990dc2537", null))
 		return FALSE
 	if(!target.mind && !can_drink_from_mindless(target_user))
 		if(give_warnings)
-			owner.balloon_alert(owner, "cant drink from mindless!")
+			owner.balloon_alert(owner, LANG("datum.8b57562eb66fc4fb", null))
 		return FALSE
 	if(target_user.has_reagent(/datum/reagent/consumable/garlic, 5))
 		if(give_warnings)
-			owner.balloon_alert(owner, "too much garlic!")
+			owner.balloon_alert(owner, LANG("datum.7c6d19cb85320f72", null))
 		return FALSE
 	return TRUE
 
@@ -438,7 +439,7 @@
 	if (!COOLDOWN_FINISHED(src, feed_movement_notify_cooldown))
 		return
 	COOLDOWN_START(src, feed_movement_notify_cooldown, 3 SECONDS)
-	owner.balloon_alert(owner, "you cannot move while feeding! Click the power to stop.")
+	owner.balloon_alert(owner, LANG("datum.4b6cda440857f8e3", null))
 
 /datum/action/cooldown/bloodsucker/feed/proc/modify_blood_drunk(amount = 0)
 	for(var/datum/weakref/weakref as anything in targets_and_blood)

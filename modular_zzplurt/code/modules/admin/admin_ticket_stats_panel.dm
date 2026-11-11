@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/ticket_stats
 	var/client/admin_client
 	var/list/last_query_result = list()
@@ -213,7 +214,7 @@
 	qdel(query)
 	return list("success" = TRUE, "data" = results, "grouping" = grouping)
 
-ADMIN_VERB(show_admin_ticket_stats, R_ADMIN, "Show Admin tickets Stats", "View statistics for admin ticket handling", ADMIN_CATEGORY_MAIN)
+ADMIN_VERB(show_admin_ticket_stats, R_ADMIN, "显示管理员工单统计", "View statistics for admin ticket handling", ADMIN_CATEGORY_MAIN)
 	var/datum/ticket_stats/stats = new(user)
 	stats.ui_interact(user.mob)
 	BLACKBOX_LOG_ADMIN_VERB("Show Admin Ticket Stats")

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/dynamic_ruleset/midround
 	repeatable = TRUE
 	repeatable_weight_decrease = 2
@@ -53,7 +54,7 @@
 	addtimer(CALLBACK(src, PROC_REF(announce_spiders)), rand(375, 600) SECONDS)
 
 /datum/dynamic_ruleset/midround/spiders/proc/announce_spiders()
-	priority_announce("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert", ANNOUNCER_ALIENS)
+	priority_announce(LANG("datum.9d5038a31b818751", list(station_name())), "Lifesign Alert", ANNOUNCER_ALIENS)
 
 /datum/dynamic_ruleset/midround/spiders/false_alarm()
 	announce_spiders()
@@ -106,7 +107,7 @@
 	var/list/admin_pool = list("[RULESET_CONFIG_CANCEL]" = TRUE, "[RANDOM_PIRATE_POOL]" = TRUE)
 	for(var/datum/pirate_gang/gang as anything in default_pirate_pool())
 		admin_pool[gang.name] = gang
-	var/picked = tgui_input_list(admin, "Select a pirate gang", "Pirate Gang Selection", admin_pool)
+	var/picked = tgui_input_list(admin, LANG("datum.564be559f68328b2", null), LANG("datum.62837e54793b5b6d", null), admin_pool)
 	if(!picked || picked == RULESET_CONFIG_CANCEL)
 		return RULESET_CONFIG_CANCEL
 	if(picked == RANDOM_PIRATE_POOL)
@@ -161,7 +162,8 @@
 	if(chosen_gang.paid_off)
 		return
 
-	var/list/candidates = SSpolling.poll_ghost_candidates("Do you wish to be considered for a [span_notice("pirate crew of [chosen_gang.name]?")]", check_jobban = ROLE_TRAITOR, alert_pic = /obj/item/claymore/cutlass, role_name_text = "pirate crew")
+	// ZH EDIT CHANGE - I18N - ORIGINAL: var/list/candidates = SSpolling.poll_ghost_candidates("Do you wish to be considered for a [span_notice("pirate crew of [chosen_gang.name]?")]", check_jobban = ROLE_TRAITOR, alert_pic = /obj/item/claymore/cutlass, role_name_text = "pirate crew")
+	var/list/candidates = SSpolling.poll_ghost_candidates(LANG("datum.ec53fb23cd2b45e9", list(chosen_gang.name)), check_jobban = ROLE_TRAITOR, alert_pic = /obj/item/claymore/cutlass, role_name_text = "pirate crew")
 	shuffle_inplace(candidates)
 
 	var/template_key = "pirate_[chosen_gang.ship_template_id]"
@@ -191,13 +193,13 @@
 			var/mob/spawned_mob = spawner.create_from_ghost(our_candidate)
 			candidates -= our_candidate
 			notify_ghosts(
-				"The [chosen_gang.ship_name] has an object of interest: [spawned_mob]!",
+				LANG("datum.48d5a6bb229961d0", list(chosen_gang.ship_name, spawned_mob)),
 				source = spawned_mob,
 				header = "Pirates!",
 			)
 		else
 			notify_ghosts(
-				"The [chosen_gang.ship_name] has an object of interest: [spawner]!",
+				LANG("datum.48d5a6bb229961d0", list(chosen_gang.ship_name, spawner)),
 				source = spawner,
 				header = "Pirate Spawn Here!",
 			)
@@ -259,7 +261,7 @@
 
 	return SSpolling.poll_candidates(
 		group = trim_candidates(GLOB.dead_player_list | GLOB.current_observers_list),
-		question = "Looking for volunteers to become [span_notice(readable_poll_role)] for [span_danger(name)]",
+		question = LANG("datum.17f7657ed40b6371", list(span_notice(readable_poll_role), span_danger(name))), // ZH EDIT CHANGE - I18N - ORIGINAL: question = "Looking for volunteers to become [span_notice(readable_poll_role)] for [span_danger(name)]",
 		// check_jobban = list(ROLE_SYNDICATE, jobban_flag || pref_flag), // Not necessary, handled in trim_candidates()
 		// role = pref_flag, // Not necessary, handled in trim_candidates()
 		poll_time = 30 SECONDS,
@@ -428,7 +430,7 @@
 	return pick(GLOB.blobstart)
 
 /datum/dynamic_ruleset/midround/from_ghosts/blob/false_alarm()
-	priority_announce("Confirmed outbreak of level 5 biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert", ANNOUNCER_OUTBREAK5)
+	priority_announce(LANG("datum.4bada0d03b828da2", list(station_name())), "Biohazard Alert", ANNOUNCER_OUTBREAK5)
 
 	// Set status displays to biohazard alert even for false alarm
 	send_status_display_biohazard_alert()
@@ -465,7 +467,7 @@
 	addtimer(CALLBACK(src, PROC_REF(announce_xenos)), rand(375, 600) SECONDS)
 
 /datum/dynamic_ruleset/midround/from_ghosts/xenomorph/proc/announce_xenos()
-	priority_announce("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert", ANNOUNCER_ALIENS)
+	priority_announce(LANG("datum.9d5038a31b818751", list(station_name())), "Lifesign Alert", ANNOUNCER_ALIENS)
 
 /datum/dynamic_ruleset/midround/from_ghosts/xenomorph/false_alarm()
 	announce_xenos()
@@ -518,7 +520,7 @@
 	candidate.current.move_into_vent(vent)
 
 /datum/dynamic_ruleset/midround/from_ghosts/blood_worms/proc/announce_worms()
-	priority_announce("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert", ANNOUNCER_ALIENS)
+	priority_announce(LANG("datum.9d5038a31b818751", list(station_name())), "Lifesign Alert", ANNOUNCER_ALIENS)
 
 /datum/dynamic_ruleset/midround/from_ghosts/blood_worms/false_alarm()
 	announce_worms()
@@ -582,7 +584,7 @@
 	addtimer(CALLBACK(src, PROC_REF(announce_space_dragon)), rand(5, 10) SECONDS)
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_dragon/proc/announce_space_dragon()
-	priority_announce("A large organic energy flux has been recorded near of [station_name()], please stand-by.", "Lifesign Alert")
+	priority_announce(LANG("datum.3c3f0633bdb949b0", list(station_name())), "Lifesign Alert")
 
 /datum/dynamic_ruleset/midround/from_ghosts/space_dragon/false_alarm()
 	announce_space_dragon()
@@ -766,7 +768,7 @@
 	var/list/admin_pool = list("[RULESET_CONFIG_CANCEL]" = TRUE, "[RANDOM_CLONE_TARGET]" = TRUE)
 	for(var/mob/living/carbon/human/target as anything in find_clone_candidates())
 		admin_pool["[target.real_name], the [target.mind.assigned_role.title]"] = target
-	var/picked = tgui_input_list(admin, "Select a crewmember to clone", "Clone Target", admin_pool)
+	var/picked = tgui_input_list(admin, LANG("datum.df632e8611b5db68", null), LANG("datum.1c58c863de3754c5", null), admin_pool)
 	if(!picked || picked == RULESET_CONFIG_CANCEL)
 		return RULESET_CONFIG_CANCEL
 	if(picked != RANDOM_CLONE_TARGET)
@@ -900,13 +902,13 @@
 		RULESET_CONFIG_CANCEL,
 	)
 
-	var/picked_fugitive_backstory = tgui_input_list(admin, "Select a fugitive backstory", "Fugitive Backstory", fugitive_backstories)
+	var/picked_fugitive_backstory = tgui_input_list(admin, LANG("datum.dd847d7b1961f038", null), LANG("datum.6b6f6c56295a65ae", null), fugitive_backstories)
 	if(!picked_fugitive_backstory || picked_fugitive_backstory == RULESET_CONFIG_CANCEL)
 		return RULESET_CONFIG_CANCEL
 	if(picked_fugitive_backstory != RANDOM_BACKSTORY)
 		fugitive_backstory = picked_fugitive_backstory
 
-	var/picked_hunter_backstory = tgui_input_list(admin, "Select a hunter backstory", "Hunter Backstory", hunter_backstories)
+	var/picked_hunter_backstory = tgui_input_list(admin, LANG("datum.f39062b44f6d5c68", null), LANG("datum.5396b4c879d32b01", null), hunter_backstories)
 	if(!picked_hunter_backstory || picked_hunter_backstory == RULESET_CONFIG_CANCEL)
 		return RULESET_CONFIG_CANCEL
 	if(picked_hunter_backstory != RANDOM_BACKSTORY)
@@ -1016,13 +1018,13 @@
 				var/mob/spawned_mob = spawner.create_from_ghost(our_candidate)
 				candidates -= our_candidate
 				notify_ghosts(
-					"[spawner.prompt_name] has awoken: [spawned_mob]!",
+					LANG("datum.a28ace146ef1fb8a", list(spawner.prompt_name, spawned_mob)),
 					source = spawned_mob,
 					header = "Come look!",
 				)
 			else
 				notify_ghosts(
-					"[spawner.prompt_name] spawner has been created!",
+					LANG("datum.1fa067077c32a8cc", list(spawner.prompt_name)),
 					source = spawner,
 					header = "Spawn Here!",
 				)
@@ -1174,7 +1176,7 @@
 /datum/dynamic_ruleset/midround/from_living/traitor/false_alarm()
 	priority_announce(
 		"Attention crew, it appears that someone on your station has hijacked your telecommunications and broadcasted an unknown signal.",
-		"[command_name()] High-Priority Update",
+		LANG("datum.34bd7ec69a2575e5", list(command_name())),
 	)
 
 /datum/dynamic_ruleset/midround/from_living/traitor/mass
@@ -1251,7 +1253,7 @@
 /datum/dynamic_ruleset/midround/from_living/blob/assign_role(datum/mind/candidate)
 	candidate.add_antag_datum(/datum/antagonist/blob/infection)
 	notify_ghosts(
-		"[candidate.current.real_name] has become a blob host!",
+		LANG("datum.6c19b4fdc5d0ba0c", list(candidate.current.real_name)),
 		source = candidate.current,
 		header = "So Bulbous...",
 	)
@@ -1282,7 +1284,7 @@
 	var/obj/item/organ/brain/brain = candidate.current.get_organ_by_type(__IMPLIED_TYPE__)
 	brain.brain_gain_trauma(/datum/brain_trauma/special/obsessed)
 	notify_ghosts(
-		"[candidate.current.real_name] has developed an obsession with someone!",
+		LANG("datum.8b4eb665faccc0fa", list(candidate.current.real_name)),
 		source = candidate.current,
 		header = "Love Can Bloom",
 	)

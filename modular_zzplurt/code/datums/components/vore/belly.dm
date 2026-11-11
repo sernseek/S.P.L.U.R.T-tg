@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/vore_belly
 	var/list/message_timers = list() // Per-prey message cooldowns for digest modes
 
@@ -41,13 +42,13 @@
 				if(belly != src) // Don't allow transferring to self
 					belly_choices[belly.name] = belly
 			if(LAZYLEN(belly_choices))
-				var/choice = tgui_input_list(usr, "Select target belly for auto-transfer", "Auto-Transfer Target", belly_choices)
+				var/choice = tgui_input_list(usr, LANG("obj.d6d18370bada4c78", null), LANG("obj.8b8023f334e486af", null), belly_choices)
 				if(choice)
 					autotransfer_target = belly_choices[choice]
 			else
-				to_chat(usr, span_warning("You need at least one other belly to set as a transfer target!"))
+				to_chat(usr, span_warning(LANG("obj.e4289985416415ef", null)))
 		if("autotransfer_delay")
-			var/new_delay = tgui_input_number(usr, "Transfer delay in seconds", "Auto-Transfer Delay", autotransfer_delay / 10, 300, 5)
+			var/new_delay = tgui_input_number(usr, LANG("obj.46e089040e06f374", null), LANG("obj.f8fe3f63ce1d12f3", null), autotransfer_delay / 10, 300, 5)
 			if(new_delay)
 				autotransfer_delay = new_delay * 10 // Convert to deciseconds
 				autotransfer_timer = 0 // Reset timer
@@ -92,8 +93,8 @@
 
 			// Messages
 			if(ismob(prey))
-				to_chat(living_parent, span_notice("You feel [prey] slide from your [name] into your [autotransfer_target.name]."))
-				to_chat(prey, span_notice("You slide from [living_parent]'s [name] into their [autotransfer_target.name]!"))
+				to_chat(living_parent, span_notice(LANG("obj.07d72419d0dbc6ec", list(prey, name, autotransfer_target.name))))
+				to_chat(prey, span_notice(LANG("obj.aec9b69fe1874027", list(living_parent, name, autotransfer_target.name))))
 
 			// Play transfer sound
 			if(fancy_sounds && release_sound)

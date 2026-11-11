@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/ash_ritual
 	/// the name of the ritual
 	var/name = "Summon Coders"
@@ -27,7 +28,7 @@
 		return
 	in_use = TRUE
 
-	rune.balloon_alert_to_viewers("ritual has begun...")
+	rune.balloon_alert_to_viewers(LANG("datum.a1cab08041b2dd0b", null))
 	new ritual_effect(rune.loc)
 
 	// it is entirely possible to have your own effects here... this is just a suggestion
@@ -62,10 +63,10 @@
 				pile.use(1, transfer = FALSE)
 			else
 				qdel(atom_check)
-			checked_rune.balloon_alert_to_viewers("[checked_component] component has been consumed...")
+			checked_rune.balloon_alert_to_viewers(LANG("datum.bf43ca1d21a17c20", list(checked_component)))
 
 		else
-			checked_rune.balloon_alert_to_viewers("[checked_component] component has been checked...")
+			checked_rune.balloon_alert_to_viewers(LANG("datum.0d7d872d7a3e230e", list(checked_component)))
 
 		new ritual_effect(checked_rune.loc)
 		sleep(ritual_time)
@@ -74,14 +75,14 @@
 
 /datum/ash_ritual/proc/ritual_fail(obj/effect/ash_rune/failed_rune)
 	new ritual_effect(failed_rune.loc)
-	failed_rune.balloon_alert_to_viewers("ritual has failed...")
+	failed_rune.balloon_alert_to_viewers(LANG("datum.13a3a8c10b70e59b", null))
 	failed_rune.current_ritual = null
 	in_use = FALSE
 	return
 
 /datum/ash_ritual/proc/ritual_success(obj/effect/ash_rune/success_rune)
 	new ritual_effect(success_rune.loc)
-	success_rune.balloon_alert_to_viewers("ritual has been successful...")
+	success_rune.balloon_alert_to_viewers(LANG("datum.1e6cd11dcd4944a4", null))
 	log_game("[name] ritual has been successfully activated.")
 
 	var/turf/rune_turf = get_turf(success_rune)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // virtual disposal object
 // travels through pipes in lieu of actual items
 // contents will be items flushed by the disposal
@@ -104,7 +105,7 @@
 	last_pipe = null
 	active = FALSE
 	for(var/mob/living/piperider in contents)
-		to_chat(piperider, span_notice("Your movement has slowed to a stop. If you tried, you could probably <b>struggle</b> free."))
+		to_chat(piperider, span_notice(LANG("obj.24d18756fd8bbc5b", null)))
 
 /**
  * Starts the struggle code
@@ -130,11 +131,11 @@
 		return //Somehow we're not in a pipe, shits probably fucked
 	var/obj/structure/disposalpipe/transport_cylinder = loc
 	if(active)
-		to_chat(escapee, span_danger("You slide past [loc] and are unable to keep your grip!"))
+		to_chat(escapee, span_danger(LANG("obj.409de90de39ece2b", list(loc))))
 		return
 	if(src in escapee.do_afters)
 		return //already trying to escape
-	to_chat(escapee, span_warning("You push against the thin pipe walls..."))
+	to_chat(escapee, span_warning(LANG("obj.4fe951d29cee235d", null)))
 	playsound(loc, 'sound/machines/airlock/airlock_alien_prying.ogg', vol = 30, vary = FALSE, extrarange = 3) //yeah I know but at least it sounds like metal being bent.
 
 	if(!do_after(escapee, 20 SECONDS, get_turf(loc)))

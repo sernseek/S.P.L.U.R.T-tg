@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**********************Kheiral Cuffs**********************/
 /// Acts as a GPS beacon & connects to station crew monitors from lavaland
 /obj/item/clothing/accessory/kheiral_cuffs
@@ -36,7 +37,7 @@
 /obj/item/clothing/accessory/kheiral_cuffs/examine(mob/user)
 	. = ..()
 	if(gps_enabled)
-		. += span_notice("The cuff's GPS signal is on.")
+		. += span_notice(LANG("obj.0f2e7a1602fc0611", null))
 
 /obj/item/clothing/accessory/kheiral_cuffs/equipped(mob/user, slot, initial)
 	. = ..()
@@ -64,7 +65,7 @@
 	if(id_card)
 		gps_name = id_card.registered_name
 	AddComponent(/datum/component/gps/kheiral_cuffs, "*[gps_name]'s Kheiral Link")
-	balloon_alert(user, "gps activated")
+	balloon_alert(user, LANG("obj.9af8c2fd1a1ae654", null))
 	ADD_TRAIT(user, TRAIT_MULTIZ_SUIT_SENSORS, REF(src))
 	gps_enabled = TRUE
 
@@ -74,7 +75,7 @@
 		return
 	if(on_wrist && far_from_home)
 		return
-	balloon_alert(user, "gps de-activated") // GPS component deletes itself when we get on-Z
+	balloon_alert(user, LANG("obj.12df76a8a332165f", null)) // GPS component deletes itself when we get on-Z
 	REMOVE_TRAIT(user, TRAIT_MULTIZ_SUIT_SENSORS, REF(src))
 	gps_enabled = FALSE
 
@@ -111,18 +112,18 @@
 
 /obj/item/clothing/accessory/kheiral_cuffs/suicide_act(mob/living/user)
 	if(!ishuman(user))
-		user.visible_message(span_suicide("[user] locks [src] around their neck, wrinkles forming across their face. It looks like [user.p_theyre()] trying to commit suicide!"))
+		user.visible_message(span_suicide(LANG("obj.4b8ee9fb3b67c6b7", list(user, src, user.p_theyre()))))
 		return OXYLOSS
 
 	var/mob/living/carbon/human/victim = user
-	victim.visible_message(span_suicide("[user] locks [src] around their neck, wrinkles forming across their face. It looks like [user.p_theyre()] trying to commit suicide!"))
+	victim.visible_message(span_suicide(LANG("obj.4b8ee9fb3b67c6b7", list(user, src, user.p_theyre()))))
 	for(var/mult in 1 to 5) // Rapidly age
 		if(!do_after(victim, 0.5 SECONDS)) // just to space out the aging, either way you still dust.
 			break
 		var/before_age = victim.age
 		victim.age = round((victim.age * 1.5),1)
-		to_chat(victim, span_danger("You age [(victim.age - before_age)] years!"))
+		to_chat(victim, span_danger(LANG("obj.45faeb0d481a691e", list((victim.age - before_age)))))
 
-	to_chat(victim, span_danger("At the ripe age of [victim.age], your cells fail their cycle of mitosis, allowing the sands of time to wash over you."))
+	to_chat(victim, span_danger(LANG("obj.4f1e2837ec960a52", list(victim.age))))
 	victim.dust(TRUE, TRUE, TRUE)
 	return MANUAL_SUICIDE

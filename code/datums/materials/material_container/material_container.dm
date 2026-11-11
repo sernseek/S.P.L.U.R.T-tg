@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*!
 	This datum should be used for handling mineral contents of machines and whatever else is supposed to hold minerals and make use of them.
 
@@ -103,7 +104,7 @@
 		var/datum/material/M = I
 		var/amt = materials[I] / SHEET_MATERIAL_AMOUNT
 		if(amt)
-			examine_texts += span_notice("It has [amt] sheets of [LOWER_TEXT(M.name)] stored.")
+			examine_texts += span_notice(LANG("datum.d6c8fe3e75098dbb", list(amt, LOWER_TEXT(M.name))))
 
 /datum/material_container/vv_edit_var(var_name, var_value)
 	var/old_flags = mat_container_flags
@@ -326,7 +327,7 @@
 			//duffle bags needs to be unzipped
 			if(target_item.atom_storage?.locked)
 				if(!(mat_container_flags & MATCONTAINER_SILENT))
-					to_chat(user, span_warning("[target_item] has its storage locked"))
+					to_chat(user, span_warning(LANG("datum.bd01ee28bc380701", list(target_item))))
 				return
 
 			//anything that isn't a stack cannot be split so find out if we have enough space, we don't want to consume half the contents of an object & leave it in a broken state
@@ -337,7 +338,7 @@
 					total_amount += get_item_material_amount(weapon)
 				if(!has_space(total_amount))
 					if(!(mat_container_flags & MATCONTAINER_SILENT))
-						to_chat(user, span_warning("[parent] does not have enough space for [target_item]!"))
+						to_chat(user, span_warning(LANG("datum.106a78acc5957e48", list(parent, target_item))))
 					return
 
 			first_checks = FALSE
@@ -347,7 +348,7 @@
 		if(isstack(target_item) && precise_insertion)
 			var/atom/current_parent = parent
 			item_stack = target_item
-			var/requested_amount = tgui_input_number(user, "How much do you want to insert?", "Inserting [item_stack.singular_name]s", item_stack.amount, item_stack.amount)
+			var/requested_amount = tgui_input_number(user, LANG("datum.f4a4771f22c4abe7", null), LANG("datum.0622685d1d4405c5", list(item_stack.singular_name)), item_stack.amount, item_stack.amount)
 			if(!requested_amount || QDELETED(target_item) || QDELETED(user) || QDELETED(src))
 				continue
 			if(parent != current_parent || user.get_active_held_item() != active_held)
@@ -465,28 +466,28 @@
 							var/obj/item/stack/stack = item
 							var/sheets = min(count, amount) //minimum between sheets inserted vs sheets consumed(values differ for alloys)
 							if (sheets > 1)
-								to_chat(user, span_notice("[sheets] [stack.singular_name][plural_s(stack.singular_name)] were added to [parent]."))
+								to_chat(user, span_notice(LANG("datum.bd690f9299f8db65", list(sheets, stack.singular_name, plural_s(stack.singular_name), parent))))
 							else
-								to_chat(user, span_notice("The [stack.singular_name] was added to [parent]."))
+								to_chat(user, span_notice(LANG("datum.d4dede73c389d47d", list(stack.singular_name, parent))))
 						else
 							if (count > 1)
-								to_chat(user, span_notice("[count] [item.name][plural_s(item.name)], worth [amount] sheet\s, were added to [parent]."))
+								to_chat(user, span_notice(LANG("datum.020ce6977337afba", list(count, item.name, plural_s(item.name), amount, parent))))
 							else
-								to_chat(user, span_notice("\The [item], worth [amount] sheet\s, [item.p_were()] added to [parent]."))
+								to_chat(user, span_notice(LANG("datum.34d4764b173153ac", list(item, amount, item.p_were(), parent))))
 					if(MATERIAL_INSERT_ITEM_NO_SPACE) //no space
-						to_chat(user, span_warning("[parent] has no space to accept \the [item]!"))
+						to_chat(user, span_warning(LANG("datum.ce03c8e9109b4b73", list(parent, item))))
 					if(MATERIAL_INSERT_ITEM_NO_MATS) //no materials inside these items
 						if(isstack(item))
 							var/obj/item/stack/stack = item
-							to_chat(user, span_warning("The [stack.singular_name] has no materials that can be accepted by [parent]!"))
+							to_chat(user, span_warning(LANG("datum.a3f625b68eb9a594", list(stack.singular_name, parent))))
 						else
-							to_chat(user, span_warning("\The [item][count > 1 ? "[plural_s(item.name)] have" : " [item.p_have()]"] no materials that can be accepted by [parent]!"))
+							to_chat(user, span_warning(LANG("datum.fddeb9393d8df052", list(item, count > 1 ? "[plural_s(item.name)] have" : " [item.p_have()]", parent))))
 					if(MATERIAL_INSERT_ITEM_FAILURE) //could be because the material type was not accepted or other stuff
 						if (isstack(item))
 							var/obj/item/stack/stack = item
-							to_chat(user, span_warning("The [stack.singular_name] was rejected by [parent]!"))
+							to_chat(user, span_warning(LANG("datum.666df7fceb33d077", list(stack.singular_name, parent))))
 						else
-							to_chat(user, span_warning("\The [item][count > 1 ? "[plural_s(item.name)] were" : " [item.p_were()]"] rejected by [parent]!"))
+							to_chat(user, span_warning(LANG("datum.60abd556157ddf69", list(item, count > 1 ? "[plural_s(item.name)] were" : " [item.p_were()]", parent))))
 
 	//finally delete the items
 	for(var/obj/item/deleting as anything in to_delete)
@@ -760,7 +761,11 @@
 		var/amount = materials[material]
 
 		data += list(list(
-			"name" = material.name,
+			"name" = lang_localize_display_name(material.name), // ZH EDIT - I18N: 显示名（单词材料名 P1 的多词门槛够不着）；标识符走下面那条英文 id。ORIGINAL: "name" = material.name,
+			// ZH EDIT ADDITION - I18N: 前端 MATERIAL_ICONS/MATERIAL_RARITY 按**英文材料名**查表，所以另发一个
+			// 英文 id（"id" 在 i18n_payload_skip_keys 里、P1 永不翻），name 只做显示。material.name 会被
+			// SSmaterials 在建单例时就地译成中文，所以这里取 initial() 的英文原名。
+			"id" = initial(material.name),
 			"ref" = REF(material),
 			"amount" = amount,
 			"color" = material.greyscale_color || material.color

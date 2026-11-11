@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MUT_MSG_IMMEDIATE 1
 #define MUT_MSG_EXTENDED 2
 #define MUT_MSG_ABOUT2TURN 3
@@ -400,7 +401,7 @@
 	. = ..()
 
 	if (prob(50))
-		to_chat(affected_mob, span_warning("You feel the urge to weh..."))
+		to_chat(affected_mob, span_warning(LANG("datum.b36034208119d962", null)))
 		addtimer(CALLBACK(src, PROC_REF(do_weh), affected_mob), rand(1, 4) SECONDS)
 
 /datum/reagent/juice_that_makes_you_weh/proc/do_weh(mob/living/carbon/M)
@@ -420,7 +421,7 @@
 /datum/reagent/plushmium/expose_obj(obj/exposed_obj, reac_volume, methods, show_message)
 	. = ..()
 	if(istype(exposed_obj, /obj/item/toy/plush) && reac_volume >= 5)
-		exposed_obj.loc.visible_message(span_warning("The plushie seems to be staring back at you."))
+		exposed_obj.loc.visible_message(span_warning(LANG("datum.793db6c63b4820d8", null)))
 		var/obj/item/toy/plushie_shell/new_shell = new /obj/item/toy/plushie_shell(exposed_obj.loc)
 		new_shell.name = exposed_obj.name
 		new_shell.icon = exposed_obj.icon

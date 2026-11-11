@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/ballistic/revolver
 	name = "\improper .357 revolver"
 	desc = "A suspicious revolver. Uses .357 ammo."
@@ -57,7 +58,7 @@
 		if(play_click)
 			playsound(src, 'sound/items/weapons/gun/general/ballistic_click.ogg', fire_sound_volume, vary_fire_sound, frequency = click_frequency_to_use)
 
-GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
+GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "转动弹巢", null)
 	spin_chamber(usr)
 
 /obj/item/gun/ballistic/revolver/verb/spin_chamber(mob/living/user)
@@ -71,8 +72,8 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 
 	if(do_spin())
 		playsound(usr, SFX_REVOLVER_SPIN, 30, FALSE)
-		visible_message(span_notice("[user] spins [src]'s chamber."), span_notice("You spin [src]'s chamber."))
-		balloon_alert(user, "chamber spun")
+		visible_message(span_notice(LANG("obj.2bcb73d689ee3b4b", list(user, src))), span_notice(LANG("obj.b2483544fa9b9bd2", list(src))))
+		balloon_alert(user, LANG("obj.400a3b3892f5f247", null))
 	else
 		verbs -= /obj/item/gun/ballistic/revolver/verb/spin
 
@@ -94,8 +95,8 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 /obj/item/gun/ballistic/revolver/examine(mob/user)
 	. = ..()
 	var/live_ammo = get_ammo(FALSE, FALSE)
-	. += "[live_ammo ? live_ammo : "None"] of those are live rounds."
-	. += span_notice("It can be spun with [EXAMINE_HINT("alt-click")].")
+	. += LANG("obj.88488fc4fe1c7d5c", list(live_ammo ? live_ammo : "None"))
+	. += span_notice(LANG("obj.53ced635666f4d42", list(EXAMINE_HINT("alt-click"))))
 
 /obj/item/gun/ballistic/revolver/ignition_effect(atom/A, mob/user)
 	if(last_fire && last_fire + 15 SECONDS > world.time)
@@ -225,17 +226,17 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 
 /obj/item/gun/ballistic/revolver/russian/examine(mob/user)
 	. = ..()
-	. += span_notice("You can change length of your pause before pulling the trigger with [EXAMINE_HINT("alt-right-click")].")
+	. += span_notice(LANG("obj.9ea2df3d23ce7651", list(EXAMINE_HINT("alt-right-click"))))
 
 /obj/item/gun/ballistic/revolver/russian/click_alt_secondary(mob/user)
 	if(loc != user)
-		to_chat(user, span_warning("You need to be holding the gun to determine how long you are going to pause!"))
+		to_chat(user, span_warning(LANG("obj.88d11d2714030f47", null)))
 		return CLICK_ACTION_BLOCKING
-	var/new_aim_time = tgui_input_number(user, "How long will you pause before pulling the trigger (seconds)?", "Do you feel lucky?", (aim_time / (1 SECONDS)), 10, 0)
+	var/new_aim_time = tgui_input_number(user, LANG("obj.7cb8fcd182249b92", null), LANG("obj.fb0ce01cf9f40fce", null), (aim_time / (1 SECONDS)), 10, 0)
 	if(loc != user || user.incapacitated)
 		return CLICK_ACTION_BLOCKING
 	aim_time = new_aim_time * (1 SECONDS)
-	to_chat(user, span_warning("You're going to pause [aim_time] second\s before pulling the trigger[aim_time == 0 ? "... Good luck" : ""]."))
+	to_chat(user, span_warning(LANG("obj.907ed761134da5dc", list(aim_time, aim_time == 0 ? "... Good luck" : ""))))
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/gun/ballistic/revolver/russian/dropped(mob/user, silent)
@@ -278,21 +279,21 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 		shoot_with_empty_chamber(user)
 		spun = FALSE
 		user.visible_message(
-			span_danger("[user] tries to fire \the [src] aimed at something else, but only succeeds at looking like an idiot."),
-			span_danger("\The [src]'s anti-combat mechanism prevents you from firing it at anyone but yourself!"),
+			span_danger(LANG("obj.e95dedf36a594b4b", list(user, src))),
+			span_danger(LANG("obj.90852171a38e6757", list(src))),
 		)
 		return TRUE // no melee attack
 	if(!spun)
-		to_chat(user, span_warning("You need to spin \the [src]'s chamber first!"))
+		to_chat(user, span_warning(LANG("obj.0297323871561774", list(src))))
 		return TRUE // no melee attack
 	if(HAS_TRAIT(user, TRAIT_CURSED)) // I cannot live, I cannot die, trapped in myself, body my holding cell.
-		to_chat(user, span_warning("What a horrible night... To have a curse!"))
+		to_chat(user, span_warning(LANG("obj.89afa55a1bc944d2", null)))
 		return TRUE // no melee attack
 	if(loc != user)
 		if(tk_firing(user))
-			to_chat(user, span_warning("Russian roulette is stressful enough without trying to focus on telekinesis!"))
+			to_chat(user, span_warning(LANG("obj.59c428ee6a6162ca", null)))
 		else
-			to_chat(user, span_warning("You need to be holding the gun to fire it!"))
+			to_chat(user, span_warning(LANG("obj.b953bec62704d067", null)))
 		return TRUE // no melee attack
 
 	return ..() // try to shoot the gun
@@ -302,8 +303,8 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 	if(aim_time <= 0)
 		return FALSE
 	user.visible_message(
-		span_danger("[user] aims \the [src] at [user.p_their()] [parse_zone(user.zone_selected)]..."),
-		span_userdanger("You aim \the [src] at your [parse_zone(user.zone_selected)]..."),
+		span_danger(LANG("obj.381a74d972083816", list(user, src, user.p_their(), parse_zone(user.zone_selected)))),
+		span_userdanger(LANG("obj.f1efe36d753bbd41", list(src, parse_zone(user.zone_selected)))),
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
 	if(prob(10) && !HAS_TRAIT(user, TRAIT_FEARLESS))
@@ -311,8 +312,8 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 	if(!do_after(user, aim_time, target))
 		if(!user.incapacitated)
 			user.visible_message(
-				span_danger("[user] loses [user.p_their()] nerve and puts \the [src] down."),
-				span_userdanger("You lose your nerve and put \the [src] down."),
+				span_danger(LANG("obj.f83820b03ef16ab7", list(user, user.p_their(), src))),
+				span_userdanger(LANG("obj.eb0ac5dc9eed3a7f", list(src))),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 		return TRUE
@@ -349,18 +350,18 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 		if(loaded_rounds && is_target_face)
 			user.add_mood_event("russian_roulette_win", /datum/mood_event/russian_roulette_win, loaded_rounds)
 		user.visible_message(
-			span_danger("[user][is_target_face ? "": " cowardly"] points \the [src] at [user.p_their()] [aimed_at_readable], pulls the trigger, and... nothing happens!"),
-			span_danger("You[is_target_face ? "": " cowardly"] point \the [src] at your [aimed_at_readable], pull the trigger, and... nothing happens!"),
-			span_hear("You hear a click!"),
+			span_danger(LANG("obj.e7e647285a3e7344", list(user, is_target_face ? "": " cowardly", src, user.p_their(), aimed_at_readable))),
+			span_danger(LANG("obj.3dbfa656a01ba7f0", list(is_target_face ? "": " cowardly", src, aimed_at_readable))),
+			span_hear(LANG("obj.dc441496dc57a1a7", null)),
 			vision_distance = COMBAT_MESSAGE_RANGE,
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
 		return TRUE // so they don't hit themselves in the forehead. because returning FALSE translates to "do melee attack" for whatever reason
 
 	user.visible_message(
-		span_danger("[user][is_target_face ? "": " cowardly"] aims \the [src] at [user.p_their()] [aimed_at_readable] as it goes off!"),
-		span_danger("You[is_target_face ? "": " cowardly"] aim \the [src] at your [aimed_at_readable] as it goes off![user.stat >= HARD_CRIT ? " <b>Everything suddenly goes black.</b>" : ""]"),
-		span_hear("You hear a grunt[!IS_UNCONSCIOUS_OR_CRIT(user) ? "" : ", followed by a thud"]!"),
+		span_danger(LANG("obj.787bde19e5b8a3a8", list(user, is_target_face ? "": " cowardly", src, user.p_their(), aimed_at_readable))),
+		span_danger(LANG("obj.73f6fe2e3434fc99", list(is_target_face ? "": " cowardly", src, aimed_at_readable, user.stat >= HARD_CRIT ? " <b>Everything suddenly goes black.</b>" : ""))),
+		span_hear(LANG("obj.d69ae26b3095d0a6", list(!IS_UNCONSCIOUS_OR_CRIT(user) ? "" : ", followed by a thud"))),
 		vision_distance = COMBAT_MESSAGE_RANGE,
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
@@ -391,15 +392,15 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 			qdel(stone)
 			return
 		user.visible_message(
-			span_danger("[user]'s soul is captured by \the [src]!"),
-			span_userdanger("You've lost the gamble! Your soul is forfeit!"),
+			span_danger(LANG("obj.4e14d5374cc62f4a", list(user, src))),
+			span_userdanger(LANG("obj.2bd83ab48c9e02df", null)),
 			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 		)
 		return
 
 	user.visible_message(
-		span_danger("[user] is punished for trying to cheat the game!"),
-		span_userdanger("You've lost the gamble! Not only is your soul forfeit, but it is whisked away for attempting to cheat death!"),
+		span_danger(LANG("obj.9a26ddce93c7750c", list(user))),
+		span_userdanger(LANG("obj.4f50106a0505a8d1", null)),
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
 	user.dust(drop_items = TRUE)
@@ -413,7 +414,7 @@ GAME_VERB(/obj/item/gun/ballistic/revolver, spin, "Spin Chamber", null)
 	if(HAS_TRAIT(user, TRAIT_CLUMSY) || is_clown_job(user.mind?.assigned_role))
 		return ..()
 	if(process_fire(user, user, FALSE, null, BODY_ZONE_HEAD))
-		user.visible_message(span_warning("[user] somehow manages to shoot [user.p_them()]self in the face!"), span_userdanger("You somehow shoot yourself in the face! How the hell?!"))
+		user.visible_message(span_warning(LANG("obj.8e788618e677c47a", list(user, user.p_them()))), span_userdanger(LANG("obj.2cb5408d069531fa", null)))
 		user.emote("scream")
 		user.drop_all_held_items()
 		user.Paralyze(80)

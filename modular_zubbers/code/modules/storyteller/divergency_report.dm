@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/controller/subsystem/gamemode/proc/send_trait_report()
 	. = "<b><i>Central Command Status Summary</i></b><hr>"
 	// We don't want to roll all three goals every shift, so randomly choose how many we'll do, weighted towards doing none.
@@ -19,11 +20,10 @@
 	else
 		. += generate_station_trait_report()
 
-	. += "<hr>This concludes your shift-start evaluation. Have a secure shift!<hr>\
-	<p style=\"color: grey; text-align: justify;\">This label certifies an Intern has reviewed the above before sending. This document is the property of Nanotrasen Corporation.</p>"
+	. += LANG("datum.35f364f202fb38e5", null)
 
 	print_command_report(., "Central Command Status Summary", announce = FALSE)
-	priority_announce("Hello, crew of [station_name()]. Our intern has finished their shift-start divergency and goals evaluation, which has been sent to your communications console. Have a secure shift!", "Divergency Report", ANNOUNCER_COMMAND_REPORT) // SPLURT EDIT
+	priority_announce(LANG("datum.ebf1c56be62f263f", list(station_name())), "Divergency Report", ANNOUNCER_COMMAND_REPORT) // SPLURT EDIT
 
 
 

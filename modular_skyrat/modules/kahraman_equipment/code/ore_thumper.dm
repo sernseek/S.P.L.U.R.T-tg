@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define SLAM_JAM_DELAY 15 SECONDS
 
 /obj/machinery/power/colony_ore_thumper
@@ -85,14 +86,14 @@
 	. = ..()
 	var/area/thumper_area = get_area(src)
 	if(!thumper_area.outdoors)
-		. += span_notice("Its must be constructed <b>outdoors</b> to function.")
+		. += span_notice(LANG("obj.452ecee1223b619d", null))
 	if(!istype(get_turf(src), /turf/open/misc))
-		. += span_notice("It must be constructed on <b>suitable terrain</b>, like ash, snow, or sand.")
-	. += span_notice("It must have a powered, <b>wired connection</b> running beneath it with <b>[active_power_usage / BASE_MACHINE_ACTIVE_CONSUMPTION] kW</b> of excess power to function.")
-	. += span_notice("It will produce a box of materials after it has slammed [slam_jams_needed] times.")
-	. += span_notice("Currently, it has slammed [slam_jams] / [slam_jams_needed] times needed.")
-	. += span_notice("It will stop producing resources if there are <b>too many piles of ore</b> near it.")
-	. += span_notice("The thumper cannot work if it is <b>too close to another thumper</b>, needing <b>at least [ore_spawn_range] spaces</b> in all directions between it another thumper.")
+		. += span_notice(LANG("obj.170ee88511a4da57", null))
+	. += span_notice(LANG("obj.60dcf2aaa49bda97", list(active_power_usage / BASE_MACHINE_ACTIVE_CONSUMPTION)))
+	. += span_notice(LANG("obj.d89ddb3ac7c81bb7", list(slam_jams_needed)))
+	. += span_notice(LANG("obj.e43979b4286813df", list(slam_jams, slam_jams_needed)))
+	. += span_notice(LANG("obj.b4b34c3d66578e29", null))
+	. += span_notice(LANG("obj.986a18641c344706", list(ore_spawn_range)))
 
 
 /obj/machinery/power/colony_ore_thumper/process()
@@ -104,13 +105,13 @@
 		connect_to_network()
 	if(thumping)
 		if(!see_if_we_can_work(our_turf))
-			balloon_alert_to_viewers("invalid location!")
+			balloon_alert_to_viewers(LANG("obj.5a6389ed5f3d395f", null))
 			cut_that_out()
 			return
 		if(avail(active_power_usage))
 			add_load(active_power_usage)
 		else
-			balloon_alert_to_viewers("not enough power!")
+			balloon_alert_to_viewers(LANG("obj.7005f2d2db44de44", null))
 			cut_that_out()
 
 /// Checks the turf we are on to make sure we are outdoors and on a misc turf
@@ -127,7 +128,7 @@
 	if(.)
 		return
 
-	to_chat(user, span_notice("You toggle [src]'s power button."))
+	to_chat(user, span_notice(LANG("obj.97ae62251f2507e0", list(src))))
 
 	if(thumping)
 		cut_that_out(user)
@@ -148,10 +149,10 @@
 	var/turf/our_turf = get_turf(src)
 	var/obj/structure/cable/cable_under_us = locate() in our_turf
 	if(!cable_under_us && powernet)
-		balloon_alert(user, "not connected to wire")
+		balloon_alert(user, LANG("obj.228f64db02100c5d", null))
 		return
 	if(!avail(active_power_usage))
-		balloon_alert(user, "not enough power")
+		balloon_alert(user, LANG("obj.43ec9f952cecb3d5", null))
 		return
 
 	thumping = TRUE
@@ -160,7 +161,7 @@
 	if(callback_tracker)
 		deltimer(callback_tracker)
 
-	balloon_alert(user, "thumper started")
+	balloon_alert(user, LANG("obj.53aad50362057a4f", null))
 
 	callback_tracker = addtimer(CALLBACK(src, PROC_REF(slam_it_down)), SLAM_JAM_DELAY, TIMER_DELETE_ME | TIMER_STOPPABLE)
 
@@ -170,7 +171,7 @@
 	thumping = FALSE
 	soundloop.stop()
 	if(user)
-		balloon_alert(user, "thumper stopped")
+		balloon_alert(user, LANG("obj.8517f0919711df38", null))
 
 
 /// Makes the machine slam down, producing a box of ore if it has been slamming long enough
@@ -179,7 +180,7 @@
 		return
 	var/turf/our_turf = get_turf(src)
 	if(!see_if_we_can_work(our_turf))
-		balloon_alert_to_viewers("invalid location!")
+		balloon_alert_to_viewers(LANG("obj.5a6389ed5f3d395f", null))
 		cut_that_out()
 		return
 	// Down we go
@@ -211,13 +212,13 @@
 				break
 
 	if(nearby_ore > nearby_ore_limit)
-		balloon_alert_to_viewers("nearby ore too saturated")
+		balloon_alert_to_viewers(LANG("obj.4e16b7006e411a52", null))
 		// Makes the thumper rumble around when something's wrong
 		Shake(2, 2, 2 SECONDS)
 		return
 
 	if(is_there_a_thumper_too)
-		balloon_alert_to_viewers("too close to another thumper")
+		balloon_alert_to_viewers(LANG("obj.a87b018a03ee4237", null))
 		// Makes the thumper rumble around when something's wrong
 		Shake(2, 2, 2 SECONDS)
 		return
@@ -264,9 +265,9 @@
 
 /obj/item/flatpacked_machine/ore_thumper/examine(mob/user)
 	. = ..()
-	. += span_notice("Its must be constructed <b>outdoors</b> to function.")
-	. += span_notice("It must be constructed on <b>suitable terrain</b>, like ash, snow, or sand.")
-	. += span_notice("It must have a powered, <b>wired connection</b> running beneath it to function.")
+	. += span_notice(LANG("obj.452ecee1223b619d", null))
+	. += span_notice(LANG("obj.170ee88511a4da57", null))
+	. += span_notice(LANG("obj.01763e431924b32d", null))
 
 /obj/item/flatpacked_machine/ore_thumper/give_manufacturer_examine()
 	AddElement(/datum/element/manufacturer_examine, COMPANY_KAHRAMAN)

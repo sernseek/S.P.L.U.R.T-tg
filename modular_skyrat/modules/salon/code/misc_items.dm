@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /obj/item/storage/box/lipsticks
 	name = "lipstick box"
@@ -15,7 +16,7 @@
 /obj/item/lipstick/quantum/display_radial_menu(mob/living/carbon/human/user)
 	lipstick_color = tgui_color_picker(
 		user,
-		"Select lipstick color",
+		LANG("obj.1b13a856df3e15a5", null),
 		null,
 		COLOR_WHITE,
 	)
@@ -54,7 +55,7 @@
 	var/shaving_time = 5 SECONDS
 
 /obj/item/razor/suicide_act(mob/living/carbon/user)
-	user.visible_message(span_suicide("[user] begins shaving [user.p_them()]self without the razor guard! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.01acdff13c17e341", list(user, user.p_them(), user.p_theyre()))))
 	shave(user, BODY_ZONE_PRECISE_MOUTH)
 	shave(user, BODY_ZONE_HEAD)//doesnt need to be BODY_ZONE_HEAD specifically, but whatever
 	return BRUTELOSS
@@ -78,65 +79,65 @@
 	var/static/list/head_zones = list(BODY_ZONE_PRECISE_MOUTH, BODY_ZONE_HEAD)
 
 	if(!noggin && (location in head_zones))
-		to_chat(user, span_warning("[target_human] doesn't have a head!"))
+		to_chat(user, span_warning(LANG("obj.618bead4579c1526", list(target_human))))
 		return
 
 	if(!(location in head_zones) && !user.combat_mode)
-		to_chat(user, span_warning("You stop, look down at what you're currently holding and ponder to yourself, \"This is probably to be used on their hair or their facial hair.\""))
+		to_chat(user, span_warning(LANG("obj.d6bb17074b83e7e0", null)))
 		return
 
 	if(location == BODY_ZONE_PRECISE_MOUTH)
 		if(!(noggin.head_flags & HEAD_FACIAL_HAIR))
-			to_chat(user, span_warning("There is no facial hair to shave!"))
+			to_chat(user, span_warning(LANG("obj.f4b1d28669ff6554", null)))
 			return
 
 		var/covering = target_human.is_mouth_covered()
 		if(covering)
-			to_chat(user, span_warning("[covering] is in the way!"))
+			to_chat(user, span_warning(LANG("obj.f4935eb907e08bb0", list(covering))))
 			return
 
 		if(HAS_TRAIT(target_human, TRAIT_SHAVED))
-			to_chat(user, span_warning("[target_human] is just way too shaved. Like, really really shaved."))
+			to_chat(user, span_warning(LANG("obj.41f7910e5594dccc", list(target_human))))
 			return
 
 		if(target_human.facial_hairstyle == "Shaved")
-			to_chat(user, span_warning("Already clean-shaven!"))
+			to_chat(user, span_warning(LANG("obj.ca2845a9f1916c0c", null)))
 			return
 
 		var/self_shaving = target_human == user // Shaving yourself?
-		user.visible_message(span_notice("[user] starts to shave [self_shaving ? user.p_their() : "[target_human]'s"] hair with [src]."), \
-			span_notice("You take a moment to shave [self_shaving ? "your" : "[target_human]'s" ] hair with [src]..."))
+		user.visible_message(span_notice(LANG("obj.49952d541092345c", list(user, self_shaving ? user.p_their() : "[target_human]'s", src))), \
+			span_notice(LANG("obj.f1e29016793c8e24", list(self_shaving ? "your" : "[target_human]'s", src))))
 
 		if(do_after(user, shaving_time, target = target_human))
-			user.visible_message(span_notice("[user] shaves [self_shaving ? user.p_their() : "[target_human]'s"] hair clean with [src]."), \
-				span_notice("You finish shaving [self_shaving ? "your" : " [target_human]'s"] hair with [src]. Fast and clean!"))
+			user.visible_message(span_notice(LANG("obj.a7aac793de9caa07", list(user, self_shaving ? user.p_their() : "[target_human]'s", src))), \
+				span_notice(LANG("obj.fcc5b055010514a0", list(self_shaving ? "your" : " [target_human]'s", src))))
 
 			shave(target_human, location)
 
 	else if(location == BODY_ZONE_HEAD)
 		if(!(noggin.head_flags & HEAD_HAIR))
-			to_chat(user, span_warning("There is no hair to shave!"))
+			to_chat(user, span_warning(LANG("obj.90a39cacb81c009a", null)))
 			return
 
 		if(!target_human.is_location_accessible(location))
-			to_chat(user, span_warning("The headgear is in the way!"))
+			to_chat(user, span_warning(LANG("obj.080119ba56078521", null)))
 			return
 
 		if(target_human.hairstyle == "Bald" || target_human.hairstyle == "Balding Hair" || target_human.hairstyle == "Skinhead")
-			to_chat(user, span_warning("There is not enough hair left to shave!"))
+			to_chat(user, span_warning(LANG("obj.a6abc8b8218db1b0", null)))
 			return
 
 		if(HAS_TRAIT(target_human, TRAIT_SHAVED))
-			to_chat(user, span_warning("[target_human] is just way too shaved. Like, really really shaved."))
+			to_chat(user, span_warning(LANG("obj.41f7910e5594dccc", list(target_human))))
 			return
 
 		var/self_shaving = target_human == user // Shaving yourself?
-		user.visible_message(span_notice("[user] starts to shave [self_shaving ? user.p_their() : "[target_human]'s"] hair with [src]."), \
-			span_notice("You take a moment to shave [self_shaving ? "your" : "[target_human]'s" ] hair with [src]..."))
+		user.visible_message(span_notice(LANG("obj.49952d541092345c", list(user, self_shaving ? user.p_their() : "[target_human]'s", src))), \
+			span_notice(LANG("obj.f1e29016793c8e24", list(self_shaving ? "your" : "[target_human]'s", src))))
 
 		if(do_after(user, shaving_time, target = target_human))
-			user.visible_message(span_notice("[user] shaves [self_shaving ? user.p_their() : "[target_human]'s"] hair clean with [src]."), \
-				span_notice("You finish shaving [self_shaving ? "your" : " [target_human]'s"] hair with [src]. Fast and clean!"))
+			user.visible_message(span_notice(LANG("obj.a7aac793de9caa07", list(user, self_shaving ? user.p_their() : "[target_human]'s", src))), \
+				span_notice(LANG("obj.fcc5b055010514a0", list(self_shaving ? "your" : " [target_human]'s", src))))
 
 			shave(target_human, location)
 

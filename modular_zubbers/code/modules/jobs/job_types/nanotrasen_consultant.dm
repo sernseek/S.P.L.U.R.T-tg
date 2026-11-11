@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/job/nanotrasen_consultant
 	title = JOB_NT_REP
 	rpg_title = "Guild Adviser"
@@ -303,7 +304,7 @@
 	redeemed = TRUE
 	var/obj/item/chosen_item = new spawn_path(drop_location())
 	redeemer.put_in_hands(chosen_item)
-	balloon_alert(redeemer, "selected [LOWER_TEXT(selection)]")
+	balloon_alert(redeemer, LANG("obj.e692b9c0125a3236", list(LOWER_TEXT(selection))))
 	qdel(src)
 
 /obj/item/consultant/weapon_case/proc/check_redeem_menu(mob/living/redeemer)

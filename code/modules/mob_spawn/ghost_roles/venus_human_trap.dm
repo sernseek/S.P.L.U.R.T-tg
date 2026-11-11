@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Handles logic for ghost spawning code, visible object in game is handled by /obj/structure/alien/resin/flower_bud
 /obj/effect/mob_spawn/ghost_role/venus_human_trap
 	name = "flower bud"
@@ -39,7 +40,7 @@
 /obj/effect/mob_spawn/ghost_role/venus_human_trap/proc/bear_fruit()
 	ready = TRUE
 	notify_ghosts(
-		"[src] has borne fruit!",
+		LANG("obj.5dd73092fda44bc4", list(src)),
 		source = src,
 		header = "Venus Human Trap",
 		click_interact = TRUE,
@@ -52,6 +53,6 @@
 		return FALSE
 	if(!ready)
 		if(!silent)
-			to_chat(user, span_warning("\The [src] has not borne fruit yet!"))
+			to_chat(user, span_warning(LANG("obj.64e8db3d9b18da06", list(src))))
 		return FALSE
 	return TRUE

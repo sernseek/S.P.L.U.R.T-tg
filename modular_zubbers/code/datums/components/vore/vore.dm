@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/innate/vore_mode
 	name = "Vore Mode"
 	desc = "<b>Left Click</b> to switch into vore mode<br><b>Right click</b> to see the vore UI<br>When aggressively grabbing someone in vore mode:<br><ul><li>Click on <b>yourself</b> to eat them</li><li>Click on <b>them</b> to feed yourself to them</li><li>Click on <b>someone else</b> to feed them who you're holding</li></ul>"
@@ -171,11 +172,11 @@
 			if(findtext(name, "vore_backup_"))
 				entries_to_show += "[name] - [time2text(ftime("[full_path]/[name]"))]"
 
-		var/selected = tgui_input_list(usr, "Select a backup to download", "Vore Backups", entries_to_show)
+		var/selected = tgui_input_list(usr, LANG("datum.eed25fce7ee2948d", null), LANG("datum.eb79b66e52ee1c00", null), entries_to_show)
 		if(selected)
 			var/filename = splittext(selected, " - ")[1]
 			usr << ftp(file("[full_path]/[filename]"))
-			to_chat(usr, "Attempting to send [selected], this may take a few minutes.")
+			to_chat(usr, LANG("datum.5e29f48297789506", list(selected)))
 
 /datum/component/vore/proc/save_belly_backup(special_name)
 	var/datum/vore_preferences/vore_prefs = get_parent_vore_prefs()
@@ -201,9 +202,9 @@
 		return
 
 	if(non_owner_modified_settings)
-		var/confirmation = tgui_alert(usr, "Warning: Your bellies were changed by [non_owner_modified_settings]. Do you want to save these changes permanently?", "Dirty Belly Prefs", list("No", "Yes"))
+		var/confirmation = tgui_alert(usr, LANG("datum.702d317bababebc5", list(non_owner_modified_settings)), LANG("datum.e5e84375728ae698", null), list("No", "Yes"))
 		if(confirmation != "Yes")
-			var/restore = tgui_alert(usr, "Do you want to undo all changes by [non_owner_modified_settings] and revert to your preferences? A backup of their changes will be created.", "Revert?", list("No", "Yes"))
+			var/restore = tgui_alert(usr, LANG("datum.ba81e2eb322e3d15", list(non_owner_modified_settings)), LANG("datum.62606634f58bdf0c", null), list("No", "Yes"))
 			if(restore == "Yes")
 				save_belly_backup("modified_[sanitize_filename(non_owner_modified_settings)]")
 				clear_bellies()
@@ -238,7 +239,7 @@
 		vore_mode_action.build_all_button_icons(UPDATE_BUTTON_BACKGROUND | UPDATE_BUTTON_STATUS)
 
 	if(!check_vore_grab(user))
-		to_chat(user, span_danger("You must have an aggressive grab to do vore."))
+		to_chat(user, span_danger(LANG("datum.e9242340eb26a49c", null)))
 		return TRUE
 	var/mob/living/pulled = user.pulling
 
@@ -261,36 +262,36 @@
 	var/datum/component/vore/pred_component = pred.GetComponent(/datum/component/vore)
 	if(!pred_component)
 		log_game("[user] tried to feed [prey] to [pred] but pred had vore disabled")
-		to_chat(user, span_danger("[pred] isn't interested in mechanical vore."))
+		to_chat(user, span_danger(LANG("_root.41ff5f7350e82bf2", list(pred))))
 		return FALSE
 	if(!pred_component.selected_belly)
-		to_chat(user, span_danger("[pred] doesn't have a belly selected."))
+		to_chat(user, span_danger(LANG("_root.9ba494487020c3ae", list(pred))))
 		return FALSE
 	if(pred_component.count_prey() >= MAX_PREY)
-		to_chat(user, span_danger("[pred] is too full to eat more."))
+		to_chat(user, span_danger(LANG("_root.136a517eef09b141", list(pred))))
 		return FALSE
 	var/datum/component/vore/prey_component = prey.GetComponent(/datum/component/vore)
 	if(!prey_component)
 		log_game("[user] tried to feed [prey] to [pred] but prey had vore disabled")
-		to_chat(user, span_danger("[prey] isn't interested in mechanical vore."))
+		to_chat(user, span_danger(LANG("_root.41ff5f7350e82bf2", list(prey))))
 		return FALSE
 	if(MATRYOSHKA_BANNED && prey_component.has_prey())
 		return FALSE
 	if(REQUIRES_PLAYER)
 		if(!pred.client)
 			log_game("[user] tried to feed [prey] to [pred] but pred was logged off")
-			to_chat(user, span_danger("[pred] isn't logged on."))
+			to_chat(user, span_danger(LANG("_root.1d7af10e9a85a90e", list(pred))))
 			return FALSE
 		if(!prey.client)
 			log_game("[user] tried to feed [prey] to [pred] but prey was logged off")
-			to_chat(user, span_danger("[prey] isn't logged on."))
+			to_chat(user, span_danger(LANG("_root.1d7af10e9a85a90e", list(prey))))
 			return FALSE
 	if(NO_DEAD)
 		if(pred.stat)
-			to_chat(user, span_danger("[pred] doesn't look healthy enough to feed."))
+			to_chat(user, span_danger(LANG("_root.4fb89a5361096a30", list(pred))))
 			return FALSE
 		if(prey.stat)
-			to_chat(user, span_danger("[prey] doesn't look healthy enough to eat."))
+			to_chat(user, span_danger(LANG("_root.b1469cbdc87d298f", list(prey))))
 			return FALSE
 	if(!is_type_in_typecache(pred, GLOB.vore_allowed_mob_types))
 		return FALSE
@@ -298,10 +299,10 @@
 		return FALSE
 
 	if(prey.buckled)
-		to_chat(user, span_danger("[prey] is buckled."))
+		to_chat(user, span_danger(LANG("_root.31a22578e4d78baa", list(prey))))
 		return FALSE
 	if(prey.has_buckled_mobs())
-		to_chat(user, span_danger("[prey] has buckled mobs."))
+		to_chat(user, span_danger(LANG("_root.b575c00fd5d80060", list(prey))))
 		return FALSE
 
 	// Check pred prefs
@@ -320,15 +321,15 @@
 				if(assume_active_consent || pred == user)
 					allowed_to_pred = TRUE
 				else
-					to_chat(user, span_warning("Please wait, [pred] is deciding if they want to eat [prey]..."))
-					if(tgui_alert(pred, "[user] is trying to feed [prey] to you, are you okay with this?", "Pred Pref", list("Yes", "No")) == "Yes")
+					to_chat(user, span_warning(LANG("_root.4cc0e0b32018a410", list(pred, prey))))
+					if(tgui_alert(pred, LANG("_root.7328b3e7f2751a33", list(user, prey)), LANG("_root.ec3ecec4baa867db", null), list("Yes", "No")) == "Yes")
 						allowed_to_pred = TRUE
 			if(PREF_TRINARY_ALWAYS)
 				allowed_to_pred = TRUE
 
 		if(!allowed_to_pred)
 			log_game("[key_name(user)] tried to feed [key_name(prey)] to [key_name(pred)] and was rejected by pred [key_name(pred)]")
-			to_chat(user, span_warning("[pred] isn't interested in being a pred."))
+			to_chat(user, span_warning(LANG("_root.9a9ceb0ac3ab913b", list(pred))))
 			return FALSE
 
 	// Check prey prefs
@@ -345,15 +346,15 @@
 				if(assume_active_consent || prey == user)
 					allowed_to_prey = TRUE
 				else
-					to_chat(user, span_warning("Please wait, [prey] is deciding if they want to be fed to [pred]..."))
-					if(tgui_alert(prey, "[user] is trying to feed you to [pred], are you okay with this?", "Prey Pref", list("Yes", "No")) == "Yes")
+					to_chat(user, span_warning(LANG("_root.1d90e9d70655b96f", list(prey, pred))))
+					if(tgui_alert(prey, LANG("_root.de904b259bac0738", list(user, pred)), LANG("_root.56f3239abd596691", null), list("Yes", "No")) == "Yes")
 						allowed_to_prey = TRUE
 			if(PREF_TRINARY_ALWAYS)
 				allowed_to_prey = TRUE
 
 		if(!allowed_to_prey)
 			log_game("[key_name(user)] tried to feed [key_name(prey)] to [key_name(pred)] and was rejected by prey [key_name(prey)]")
-			to_chat(user, span_warning("[prey] isn't interested in being prey."))
+			to_chat(user, span_warning(LANG("_root.b05e0647323ee6d1", list(prey))))
 			return FALSE
 
 	return TRUE
@@ -372,24 +373,24 @@
 	if(!prey)
 		prey = pred.pulling
 	if(!check_vore_grab(pred) && !istype(prey.loc, /obj/item/mob_holder))
-		to_chat(parent, span_danger("You must have a[ishuman(pred) ? "n aggressive" : ""] grab to eat someone."))
+		to_chat(parent, span_danger(LANG("datum.3470e5f1639ff581", list(ishuman(pred) ? "n aggressive" : ""))))
 		return
 	if(!check_vore_preferences(parent, pred, prey))
 		return
 	#ifdef VORE_DELAY
-	pred.visible_message(span_danger("[pred] is attempting to [LOWER_TEXT(selected_belly.insert_verb)] [prey] into their [LOWER_TEXT(selected_belly.name)]!"), pref_to_check = /datum/preference/toggle/erp/vore_enable)
+	pred.visible_message(span_danger(LANG("datum.d162a0f01d1a4daf", list(pred, LOWER_TEXT(selected_belly.insert_verb), prey, LOWER_TEXT(selected_belly.name)))), pref_to_check = /datum/preference/toggle/erp/vore_enable)
 	if(!do_after(pred, VORE_DELAY, prey))
 		return
 	if((!check_vore_grab(pred) && !istype(prey.loc, /obj/item/mob_holder)) || !check_vore_preferences(parent, pred, prey, assume_active_consent = TRUE))
 		return
 	#endif
-	pred.visible_message(span_danger("[pred] manages to [LOWER_TEXT(selected_belly.insert_verb)] [prey] into their [LOWER_TEXT(selected_belly.name)]!"), pref_to_check = /datum/preference/toggle/erp/vore_enable)
+	pred.visible_message(span_danger(LANG("datum.8af2838287d68ab5", list(pred, LOWER_TEXT(selected_belly.insert_verb), prey, LOWER_TEXT(selected_belly.name)))), pref_to_check = /datum/preference/toggle/erp/vore_enable)
 	complete_vore(prey)
 
 /datum/component/vore/proc/feed_self_to_other()
 	var/mob/living/prey = parent
 	if(!check_vore_grab(prey))
-		to_chat(parent, span_danger("You must have a[ishuman(prey) ? "n aggressive" : ""] grab to feed yourself to someone."))
+		to_chat(parent, span_danger(LANG("datum.05bca74ba0c1db96", list(ishuman(prey) ? "n aggressive" : ""))))
 		return
 	var/mob/living/pred = prey.pulling
 	if(!check_vore_preferences(parent, pred, prey))
@@ -397,13 +398,13 @@
 	// check_vore_preferences asserts this exists
 	var/datum/component/vore/pred_component = pred.GetComponent(/datum/component/vore)
 	#ifdef VORE_DELAY
-	prey.visible_message(span_danger("[prey] is attempting to make [pred] [LOWER_TEXT(pred_component.selected_belly.insert_verb)] [prey] into their [LOWER_TEXT(pred_component.selected_belly.name)]!"), pref_to_check = /datum/preference/toggle/erp/vore_enable)
+	prey.visible_message(span_danger(LANG("datum.a85ac441a57b9048", list(prey, pred, LOWER_TEXT(pred_component.selected_belly.insert_verb), prey, LOWER_TEXT(pred_component.selected_belly.name)))), pref_to_check = /datum/preference/toggle/erp/vore_enable)
 	if(!do_after(prey, VORE_DELAY, pred))
 		return
 	if(!check_vore_grab(prey) || !check_vore_preferences(parent, pred, prey, assume_active_consent = TRUE))
 		return
 	#endif
-	prey.visible_message(span_danger("[prey] manages to make [pred] [LOWER_TEXT(pred_component.selected_belly.insert_verb)] [prey] into their [LOWER_TEXT(pred_component.selected_belly.name)]!"), pref_to_check = /datum/preference/toggle/erp/vore_enable)
+	prey.visible_message(span_danger(LANG("datum.043b7c7167ca78e2", list(prey, pred, LOWER_TEXT(pred_component.selected_belly.insert_verb), prey, LOWER_TEXT(pred_component.selected_belly.name)))), pref_to_check = /datum/preference/toggle/erp/vore_enable)
 	pred_component.complete_vore(prey)
 
 /datum/component/vore/proc/feed_other_to_other(mob/living/pred, mob/living/prey)
@@ -411,7 +412,7 @@
 	if(!prey)
 		prey = feeder.pulling
 	if(!check_vore_grab(feeder) && !istype(prey.loc, /obj/item/mob_holder))
-		to_chat(feeder, span_danger("You must have a[ishuman(feeder) ? "n aggressive" : ""] grab to feed someone to someone else."))
+		to_chat(feeder, span_danger(LANG("datum.2c269ffa1349942d", list(ishuman(feeder) ? "n aggressive" : ""))))
 		return
 	if(!feeder.can_perform_action(pred, pred.interaction_flags_click | FORBID_TELEKINESIS_REACH))
 		return
@@ -420,7 +421,7 @@
 	// check_vore_preferences asserts this exists
 	var/datum/component/vore/pred_component = pred.GetComponent(/datum/component/vore)
 	#ifdef VORE_DELAY
-	feeder.visible_message(span_danger("[feeder] is attempting to make [pred] [LOWER_TEXT(pred_component.selected_belly.insert_verb)] [prey] into their [LOWER_TEXT(pred_component.selected_belly.name)]!"), pref_to_check = /datum/preference/toggle/erp/vore_enable)
+	feeder.visible_message(span_danger(LANG("datum.a85ac441a57b9048", list(feeder, pred, LOWER_TEXT(pred_component.selected_belly.insert_verb), prey, LOWER_TEXT(pred_component.selected_belly.name)))), pref_to_check = /datum/preference/toggle/erp/vore_enable)
 	if(!do_after(feeder, VORE_DELAY, pred))
 		return
 	if((!check_vore_grab(pred) && !istype(prey.loc, /obj/item/mob_holder)) || !check_vore_preferences(feeder, pred, prey, assume_active_consent = TRUE))
@@ -428,7 +429,7 @@
 	if(!feeder.can_perform_action(pred, pred.interaction_flags_click | FORBID_TELEKINESIS_REACH))
 		return
 	#endif
-	feeder.visible_message(span_danger("[feeder] manages to make [pred] [LOWER_TEXT(pred_component.selected_belly.insert_verb)] [prey] into their [LOWER_TEXT(pred_component.selected_belly.name)]!"), pref_to_check = /datum/preference/toggle/erp/vore_enable)
+	feeder.visible_message(span_danger(LANG("datum.043b7c7167ca78e2", list(feeder, pred, LOWER_TEXT(pred_component.selected_belly.insert_verb), prey, LOWER_TEXT(pred_component.selected_belly.name)))), pref_to_check = /datum/preference/toggle/erp/vore_enable)
 	pred_component.complete_vore(prey)
 
 /datum/component/vore/proc/complete_vore(mob/living/prey)

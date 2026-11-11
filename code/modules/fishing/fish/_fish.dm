@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define FISH_SAD 0
 #define FISH_VERY_HAPPY 4
 
@@ -265,16 +266,16 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 /obj/item/fish/suicide_act(mob/living/user)
 	if(force == 0)
-		user.visible_message(span_suicide("[user] slaps [user.p_them()]self with [src], but nothing happens!"))
+		user.visible_message(span_suicide(LANG("obj.6c2c89511814175b", list(user, user.p_them(), src))))
 		return SHAME
-	user.visible_message(span_suicide("[user] starts rapidly slapping [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.e993a19978b4493a", list(user, user.p_them(), src, user.p_theyre()))))
 	user.set_combat_mode(TRUE)
 	ADD_TRAIT(user, TRAIT_COMBAT_MODE_LOCK, REF(src))
 	slapperoni(user, iteration = 1)
 	REMOVE_TRAIT(user, TRAIT_COMBAT_MODE_LOCK, REF(src))
 	if (user.stat == DEAD)
 		return MANUAL_SUICIDE
-	user.visible_message(span_suicide("[user] slaps [user.p_them()]self with [src], but fails to go through with it!"))
+	user.visible_message(span_suicide(LANG("obj.4141d7a7fb274b93", list(user, user.p_them(), src))))
 	return SHAME
 
 /obj/item/fish/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
@@ -316,14 +317,14 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 /obj/item/fish/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(!istype(tool, /obj/item/clothing/neck/stethoscope))
 		return NONE
-	user.balloon_alert_to_viewers("checking pulse")
+	user.balloon_alert_to_viewers(LANG("obj.7b75ec5a6c2eaaa4", null))
 	if(!do_after(user, 2.5 SECONDS, src))
 		return ITEM_INTERACT_FAILURE
 	// Sir... I'm afraid your fish is dying.
-	user.visible_message(span_notice("[user] checks the pulse of [src] with [tool]."), span_notice("You check the pulse of [src] with [tool]."))
+	user.visible_message(span_notice(LANG("obj.4c586727f97ab708", list(user, src, tool))), span_notice(LANG("obj.6df4a388ef93aba5", list(src, tool))))
 	var/warns = get_health_warnings(user, always_deep = TRUE)
 	if(!warns)
-		to_chat(user, span_notice("[src] appears to be perfectly healthy!"))
+		to_chat(user, span_notice(LANG("obj.4dc26c63369c57cc", list(src))))
 		return ITEM_INTERACT_SUCCESS
 	to_chat(user, warns)
 	return ITEM_INTERACT_SUCCESS
@@ -332,18 +333,18 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	if(!HAS_TRAIT(interacting_with, TRAIT_CATCH_AND_RELEASE))
 		return NONE
 	if(HAS_TRAIT(src, TRAIT_NODROP))
-		balloon_alert(user, "[p_theyre()] stuck to your hand!")
+		balloon_alert(user, LANG("obj.c8e52234447aafa9", list(p_theyre())))
 		return ITEM_INTERACT_BLOCKING
-	balloon_alert(user, "releasing fish...")
+	balloon_alert(user, LANG("obj.34666498c40125f2", null))
 	if(!do_after(user, 3 SECONDS, interacting_with))
 		return ITEM_INTERACT_BLOCKING
-	balloon_alert(user, "fish released")
+	balloon_alert(user, LANG("obj.261a79e45b785026", null))
 	var/goodbye_text = "Bye bye [name]."
 	if(status == FISH_DEAD && !HAS_MIND_TRAIT(user, TRAIT_NAIVE))
 		goodbye_text = "May [p_they()] rest in peace..."
-	user.visible_message(span_notice("[user] releases [src] into [interacting_with]"), \
-		span_notice("You release [src] into [interacting_with]. [goodbye_text]"), \
-		span_notice("You hear a splash."))
+	user.visible_message(span_notice(LANG("obj.79e41f5fed8ea8e9", list(user, src, interacting_with))), \
+		span_notice(LANG("obj.2d0148231c42eb9b", list(src, interacting_with, goodbye_text))), \
+		span_notice(LANG("obj.0b1a6e8f3816df14", null)))
 	released(interacting_with, user)
 	return ITEM_INTERACT_SUCCESS
 
@@ -456,7 +457,7 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 
 /obj/item/fish/proc/flinch_on_eat(mob/living/eater, mob/living/feeder)
 	if(status == FISH_ALIVE && prob(50) && feeder.is_holding(src) && feeder.dropItemToGround(src))
-		to_chat(feeder, span_warning("[src] slips out of your hands in pain!"))
+		to_chat(feeder, span_warning(LANG("obj.2309a045b76ca623", list(src))))
 		var/turf/target_turf = get_ranged_target_turf(get_turf(src), pick(GLOB.alldirs), 2)
 		throw_at(target_turf)
 
@@ -538,7 +539,7 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 		return NONE
 
 	if(!tool.reagents.total_volume)
-		balloon_alert(user, "[tool.name] is empty!")
+		balloon_alert(user, LANG("obj.02d482cc1aef0cef", list(tool.name)))
 		return ITEM_INTERACT_BLOCKING
 
 	if(status == FISH_DEAD)
@@ -546,28 +547,28 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 		return ITEM_INTERACT_BLOCKING
 
 	feed(tool.reagents)
-	balloon_alert(user, "fed [name]")
+	balloon_alert(user, LANG("obj.158da1cb29154ea8", list(name)))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/fish/examine(mob/user)
 	. = ..()
 	if(catcher_name && catch_date)
-		. += span_boldnicegreen("Caught by [catcher_name] on [catch_date].")
+		. += span_boldnicegreen(LANG("obj.82afe7e15dd303e2", list(catcher_name, catch_date)))
 
 	if(HAS_MIND_TRAIT(user, TRAIT_EXAMINE_FISH) || HAS_TRAIT(loc, TRAIT_EXAMINE_FISH))
-		. += span_notice("[p_Theyre()] [size] cm long.")
-		. += span_notice("[p_They()] weigh[p_s()] [weight] [span_tooltip("the standard unit of measurement for space age fish", "kiloclam")].")
+		. += span_notice(LANG("obj.c3aed59ed80a74eb", list(p_Theyre(), size)))
+		. += span_notice(LANG("obj.c066a1a10a3c3506", list(p_They(), p_s(), weight, span_tooltip(lang_reverse_text("the standard unit of measurement for space age fish"), lang_reverse_text("kiloclam"))))) // ZH EDIT - I18N: span 包裹的单位词反查（"kiloclam"→千蛤币 在目录，但 span 壳让整 arg 反查 miss，故在此显式反查内层）
 
 		if(HAS_TRAIT(src, TRAIT_FISH_GENEGUNNED))
-			. += span_warning("[p_Theyve()] been edited by a fish genegun. [p_They()]'ll die if edited again.")
+			. += span_warning(LANG("obj.326136be3e7a7e28", list(p_Theyve(), p_They())))
 
 	. += get_health_warnings(user, always_deep = FALSE)
 
 	if(HAS_TRAIT(src, TRAIT_FISHING_BAIT))
-		. += span_smallnoticeital("[p_They()] can be used as a fishing bait.")
+		. += span_smallnoticeital(LANG("obj.f2d52c46768eff89", list(p_They())))
 
 	if(bites_amount)
-		. += span_warning("[p_Theyve()] been bitten by someone.")
+		. += span_warning(LANG("obj.b363ab08dfd634fc", list(p_Theyve())))
 
 /obj/item/fish/proc/get_health_warnings(mob/user, always_deep = FALSE)
 	if(!HAS_MIND_TRAIT(user, TRAIT_EXAMINE_DEEPER_FISH) && !always_deep)
@@ -593,7 +594,7 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 			warnings += "mostly healthy"
 
 	if(length(warnings))
-		. += span_warning("[p_Theyre()] [english_list(warnings)].")
+		. += span_warning("[p_Theyre()] [lang_english_list(warnings)].") // ZH EDIT - I18N: 逐项翻状态词（整句拼完不是目录键）
 
 	return .
 
@@ -1011,7 +1012,7 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 		return
 	time_passed_on_safe_turf += seconds_per_tick SECONDS
 	if(time_passed_on_safe_turf >= (get_starvation_mult() ? STARVING_FISH_SUBMERGING_THRESHOLD : FISH_SUBMERGING_THRESHOLD))
-		visible_message(span_notice("[src] disperses into \the [loc]"), span_notice("You hear a splash."))
+		visible_message(span_notice(LANG("obj.f66e194f7c780e8f", list(src, loc))), span_notice(LANG("obj.0b1a6e8f3816df14", null)))
 		released(loc)
 
 /obj/item/fish/proc/do_fish_process(seconds_per_tick)
@@ -1107,17 +1108,17 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	if(reagents[revival] >= 2 * w_class && revival.pre_rez_check(src))
 		set_status(FISH_ALIVE)
 	else
-		balloon_alert_to_viewers("twitches for a moment!")
+		balloon_alert_to_viewers(LANG("obj.b19d1ace2da79fee", null))
 		animate(src, pixel_x = 1, time = 0.1 SECONDS, loop = 2, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
 		animate(pixel_x = -1, flags = ANIMATION_RELATIVE)
 
 /obj/item/fish/proc/use_lazarus(datum/source, obj/item/lazarus_injector/injector, mob/user)
 	SIGNAL_HANDLER
 	if(injector.revive_type != SENTIENCE_ORGANIC)
-		balloon_alert(user, "invalid creature!")
+		balloon_alert(user, LANG("obj.1c85036c03c3d01e", null))
 		return
 	if(status != FISH_DEAD)
-		balloon_alert(user, "[p_theyre()] not dead!")
+		balloon_alert(user, LANG("obj.93b69f173ea354ab", list(p_theyre())))
 		return
 	set_status(FISH_ALIVE)
 	injector.expend(src, user)
@@ -1570,10 +1571,10 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 /obj/item/fish/proc/try_pet_fish(mob/living/user)
 	var/in_aquarium = loc && HAS_TRAIT(loc, TRAIT_IS_AQUARIUM)
 	if(status == FISH_DEAD)
-		to_chat(user, span_warning("You try to pet [src], but [p_theyre()] motionless!"))
+		to_chat(user, span_warning(LANG("obj.f802af950056493f", list(src, p_theyre()))))
 		return FALSE
 	if(!proper_environment())
-		to_chat(user, span_warning("You try to pet [src], but [p_theyre()] not feeling well!"))
+		to_chat(user, span_warning(LANG("obj.bdfe870b799ce479", list(src, p_theyre()))))
 		return FALSE
 
 	return pet_fish(user, in_aquarium)
@@ -1581,9 +1582,9 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 /obj/item/fish/proc/pet_fish(mob/living/user, in_aquarium)
 	if(fish_flags & FISH_FLAG_PETTED)
 		if(in_aquarium)
-			to_chat(user, span_warning("[src] runs away from your finger as you dip it into the water!"))
+			to_chat(user, span_warning(LANG("obj.d202f24ce4182015", list(src))))
 		else
-			to_chat(user, span_warning("You try to pet [src] but [p_they()] squirm[p_s()] away!"))
+			to_chat(user, span_warning(LANG("obj.aa41c01778de1c9b", list(src, p_they(), p_s()))))
 		return FALSE
 	if(HAS_TRAIT(src, TRAIT_FISH_ELECTROGENESIS) && GET_FISH_ELECTROGENESIS(src) > 15 MEGA JOULES)
 		user.electrocute_act(5, src) //was it all worth it?
@@ -1592,14 +1593,14 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 	if((/datum/fish_trait/predator in fish_traits) && prob(50))
 		if(in_aquarium)
 			user.visible_message(
-				span_warning("[src] dances around before biting [user]!"),
-				span_warning("[src] dances around before biting you!"),
+				span_warning(LANG("obj.85e99c29dbe5226e", list(src, user))),
+				span_warning(LANG("obj.17922d228f83e28c", list(src))),
 				vision_distance = DEFAULT_MESSAGE_RANGE - 3,
 			)
 		else
 			user.visible_message(
-				span_warning("[src] bites [user]'s hand!"),
-				span_warning("You pet [src] as you hold [p_they()], only for [p_them()] to happily bite back!"),
+				span_warning(LANG("obj.c1e965338e34fde2", list(src, user))),
+				span_warning(LANG("obj.6014fe51b18527f6", list(src, p_they(), p_them()))),
 				vision_distance = DEFAULT_MESSAGE_RANGE - 3,
 			)
 		var/body_zone = pick(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM)
@@ -1607,9 +1608,9 @@ GLOBAL_LIST_INIT(fish_compatible_fluid_types, list(
 		playsound(src,'sound/items/weapons/bite.ogg', 45, TRUE, -1)
 	else
 		if(in_aquarium)
-			to_chat(user, span_notice("[src] dances around!"))
+			to_chat(user, span_notice(LANG("obj.434c97005d6f5077", list(src))))
 		else
-			to_chat(user, span_notice("You pet [src] as you hold [p_they()]."))
+			to_chat(user, span_notice(LANG("obj.6ee1622cefe45948", list(src, p_they()))))
 		user.add_mood_event("petted_fish", /datum/mood_event/fish_petting, src, HAS_MIND_TRAIT(user, TRAIT_MORBID))
 		playsound(src, 'sound/items/weapons/thudswoosh.ogg', 30, TRUE, -1)
 	addtimer(CALLBACK(src, PROC_REF(undo_petted)), 30 SECONDS)

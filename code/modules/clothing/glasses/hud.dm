@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/glasses/hud
 	gender = NEUTER
 	name = "HUD"
@@ -13,28 +14,28 @@
 	if(obj_flags & EMAGGED || . & EMP_PROTECT_SELF)
 		return
 	obj_flags |= EMAGGED
-	desc = "[desc] The display is flickering slightly."
+	desc = LANG("obj.74b3f8d1fcf36ecd", list(desc))
 
 /obj/item/clothing/glasses/hud/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
-	balloon_alert(user, "display scrambled")
-	desc = "[desc] The display is flickering slightly."
+	balloon_alert(user, LANG("obj.818a8b789472b58c", null))
+	desc = LANG("obj.74b3f8d1fcf36ecd", list(desc))
 	return TRUE
 
 /obj/item/clothing/glasses/hud/suicide_act(mob/living/user)
 	if(user.is_blind())
 		return SHAME
 	var/mob/living/living_user = user
-	user.visible_message(span_suicide("[user] looks through [src] and looks overwhelmed with the information! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.32039496d5a2a916", list(user, src, user.p_theyre()))))
 	if(living_user.get_organ_loss(ORGAN_SLOT_BRAIN) >= BRAIN_DAMAGE_SEVERE)
 		var/mob/thing = pick((/mob in view()) - user)
 		if(thing)
-			user.say("VALID MAN IS WANTER, ARREST HE!!")
+			user.say(LANG("obj.e895b4bc9e2aef16", null))
 			user.pointed(thing)
 		else
-			user.say("WHY IS THERE A BAR ON MY HEAD?!!")
+			user.say(LANG("obj.da6d9fce7ad90fad", null))
 	return OXYLOSS
 
 /obj/item/clothing/glasses/hud/equipped(mob/living/user, slot)
@@ -46,13 +47,13 @@
 		display_active = FALSE
 		for(var/hud_trait in clothing_traits)
 			REMOVE_CLOTHING_TRAIT(eye_owner, hud_trait)
-		balloon_alert(eye_owner, "hud disabled")
+		balloon_alert(eye_owner, LANG("obj.8f3da78925e2f1b3", null))
 		return
 
 	display_active = TRUE
 	for(var/hud_trait in clothing_traits)
 		ADD_CLOTHING_TRAIT(eye_owner, hud_trait)
-	balloon_alert(eye_owner, "hud enabled")
+	balloon_alert(eye_owner, LANG("obj.435a2369c33cffae", null))
 
 /obj/item/clothing/glasses/hud/health
 	name = "health scanner HUD"

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Component to make an item temporarily break glass
 /datum/component/temporary_glass_shatterer/Initialize(...)
 	. = ..()
@@ -13,7 +14,7 @@
 	if(istype(target, /obj/structure/window))
 		var/obj/structure/grille/grille = locate(/obj/structure/grille) in get_turf(target)
 		if(grille?.is_shocked())
-			target.balloon_alert(tapper, "is shocked!")
+			target.balloon_alert(tapper, LANG("datum.b5c33e7b11c3a03f", null))
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 
 		var/obj/structure/window/window = target
@@ -21,7 +22,7 @@
 	else if(istype(target, /obj/structure/grille))
 		var/obj/structure/grille/grille = target
 		if(grille.is_shocked())
-			target.balloon_alert(tapper, "is shocked!")
+			target.balloon_alert(tapper, LANG("datum.b5c33e7b11c3a03f", null))
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 
 		grille.temporary_shatter()

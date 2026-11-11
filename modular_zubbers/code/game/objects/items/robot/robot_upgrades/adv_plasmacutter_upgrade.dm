@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/energy/plasmacutter/brg // Plasma cutter for Mining cyborg, recharges on power.
 	name = "advanced plasma cutter"
 	icon_state = "adv_plasmacutter"
@@ -30,7 +31,7 @@
 	if(.)
 		var/obj/item/gun/energy/plasmacutter/brg/AC = locate() in R.model.modules
 		if(AC)
-			to_chat(user, span_warning("This unit is already equipped with A plasma Cutter!"))
+			to_chat(user, span_warning(LANG("obj.4511793ea4191d1c", null)))
 			return FALSE
 		AC = new(R.model)
 		R.model.basic_modules += AC

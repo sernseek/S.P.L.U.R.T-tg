@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define NO_ANSWER 0
 #define POSITIVE_ANSWER 1
 #define NEGATIVE_ANSWER 2
@@ -95,13 +96,13 @@
 				var/mob/spawned_mob = spawner.create_from_ghost(our_candidate)
 				candidates -= our_candidate
 				notify_ghosts(
-					"The [chosen_gang.ship_name] has an object of interest: [spawned_mob]!",
+					LANG("_root.48d5a6bb229961d0", list(chosen_gang.ship_name, spawned_mob)),
 					source = spawned_mob,
 					header = "Pirates!",
 				)
 			else
 				notify_ghosts(
-					"The [chosen_gang.ship_name] has an object of interest: [spawner]!",
+					LANG("_root.48d5a6bb229961d0", list(chosen_gang.ship_name, spawner)),
 					source = spawner,
 					header = "Pirate Spawn Here!",
 				)

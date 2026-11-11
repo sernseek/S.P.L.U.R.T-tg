@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/stack/tile/iron
 	name = "floor tile"
 	singular_name = "floor tile"
@@ -124,13 +125,13 @@
 
 /obj/item/stack/tile/iron/welder_act(mob/living/user, obj/item/tool)
 	if(get_amount() < 4)
-		balloon_alert(user, "not enough tiles!")
+		balloon_alert(user, LANG("obj.16694563cce12313", null))
 		return
 	if(tool.use_tool(src, user, delay = 0, volume = 40))
 		var/obj/item/stack/sheet/iron/new_item = new(user.loc)
 		user.visible_message(
-			span_notice("[user.name] shaped [src] into sheets with [tool]."),
-			blind_message = span_hear("You hear welding."),
+			span_notice(LANG("obj.88395aa2238747d1", list(user.name, src, tool))),
+			blind_message = span_hear(LANG("obj.1aa82fa3545466eb", null)),
 			vision_distance = COMBAT_MESSAGE_RANGE,
 			ignored_mobs = user
 		)
@@ -140,13 +141,13 @@
 
 /obj/item/stack/tile/iron/welder_act_secondary(mob/living/user, obj/item/tool)
 	if(get_amount() < 2)
-		balloon_alert(user, "not enough tiles!")
+		balloon_alert(user, LANG("obj.16694563cce12313", null))
 		return
 	if(tool.use_tool(src, user, delay = 0, volume = 40))
 		var/obj/item/stack/rods/new_item = new(user.loc)
 		user.visible_message(
-			span_notice("[user.name] shaped [src] into rods with [tool]."),
-			blind_message = span_hear("You hear welding."),
+			span_notice(LANG("obj.de51624c3c3c77b1", list(user.name, src, tool))),
+			blind_message = span_hear(LANG("obj.1aa82fa3545466eb", null)),
 			vision_distance = COMBAT_MESSAGE_RANGE,
 			ignored_mobs = user
 		)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //These procs handle putting stuff in your hand. It's probably best to use these rather than setting stuff manually
 //as they handle all relevant stuff like adding it to the player's screen and such
 
@@ -27,18 +28,18 @@
 		CRASH("activate_module called with item_module not in model.modules")
 
 	if(activated(item_module))
-		to_chat(src, span_warning("That module is already activated."))
+		to_chat(src, span_warning(LANG("mob.28a6ca0d9c5ef177", null)))
 		return FALSE
 
 	if(disabled_modules & BORG_MODULE_ALL_DISABLED)
-		to_chat(src, span_warning("All modules are disabled!"))
+		to_chat(src, span_warning(LANG("mob.9f69743c4f0ded89", null)))
 		return FALSE
 
 	/// What's the first free slot for the borg?
 	var/first_free_slot = !held_items[1] ? 1 : (!held_items[2] ? 2 : (!held_items[3] ? 3 : null))
 
 	if(!first_free_slot || is_invalid_module_number(first_free_slot))
-		to_chat(src, span_warning("Deactivate a module first!"))
+		to_chat(src, span_warning(LANG("mob.7b1b870b6c82f543", null)))
 		return FALSE
 
 	return put_in_hand(item_module, first_free_slot)
@@ -60,7 +61,7 @@
 		return ..()
 
 	if(newloc != model)
-		to_chat(src, span_notice("You can't drop your [item_dropping.name] module."))
+		to_chat(src, span_notice(LANG("mob.2b0bfbbf22b67be7", list(item_dropping.name))))
 		return FALSE
 
 	var/module_num = get_selected_module()
@@ -98,13 +99,13 @@
 			disabled_modules |= BORG_MODULE_ALL_DISABLED
 
 			playsound(src, 'sound/machines/warning-buzzer.ogg', 75, TRUE, TRUE)
-			audible_message(span_warning("[src] sounds an alarm! \"CRITICAL ERROR: ALL modules OFFLINE.\""))
+			audible_message(span_warning(LANG("mob.a33df38fb3fa8ec1", list(src))))
 
 			if(builtInCamera)
 				builtInCamera.camera_enabled = FALSE
-				to_chat(src, span_userdanger("CRITICAL ERROR: Built in security camera OFFLINE."))
+				to_chat(src, span_userdanger(LANG("mob.e94f8582d6dcdb1e", null)))
 
-			to_chat(src, span_userdanger("CRITICAL ERROR: ALL modules OFFLINE."))
+			to_chat(src, span_userdanger(LANG("mob.424a6e058cde73b6", null)))
 
 		if(BORG_CHOOSE_MODULE_TWO)
 			if(disabled_modules & BORG_MODULE_TWO_DISABLED)
@@ -113,8 +114,8 @@
 			disabled_modules |= BORG_MODULE_TWO_DISABLED
 
 			playsound(src, 'sound/machines/warning-buzzer.ogg', 60, TRUE, TRUE)
-			audible_message(span_warning("[src] sounds an alarm! \"SYSTEM ERROR: Module [module_num] OFFLINE.\""))
-			to_chat(src, span_userdanger("SYSTEM ERROR: Module [module_num] OFFLINE."))
+			audible_message(span_warning(LANG("mob.1ebf612c3929a92c", list(src, module_num))))
+			to_chat(src, span_userdanger(LANG("mob.34e8ceebdc87408c", list(module_num))))
 
 		if(BORG_CHOOSE_MODULE_THREE)
 			if(disabled_modules & BORG_MODULE_THREE_DISABLED)
@@ -123,8 +124,8 @@
 			disabled_modules |= BORG_MODULE_THREE_DISABLED
 
 			playsound(src, 'sound/machines/warning-buzzer.ogg', 50, TRUE, TRUE)
-			audible_message(span_warning("[src] sounds an alarm! \"SYSTEM ERROR: Module [module_num] OFFLINE.\""))
-			to_chat(src, span_userdanger("SYSTEM ERROR: Module [module_num] OFFLINE."))
+			audible_message(span_warning(LANG("mob.1ebf612c3929a92c", list(src, module_num))))
+			to_chat(src, span_userdanger(LANG("mob.34e8ceebdc87408c", list(module_num))))
 
 	var/atom/movable/screen/robot/module_slot/module = hud_used?.screen_objects[HUD_KEY_HAND_SLOT(module_num)]
 	if(module)
@@ -156,7 +157,7 @@
 			disabled_modules &= ~BORG_MODULE_ALL_DISABLED
 			if(builtInCamera)
 				builtInCamera.camera_enabled = TRUE
-				to_chat(src, span_notice("You hear your built in security camera focus adjust as it comes back online!"))
+				to_chat(src, span_notice(LANG("mob.0045c3798265fe3c", null)))
 
 		if(BORG_CHOOSE_MODULE_TWO)
 			if(!(disabled_modules & BORG_MODULE_TWO_DISABLED))
@@ -170,7 +171,7 @@
 
 			disabled_modules &= ~BORG_MODULE_THREE_DISABLED
 
-	to_chat(src, span_notice("ERROR CLEARED: Module [module_num] back online."))
+	to_chat(src, span_notice(LANG("mob.a6e982e547e6c73a", list(module_num))))
 	var/atom/movable/screen/robot/module_slot/module = hud_used?.screen_objects[HUD_KEY_HAND_SLOT(module_num)]
 	if(module)
 		module.icon_state = module.base_icon_state

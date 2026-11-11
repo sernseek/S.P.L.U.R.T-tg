@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define DIG_UNDEFINED 	(1<<0) //when the strange rock is dug by an item with no dig depth.
 #define DIG_DELETE 		(1<<1) //when the strange rock is dug too deep and gets destroyed in the process.
 #define DIG_ROCK		(1<<2) //when the strange rock is just dug, with no additional effects.
@@ -45,11 +46,11 @@
 	. = ..()
 	. += span_notice("[scanned ? "This item has been scanned. Max Depth: [max_depth] cm. Safe Depth: [safe_depth] cm." : "This item has not been scanned."]")
 	if(adv_scanned)
-		. += span_notice("The item depth is [item_depth] cm.")
+		. += span_notice(LANG("obj.9c404e9c88edaba1", list(item_depth)))
 
 	. += span_notice("[measured ? "This item has been measured. Dug Depth: [dug_depth]." : "This item has not been measured."]")
 	if(measured && dug_depth > item_depth)
-		. += span_warning("The rock is crumbling, even just brushing it will destroy it!")
+		. += span_warning(LANG("obj.8037354a6e1c0650", null))
 
 /obj/item/xenoarch/strange_rock/proc/create_item()
 	choose_tier = rand(1,100)
@@ -123,9 +124,9 @@
 	var/skill_modifier = user.mind.get_skill_modifier(/datum/skill/research, SKILL_SPEED_MODIFIER)
 	if(istype(attacking_item, /obj/item/xenoarch/hammer))
 		var/obj/item/xenoarch/hammer/xeno_hammer = attacking_item
-		to_chat(user, span_notice("You begin carefully using your hammer."))
+		to_chat(user, span_notice(LANG("obj.c3639cded9a86cdb", null)))
 		if(!do_after(user, xeno_hammer.dig_speed * skill_modifier, target = src))
-			to_chat(user, span_warning("You interrupt your careful planning, damaging the rock in the process!"))
+			to_chat(user, span_warning(LANG("obj.bc5ef594fa54c9f2", null)))
 			dug_depth += rand(1,5)
 			return
 
@@ -135,65 +136,65 @@
 				return
 
 			if(DIG_DELETE)
-				to_chat(user, span_warning("The rock crumbles, leaving nothing behind."))
+				to_chat(user, span_warning(LANG("obj.3a2fa2ebe1cd7d5d", null)))
 				return
 
 			if(DIG_ROCK)
-				to_chat(user, span_notice("You successfully dig around the item."))
+				to_chat(user, span_notice(LANG("obj.c2a25e9ab2ed5ac3", null)))
 				user.mind?.adjust_experience(/datum/skill/research, xeno_hammer.dig_amount)
 
 	if(istype(attacking_item, /obj/item/xenoarch/brush))
 		var/obj/item/xenoarch/brush/xeno_brush = attacking_item
-		to_chat(user, span_notice("You begin carefully using your brush."))
+		to_chat(user, span_notice(LANG("obj.f49f7bc1952c1865", null)))
 		if(!do_after(user, xeno_brush.dig_speed * skill_modifier, target = src))
-			to_chat(user, span_warning("You interrupt your careful planning, damaging the rock in the process!"))
+			to_chat(user, span_warning(LANG("obj.bc5ef594fa54c9f2", null)))
 			dug_depth += rand(1,5)
 			return
 
 		switch(try_uncover())
 			if(BRUSH_DELETE)
-				to_chat(user, span_warning("The rock crumbles, leaving nothing behind."))
+				to_chat(user, span_warning(LANG("obj.3a2fa2ebe1cd7d5d", null)))
 				return
 
 			if(BRUSH_UNCOVER)
-				to_chat(user, span_notice("You successfully brush around the item, fully revealing the item!"))
+				to_chat(user, span_notice(LANG("obj.63b96783c3c30b93", null)))
 				user.mind?.adjust_experience(/datum/skill/research, 20)
 				return
 
 			if(BRUSH_NONE)
-				to_chat(user, span_notice("You brush around the item, but it wasn't revealed... hammer some more."))
+				to_chat(user, span_notice(LANG("obj.377f381aa23c6c20", null)))
 
 	if(istype(attacking_item, /obj/item/xenoarch/tape_measure))
-		to_chat(user, span_notice("You begin carefully using your measuring tape."))
+		to_chat(user, span_notice(LANG("obj.cfbbc627f83faa70", null)))
 		if(!do_after(user, 4 SECONDS * skill_modifier, target = src))
-			to_chat(user, span_warning("You interrupt your careful planning, damaging the rock in the process!"))
+			to_chat(user, span_warning(LANG("obj.bc5ef594fa54c9f2", null)))
 			dug_depth += rand(1,5)
 			return
 
 		if(get_measured())
-			to_chat(user, span_notice("You successfully attach a holo measuring tape to the strange rock; the strange rock will now report its dug depth always!"))
+			to_chat(user, span_notice(LANG("obj.c3c6b484914b366f", null)))
 			user.mind?.adjust_experience(/datum/skill/research, 5)
 			return
 
-		to_chat(user, span_warning("The strange rock was already marked with a holo measuring tape."))
+		to_chat(user, span_warning(LANG("obj.a37b65d231c2e958", null)))
 
 	if(istype(attacking_item, /obj/item/xenoarch/handheld_scanner))
 		var/obj/item/xenoarch/handheld_scanner/item_scanner = attacking_item
-		to_chat(user, span_notice("You begin to scan [src] using [item_scanner]."))
+		to_chat(user, span_notice(LANG("obj.c849e69f03c8630e", list(src, item_scanner))))
 		if(!do_after(user, item_scanner.scanning_speed * skill_modifier, target = src))
-			to_chat(user, span_warning("You interrupt your scanning, damaging the rock in the process!"))
+			to_chat(user, span_warning(LANG("obj.c2ee9a32daa49294", null)))
 			dug_depth += rand(1,5)
 			return
 
 		if(get_scanned(item_scanner.scan_advanced))
-			to_chat(user, span_notice("You successfully attach a holo scanning module to the strange rock; the strange rock will now report its depth information always!"))
+			to_chat(user, span_notice(LANG("obj.ec1f3d904bd73f11", null)))
 			user.mind?.adjust_experience(/datum/skill/research, 5)
 			if(adv_scanned)
-				to_chat(user, span_notice("The rock's item depth is being reported!"))
+				to_chat(user, span_notice(LANG("obj.717b945fb8eaff19", null)))
 
 			return
 
-		to_chat(user, span_warning("The strange rock was already marked with a holo scanning module."))
+		to_chat(user, span_warning(LANG("obj.18eb770da3e5d579", null)))
 
 //turfs
 /turf/closed/mineral/strange_rock

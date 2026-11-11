@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/analyzer
 	desc = "A hand-held environmental scanner which reports current gas levels."
 	name = "gas analyzer"
@@ -56,16 +57,16 @@
 
 /obj/item/analyzer/examine(mob/user)
 	. = ..()
-	. += span_notice("Right-click [src] to open the gas reference.")
-	. += span_notice("Alt-click [src] to activate the barometer function.")
+	. += span_notice(LANG("obj.647b6ae72cb65913", list(src)))
+	. += span_notice(LANG("obj.51181bf68a207a6a", list(src)))
 
 /obj/item/analyzer/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] begins to analyze [user.p_them()]self with [src]! The display shows that [user.p_theyre()] dead!"))
+	user.visible_message(span_suicide(LANG("obj.1cd52c32807c3847", list(user, user.p_them(), src, user.p_theyre()))))
 	return BRUTELOSS
 
 /obj/item/analyzer/click_alt(mob/user) //Barometer output for measuring when the next storm happens
 	if(cooldown)
-		to_chat(user, span_warning("[src]'s barometer function is preparing itself."))
+		to_chat(user, span_warning(LANG("obj.d3c6539477e2630d", list(src))))
 		return CLICK_ACTION_BLOCKING
 
 	var/turf/T = get_turf(user)
@@ -77,7 +78,7 @@
 	var/datum/weather/ongoing_weather = null
 
 	if(!user_area.outdoors)
-		to_chat(user, span_warning("[src]'s barometer function won't work indoors!"))
+		to_chat(user, span_warning(LANG("obj.261a3319fb726920", list(src))))
 		return CLICK_ACTION_BLOCKING
 
 	for(var/V in SSweather.processing)
@@ -88,19 +89,19 @@
 
 	if(ongoing_weather)
 		if((ongoing_weather.stage == MAIN_STAGE) || (ongoing_weather.stage == WIND_DOWN_STAGE))
-			to_chat(user, span_warning("[src]'s barometer function can't trace anything while the storm is [ongoing_weather.stage == MAIN_STAGE ? "already here!" : "winding down."]"))
+			to_chat(user, span_warning(LANG("obj.67af6f3fb8e57648", list(src, ongoing_weather.stage == MAIN_STAGE ? "already here!" : "winding down."))))
 			return CLICK_ACTION_BLOCKING
 
-		to_chat(user, span_notice("The next [ongoing_weather] will hit in [butchertime(ongoing_weather.next_hit_time - world.time)]."))
+		to_chat(user, span_notice(LANG("obj.48ac87bf02e4ded8", list(ongoing_weather, butchertime(ongoing_weather.next_hit_time - world.time)))))
 		if(!(ongoing_weather.weather_flags & FUNCTIONAL_WEATHER))
-			to_chat(user, span_warning("[src]'s barometer function says that the next storm will breeze on by."))
+			to_chat(user, span_warning(LANG("obj.e13009ac37607046", list(src))))
 	else
 		var/next_hit = SSweather.next_hit_by_zlevel["[T.z]"]
 		var/fixed = next_hit ? timeleft(next_hit) : -1
 		if(fixed < 0)
-			to_chat(user, span_warning("[src]'s barometer function was unable to trace any weather patterns."))
+			to_chat(user, span_warning(LANG("obj.892c75506a1b84f4", list(src))))
 		else
-			to_chat(user, span_warning("[src]'s barometer function says a storm will land in approximately [butchertime(fixed)]."))
+			to_chat(user, span_warning(LANG("obj.6a27eee16282d7a6", list(src, butchertime(fixed)))))
 	cooldown = TRUE
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/analyzer, ping)), cooldown_time)
 	return CLICK_ACTION_SUCCESS
@@ -108,7 +109,7 @@
 /obj/item/analyzer/proc/ping()
 	if(isliving(loc))
 		var/mob/living/L = loc
-		to_chat(L, span_notice("[src]'s barometer function is ready!"))
+		to_chat(L, span_notice(LANG("obj.e10fc5897ed0e071", list(src))))
 	playsound(src, 'sound/machines/click.ogg', 100)
 	cooldown = FALSE
 
@@ -191,15 +192,15 @@
 	var/message = list()
 	if(!silent && isliving(user))
 		playsound(user, SFX_INDUSTRIAL_SCAN, 20, TRUE, -2, TRUE, FALSE)
-		user.visible_message(span_notice("[user] uses the analyzer on [icon2html(icon, viewers(user))] [target]."), span_notice("You use the analyzer on [icon2html(icon, user)] [target]."))
-	message += span_boldnotice("Results of analysis of [icon2html(icon, user)] [target].")
+		user.visible_message(span_notice(LANG("_root.442d7504006d8d6c", list(user, icon2html(icon, viewers(user)), target))), span_notice(LANG("_root.3da82a2f5cf28ea4", list(icon2html(icon, user), target))))
+	message += span_boldnotice(LANG("_root.f540f85f37c4b0ff", list(icon2html(icon, user), target))) // ZH EDIT - I18N
 
 	var/list/airs = islist(mixture) ? mixture : list(mixture)
 	for(var/datum/gas_mixture/air as anything in airs)
 		var/mix_name = capitalize(LOWER_TEXT(target.name))
 		if(airs.len > 1) //not a unary gas mixture
 			var/mix_number = airs.Find(air)
-			message += span_boldnotice("Node [mix_number]")
+			message += span_boldnotice(LANG("_root.ad89cabf5f308c26", list(mix_number))) // ZH EDIT - I18N
 			mix_name += " - Node [mix_number]"
 
 		var/total_moles = air.total_moles()
@@ -210,20 +211,22 @@
 		var/thermal_energy = air.thermal_energy()
 
 		if(total_moles > 0)
-			message += span_notice("Moles: [round(total_moles, 0.01)] mol")
+			message += span_notice(LANG("_root.ebc0cba414f2f0d2", list(round(total_moles, 0.01)))) // ZH EDIT - I18N
 
 			var/list/cached_gas_name = GAS_META[META_GAS_NAME]
 			for(var/id, amount in air.moles)
 				var/gas_concentration = amount / total_moles
-				message += span_notice("[cached_gas_name[id]]: [round(amount, 0.01)] mol ([round(gas_concentration*100, 0.01)] %)")
-			message += span_notice("Temperature: [round(temperature - T0C,0.01)] &deg;C ([round(temperature, 0.01)] K)")
-			message += span_notice("Volume: [volume] L")
-			message += span_notice("Pressure: [round(pressure, 0.01)] kPa")
-			message += span_notice("Heat Capacity: [display_energy(heat_capacity)] / K")
-			message += span_notice("Thermal Energy: [display_energy(thermal_energy)]")
+				message += span_notice(LANG("_root.fd761232cbb906a8", list(cached_gas_name[id], round(amount, 0.01), round(gas_concentration*100, 0.01)))) // ZH EDIT - I18N
+			// ZH EDIT CHANGE START - I18N: 具名累加器 + 非 examine proc → 抽取器整句闸挡在目录外。
+			message += span_notice(LANG("_root.65277b5468ac66be", list(round(temperature - T0C,0.01), round(temperature, 0.01))))
+			message += span_notice(LANG("_root.d3cc48cf0a5ef13e", list(volume)))
+			message += span_notice(LANG("_root.1e0faec1b85c5156", list(round(pressure, 0.01))))
+			message += span_notice(LANG("_root.71e36c17dbd74763", list(display_energy(heat_capacity))))
+			message += span_notice(LANG("_root.a32465bd906b3973", list(display_energy(thermal_energy))))
+			// ZH EDIT CHANGE END
 		else
-			message += airs.len > 1 ? span_notice("This node is empty!") : span_notice("[target] is empty!")
-			message += span_notice("Volume: [volume] L") // don't want to change the order volume appears in, suck it
+			message += airs.len > 1 ? span_notice(LANG("_root.fa2f9f11cc67019c", null)) : span_notice(LANG("_root.02d482cc1aef0cef", list(target))) // ZH EDIT - I18N
+			message += span_notice(LANG("_root.d3cc48cf0a5ef13e", list(volume))) // ZH EDIT - I18N. don't want to change the order volume appears in, suck it
 
 	// we let the join apply newlines so we do need handholding
 	to_chat(user, boxed_message(jointext(message, "\n")), type = MESSAGE_TYPE_INFO)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/teshari
 
 /datum/species/teshari/on_species_gain(mob/living/carbon/human/new_teshari, datum/species/old_species, pref_load, regenerate_icons = TRUE)
@@ -21,7 +22,7 @@
 
 /datum/action/cooldown/sonar_ping/Activate(atom/target)
 	var/heard_something = FALSE
-	to_chat(owner, span_notice("You take a moment to listen in to your environment..."))
+	to_chat(owner, span_notice(LANG("datum.03a65e51a5eee32f", null)))
 	for(var/mob/living/living in range(owner.client?.view, owner))
 		if(living == owner || living.stat == DEAD)
 			continue
@@ -53,7 +54,7 @@
 		to_chat(owner, span_notice(jointext(feedback, null)))
 
 	if(!heard_something)
-		to_chat(owner, span_notice("You hear no movement but your own."))
+		to_chat(owner, span_notice(LANG("datum.94d0df851f150cb6", null)))
 
 	StartCooldown()
 	return TRUE

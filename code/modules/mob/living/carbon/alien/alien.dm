@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/carbon/alien
 	abstract_type = /mob/living/carbon/alien
 	name = "alien"
@@ -135,8 +136,8 @@ Des: Removes all infected images from the alien.
 
 /mob/living/carbon/alien/proc/alien_evolve(mob/living/carbon/alien/new_xeno)
 	visible_message(
-		span_alertalien("[src] begins to twist and contort!"),
-		span_noticealien("You begin to evolve!"),
+		span_alertalien(LANG("mob.266d235c909d05ba", list(src))),
+		span_noticealien(LANG("mob.240e9dea06a0b7b2", null)),
 	)
 
 	new_xeno.setDir(dir)
@@ -180,7 +181,12 @@ Des: Removes all infected images from the alien.
 
 /// Changes the name of the xeno we are evolving into in order to keep the same numerical identifier the old xeno had.
 /mob/living/carbon/alien/proc/change_name(old_name, old_real_name, old_identifier)
-	if(!alien_name_regex.Find(old_name)) // check to make sure there's no admins doing funny stuff with naming these aliens
+	// ZH EDIT CHANGE - i18n: old_name is reverse-localized at atom/Initialize, so the english regex failed → this
+	// treated every evolved xeno as "admin-renamed" and kept the OLD caste name (all xenos stuck as alien larva).
+	// Strip the trailing "(id)" and un-reverse the base to english (the regex's id group is optional). no-op on en.
+	// ORIGINAL: if(!alien_name_regex.Find(old_name))
+	var/static/regex/alien_id_suffix = new(" \\(\\d+\\)$")
+	if(!alien_name_regex.Find(alien_id_suffix.Replace(old_name, ""))) // check to make sure there's no admins doing funny stuff with naming these aliens
 		name = old_name
 		real_name = old_real_name
 		return

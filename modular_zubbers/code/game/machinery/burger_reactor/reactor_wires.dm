@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define WIRE_VENT_DIRECTION "Vent Direction"
 #define WIRE_VENT_POWER "Vent Power"
 #define WIRE_TAMPER "Tamper"
@@ -32,20 +33,20 @@
 /datum/wires/rbmk2/get_status()
 	var/obj/machinery/power/rbmk2/M = holder
 	. = list()
-	. += "The power light is [M.power && M.powernet ? "yellow" : "off"]."
-	. += "The occupancy light is [M.stored_rod ? "purple" : "off"]."
-	. += "The processing light is [M.active ? "green" : "off"]."
-	. += "The safety light is [M.safety ? "blue" : "flashing red"]."
+	. += LANG("datum.50637ffafedc0b84", list(M.power && M.powernet ? "yellow" : "off"))
+	. += LANG("datum.3e1ae9d681719f9a", list(M.stored_rod ? "purple" : "off"))
+	. += LANG("datum.0b8d503ccae7f5b4", list(M.active ? "green" : "off"))
+	. += LANG("datum.2c3bcfb8d9293d5f", list(M.safety ? "blue" : "flashing red"))
 
 	if(M.auto_vent_upgrade && M.auto_vent)
-		. += "The vent light is [M.venting ? "yellow" : "flashing red"]."
+		. += LANG("datum.1c191eb5e95e03ba", list(M.venting ? "yellow" : "flashing red"))
 	else if(M.vent_reverse_direction)
-		. += "The vent light is [M.venting ? "flashing orange and white" : "flashing red"]."
+		. += LANG("datum.1c191eb5e95e03ba", list(M.venting ? "flashing orange and white" : "flashing red"))
 	else
-		. += "The vent light is [M.venting ? "green" : "flashing red"]."
+		. += LANG("datum.1c191eb5e95e03ba", list(M.venting ? "green" : "flashing red"))
 
-	. += "The cooling limiter display reads [M.cooling_limiter < M.cooling_limiter_max ? "[M.cooling_limiter]%" : "AUTO"]"
-	. += "The anti-tamper light is [M.tampered ? "flashing red" : "green"]."
+	. += LANG("datum.38cf17e698565126", list(M.cooling_limiter < M.cooling_limiter_max ? "[M.cooling_limiter]%" : "AUTO"))
+	. += LANG("datum.230eb30ac5842bfc", list(M.tampered ? "flashing red" : "green"))
 
 /datum/wires/rbmk2/on_pulse(wire)
 	var/obj/machinery/power/rbmk2/M = holder

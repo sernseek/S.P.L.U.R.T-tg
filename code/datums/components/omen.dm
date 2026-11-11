@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * omen.dm: For when you want someone to have a really bad day
  *
@@ -60,10 +61,10 @@
 	var/mob/living/person = parent
 	REMOVE_TRAIT(person, TRAIT_CURSED, REF(src))
 	REMOVE_TRAIT(person, TRAIT_NO_MIRROR_REFLECTION, REF(src))
-	to_chat(person, span_nicegreen("You feel a horrible omen lifted off your shoulders!"))
+	to_chat(person, span_nicegreen(LANG("datum.43738be85c0b2afe", null)))
 
 	if(vessel)
-		vessel.visible_message(span_warning("[vessel] burns up in a sinister flash, taking an evil energy with it..."))
+		vessel.visible_message(span_warning(LANG("datum.0b1457c304f2106f", list(vessel))))
 		UnregisterSignal(vessel, COMSIG_QDELETING)
 		vessel.burn()
 		vessel = null
@@ -119,7 +120,7 @@
 		return NONE
 
 	consume_omen()
-	to_chat(parent, span_warning("As you stand in [darth_airlock], it doesn't stop closing like it should..."))
+	to_chat(parent, span_warning(LANG("datum.ed8e4bc668244404", list(darth_airlock))))
 	return AIRLOCK_BLOCK_FORCE_CRUSH
 
 /// When we vend an item from a vending machine, there's a chance the machine will tip
@@ -130,7 +131,7 @@
 		return NONE
 
 	consume_omen()
-	to_chat(source, span_warning("As you grab [vended_item] from the slot, [darth_vendor] wobbles ominously..."))
+	to_chat(source, span_warning(LANG("datum.2a247166775e6cb2", list(vended_item, darth_vendor))))
 	INVOKE_ASYNC(darth_vendor, TYPE_PROC_REF(/obj/machinery/vending, tilt), source)
 	return VENDING_NO_PICKUP
 
@@ -178,7 +179,7 @@
 	SIGNAL_HANDLER
 
 	if(was_ok && !HAS_TRAIT(parent, TRAIT_SHOCKIMMUNE) && roll_for_accident(25))
-		evil_light.visible_message(span_boldwarning("A bolt of electricity jumps from [evil_light] to [parent] as it breaks!"))
+		evil_light.visible_message(span_boldwarning(LANG("datum.35f7b40214ba2cc6", list(evil_light, parent))))
 		light_zap(evil_light)
 		consume_omen()
 	// always untrack because it's broken now
@@ -191,7 +192,7 @@
 	if(HAS_TRAIT(parent, TRAIT_SHOCKIMMUNE) || !roll_for_accident(10))
 		return
 
-	evil_light.visible_message(span_boldwarning("A bolt of electricity jumps from [evil_light] to [parent] as it turns [new_status ? "on" : "off"]!"))
+	evil_light.visible_message(span_boldwarning(LANG("datum.6a241cd8c32140cc", list(evil_light, parent, new_status ? "on" : "off"))))
 	light_zap(evil_light)
 	consume_omen()
 	// we're about to break it, so untrack to avoid a double zap
@@ -217,8 +218,8 @@
 		return FALSE
 
 	target.visible_message(
-		span_danger("[target] suddenly bursts into flames!"),
-		span_userdanger("You suddenly burst into flames!"),
+		span_danger(LANG("datum.d795ed13c335b7b3", list(target))),
+		span_userdanger(LANG("datum.6ba34e89a6ae13f0", null)),
 	)
 	INVOKE_ASYNC(target, TYPE_PROC_REF(/mob, emote), "scream")
 	consume_omen()
@@ -248,7 +249,7 @@
 			return FALSE
 
 		var/obj/structure/railing/rail = locate() in mob_turf
-		to_chat(our_guy, span_warning("As you step on [mob_turf], you lose footing and fall[rail ? " over the railing and" : ""] off the edge!"))
+		to_chat(our_guy, span_warning(LANG("datum.41ec311b2c8a23ec", list(mob_turf, rail ? " over the railing and" : ""))))
 		our_guy.throw_at(adjacent_turf, 1, 10, force = MOVE_FORCE_EXTREMELY_STRONG)
 		consume_omen()
 		return TRUE
@@ -263,14 +264,14 @@
 		REMOVE_TRAIT(our_guy, TRAIT_NO_MIRROR_REFLECTION, REF(src))
 		return FALSE
 
-	to_chat(our_guy, span_warning("You pass by the mirror and glance at it..."))
+	to_chat(our_guy, span_warning(LANG("datum.5de944554e13379a", null)))
 	if(evil_mirror.broken)
-		to_chat(our_guy, span_notice("...You feel lucky, somehow."))
+		to_chat(our_guy, span_notice(LANG("datum.af3613d5c6040c5f", null)))
 		return TRUE
 
 	switch(rand(1, 5))
 		if(1)
-			to_chat(our_guy, span_warning("...The mirror explodes into a million pieces! Wait, does that mean you're even more unlucky?"))
+			to_chat(our_guy, span_warning(LANG("datum.4088947baf04606f", null)))
 			evil_mirror.take_damage(evil_mirror.max_integrity, BRUTE, MELEE, FALSE)
 			if(roll_for_accident(20))
 				luck_mod += 0.25
@@ -278,23 +279,23 @@
 
 		if(2 to 3)
 			if(HAS_TRAIT(our_guy, TRAIT_NO_MIRROR_REFLECTION)) // not so living i suppose
-				to_chat(our_guy, span_green("...Oh god, you can't see your reflection - wait, that's normal."))
+				to_chat(our_guy, span_green(LANG("datum.98ec971088dac8d7", null)))
 				return TRUE
-			to_chat(our_guy, span_big(span_hypnophrase("...Oh god, you can't see your reflection!!")))
+			to_chat(our_guy, span_big(span_hypnophrase(LANG("datum.44347069d6e17f6c", null))))
 			INVOKE_ASYNC(our_guy, TYPE_PROC_REF(/mob, emote), "scream")
 			ADD_TRAIT(our_guy, TRAIT_NO_MIRROR_REFLECTION, REF(src))
 
 		if(4 to 5)
 			if(HAS_TRAIT(our_guy, TRAIT_NO_MIRROR_REFLECTION))
-				to_chat(our_guy, span_warning("...but you don't see anything of notice."))
+				to_chat(our_guy, span_warning(LANG("datum.7f7fbfa97d7242a8", null)))
 				return TRUE
-			to_chat(our_guy, span_userdanger("You see your reflection, but it is grinning malevolently and staring directly at you!"))
+			to_chat(our_guy, span_userdanger(LANG("datum.c5102a4e8af8e821", null)))
 			INVOKE_ASYNC(our_guy, TYPE_PROC_REF(/mob, emote), "scream")
 
 	our_guy.set_jitter_if_lower(25 SECONDS)
 	if(roll_for_accident(2))
-		to_chat(our_guy, span_warning("You are completely shocked by this turn of events!"))
-		to_chat(our_guy, span_userdanger("You clutch at your heart!"))
+		to_chat(our_guy, span_warning(LANG("datum.f0453fc57ae33abb", null)))
+		to_chat(our_guy, span_userdanger(LANG("datum.ac5673a54f599478", null)))
 		if(iscarbon(our_guy))
 			var/mob/living/carbon/carbon_guy = our_guy
 			carbon_guy.set_heartattack(status = TRUE)
@@ -311,8 +312,8 @@
 
 	playsound(our_guy, 'sound/effects/tableheadsmash.ogg', 90, TRUE)
 	our_guy.visible_message(
-		span_danger("[our_guy] hits [our_guy.p_their()] head really badly falling down!"),
-		span_userdanger("You hit your head really badly falling down!"),
+		span_danger(LANG("datum.2ffb47ee4f53d212", list(our_guy, our_guy.p_their()))),
+		span_userdanger(LANG("datum.56c37791bb2d5404", null)),
 	)
 	our_guy.apply_damage(75 * damage_mod, BRUTE, BODY_ZONE_HEAD, attacking_item = "slipping")
 	our_guy.apply_damage(100 * damage_mod, BRAIN)
@@ -326,7 +327,7 @@
 		return
 
 	playsound(our_guy, 'sound/effects/pray_chaplain.ogg', 40, TRUE)
-	to_chat(our_guy, span_green("You feel fantastic!"))
+	to_chat(our_guy, span_green(LANG("datum.2338ad4e94bda114", null)))
 	qdel(src)
 
 /// Severe deaths. Normally lifts the curse.

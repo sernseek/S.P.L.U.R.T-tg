@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
  * Simple helper to generate a string of
  * garbled symbols up to [length] characters.
@@ -298,8 +299,8 @@
 		return
 	var/confirmed = tgui_alert(
 		owner.current,
-		message = "Are you sure? You will no longer be able to Ascend.",
-		title = "Reject the call?",
+		message = LANG("datum.e97bafc6cb330068", null),
+		title = LANG("datum.cbdc9b35bd6720b4", null),
 		buttons = list("Yes", "No"),
 	) == "Yes"
 	if (!confirmed)
@@ -334,7 +335,7 @@
 
 /datum/antagonist/heretic/farewell()
 	if(!silent && owner.current)
-		to_chat(owner.current, span_userdanger("Your mind begins to flare as the otherwordly knowledge escapes your grasp!"))
+		to_chat(owner.current, span_userdanger(LANG("datum.a550bda4ec677bd5", null)))
 	return ..()
 
 /datum/antagonist/heretic/on_gain()
@@ -436,8 +437,8 @@
 		return
 	var/mob/heretic_mob = owner.current
 	unlimited_blades = TRUE
-	to_chat(heretic_mob, span_boldwarning("You have gained a lot of power, the mansus will no longer allow you to break your blades, but you can now make as many as you wish."))
-	heretic_mob.balloon_alert(heretic_mob, "blade breaking disabled!")
+	to_chat(heretic_mob, span_boldwarning(LANG("datum.724bfbbdd0e7ed7b", null)))
+	heretic_mob.balloon_alert(heretic_mob, LANG("datum.e3c32e0d3c423c4b", null))
 	update_heretic_aura()
 	var/datum/action/cooldown/spell/shadow_cloak/cloak_spell = locate() in heretic_mob.actions
 	cloak_spell.Remove(heretic_mob)
@@ -519,15 +520,15 @@
 /datum/antagonist/heretic/proc/try_draw_rune(mob/living/user, turf/target_turf, drawing_time = 20 SECONDS, additional_checks)
 	for(var/turf/nearby_turf as anything in RANGE_TURFS(1, target_turf))
 		if(!isopenturf(nearby_turf) || is_type_in_typecache(nearby_turf, blacklisted_rune_turfs))
-			target_turf.balloon_alert(user, "invalid placement for rune!")
+			target_turf.balloon_alert(user, LANG("datum.871ab3efe695b995", null))
 			return
 
 	if(locate(/obj/effect/heretic_rune) in range(3, target_turf))
-		target_turf.balloon_alert(user, "too close to another rune!")
+		target_turf.balloon_alert(user, LANG("datum.7af63d5418699b5f", null))
 		return
 
 	if(drawing_rune)
-		target_turf.balloon_alert(user, "already drawing a rune!")
+		target_turf.balloon_alert(user, LANG("datum.3d30c111553ee02c", null))
 		return
 
 	INVOKE_ASYNC(src, PROC_REF(draw_rune), user, target_turf, drawing_time, additional_checks)
@@ -545,7 +546,7 @@
 	drawing_rune = TRUE
 
 	var/rune_colour = GLOB.heretic_path_to_color[heretic_path?.route || PATH_START]
-	target_turf.balloon_alert(user, "drawing rune...")
+	target_turf.balloon_alert(user, LANG("datum.10bc15c69e4bf28b", null))
 	var/obj/effect/temp_visual/drawing_heretic_rune/drawing_effect
 	if (drawing_time < (10 SECONDS))
 		drawing_effect = new /obj/effect/temp_visual/drawing_heretic_rune/fast(target_turf, rune_colour)
@@ -553,14 +554,14 @@
 		drawing_effect = new(target_turf, rune_colour)
 
 	if(!do_after(user, drawing_time, target_turf, extra_checks = additional_checks, cog_icon = null))
-		target_turf.balloon_alert(user, "interrupted!")
+		target_turf.balloon_alert(user, LANG("datum.c67b5d274d6e724b", null))
 		new /obj/effect/temp_visual/drawing_heretic_rune/fail(target_turf, rune_colour)
 		qdel(drawing_effect)
 		drawing_rune = FALSE
 		return
 
 	qdel(drawing_effect)
-	target_turf.balloon_alert(user, "rune created")
+	target_turf.balloon_alert(user, LANG("datum.676d721a5e8339bc", null))
 	new /obj/effect/heretic_rune/big(target_turf, rune_colour)
 	drawing_rune = FALSE
 
@@ -612,7 +613,7 @@
 	haunted_blade.gender_reveal(outline_color = null, ray_color = COLOR_HERETIC_GREEN)
 
 	for(var/mob/living/culto as anything in invokers)
-		to_chat(culto, span_cult_large("\"A follower of the forgotten gods! You must be rewarded for such a valuable sacrifice.\""))
+		to_chat(culto, span_cult_large(LANG("datum.f58d3a68fe609bf8", null)))
 
 	// Locate a cultist team (Is there a better way??)
 	var/mob/living/random_cultist = pick(invokers)
@@ -792,9 +793,9 @@
 			/*
 			if(!objective.check_completion())
 				succeeded = FALSE
-			parts += "<b>Objective #[count]</b>: [objective.explanation_text] [objective.get_roundend_success_suffix()]"
+			parts += "<b>[lang_reverse_text("Objective")] #[count]</b>: [lang_reverse_text(objective.explanation_text)] [objective.get_roundend_success_suffix()]" // ZH EDIT - I18N - reverse non-interpolated full-sentence objectives (interpolated ones miss and still hit the to_chat boundary engine)
 			*/
-			parts += "<b>Objective #[count]</b>: [objective.explanation_text]"
+			parts += "<b>[lang_reverse_text("Objective")] #[count]</b>: [lang_reverse_text(objective.explanation_text)]" // ZH EDIT - I18N - reverse non-interpolated full-sentence objectives (interpolated ones miss and still hit the to_chat boundary engine)
 			// SKYRAT EDIT END - No greentext
 			count++
 
@@ -844,12 +845,12 @@
  */
 /datum/antagonist/heretic/proc/give_living_heart(mob/admin)
 	if(!admin.client?.holder)
-		to_chat(admin, span_warning("You shouldn't be using this!"))
+		to_chat(admin, span_warning(LANG("datum.dddf66eb7b180133", null)))
 		return
 
 	var/datum/heretic_knowledge/living_heart/heart_knowledge = get_knowledge(/datum/heretic_knowledge/living_heart)
 	if(!heart_knowledge)
-		to_chat(admin, span_warning("The heretic doesn't have a living heart knowledge for some reason. What?"))
+		to_chat(admin, span_warning(LANG("datum.d4d9eb8b00f0d6a8", null)))
 		return
 
 	heart_knowledge.on_research(owner.current, src)
@@ -859,17 +860,17 @@
  */
 /datum/antagonist/heretic/proc/add_marked_as_target(mob/admin)
 	if(!admin.client?.holder)
-		to_chat(admin, span_warning("You shouldn't be using this!"))
+		to_chat(admin, span_warning(LANG("datum.dddf66eb7b180133", null)))
 		return
 
 	var/mob/living/carbon/human/new_target = admin.client?.holder.marked_datum
 	if(!istype(new_target))
-		to_chat(admin, span_warning("You need to mark a human to do this!"))
+		to_chat(admin, span_warning(LANG("datum.06283c2536283e2f", null)))
 		return
 
-	if(tgui_alert(admin, "Let them know their targets have been updated?", "Whispers of the Mansus", list("Yes", "No")) == "Yes")
-		to_chat(owner.current, span_danger("The Mansus has modified your targets. Go find them!"))
-		to_chat(owner.current, span_danger("[new_target.real_name], the [new_target.mind?.assigned_role?.title || "human"]."))
+	if(tgui_alert(admin, LANG("datum.6375d72fe710bbea", null), LANG("datum.c61774cb2443c4e8", null), list("Yes", "No")) == "Yes")
+		to_chat(owner.current, span_danger(LANG("datum.ceb53cb345170fa7", null)))
+		to_chat(owner.current, span_danger(LANG("datum.b88a54a4b354012c", list(new_target.real_name, new_target.mind?.assigned_role?.title || "human"))))
 
 	add_sacrifice_target(new_target)
 
@@ -878,14 +879,14 @@
  */
 /datum/antagonist/heretic/proc/remove_target(mob/admin)
 	if(!admin.client?.holder)
-		to_chat(admin, span_warning("You shouldn't be using this!"))
+		to_chat(admin, span_warning(LANG("datum.dddf66eb7b180133", null)))
 		return
 
 	var/list/removable = list()
 	for(var/mob/living/carbon/human/old_target as anything in sac_targets)
 		removable[old_target.name] = old_target
 
-	var/name_of_removed = tgui_input_list(admin, "Choose a human to remove", "Who to Spare", removable)
+	var/name_of_removed = tgui_input_list(admin, LANG("datum.3a2736192e866be0", null), LANG("datum.e5a5bc00dfe31a9e", null), removable)
 	if(QDELETED(src) || !admin.client?.holder || isnull(name_of_removed))
 		return
 	var/mob/living/carbon/human/chosen_target = removable[name_of_removed]
@@ -893,21 +894,21 @@
 		return
 
 	if(!remove_sacrifice_target(chosen_target))
-		to_chat(admin, span_warning("Failed to remove [name_of_removed] from [owner]'s sacrifice list. Perhaps they're no longer in the list anyways."))
+		to_chat(admin, span_warning(LANG("datum.8360d0736e70b154", list(name_of_removed, owner))))
 		return
 
-	if(tgui_alert(admin, "Let them know their targets have been updated?", "Whispers of the Mansus", list("Yes", "No")) == "Yes")
-		to_chat(owner.current, span_danger("The Mansus has modified your targets."))
+	if(tgui_alert(admin, LANG("datum.6375d72fe710bbea", null), LANG("datum.c61774cb2443c4e8", null), list("Yes", "No")) == "Yes")
+		to_chat(owner.current, span_danger(LANG("datum.18b68f728c1faccd", null)))
 
 /**
  * Admin proc for easily adding / removing knowledge points.
  */
 /datum/antagonist/heretic/proc/admin_change_points(mob/admin)
 	if(!admin.client?.holder)
-		to_chat(admin, span_warning("You shouldn't be using this!"))
+		to_chat(admin, span_warning(LANG("datum.dddf66eb7b180133", null)))
 		return
 
-	var/change_num = tgui_input_number(admin, "Add or remove knowledge points", "Points", 0, 100, -100)
+	var/change_num = tgui_input_number(admin, LANG("datum.865305fb11e911e9", null), LANG("datum.4c684fb6d08f96fa", null), 0, 100, -100)
 	if(!change_num || QDELETED(src))
 		return
 
@@ -918,12 +919,12 @@
  */
 /datum/antagonist/heretic/proc/admin_give_focus(mob/admin)
 	if(!admin.client?.holder)
-		to_chat(admin, span_warning("You shouldn't be using this!"))
+		to_chat(admin, span_warning(LANG("datum.dddf66eb7b180133", null)))
 		return
 
 	var/mob/living/pawn = owner.current
 	pawn.equip_to_slot_if_possible(new /obj/item/clothing/neck/heretic_focus(get_turf(pawn)), ITEM_SLOT_NECK, TRUE, TRUE)
-	to_chat(pawn, span_mansus("The Mansus has manifested you a focus."))
+	to_chat(pawn, span_mansus(LANG("datum.73cd4578b4117596", null)))
 
 /datum/antagonist/heretic/antag_panel_data()
 	var/list/string_of_knowledge = list()
@@ -941,13 +942,13 @@
 	. = ..()
 
 	. += "<br>"
-	. += "<i><b>Current Targets:</b></i><br>"
+	. += LANG("datum.8c06fe40b9c3d129", null)
 	if(LAZYLEN(sac_targets))
 		for(var/mob/living/carbon/human/target as anything in sac_targets)
-			. += " - <b>[target.real_name]</b>, the [target.mind?.assigned_role?.title || "human"].<br>"
+			. += LANG("datum.71f1421cd4cc8a73", list(target.real_name, target.mind?.assigned_role?.title || "human"))
 
 	else
-		. += "<i>None!</i><br>"
+		. += LANG("datum.fa63c79d44502ee4", null)
 	. += "<br>"
 
 /datum/antagonist/heretic/proc/purchase_knowledge(datum/heretic_knowledge/knowledge_type, category = HERETIC_KNOWLEDGE_TREE, update = TRUE)

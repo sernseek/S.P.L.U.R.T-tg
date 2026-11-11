@@ -22,7 +22,7 @@
 		EU_RELAY,
 		NO_RELAY,
 	)
-	var/choice = tgui_input_list(usr, "Which relay do you wish to use?", "Relay Select", relays)
+	var/choice = tgui_input_list(usr, LANG("client.ad08a62ae8a1c599", null), LANG("client.d4b38d34aede49c1", null), relays)
 	var/destination
 	switch(choice)
 		if(US_EAST_RELAY)

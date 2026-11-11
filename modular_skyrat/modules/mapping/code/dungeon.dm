@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 *	WALLS
 */
@@ -87,7 +88,7 @@
 	climbable = TRUE
 
 /obj/structure/railing/stone/attackby(obj/item/wrench, mob/living/user, params)
-	to_chat(user, span_notice("You frown as you realise this wall is in fact made of stone, and cannot be uprooted from the ground and dragged along with a mere wrench."))
+	to_chat(user, span_notice(LANG("obj.5650ee360f193482", null)))
 	return
 
 /obj/structure/railing/stone/left
@@ -123,6 +124,6 @@
 
 /obj/machinery/button/dungeon/attackby(obj/item/W, mob/user, params)
 	if(W.tool_behaviour == TOOL_SCREWDRIVER)
-		to_chat(user, span_notice("You prod around the rim of the bricks and try and jam it in. Looks like it isn't coming out this way."))
+		to_chat(user, span_notice(LANG("obj.eaa7cee8e7ee789c", null)))
 		return
 // Let's not open the maintenance panel of a stone brick.

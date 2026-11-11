@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //to either get inside, or out, of a host
 /datum/action/cooldown/mob_cooldown/borer/choosing_host
 	name = "Inhabit/Uninhabit Host"
@@ -6,10 +7,10 @@
 
 /datum/action/cooldown/mob_cooldown/borer/choosing_host/Activate(atom/target)
 	if(!owner.Adjacent(target))
-		owner.balloon_alert(owner, "too far")
+		owner.balloon_alert(owner, LANG("datum.3052188b38b19a29", null))
 		return FALSE
 	if(!ishuman(target))
-		owner.balloon_alert(owner, "not human")
+		owner.balloon_alert(owner, LANG("datum.93143d8895d4664f", null))
 		return FALSE
 	var/mob/living/basic/cortical_borer/cortical_owner = owner
 	cortical_owner.face_atom(target)

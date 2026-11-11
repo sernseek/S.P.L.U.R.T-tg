@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/glasses	//Code to let you switch the side your eyepatch is on! Woo! Just an explanation, this is added to the base glasses so it works on eyepatch-huds too
 	var/can_switch_eye = FALSE	//Having this default to false means that its easy to make sure this doesnt apply to any pre-existing items
 
@@ -5,7 +6,7 @@
 /obj/item/clothing/glasses/examine(mob/user)
 	. = ..()
 	if(can_switch_eye)
-		. += "Use in hands to wear it over your [icon_state == base_icon_state ? "left" : "right"] eye."
+		. += LANG("obj.ebc719f0a8e61e23", list(icon_state == base_icon_state ? "left" : "right"))
 
 
 /* ---------- Items Below ----------*/

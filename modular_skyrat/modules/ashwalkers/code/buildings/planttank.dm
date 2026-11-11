@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/plant_tank
 	name = "plant tank"
 	desc = "A small little glass tank that is used to grow plants; this tank promotes the nitrogen and oxygen cycle."
@@ -19,11 +20,11 @@
 
 /obj/structure/plant_tank/examine(mob/user)
 	. = ..()
-	. += span_notice("<br>Use food or worm fertilizer to allow nitrogen production and carbon dioxide processing!")
-	. += span_notice("There are [operation_number] cycles left!")
+	. += span_notice(LANG("obj.7119a77581127558", null))
+	. += span_notice(LANG("obj.17448eb1b2ed5983", list(operation_number)))
 	var/datum/component/simple_farm/find_farm = GetComponent(/datum/component/simple_farm)
 	if(!find_farm)
-		. += span_notice("<br>Use five sand to allow planting!")
+		. += span_notice(LANG("obj.884eae86cd9490ef", null))
 
 /obj/structure/plant_tank/attackby(obj/item/attacking_item, mob/user, params)
 	if(istype(attacking_item, /obj/item/food) || istype(attacking_item, /obj/item/stack/worm_fertilizer))
@@ -35,7 +36,7 @@
 		else
 			qdel(attacking_item)
 
-		balloon_alert(user, "[attacking_item] placed inside")
+		balloon_alert(user, LANG("obj.b25cae3550bffe99", list(attacking_item)))
 		user.mind?.adjust_experience(/datum/skill/primitive, 5)
 		operation_number += 2
 		if(prob(user.mind.get_skill_modifier(/datum/skill/primitive, SKILL_PROBS_MODIFIER)))
@@ -44,7 +45,7 @@
 		return
 
 	if(istype(attacking_item, /obj/item/storage/bag/plants))
-		balloon_alert(user, "placing food inside")
+		balloon_alert(user, LANG("obj.0126860d0577a5f0", null))
 		var/skill_modifier = user.mind.get_skill_modifier(/datum/skill/primitive, SKILL_SPEED_MODIFIER)
 		for(var/obj/item/food/selected_food in attacking_item.contents)
 			if(!do_after(user, 1 SECONDS * skill_modifier, src))
@@ -61,12 +62,12 @@
 	if(istype(attacking_item, /obj/item/stack/ore/glass))
 		var/datum/component/simple_farm/find_farm = GetComponent(/datum/component/simple_farm)
 		if(find_farm)
-			balloon_alert(user, "no more [attacking_item] required")
+			balloon_alert(user, LANG("obj.47cd9db73bd58933", list(attacking_item)))
 			return
 
 		var/obj/item/stack/attacking_stack = attacking_item
 		if(!attacking_stack.use(5))
-			balloon_alert(user, "farms require five sand")
+			balloon_alert(user, LANG("obj.acbb2297f142a2b5", null))
 			return
 
 		AddComponent(/datum/component/simple_farm, TRUE, TRUE, list(0, 12))
@@ -100,17 +101,17 @@
 	src_mixture.moles[/datum/gas/nitrogen] += MOLES_CELLSTANDARD //the nitrogen cycle-- plants (and bacteria) participate in the nitrogen cycle
 
 /obj/structure/plant_tank/wrench_act(mob/living/user, obj/item/tool)
-	balloon_alert(user, "[anchored ? "un" : ""]bolting")
+	balloon_alert(user, LANG("obj.e8caa39b6b91e64c", list(anchored ? "un" : "")))
 	tool.play_tool_sound(src, 50)
 	if(!tool.use_tool(src, user, 2 SECONDS))
 		return TRUE
 
 	anchored = !anchored
-	balloon_alert(user, "[anchored ? "" : "un"]bolted")
+	balloon_alert(user, LANG("obj.1e8c7ea22ad920d6", list(anchored ? "" : "un")))
 	return TRUE
 
 /obj/structure/plant_tank/screwdriver_act(mob/living/user, obj/item/tool)
-	balloon_alert(user, "deconstructing")
+	balloon_alert(user, LANG("obj.5a199e01223ef916", null))
 	tool.play_tool_sound(src, 50)
 	if(!tool.use_tool(src, user, 2 SECONDS))
 		return TRUE

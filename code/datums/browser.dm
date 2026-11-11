@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/browser
 	var/mob/user
 	var/title = ""
@@ -111,16 +112,21 @@
 </html>"}
 
 /datum/browser/proc/get_content()
-	return {"
+	// ZH EDIT ADDITION START - i18n - 遗留 browse HTML 经 AC 子串兜底（低频；仅全服中文时；英文服 no-op）
+	var/full_content = {"
 		[get_header()]
 		[content]
 		[get_footer()]
 	"}
+	if(GLOB.i18n_server_locale != DEFAULT_UI_LOCALE)
+		return lang_fallback_apply_html(full_content)
+	return full_content
+	// ZH EDIT ADDITION END
 
 /datum/browser/proc/open(use_on_close = TRUE)
 	if(isnull(window_id)) //null check because this can potentially nuke goonchat
 		WARNING("Browser [title] tried to open with a null ID")
-		to_chat(user, span_userdanger("The [title] browser you tried to open failed a sanity check! Please report this on GitHub!"))
+		to_chat(user, span_userdanger(LANG("datum.0dd6697122c54a97", list(title))))
 		return
 
 	var/window_size = ""
@@ -419,11 +425,11 @@
 					setting["value"] = new_value
 
 			if ("string")
-				setting["value"] = stripped_input(user, "Enter new value for [setting["desc"]]", "Enter new value for [setting["desc"]]", setting["value"])
+				setting["value"] = stripped_input(user, LANG("datum.3ec3cdd5425f6b73", list(setting["desc"])), LANG("datum.3ec3cdd5425f6b73", list(setting["desc"])), setting["value"])
 			if ("number")
-				setting["value"] = input(user, "Enter new value for [setting["desc"]]", "Enter new value for [setting["desc"]]") as num
+				setting["value"] = input(user, LANG("datum.3ec3cdd5425f6b73", list(setting["desc"])), LANG("datum.3ec3cdd5425f6b73", list(setting["desc"]))) as num
 			if ("color")
-				settings["mainsettings"][setting]["value"] = tgui_color_picker(user, "Enter new value for [settings["mainsettings"][setting]["desc"]]", "Enter new value for [settings["mainsettings"][setting]["desc"]]", settings["mainsettings"][setting]["value"])	// BUBBERSTATION EDIT: TGUI COLOR PICKER
+				settings["mainsettings"][setting]["value"] = tgui_color_picker(user, LANG("datum.3ec3cdd5425f6b73", list(settings["mainsettings"][setting]["desc"])), LANG("datum.3ec3cdd5425f6b73", list(settings["mainsettings"][setting]["desc"])), settings["mainsettings"][setting]["value"])	// BUBBERSTATION EDIT: TGUI COLOR PICKER
 			if ("boolean")
 				setting["value"] = (setting["value"] == "Yes") ? "No" : "Yes"
 			if ("ckey")

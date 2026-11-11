@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/projectile/energy/electrode
 	name = "electrode"
 	icon_state = "spark"
@@ -43,8 +44,8 @@
 	// we need a "from", otherwise, where does the electricity come from?
 	if(isnull(fired_from))
 		target.visible_message(
-			span_warning("[src]\s collide with [target] harmlessly[isfloorturf(target.loc) ? ", before falling to [target.loc]" : ""]."),
-			span_notice("[src] collide with you harmlessly[isfloorturf(target.loc) ? ", before falling to [target.loc]" : ""]."),
+			span_warning(LANG("obj.ba17836c43dcc2e9", list(src, target, isfloorturf(target.loc) ? ", before falling to [target.loc]" : ""))),
+			span_notice(LANG("obj.f1b4b88bf36c32ea", list(src, isfloorturf(target.loc) ? ", before falling to [target.loc]" : ""))),
 		)
 		return
 
@@ -168,7 +169,7 @@
 
 /datum/status_effect/tased/on_apply()
 	if(issilicon(owner) || isbot(owner) || isdrone(owner) || HAS_TRAIT(owner, TRAIT_PIERCEIMMUNE))
-		owner.visible_message(span_warning("[capitalize(electrode_name)] fail to catch [owner][isfloorturf(owner.loc) ? ", falling to [owner.loc]" : ""]!"))
+		owner.visible_message(span_warning(LANG("datum.39c012f7f97fed84", list(capitalize(electrode_name), owner, isfloorturf(owner.loc) ? ", falling to [owner.loc]" : ""))))
 		return FALSE
 
 	RegisterSignal(owner, COMSIG_LIVING_RESIST, PROC_REF(try_remove_taser))
@@ -315,8 +316,8 @@
 	if(QDELING(src))
 		return
 	owner.visible_message(
-		span_warning("[capitalize(electrode_name)] stop shocking [owner][isfloorturf(owner.loc) ? ", falling to [owner.loc]" : ""]."),
-		span_notice("[capitalize(electrode_name)] stop shocking you[isfloorturf(owner.loc) ? ", falling to [owner.loc]" : ""]."),
+		span_warning(LANG("datum.d1c152eeffb38baf", list(capitalize(electrode_name), owner, isfloorturf(owner.loc) ? ", falling to [owner.loc]" : ""))),
+		span_notice(LANG("datum.76a36d400cddb645", list(capitalize(electrode_name), isfloorturf(owner.loc) ? ", falling to [owner.loc]" : ""))),
 	)
 	qdel(src)
 
@@ -335,15 +336,15 @@
 	owner.shake_up_animation()
 	playsound(owner, 'sound/items/weapons/thudswoosh.ogg', 50, TRUE, -1)
 	remover.visible_message(
-		span_warning("[owner] tries to remove [electrode_name][remover == owner ? "" : " from [owner]"]!"),
-		span_notice("You try to remove [electrode_name][remover == owner ? "" : " from [owner]"]!"),
+		span_warning(LANG("datum.0d333ba5d2fa3811", list(owner, electrode_name, remover == owner ? "" : " from [owner]"))),
+		span_notice(LANG("datum.29f21c9ea9b1be3e", list(electrode_name, remover == owner ? "" : " from [owner]"))),
 	)
 	// If embedding was less... difficult to work with, I would make tasers rely on an embedded object to handle this
 	if(!do_after(remover, 5 SECONDS, owner, extra_checks = CALLBACK(src, PROC_REF(try_remove_taser_checks)), interaction_key = id))
 		return
 	remover.visible_message(
-		span_warning("[owner] removes [electrode_name] from [remover == owner ? "[owner.p_their()]" : "[owner]'s"] body!"),
-		span_notice("You remove [electrode_name][remover == owner ? "" : " from [owner]'s body"]!"),
+		span_warning(LANG("datum.b29e1f608e794e77", list(owner, electrode_name, remover == owner ? "[owner.p_their()]" : "[owner]'s"))),
+		span_notice(LANG("datum.9f59db4436546d41", list(electrode_name, remover == owner ? "" : " from [owner]'s body"))),
 	)
 	end_tase()
 
@@ -369,8 +370,8 @@
 			if(disruptor.body_position == LYING_DOWN)
 				return
 	disruptor.visible_message(
-		span_warning("[disruptor] gets tangled in [electrode_name]!"),
-		span_warning("You get tangled in [electrode_name]!"),
+		span_warning(LANG("datum.17ea3b84b57a4512", list(disruptor, electrode_name))),
+		span_warning(LANG("datum.01382bb56017a0b9", list(electrode_name))),
 	)
 	if(!disruptor.check_stun_immunity(CANSTUN|CANKNOCKDOWN))
 		disruptor.apply_damage(90, STAMINA)

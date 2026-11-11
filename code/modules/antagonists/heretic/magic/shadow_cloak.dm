@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/spell/shadow_cloak
 	name = "Cloak of Shadow"
 	desc = "Completely conceals your identity, but does not make you invisible.  Can be activated early to disable it. \
@@ -29,7 +30,7 @@
 
 /datum/action/cooldown/spell/shadow_cloak/is_valid_target(atom/cast_on)
 	if(HAS_TRAIT(cast_on, TRAIT_HULK)) // Hulks are not stealthy. Need not apply
-		cast_on.balloon_alert(cast_on, "cannot cast while hulk!")
+		cast_on.balloon_alert(cast_on, LANG("datum.24ab9ccde79edd4f", null))
 		return FALSE
 	return isliving(cast_on)
 
@@ -71,8 +72,8 @@
 /datum/action/cooldown/spell/shadow_cloak/proc/cloak_mob(mob/living/cast_on)
 	playsound(cast_on, 'sound/effects/chemistry/ahaha.ogg', 50, TRUE, -1, extrarange = SILENCED_SOUND_EXTRARANGE, frequency = 0.5)
 	cast_on.visible_message(
-		span_warning("[cast_on] disappears into the shadows!"),
-		span_notice("You disappear into the shadows, becoming unidentifiable."),
+		span_warning(LANG("datum.563549b014cffd29", list(cast_on))),
+		span_notice(LANG("datum.440f154ddf000c3e", null)),
 	)
 
 	active_cloak = cast_on.apply_status_effect(/datum/status_effect/shadow_cloak)
@@ -87,8 +88,8 @@
 	playsound(cast_on, 'sound/effects/curse/curseattack.ogg', 50)
 	if(show_message)
 		cast_on.visible_message(
-			span_warning("[cast_on] appears from the shadows!"),
-			span_notice("You appear from the shadows, identifiable once more."),
+			span_warning(LANG("datum.a744519743098b9a", list(cast_on))),
+			span_notice(LANG("datum.c485d7c0eee4e71f", null)),
 		)
 
 	// Clear up the timer
@@ -102,8 +103,8 @@
 	var/mob/living/removed = source.owner
 	uncloak_mob(removed, show_message = FALSE)
 	removed.visible_message(
-		span_warning("[removed] is pulled from the shadows!"),
-		span_userdanger("You are pulled out of the shadows!"),
+		span_warning(LANG("datum.c6906ed32987654a", list(removed))),
+		span_userdanger(LANG("datum.5b04c41a8d456fd6", null)),
 	)
 
 	removed.Knockdown(0.5 SECONDS)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/rna_extractor
 	name = "advanced virus RNA extractor"
 	desc = "A tool used to extract the RNA from viruses. Apply to skin."
@@ -14,12 +15,12 @@
 
 /obj/item/rna_extractor/attackby(obj/item/O, mob/living/user)
 	if((istype(O, /obj/item/rna_vial) && loaded_vial != null))
-		to_chat(user, span_warning("[src] can not hold more than one vial!"))
+		to_chat(user, span_warning(LANG("obj.9476963a231d5d29", list(src))))
 		return FALSE
 	if(istype(O, /obj/item/rna_vial))
 		if(!user.transferItemToLoc(O, src))
 			return FALSE
-		to_chat(user, span_notice("You insert [O] into [src]!"))
+		to_chat(user, span_notice(LANG("obj.dbb74bc7f70fecc2", list(O, src))))
 		loaded_vial = O
 		playsound(loc, 'sound/items/weapons/autoguninsert.ogg', 35, 1)
 		update_appearance()
@@ -34,36 +35,36 @@
 		return
 	var/mob/living/carbon/human/target = interacting_with
 	if(!loaded_vial)
-		to_chat(user, span_danger("[src] is empty!"))
+		to_chat(user, span_danger(LANG("obj.02d482cc1aef0cef", list(src))))
 		return
 	if(loaded_vial.contains_rna)
-		to_chat(user, span_danger("[src] already has RNA data in it, upload it to the combinator!"))
+		to_chat(user, span_danger(LANG("obj.c9e8ba43a2a5d2d5", list(src))))
 		return
 	if(!ismutant(target))
-		to_chat(user, span_danger("[target] does not register as infected!"))
+		to_chat(user, span_danger(LANG("obj.73424ee2d20932b3", list(target))))
 		return
 	var/datum/component/mutant_infection/target_infection = target.GetComponent(/datum/component/mutant_infection)
 	if(!target_infection)
-		to_chat(user, span_danger("[target] does not register as infected!"))
+		to_chat(user, span_danger(LANG("obj.73424ee2d20932b3", list(target))))
 		return
 	if(target_infection.extract_rna())
 		loaded_vial.load_rna(target)
-		to_chat(user, span_notice("[src] successfully scanned [target], and now holds a sample virus RNA data."))
+		to_chat(user, span_notice(LANG("obj.efe7a564480c73b8", list(src, target))))
 		playsound(src.loc, 'sound/effects/spray2.ogg', 50, TRUE, -6)
 		update_appearance()
 	else
-		to_chat(user, span_warning("[target] has no useable RNA!"))
+		to_chat(user, span_warning(LANG("obj.7746bc5922c6d996", list(target))))
 
 /obj/item/rna_extractor/proc/unload_vial(mob/living/user)
 	if(loaded_vial)
 		loaded_vial.forceMove(user.loc)
 		user.put_in_hands(loaded_vial)
-		to_chat(user, span_notice("You remove [loaded_vial] from [src]."))
+		to_chat(user, span_notice(LANG("obj.cbed32661d4c054a", list(loaded_vial, src))))
 		loaded_vial = null
 		update_appearance()
 		playsound(loc, 'sound/items/weapons/empty.ogg', 50, 1)
 	else
-		to_chat(user, span_notice("[src] isn't loaded!"))
+		to_chat(user, span_notice(LANG("obj.a776223e1d5fa171", list(src))))
 		return
 
 /obj/item/rna_extractor/update_overlays()
@@ -74,7 +75,7 @@
 /obj/item/rna_extractor/examine(mob/user)
 	. = ..()
 	if(loaded_vial)
-		. += "It has an extracted RNA sample in it."
+		. += LANG("obj.4ae9cd5d77b0594d", null)
 
 /obj/item/rna_extractor/Destroy()
 	if(loaded_vial)
@@ -106,7 +107,7 @@
 /obj/item/rna_vial/examine(mob/user)
 	. = ..()
 	if(contains_rna)
-		. += "It has an RNA sample in it."
+		. += LANG("obj.f7c805cbe457b77c", null)
 
 /obj/item/hnz_cure
 	name = "HNZ-1 cure vial"
@@ -118,17 +119,17 @@
 /obj/item/hnz_cure/attack(mob/living/M, mob/living/user, params)
 	. = ..()
 	if(used)
-		to_chat(user, span_danger("[src] has been used and is useless!"))
+		to_chat(user, span_danger(LANG("obj.f98ac6d443f5aa5e", list(src))))
 		return
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(!H.GetComponent(/datum/component/mutant_infection))
-			to_chat(user, span_danger("[H] does not register as infected!"))
+			to_chat(user, span_danger(LANG("obj.73424ee2d20932b3", list(H))))
 			return
 		if(do_after(user, 4 SECONDS))
 			cure_target(H)
 			playsound(src.loc, 'sound/effects/spray2.ogg', 50, TRUE, -6)
-			to_chat(user, span_notice("You inject [H] wth [src]!"))
+			to_chat(user, span_notice(LANG("obj.f59903699cc35ff3", list(H, src))))
 			used = TRUE
 			update_appearance()
 
@@ -180,7 +181,7 @@
 	if(!user.transferItemToLoc(weapon, src))
 		return FALSE
 	loaded_item = weapon
-	to_chat(user, span_notice("You insert [weapon] to into [src] reciprocal."))
+	to_chat(user, span_notice(LANG("obj.b5230998cb0bd86c", list(weapon, src))))
 	flick("h_lathe_load", src)
 	update_appearance()
 	playsound(loc, 'sound/items/weapons/autoguninsert.ogg', 35, 1)
@@ -229,11 +230,11 @@
 		SStgui.update_uis(src)
 	else
 		if(status != STATUS_IDLE)
-			to_chat(usr, span_warning("[src] is currently recombinating!"))
+			to_chat(usr, span_warning(LANG("obj.5c118aadb01916ec", list(src))))
 		else if(!loaded_item)
-			to_chat(usr, span_warning("[src] is not currently loaded!"))
+			to_chat(usr, span_warning(LANG("obj.e76cc4f331a17c9e", list(src))))
 		else if(!process || process != loaded_item) //Interface exploit protection (such as hrefs or swapping items with interface set to old item)
-			to_chat(usr, span_danger("Interface failure detected in [src]. Please try again."))
+			to_chat(usr, span_danger(LANG("obj.5cfd33ca148cd3c0", list(src))))
 		else
 			if(operation == "virus")
 				status = STATUS_RECOMBINATING_VIRUS

@@ -1,8 +1,9 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /obj/machinery/power/rbmk2/multitool_act(mob/living/user, obj/item/multitool/tool)
 
 	if(!panel_open)
-		balloon_alert(user, "open the panel first!")
+		balloon_alert(user, LANG("obj.2152c7cd805774d4", null))
 		return ITEM_INTERACT_FAILURE
 
 	wires.interact(user)
@@ -11,7 +12,7 @@
 /obj/machinery/power/rbmk2/wirecutter_act(mob/living/user, obj/item/tool)
 
 	if(!panel_open)
-		balloon_alert(user, "open the panel first!")
+		balloon_alert(user, LANG("obj.2152c7cd805774d4", null))
 		return ITEM_INTERACT_FAILURE
 
 	wires.interact(user)
@@ -23,7 +24,7 @@
 		force_unjam(attack_item,user,25)
 		return ITEM_INTERACT_SUCCESS
 	if(stored_rod)
-		balloon_alert(user, "remove the rod first!")
+		balloon_alert(user, LANG("obj.23cbc8c2d62f51db", null))
 		return ITEM_INTERACT_FAILURE
 	if(!meltdown && default_deconstruction_crowbar(attack_item))
 		if(user)
@@ -41,7 +42,7 @@
 /obj/machinery/power/rbmk2/wrench_act(mob/living/user, obj/item/attack_item)
 
 	if(jammed)
-		balloon_alert(user, "refuses to budge!")
+		balloon_alert(user, LANG("obj.1059e89cda730aa5", null))
 		return ITEM_INTERACT_FAILURE
 
 	toggle_active(user)
@@ -52,21 +53,21 @@
 /obj/machinery/power/rbmk2/welder_act(mob/living/user, obj/item/attack_item)
 
 	if(atom_integrity >= max_integrity)
-		balloon_alert(user, "already repaired!")
+		balloon_alert(user, LANG("obj.88cc0c7c9991f538", null))
 		return ITEM_INTERACT_FAILURE
 	if (machine_stat & BROKEN)
-		balloon_alert(user, "too damaged to repair!")
+		balloon_alert(user, LANG("obj.6a314f11fac591f6", null))
 		return ITEM_INTERACT_FAILURE
 	if(!attack_item.tool_start_check(user, amount=1))
 		return ITEM_INTERACT_FAILURE
 
-	balloon_alert(user, "repairing...")
+	balloon_alert(user, LANG("obj.b52342a8e93a2ba2", null))
 	if(attack_item.use_tool(src, user, 4 SECONDS, volume = 50))
 		update_integrity(min(atom_integrity + 50,max_integrity))
 		if(atom_integrity >= max_integrity)
-			balloon_alert(user, "fully repaired!")
+			balloon_alert(user, LANG("obj.9717d1a33f0fc9b4", null))
 		else
-			balloon_alert(user, "partially repaired!")
+			balloon_alert(user, LANG("obj.05360c87e806ce4b", null))
 
 	return ITEM_INTERACT_SUCCESS
 
@@ -120,7 +121,7 @@
 	playsound(src, SFX_SPARKS, 75, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	safety = FALSE
 	obj_flags |= EMAGGED
-	balloon_alert(user, "overdrive engaged!")
+	balloon_alert(user, LANG("obj.03b9f4d740e10838", null))
 
 	if(user)
 		var/turf/T = get_turf(src)

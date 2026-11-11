@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * ## soft landing element!
  *
@@ -27,7 +28,7 @@
 
 	for(var/mob/living/falling_victim in falling_movables)
 		if(soft_object == falling_victim)
-			to_chat(falling_victim, span_notice("Your fall is cushioned by your body to provide a soft landing!"))
+			to_chat(falling_victim, span_notice(LANG("datum.58da6a04a5c7da53", null)))
 		else
-			to_chat(falling_victim, span_notice("[soft_object] provides a soft landing for you!"))
+			to_chat(falling_victim, span_notice(LANG("datum.421ff1c180818cb5", list(soft_object))))
 	return FALL_INTERCEPTED | FALL_NO_MESSAGE

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/carbon/alien/adult/royal
 	//Common stuffs for Praetorian and Queen
 	icon = 'icons/mob/nonhuman-player/alienqueen.dmi'
@@ -101,7 +102,7 @@
 
 /datum/action/cooldown/alien/make_structure/lay_egg/Activate(atom/target)
 	. = ..()
-	owner.visible_message(span_alertalien("[owner] lays an egg!"))
+	owner.visible_message(span_alertalien(LANG("datum.e0a767fee8b79dc2", list(owner))))
 
 //Button to let queen choose her praetorian.
 /datum/action/cooldown/alien/promote
@@ -115,7 +116,8 @@
 	. = ..()
 	//not free
 	if(promotion_plasma_cost != 0)
-		name = "[initial(name)] ([promotion_plasma_cost]P)"
+		// ZH EDIT CHANGE - i18n: initial(name) 是编译期英文原值，会覆盖掉 /atom/Initialize 反查好的中文名
+		name = "[lang_reverse_text(initial(name))] ([promotion_plasma_cost]P)"
 
 /datum/action/cooldown/alien/promote/IsAvailable(feedback = FALSE)
 	. = ..()
@@ -134,21 +136,21 @@
 /datum/action/cooldown/alien/promote/Activate(atom/target)
 	var/obj/item/queen_promotion/existing_promotion = locate() in owner.held_items
 	if(existing_promotion)
-		to_chat(owner, span_noticealien("You discard [existing_promotion]."))
+		to_chat(owner, span_noticealien(LANG("datum.edeef4afc3219c31", list(existing_promotion))))
 		owner.temporarilyRemoveItemFromInventory(existing_promotion)
 		qdel(existing_promotion)
 		return TRUE
 
 	if(!owner.get_empty_held_indexes())
-		to_chat(owner, span_warning("You must have an empty hand before preparing the parasite."))
+		to_chat(owner, span_warning(LANG("datum.59f45e63a9233ff7", null)))
 		return FALSE
 
 	var/obj/item/queen_promotion/new_promotion = new(owner.loc)
 	if(!owner.put_in_hands(new_promotion, del_on_fail = TRUE))
-		to_chat(owner, span_noticealien("You fail to prepare a parasite."))
+		to_chat(owner, span_noticealien(LANG("datum.29307d58b76fa836", null)))
 		return FALSE
 
-	to_chat(owner, span_noticealien("Use [new_promotion] on one of your children to promote her to a Praetorian!"))
+	to_chat(owner, span_noticealien(LANG("datum.4b1ef8112e7f7e71", list(new_promotion))))
 	return TRUE
 
 /obj/item/queen_promotion
@@ -168,11 +170,11 @@
 		CRASH("[type] was created and handled by a mob ([queen]) that didn't have a promotion action associated.")
 
 	if(!isalienadult(to_promote) || isalienroyal(to_promote))
-		to_chat(queen, span_noticealien("You may only use this with your adult, non-royal children!"))
+		to_chat(queen, span_noticealien(LANG("obj.6b0216944e5e4250", null)))
 		return
 
 	if(!promotion.IsAvailable())
-		to_chat(queen, span_noticealien("You cannot promote a child right now!"))
+		to_chat(queen, span_noticealien(LANG("obj.0d8eb4343a69e552", null)))
 		return
 
 	if(IS_UNCONSCIOUS_OR_CRIT(to_promote) || !to_promote.mind || !to_promote.key)
@@ -180,10 +182,10 @@
 
 	queen.adjustPlasma(-promotion.promotion_plasma_cost)
 
-	to_chat(queen, span_noticealien("You have promoted [to_promote] to a Praetorian!"))
+	to_chat(queen, span_noticealien(LANG("obj.d1b01c6fc12392d3", list(to_promote))))
 	to_promote.visible_message(
-		span_alertalien("[to_promote] begins to expand, twist and contort!"),
-		span_noticealien("The queen has granted you a promotion to Praetorian!"),
+		span_alertalien(LANG("obj.c11d82d2d6fbc448", list(to_promote))),
+		span_noticealien(LANG("obj.31cae26d4681031e", null)),
 	)
 
 	var/mob/living/carbon/alien/lucky_winner = to_promote
@@ -193,10 +195,10 @@
 	return TRUE
 
 /obj/item/queen_promotion/attack_self(mob/user)
-	to_chat(user, span_noticealien("You discard [src]."))
+	to_chat(user, span_noticealien(LANG("obj.edeef4afc3219c31", list(src))))
 	qdel(src)
 
 /obj/item/queen_promotion/dropped(mob/user, silent)
 	if(!silent)
-		to_chat(user, span_noticealien("You discard [src]."))
+		to_chat(user, span_noticealien(LANG("obj.edeef4afc3219c31", list(src))))
 	return ..()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_DATUM(character_directory, /datum/character_directory)
 #define READ_PREFS(target, pref) (target.client.prefs.read_preference(/datum/preference/pref) || "Unset")
 
@@ -155,10 +156,10 @@ GLOBAL_DATUM(character_directory, /datum/character_directory)
 	COOLDOWN_DECLARE(char_directory_cooldown)
 
 //Make a verb to open the character directory
-GAME_VERB_DESC(/client, show_character_directory, "Character Directory", "Shows a listing of all active characters, along with their associated OOC notes, flavor text, and more.", "OOC")
+GAME_VERB_DESC(/client, show_character_directory, "角色目录", "Shows a listing of all active characters, along with their associated OOC notes, flavor text, and more.", "OOC")
 	// This is primarily to stop malicious users from trying to lag the server by spamming this verb
 	if(!COOLDOWN_FINISHED(src, char_directory_cooldown))
-		to_chat(src, span_alert("Hold your horses! It's still refreshing!"))
+		to_chat(src, span_alert(LANG("client.8c437e3bfd1831a6", null)))
 		return
 	COOLDOWN_START(src, char_directory_cooldown, 10)
 
@@ -319,7 +320,7 @@ GAME_VERB_DESC(/client, show_character_directory, "Character Directory", "Shows 
 		if("refresh")
 			// This is primarily to stop malicious users from trying to lag the server by spamming this verb
 			if(!COOLDOWN_FINISHED(user.client, char_directory_cooldown))
-				to_chat(user, "<span class='warning'>Don't spam character directory refresh.</span>")
+				to_chat(user, LANG("datum.f906b6db9bf76c86", null))
 				return
 			COOLDOWN_START(user.client, char_directory_cooldown, 10)
 			update_static_data(user, ui)

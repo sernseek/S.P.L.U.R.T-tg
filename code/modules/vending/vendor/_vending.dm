@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///Maximum credits dump threshold
 #define CREDITS_DUMP_THRESHOLD 50
 /**
@@ -314,7 +315,7 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 	if(held_item?.tool_behaviour == TOOL_SCREWDRIVER)
-		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] Panel"
+		context[SCREENTIP_CONTEXT_LMB] = LANG("obj.3a1f9b9bcb4eed7a", list(panel_open ? "Close" : "Open"))
 		return CONTEXTUAL_SCREENTIP_SET
 
 	if(panel_open && held_item?.tool_behaviour == TOOL_WRENCH)
@@ -359,20 +360,20 @@
 	if(isnull(refill_canister))
 		return // you can add the comment here instead
 
-	. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "closed" : "open"].")
+	. += span_notice(LANG("obj.f3fabb12d30acb3c", list(EXAMINE_HINT("screwed"), panel_open ? "closed" : "open")))
 	if(panel_open)
-		. += span_notice("The machine may be [EXAMINE_HINT("pried")] apart.")
+		. += span_notice(LANG("obj.feb87e117b205d5b", list(EXAMINE_HINT("pried"))))
 
 	var/list/total_stock = total_stock()
 	if(total_stock[2])
 		if(total_stock[1] < total_stock[2])
-			. += span_notice("\The [src] can be restocked with [span_boldnotice("\a [initial(refill_canister.machine_name)] [initial(refill_canister.name)]")] with the panel open.")
+			. += span_notice(LANG("obj.b4898151b99a428d", list(src, span_boldnotice("\a [initial(refill_canister.machine_name)] [initial(refill_canister.name)]"))))
 		else
-			. += span_notice("\The [src] is fully stocked.")
+			. += span_notice(LANG("obj.a8c0dec7acba2a39", list(src)))
 	if(credits_contained < CREDITS_DUMP_THRESHOLD && credits_contained > 0)
-		. += span_notice("It should have a handfull of [MONEY_NAME] stored based on the missing items.")
+		. += span_notice(LANG("obj.c9dbdf57d84e17ce", list(MONEY_NAME)))
 	else if (credits_contained > PAYCHECK_CREW)
-		. += span_notice("It should have at least a full paycheck worth of [MONEY_NAME] inside!")
+		. += span_notice(LANG("obj.8d1dcd9ea8dd9653", list(MONEY_NAME)))
 
 /obj/machinery/vending/update_appearance(updates = ALL)
 	. = ..()
@@ -420,7 +421,7 @@
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
-	balloon_alert(user, "product lock disabled")
+	balloon_alert(user, LANG("obj.c10d3ad20877b858", null))
 	return TRUE
 
 

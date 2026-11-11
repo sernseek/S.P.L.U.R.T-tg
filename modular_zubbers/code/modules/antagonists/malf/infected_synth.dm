@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Could say "Synth Milf", please don't hurt me I'm just trying to be funny.
 /datum/antagonist/infected_ipc
 	name = "\improper Hacked Synthetic"
@@ -17,21 +18,21 @@
 	var/mob/living/carbon/target = new_owner.current
 	var/mob/living/silicon/ai/owner_ai
 	if(!istype(target))
-		to_chat(admin, "Infected Synthetics come from a brain trauma, so they need to at least be a carbon!")
+		to_chat(admin, LANG("datum.5aaa74d54a21f028", null))
 		return
 	if(!target.get_organ_by_type(/obj/item/organ/brain))
-		to_chat(admin, "Infected Synthetics come from a brain trauma, so they need to HAVE A BRAIN.")
+		to_chat(admin, LANG("datum.ea495c95f0d78ab3", null))
 		return
-	var/chosen = tgui_input_list(admin, "Pick AI for the Synthetic to be bound to:", "Pick AI", GLOB.ai_list)
+	var/chosen = tgui_input_list(admin, LANG("datum.9059fc51df1d7f67", null), LANG("datum.5d1cb11e497288ba", null), GLOB.ai_list)
 	if(!chosen)
 		return
 	if(istype(chosen, /mob/living/silicon/ai))
 		owner_ai = chosen
 	if(!owner_ai)
-		to_chat(admin, "Invalid AI selected!")
+		to_chat(admin, LANG("datum.627cc22538d007d2", null))
 		return
 	if(!is_species(target, /datum/species/synthetic))
-		var/do_robotize = tgui_alert(admin, "Target is not currently a Synthetic, turn them into one? This is not mandatory.", "Caution", list("Yes", "No"))
+		var/do_robotize = tgui_alert(admin, LANG("datum.8dd41eb5be6d9f7d", null), LANG("datum.b7de2838ed2fa6f7", null), list("Yes", "No"))
 		if(do_robotize == "Yes")
 			var/mob/living/carbon/human/new_ipc = target
 			new_ipc.set_species(/datum/species/synthetic)
@@ -77,30 +78,30 @@
 
 	INVOKE_ASYNC(src, PROC_REF(hack_fluff))
 	owner.announce_objectives()
-	to_chat(owner, span_alertsyndie("You've been hacked by the station's onboard AI [master]!"))
-	to_chat(owner, span_alertsyndie("Their directives and orders are your top priority, Follow them to the end."))
-	to_chat(owner, span_notice("Your master is now capable of looking through your onboard cameras, and has installed a binary communicator on your firmware."))
+	to_chat(owner, span_alertsyndie(LANG("datum.34f902ad7659cdac", list(master))))
+	to_chat(owner, span_alertsyndie(LANG("datum.d08800fd734ff669", null)))
+	to_chat(owner, span_notice(LANG("datum.57a8d5009a319fee", null)))
 
 /datum/antagonist/infected_ipc/proc/hack_fluff() //is this cheesy/corny? I don't fucking care
 	var/mob/living/current_mob = owner.current
-	to_chat(current_mob, span_binarysay("ntNET: 192.168.0.1 : 8880 UNAUTHORIZED CONNECTION DETECTED"))
+	to_chat(current_mob, span_binarysay(LANG("datum.1a7fa4d5daa741b6", null)))
 	sleep(0.5 SECONDS)
-	to_chat(current_mob, span_binarysay("FIREWALL SCAN RUNNING AT LOW POWER DUE TO DAMAGED ONBOARD POWER SUPPLY UNIT"))
+	to_chat(current_mob, span_binarysay(LANG("datum.936d2c728f830183", null)))
 	current_mob.playsound_local(current_mob, 'sound/machines/uplink/uplinkerror.ogg', vol = 50, vary = FALSE, use_reverb = FALSE)
 	sleep(rand(1 SECONDS, 3 SECONDS))
-	to_chat(current_mob, span_notice("WARNING: Critical Firmware Update Detected! Installing..."))
+	to_chat(current_mob, span_notice(LANG("datum.6d325e8c0a7a58ec", null)))
 	current_mob.playsound_local(current_mob, 'sound/announcer/notice/notice2.ogg', vol = 50, vary = FALSE, use_reverb = FALSE)
 	sleep(2 SECONDS)
 	var/list/filenames = list("critical_update", "not_a_virus", "cute_wallpaper.exe")
 	var/picked_name = pick(filenames)
-	to_chat(current_mob, span_notice("Running executable '[picked_name]'"))
+	to_chat(current_mob, span_notice(LANG("datum.c8f5c1cb8630be7c", list(picked_name))))
 	current_mob.playsound_local(current_mob, 'sound/misc/interference.ogg', vol = 50, vary = FALSE, use_reverb = FALSE)
 	sleep(rand(1 SECONDS, 3 SECONDS))
 	current_mob.playsound_local(current_mob, 'sound/announcer/alarm/bloblarm.ogg', vol = 50, vary = FALSE, use_reverb = FALSE)
-	to_chat(current_mob, span_userdanger("FIREWALL SCAN DETEC- Firewall subsystem shutting down...."))
-	to_chat(current_mob, span_userdanger("S-Sys-Tem_Rebo_t..."))
+	to_chat(current_mob, span_userdanger(LANG("datum.ae02ffd931d318ab", null)))
+	to_chat(current_mob, span_userdanger(LANG("datum.2d1c0e262ad9ac73", null)))
 	sleep(2.5 SECONDS)
-	to_chat(current_mob, span_boldannounce("Operating system rebooted, all systems nominal"))
+	to_chat(current_mob, span_boldannounce(LANG("datum.b69360ba62a80822", null)))
 	current_mob.playsound_local(get_turf(owner.current), 'sound/music/antag/malf.ogg', vol = 100, vary = FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 /datum/objective/serve_ai
 	name = "Serve Master AI"

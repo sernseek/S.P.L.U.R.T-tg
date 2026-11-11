@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 // this suggests that your heart is beating, when it is not
 /mob/living/carbon/bleed_warn(bleed_amt = 0, forced = FALSE)
@@ -31,7 +32,7 @@
 // todo move this to it's own trait
 /obj/item/clothing/neck/necklace/memento_mori/memento(mob/living/carbon/human/user)
 	if(IS_BLOODSUCKER(user))
-		to_chat(user, span_warning("The Memento notices your undead soul, and refuses to react.."))
+		to_chat(user, span_warning(LANG("obj.bde02a9ae98809f6", null)))
 		return
 	return ..()
 
@@ -59,13 +60,13 @@
 	var/datum/antagonist/bloodsucker/bloodsuckerdatum = IS_BLOODSUCKER(src)
 	if(bloodsuckerdatum)
 		. += ""
-		. += "Blood Drank: [bloodsuckerdatum.total_blood_drank]"
-		. += "Maximum blood: [bloodsuckerdatum.max_blood_volume]"
-		. += "Blood Thickening: [bloodsuckerdatum.blood_level_gain] / [bloodsuckerdatum.get_level_cost()]"
+		. += LANG("mob.11192f43e65af12a", list(bloodsuckerdatum.total_blood_drank))
+		. += LANG("mob.8ff17ff58b98173b", list(bloodsuckerdatum.max_blood_volume))
+		. += LANG("mob.ebdddb324a8b7c67", list(bloodsuckerdatum.blood_level_gain, bloodsuckerdatum.get_level_cost()))
 		if(bloodsuckerdatum.is_frenzied())
-			. += "Frenzy exit blood threshold: [bloodsuckerdatum.frenzy_exit_threshold()]"
+			. += LANG("mob.9c7290690b8d9734", list(bloodsuckerdatum.frenzy_exit_threshold()))
 		else
-			. += "Frenzy blood threshold: [bloodsuckerdatum.frenzy_enter_threshold()]"
+			. += LANG("mob.0f7c56391ba440c1", list(bloodsuckerdatum.frenzy_enter_threshold()))
 
 /datum/outfit/bloodsucker_outfit
 	name = "Bloodsucker outfit (Preview only)"

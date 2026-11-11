@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Consume things that run into the supermatter from the tram. The tram calls forceMove (doesn't call Bump/ed) and not Move, and I'm afraid changing it will do something chaotic
 /obj/machinery/power/supermatter_crystal/proc/tram_contents_consume(datum/source, list/tram_contents)
 	SIGNAL_HANDLER
@@ -31,7 +32,7 @@
 		// This isn't clean and we are repeating [/obj/machinery/power/supermatter_crystal/proc/calculate_damage], sorry for this.
 		var/damage_to_be = damage + external_damage_immediate * clamp((emergency_point - damage) / emergency_point, 0, 1)
 		if(damage_to_be > danger_point)
-			visible_message(span_notice("[src] compresses under stress, resisting further impacts!"))
+			visible_message(span_notice(LANG("obj.81751d59a9956eb1", list(src))))
 		playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE)
 	if(istype(projectile, /obj/projectile/beam/emitter/hitscan))
 		var/obj/projectile/beam/emitter/hitscan/mahlaser = projectile
@@ -52,13 +53,13 @@
 	var/gain = 100
 	investigate_log("was consumed by a singularity.", INVESTIGATE_ENGINE)
 	message_admins("Singularity has consumed a supermatter shard and can now become stage six.")
-	visible_message(span_userdanger("[src] is consumed by the singularity!"))
+	visible_message(span_userdanger(LANG("obj.fc4aafe7887423d0", list(src))))
 	var/turf/sm_turf = get_turf(src)
 	for(var/mob/hearing_mob as anything in GLOB.player_list)
 		if(!is_valid_z_level(get_turf(hearing_mob), sm_turf))
 			continue
 		SEND_SOUND(hearing_mob, 'sound/effects/supermatter.ogg') //everyone goan know bout this
-		to_chat(hearing_mob, span_bolddanger("A horrible screeching fills your ears, and a wave of dread washes over you..."))
+		to_chat(hearing_mob, span_bolddanger(LANG("obj.0aa910b78cbafa73", null)))
 	qdel(src)
 	return gain
 
@@ -66,7 +67,7 @@
 	if(!iscarbon(user))
 		return
 	var/mob/living/carbon/jedi = user
-	to_chat(jedi, span_userdanger("That was a really dense idea."))
+	to_chat(jedi, span_userdanger(LANG("obj.d2253e90ef9fab41", null)))
 	jedi.investigate_log("had [jedi.p_their()] brain dusted by touching [src] with telekinesis.", INVESTIGATE_DEATHS)
 	jedi.ghostize()
 	var/obj/item/organ/brain/rip_u = locate(/obj/item/organ/brain) in jedi.organs
@@ -78,45 +79,45 @@
 /obj/machinery/power/supermatter_crystal/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(istype(tool, /obj/item/scalpel/supermatter))
 		var/obj/item/scalpel/supermatter/scalpel = tool
-		to_chat(user, span_notice("You carefully begin to scrape \the [src] with \the [scalpel]..."))
+		to_chat(user, span_notice(LANG("obj.e9241f3f6f814c14", list(src, scalpel))))
 		if(!scalpel.use_tool(src, user, 60, volume=100))
 			return ITEM_INTERACT_BLOCKING
 		if (!scalpel.usesLeft)
-			to_chat(user, span_warning("You fail to extract a sliver from \the [src]! \The [scalpel] isn't sharp enough anymore."))
+			to_chat(user, span_warning(LANG("obj.fc5830634d0d06f8", list(src, scalpel))))
 			return ITEM_INTERACT_BLOCKING
-		to_chat(user, span_danger("You extract a sliver from \the [src]. \The [src] begins to react violently!"))
+		to_chat(user, span_danger(LANG("obj.3265e75b2a9fe159", list(src, src))))
 		new /obj/item/nuke_core/supermatter_sliver(src.drop_location())
 		supermatter_sliver_removed = TRUE
 		external_power_trickle += 800
 		log_activation(who = user, how = scalpel)
 		scalpel.usesLeft--
 		if (!scalpel.usesLeft)
-			to_chat(user, span_notice("A tiny piece of \the [scalpel] falls off, rendering it useless!"))
+			to_chat(user, span_notice(LANG("obj.51b4a6617519df9c", list(scalpel))))
 		return ITEM_INTERACT_SUCCESS
 
 	if(istype(tool, /obj/item/hemostat/supermatter))
-		to_chat(user, span_warning("You poke [src] with [tool]'s hyper-noblium tips. Nothing happens."))
+		to_chat(user, span_warning(LANG("obj.314440a7961ab835", list(src, tool))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(istype(tool, /obj/item/destabilizing_crystal))
 		var/obj/item/destabilizing_crystal/destabilizing_crystal = tool
 
 		if(!is_main_engine)
-			to_chat(user, span_warning("You can't use \the [destabilizing_crystal] on \a [name]."))
+			to_chat(user, span_warning(LANG("obj.3f6c7fc3b73e6c8a", list(destabilizing_crystal, name))))
 			return ITEM_INTERACT_BLOCKING
 
 		if(get_integrity_percent() < SUPERMATTER_CASCADE_PERCENT)
-			to_chat(user, span_warning("You can only apply \the [destabilizing_crystal] to \a [name] that is at least [SUPERMATTER_CASCADE_PERCENT]% intact."))
+			to_chat(user, span_warning(LANG("obj.29b9afe0d17cd3ef", list(destabilizing_crystal, name, SUPERMATTER_CASCADE_PERCENT))))
 			return ITEM_INTERACT_BLOCKING
 
-		to_chat(user, span_warning("You begin to attach \the [destabilizing_crystal] to \the [src]..."))
+		to_chat(user, span_warning(LANG("obj.fe79f630cc86aa4f", list(destabilizing_crystal, src))))
 		if(!do_after(user, 3 SECONDS, src))
 			return ITEM_INTERACT_BLOCKING
 
 		message_admins("[ADMIN_LOOKUPFLW(user)] attached [destabilizing_crystal] to the supermatter at [ADMIN_VERBOSEJMP(src)].")
 		user.log_message("attached [destabilizing_crystal] to the supermatter", LOG_GAME)
 		user.investigate_log("attached [destabilizing_crystal] to a supermatter crystal.", INVESTIGATE_ENGINE)
-		to_chat(user, span_danger("\The [destabilizing_crystal] snaps onto \the [src]."))
+		to_chat(user, span_danger(LANG("obj.9b400c9d3831d3c2", list(destabilizing_crystal, src))))
 		set_delam(SM_DELAM_PRIO_IN_GAME, /datum/sm_delam/cascade)
 		external_damage_immediate += 10
 		external_power_trickle += 500

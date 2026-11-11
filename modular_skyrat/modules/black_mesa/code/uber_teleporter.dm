@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/uber_teleporter
 	name = "\improper Nihilanth's Divinity"
 	desc = "It glows harshly, the power of a portal wielding monster lays within."
@@ -7,7 +8,7 @@
 /obj/item/uber_teleporter/attack_self(mob/living/user, modifiers)
 	. = ..()
 	playsound(get_turf(user), 'sound/items/weapons/zapbang.ogg', 50, TRUE)
-	var/area/area_to_teleport_to = tgui_input_list(usr, "Area to teleport to", "Teleport", GLOB.teleportlocs)
+	var/area/area_to_teleport_to = tgui_input_list(usr, LANG("obj.61b291cc26f5e93f", null), LANG("obj.d225289abefb4d14", null), GLOB.teleportlocs)
 	if(!area_to_teleport_to)
 		return
 
@@ -25,7 +26,7 @@
 				possible_turfs += iterating_turf
 
 	if(!LAZYLEN(possible_turfs))
-		to_chat(user, span_warning("The spell matrix was unable to locate a suitable teleport destination for an unknown reason. Sorry."))
+		to_chat(user, span_warning(LANG("obj.a9dd7195b24fccec", null)))
 		return
 
 	if(user.buckled)

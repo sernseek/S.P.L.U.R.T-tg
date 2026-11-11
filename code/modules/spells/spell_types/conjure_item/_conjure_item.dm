@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/spell/conjure_item
 	school = SCHOOL_CONJURATION
 	invocation_type = INVOCATION_NONE
@@ -38,7 +39,7 @@
 	var/mob/living/living_owner = owner
 	if(living_owner.usable_hands < 1)
 		if(feedback)
-			owner.balloon_alert(owner, "no free hands!")
+			owner.balloon_alert(owner, LANG("datum.1dee07cc4730d063", null))
 		return FALSE
 
 	return TRUE

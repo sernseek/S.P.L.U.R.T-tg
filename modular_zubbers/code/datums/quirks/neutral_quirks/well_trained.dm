@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/well_trained
 	name = "Well-Trained"
 	desc = "You absolutely love being dominated. The thought of someone with a stronger character than yours is enough to make you act up. They can snap their fingers to send you to the floor."
@@ -116,10 +117,10 @@
 		return
 	if(HAS_TRAIT(quirk_holder, TRAIT_QUICKREFLEXES))
 		return
-	examine_list += span_purple("You can't look at <b>[dom]</b> for long before flustering away.")
+	examine_list += span_purple(LANG("datum.11549266eaf134ed", list(dom)))
 
 	if(TIMER_COOLDOWN_FINISHED(dom, DOMINANT_COOLDOWN_EXAMINE))
-		to_chat(dom, span_purple("<b>[source]</b> tries to look at you but immediately looks away with a red face..."))
+		to_chat(dom, span_purple(LANG("datum.775cab0eda639b7e", list(source))))
 		TIMER_COOLDOWN_START(dom, DOMINANT_COOLDOWN_EXAMINE, 15 SECONDS)
 		INVOKE_ASYNC(quirk_holder, TYPE_PROC_REF(/mob, emote), "blush") // Needs to be aynsc because of the cooldown.
 		quirk_holder.dir = turn(get_dir(quirk_holder, dom), pick(-90, 90))

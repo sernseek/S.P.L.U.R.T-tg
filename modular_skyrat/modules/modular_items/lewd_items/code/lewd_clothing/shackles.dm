@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/suit/straight_jacket/shackles
 	name = "shackles"
 	desc = "Fancy shackles with a fake lock."
@@ -71,7 +72,7 @@
 	. = ..()
 	var/mob/living/carbon/human/affected_mob = user
 	if(src == affected_mob.wear_suit)
-		to_chat(user, span_purple("The shackles are restraining your body, though the lock appears to be made of... Plastic?"))
+		to_chat(user, span_purple(LANG("obj.7594b4aadc13dc95", null)))
 	else
 		return
 
@@ -80,7 +81,7 @@
 	. = ..()
 	var/mob/living/carbon/human/affected_mob = user
 	if(src == affected_mob.wear_suit)
-		to_chat(user, span_purple("The shackles are no longer restraining your body. It wasn't too hard, huh?"))
+		to_chat(user, span_purple(LANG("obj.46b4e3ee92bb057a", null)))
 
 //reinforcing normal version by using handcuffs on it.
 /obj/item/clothing/suit/straight_jacket/shackles/attackby(obj/item/used_item, mob/user, params) //That part allows reinforcing this item with normal straightjacket
@@ -88,7 +89,7 @@
 		var/obj/item/clothing/suit/straight_jacket/shackles/reinforced/shackles = new()
 		remove_item_from_storage(user)
 		user.put_in_hands(shackles)
-		to_chat(user, span_notice("You reinforced the locks on [src] with [used_item]."))
+		to_chat(user, span_notice(LANG("obj.8baf4a3f9c03f5eb", list(src, used_item))))
 		qdel(used_item)
 		qdel(src)
 		return TRUE
@@ -110,7 +111,7 @@
 	. = ..()
 	var/mob/living/carbon/human/affected_mob = user
 	if(src == affected_mob.wear_suit)
-		to_chat(user, span_purple("The shackles are restraining your body!"))
+		to_chat(user, span_purple(LANG("obj.be486d6dcde3beba", null)))
 	else
 		return
 
@@ -119,4 +120,4 @@
 	. = ..()
 	var/mob/living/carbon/human/affected_mob = user
 	if(src == affected_mob.wear_suit)
-		to_chat(user, span_purple("The shackles are no longer restraining your body. You are free!"))
+		to_chat(user, span_purple(LANG("obj.10707fba1d6db7db", null)))

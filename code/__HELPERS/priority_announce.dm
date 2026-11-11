@@ -36,10 +36,26 @@
  * * players - a list of all players to send the message to. defaults to all players (not including new players)
  * * encode_title - if TRUE, the title will be HTML encoded
  * * encode_text - if TRUE, the text will be HTML encoded
+ * * tts_speaker - optional voice identifier for player-authored announcements; invalid values fall back to the system voice
  */
-/proc/priority_announce(text, title = "", sound, type, sender_override, has_important_message = FALSE, list/mob/players = GLOB.player_list, encode_title = TRUE, encode_text = TRUE, color_override)
+/proc/priority_announce(text, title = "", sound, type, sender_override, has_important_message = FALSE, list/mob/players = GLOB.player_list, encode_title = TRUE, encode_text = TRUE, color_override, tts_speaker) // ZH EDIT CHANGE - ADMIN - Added optional player-authored TTS voice.
 	if(!text)
 		return
+
+	// ZH EDIT ADDITION START - i18n: 公告非 sink，正文/标题靠运行时反查翻译。
+	// 在 html_encode 之前做（目录键是未转义英文）：整串命中→译文；否则 AC 子串尽力翻动态正文。
+	if(GLOB.i18n_server_locale != DEFAULT_UI_LOCALE)
+		if(istext(title) && length(title) > 0)
+			var/translated_title = lang_reverse_text(title)
+			title = (translated_title != title) ? translated_title : lang_fallback_apply(title)
+		if(istext(text))
+			var/translated_text = lang_reverse_text(text)
+			text = (translated_text != text) ? translated_text : lang_fallback_apply(text)
+	// ZH EDIT ADDITION END
+
+	// ZH EDIT ADDITION START - ADMIN - Replace prerecorded English announcement speech with localized TTS.
+	var/tts_queued = tts_queue_global_announcement(text, title, players, tts_speaker)
+	// ZH EDIT ADDITION END
 
 	if(encode_title && title && length(title) > 0)
 		title = html_encode(title)
@@ -80,7 +96,11 @@
 
 	///If the announcer overrides alert messages, use that message.
 	if(SSstation.announcer.custom_alert_message && !has_important_message)
-		announcement_strings += MAJOR_ANNOUNCEMENT_TEXT(SSstation.announcer.custom_alert_message)
+		// ZH EDIT CHANGE - I18N: 播音员的自定义提示语是**编译期 span_alert() 包裹**的类型变量，
+		// 目录里存的是里层裸串 → 整串直接发出去必然 miss 反查，只剩 AC 子串兜底把 "important" 单词
+		// 替换成「重要」，其余留英文（表现：「Please stand by for an 重要message from our new intern.」）。
+		// lang_reverse_text 本身会剥单层 span 再查内层，这里补上调用即可。ORIGINAL: MAJOR_ANNOUNCEMENT_TEXT(SSstation.announcer.custom_alert_message)
+		announcement_strings += MAJOR_ANNOUNCEMENT_TEXT(lang_reverse_text(SSstation.announcer.custom_alert_message))
 	else
 		announcement_strings += MAJOR_ANNOUNCEMENT_TEXT(text)
 
@@ -90,6 +110,9 @@
 	else
 		finalized_announcement = CHAT_ALERT_DEFAULT_SPAN(jointext(announcement_strings, ""))
 
+	if(tts_queued && tts_sound_is_announcer_speech(sound))
+		var/is_event = !isnull(sound) && !isnull(SSstation.announcer.event_sounds[sound])
+		sound = tts_priority_announcement_cue(urgent = is_event, hostile = (type == ANNOUNCEMENT_TYPE_SYNDICATE))
 	dispatch_announcement_to_players(finalized_announcement, players, sound)
 
 	if(isnull(sender_override) && players == GLOB.player_list)
@@ -123,6 +146,13 @@
 			has_important_message = TRUE,
 		)
 
+	// ZH EDIT ADDITION START - I18N - 指挥报告（生成纸张/发到通讯台）正文是多段运行期拼接（威胁等级公告、
+	// 特别订单 station_goal.get_report()、station_trait.get_report() 报告、各 LANG 段），整串 reverse 够不着。
+	// 过聊天同款落地层：模板整句命中、`<i>特质名</i> - 报告` 的列表记号、站点目标的多行逐行（字面 AC 已整层
+	// 删除，不再有子串兜底）。威胁公告整块已在 communications.dm 拼接前整串反查为中文。
+	// locale==en 时 lang_fallback_apply 原样返回（零开销）。
+	text = lang_fallback_apply(text)
+	// ZH EDIT ADDITION END
 	var/datum/comm_message/message = new
 	message.title = title
 	message.content = text
@@ -142,10 +172,25 @@
  * sound_override - optional, use the passed sound file instead of the default notice sounds.
  * should_play_sound - Whether the notice sound should be played or not. This can also be a callback, if you only want mobs to hear the sound based off of specific criteria.
  * color_override - optional, use the passed color instead of the default notice color.
+ * tts_speaker - optional voice identifier for player-authored announcements; invalid values fall back to the system voice
  */
-/proc/minor_announce(message, title = "Attention:", alert = FALSE, html_encode = TRUE, list/players, sound_override, should_play_sound = TRUE, color_override)
+/proc/minor_announce(message, title = "Attention:", alert = FALSE, html_encode = TRUE, list/players, sound_override, should_play_sound = TRUE, color_override, tts_speaker) // ZH EDIT CHANGE - ADMIN - Added optional player-authored TTS voice.
 	if(!message)
 		return
+
+	// ZH EDIT ADDITION START - i18n: 同 priority_announce，html_encode 前反查正文/标题。
+	if(GLOB.i18n_server_locale != DEFAULT_UI_LOCALE)
+		if(istext(title) && length(title) > 0)
+			var/translated_title = lang_reverse_text(title)
+			title = (translated_title != title) ? translated_title : lang_fallback_apply(title)
+		if(istext(message))
+			var/translated_message = lang_reverse_text(message)
+			message = (translated_message != message) ? translated_message : lang_fallback_apply(message)
+	// ZH EDIT ADDITION END
+
+	// ZH EDIT ADDITION START - ADMIN - Preserve deliberately silent/callback announcements.
+	var/tts_queued = (should_play_sound == TRUE) && tts_queue_global_announcement(message, title, isnull(players) ? GLOB.player_list : players, tts_speaker)
+	// ZH EDIT ADDITION END
 
 	if (html_encode)
 		title = html_encode(title)
@@ -162,7 +207,7 @@
 	else
 		finalized_announcement = CHAT_ALERT_DEFAULT_SPAN(jointext(minor_announcement_strings, ""))
 
-	var/custom_sound = sound_override || (alert ? 'modular_skyrat/modules/alerts/sound/alerts/alert1.ogg' : 'sound/announcer/notice/notice2.ogg') // SKYRAT EDIT CHANGE - CUSTOM ANNOUNCEMENTS - Original: 'sound/announcer/notice/notice1.ogg'
+	var/custom_sound = sound_override || (tts_queued ? tts_minor_announcement_cue(alert) : null) || (alert ? /* ZH EDIT CHANGE - ADMIN - TTS replaces prerecorded speech */ 'modular_skyrat/modules/alerts/sound/alerts/alert1.ogg' : 'sound/announcer/notice/notice2.ogg') // SKYRAT EDIT CHANGE - CUSTOM ANNOUNCEMENTS - Original: 'sound/announcer/notice/notice1.ogg'
 	dispatch_announcement_to_players(finalized_announcement, players, custom_sound, should_play_sound)
 
 /// Sends an announcement about the level changing to players. Uses the passed in datum and the subsystem's previous security level to generate the message.
@@ -176,11 +221,17 @@
 	var/message
 
 	if(current_level_number > previous_level_number)
-		title = "Attention! Security level elevated to [current_level_name]:"
+		title = LANG("datum.b89256636145aa75", list(current_level_name)) // ZH EDIT CHANGE - I18N - ORIGINAL: title = "Attention! Security level elevated to [current_level_name]:"
 		message = selected_level.elevating_to_announcement
 	else
-		title = "Attention! Security level lowered to [current_level_name]:"
+		title = LANG("datum.9aa16b5dfe73dfdd", list(current_level_name)) // ZH EDIT CHANGE - I18N - ORIGINAL: title = "Attention! Security level lowered to [current_level_name]:"
 		message = selected_level.lowering_to_announcement
+
+	// ZH EDIT ADDITION START - ADMIN - Security-level messages use localized TTS. The level's own
+	// sound is a plain alarm tone ("Friendly beep" / "Angry alarm" / air raid), not a spoken line,
+	// so it plays under the speech and is deliberately left alone.
+	tts_queue_global_announcement(message, title, GLOB.player_list)
+	// ZH EDIT ADDITION END
 
 	var/list/level_announcement_strings = list()
 	level_announcement_strings += ANNOUNCEMENT_HEADER(MINOR_ANNOUNCEMENT_TITLE(title))
@@ -195,7 +246,7 @@
 /proc/generate_unique_announcement_header(title, sender_override)
 	var/list/returnable_strings = list()
 	if(isnull(sender_override))
-		returnable_strings += MAJOR_ANNOUNCEMENT_TITLE("[command_name()] Update")
+		returnable_strings += MAJOR_ANNOUNCEMENT_TITLE("[command_name()] [lang_reverse_text("Update")]") // ZH EDIT - i18n: 反查 "Update" 后缀（command_name 经聊天 AC 反查）
 	else
 		returnable_strings += MAJOR_ANNOUNCEMENT_TITLE(sender_override)
 
@@ -237,6 +288,7 @@
 			break
 
 	var/static/list/quiet_areas = typecacheof(typesof(/area/station/maintenance) + typesof(/area/space) + typesof(/area/station/commons/dorms))
+	var/datum/callback/should_play_sound_callback = astype(should_play_sound)
 	for(var/mob/target in players)
 		// no redundant checks please
 		if(isnewplayer(target) || HAS_TRAIT(target, TRAIT_DEAF) || isnull(target.client))
@@ -269,7 +321,7 @@
 
 		var/sound_to_play = !isnull(computed_sound) ? computed_sound : 'sound/announcer/notice/notice2.ogg'
 
-		if(target.client?.prefs.read_preference(/datum/preference/toggle/sound_announcements))
+		if(should_play_sound && (!should_play_sound_callback || should_play_sound_callback.Invoke(target)) && target.client?.prefs.read_preference(/datum/preference/toggle/sound_announcements))
 			var/area/A = get_area(target)
 			if(is_type_in_typecache(A, quiet_areas)) //These areas don't hear it as loudly
 				target.playsound_local(get_turf(target), sound_to_play, 30, FALSE)

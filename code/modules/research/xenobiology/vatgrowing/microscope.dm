@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/microscope
 	name = "Microscope"
 	desc = "A simple microscope, allowing you to examine micro-organisms."
@@ -50,7 +51,7 @@
 			var/atom/resulting_atom = cell_line.resulting_atom
 			var/list/organism_data = list(
 				type = "cell line",
-				name = cell_line.name,
+				name = lang_localize_display_name(cell_line.name), // ZH EDIT - I18N: 细胞系名纯显示。ORIGINAL: name = cell_line.name,
 				desc = cell_line.desc,
 				icon = resulting_atom ? initial(resulting_atom.icon) : "",
 				icon_state = resulting_atom ? initial(resulting_atom.icon_state) : "",
@@ -67,7 +68,7 @@
 			var/datum/micro_organism/virus/virus = organism
 			var/list/virus_data = list(
 				type = "virus",
-				name = virus.name,
+				name = lang_localize_display_name(virus.name), // ZH EDIT - I18N: 病毒名纯显示。ORIGINAL: name = virus.name,
 				desc = virus.desc
 			)
 			data["cell_lines"] += list(virus_data)
@@ -78,7 +79,12 @@
 	var/list/reagent_list = list()
 	for(var/i in reagents) //Convert from assoc to normal. Yeah very shit.
 		var/datum/reagent/reagent = i
-		reagent_list["[initial(reagent.name)]"] = reagents[i] * SSMACHINES_DT
+		// ZH EDIT CHANGE - I18N - ORIGINAL: reagent_list["[initial(reagent.name)]"] = reagents[i] * SSMACHINES_DT
+		// 试剂名在这里是**关联键**，而 P1 的 lang_reverse_tree 只本地化「值」——键一律当标识符放过，
+		// 所以显微镜里的试剂名永远是英文，哪怕目录里早有译文。这份表纯粹是给前端显示的
+		// （Microscope.tsx 只 Object.keys 出来渲染，act 只有 eject_petridish，键从不回传服务端），
+		// 所以在这里就把键翻掉是安全的。
+		reagent_list["[lang_reverse_text("[initial(reagent.name)]")]"] = reagents[i] * SSMACHINES_DT
 	return reagent_list
 
 /obj/structure/microscope/ui_act(action, params, datum/tgui/ui)
@@ -98,16 +104,16 @@
 	if(current_dish)
 		old_dish = current_dish
 	if(!user.transferItemToLoc(new_dish, src))
-		balloon_alert(user, "couldn't add!")
+		balloon_alert(user, LANG("obj.08fb3b1d5f7540eb", null))
 		return ITEM_INTERACT_FAILURE
 	current_dish = new_dish
 	update_static_data_for_all_viewers()
 	if(old_dish)
 		if(!user.put_in_hands(old_dish))
 			old_dish.forceMove(get_turf(src))
-		balloon_alert(user, "dish swapped")
+		balloon_alert(user, LANG("obj.39c6657a9a072032", null))
 	else
-		balloon_alert(user, "dish added")
+		balloon_alert(user, LANG("obj.866b4e389a4cefd6", null))
 	return ITEM_INTERACT_SUCCESS
 
 ///Take the inserted dish, or drop it on the floor
@@ -118,7 +124,7 @@
 		current_dish.forceMove(get_turf(src))
 	current_dish = null
 	update_static_data_for_all_viewers()
-	balloon_alert(user, "dish removed")
+	balloon_alert(user, LANG("obj.e09114ec9f5534c1", null))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/structure/microscope/unanchored

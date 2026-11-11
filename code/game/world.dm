@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define RESTART_COUNTER_PATH "data/round_counter.txt"
 /// Load byond-tracy. If USE_BYOND_TRACY is defined, then this is ignored and byond-tracy is always loaded.
 #define USE_TRACY_PARAMETER "tracy"
@@ -152,6 +153,13 @@ GLOBAL_VAR(restart_counter)
 	// Everything in here is prioritized in a very specific way.
 	// If you need to add to it, ask yourself hard if what your adding is in the right spot
 	// (i.e. basically nothing should be added before load_admins() in here)
+
+	// ZH EDIT ADDITION START - i18n: resolve config, load only English + active locale, and prewarm every runtime index.
+	lang_initialize_runtime(
+		CONFIG_GET(string/i18n_server_locale),
+		CONFIG_GET(flag/i18n_chat_fallback),
+	)
+	// ZH EDIT ADDITION END
 
 	// Try to set round ID
 	SSdbcore.InitializeRound()
@@ -362,9 +370,9 @@ GLOBAL_VAR_INIT(last_maptick_time, 0)
 		if (usr)
 			log_admin("[key_name(usr)] Has requested an immediate world restart via client side debugging tools")
 			message_admins("[key_name_admin(usr)] Has requested an immediate world restart via client side debugging tools")
-		to_chat(world, span_boldannounce("Rebooting World immediately due to host request."))
+		to_chat(world, span_boldannounce(LANG("world.554d10e76cf9cd2b", null)))
 	else
-		to_chat(world, span_boldannounce("Rebooting world..."))
+		to_chat(world, span_boldannounce(LANG("world.4ad4adb11c7bcadf", null)))
 		Master.Shutdown() //run SS shutdowns
 
 	#ifdef UNIT_TESTS

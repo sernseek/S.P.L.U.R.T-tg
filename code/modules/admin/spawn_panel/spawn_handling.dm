@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define WHERE_FLOOR_BELOW_MOB "Current location"
 #define WHERE_SUPPLY_BELOW_MOB "Current location (droppod)"
 #define WHERE_MOB_HAND "In own mob's hand"
@@ -38,23 +39,23 @@
 		target = (where_target_type == WHERE_TARGETED_MOB_HAND ? spawn_params["target"] : user)
 
 		if(!target)
-			to_chat(user, span_warning("No target specified."))
+			to_chat(user, span_warning(LANG("datum.f34756b2284e5e44", null)))
 			return
 
 		if(!ismob(target))
-			to_chat(user, span_warning("The targeted atom is not a mob."))
+			to_chat(user, span_warning(LANG("datum.6f680b7ad513458d", null)))
 			return
 
 		if(!iscarbon(target) && !iscyborg(target))
-			to_chat(user, span_warning("Can only spawn in hand when the target is a carbon mob or a cyborg."))
+			to_chat(user, span_warning(LANG("datum.61ce565d2c3de69c", null)))
 			where_target_type = WHERE_FLOOR_BELOW_MOB
 
 	else if(where_target_type == WHERE_MARKED_OBJECT || where_target_type == WHERE_IN_MARKED_OBJECT)
 		if(!user.client.holder.marked_datum)
-			to_chat(user, span_warning("You don't have any object marked."))
+			to_chat(user, span_warning(LANG("datum.0171f97f12317117", null)))
 			return
 		else if(!istype(user.client.holder.marked_datum, /atom))
-			to_chat(user, span_warning("The object you have marked cannot be used as a target. Target must be of type /atom."))
+			to_chat(user, span_warning(LANG("datum.6f00d82461527514", null)))
 			return
 		else
 			target = (where_target_type == WHERE_MARKED_OBJECT ? get_turf(user.client.holder.marked_datum) : user.client.holder.marked_datum)
@@ -81,7 +82,7 @@
 						relative_turf = locate(1, 1, 1)
 
 				if (!relative_turf)
-					to_chat(user, span_warning("Could not determine a valid relative location."))
+					to_chat(user, span_warning(LANG("datum.0549d3cef04fb0da", null)))
 					return
 
 				target = locate(relative_turf.x + X, relative_turf.y + Y, relative_turf.z + Z)

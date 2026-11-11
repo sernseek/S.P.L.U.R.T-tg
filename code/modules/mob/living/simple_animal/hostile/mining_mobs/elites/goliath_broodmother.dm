@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define TENTACLE_PATCH 1
 #define SPAWN_CHILDREN 2
 #define RAGE 3
@@ -124,19 +125,19 @@
 	var/tturf = get_turf(target)
 	if(!isturf(tturf))
 		return
-	visible_message(span_warning("[src] digs its tentacles under [target]!"))
+	visible_message(span_warning(LANG("mob.0a04682ef19f97e0", list(src, target))))
 	new /obj/effect/goliath_tentacle/broodmother/patch(tturf, src)
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/proc/spawn_children(target)
 	ranged_cooldown = world.time + 40
-	visible_message(span_boldwarning("The ground churns behind [src]!"))
+	visible_message(span_boldwarning(LANG("mob.9fbb5a9c3ec476f3", list(src))))
 	for(var/i in 1 to 2)
 		if(children_list.len >= 8)
 			return
 		var/mob/living/simple_animal/hostile/asteroid/elite/broodmother_child/new_child = new /mob/living/simple_animal/hostile/asteroid/elite/broodmother_child(loc)
 		new_child.GiveTarget(target)
 		SET_FACTION_AND_ALLIES_FROM(new_child, src)
-		visible_message(span_boldwarning("[new_child] appears below [src]!"))
+		visible_message(span_boldwarning(LANG("mob.25cf655efecb8206", list(new_child, src))))
 		register_child(new_child)
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/proc/register_child(atom/child)
@@ -157,7 +158,7 @@
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/proc/rage()
 	ranged_cooldown = world.time + 100
 	playsound(src,'sound/misc/insane_low_laugh.ogg', 200, 1)
-	visible_message(span_warning("[src] starts picking up speed!"))
+	visible_message(span_warning(LANG("mob.8b1165354cea6149", list(src))))
 	color = COLOR_RED
 	set_varspeed(0)
 	move_to_delay = 3
@@ -170,7 +171,7 @@
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother/proc/call_children()
 	ranged_cooldown = world.time + 60
-	visible_message(span_warning("The ground shakes near [src]!"))
+	visible_message(span_warning(LANG("mob.fa36fe9521266173", list(src))))
 	var/list/directions = GLOB.cardinals.Copy() + GLOB.diagonals.Copy()
 	for(var/mob/child in children_list)
 		var/spawndir = pick_n_take(directions)
@@ -216,12 +217,12 @@
 	if(!isturf(tturf))
 		return
 	if(get_dist(src, target) <= 7)//Screen range check, so it can't attack people off-screen
-		visible_message(span_warning("[src] digs one of its tentacles under [target]!"))
+		visible_message(span_warning(LANG("mob.de036f909c104de5", list(src, target))))
 		new /obj/effect/goliath_tentacle/broodmother(tturf, src)
 
 /mob/living/simple_animal/hostile/asteroid/elite/broodmother_child/death()
 	. = ..()
-	visible_message(span_warning("[src] explodes!"))
+	visible_message(span_warning(LANG("mob.e64b7ad721a42632", list(src))))
 	explosion(src, flame_range = 3, adminlog = FALSE)
 	gib(DROP_ALL_REMAINS)
 

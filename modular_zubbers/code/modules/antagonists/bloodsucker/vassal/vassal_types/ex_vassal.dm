@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BLOOD_TIMER_REQUIREMENT (10 MINUTES)
 #define BLOOD_TIMER_HALWAY (BLOOD_TIMER_REQUIREMENT / 2)
 
@@ -34,7 +35,7 @@
 
 	var/datum/antagonist/ghoul/revenge/ghouldatum = IS_REVENGE_GHOUL(examiner)
 	if(ghouldatum && !revenge_ghoul)
-		examine_text += span_notice("[owner.current] is an ex-ghoul!")
+		examine_text += span_notice(LANG("datum.0e0415e7116edda0", list(owner.current)))
 
 /datum/antagonist/ex_ghoul/add_team_hud(mob/target)
 	QDEL_NULL(team_hud_ref)
@@ -75,11 +76,11 @@
 	SIGNAL_HANDLER
 
 	if(COOLDOWN_TIMELEFT(src, blood_timer) <= BLOOD_TIMER_HALWAY + 2 && COOLDOWN_TIMELEFT(src, blood_timer) >= BLOOD_TIMER_HALWAY - 2) //just about halfway
-		to_chat(owner.current, span_cult_bold("You need new blood from your Master!"))
+		to_chat(owner.current, span_cult_bold(LANG("datum.4921f5d132a83783", null)))
 	if(!COOLDOWN_FINISHED(src, blood_timer))
 		return
-	to_chat(owner.current, span_cult_bold("You are out of blood!"))
-	to_chat(revenge_ghoul.owner.current, span_cult_bold("[owner.current] has ran out of blood and is no longer in the fold!"))
+	to_chat(owner.current, span_cult_bold(LANG("datum.33e88012ef0277cb", null)))
+	to_chat(revenge_ghoul.owner.current, span_cult_bold(LANG("datum.dc7f8897a6f62112", list(owner.current))))
 	owner.remove_antag_datum(/datum/antagonist/ex_ghoul)
 
 
@@ -94,7 +95,7 @@
 /datum/reagent/blood/bloodsucker/expose_mob(mob/living/exposed_mob, methods, reac_volume, show_message, touch_protection)
 	var/datum/antagonist/ex_ghoul/former_ghoul = exposed_mob.mind.has_antag_datum(/datum/antagonist/ex_ghoul)
 	if(former_ghoul)
-		to_chat(exposed_mob, span_cult("You feel the blood restore you... You feel safe."))
+		to_chat(exposed_mob, span_cult(LANG("datum.3a68dd8797d2bc6c", null)))
 		COOLDOWN_RESET(former_ghoul, blood_timer)
 		COOLDOWN_START(former_ghoul, blood_timer, BLOOD_TIMER_REQUIREMENT)
 	return ..()

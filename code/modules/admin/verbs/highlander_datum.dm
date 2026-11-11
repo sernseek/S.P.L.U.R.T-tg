@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 GLOBAL_DATUM(highlander_controller, /datum/highlander_controller)
 
@@ -59,7 +60,7 @@ GLOBAL_DATUM(highlander_controller, /datum/highlander_controller)
 /datum/highlander_controller/proc/new_highlander(datum/source, mob/living/new_crewmember, rank)
 	SIGNAL_HANDLER
 
-	to_chat(new_crewmember, span_userdanger("<i>THERE CAN BE ONLY ONE!!!</i>"))
+	to_chat(new_crewmember, span_userdanger(LANG("datum.47f945068c7d0c3c", null)))
 	new_crewmember.make_scottish()
 
 /**
@@ -72,7 +73,7 @@ GLOBAL_DATUM(highlander_controller, /datum/highlander_controller)
  */
 /client/proc/only_one(was_delayed = FALSE)
 	if(!SSticker.HasRoundStarted())
-		tgui_alert(usr,"The game hasn't started yet!")
+		tgui_alert(usr,LANG("client.8a212f0792509a20", null))
 		return
 
 	if(was_delayed) //sends more accurate logs

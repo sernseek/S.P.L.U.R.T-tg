@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/tongue/jelly/Initialize(mapload) //speech bubble addition
 	. = ..()
 	AddComponent(/datum/component/bubble_icon_override, "slime", BUBBLE_ICON_PRIORITY_ORGAN)
@@ -103,7 +104,7 @@
 		else
 			detransform()
 	else
-		owner.balloon_alert(owner, "can't transform while immobilized!")
+		owner.balloon_alert(owner, LANG("datum.151cdce9d87dfe41", null))
 
 /datum/action/innate/slime_blobform/proc/detransform()
 	var/mob/living/carbon/human/H = owner

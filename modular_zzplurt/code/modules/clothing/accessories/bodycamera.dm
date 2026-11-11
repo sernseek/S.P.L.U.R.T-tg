@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Bodycamera Upgrade
  *
@@ -36,10 +37,10 @@
 		return NONE
 	var/obj/item/interacting_item = interacting_with
 	if(!(interacting_item.slot_flags & ITEM_SLOT_OCLOTHING))
-		user.balloon_alert(user, "only fits on suits!")
+		user.balloon_alert(user, LANG("obj.5fc7b88df9a589b2", null))
 		return ITEM_INTERACT_BLOCKING
 	if(interacting_item.item_flags & (ABSTRACT|DROPDEL)) //things like changeling suits don't get body cameras.
-		user.balloon_alert(user, "cannot attach!")
+		user.balloon_alert(user, LANG("obj.95bfb10749ed55f0", null))
 		return ITEM_INTERACT_BLOCKING
 	if(install_camera(interacting_item, user))
 		return ITEM_INTERACT_SUCCESS
@@ -49,7 +50,7 @@
 	var/obj/item/bodycam_upgrade/existing_upgrade = locate() in installing_into.contents
 	if(existing_upgrade)
 		//this is where your mouse is, so more likely where you're looking.
-		installing_into.balloon_alert(user, "camera already installed!")
+		installing_into.balloon_alert(user, LANG("obj.40e2b18e9d4caeca", null))
 		playsound(installing_into, 'sound/machines/buzz/buzz-two.ogg', 20, TRUE, -1)
 		return FALSE
 	installing_into.add_overlay(equipped_overlay)
@@ -99,7 +100,7 @@
 	else
 		builtin_bodycamera.c_tag = "-Body Camera: [(user.name)]"
 	if(user)
-		user.balloon_alert(user, "bodycamera activated")
+		user.balloon_alert(user, LANG("obj.1a7ea5ea0f855e62", null))
 		playsound(loc, 'sound/machines/beep/beep.ogg', get_clamped_volume(), TRUE, -1)
 	builtin_bodycamera.network = network //sync the network of the camera to us, the upgrade.
 	builtin_bodycamera.camera_enabled = TRUE
@@ -108,7 +109,7 @@
 ///Turns the camera off. Will be silent if 'user' is null.
 /obj/item/bodycam_upgrade/proc/turn_off(mob/user)
 	if(user)
-		user.balloon_alert(user, "bodycamera deactivated")
+		user.balloon_alert(user, LANG("obj.fd45b6ecca91eadd", null))
 		playsound(loc, 'sound/machines/beep/beep.ogg', get_clamped_volume(), TRUE, -1)
 	if(builtin_bodycamera)
 		builtin_bodycamera.camera_enabled = FALSE
@@ -135,7 +136,7 @@
  */
 /obj/item/bodycam_upgrade/proc/on_examine_more(atom/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
-	examine_list += span_notice("It has [name] installed. You can toggle it with an [EXAMINE_HINT("ID card")] or remove it with a [EXAMINE_HINT("screwdriver")].")
+	examine_list += span_notice(LANG("obj.2cb12bccbad55e87", list(name, EXAMINE_HINT("ID card"), EXAMINE_HINT("screwdriver"))))
 
 /**
  * Screwdriver act

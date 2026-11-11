@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Gives you wizard if you land on 20. Fail, and the dice teleports somewhere else.
 
 /obj/item/dice/d20/teleporting_die_of_fate
@@ -51,16 +52,16 @@
 
 /obj/item/dice/d20/teleporting_die_of_fate/examine(mob/user)
 	. = ..()
-	. += span_notice("Roll a 20, and you might become magical...")
-	. += span_warning("Roll a 1, and you will end up in medical!")
+	. += span_notice(LANG("obj.26c412d465755abd", null))
+	. += span_warning(LANG("obj.e91afe86068e45e0", null))
 	if(relocation_timer && isobserver(user))
-		. += span_notice("The dice will relocate in [DisplayTimeText(timeleft(relocation_timer),1)]!")
-		. += span_warning("It has <b>[uses_left]</b> use[uses_left == 1 ? "" : "s"] left...")
+		. += span_notice(LANG("obj.35e103222bd0e33a", list(DisplayTimeText(timeleft(relocation_timer),1))))
+		. += span_warning(LANG("obj.02d4a9a42db7714a", list(uses_left, uses_left == 1 ? "" : "s")))
 
 /obj/item/dice/d20/teleporting_die_of_fate/equipped(mob/user, slot)
 	. = ..()
 	if(!ishuman(user) || !user.mind || IS_WIZARD(user))
-		to_chat(user, span_warning("You feel the magic of the dice is restricted to ordinary people! You should leave it alone."))
+		to_chat(user, span_warning(LANG("obj.86b8c7430217966d", null)))
 		user.dropItemToGround(src)
 	else if(do_teleport && !was_touched)
 		create_timer(teleport_delay_pickup)
@@ -69,17 +70,17 @@
 /obj/item/dice/d20/teleporting_die_of_fate/diceroll(mob/user, in_hand=FALSE)
 
 	if(!COOLDOWN_FINISHED(src, roll_cd))
-		to_chat(user, span_warning("Hold on, [src] isn't caught up with your last roll!"))
+		to_chat(user, span_warning(LANG("obj.382a27bbe5279163", list(src))))
 		return
 
 	. = ..()
 
 	if(!ishuman(user) || !user.mind || IS_WIZARD(user))
-		to_chat(user, span_warning("You feel the magic of the dice is restricted to ordinary people!"))
+		to_chat(user, span_warning(LANG("obj.32d6b3272fa2ccc4", null)))
 		return
 
 	var/turf/current_turf = get_turf(src)
-	current_turf.visible_message(span_userdanger("[src] flares briefly."))
+	current_turf.visible_message(span_userdanger(LANG("obj.0204327d5219134c", list(src))))
 
 	addtimer(CALLBACK(src, PROC_REF(effect), user, .), 1 SECONDS)
 	COOLDOWN_START(src, roll_cd, 2.5 SECONDS)
@@ -93,10 +94,10 @@
 		if(uses_left <= 0)
 			if(rigged != DICE_TOTALLY_RIGGED)
 				notify_ghosts(
-					"[src] was all used up, and was removed from reality.",
+					LANG("obj.f0b69ea31799360b", list(src)),
 					source = src
 				)
-			current_turf.visible_message(span_warning("[src] phases out of reality..."))
+			current_turf.visible_message(span_warning(LANG("obj.26961237ddfb3908", list(src))))
 			qdel(src)
 			return
 
@@ -111,7 +112,7 @@
 	if(!desired_turf) //Do nothing as a failsafe for a failsafe.
 		return
 
-	current_turf.visible_message(span_warning("[src] phases out to another location!"))
+	current_turf.visible_message(span_warning(LANG("obj.315684768ac6cf8d", list(src))))
 
 	//Teleport!
 	src.forceMove(desired_turf)
@@ -120,7 +121,7 @@
 	playsound(desired_turf,'sound/effects/magic/magic_missile.ogg',50,8,FALSE)
 
 	notify_ghosts(
-		"[src] has teleported to [desired_turf.loc]!",
+		LANG("obj.6056e6fdbf696958", list(src, desired_turf.loc)),
 		source = src
 	)
 
@@ -137,7 +138,7 @@
 			user.emote("scream")
 			user.investigate_log("has been smited by a wizardly die of fate.", INVESTIGATE_DEATHS)
 			notify_ghosts(
-				"[user] got a 1 while rolling [src]! Point and laugh at them!",
+				LANG("obj.fa6eeab7f545e6d0", list(user, src)),
 				source = user
 			)
 			addtimer(CALLBACK(src, PROC_REF(apply_random_smite), user), 1 SECONDS)
@@ -148,12 +149,12 @@
 		return
 
 	user.emote("laugh")
-	current_turf.visible_message(span_userdanger("Magic flows out of [src] and into [user]!"))
+	current_turf.visible_message(span_userdanger(LANG("obj.46c353600ee99c7d", list(src, user))))
 	user.drop_everything(del_on_drop = FALSE, force = TRUE, del_if_nodrop = TRUE)
 	user.mind.make_wizard()
 
 	notify_ghosts(
-		"[user] got a nat 20 while rolling [src]!",
+		LANG("obj.2615033cff1fc706", list(user, src)),
 		source = user
 	)
 
@@ -170,20 +171,20 @@
 				incidents_left = 7, \
 				bless_fixable = TRUE, \
 			)
-			to_chat(target, span_warning("You get a bad feeling about this..."))
+			to_chat(target, span_warning(LANG("obj.7c978e0fee3cbfe4", null)))
 		if(1)
 			//Drain bamage.
 			target.adjust_organ_loss(ORGAN_SLOT_BRAIN, BRAIN_DAMAGE_DEATH - 1, BRAIN_DAMAGE_DEATH - 1)
-			to_chat(target, span_warning("You feel <b>stupid</b> for rolling [src]..."))
+			to_chat(target, span_warning(LANG("obj.5538d157a923661b", list(src))))
 		if(2)
 			//Forced to speak a random language.
 			target.apply_status_effect(/datum/status_effect/tower_of_babel, teleport_delay_pickup)
-			to_chat(target, span_warning("Come, let us go down and confuse their language there, so that they will not understand one another's speech. It'd be fucking hilarious!"))
+			to_chat(target, span_warning(LANG("obj.6c15cf8aba3d5f1d", null)))
 		if(3)
 			//Raining fireball.
 			target.Immobilize(3 SECONDS)
 			new /obj/effect/temp_visual/target(get_turf(target))
-			to_chat(target, span_warning("I CAST FIREBALL!"))
+			to_chat(target, span_warning(LANG("obj.a6bbeb5714a95f65", null)))
 		if(4)
 			//Lighting bolt smite.
 			var/turf/lightning_source = get_turf(src)
@@ -191,11 +192,11 @@
 			target.adjust_fire_loss(LIGHTNING_BOLT_DAMAGE)
 			playsound(get_turf(target), 'sound/effects/magic/lightningbolt.ogg', 50, TRUE)
 			target.electrocution_animation(LIGHTNING_BOLT_ELECTROCUTION_ANIMATION_LENGTH)
-			to_chat(target, span_warning("LIGHTNING BOLT!!"))
+			to_chat(target, span_warning(LANG("obj.f2c02ff2fee9662d", null)))
 		if(5)
 			//Ick Ock Phobia
 			target.gain_trauma(/datum/brain_trauma/mild/phobia/ocky_icky, TRAUMA_RESILIENCE_SURGERY)
-			to_chat(target, span_warning("Those damn coders are out to get us!!!"))
+			to_chat(target, span_warning(LANG("obj.a663fb0ad0fafe3e", null)))
 		if(6)
 			//A rod comes and fucks you up. And the station.
 			var/turf/target_turf = get_turf(target)
@@ -204,7 +205,7 @@
 			var/turf/end_turf = spaceDebrisFinishLoc(startside, target_turf.z)
 			if(start_turf && end_turf)
 				new /obj/effect/immovablerod(start_turf, end_turf, target, FALSE)
-			to_chat(target, span_warning("Huh. Nothing seems to have happened. I guess I am unstoppable..."))
+			to_chat(target, span_warning(LANG("obj.57beeac9013aa810", null)))
 		if(7)
 			//A pod comes down and slams you.
 			target.Immobilize(3 SECONDS)
@@ -217,16 +218,16 @@
 				"explosionSize" = list(0, 0, 2, 4),
 				"effectStun" = TRUE
 			))
-			to_chat(target, span_warning("SPECIAL DELIVERY!"))
+			to_chat(target, span_warning(LANG("obj.15690950ff47e31f", null)))
 		if(8)
 			//You turn into a lizard. If you're already a lizard, you're now scared of lizards.
 			//Can be fixed via SAD.
 			if(target.dna && !istype(target.dna.species,/datum/species/lizard))
 				target.set_species(/datum/species/lizard)
-				to_chat(target, span_warning("You're a lizard, Harry."))
+				to_chat(target, span_warning(LANG("obj.7b6768392758b700", null)))
 			else
 				target.gain_trauma(/datum/brain_trauma/mild/phobia/lizards, TRAUMA_RESILIENCE_SURGERY)
-				to_chat(target, span_warning("Wait a minute, I've been a LIZARD THIS WHOLE TIME?"))
+				to_chat(target, span_warning(LANG("obj.0c67ac7f72defc22", null)))
 
 
 

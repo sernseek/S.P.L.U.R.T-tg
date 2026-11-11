@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Records subtype for the shared functionality between medical/security/warrant consoles.
  */
@@ -52,11 +53,11 @@
 				return FALSE
 			// Don't let people off station futz with the station network.
 			if(!is_station_level(z))
-				balloon_alert(user, "out of range!")
+				balloon_alert(user, LANG("obj.2201997fe1ea08ad", null))
 				return TRUE
 
 			expunge_record_info(target)
-			balloon_alert(user, "record expunged")
+			balloon_alert(user, LANG("obj.0f11207fc11db655", null))
 			playsound(src, 'sound/machines/terminal/terminal_eject.ogg', 70, TRUE)
 			investigate_log("[key_name(user)] expunged the record of [target.name].", INVESTIGATE_RECORDS)
 
@@ -68,7 +69,7 @@
 			return TRUE
 
 		if("logout")
-			balloon_alert(user, "logged out")
+			balloon_alert(user, LANG("obj.73a729993efe359e", null))
 			playsound(src, 'sound/machines/terminal/terminal_off.ogg', 70, TRUE)
 			authenticated = FALSE
 
@@ -77,22 +78,22 @@
 		if("purge_records")
 			// Don't let people off station futz with the station network.
 			if(!is_station_level(z))
-				balloon_alert(user, "out of range!")
+				balloon_alert(user, LANG("obj.2201997fe1ea08ad", null))
 				return TRUE
 
 			ui.close()
-			balloon_alert(user, "purging records...")
+			balloon_alert(user, LANG("obj.220a4db5c8bc00cd", null))
 			playsound(src, 'sound/machines/terminal/terminal_alert.ogg', 70, TRUE)
 
 			if(do_after(user, 5 SECONDS))
 				for(var/datum/record/crew/entry in GLOB.manifest.general)
 					expunge_record_info(entry)
 
-				balloon_alert(user, "records purged")
+				balloon_alert(user, LANG("obj.8753f11e83178e3d", null))
 				playsound(src, 'sound/machines/terminal/terminal_off.ogg', 70, TRUE)
 				investigate_log("[key_name(user)] purged all records.", INVESTIGATE_RECORDS)
 			else
-				balloon_alert(user, "interrupted!")
+				balloon_alert(user, LANG("obj.c67b5d274d6e724b", null))
 
 			return TRUE
 
@@ -139,23 +140,23 @@
 		return FALSE
 
 	if(!authenticated && !allowed(user))
-		balloon_alert(user, "access denied")
+		balloon_alert(user, LANG("obj.1d2a5ed1ed67a4a4", null))
 		playsound(src, 'sound/machines/terminal/terminal_error.ogg', 70, TRUE)
 		return FALSE
 
 	if(mugshot.picture.psize_x > ICON_SIZE_X || mugshot.picture.psize_y > ICON_SIZE_Y)
-		balloon_alert(user, "photo too large!")
+		balloon_alert(user, LANG("obj.fedaf173be49bf81", null))
 		playsound(src, 'sound/machines/terminal/terminal_error.ogg', 70, TRUE)
 		return FALSE
 
 	var/trimmed = copytext(mugshot.name, 9, MAX_NAME_LEN) // Remove "photo - "
-	var/name = tgui_input_text(user, "Enter the name of the new record.", "New Record", trimmed, max_length = MAX_NAME_LEN)
+	var/name = tgui_input_text(user, LANG("obj.57d81285b37b2400", null), LANG("obj.f852426137f8923f", null), trimmed, max_length = MAX_NAME_LEN)
 	if(!name || !is_operational || !user.can_perform_action(src, ALLOW_SILICON_REACH) || !mugshot || QDELETED(mugshot) || QDELETED(src))
 		return FALSE
 
 	new /datum/record/crew(name = name, character_appearance = mugshot.picture.picture_image)
 
-	balloon_alert(user, "record created")
+	balloon_alert(user, LANG("obj.d04363cb2736c085", null))
 	playsound(src, 'sound/machines/terminal/terminal_insert_disc.ogg', 70, TRUE)
 
 	qdel(mugshot)
@@ -168,11 +169,11 @@
 		return FALSE
 
 	if(!allowed(user))
-		balloon_alert(user, "access denied")
+		balloon_alert(user, LANG("obj.1d2a5ed1ed67a4a4", null))
 		playsound(src, 'sound/machines/terminal/terminal_error.ogg', 70, TRUE)
 		return FALSE
 
-	balloon_alert(user, "logged in")
+	balloon_alert(user, LANG("obj.c36a641855e57b51", null))
 	playsound(src, 'sound/machines/terminal/terminal_on.ogg', 70, TRUE)
 
 	return TRUE

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*!
  * Kinetic Gauntlets
  *
@@ -105,7 +106,7 @@
 		return
 
 	if(wearer.gloves != src)
-		to_chat(wearer, span_warning("You must be wearing these to do this!"))
+		to_chat(wearer, span_warning(LANG("obj.fd69f2f5d255bb7c", null)))
 		return
 
 	if(gauntlets_deployed())
@@ -113,13 +114,13 @@
 
 	if(!wearer.can_put_in_hand(left_gauntlet, 1) || !wearer.can_put_in_hand(right_gauntlet, 2))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
-		to_chat(wearer, span_warning("You need both free hands to deploy [src]!"))
+		to_chat(wearer, span_warning(LANG("obj.cfc4e848dc827c8e", list(src))))
 		return
 
 	wearer.add_movespeed_modifier(/datum/movespeed_modifier/equipping_gauntlets)
 	if(!do_after(wearer, 1.5 SECONDS, src, IGNORE_USER_LOC_CHANGE, interaction_key = type))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
-		to_chat(wearer, span_warning("You fail to deploy [src]!"))
+		to_chat(wearer, span_warning(LANG("obj.0f0b75e1190b96ac", list(src))))
 		wearer.remove_movespeed_modifier(/datum/movespeed_modifier/equipping_gauntlets)
 		return
 
@@ -127,7 +128,7 @@
 
 	if(!wearer.can_put_in_hand(left_gauntlet, 1) || !wearer.can_put_in_hand(right_gauntlet, 2))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
-		to_chat(wearer, span_warning("You need both free hands to deploy [src]!"))
+		to_chat(wearer, span_warning(LANG("obj.cfc4e848dc827c8e", list(src))))
 		return
 
 	wearer.put_in_l_hand(left_gauntlet)
@@ -140,7 +141,7 @@
 
 	playsound(src, 'sound/vehicles/mecha/mechmove03.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	playsound(src, 'sound/vehicles/mecha/mechmove01.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-	to_chat(wearer, span_notice("You deploy [src]."))
+	to_chat(wearer, span_notice(LANG("obj.4e3e93eec4e0e842", list(src))))
 
 /obj/item/clothing/gloves/kinetic_gauntlets/proc/retract_gauntlets()
 	var/mob/living/carbon/human/wearer = loc
@@ -148,7 +149,7 @@
 		return
 
 	if(wearer.gloves != src)
-		to_chat(wearer, span_warning("You must be wearing these to do this!"))
+		to_chat(wearer, span_warning(LANG("obj.fd69f2f5d255bb7c", null)))
 		return
 
 	if(!gauntlets_deployed())
@@ -158,7 +159,7 @@
 	if(!do_after(wearer, 1.5 SECONDS, src, IGNORE_USER_LOC_CHANGE, interaction_key = type))
 		wearer.remove_movespeed_modifier(/datum/movespeed_modifier/equipping_gauntlets)
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
-		to_chat(wearer, span_warning("You fail to retract [src]!"))
+		to_chat(wearer, span_warning(LANG("obj.e9d2676609d63b82", list(src))))
 		return
 
 	wearer.remove_movespeed_modifier(/datum/movespeed_modifier/equipping_gauntlets)
@@ -173,7 +174,7 @@
 
 	playsound(src, 'sound/vehicles/mecha/powerloader_turn2.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	playsound(src, 'sound/vehicles/mecha/mechmove01.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-	to_chat(wearer, span_notice("You retract [src]."))
+	to_chat(wearer, span_notice(LANG("obj.25c30027a3e52edc", list(src))))
 
 /obj/item/kinetic_gauntlet
 	name = "kinetic gauntlet"
@@ -266,7 +267,7 @@
 		return ITEM_INTERACT_BLOCKING
 
 	if(interacting_with == user)
-		user.balloon_alert(user, "can't aim at yourself!")
+		user.balloon_alert(user, LANG("obj.224c61eb79a11f6c", null))
 		return ITEM_INTERACT_BLOCKING
 
 	var/datum/component/kinetic_gauntlets/gauntlets_comp = linked_gauntlets.GetComponent(/datum/component/kinetic_gauntlets)
@@ -277,7 +278,7 @@
 		return ITEM_INTERACT_BLOCKING
 
 	if(!gauntlets_comp.charged)
-		user.balloon_alert(user, "recharging...")
+		user.balloon_alert(user, LANG("obj.2e29b52d8d0de3cc", null))
 		return ITEM_INTERACT_BLOCKING
 
 	gauntlets_comp.fire_kinetic_blast(interacting_with, user, modifiers)

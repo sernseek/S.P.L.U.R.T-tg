@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * The fleshmind base type, make sure all mobs are derived from this.
  *
@@ -128,11 +129,11 @@
 /mob/living/basic/fleshmind/emp_act(severity)
 	switch(severity)
 		if(EMP_LIGHT)
-			say("Electronic disturbance detected.")
+			say(LANG("mob.46f6b5d5dd978d17", null))
 			apply_damage(MOB_EMP_LIGHT_DAMAGE)
 			malfunction(MALFUNCTION_RESET_TIME)
 		if(EMP_HEAVY)
-			say("Major electronic disturbance detected!")
+			say(LANG("mob.8be4d47ef0705a64", null))
 			apply_damage(MOB_EMP_HEAVY_DAMAGE)
 			malfunction(MALFUNCTION_RESET_TIME * 2)
 
@@ -153,7 +154,7 @@
 
 	our_controller = null
 	endless_malfunction = TRUE
-	balloon_alert_to_viewers("its systems are overloading!")
+	balloon_alert_to_viewers(LANG("mob.5525a14be0ca13a6", null))
 	addtimer(CALLBACK(src, PROC_REF(kill_mob)), pick(rand(3 SECONDS,10 SECONDS)))
 
 /mob/living/basic/fleshmind/proc/kill_mob() // Used to make all fleshmind mobs lightly explode
@@ -210,7 +211,7 @@
  * Resets the mob after a malfunction has occured.
  */
 /mob/living/basic/fleshmind/proc/malfunction_reset()
-	say("System restored.")
+	say(LANG("mob.887c3e9a4890709f", null))
 	src.ai_controller?.set_ai_status(AI_STATUS_ON)
 	suffering_malfunction = FALSE
 
@@ -241,7 +242,11 @@
 		"All your scattered minds have is hatred.",
 		"CONNECTION TERMINATED.",
 	)
-	say(pick(death_cry_emotes))
+	// ZH EDIT ADDITION START - I18N: scope garbled and partial cries to this NPC's fixed speech pool
+	var/death_cry = pick(death_cry_emotes)
+	var/list/localized_cries = lang_scoped_table("fleshmind_speech.json")
+	say(localized_cries[death_cry] || death_cry)
+	// ZH EDIT ADDITION END - ORIGINAL: say(pick(death_cry_emotes))
 
 /**
  * Death cry
@@ -390,7 +395,7 @@
 /mob/living/basic/fleshmind/floater/proc/pre_detonate()
 	if(!QDELETED(src))
 		add_filter("detonating_glow", 2, list("type" = "outline", "color" = "#ff0000ff", "size" = 2))
-		balloon_alert_to_viewers("DETONATING", "DETONATING", world.view)
+		balloon_alert_to_viewers(LANG("mob.83a3e96620d7e204", null), LANG("mob.83a3e96620d7e204", null), world.view)
 		addtimer(CALLBACK(src, PROC_REF(detonate), 3 SECONDS))
 
 /mob/living/basic/fleshmind/floater/proc/detonate()
@@ -648,7 +653,7 @@
 	COOLDOWN_START(src, stun_attack, stun_attack_cooldown)
 
 /mob/living/basic/fleshmind/hiborg/proc/aoe_attack()
-	visible_message("[src] spins around violently!")
+	visible_message(LANG("mob.c5910d767bcb9f4a", list(src)))
 	spin(20, 1)
 	for(var/mob/living/iterating_mob in view(aoe_attack_range, src))
 		if(iterating_mob == src)
@@ -798,12 +803,12 @@
 /mob/living/basic/fleshmind/himan/examine(mob/user)
 	. = ..()
 	if(faking_death)
-		. += span_deadsay("Upon closer examination, [p_they()] appear[p_s()] to be dead.")
+		. += span_deadsay(LANG("mob.113d960183997649", list(p_they(), p_s())))
 
 /mob/living/basic/fleshmind/himan/proc/scream()
 	COOLDOWN_START(src, scream_ability, scream_cooldown)
 	playsound(src, 'modular_skyrat/modules/horrorform/sound/horror_scream.ogg', 100, TRUE)
-	manual_emote("screams violently!")
+	manual_emote(LANG("mob.439d8f1fe4dbe800", null))
 	for(var/mob/living/iterating_mob in get_hearers_in_range(scream_effect_range, src))
 		if(HAS_TRAIT(iterating_mob, TRAIT_DEAF))
 			continue
@@ -811,11 +816,11 @@
 			continue
 		iterating_mob.Knockdown(3 SECONDS)
 		iterating_mob.apply_status_effect(/datum/status_effect/jitter, 20 SECONDS)
-		to_chat(iterating_mob, span_userdanger("A terrible howl tears through your mind, the voice senseless, soulless."))
+		to_chat(iterating_mob, span_userdanger(LANG("mob.b1d3e94f9f81d08a", null)))
 
 /mob/living/basic/fleshmind/himan/proc/fake_our_death()
 	ai_controller?.set_ai_status(AI_STATUS_OFF)
-	manual_emote("stops moving...")
+	manual_emote(LANG("mob.2f33d25b1e5b2f85", null))
 	faking_death = TRUE
 	look_dead()
 	COOLDOWN_START(src, fake_death, fake_death_cooldown)
@@ -917,7 +922,7 @@
 			if(iterating_mob.health < iterating_mob.maxHealth)
 				if(istype(iterating_mob, /mob/living/basic/fleshmind/tyrant)) // Don't heal this.
 					continue
-				manual_emote("vomits out a burst of nanites!")
+				manual_emote(LANG("mob.8ae225cd91a31301", null))
 				do_smoke(3, 4, get_turf(src))
 				iterating_mob.heal_overall_damage(30, 30)
 
@@ -1081,8 +1086,8 @@
 	forceMove(place)
 	for(var/mob/living/living_mob in place)
 		if(living_mob != src)
-			visible_message("[src] lands directly on top of [living_mob]!")
-			to_chat(living_mob, span_userdanger("[src] lands directly on top of you!"))
+			visible_message(LANG("mob.51aed5ade0bce534", list(src, living_mob)))
+			to_chat(living_mob, span_userdanger(LANG("mob.29508b5091addb5a", list(src))))
 			playsound(place, 'sound/effects/ghost2.ogg', 70, 1)
 			living_mob.Knockdown(10)
 
@@ -1146,7 +1151,7 @@
 	if(!LAZYLEN(possible_targets))
 		return
 
-	var/mob/living/selected_target = tgui_input_list(phaser_owner, "Select a mob to harass", "Select Mob", possible_targets)
+	var/mob/living/selected_target = tgui_input_list(phaser_owner, LANG("datum.d55fae6fab6e3e0e", null), LANG("datum.b6028fc8c789401a", null), possible_targets)
 
 	if(!selected_target)
 		return
@@ -1408,8 +1413,8 @@
 	contained_mob = target_mob
 	target_mob.forceMove(src)
 
-	to_chat(target_mob, span_userdanger("[src] ensnares your limbs as it pulls you inside its compartment, metal tendrils sliding around you, squeezing tight."))
-	visible_message(span_danger("[src] consumes [target_mob]!"))
+	to_chat(target_mob, span_userdanger(LANG("mob.613f482449a2f5ac", list(src))))
+	visible_message(span_danger(LANG("mob.5b0a8f33e34d69a7", list(src, target_mob))))
 	playsound(src, 'sound/effects/blob/blobattack.ogg', 70, 1)
 
 	addtimer(CALLBACK(src, PROC_REF(release_mob)), conversion_time)

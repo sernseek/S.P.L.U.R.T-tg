@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/ballistic/rocketlauncher/security
 
 	//Text
@@ -132,13 +133,13 @@
 	//Shamelessly copied from /obj/structure/sign/eyechart
 	if(!user.can_read(src, READING_CHECK_LITERACY, silent = TRUE) || !user.has_language(/datum/language/common, UNDERSTOOD_LANGUAGE))
 		if(!user.is_blind())
-			. += "<hr>You gaze at the warning label, trying to make sense of it..."
-			. += span_warning("...But you don't actually know what any of it means.")
+			. += LANG("obj.d3df6cb25b95bb0a", null)
+			. += span_warning(LANG("obj.1cbb4442070101c0", null))
 		return
 
 	if(!user.can_read(src, READING_CHECK_LIGHT, silent = TRUE))
-		. += "<hr>You squint at the warning label..."
-		. += span_warning("...But it's too dark to make out anything.")
+		. += LANG("obj.63b5a33d874f2029", null)
+		. += span_warning(LANG("obj.acb1aee2995b2b6d", null))
 		return
 
 	var/obj/item/organ/eyes/eye = user.get_organ_slot(ORGAN_SLOT_EYES)
@@ -146,14 +147,14 @@
 		return
 
 	if(eye.damage >= eye.low_threshold || user.has_status_effect(/datum/status_effect/eye_blur))
-		. += "<hr>You squint at the warning label..."
-		. += span_warning("...But it's too hard to read anything this small...")
+		. += LANG("obj.63b5a33d874f2029", null)
+		. += span_warning(LANG("obj.5e770188372abbfd", null))
 		return
 
 	if(!warning_label)
 		warning_label = generate_warning_label()
 
-	. += span_warning("A warning label on the side reads:")
+	. += span_warning(LANG("obj.a4611bbac00c66bc", null))
 
 	. += span_danger(warning_label)
 
@@ -161,7 +162,7 @@
 	if(self_targeting)
 		return FALSE
 	self_targeting = TRUE
-	balloon_alert(user, "targeting systems tampered")
+	balloon_alert(user, LANG("obj.ccc36f3ac3690dc6", null))
 	do_sparks(2, FALSE, src)
 	return TRUE
 

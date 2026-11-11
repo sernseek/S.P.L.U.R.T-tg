@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/interaction/lewd/titgrope_self
 	name = "Grope Breasts (self)"
 	description = "Grope your own breasts."
@@ -27,13 +28,13 @@
 	if(!ishuman(user))
 		return
 	if(prob(5 + user.arousal))
-		user.visible_message(span_lewd("<b>\The [user]</b> [pick(
+		user.visible_message(span_lewd(LANG("datum.b00a516931f33a43", list(user, pick(
 			"shivers in arousal.",
 			"moans quietly.",
 			"breathes out a soft moan.",
 			"gasps.",
 			"shudders softly.",
-			"trembles as their hands run across bare skin.")]"))
+			"trembles as their hands run across bare skin.")))))
 
 	var/obj/item/liquid_container
 	var/obj/item/cached_item = user.get_active_held_item()

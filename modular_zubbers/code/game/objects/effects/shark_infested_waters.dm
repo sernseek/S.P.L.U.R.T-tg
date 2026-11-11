@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/shark_infested_waters
 	name = "a carp with a fricken laser rifle attached to their head"
 	desc = "An ill-tempered endangered species of territorial water carp with a laser rifle on its head. \
@@ -44,7 +45,7 @@
 			if(COOLDOWN_FINISHED(src,growl_cooldown) && !prob(80)) // Growl optimization
 				COOLDOWN_START(src,growl_cooldown,3 SECONDS)
 				src.audible_message(
-					span_warning("[src] growls at [arrived]..."),
+					span_warning(LANG("obj.97328f58d7680e47", list(src, arrived))),
 					hearing_distance = COMBAT_MESSAGE_RANGE
 				)
 

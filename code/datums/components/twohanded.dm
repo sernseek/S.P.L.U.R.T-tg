@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Two Handed Component
  *
@@ -217,22 +218,22 @@
 	var/atom/atom_parent = parent
 	if(HAS_TRAIT(user, TRAIT_NO_TWOHANDING))
 		if(HAS_TRAIT(parent, TRAIT_NEEDS_TWO_HANDS))
-			atom_parent.balloon_alert(user, "can't wield!")
+			atom_parent.balloon_alert(user, LANG("datum.9bd41f9e905a1ab1", null))
 			user.dropItemToGround(parent, force = TRUE)
 		else
-			atom_parent.balloon_alert(user, "can't wield with both hands!")
+			atom_parent.balloon_alert(user, LANG("datum.0cdedbe969edfbc9", null))
 		return COMPONENT_EQUIPPED_FAILED
 	if(user.get_inactive_held_item())
 		if(HAS_TRAIT(parent, TRAIT_NEEDS_TWO_HANDS))
-			atom_parent.balloon_alert(user, "can't carry in one hand!")
+			atom_parent.balloon_alert(user, LANG("datum.1c69b19ee1aa1d21", null))
 			user.dropItemToGround(parent, force = TRUE)
 		else
-			atom_parent.balloon_alert(user, "holding something in other hand!")
+			atom_parent.balloon_alert(user, LANG("datum.cea38e9c5cc4897b", null))
 		return COMPONENT_EQUIPPED_FAILED
 	if(user.usable_hands < 2)
 		if(HAS_TRAIT(parent, TRAIT_NEEDS_TWO_HANDS))
 			user.dropItemToGround(parent, force = TRUE)
-		atom_parent.balloon_alert(user, "not enough hands!")
+		atom_parent.balloon_alert(user, LANG("datum.9910e34d93941a7f", null))
 		return COMPONENT_EQUIPPED_FAILED
 
 	// wield update status
@@ -257,9 +258,9 @@
 	parent_item.update_appearance()
 
 	if(iscyborg(user))
-		to_chat(user, span_notice("You dedicate your module to [parent]."))
+		to_chat(user, span_notice(LANG("datum.21610e95a21a3e0a", list(parent))))
 	else
-		to_chat(user, span_notice("You grab [parent] with both hands."))
+		to_chat(user, span_notice(LANG("datum.8f77f32832156d5e", list(parent))))
 
 	// Play sound if one is set
 	if(wieldsound)
@@ -325,11 +326,11 @@
 		// Show message if requested
 		if(show_message)
 			if(iscyborg(user))
-				to_chat(user, span_notice("You free up your module."))
+				to_chat(user, span_notice(LANG("datum.8d2ceb229f09c505", null)))
 			else if(HAS_TRAIT(parent, TRAIT_NEEDS_TWO_HANDS))
-				to_chat(user, span_notice("You drop [parent]."))
+				to_chat(user, span_notice(LANG("datum.42e2c243dd34159f", list(parent))))
 			else
-				to_chat(user, span_notice("You are now carrying [parent] with one hand."))
+				to_chat(user, span_notice(LANG("datum.cfee0cf95b89e133", list(parent))))
 
 	// Play sound if set
 	if(unwieldsound)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/stripper_pole
 	name = "stripper pole"
 	desc = "A pole fastened to the ceiling and floor, used to show of one's goods to company."
@@ -35,7 +36,7 @@
 
 /obj/structure/stripper_pole/examine(mob/user)
 	. = ..()
-	. += "The lights are currently <b>[lights_enabled ? "ON" : "OFF"]</b> and could be [lights_enabled ? "dis" : "en"]abled with <b>Alt-Click</b>."
+	. += LANG("obj.5f601baa4cabd89f", list(lights_enabled ? "ON" : "OFF", lights_enabled ? "dis" : "en"))
 
 
 /// The list of possible designs generated for the radial reskinning menu
@@ -63,7 +64,7 @@
 // Alt-click to turn the lights on or off.
 /obj/structure/stripper_pole/click_alt(mob/user)
 	lights_enabled = !lights_enabled
-	balloon_alert(user, "lights [lights_enabled ? "on" : "off"]")
+	balloon_alert(user, LANG("obj.099ca9f346e1aa95", list(lights_enabled ? "on" : "off")))
 	playsound(user, lights_enabled ? 'sound/items/weapons/magin.ogg' : 'sound/items/weapons/magout.ogg', 40, TRUE)
 	update_icon_state()
 	update_icon()
@@ -99,7 +100,7 @@
 	if(!proximity_flag)
 		return
 	if(pole_in_use)
-		balloon_alert(user, "already in use!")
+		balloon_alert(user, LANG("obj.38f46f8c1ab54d5a", null))
 		return
 	pole_in_use = TRUE
 	dancer = user
@@ -151,15 +152,15 @@
 
 /obj/structure/stripper_pole/click_ctrl_shift(mob/user)
 	add_fingerprint(user)
-	balloon_alert(user, "disassembling...")
+	balloon_alert(user, LANG("obj.b5ba987161d1a2e3", null))
 	if(!do_after(user, 8 SECONDS, src))
-		balloon_alert(user, "disassembly interrupted!")
+		balloon_alert(user, LANG("obj.b8d5b3bfb4f2d504", null))
 		return
 
-	balloon_alert(user, "disassembled")
+	balloon_alert(user, LANG("obj.6da68488a6a04800", null))
 	new /obj/item/construction_kit/pole(get_turf(user))
 	qdel(src)
 
 /obj/structure/stripper_pole/examine(mob/user)
 	. = ..()
-	. += span_purple("[src] can be disassembled by using Ctrl+Shift+Click")
+	. += span_purple(LANG("obj.c1a93939eb9daced", list(src)))

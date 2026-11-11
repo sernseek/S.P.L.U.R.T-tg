@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Used by Ghouls
 /datum/action/cooldown/bloodsucker/recuperate
 	name = "Sanguine Recuperation"
@@ -21,14 +22,14 @@
 	if(!.)
 		return
 	if(user.stat >= DEAD || user.incapacitated)
-		user.balloon_alert(user, "you are incapacitated...")
+		user.balloon_alert(user, LANG("datum.e696d657da729da1", null))
 		return FALSE
 	return TRUE
 
 /datum/action/cooldown/bloodsucker/recuperate/ActivatePower(trigger_flags)
 	. = ..()
-	to_chat(owner, span_notice("Your muscles clench as your master's immortal blood mixes with your own, knitting your wounds."))
-	owner.balloon_alert(owner, "recuperate turned on.")
+	to_chat(owner, span_notice(LANG("datum.32d0e30202f1debb", null)))
+	owner.balloon_alert(owner, LANG("datum.5c6d7c474e2d77d9", null))
 	return TRUE
 
 /datum/action/cooldown/bloodsucker/recuperate/process(seconds_per_tick)
@@ -41,7 +42,7 @@
 	var/mob/living/carbon/user = owner
 	var/datum/antagonist/ghoul/ghouldatum = IS_GHOUL(user)
 	if(!ghouldatum || QDELETED(ghouldatum.master))
-		to_chat(owner, span_warning("No master to draw blood from!"))
+		to_chat(owner, span_warning(LANG("datum.fab288c1b492532d", null)))
 		DeactivatePower()
 		return
 	ghouldatum.master.AdjustBloodVolume(-1)
@@ -63,7 +64,7 @@
 	if(user.stat >= DEAD)
 		return FALSE
 	if(INCAPACITATED_IGNORING(user, INCAPABLE_GRAB|INCAPABLE_RESTRAINTS))
-		owner?.balloon_alert(owner, "too exhausted...")
+		owner?.balloon_alert(owner, LANG("datum.18c0415aa14c131f", null))
 		return FALSE
 	return TRUE
 
@@ -71,5 +72,5 @@
 	. = ..()
 	if(!.)
 		return
-	owner.balloon_alert(owner, "recuperate turned off.")
+	owner.balloon_alert(owner, LANG("datum.e895131e5a8f4e34", null))
 	return ..()

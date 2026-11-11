@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Called when the shuttle starts launching back to centcom, polls a few random players who joined the round for commendations
 /datum/controller/subsystem/ticker/proc/poll_hearts()
 	if(!CONFIG_GET(number/commendation_percent_poll))
@@ -39,17 +40,17 @@
 /mob/proc/query_heart(attempt=1)
 	if(!client || attempt > 3)
 		return
-	if(attempt == 1 && tgui_alert(src, "Was there another character you noticed being kind this round that you would like to anonymously thank?", "<3?", list("Yes", "No"), timeout = 30 SECONDS) != "Yes")
+	if(attempt == 1 && tgui_alert(src, LANG("mob.60e93335a616a052", null), "<3?", list("Yes", "No"), timeout = 30 SECONDS) != "Yes")
 		return
 
 	var/heart_nominee
 	switch(attempt)
 		if(1)
-			heart_nominee = tgui_input_text(src, "What was their name? Just a first or last name may be enough.", "<3?", max_length = MAX_NAME_LEN)
+			heart_nominee = tgui_input_text(src, LANG("mob.25a44c6e57357596", null), "<3?", max_length = MAX_NAME_LEN)
 		if(2)
-			heart_nominee = tgui_input_text(src, "Try again, what was their name? Just a first or last name may be enough.", "<3?", max_length = MAX_NAME_LEN)
+			heart_nominee = tgui_input_text(src, LANG("mob.3c9ae59edf11714a", null), "<3?", max_length = MAX_NAME_LEN)
 		if(3)
-			heart_nominee = tgui_input_text(src, "One more try, what was their name? Just a first or last name may be enough.", "<3?", max_length = MAX_NAME_LEN)
+			heart_nominee = tgui_input_text(src, LANG("mob.81561592748885e0", null), "<3?", max_length = MAX_NAME_LEN)
 
 	if(!heart_nominee)
 		return
@@ -66,7 +67,7 @@
 		if(heart_contender == src)
 			continue
 
-		switch(tgui_alert(src, "Is this the person: [heart_contender.real_name]?", "<3?", list("Yes!", "Nope", "Cancel"), timeout = 15 SECONDS))
+		switch(tgui_alert(src, LANG("mob.5dacd5270274a376", list(heart_contender.real_name)), "<3?", list("Yes!", "Nope", "Cancel"), timeout = 15 SECONDS))
 			if("Yes!")
 				heart_contender.receive_heart(src)
 				return
@@ -91,7 +92,7 @@
 /mob/proc/receive_heart(mob/heart_sender, duration = 24 HOURS, instant = FALSE)
 	if(!client)
 		return
-	to_chat(heart_sender, span_nicegreen("Commendation sent!"))
+	to_chat(heart_sender, span_nicegreen(LANG("mob.4290a5ddfba0188f", null)))
 	message_admins("[key_name(heart_sender)] commended [key_name(src)] [instant ? "(instant)" : ""]")
 	log_admin_private("[key_name(heart_sender)] commended [key_name(src)] [instant ? "(instant)" : ""]")
 	if(instant || SSticker.current_state == GAME_STATE_FINISHED)

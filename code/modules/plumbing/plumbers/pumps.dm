@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///We pump liquids from activated(plungerated) geysers to a plumbing outlet. We need to be wired.
 /obj/machinery/plumbing/liquid_pump
 	name = "liquid pump"
@@ -40,7 +41,7 @@
 			update_appearance()
 		if(!geyser) //we didnt find one, abort
 			geyserless = TRUE
-			visible_message(span_warning("\The [src] makes a sad beep!"))
+			visible_message(span_warning(LANG("obj.5c290b5d30564a38", list(src))))
 			playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50)
 			return
 

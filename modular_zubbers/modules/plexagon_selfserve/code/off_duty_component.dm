@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/off_duty_timer
 	///Is the ID that the component is attached to is able to clock back in?
 	var/on_cooldown = FALSE
@@ -54,11 +55,11 @@
 		return FALSE
 
 	if(!(ACCESS_HOP in hop_id.access))
-		to_chat(user, span_warning("You lack the access to unlock [parent]"))
+		to_chat(user, span_warning(LANG("datum.c21ab3f924811246", list(parent))))
 		return FALSE
 
 	hop_locked = FALSE
-	to_chat(user, span_notice("[parent] has been unlocked, the owner is now able to clock in."))
+	to_chat(user, span_notice(LANG("datum.d2b0764bb09978d7", list(parent))))
 	log_admin("[parent] has been unlocked by [user] and is now able to be clocked back in.")
 
 	return TRUE

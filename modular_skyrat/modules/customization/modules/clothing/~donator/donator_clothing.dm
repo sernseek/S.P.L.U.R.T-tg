@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**************SKYRAT REWARDS**************/
 //SUITS
 /obj/item/clothing/suit/hooded/wintercoat/colourable
@@ -125,21 +126,21 @@
 
 /obj/item/canvas/drawingtablet/ui_action_click(mob/user, action)
 	if(istype(action, /datum/action/item_action/dtselectcolor))
-		currentcolor = tgui_color_picker(user, "", "Choose Color", currentcolor)
+		currentcolor = tgui_color_picker(user, "", LANG("obj.d472a9f2c270f157", null), currentcolor)
 	else if(istype(action, /datum/action/item_action/dtcolormenu))
 		var/list/selects = colors.Copy()
 		selects["Save"] = "Save"
 		selects["Delete"] = "Delete"
-		var/selection = input(user, "", "Color Menu", currentcolor) as null|anything in selects
+		var/selection = input(user, "", LANG("obj.cdae6578ede00b80", null), currentcolor) as null|anything in selects
 		if(QDELETED(src) || !user.can_perform_action(src))
 			return
 		switch(selection)
 			if("Save")
-				var/name = input(user, "", "Name the color!", "Pastel Purple") as text|null
+				var/name = input(user, "", LANG("obj.90b562f4927ce970", null), "Pastel Purple") as text|null
 				if(name)
 					colors[name] = currentcolor
 			if("Delete")
-				var/delet = input(user, "", "Color Menu", currentcolor) as null|anything in colors
+				var/delet = input(user, "", LANG("obj.cdae6578ede00b80", null), currentcolor) as null|anything in colors
 				if(delet)
 					colors.Remove(delet)
 			if(null)
@@ -147,7 +148,7 @@
 			else
 				currentcolor = colors[selection]
 	else if(istype(action, /datum/action/item_action/dtcleargrid))
-		var/yesnomaybe = tgui_alert(user, "Are you sure you wanna clear the canvas?", "", list("Yes", "No", "Maybe"))
+		var/yesnomaybe = tgui_alert(user, LANG("obj.8fc9b6a959348782", null), "", list("Yes", "No", "Maybe"))
 		if(QDELETED(src) || !user.can_perform_action(src))
 			return
 		switch(yesnomaybe)
@@ -164,7 +165,7 @@
 				return
 			if("Maybe")
 				playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
-				audible_message(span_warning("The [src] buzzes!"))
+				audible_message(span_warning(LANG("obj.5c228379d0c004e7", list(src))))
 				return
 
 /obj/item/canvas/drawingtablet/get_paint_tool_color()
@@ -293,7 +294,7 @@
 
 /obj/item/clothing/mask/gas/nightlight/examine(mob/user)
 	. = ..()
-	. += span_notice("Alt-click [src] to adjust it.")
+	. += span_notice(LANG("obj.10c89ab80b545b48", list(src)))
 
 /obj/item/clothing/mask/gas/nightlight/alldono //different itempath so regular donators can have it, too
 
@@ -525,7 +526,7 @@
 /obj/item/clothing/gloves/ring/hypno/ui_action_click(mob/living/user, action)
 	if(!isliving(user) || !can_use(user))
 		return
-	var/message = input(user, "Speak with a hypnotic whisper", "Whisper")
+	var/message = input(user, LANG("obj.e07a49a6cf3ad500", null), LANG("obj.fc9f00ae3362c705", null))
 	if(QDELETED(src) || QDELETED(user) || !message || !user.can_speak())
 		return
 	user.whisper(message, spans = spans)
@@ -550,10 +551,10 @@
 		return
 	if(goggles)
 		icon_state = "avipilotup"
-		to_chat(user, span_notice("You put all your effort into pulling the goggles up."))
+		to_chat(user, span_notice(LANG("obj.70e213cd5128bca6", null)))
 	else
 		icon_state = "avipilotdown"
-		to_chat(user, span_notice("You focus all your willpower to put the goggles down on your eyes."))
+		to_chat(user, span_notice(LANG("obj.88e61b72a30db60a", null)))
 	goggles = !goggles
 	if(user)
 		user.update_worn_head()
@@ -639,9 +640,9 @@
 		new treat_path(src)
 
 /obj/item/clothing/neck/inferno_collar/attack_self(mob/user)
-	tagname = stripped_input(user, "Would you like to change the name on the tag?", "Name your new pet", "Kiara", MAX_NAME_LEN)
+	tagname = stripped_input(user, LANG("obj.caff9b8cf4adcde9", null), LANG("obj.f428d0a3eb8ed8ce", null), "Kiara", MAX_NAME_LEN)
 	if(tagname)
-		name = "[initial(name)] - [tagname]"
+		name = "[lang_reverse_text(initial(name))] - [tagname]"  // i18n: initial(name) 会覆盖掉已反查的中文名
 
 // Donation reward for inferno707
 /obj/item/clothing/accessory/medal/steele
@@ -732,7 +733,7 @@
 		update_icon()
 		ooser.update_worn_mask()
 		ooser.update_mob_action_buttons()
-		to_chat(ooser, span_notice("You toggle the [src] to [possible_colors[c_color_index]]."))
+		to_chat(ooser, span_notice(LANG("obj.df28159d5ec17599", list(src, possible_colors[c_color_index]))))
 
 // Donation reward for asky / Zulie
 /obj/item/clothing/suit/hooded/cloak/zuliecloak
@@ -979,7 +980,7 @@
 /obj/item/clothing/glasses/welding/steampunk_goggles/examine(mob/user)
 	. = ..()
 	if(welding_upgraded)
-		. += "It has been upgraded with welding shutters, which are currently [welding_protection ? "closed" : "opened"]."
+		. += LANG("obj.8ace0874a105c3fb", list(welding_protection ? "closed" : "opened"))
 
 /obj/item/clothing/glasses/welding/steampunk_goggles/item_action_slot_check(slot, mob/user)
 	. = ..()
@@ -988,7 +989,7 @@
 
 /obj/item/clothing/glasses/welding/steampunk_goggles/attack_self(mob/user)
 	if(user.get_item_by_slot(ITEM_SLOT_HEAD) == src)
-		to_chat(user, span_warning("You can't seem to slip those on your eyes from the top of your head!"))
+		to_chat(user, span_warning(LANG("obj.53af2bfedcfe8037", null)))
 		return
 	. = ..()
 
@@ -1006,11 +1007,11 @@
 		return ..()
 
 	if(welding_upgraded)
-		to_chat(user, span_warning("\The [src] was already upgraded to have welding protection!"))
+		to_chat(user, span_warning(LANG("obj.46d52b7487b3de1a", list(src))))
 		return
 	qdel(attacking_item)
 	welding_upgraded = TRUE
-	to_chat(user, span_notice("You upgrade \the [src] with some welding shutters, offering you the ability to toggle welding protection!"))
+	to_chat(user, span_notice(LANG("obj.674448094804c3d5", list(src))))
 	actions += new /datum/action/item_action/toggle_steampunk_goggles_welding_protection(src)
 
 /// Proc that handles the whole toggling the welding protection on and off, with user feedback.
@@ -1020,7 +1021,7 @@
 	if(!toggle_welding_protection(user))
 		return FALSE
 
-	to_chat(user, span_notice("You slide \the [src]'s welding shutters slider, [welding_protection ? "closing" : "opening"] them."))
+	to_chat(user, span_notice(LANG("obj.c7a045966101825e", list(src, welding_protection ? "closing" : "opening"))))
 	playsound(user, shutters_sound, 100, TRUE)
 	if(iscarbon(user))
 		var/mob/living/carbon/carbon_user = user
@@ -1218,7 +1219,7 @@
 
 /obj/item/card/fuzzy_license/attack_self(mob/user)
 	if(Adjacent(user))
-		user.visible_message(span_notice("[user] shows you: [icon2html(src, viewers(user))] [src.name]."), span_notice("You show \the [src.name]."))
+		user.visible_message(span_notice(LANG("obj.ba4fa098a36e1d83", list(user, icon2html(src, viewers(user)), src.name))), span_notice(LANG("obj.3f13aa85be06bcd1", list(src.name))))
 	add_fingerprint(user)
 
 /obj/item/card/fuzzy_license/attackby(obj/item/used, mob/living/user, params)
@@ -1226,7 +1227,7 @@
 		return
 
 	if(istype(used, /obj/item/pen) || istype(used, /obj/item/toy/crayon))
-		var/choice = input(user, "Select the license type", "License Type Selection") as null|anything in possible_types
+		var/choice = input(user, LANG("obj.8a06c96878520cda", null), LANG("obj.1ae692efc54a115f", null)) as null|anything in possible_types
 		if(!isnull(choice))
 			name = "license to [choice]"
 
@@ -1407,14 +1408,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/korpstech, 32)
 /obj/item/clothing/accessory/hypno_watch/ui_action_click(mob/living/user, action)
 	if(!isliving(user) || !can_use(user))
 		return
-	var/message = input(user, "Speak with a hypnotic whisper", "Whisper")
+	var/message = input(user, LANG("obj.e07a49a6cf3ad500", null), LANG("obj.fc9f00ae3362c705", null))
 	if(QDELETED(src) || QDELETED(user) || !message || !user.can_speak())
 		return
 	user.whisper(message, spans = spans)
 
 /obj/item/clothing/accessory/hypno_watch/examine()
 	. = ..()
-	. += span_boldwarning("Who knows what it could be used for?")
+	. += span_boldwarning(LANG("obj.01a32254255cf1db", null))
 
 // Donation reward for BoisterousBeebz
 
@@ -1696,7 +1697,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/korpstech, 32)
 
 /obj/item/clothing/suit/armor/hos/elofy/examine_more(mob/user)
 	. = ..()
-	. += "It seems particularly soft and has subtle ballistic fibers intwined with the soft fabric that is perfectedly tailored to the body that wears it. Each golden engraving seems to reflect against your eyes with a slightly blinding flare. This is part of a full set of Luna Wolves Legion battle garb."
+	. += LANG("obj.c53541895eea0a41", null)
 
 
 /obj/item/clothing/head/hats/hos/elofy
@@ -1868,7 +1869,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/poster/contraband/korpstech, 32)
 
 	var/obj/item/food/griddle_toast/toaster_implant/toast = new(get_turf(imp_in))
 	var/adjective = pick("crispy", "delicious", "fresh")
-	imp_in.visible_message(span_notice("[imp_in] ejects a [adjective] toast!"), span_notice("With the familiar \"ding\", the toaster ejects a [adjective] toast."))
+	imp_in.visible_message(span_notice(LANG("obj.f964e979406b5e6f", list(imp_in, adjective))), span_notice(LANG("obj.80d1ae06fb3d27d2", list(adjective))))
 
 	playsound(imp_in, 'sound/machines/ding.ogg', vol = 75, vary = FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 	toast.throw_at(get_turf(imp_in), 2, 3)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/head/helmet/monkey_sentience
 	name = "monkey mind magnification helmet"
 	desc = "A fragile, circuitry embedded helmet for boosting the intelligence of a monkey to a higher level. You see several warning labels..."
@@ -26,12 +27,12 @@
 
 /obj/item/clothing/head/helmet/monkey_sentience/examine(mob/user)
 	. = ..()
-	. += span_boldwarning("---WARNING: REMOVAL OF HELMET ON SUBJECT MAY LEAD TO:---")
-	. += span_warning("BLOOD RAGE")
-	. += span_warning("BRAIN DEATH")
-	. += span_warning("PRIMAL GENE ACTIVATION")
-	. += span_warning("GENETIC MAKEUP MASS SUSCEPTIBILITY")
-	. += span_boldnotice("Ask your CMO if mind magnification is right for you.")
+	. += span_boldwarning(LANG("obj.9d7f8d0de78eeb6a", null))
+	. += span_warning(LANG("obj.2fac3a0172f69d82", null))
+	. += span_warning(LANG("obj.c577ae01c2b16362", null))
+	. += span_warning(LANG("obj.93c7a06aba3e8218", null))
+	. += span_warning(LANG("obj.9c337a1052fc3b2c", null))
+	. += span_boldnotice(LANG("obj.1f6444941d0f62bb", null))
 
 /obj/item/clothing/head/helmet/monkey_sentience/update_icon_state()
 	. = ..()
@@ -45,36 +46,36 @@
 		return
 	if(!ismonkey(user) || user.ckey)
 		var/mob/living/something = user
-		to_chat(something, span_boldnotice("You feel a stabbing pain in the back of your head for a moment."))
+		to_chat(something, span_boldnotice(LANG("obj.3bdeb9198fef4605", null)))
 		something.apply_damage(5, BRUTE, BODY_ZONE_HEAD, FALSE, FALSE, FALSE) // notably: no damage resist (it's in your helmet), no damage spread (it's in your helmet)
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 30, TRUE)
 		return
 	if(!(GLOB.ghost_role_flags & GHOSTROLE_STATION_SENTIENCE))
-		say("ERROR: Central Command has temporarily outlawed monkey sentience helmets in this sector. NEAREST LAWFUL SECTOR: 2.537 million light years away.")
+		say(LANG("obj.7dc1a7e2f0d293c2", null))
 		return
 	magnification = user // this polls ghosts
-	visible_message(span_warning("[src] powers up!"))
+	visible_message(span_warning(LANG("obj.ea45e666dd532ddf", list(src))))
 	playsound(src, 'sound/machines/ping.ogg', 30, TRUE)
 	RegisterSignal(magnification, COMSIG_SPECIES_LOSS, PROC_REF(make_fall_off))
 	INVOKE_ASYNC(src, TYPE_PROC_REF(/obj/item/clothing/head/helmet/monkey_sentience, connect), user)
 
 /obj/item/clothing/head/helmet/monkey_sentience/proc/connect(mob/user)
 	polling = TRUE
-	var/mob/chosen = SSpolling.poll_ghosts_for_target("Do you want to play as a mind magnified monkey?", ROLE_MONKEY_HELMET, poll_time = 5 SECONDS, checked_target = magnification, ignore_category = POLL_IGNORE_MONKEY_HELMET)
+	var/mob/chosen = SSpolling.poll_ghosts_for_target(LANG("obj.32cb0797e1ff96b5", null), ROLE_MONKEY_HELMET, poll_time = 5 SECONDS, checked_target = magnification, ignore_category = POLL_IGNORE_MONKEY_HELMET)
 	polling = FALSE
 	if(!magnification)
 		return
 	if(!chosen)
 		UnregisterSignal(magnification, COMSIG_SPECIES_LOSS)
 		magnification = null
-		visible_message(span_notice("[src] falls silent and drops on the floor. Maybe you should try again later?"))
+		visible_message(span_notice(LANG("obj.65993641355c2338", list(src))))
 		playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 30, TRUE)
 		user.dropItemToGround(src)
 		return
 
 	magnification.key = chosen.key
 	playsound(src, 'sound/machines/microwave/microwave-end.ogg', 100, FALSE)
-	to_chat(magnification, span_notice("You're a mind magnified monkey! Protect your helmet with your life- if you lose it, your sentience goes with it!"))
+	to_chat(magnification, span_notice(LANG("obj.33845a580c8b6acb", null)))
 	var/policy = get_policy(ROLE_MONKEY_HELMET)
 	if(policy)
 		to_chat(magnification, policy)
@@ -96,7 +97,7 @@
 	ADD_TRAIT(magnification, TRAIT_PRIMITIVE, SPECIES_TRAIT) // We removed it, now that they're back to being dumb, add the trait again.
 	if(!polling)// put on a viable head, but taken off after polling finished.
 		if(magnification.client)
-			to_chat(magnification, span_userdanger("You feel your flicker of sentience ripped away from you, as everything becomes dim..."))
+			to_chat(magnification, span_userdanger(LANG("obj.47280d181aac6d0b", null)))
 			magnification.ghostize(FALSE)
 		if(prob(10))
 			switch(rand(1, 4))
@@ -120,5 +121,5 @@
 /obj/item/clothing/head/helmet/monkey_sentience/proc/make_fall_off()
 	SIGNAL_HANDLER
 	if(magnification)
-		visible_message(span_warning("[src] falls off of [magnification]'s head as it changes shape!"))
+		visible_message(span_warning(LANG("obj.ffd99ba51bf6a859", list(src, magnification))))
 		magnification.dropItemToGround(src)

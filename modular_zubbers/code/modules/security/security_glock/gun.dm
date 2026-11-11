@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/ballistic/automatic/pistol/sec_glock
 	name = "\improper 'Murphy' Service Pistol"
 	desc = "This 9mm monster was developed during the very first body-modding craze by Nanotrasen, built with every what-if in mind, this timeless brick is near-incapable of failure. It comes with a revolutionary quick-reload system."
@@ -26,30 +27,30 @@
 	if(!istype(actiontype, /datum/action/item_action/toggle_mageject))
 		return ..()
 	magejecting = !magejecting
-	balloon_alert(user, "[magejecting ? "now" : "no longer"] launching empty magazines")
+	balloon_alert(user, LANG("obj.e932a1849cad07bf", list(magejecting ? "now" : "no longer")))
 	playsound(user, 'sound/items/weapons/empty.ogg', 100, TRUE)
 	update_appearance()
 	update_item_action_buttons()
 
 /obj/item/gun/ballistic/automatic/pistol/sec_glock/examine(mob/user)
 	. = ..()
-	. += span_notice("Only compatible with Nanotrasen-sourced 9mm magazines.")
-	. += span_notice("Using it in hand when out of ammo to start a spin reload. This can only be done if you have a spare magazine in or on your belt.")
-	. += span_notice("Spin reloads can be done on the move and need you only to hold your gun for their 2 second duration.")
-	. += span_notice("If toggled on, spin reloads throw empty magazines in the direction you're facing, dealing damage dependant on their type.")
+	. += span_notice(LANG("obj.bf85edb6c5075fab", null))
+	. += span_notice(LANG("obj.0bb1c136aa8c105a", null))
+	. += span_notice(LANG("obj.e84ab921d93cf5a7", null))
+	. += span_notice(LANG("obj.a55328172fad4167", null))
 
 /obj/item/gun/ballistic/automatic/pistol/sec_glock/attack_self(mob/living/user)
 	var/obj/item/belt_item = user.get_item_by_slot(ITEM_SLOT_BELT)
 	var/obj/item/ammo_box/magazine/swapped_mag = istype(belt_item, accepted_magazine_type) ? belt_item : locate(accepted_magazine_type) in belt_item
 	if(!magazine && !chambered) //Empty gun, load in anyhow but without delay. No mag
 		if(swapped_mag)
-			balloon_alert(user, "you spin your gun, loading in a mag!")
+			balloon_alert(user, LANG("obj.994c9aa8733c52fb", null))
 			SpinAnimation(2, 1)
 			if(do_after(user, 1 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE), target = src))
 				insert_magazine(user, swapped_mag) // Just put the new mag in hands off
 				return
 		else
-			balloon_alert(user, "no spare magazines in your belt!") // We still say what's wrong
+			balloon_alert(user, LANG("obj.77985892e56f3af7", null)) // We still say what's wrong
 			default_behaviour(user, TRUE)
 			return
 	if(!magazine && chambered)
@@ -58,14 +59,14 @@
 	if(magazine)
 		if(!magazine.ammo_count() && !chambered)
 			if(swapped_mag)
-				balloon_alert(user, "you spin your gun, loading in a mag!")
+				balloon_alert(user, LANG("obj.994c9aa8733c52fb", null))
 				SpinAnimation(2, 1)
 				if(do_after(user, 1 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE), target = src))
 					throw_eject_magazine(user, magejecting, swapped_mag)
 					return
 			else
 				default_behaviour(user, TRUE)
-				balloon_alert(user, "no spare magazines in your belt!")
+				balloon_alert(user, LANG("obj.77985892e56f3af7", null))
 				return
 	default_behaviour(user)
 
@@ -93,7 +94,7 @@
 
 /obj/item/gun/ballistic/automatic/pistol/sec_glock/insert_magazine(mob/user, obj/item/ammo_box/magazine/AM, display_message = TRUE)
 	if(!istype(AM, accepted_magazine_type))
-		balloon_alert(user, "[AM.name] doesn't fit!")
+		balloon_alert(user, LANG("obj.337bbdecd64af4db", list(AM.name)))
 		return FALSE
 	if(user.transferItemToLoc(AM, src))
 		magazine = AM
@@ -103,7 +104,7 @@
 		update_appearance()
 		return TRUE
 	else
-		to_chat(user, span_warning("You cannot seem to get [src] out of your hands!"))
+		to_chat(user, span_warning(LANG("obj.33f0a28c0ecbd44e", list(src))))
 		return FALSE
 
 
@@ -156,6 +157,6 @@
 		if (tac_reloads)
 			eject_magazine(user, display_message = FALSE)
 			insert_magazine(user, tool, display_message = FALSE)
-			balloon_alert(user, "[src.magazine_wording] loaded")
+			balloon_alert(user, LANG("obj.8255044fcd6a7f23", list(src.magazine_wording)))
 			return ITEM_INTERACT_SUCCESS
 	..()

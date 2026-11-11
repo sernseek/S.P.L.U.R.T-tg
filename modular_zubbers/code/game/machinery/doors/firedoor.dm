@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/door/firedoor
 	name = "emergency shutter"
 	desc = "Emergency air-tight shutter, capable of sealing off breached areas. This one has a glass panel. It has a mechanism to open it with just your hands."
@@ -9,7 +10,7 @@
 
 /obj/machinery/door/firedoor/examine(mob/user)
 	. = ..()
-	. += span_notice("Alt-click the door to use the manual override.")
+	. += span_notice(LANG("obj.927eb5435f079315", null))
 
 /obj/machinery/door/firedoor/update_overlays()
 	. = ..()
@@ -21,7 +22,7 @@
 
 /obj/machinery/door/firedoor/proc/try_manual_override(mob/user)
 	if(density && !welded && !operating)
-		balloon_alert(user, "opening...")
+		balloon_alert(user, LANG("obj.1194bd8a6cfaaf1f", null))
 		if(do_after(user, 5 SECONDS, target = src))
 			try_to_crowbar(null,user)
 			return TRUE

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/tank/rbmk2_rod
 	name = "\improper RB-MK2 reactor rod"
 	desc = "A rod for the RB-MK2 reactor. Usually filled with a mix of tritium and an inert gas, such as nitrogen."
@@ -62,4 +63,4 @@
 
 /obj/item/tank/rbmk2_rod/examine(user)
 	. = ..()
-	. += span_notice("A sticker on its side says <b>MAX SAFE PRESSURE: [siunit_pressure(pressure_limit, 0)]; MAX SAFE TEMPERATURE: [siunit(temperature_limit, "K", 0)]</b>.")
+	. += span_notice(LANG("obj.a9cd71f254fb20f5", list(siunit_pressure(pressure_limit, 0), siunit(temperature_limit, "K", 0))))

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/folder
 	name = "folder"
 	desc = "A folder."
@@ -25,7 +26,7 @@
 	var/folder_type_name = "folder"
 
 /obj/item/folder/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] begins filing an imaginary death warrant! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.8cc04502c791bc01", list(user, user.p_theyre()))))
 	return OXYLOSS
 
 /obj/item/folder/Initialize(mapload)
@@ -45,12 +46,12 @@
 /obj/item/folder/examine()
 	. = ..()
 	if(length(contents) && !contents_hidden)
-		. += span_notice("<b>Right-click</b> to remove [contents[1]].")
+		. += span_notice(LANG("obj.f1120689587a921d", list(contents[1])))
 
 /obj/item/folder/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
 	if(is_type_in_typecache(target, folder_insertables))
 		// As this is shown on the paper, we clarify we are picking it up.
-		context[SCREENTIP_CONTEXT_LMB] = "Insert into [folder_type_name]"
+		context[SCREENTIP_CONTEXT_LMB] = LANG("obj.4689c77503ba571e", list(folder_type_name))
 		return CONTEXTUAL_SCREENTIP_SET
 	return NONE
 
@@ -72,7 +73,7 @@
 	if(istype(Item))
 		Item.forceMove(user.loc)
 		user.put_in_hands(Item)
-		to_chat(user, span_notice("You remove [Item] from [src]."))
+		to_chat(user, span_notice(LANG("obj.cbed32661d4c054a", list(Item, src))))
 		update_icon()
 
 /obj/item/folder/attack_hand(mob/user, list/modifiers)
@@ -107,10 +108,10 @@
 
 /obj/item/folder/proc/sharp_thing_act(mob/user, obj/item/sharp_tool)
 	if(contents.len)
-		balloon_alert(user, "empty [src] first!")
+		balloon_alert(user, LANG("obj.caa44cf0f4469be2", list(src)))
 		return ITEM_INTERACT_BLOCKING
 
-	balloon_alert(user, "cut apart")
+	balloon_alert(user, LANG("obj.b98b43de28eb7559", null))
 	qdel(src)
 	user.put_in_hands(new /obj/item/stack/sheet/cardboard)
 	return ITEM_INTERACT_SUCCESS

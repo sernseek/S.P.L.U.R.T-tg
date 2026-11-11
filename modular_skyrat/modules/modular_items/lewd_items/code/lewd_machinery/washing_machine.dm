@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/washing_machine
 	can_buckle = TRUE
 	/// If we are active, all mobs buckled to us with a penis will have arousal raised by this per second.
@@ -46,4 +47,4 @@
 			buckled_human.adjust_arousal(buckled_arousal_penis * arousal_mult)
 			do_message = TRUE
 		if (do_message && SPT_PROB(message_chance, seconds_per_tick))
-			to_chat(buckled_human, span_userlove("[src] vibrates into your groin, and you feel a warm fuzzy feeling..."))
+			to_chat(buckled_human, span_userlove(LANG("obj.5a610d02be6238f6", list(src))))

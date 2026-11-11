@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Rough ceiling of what a Dream Daemon process can address before it falls over, in MB. Display only.
 #define MEMORY_STATS_BUDGET_MB 3900
 /// File the windows background writer drops its RSS samples into, see tools/memory_stats/mem_writer.ps1
@@ -126,11 +127,11 @@ SUBSYSTEM_DEF(memory_stats)
 /mob/get_status_tab_items()
 	. = ..()
 	if(CONFIG_GET(flag/enable_memory_stats))
-		. += "Memory: [SSmemory_stats.get_status_line()]"
+		. += LANG("mob.40c5fce6c8cda4d0", list(SSmemory_stats.get_status_line()))
 
-ADMIN_VERB(dump_memory_stats, R_DEBUG, "Dump Memory Stats", "Writes a memory stats sample to memory_stats.log right now.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(dump_memory_stats, R_DEBUG, "导出内存统计", "Writes a memory stats sample to memory_stats.log right now.", ADMIN_CATEGORY_DEBUG)
 	SSmemory_stats.log_memory_stats()
-	to_chat(user, span_notice("Memory stats dumped to memory_stats.log (rss: [SSmemory_stats.last_rss_mb]MB / [num2text(SSmemory_stats.last_rss_bytes, 12)] bytes)."))
+	to_chat(user, span_notice(LANG("datum.33a707fd0456b7d7", list(SSmemory_stats.last_rss_mb, num2text(SSmemory_stats.last_rss_bytes, 12)))))
 
 #undef MEMORY_RSS_FILE
 #undef MEMORY_STATS_BUDGET_MB

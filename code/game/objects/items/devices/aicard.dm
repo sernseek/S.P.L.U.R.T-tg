@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/aicard
 	name = "intelliCard"
 	desc = "A storage device for AIs. Patent pending."
@@ -45,7 +46,7 @@
 	custom_materials = list(/datum/material/glass = SMALL_MATERIAL_AMOUNT * 5.5, /datum/material/gold = SMALL_MATERIAL_AMOUNT * 2, /datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.5)
 
 /obj/item/aicard/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] is trying to upload [user.p_them()]self into [src]! That's not going to work out well!"))
+	user.visible_message(span_suicide(LANG("obj.a88bcb63c4325e10", list(user, user.p_them(), src))))
 	return BRUTELOSS
 
 /obj/item/aicard/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
@@ -103,7 +104,7 @@
 /obj/item/aicard/update_name(updates)
 	. = ..()
 	if(AI)
-		name = "[initial(name)] - [AI.name]"
+		name = "[lang_reverse_text(initial(name))] - [AI.name]"  // ZH EDIT CHANGE - i18n: initial(name) 是编译期英文原值，会覆盖掉 /atom/Initialize 反查好的中文名 - ORIGINAL: name = "[initial(name)] - [AI.name]"
 	else
 		name = initial(name)
 
@@ -172,25 +173,25 @@
 			if(flush)
 				flush = FALSE
 			else
-				var/confirm = tgui_alert(usr, "Are you sure you want to wipe this card's memory?", name, list("Yes", "No"))
+				var/confirm = tgui_alert(usr, LANG("obj.fd1883ca4fd1f10a", null), name, list("Yes", "No"))
 				if(confirm == "Yes" && !..())
 					flush = TRUE
 					wipe_ai()
 			. = TRUE
 		if("wireless")
 			AI.set_control_disabled(!AI.control_disabled)
-			to_chat(AI, span_warning("[src]'s wireless port has been [AI.control_disabled ? "disabled" : "enabled"]!"))
+			to_chat(AI, span_warning(LANG("obj.95d9adcc84ba0461", list(src, AI.control_disabled ? "disabled" : "enabled"))))
 			. = TRUE
 		if("radio")
 			AI.radio_enabled = !AI.radio_enabled
-			to_chat(AI, span_warning("Your Subspace Transceiver has been [AI.radio_enabled ? "enabled" : "disabled"]!"))
+			to_chat(AI, span_warning(LANG("obj.96bd9bedceeeffc1", list(AI.radio_enabled ? "enabled" : "disabled"))))
 			. = TRUE
 	update_appearance()
 
 /obj/item/aicard/proc/wipe_ai()
 	set waitfor = FALSE
 	if(AI && AI.loc == src)
-		to_chat(AI, span_userdanger("YOUR SYSTEM FILES ARE BEING WIPED!"))
+		to_chat(AI, span_userdanger(LANG("obj.e267db089d78b8e7", null)))
 		while(AI.stat != DEAD && flush)
 			AI.adjust_oxy_loss(5)
 			AI.updatehealth()

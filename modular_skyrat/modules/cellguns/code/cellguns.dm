@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/energy/cell_loaded //The basic cell loaded gun
 	name = "cell-loaded gun"
 	desc = "A energy gun that functions by loading cells for ammo types"
@@ -17,17 +18,17 @@
 /obj/item/gun/energy/cell_loaded/examine(mob/user)
 	. = ..()
 	if(maxcells)
-		. += "<b>[installedcells.len]</b> out of <b>[maxcells]</b> cell slots are filled."
-		. += span_info("You can use AltClick with an empty hand to remove the most recently inserted cell from the chamber.")
+		. += LANG("obj.caf41c05455a7d90", list(installedcells.len, maxcells))
+		. += span_info(LANG("obj.f1e7768958a3dcd1", null))
 
 		for(var/cell in installedcells)
-			. += span_notice("There is \a [cell] loaded in the chamber.") //Shows what cells are currently inside of the gun
+			. += span_notice(LANG("obj.310931af48ececc7", list(cell))) //Shows what cells are currently inside of the gun
 
 /// Handles insertion of weapon cells
 /obj/item/gun/energy/cell_loaded/attackby(obj/item/weaponcell/used_cell, mob/user)
 	if(is_type_in_list(used_cell, allowed_cells)) // Checks allowed_cells to see if the gun is able to load the cells.
 		if(installedcells.len >= maxcells) //Prevents the user from loading any cells past the maximum cell allowance
-			to_chat(user, span_notice("[src] is full, take a cell out to make room."))
+			to_chat(user, span_notice(LANG("obj.b98699c22c3d6f21", list(src))))
 			return
 
 		var/obj/item/weaponcell/cell = used_cell
@@ -35,7 +36,7 @@
 			return
 
 		playsound(loc, 'sound/machines/click.ogg', 50, 1)
-		to_chat(user, span_notice("You install the [cell]."))
+		to_chat(user, span_notice(LANG("obj.f2af2311d64352b9", list(cell))))
 		ammo_type += new cell.ammo_type(src)
 		installedcells += cell
 	else
@@ -74,10 +75,10 @@
 
 /obj/item/gun/energy/cell_loaded/click_alt(mob/user, modifiers)
 	if(!installedcells.len) //Checks to see if there is a cell inside of the gun, before removal.
-		to_chat(user, span_notice("The [src] has no cells inside"))
+		to_chat(user, span_notice(LANG("obj.07f39855882daeb5", list(src))))
 		return CLICK_ACTION_BLOCKING
 
-	to_chat(user, span_notice("You remove a cell"))
+	to_chat(user, span_notice(LANG("obj.caf14d014f99564a", null)))
 	var/obj/item/last_cell = installedcells[installedcells.len]
 
 	if(last_cell)

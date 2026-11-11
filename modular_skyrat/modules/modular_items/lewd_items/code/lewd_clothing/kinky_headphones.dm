@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/ears/kinky_headphones
 	name = "kinky headphones"
 	desc = "Protect your ears from loud noises. It has a switch on the right hand side."
@@ -61,7 +62,7 @@
 	if(!(src == user.ears || src == user.ears_extra)) // SPLURT EDIT - fixes the headphones on ears_extra
 		return
 	REMOVE_TRAIT(user, TRAIT_DEAF, CLOTHING_TRAIT)
-	to_chat(user, span_purple("You can finally hear the world around you once more."))
+	to_chat(user, span_purple(LANG("obj.230ca85fab925815", null)))
 
 
 //to make it change model on click
@@ -84,7 +85,7 @@
 /obj/item/clothing/ears/kinky_headphones/proc/toggle(owner)
 	kinky_headphones_on = !kinky_headphones_on
 	update_icon()
-	to_chat(owner, span_notice("You turn the music [kinky_headphones_on ? "on. It plays relaxing music." : "off."]"))
+	to_chat(owner, span_notice(LANG("obj.66066e77f2ef1053", list(kinky_headphones_on ? "on. It plays relaxing music." : "off."))))
 
 /datum/action/item_action/toggle_kinky_headphones
 	name = "Toggle kinky headphones"

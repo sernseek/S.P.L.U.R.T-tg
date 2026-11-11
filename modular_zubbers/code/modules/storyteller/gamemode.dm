@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define INIT_ORDER_GAMEMODE 70
 
 SUBSYSTEM_DEF(gamemode)
@@ -848,12 +849,12 @@ SUBSYSTEM_DEF(gamemode)
 		event_control = pick_weight(SSgamemode.antag_rerolls)
 	SSgamemode.inject_event(event_control = event_control)
 
-ADMIN_VERB(create_antagonist, R_FUN, "Create Antagonist", "Inject a little more action into the round.", ADMIN_CATEGORY_EVENTS)
+ADMIN_VERB(create_antagonist, R_FUN, "创建反派", "Inject a little more action into the round.", ADMIN_CATEGORY_EVENTS)
 	var/list/available_antags = list()
 	for(var/datum/round_event_control/event_control as anything in SSgamemode.antag_rerolls)
 		LAZYADD(available_antags, event_control)
 
-	var/datum/round_event_control/selected_event = tgui_input_list(user, "Choose a crew antagonist type to spawn.", "Create Antagonist", available_antags)
+	var/datum/round_event_control/selected_event = tgui_input_list(user, LANG("datum.87eacade1cb47b98", null), LANG("datum.72a15d672d5b42a2", null), available_antags)
 	if(isnull(selected_event))
 		return
 

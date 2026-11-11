@@ -4,7 +4,7 @@ SUBSYSTEM_DEF(privacy)
 
 /datum/controller/subsystem/privacy/Initialize()
 	if(!CONFIG_GET(flag/sql_enabled))
-		return
+		return SS_INIT_NO_NEED // ZH EDIT CHANGE - ORIGINAL: return
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/privacy/proc/has_accepted(ckey, policy_key)

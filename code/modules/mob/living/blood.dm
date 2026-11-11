@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BLOOD_DRIP_RATE_MOD 90 //Greater number means creating blood drips more often while bleeding
 // Conversion between internal drunk power and common blood alcohol content
 #define DRUNK_POWER_TO_BLOOD_ALCOHOL 0.003
@@ -215,22 +216,22 @@
 		// Way too much blood!
 		if(BLOOD_VOLUME_EXCESS to BLOOD_VOLUME_MAX_LETHAL)
 			if(SPT_PROB(7.5, seconds_per_tick))
-				to_chat(src, span_userdanger("Blood starts to tear your skin apart. You're going to burst!"))
+				to_chat(src, span_userdanger(LANG("mob.a1b52df6c5d8578f", null)))
 				investigate_log("has been gibbed by having too much blood.", INVESTIGATE_DEATHS)
 				inflate_gib()
 		// Too much blood
 		if(BLOOD_VOLUME_MAXIMUM to BLOOD_VOLUME_EXCESS)
 			if(SPT_PROB(5, seconds_per_tick))
-				to_chat(src, span_warning("You feel terribly bloated."))
+				to_chat(src, span_warning(LANG("mob.24c7b879bd7242cb", null)))
 		// Low blood but not a big deal in the immediate
 		if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
 			if(SPT_PROB(2.5, seconds_per_tick))
 				set_eye_blur_if_lower(2 SECONDS * determined_mod)
 				if(prob(50))
-					to_chat(src, span_danger("You feel [word]. It's getting a bit hard to breathe."))
+					to_chat(src, span_danger(LANG("mob.617d06b1d4d22cc3", list(word))))
 					losebreath += 0.5 * determined_mod * seconds_per_tick
 				else if(get_stamina_loss() < 25 * determined_mod)
-					to_chat(src, span_danger("You feel [word]. It's getting a bit hard to focus."))
+					to_chat(src, span_danger(LANG("mob.f505cfd99c640436", list(word))))
 					adjust_stamina_loss(5 * determined_mod * seconds_per_tick)
 		// Pretty low blood, getting dangerous!
 		if(BLOOD_VOLUME_RISKY to BLOOD_VOLUME_OKAY)
@@ -238,10 +239,10 @@
 				set_eye_blur_if_lower(2 SECONDS * determined_mod)
 				set_dizzy_if_lower(2 SECONDS * determined_mod)
 				if(prob(50))
-					to_chat(src, span_bolddanger("You feel very [word]. It's getting hard to breathe!"))
+					to_chat(src, span_bolddanger(LANG("mob.31d2326f934635a7", list(word))))
 					losebreath += 1 * determined_mod
 				else if(get_stamina_loss() < 40 * determined_mod)
-					to_chat(src, span_bolddanger("You feel very [word]. It's getting hard to stay awake!"))
+					to_chat(src, span_bolddanger(LANG("mob.84e7b531509c43eb", list(word))))
 					adjust_stamina_loss(7.5 * determined_mod)
 		// Very low blood, danger!!
 		if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_RISKY)
@@ -249,16 +250,16 @@
 				set_eye_blur_if_lower(4 SECONDS * determined_mod)
 				set_dizzy_if_lower(4 SECONDS * determined_mod)
 				if(prob(50))
-					to_chat(src, span_userdanger("You feel extremely [word]! It's getting very hard to breathe!"))
+					to_chat(src, span_userdanger(LANG("mob.7eee26acfab57938", list(word))))
 					losebreath += 1.5 * determined_mod
 				else if(get_stamina_loss() < 80 * determined_mod)
-					to_chat(src, span_userdanger("You feel extremely [word]! It's getting very hard to stay awake!"))
+					to_chat(src, span_userdanger(LANG("mob.e2bb0c753b07bddf", list(word))))
 					adjust_stamina_loss(10 * determined_mod)
 		// Critically low blood, death is near! Adrenaline won't help you here.
 		if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
 			if(SPT_PROB(7.5, seconds_per_tick))
 				Unconscious(rand(1 SECONDS, 2 SECONDS))
-				to_chat(src, span_userdanger("You black out for a moment!"))
+				to_chat(src, span_userdanger(LANG("mob.1ddcb441b8fd402b", null)))
 		// Instantly die upon this threshold
 		if(-INFINITY to BLOOD_VOLUME_SURVIVE)
 			if(!HAS_TRAIT(src, TRAIT_NODEATH))
@@ -367,7 +368,9 @@
 				if(BLOOD_FLOW_DECREASING) // this only matters if none of the wounds fit the above two cases, included here for completeness
 					continue
 
-	to_chat(src, span_warning("[bleeding_severity][rate_of_change]"))
+	// ZH EDIT ADDITION - I18N - reverse each concatenated bleeding fragment (literals not caught by codemod/boundary; en: no-op) - see strings/i18n/*/_bodyfeel.json
+	to_chat(src, span_warning("[lang_reverse_text(bleeding_severity)][lang_reverse_text(rate_of_change)]"))
+	// ZH EDIT - I18N - ORIGINAL: to_chat(src, span_warning("[bleeding_severity][rate_of_change]"))
 	COOLDOWN_START(src, bleeding_message_cd, next_cooldown)
 
 /mob/living/proc/restore_blood()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// SKYRAT MODULE SKYRAT_XENO_REDO
 
 /mob/living/carbon/alien/adult/skyrat/sentinel
@@ -54,7 +55,7 @@
 	if(!.)
 		return
 
-	to_chat(on_who, span_notice("You prepare your [projectile_name] gland. <B>Left-click to fire at a target!</B>"))
+	to_chat(on_who, span_notice(LANG("datum.01e3121a5e5af87e", list(projectile_name))))
 
 	button_icon_state = "[button_base_icon]_1"
 	build_all_button_icons()
@@ -66,7 +67,7 @@
 		return
 
 	if(refund_cooldown)
-		to_chat(on_who, span_notice("You empty your [projectile_name] gland."))
+		to_chat(on_who, span_notice(LANG("datum.56ce655c2e678d7f", list(projectile_name))))
 
 	button_icon_state = "[button_base_icon]_0"
 	build_all_button_icons()
@@ -85,8 +86,8 @@
 
 	var/modifiers = params2list(params)
 	clicker.visible_message(
-		span_danger("[clicker] spits [projectile_name]!"),
-		span_alertalien("You spit [projectile_name]."),
+		span_danger(LANG("datum.4e143c8decf4d3db", list(clicker, projectile_name))),
+		span_alertalien(LANG("datum.73460d9207c5ce10", list(projectile_name))),
 	)
 
 	if(acid_projectile)

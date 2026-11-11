@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/mob_spawner
 	name = "nest"
 	desc = "A nasty looking pile of sticks and debris."
@@ -107,7 +108,7 @@
 
 	RegisterSignal(spawned_mob, COMSIG_LIVING_DEATH, PROC_REF(mob_death))
 
-	visible_message(span_danger("[spawned_mob] emerges from [src]."))
+	visible_message(span_danger(LANG("obj.50fe0335ad7eb4b0", list(spawned_mob, src))))
 
 /obj/structure/mob_spawner/proc/mob_death(mob/living/dead_guy, gibbed)
 	SIGNAL_HANDLER
@@ -118,16 +119,16 @@
 	. = ..()
 	do_jiggle_sr()
 	if(!retaliated)
-		visible_message(span_danger("[src] grubbles angrily!"))
+		visible_message(span_danger(LANG("obj.e719f91697486e84", list(src))))
 		var/chosen_mob_type = pick(monster_types)
 		var/mob/living/simple_animal/L = new chosen_mob_type(loc)
-		visible_message(span_danger("[L] emerges from [src]."))
+		visible_message(span_danger(LANG("obj.50fe0335ad7eb4b0", list(L, src))))
 		retaliated = TRUE
 		addtimer(CALLBACK(src, PROC_REF(ready_retaliate)), retaliate_cooldown)
 
 /obj/structure/mob_spawner/proc/ready_retaliate()
 	retaliated = FALSE
-	visible_message(span_danger("[src] calms down."))
+	visible_message(span_danger(LANG("obj.7e5c0be2e96282f3", list(src))))
 
 /*
 *	CUSTOM SPAWNERS
@@ -149,9 +150,9 @@
 
 /obj/item/spider_egg/attack_self(mob/user, modifiers)
 	. = ..()
-	to_chat(user, span_danger("You begin to crack open [src]..."))
+	to_chat(user, span_danger(LANG("obj.5deefb3bc2da119e", list(src))))
 	if(do_after(user, 3 SECONDS, src))
-		to_chat(user, span_userdanger("You crack [src] open, something monsterous crawls out!"))
+		to_chat(user, span_userdanger(LANG("obj.5369e7cc2aa63be2", list(src))))
 		playsound(src, 'sound/effects/blob/blobattack.ogg', 100)
 		new /mob/living/basic/spider/giant/ (user.loc)
 		qdel(src)
@@ -180,7 +181,7 @@
 	. = ..()
 	if(!swarmed)
 		playsound(src, 'sound/mobs/non-humanoids/bee/bee.ogg', 100)
-		visible_message(span_userdanger("[src] buzzes violently as bees pour out!"))
+		visible_message(span_userdanger(LANG("obj.b1a61e2e55a2d5ee", list(src))))
 		for(var/i=1, i<max_mobs, ++i)
 			new /mob/living/basic/bee (loc)
 		swarmed = TRUE

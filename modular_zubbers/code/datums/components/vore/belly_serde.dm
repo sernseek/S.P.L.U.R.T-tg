@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Serializes this belly to store in savefile data.
 /obj/vore_belly/proc/serialize()
 	return list(
@@ -50,7 +51,7 @@
 		if(maybe_name)
 			deserialize_vrdb(data)
 		else
-			to_chat(usr, span_warning("Unable to load belly, missing '[VORE_BELLY_KEY]' signature and cannot detect VRBD"))
+			to_chat(usr, span_warning(LANG("obj.362b2f1e3c1dced6", list(VORE_BELLY_KEY))))
 		return
 	if(data[VORE_BELLY_KEY] != VORE_BELLY_VERSION)
 		apply_migrations(data)
@@ -100,7 +101,7 @@
 /// Special handler that tries to deserialize as much of a VRDB save as it can
 /obj/vore_belly/proc/deserialize_vrdb(list/data)
 	var/maybe_name = data["name"]
-	to_chat(usr, span_warning("Attempting to load VRDB belly '[maybe_name]'..."))
+	to_chat(usr, span_warning(LANG("obj.a24f00e5a4647927", list(maybe_name))))
 	name = permissive_sanitize_name(maybe_name) || "(Bad Name)"
 	desc = STRIP_HTML_SIMPLE(data["desc"], MAX_FLAVOR_LEN) || "(Bad Desc)"
 	digest_mode = GLOB.digest_modes[sanitize_text(data["mode"])] || GLOB.digest_modes[DIGEST_MODE_SAFE]

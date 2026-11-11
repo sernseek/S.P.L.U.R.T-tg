@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/masked_mook
 	name = "Bane Syndrome"
 	desc = "You don't feel right without wearing some kind of gas mask."
@@ -49,7 +50,7 @@
 			return
 
 		// Alert user in chat
-		to_chat(quirk_mob, span_nicegreen("The mask makes you feel more complete."))
+		to_chat(quirk_mob, span_nicegreen(LANG("datum.09817fc1f3d2c0f9", null)))
 
 		// Set mask status
 		is_masked = TRUE
@@ -70,7 +71,7 @@
 			return
 
 		// Alert user in chat
-		to_chat(quirk_mob, span_warning("You start feeling incomplete without your mask..."))
+		to_chat(quirk_mob, span_warning(LANG("datum.cadbf75400ecf44d", null)))
 
 		// Set mask status
 		is_masked = FALSE

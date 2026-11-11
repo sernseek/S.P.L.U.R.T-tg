@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/surgery_operation/limb/bionecrosis
 	name = "induce bionecrosis"
 	rnd_name = "Bionecroplasty (Necrotic Revival)"
@@ -21,16 +22,16 @@
 
 /datum/surgery_operation/limb/bionecrosis/all_required_strings()
 	. = ..()
-	. += "the limb must have a brain present"
+	. += LANG("datum.5816f2fb34093d5f", null)
 
 /datum/surgery_operation/limb/bionecrosis/any_required_strings()
 	. = ..()
 	for(var/datum/reagent/chem as anything in zombie_chems)
-		. += "the patient or tool must contain >1u [chem::name]"
+		. += LANG("datum.73dd224d14dff73f", list(chem::name))
 
 /datum/surgery_operation/limb/bionecrosis/all_blocked_strings()
 	. = ..()
-	. += "the limb must not already have a Romerol tumor"
+	. += LANG("datum.e2a6f344e7c16779", null)
 
 /datum/surgery_operation/limb/bionecrosis/state_check(obj/item/bodypart/limb)
 	if(locate(/obj/item/organ/zombie_infection) in limb)

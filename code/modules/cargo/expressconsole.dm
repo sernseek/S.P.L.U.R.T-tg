@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define EXPRESS_EMAG_DISCOUNT 0.72
 #define BEACON_PRINT_COOLDOWN 10 SECONDS
 
@@ -44,17 +45,17 @@
 /obj/machinery/computer/cargo/express/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if (tool.GetID() && allowed(user))
 		locked = !locked
-		to_chat(user, span_notice("You [locked ? "lock" : "unlock"] the interface."))
+		to_chat(user, span_notice(LANG("obj.d72f945d46441985", list(locked ? "lock" : "unlock"))))
 		return ITEM_INTERACT_SUCCESS
 
 	if (istype(tool, /obj/item/disk/cargo/bluespace_pod))
 		if (pod_type == /obj/structure/closet/supplypod/bluespacepod)
-			balloon_alert(user, "already upgraded!")
+			balloon_alert(user, LANG("obj.7d09f139044f50ff", null))
 			return ITEM_INTERACT_FAILURE
 		if(!user.temporarilyRemoveItemFromInventory(tool))
 			return ITEM_INTERACT_FAILURE
 		pod_type = /obj/structure/closet/supplypod/bluespacepod // doesnt affect our circuit board, making reversal possible
-		to_chat(user, span_notice("You insert the disk into [src], allowing for advanced supply delivery vehicles."))
+		to_chat(user, span_notice(LANG("obj.9a575be2d70b08f4", list(src))))
 		tool.forceMove(src)
 		return ITEM_INTERACT_SUCCESS
 
@@ -64,7 +65,7 @@
 			beacon.link_console(src, user)
 			return ITEM_INTERACT_SUCCESS
 
-		to_chat(user, span_alert("[src] is already linked to [beacon]."))
+		to_chat(user, span_alert(LANG("obj.f663f8b73205d8ac", list(src, beacon))))
 		return ITEM_INTERACT_FAILURE
 
 	return NONE
@@ -74,8 +75,8 @@
 		return FALSE
 	if(user)
 		if (emag_card)
-			user.visible_message(span_warning("[user] swipes [emag_card] through [src]!"))
-		to_chat(user, span_notice("You change the routing protocols, allowing the Supply Pod to land anywhere on the station."))
+			user.visible_message(span_warning(LANG("obj.f9eb34497a25192c", list(user, emag_card, src))))
+		to_chat(user, span_notice(LANG("obj.6ff51e7141bdd00a", null)))
 	obj_flags |= EMAGGED
 	contraband = TRUE
 	// This also sets this on the circuit board
@@ -103,7 +104,7 @@
 	data["beaconError"] = using_beacon && !canBeacon ? "(BEACON ERROR)" : ""//changes button text to include an error alert if necessary
 	data["hasBeacon"] = beacon != null//is there a linked beacon?
 	data["beaconName"] = beacon ? beacon.name : "No Beacon Found"
-	data["printMsg"] = COOLDOWN_FINISHED(src, beacon_print_cooldown) ? "Print Beacon for [BEACON_COST] [MONEY_NAME]" : "Print Beacon for [BEACON_COST] [MONEY_NAME] ([COOLDOWN_TIMELEFT(src, beacon_print_cooldown)])" //buttontext for printing beacons
+	data["printMsg"] = COOLDOWN_FINISHED(src, beacon_print_cooldown) ? LANG("_root.express_beacon_print", list(BEACON_COST, MONEY_NAME)) : LANG("_root.express_beacon_print_cd", list(BEACON_COST, MONEY_NAME, COOLDOWN_TIMELEFT(src, beacon_print_cooldown))) //buttontext for printing beacons // ZH EDIT CHANGE - I18N - ORIGINAL: data["printMsg"] = COOLDOWN_FINISHED(src, beacon_print_cooldown) ? "Print Beacon for [BEACON_COST] [MONEY_NAME]" : "Print Beacon for [BEACON_COST] [MONEY_NAME] ([COOLDOWN_TIMELEFT(src, beacon_print_cooldown)])"
 	message = "Sales are near-instantaneous - please choose carefully."
 	if(SSshuttle.supply_blocked)
 		message = blockade_warning
@@ -148,7 +149,7 @@
 
 		if("add")//Generate Supply Order first
 			if(TIMER_COOLDOWN_RUNNING(src, COOLDOWN_EXPRESSPOD_CONSOLE))
-				say("Railgun recalibrating. Stand by.")
+				say(LANG("obj.220d397babf720b3", null))
 				return
 			var/id = params["id"]
 			id = text2path(id) || id
@@ -158,7 +159,7 @@
 				CRASH("Unknown supply pack id given by express order console ui. ID: [params["id"]]")
 
 			if((pack.order_flags & ORDER_GOODY) && !self_paid && !pack.allow_non_private_purchase && !(obj_flags & EMAGGED)) // BUBBER EDIT
-				say("ERROR: Small crates may only be purchased by private accounts.")
+				say(LANG("obj.90374cfbf570e042", null))
 				return
 
 			var/name = "*None Provided*"
@@ -180,20 +181,20 @@
 
 					paying_account = id_card?.registered_account
 					if(!istype(id_card))
-						say("No ID card detected.")
+						say(LANG("obj.9caa768c0177ac98", null))
 						return
 					if(IS_DEPARTMENTAL_CARD(id_card))
-						say("The [src] rejects [id_card].")
+						say(LANG("obj.eb8fcdad537a7f72", list(src, id_card)))
 						return
 					if(!istype(paying_account))
-						say("Invalid bank account.")
+						say(LANG("obj.3ad4c19308c51a2e", null))
 						return
 					var/list/access = id_card.GetAccess()
 					if((pack.access_view && !(pack.access_view in access)) && !bypass)
-						say("[id_card] lacks the requisite access for this purchase.")
+						say(LANG("obj.4e11fbdecc1d6d30", list(id_card)))
 						return
 				else
-					say("Invalid user.")
+					say(LANG("obj.1255d2c790e453d2", null))
 					return
 			// BUBBER EDIT END
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //incomplete pre-complete items
 /obj/item/forging/incomplete
 	name = "incomplete forging item"
@@ -30,15 +31,15 @@
 
 	var/datum/component/forge_smithable/forge_component = GetComponent(/datum/component/forge_smithable)
 	if(forge_component.is_finished_smithing())
-		to_chat(quencher, span_notice("You cool down [src]."))
+		to_chat(quencher, span_notice(LANG("obj.c858ddc35a6681dc", list(src))))
 		quencher.mind?.adjust_experience(/datum/skill/smithing, 5)
 	else
 		if(break_on_early_quench)
-			to_chat(quencher, span_warning("The [src] breaks from the thermal shock! Metalworking this type of object requires it to be hammered into completion."))
+			to_chat(quencher, span_warning(LANG("obj.d44ba9cb050cc15c", list(src))))
 			qdel(src)
 			return
 		else
-			to_chat(quencher, span_warning("You cool down [src]. You're not sure if it was ready yet..."))
+			to_chat(quencher, span_warning(LANG("obj.5ac5d96019edabfd", list(src))))
 
 	var/obj/spawned_obj = new spawn_item(get_turf(dunk_object))
 	if(custom_materials)
@@ -52,14 +53,14 @@
 	var/datum/component/reagent_imbued/new_reagent_component = spawned_obj.GetComponent(/datum/component/reagent_imbued)
 	if(!isnull(new_reagent_component) && USER_CAN_REAGENT_IMBUE(quencher))
 		new_reagent_component.set_reagent_imbue(dunk_reagents, FALSE, TRUE)
-		to_chat(quencher, span_notice("The [spawned_obj] is imbued with reagents."))
+		to_chat(quencher, span_notice(LANG("obj.42b7073fc122a63b", list(spawned_obj))))
 
 	qdel(src)
 	return spawned_obj
 
 /obj/item/forging/incomplete/tong_act(mob/living/user, obj/item/tool)
 	if(length(tool.contents) > 0)
-		user.balloon_alert(user, "tongs are full already!")
+		user.balloon_alert(user, LANG("obj.8103c9e1aab75939", null))
 		return
 	forceMove(tool)
 
@@ -79,7 +80,7 @@
 	if(!hand_protected)
 		var/hitzone = user.held_index_to_dir(user.active_hand_index) == "r" ? BODY_ZONE_PRECISE_R_HAND : BODY_ZONE_PRECISE_L_HAND
 		user.apply_damage(5, BURN, hitzone)
-		to_chat(user, span_danger("You burn your hand trying to pick up [src]!"))
+		to_chat(user, span_danger(LANG("obj.39ded5611a1d5e58", list(src))))
 		user.add_mood_event("burnt_thumb", /datum/mood_event/burnt_thumb)
 		user.dropItemToGround(src)
 
@@ -241,7 +242,7 @@
 /obj/item/forging/complete/examine(mob/user)
 	. = ..()
 	if(spawning_item)
-		. += span_notice("<br>In order to finish this item, a workbench will be necessary!")
+		. += span_notice(LANG("obj.8c51e9a06db8074b", null))
 
 /obj/item/forging/complete/afterattack(atom/target, mob/user, list/modifiers, list/attack_modifiers)
 	if(double_edged_damage <= 0)
@@ -254,12 +255,12 @@
 	if(jab.get_all_covered_flags() & HANDS)
 		return
 
-	to_chat(user, span_warning("[src] cuts into your hand!"))
+	to_chat(user, span_warning(LANG("obj.3f07fa7511239fcd", list(src))))
 	jab.apply_damage(double_edged_damage * hammer_completion_amount, BRUTE, user.get_active_hand(), attacking_item = src)
 
 /obj/item/forging/complete/tong_act(mob/living/user, obj/item/tool)
 	if(length(tool.contents) > 0)
-		user.balloon_alert(user, "tongs are full already!")
+		user.balloon_alert(user, LANG("obj.8103c9e1aab75939", null))
 		return
 	forceMove(tool)
 
@@ -424,13 +425,13 @@
 
 /obj/item/stack/tong_act(mob/living/user, obj/item/tool)
 	if(amount < 1)
-		user.balloon_alert(user, "not enough material in the stack!")
+		user.balloon_alert(user, LANG("obj.bd3bb128c2c4fb66", null))
 		return FALSE
 	if(length(tool.contents) > 0)
-		user.balloon_alert(user, "tongs are full already!")
+		user.balloon_alert(user, LANG("obj.8103c9e1aab75939", null))
 		return FALSE
 	if(!material_type && !custom_materials)
-		user.balloon_alert(user, "invalid material!")
+		user.balloon_alert(user, LANG("obj.c8041e7893c6c129", null))
 		return
 
 	var/obj/item/stack/stack_to_move
@@ -441,18 +442,18 @@
 
 	if(!isnull(stack_to_move))
 		stack_to_move.forceMove(tool)
-		user.balloon_alert(user, "took one")
+		user.balloon_alert(user, LANG("obj.9b21f8b92e169628", null))
 	else
 		stack_trace("[src] was grabbed by [tool] and couldn't pull one sheet!")
 
 /obj/tong_act(mob/living/user, obj/item/tool)
 	. = ..()
 	if(length(tool.contents))
-		user.balloon_alert(user, "tongs are full already!")
+		user.balloon_alert(user, LANG("obj.8103c9e1aab75939", null))
 		return FALSE
 	if(!isnull(GetComponent(/datum/component/forge_smithable/)) || !isnull(GetComponent(/datum/component/reagent_imbued)))
 		forceMove(tool)
-		user.balloon_alert(user, "took [src]")
+		user.balloon_alert(user, LANG("obj.f1268f2b3429da32", list(src)))
 
 /obj/item/empty_circuit
 	name = "empty circuit"
@@ -470,21 +471,21 @@
 		var/obj/item/stack/attacking_stack = attacking_item
 
 		if(user.mind.get_skill_level(/datum/skill/research) < SKILL_LEVEL_JOURNEYMAN)
-			to_chat(user, span_warning("You are not skilled enough in research to create a circuit!"))
+			to_chat(user, span_warning(LANG("obj.e467859727371e3c", null)))
 			return
 
-		var/choice = tgui_input_list(user, "Which circuit are you thinking about?", "Circuit Creation", recycleable_circuits)
+		var/choice = tgui_input_list(user, LANG("obj.140bc37ec68310d6", null), LANG("obj.c9e8aa95e228824e", null), recycleable_circuits)
 		if(!choice)
-			to_chat(user, span_notice("You decide against creating the circuit..."))
+			to_chat(user, span_notice(LANG("obj.d02fedac8ba493a8", null)))
 			return
 
 		if(!do_after(user, 5 SECONDS, src))
-			to_chat(user, span_warning("You moved around, destroying the circuit!"))
+			to_chat(user, span_warning(LANG("obj.69d184b598f4b0d9", null)))
 			qdel(src)
 			return
 
 		if(!attacking_stack.use(1))
-			to_chat(user, span_warning("You weren't able to use the gold, destroying the circuit!"))
+			to_chat(user, span_warning(LANG("obj.9ebf20c2c356448f", null)))
 			qdel(src)
 			return
 

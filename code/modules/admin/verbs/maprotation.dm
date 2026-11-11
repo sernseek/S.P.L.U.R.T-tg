@@ -1,4 +1,5 @@
-ADMIN_VERB(admin_change_map, R_SERVER, "Change Map", "Set the next map.", ADMIN_CATEGORY_SERVER)
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+ADMIN_VERB(admin_change_map, R_SERVER, "更换地图", "Set the next map.", ADMIN_CATEGORY_SERVER)
 	var/list/maprotatechoices = list()
 	for (var/map in config.maplist)
 		var/datum/map_config/virtual_map = config.maplist[map]
@@ -20,7 +21,7 @@ ADMIN_VERB(admin_change_map, R_SERVER, "Change Map", "Set the next map.", ADMIN_
 			mapname += "\]"
 
 		maprotatechoices[mapname] = virtual_map
-	var/chosenmap = tgui_input_list(user, "Choose a map to change to", "Change Map", sort_list(maprotatechoices)|"Custom")
+	var/chosenmap = tgui_input_list(user, LANG("datum.5a77597a50d784ca", null), LANG("datum.0ed5c6475be39aee", null), sort_list(maprotatechoices)|"Custom")
 	if (isnull(chosenmap))
 		return
 
@@ -29,12 +30,12 @@ ADMIN_VERB(admin_change_map, R_SERVER, "Change Map", "Set the next map.", ADMIN_
 		log_admin("[key_name(user)] is changing the map to a custom map")
 		var/datum/map_config/virtual_map = new
 
-		var/map_file = input(user, "Pick file:", "Map File") as null|file
+		var/map_file = input(user, LANG("datum.56488294d356f533", null), LANG("datum.fb118b0111d49c98", null)) as null|file
 		if(isnull(map_file))
 			return
 
 		if(copytext("[map_file]", -4) != ".dmm")//4 == length(".dmm")
-			to_chat(user, span_warning("Filename must end in '.dmm': [map_file]"))
+			to_chat(user, span_warning(LANG("datum.9585169dfa1419a7", list(map_file))))
 			return
 
 		if(fexists("_maps/custom/[map_file]"))
@@ -44,24 +45,24 @@ ADMIN_VERB(admin_change_map, R_SERVER, "Change Map", "Set the next map.", ADMIN_
 		// This is to make sure the map works so the server does not start without a map.
 		var/datum/parsed_map/M = new (map_file)
 		if(!M)
-			to_chat(user, span_warning("Map '[map_file]' failed to parse properly."))
+			to_chat(user, span_warning(LANG("datum.f51f7c674edac94a", list(map_file))))
 			return
 
 		if(!M.bounds)
-			to_chat(user, span_warning("Map '[map_file]' has non-existant bounds."))
+			to_chat(user, span_warning(LANG("datum.6c5d390d45bf9ee2", list(map_file))))
 			qdel(M)
 			return
 
 		qdel(M)
 		var/config_file = null
 		var/list/json_value = list()
-		var/config = tgui_alert(user,"Would you like to upload an additional config for this map?", "Map Config", list("Yes", "No"))
+		var/config = tgui_alert(user,LANG("datum.c3afbf7bce9cf616", null), LANG("datum.14d16896b7e72be4", null), list("Yes", "No"))
 		if(config == "Yes")
-			config_file = input(user, "Pick file:", "Config JSON File") as null|file
+			config_file = input(user, LANG("datum.56488294d356f533", null), LANG("datum.9ff9cae64d4e31d0", null)) as null|file
 			if(isnull(config_file))
 				return
 			if(copytext("[config_file]", -5) != ".json")
-				to_chat(src, span_warning("Filename must end in '.json': [config_file]"))
+				to_chat(src, span_warning(LANG("datum.93cb4c73ba470007", list(config_file))))
 				return
 			if(fexists("data/custom_map_json/[config_file]"))
 				fdel("data/custom_map_json/[config_file]")
@@ -71,22 +72,22 @@ ADMIN_VERB(admin_change_map, R_SERVER, "Change Map", "Set the next map.", ADMIN_
 			json_value = virtual_map.LoadConfig("data/custom_map_json/[config_file]", TRUE)
 
 			if(!json_value)
-				to_chat(src, span_warning("Failed to load config: [config_file]. Check that the fields are filled out correctly. \"map_path\": \"custom\" and \"map_file\": \"your_map_name.dmm\""))
+				to_chat(src, span_warning(LANG("datum.a3ef6ae3d0aca3bd", list(config_file))))
 				return
 		else
 			virtual_map = load_map_config()
-			virtual_map.map_name = input(user, "Choose the name for the map", "Map Name") as null|text
+			virtual_map.map_name = input(user, LANG("datum.e6fc49a98e4467e7", null), LANG("datum.26e91a0babdf65e9", null)) as null|text
 			if(isnull(virtual_map.map_name))
 				virtual_map.map_name = "Custom"
 
-			var/shuttles = tgui_alert(user,"Do you want to modify the shuttles?", "Map Shuttles", list("Yes", "No"))
+			var/shuttles = tgui_alert(user,LANG("datum.40d4a6e7acfeb885", null), LANG("datum.effa4eabd8295296", null), list("Yes", "No"))
 			if(shuttles == "Yes")
 				for(var/s in virtual_map.shuttles)
-					var/shuttle = input(user, s, "Map Shuttles") as null|text
+					var/shuttle = input(user, s, LANG("datum.effa4eabd8295296", null)) as null|text
 					if(!shuttle)
 						continue
 					if(!SSmapping.shuttle_templates[shuttle])
-						to_chat(user, span_warning("No such shuttle as '[shuttle]' exists, using default."))
+						to_chat(user, span_warning(LANG("datum.bbdd700ade081408", list(shuttle))))
 						continue
 					virtual_map.shuttles[s] = shuttle
 
@@ -115,5 +116,5 @@ ADMIN_VERB(admin_change_map, R_SERVER, "Change Map", "Set the next map.", ADMIN_
 			message_admins("[key_name_admin(user)] has changed the map to [virtual_map.map_name]")
 			SSmap_vote.admin_override = TRUE
 
-ADMIN_VERB(admin_revert_map, R_SERVER, "Revert Map Vote", "Revert the map vote, allowing a new vote.", ADMIN_CATEGORY_SERVER)
+ADMIN_VERB(admin_revert_map, R_SERVER, "撤销地图投票", "Revert the map vote, allowing a new vote.", ADMIN_CATEGORY_SERVER)
 	SSmap_vote.revert_next_map(user)

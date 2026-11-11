@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/neck/human_petcollar/locked/ringbell
 	name = "ringing bell collar"
 	desc = "A soft collar that chimes for your little pet!"
@@ -44,16 +45,16 @@
 
 /obj/item/clothing/neck/kink_collar/locked/gps/examine(mob/user)
 	. = ..()
-	. += span_notice("Alt-click to [gps.tracking ? "disable":"enable"] tracking.")
+	. += span_notice(LANG("obj.676e28b146f2bf21", list(gps.tracking ? "disable":"enable")))
 
 ///Calls toggletracking
 /obj/item/clothing/neck/kink_collar/locked/gps/click_alt(mob/user)
 	if(locked)
-		balloon_alert(user, "it's locked!")
+		balloon_alert(user, LANG("obj.2ffcba260e4b2ba0", null))
 		playsound(src, 'sound/items/click.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 	else
 		toggletracking(user)
-		balloon_alert(user, "tracking [gps.tracking ? "enabled":"disabled"]")
+		balloon_alert(user, LANG("obj.6edcad6655fdf46e", list(gps.tracking ? "enabled":"disabled")))
 		playsound(src, 'sound/machines/click.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 	return CLICK_ACTION_SUCCESS
 
@@ -65,7 +66,7 @@
 /obj/item/clothing/neck/kink_collar/locked/gps/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
 	if(!locked)
-		context[SCREENTIP_CONTEXT_ALT_LMB] = "[gps.tracking ? "Disable":"Enable"] tracking"
+		context[SCREENTIP_CONTEXT_ALT_LMB] = LANG("obj.501d98ac8292c686", list(gps.tracking ? "Disable":"Enable"))
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/clothing/neck/kink_collar/locked/gps/update_overlays()

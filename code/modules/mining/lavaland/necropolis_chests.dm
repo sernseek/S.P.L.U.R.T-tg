@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //The chests dropped by tendrils and megafauna.
 
 /obj/structure/closet/crate/necropolis
@@ -25,7 +26,7 @@
 
 	spawned_loot = TRUE
 	qdel(tool)
-	to_chat(user, span_notice("You disable the magic lock, revealing the loot."))
+	to_chat(user, span_notice(LANG("obj.18d771eb872302a8", null)))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/closet/crate/necropolis/tendril/before_open(mob/living/user, force)
@@ -34,7 +35,7 @@
 		return FALSE
 
 	if(!broken && !force && !spawned_loot)
-		balloon_alert(user, "its locked!")
+		balloon_alert(user, LANG("obj.d43b69873ab22a2f", null))
 		return FALSE
 
 	return TRUE

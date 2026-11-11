@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/heretic_knowledge/tricksters_mask
 	name = "Trickster's Mask"
 	desc = "Sacrifice a bandana and a spray can to create a shapeshifting mask that makes you sound like whatever your ID card is set to."
@@ -18,7 +19,7 @@
 	. = ..()
 
 	if (IS_HERETIC_OR_MONSTER(user))
-		. += span_notice("You recognize this as the trickster's mask. Wearing it will force your voice to be whatever your current ID says.")
+		. += span_notice(LANG("obj.1adadc2a0e5cb9f6", null))
 
 /obj/item/clothing/mask/chameleon/heretic/attack_self(mob/user)
 	return // you cant disable it

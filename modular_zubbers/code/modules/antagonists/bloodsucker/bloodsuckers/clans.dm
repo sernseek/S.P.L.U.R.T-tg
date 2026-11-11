@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Gives Bloodsuckers the ability to choose a Clan.
  * If they are already in a Clan, or is in a Frenzy, they will not be able to do so.
@@ -33,16 +34,16 @@
 	if(QDELETED(src) || QDELETED(owner.current))
 		return FALSE
 	if(!chosen_clan)
-		to_chat(person_selecting, span_announce("You choose to remain ignorant, for now."))
+		to_chat(person_selecting, span_announce(LANG("datum.c109fcc781a13820", null)))
 		return
 	my_clan = new chosen_clan(src)
 
 /datum/antagonist/bloodsucker/proc/remove_clan(mob/admin)
 	if(owner.current.has_status_effect(/datum/status_effect/frenzy))
-		to_chat(admin, span_announce("Removing a Bloodsucker from a Clan while they are in a Frenzy will break stuff, this action has been blocked."))
+		to_chat(admin, span_announce(LANG("datum.57c503ffa543c193", null)))
 		return
 	QDEL_NULL(my_clan)
-	to_chat(owner.current, span_announce("You have been forced out of your clan! You can re-enter one by regular means."))
+	to_chat(owner.current, span_announce(LANG("datum.ddf1c31b5f8057f7", null)))
 
 /datum/antagonist/bloodsucker/proc/admin_set_clan(mob/admin)
 	assign_clan_and_bane(admin)

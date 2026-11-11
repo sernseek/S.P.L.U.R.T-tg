@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/chem_dispenser
 	name = "chem dispenser"
 	desc = "Creates and dispenses chemicals."
@@ -154,12 +155,10 @@
 /obj/machinery/chem_dispenser/examine(mob/user)
 	. = ..()
 	if(panel_open)
-		. += span_notice("[src]'s maintenance hatch is open!")
+		. += span_notice(LANG("obj.83607a9b007a48ee", list(src)))
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("The status display reads:\n\
-		Recharge rate: <b>[display_power(recharge_amount, convert = FALSE)]</b>.\n\
-		Energy cost: <b>[siunit(power_cost, "J/u", 3)]</b>.")
-	. += span_notice("Use <b>RMB</b> to eject a stored beaker.")
+		. += span_notice(LANG("obj.e1d14930fda07469", list(display_power(recharge_amount, convert = FALSE), siunit(power_cost, "J/u", 3))))
+	. += span_notice(LANG("obj.52489082585a053c", null))
 
 /obj/machinery/chem_dispenser/on_set_is_operational(old_value)
 	if(old_value) //Turned off
@@ -199,9 +198,9 @@
 
 /obj/machinery/chem_dispenser/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)
-		balloon_alert(user, "already emagged!")
+		balloon_alert(user, LANG("obj.9bab397b17f019dd", null))
 		return FALSE
-	balloon_alert(user, "safeties shorted out")
+	balloon_alert(user, LANG("obj.a9c7d53b1b53577f", null))
 	dispensable_reagents |= emagged_reagents//add the emagged reagents to the dispensable ones
 	obj_flags |= EMAGGED
 	return TRUE
@@ -260,12 +259,20 @@
 	for(var/re in dispensable_reagents)
 		var/datum/reagent/temp = GLOB.chemical_reagents_list[re]
 		if(temp)
-			var/chemname = temp.name
+			// ZH EDIT START - I18N: temp.name is the RUNTIME name (translated to Chinese by SSreagents.Init).
+			// title/id MUST be the english name: title is matched against reagentComponent.name (english) for
+			// recipe base-reagent linking, and id is sent to the "dispense" act → GLOB.name2reagent[id] (english
+			// keys). Using the Chinese runtime name broke recipe matching + dispensing (cola/orange "点了不出货").
+			// display_title carries the translated name for showing. ORIGINAL: chemname=temp.name; "title"=chemname, "id"=temp.name
+			var/english_name = initial(temp.name)
+			var/display_name = temp.name
 			var/chemcolor = temp.color
 			if(is_hallucinating && prob(5))
-				chemname = "[pick_list_replacements("hallucination.json", "chemicals")]"
+				english_name = "[pick_list_replacements("hallucination.json", "chemicals")]"
+				display_name = english_name
 				chemcolor = random_colour()
-			chemicals += list(list("title" = chemname, "id" = temp.name, "pH" = temp.ph, "color" = chemcolor, "pHCol" = convert_ph_to_readable_color(temp.ph)))
+			chemicals += list(list("title" = english_name, "display_title" = display_name, "id" = english_name, "pH" = temp.ph, "color" = chemcolor, "pHCol" = convert_ph_to_readable_color(temp.ph)))
+			// ZH EDIT END
 	.["chemicals"] = chemicals
 	.["recipes"] = saved_recipes
 
@@ -286,7 +293,7 @@
 		var/list/beakerContents = list()
 		if(length(beaker.reagents.reagent_list))
 			for(var/datum/reagent/reagent as anything in beaker.reagents.reagent_list)
-				beakerContents += list(list("name" = reagent.name, "volume" = round(reagent.volume, CHEMICAL_VOLUME_ROUNDING))) // list in a list because Byond merges the first list...
+				beakerContents += list(list("name" = lang_localize_display_name(reagent.name), "volume" = round(reagent.volume, CHEMICAL_VOLUME_ROUNDING))) // list in a list because Byond merges the first list... // ZH EDIT - I18N: 烧杯内容物名纯显示。ORIGINAL: "name" = reagent.name
 		beaker_data["contents"] = beakerContents
 	.["beaker"] = beaker_data
 
@@ -327,10 +334,10 @@
 					var/datum/reagents/holder = beaker.reagents
 					var/to_dispense = max(0, min(amount, holder.maximum_volume - holder.total_volume))
 					if(!to_dispense)
-						say("The container is full!")
+						say(LANG("obj.371fe5cfb9d54cbc", null))
 						return
 					if(!cell.use(to_dispense * power_cost))
-						say("Not enough energy to complete operation!")
+						say(LANG("obj.151cff6fb63745f4", null))
 						return
 					beaker.add_hiddenprint(ui.user)
 					holder.add_reagent(reagent, to_dispense, reagtemp = dispensed_temperature, added_purity = base_reagent_purity)
@@ -380,7 +387,7 @@
 					if(!to_dispense)
 						continue
 					if(!cell.use(to_dispense * power_cost))
-						say("Not enough energy to complete operation!")
+						say(LANG("obj.151cff6fb63745f4", null))
 						return
 					beaker.add_hiddenprint(ui.user)
 					holder.add_reagent(reagent, to_dispense, reagtemp = dispensed_temperature, added_purity = base_reagent_purity)
@@ -390,7 +397,7 @@
 			return TRUE
 
 		if("clear_recipes")
-			if(is_operational && tgui_alert(ui.user, "Clear all recipes?", "Clear?", list("Yes", "No")) == "Yes")
+			if(is_operational && tgui_alert(ui.user, LANG("obj.f2f932236ea91e79", null), LANG("obj.65ed606362fbfa61", null), list("Yes", "No")) == "Yes")
 				saved_recipes = list()
 				return TRUE
 
@@ -402,7 +409,7 @@
 		if("save_recording")
 			if(!is_operational)
 				return
-			var/name = tgui_input_text(ui.user, "What do you want to name this recipe?", "Recipe Name", max_length = MAX_NAME_LEN, encode = FALSE)
+			var/name = tgui_input_text(ui.user, LANG("obj.9016fe3a5aa6ca84", null), LANG("obj.63014c04af880a8e", null), max_length = MAX_NAME_LEN, encode = FALSE)
 			if(!ui.user.can_perform_action(src, ALLOW_SILICON_REACH))
 				return
 			if(saved_recipes[name] && tgui_alert(ui.user, "\"[name]\" already exists, do you want to overwrite it?",, list("Yes", "No")) == "No")
@@ -411,8 +418,8 @@
 				for(var/reagent in recording_recipe)
 					var/reagent_id = GLOB.name2reagent[reagent]
 					if(!dispensable_reagents.Find(reagent_id))
-						visible_message(span_warning("[src] buzzes."), span_hear("You hear a faint buzz."))
-						to_chat(ui.user, span_warning("[src] cannot find <b>[reagent]</b>!"))
+						visible_message(span_warning(LANG("obj.9f1f2989394f9812", list(src))), span_hear(LANG("obj.c2e63776d067d9b7", null)))
+						to_chat(ui.user, span_warning(LANG("obj.699245944020db97", list(src, reagent))))
 						playsound(src, 'sound/machines/buzz/buzz-two.ogg', 50, TRUE)
 						return
 				saved_recipes[name] = recording_recipe
@@ -426,11 +433,11 @@
 		// BUBBER EDIT ADDITION BEGIN - CHEMISTRY QOL
 		if("custom_amount")
 			if(!beaker)
-				to_chat(usr, span_warning("Insert a container first!"))
+				to_chat(usr, span_warning(LANG("obj.93a3fcbf3e5c15b4", null)))
 				return
 			if(customTransferAmount)
 				transferAmounts -= customTransferAmount
-			customTransferAmount = clamp(input(usr, "Please enter your desired transfer amount.", "Transfer amount", 0) as num|null, 0, beaker.volume)
+			customTransferAmount = clamp(input(usr, LANG("obj.cf059c6f34f45272", null), LANG("obj.9749dd491955cd84", null), 0) as num|null, 0, beaker.volume)
 			transferAmounts += customTransferAmount
 			return TRUE
 		// BUBBER EDIT ADDITION END
@@ -495,7 +502,7 @@
 	cell.use(total * power_cost)
 	cell.emp_act(severity)
 	work_animation()
-	visible_message(span_danger("[src] malfunctions, spraying chemicals everywhere!"))
+	visible_message(span_danger(LANG("obj.6d845762f24b1cc7", list(src))))
 
 /obj/machinery/chem_dispenser/RefreshParts()
 	. = ..()
@@ -600,8 +607,9 @@
 
 			var/index = result_datum.name
 			var/list/new_info = get_reaction_info(reaction)
-			new_info["description"] = result_datum.description
+			new_info["description"] = lang_reverse_text(result_datum.description) // ZH EDIT - I18N
 			new_info["color"] = result_datum.color
+			new_info["display_name"] = lang_reverse_text(result_datum.name) // ZH EDIT - I18N: translated display; the record key (index) stays english for pin/search/dispense-match
 
 			var/num_alts = 0
 			while(new_reaction_list[index])
@@ -630,6 +638,7 @@
 	for(var/datum/reagent/reagent_typepath as anything in reagent_list)
 		info += list(list(
 			"name" = reagent_typepath::name,
+			"display_name" = lang_reverse_text(reagent_typepath::name), // ZH EDIT - I18N: translated display; "name" stays english for dispense/recipe matching
 			"amount" = reagent_list[reagent_typepath],
 			"typepath" = reagent_typepath,
 		))

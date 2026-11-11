@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //basically an altered ability of the ice demon teleport
 
 /datum/action/cooldown/mob_cooldown/spriggan_teleport
@@ -11,7 +12,7 @@
 
 /datum/action/cooldown/mob_cooldown/spriggan_teleport/Activate(atom/target_atom)
 	if(isclosedturf(get_turf(target_atom)))
-		owner.balloon_alert(owner, "blocked!")
+		owner.balloon_alert(owner, LANG("datum.62d831a3dbaf3612", null))
 		return FALSE
 	animate(owner, transform = matrix().Scale(0.8), time = time_delay, easing = SINE_EASING, flags = ANIMATION_PARALLEL)
 	if(!do_after(owner, time_delay, null))
@@ -43,14 +44,14 @@
 		owner.lighting_cutoff_red = 15
 		owner.lighting_cutoff_green = 55
 		owner.lighting_cutoff_blue = 20
-		owner.balloon_alert(owner, "you can now see in the dark and through walls!")
+		owner.balloon_alert(owner, LANG("datum.50ef94afc271ad0a", null))
 		StartCooldown()
 	else
 		owner.sight = initial(owner.sight)
 		owner.lighting_cutoff_red = initial(owner.lighting_cutoff_red)
 		owner.lighting_cutoff_green = initial(owner.lighting_cutoff_green)
 		owner.lighting_cutoff_blue = initial(owner.lighting_cutoff_blue)
-		owner.balloon_alert(owner, "your clerical sight fades.")
+		owner.balloon_alert(owner, LANG("datum.fb7a841c60deac19", null))
 	owner.update_sight()
 	return TRUE
 
@@ -68,9 +69,9 @@
 	light_enabled = !light_enabled
 	if(light_enabled)
 		owner.set_light(l_range = 3, l_power = 1.5, l_color = LIGHT_COLOR_ELECTRIC_GREEN, l_on = TRUE)
-		owner.balloon_alert(owner, "you emit a dim green glow.")
+		owner.balloon_alert(owner, LANG("datum.3788586953dcf0c8", null))
 		StartCooldown()
 	else
 		owner.set_light(l_range = 0)
-		owner.balloon_alert(owner, "your dim green glow fades.")
+		owner.balloon_alert(owner, LANG("datum.a77ebecb4b8418ac", null))
 	return TRUE

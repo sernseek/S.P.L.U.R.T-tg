@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/leash
 	/// whether the leash is enabled or not
 	var/enabled = TRUE
@@ -23,7 +24,7 @@
 
 /// Enables or disables the leash, allowing or forbidding the PAI from leaving a specified range
 /datum/component/leash/proc/toggle_leash()
-	to_chat(owner, span_warning("Your virtual leash has been [enabled ? "activated" : "deactivated"]!"))
+	to_chat(owner, span_warning(LANG("datum.30a730ed99c65499", list(enabled ? "activated" : "deactivated"))))
 	if(enabled)
 		disable_leash()
 	else

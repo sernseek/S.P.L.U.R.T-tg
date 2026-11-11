@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define SLEEP_BANK_MULTIPLIER 10
 
 /datum/quirk/all_nighter
@@ -98,7 +99,7 @@
 		quirk_holder.clear_mood_event("all_nighter", /datum/mood_event/all_nighter)
 	if(!all_nighter && !happy_camper)
 		quirk_holder.add_mood_event("all_nighter", /datum/mood_event/all_nighter)
-		to_chat(quirk_holder, span_danger("You start feeling tired again."))
+		to_chat(quirk_holder, span_danger(LANG("datum.8f7e8c2c9f338ecf", null)))
 
 	//adjusts bag overlay accordingly
 	if(bodypart_overlay && beauty_sleep)

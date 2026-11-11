@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/antagonist/ghoul/proc/give_warning(atom/source, danger_level, vampire_warning_message, ghoul_warning_message)
 	SIGNAL_HANDLER
 	if(ghoul_warning_message)
@@ -72,6 +73,6 @@
 	ghouldatum.silent = FALSE
 
 	//send alerts of completion
-	to_chat(master, span_danger("You have turned [ghoul_owner.current] into your [ghouldatum.name]! They will no longer be deconverted upon Mindshielding!"))
-	to_chat(ghoul_owner, span_notice("As Blood drips over your body, you feel closer to your Master... You are now the [ghouldatum.name]!"))
+	to_chat(master, span_danger(LANG("datum.c83a7dfbf4a04b30", list(ghoul_owner.current, ghouldatum.name))))
+	to_chat(ghoul_owner, span_notice(LANG("datum.7615d338825d4b42", list(ghouldatum.name))))
 	ghoul_owner.current.playsound_local(null, 'sound/effects/magic/mutate.ogg', 75, FALSE, pressure_affected = FALSE)

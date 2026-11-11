@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /obj/machinery/reagentgrinder
 	name = "all-in-one grinder"
@@ -63,7 +64,7 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 	if(held_item.tool_behaviour == TOOL_SCREWDRIVER)
-		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] panel"
+		context[SCREENTIP_CONTEXT_LMB] = LANG("obj.45725a89b7fc8d2e", list(panel_open ? "Close" : "Open"))
 		return CONTEXTUAL_SCREENTIP_SET
 	else if(held_item.tool_behaviour == TOOL_CROWBAR && panel_open)
 		context[SCREENTIP_CONTEXT_LMB] = "Deconstruct"
@@ -81,7 +82,7 @@
 /obj/machinery/reagentgrinder/examine(mob/user)
 	. = ..()
 	if(!in_range(user, src) && !issilicon(user) && !isobserver(user))
-		. += span_warning("You're too far away to examine [src]'s contents and display!")
+		. += span_warning(LANG("obj.7f267c3242b59931", list(src)))
 		return
 
 	var/total_weight = 0
@@ -96,30 +97,30 @@
 		to_process["[target.name]"] += amount
 		total_weight += target.w_class
 	if(to_process.len)
-		. += span_notice("Currently holding:")
+		. += span_notice(LANG("obj.97fdf783b296a70b", null))
 		for(var/target_name in to_process)
 			. += span_notice("[to_process[target_name]] [target_name]")
-		. += span_notice("Filled to <b>[round((total_weight / maximum_weight) * 100)]%</b> capacity.")
+		. += span_notice(LANG("obj.d9cecb0ba10a83fd", list(round((total_weight / maximum_weight) * 100))))
 
 	if(!QDELETED(beaker))
-		. += span_notice("A beaker of <b>[beaker.reagents.maximum_volume]u</b> capacity is present. Contains:")
+		. += span_notice(LANG("obj.18a7d35ad9da13fd", list(beaker.reagents.maximum_volume)))
 		if(beaker.reagents.total_volume)
 			for(var/datum/reagent/reg as anything in beaker.reagents.reagent_list)
-				. += span_notice("[round(reg.volume, CHEMICAL_VOLUME_ROUNDING)]u of [reg.name]")
+				. += span_notice(LANG("obj.d353620de6ca6337", list(round(reg.volume, CHEMICAL_VOLUME_ROUNDING), reg.name)))
 		else
-			. += span_notice("Nothing.")
-		. += span_notice("[EXAMINE_HINT("Right click")] with empty hand to remove beaker.")
+			. += span_notice(LANG("obj.aa75d1565980cc59", null))
+		. += span_notice(LANG("obj.fb87c2649aa0d2ee", list(EXAMINE_HINT("Right click"))))
 	else
-		. += span_warning("It's missing a beaker.")
+		. += span_warning(LANG("obj.bdc656a847f05a40", null))
 
-	. += span_notice("You can drag a storage item to dump its contents in the grinder.")
+	. += span_notice(LANG("obj.8e9dfe4057e7f919", null))
 	if(anchored)
-		. += span_notice("It can be [EXAMINE_HINT("wrenched")] loose.")
+		. += span_notice(LANG("obj.ea58af4170499ebd", list(EXAMINE_HINT("wrenched"))))
 	else
-		. += span_warning("Needs to be [EXAMINE_HINT("wrenched")] in place to work.")
-	. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "closed" : "open"].")
+		. += span_warning(LANG("obj.603b2ade20a94ab9", list(EXAMINE_HINT("wrenched"))))
+	. += span_notice(LANG("obj.f3fabb12d30acb3c", list(EXAMINE_HINT("screwed"), panel_open ? "closed" : "open")))
 	if(panel_open)
-		. += span_notice("It can be [EXAMINE_HINT("pried")] apart.")
+		. += span_notice(LANG("obj.fa5fc7965e12e9d0", list(EXAMINE_HINT("pried"))))
 
 /obj/machinery/reagentgrinder/update_overlays()
 	. = ..()
@@ -183,7 +184,7 @@
 
 		// Nothing would come from grinding or juicing
 		if(!length(ingredient.grind_results()) && !ingredient.reagents.total_volume)
-			to_chat(user, span_warning("You cannot grind/juice [ingredient] into reagents!"))
+			to_chat(user, span_warning(LANG("obj.3d7498aecada288f", list(ingredient))))
 			continue
 
 		// Error messages should be in the objects' definitions
@@ -206,7 +207,7 @@
 	var/items_transfered = 0
 	for(var/obj/item/weapon as anything in filtered_list)
 		if(weapon.w_class + total_weight > maximum_weight)
-			to_chat(user, span_warning("[weapon] is too big to fit into [src]."))
+			to_chat(user, span_warning(LANG("obj.34864f487f97d639", list(weapon, src))))
 			continue
 
 		//try to remove the right way
@@ -215,7 +216,7 @@
 
 		total_weight += weapon.w_class
 		items_transfered += 1
-		to_chat(user, span_notice("[weapon] was loaded into [src]."))
+		to_chat(user, span_notice(LANG("obj.e8da3f6705180b08", list(weapon, src))))
 
 	return items_transfered
 
@@ -226,7 +227,7 @@
 	//add the beaker
 	if (is_reagent_container(tool) && tool.is_open_container())
 		replace_beaker(user, tool)
-		to_chat(user, span_notice("You add [tool] to [src]."))
+		to_chat(user, span_notice(LANG("obj.0c27fe262b2ac3b6", list(tool, src))))
 		return ITEM_INTERACT_SUCCESS
 
 	//add items from bag
@@ -248,33 +249,33 @@
 		//add the items
 		var/items_added = load_items(user, to_add)
 		if(!items_added)
-			to_chat(user, span_warning("No items were added."))
+			to_chat(user, span_warning(LANG("obj.ef709a23f5caa3f3", null)))
 			return ITEM_INTERACT_BLOCKING
-		to_chat(user, span_notice("[items_added] items were added from [tool] to [src]."))
+		to_chat(user, span_notice(LANG("obj.52cb6082836fc770", list(items_added, tool, src))))
 		return ITEM_INTERACT_SUCCESS
 
 	//add item directly
 	else if(length(tool.grind_results()) || tool.reagents?.total_volume)
 		if(tool.atom_storage && length(tool.contents)) //anything that has internal storage would be too much recursion for us to handle
-			to_chat(user, span_notice("Drag this item onto [src] to dump its contents, or empty it to grind the container."))
+			to_chat(user, span_notice(LANG("obj.0a0857f0c5d4922b", list(src))))
 			return ITEM_INTERACT_BLOCKING
 
 		//add the items
 		if(!load_items(user, list(tool)))
 			return ITEM_INTERACT_BLOCKING
-		to_chat(user, span_notice("[tool] was added to [src]."))
+		to_chat(user, span_notice(LANG("obj.38ef5bc743cc4280", list(tool, src))))
 		return ITEM_INTERACT_SUCCESS
 
 	//ask player to drag stuff into grinder
 	else if(tool.atom_storage)
-		to_chat(user, span_warning("You must drag & dump contents of [tool] into [src]."))
+		to_chat(user, span_warning(LANG("obj.8890b22bcdb0fdd3", list(tool, src))))
 		return ITEM_INTERACT_BLOCKING
 
 	return NONE
 
 /obj/machinery/reagentgrinder/wrench_act(mob/living/user, obj/item/tool)
 	if(operating)
-		balloon_alert(user, "still operating!")
+		balloon_alert(user, LANG("obj.4e8eee933e4ea008", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(default_unfasten_wrench(user, tool) == SUCCESSFUL_UNFASTEN)
@@ -285,14 +286,14 @@
 
 /obj/machinery/reagentgrinder/screwdriver_act(mob/living/user, obj/item/tool)
 	if(operating)
-		balloon_alert(user, "still operating!")
+		balloon_alert(user, LANG("obj.4e8eee933e4ea008", null))
 		return ITEM_INTERACT_BLOCKING
 
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/reagentgrinder/crowbar_act(mob/living/user, obj/item/tool)
 	if(operating)
-		balloon_alert(user, "still operating!")
+		balloon_alert(user, LANG("obj.4e8eee933e4ea008", null))
 		return ITEM_INTERACT_BLOCKING
 
 	return default_deconstruction_crowbar(user, tool)
@@ -306,7 +307,7 @@
 			continue
 		contents_to_dump += to_dump
 
-	to_chat(user, span_notice("You dumped [load_items(user, contents_to_dump)] items from [storage.parent] into [src]."))
+	to_chat(user, span_notice(LANG("obj.9bb2b7acc660f6eb", list(load_items(user, contents_to_dump), storage.parent, src))))
 
 	return STORAGE_DUMP_HANDLED
 
@@ -431,13 +432,13 @@
 
 		if(juicing)
 			if(!ingredient.juice(beaker.reagents, user))
-				to_chat(user, span_danger("[src] shorts out as it tries to juice up [ingredient], and transfers it back to storage."))
+				to_chat(user, span_danger(LANG("obj.45e1c97bf2aa48cf", list(src, ingredient))))
 				continue
 		else if(!ingredient.grind(beaker.reagents, user))
 			if(isstack(ingredient))
-				to_chat(user, span_notice("[src] attempts to grind as many pieces of [ingredient] as possible."))
+				to_chat(user, span_notice(LANG("obj.10d463a7660f5ddc", list(src, ingredient))))
 			else
-				to_chat(user, span_danger("[src] shorts out as it tries to grind up [ingredient], and transfers it back to storage."))
+				to_chat(user, span_danger(LANG("obj.dae1287652998dd5", list(src, ingredient))))
 			continue
 
 		//happens only for stacks where some of the sheets were grinded so we roughly compute the weight grinded

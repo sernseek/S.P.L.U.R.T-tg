@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 //Barnyard Curse. Clears the curse after 3 minutes.
 /datum/spellbook_entry/barnyard
@@ -31,7 +32,7 @@
 		return .
 	var/mob/living/living_target = cast_on //We check if the target is living above.
 	if(living_target.key)
-		to_chat(owner, span_warning("[living_target.p_They()] [living_target.p_do()]n't appear to have a vacant mind to swap into!"))
+		to_chat(owner, span_warning(LANG("datum.15d4b36a23de5f44", list(living_target.p_They(), living_target.p_do()))))
 		return FALSE
 
 	return TRUE

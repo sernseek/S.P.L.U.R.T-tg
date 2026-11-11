@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Drone inventory procs
 
 /mob/living/basic/drone/doUnEquip(obj/item/item_dropping, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
@@ -70,7 +71,7 @@
 			internal_storage = equipping
 			update_inv_internal_storage()
 		else
-			to_chat(src, span_danger("You are trying to equip this item to an unsupported inventory slot. Report this to a coder!"))
+			to_chat(src, span_danger(LANG("mob.d90ac5022802ce1d", null)))
 			return
 
 	//Call back for item being equipped to drone

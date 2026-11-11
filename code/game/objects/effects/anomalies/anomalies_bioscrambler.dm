@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /obj/effect/anomaly/bioscrambler
 	name = "bioscrambler anomaly"
@@ -33,7 +34,7 @@
 		var/area/A = get_area(nearby)
 		if(istype(A, /area/station/commons/dorms))
 			if(nearby != pursuit_target?.resolve())
-				to_chat(nearby, span_notice("\the [A.name]'s habitation field hums quietly as it hides you from the [name]!"))
+				to_chat(nearby, span_notice(LANG("obj.065168a356466855", list(A.name, name))))
 				continue
 		//SPLURT ADDITION END
 		nearby.bioscramble(name)

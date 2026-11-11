@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/ballistic/automatic/mps5
 	name = "\improper MP-S5 VIG"
 	desc = "A Nanotrasen security submachine gun, the MP-S5 was manufactured by Nanotrasen specifically to be \
@@ -118,7 +119,7 @@
 	secondary_magazine = tool
 	if(old_mag)
 		user.put_in_hands(old_mag)
-	balloon_alert(user, "secondary [magazine_wording] loaded")
+	balloon_alert(user, LANG("obj.f30e04bc00e9bb5c", list(magazine_wording)))
 	playsound(src, load_empty_sound, load_sound_volume, load_sound_vary)
 	update_appearance()
 	return ITEM_INTERACT_SUCCESS
@@ -143,12 +144,12 @@
 	. = ..()
 	if(secondary_magazine)
 		var/secondary_ammo_count = secondary_magazine.ammo_count()
-		. += "There is a secondary magazine."
-		. += "It has [secondary_ammo_count] round\s remaining."
-		. += "Press the UI Button to swap magazine."
-	. += "You can load a secondary magazine by right-clicking [src] with the magazine you want to load."
-	. += "You can remove a secondary magazine by alt-right-clicking [src]."
-	. += "Right-click to swap the magazine to the secondary position, and vice versa."
+		. += LANG("obj.98679eef14ae1f46", null)
+		. += LANG("obj.3fff7c5e73f3dd49", list(secondary_ammo_count))
+		. += LANG("obj.e318ec7134d60437", null)
+	. += LANG("obj.9d8441442c27ba12", list(src))
+	. += LANG("obj.9a19f019f378f6d9", list(src))
+	. += LANG("obj.116b7913a420473c", null)
 
 /obj/item/gun/ballistic/automatic/wt458/Initialize(mapload)
 	. = ..()

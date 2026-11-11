@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/disk/nifsoft_uploader/dorms/hypnosis
 	name = "Purpura Eye"
 	loaded_nifsoft = /datum/nifsoft/action_granter/hypnosis
@@ -27,38 +28,38 @@
 
 	var/mob/living/carbon/human/target_human = user.pulling
 	if(!istype(target_human) || user.grab_state < GRAB_AGGRESSIVE)
-		to_chat(user, span_warning("You need to aggressively grab someone to hypnotize them."))
+		to_chat(user, span_warning(LANG("datum.cd204ed1c2d8ec92", null)))
 		return FALSE
 
 	if(!target_human.client?.prefs?.read_preference(/datum/preference/toggle/erp/hypnosis))
-		to_chat(user, span_warning("[target_human] doesn't want to be hypnotized."))
+		to_chat(user, span_warning(LANG("datum.6e3a87c5c03f24d8", list(target_human))))
 		return FALSE
 
-	to_chat(user, span_notice("You begin to place [target_human] into a hypnotic trance."))
+	to_chat(user, span_notice(LANG("datum.960b6e3507e63c6a", list(target_human))))
 
 	if(!do_after(user, 12 SECONDS, target_human))
 		return FALSE
 
-	var/choice = tgui_alert(target_human, "Do you believe in hypnosis? (This will allow [user] to issue hypnotic suggestions.)", "Hypnosis", list("Yes", "No"))
+	var/choice = tgui_alert(target_human, LANG("datum.c82d6e5becc0edb9", list(user)), LANG("datum.d9547f3371f46edf", null), list("Yes", "No"))
 	if(choice != "Yes")
-		to_chat(user, span_warning("[target_human]'s attention breaks despite your efforts. They clearly don't seem interested!"))
-		to_chat(target_human, span_warning("Your attention breaks as you realize that you don't want to listen to [user]'s suggestions."))
+		to_chat(user, span_warning(LANG("datum.d8d3b45056f0e1b2", list(target_human))))
+		to_chat(target_human, span_warning(LANG("datum.6dbd22c2a76deaf4", list(user))))
 		return FALSE
 
-	user.visible_message(span_purple("[target_human] falls into a deep, hypnotic slumber right at the snap of your fingers."), span_purple("You suddenly fall limp at the snap of [user]'s fingers."))
+	user.visible_message(span_purple(LANG("datum.d6ddff461056ba82", list(target_human))), span_purple(LANG("datum.32c2acd2c819c321", list(user))))
 	user.emote("snap")
 	target_human.SetSleeping(60 SECONDS)
 	target_human.log_message("[target_human] was placed into a hypnotic sleep by [user].", LOG_GAME)
 
-	var/secondary_choice = tgui_alert(user, "Would you like to give [target_human] a hypnotic suggestion or release them?", "Hypnosis", list("Suggestion", "Release"))
+	var/secondary_choice = tgui_alert(user, LANG("datum.d4090a389fbcdea6", list(target_human)), LANG("datum.d9547f3371f46edf", null), list("Suggestion", "Release"))
 	while(secondary_choice == "Suggestion" && target_human.IsSleeping())
 		if(!in_range(user, target_human))
-			to_chat(user, span_warning("You must be in whisper range to [target_human] in order to give hypnotic suggestions."))
+			to_chat(user, span_warning(LANG("datum.3d9269d2bddfd2dc", list(target_human))))
 			target_human.SetSleeping(0)
 			return FALSE
 
-		var/input_text = tgui_input_text(user, "What would you like to suggest?", "Hypnotic Suggestion")
-		to_chat(user, span_purple("You whisper into [target_human]'s ears in a soothing voice."))
+		var/input_text = tgui_input_text(user, LANG("datum.31eaca3e915b20b0", null), LANG("datum.43b95ef9a01022ac", null))
+		to_chat(user, span_purple(LANG("datum.fd2015cbb1fc9d25", list(target_human))))
 		to_chat(target_human, span_hypnophrase("[input_text]"))
 
 		// SPLURT EDIT START: Add logging
@@ -66,7 +67,7 @@
 		user.log_message("gave [key_name(target_human)] a hypnotic suggestion: '[input_text]'", LOG_GAME)
 		// SPLURT EDIT END
 
-		secondary_choice = tgui_alert(user, "Would you like to give [target_human] an additional hypnotic suggestion or release them?", "Hypnosis", list("Suggestion", "Release"))
+		secondary_choice = tgui_alert(user, LANG("datum.df22715e6361208d", list(target_human)), LANG("datum.d9547f3371f46edf", null), list("Suggestion", "Release"))
 
-	user.visible_message(span_purple("You wake up from your deep, hypnotic slumber. The suggestions from [user] now settled into your mind."), span_purple("[target_human] wakes up from their slumber."))
+	user.visible_message(span_purple(LANG("datum.a8b89c6777074875", list(user))), span_purple(LANG("datum.99f08fb9aaeb24e8", list(target_human))))
 	target_human.SetSleeping(0)

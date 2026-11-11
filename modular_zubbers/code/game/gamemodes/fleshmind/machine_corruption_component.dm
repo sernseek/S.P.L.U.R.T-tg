@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Machine corruption component
  *
@@ -108,7 +109,7 @@
 		var/mob/living/basic/fleshmind/mechiver/new_mechiver = incoming_controller.spawn_mob(get_turf(parent_machinery), /mob/living/basic/fleshmind/mechiver)
 		parent_machinery.circuit.forceMove(get_turf(parent_machinery))
 		parent_machinery.circuit = null
-		notify_ghosts("A new corrupt Mechiver has been created by [incoming_controller.controller_fullname]!", source = new_mechiver)
+		notify_ghosts(LANG("datum.860bdcf87a3d3aa8", list(incoming_controller.controller_fullname)), source = new_mechiver)
 		qdel(parent_machinery)
 		return
 
@@ -186,7 +187,7 @@
 
 	var/obj/machinery/parent_machinery = parent
 
-	to_chat(user_to_throw, span_userdanger("[parent_machinery] thrashes you with one of it's tendrils, sending you flying!"))
+	to_chat(user_to_throw, span_userdanger(LANG("datum.68125d6e8b9bf8cf", list(parent_machinery))))
 	playsound(parent_machinery, 'sound/items/weapons/whip.ogg', 70, TRUE)
 	new /obj/effect/temp_visual/kinetic_blast(get_turf(user_to_throw))
 
@@ -200,7 +201,7 @@
 		our_controller.activate_wireweed_nearby(get_turf(parent), GENERAL_DAMAGE_WIREWEED_ACTIVATION_RANGE)
 	playsound(target, 'modular_zubbers/sound/fleshmind/sparks_2.ogg', 70, TRUE)
 	if(prob(DAMAGE_RESPONSE_PROB))
-		target.say("ARRRRRRRGHHHHHHH!")
+		target.say(LANG("datum.fca8a4498fc19b1f", null))
 	new /obj/effect/gibspawner/robot(get_turf(target))
 
 
@@ -219,7 +220,7 @@
 /datum/component/machine_corruption/proc/on_examine(atom/examined, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 
-	examine_list += "<b>It has strange wires wrappped around it!</b>"
+	examine_list += LANG("datum.fe8fb487f685e712", null)
 
 /**
  * Infected machines are considered alive, they react to damage, trying to stop the agressor!

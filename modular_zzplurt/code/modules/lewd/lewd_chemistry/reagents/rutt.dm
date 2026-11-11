@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/reagent/drug/aphrodisiac/rutt
 	name = "\improper R.U.T.T."
 	description = "Chemically condensed dopamine, sexual proteins, estrogens, and adrenalines. This aphrodisiac is an extremely powerful narcotic which may cause unintended climax."
@@ -26,7 +27,7 @@
 /datum/reagent/drug/aphrodisiac/rutt/on_mob_add(mob/living/carbon/human/exposed_mob)
 	if(!(exposed_mob.client?.prefs.read_preference(/datum/preference/toggle/erp/aphro)))
 		return ..()
-	to_chat(exposed_mob, span_userlove("You're hit with an intense wave of sexual pleasure!"))
+	to_chat(exposed_mob, span_userlove(LANG("datum.619b4627867af837", null)))
 	return ..()
 
 /datum/reagent/drug/aphrodisiac/rutt/on_mob_life(mob/living/carbon/human/exposed_mob, seconds_per_tick, times_fired)
@@ -47,14 +48,14 @@
 
 	switch(current_cycle)
 		if(10)
-			to_chat(exposed_mob, span_userlove("Your groin starts to feel really good..."))
+			to_chat(exposed_mob, span_userlove(LANG("datum.0efbb0227c4d7191", null)))
 		if(25)
-			to_chat(exposed_mob, span_userlove("Your feel an orgasm building up..."))
+			to_chat(exposed_mob, span_userlove(LANG("datum.4a4d3bdd8e056fd2", null)))
 		if(45 to INFINITY)
 			if(SPT_PROB(20, seconds_per_tick))
 				exposed_mob.try_lewd_autoemote(pick("drool", "shiver", "twitch"))
 			if(SPT_PROB(2, seconds_per_tick))
-				to_chat(exposed_mob, span_userlove("You can't stop cumming!"))
+				to_chat(exposed_mob, span_userlove(LANG("datum.dd26e06be6874fe8", null)))
 				exposed_mob.climax(manual = FALSE)
 
 /datum/chemical_reaction/rutt

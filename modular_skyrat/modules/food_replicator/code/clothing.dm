@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/under/colonial
 	name = "colonial outfit"
 	desc = "Fancy white satin shirt and a pair of cotton-blend pants with a black synthleather belt."
@@ -54,7 +55,7 @@
 
 	if(!isnull(attach_to.atom_storage))
 		if(user)
-			attach_to.balloon_alert(user, "not compatible!")
+			attach_to.balloon_alert(user, LANG("obj.68951c6c67a8f9ed", null))
 		return FALSE
 	return TRUE
 

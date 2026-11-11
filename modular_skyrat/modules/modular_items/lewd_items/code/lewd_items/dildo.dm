@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define AROUSAL_REGULAR_THRESHOLD 25
 
 /*
@@ -44,7 +45,7 @@
 /obj/item/clothing/sextoy/dildo/examine(mob/user)
 	. = ..()
 	if(!color_changed && change_sprite)
-		. += span_notice("Alt-click to change it's designs.")
+		. += span_notice(LANG("obj.24d5749f30407562", null))
 
 /obj/item/clothing/sextoy/dildo/click_alt(mob/user)
 	if(color_changed)
@@ -102,7 +103,7 @@
 		return
 
 	if(!target.check_erp_prefs(/datum/preference/toggle/erp/sex_toy, user, src))
-		to_chat(user, span_danger("[target] doesn't want you to do that."))
+		to_chat(user, span_danger(LANG("obj.8d0a01828f0e2a19", list(target))))
 		return
 
 	var/message = ""
@@ -114,7 +115,7 @@
 		if(BODY_ZONE_PRECISE_GROIN)
 			var/obj/item/organ/genital/vagina = target.get_organ_slot(ORGAN_SLOT_VAGINA)
 			if(!vagina?.is_exposed())
-				to_chat(user, span_danger("Looks like [target]'s groin is covered!"))
+				to_chat(user, span_danger(LANG("obj.c5b0317d58c50f81", list(target))))
 				return FALSE
 
 			message = (user == target) ? pick("rubs [target.p_their()] vagina with [src]",
@@ -144,7 +145,7 @@
 
 		if(BODY_ZONE_HEAD, BODY_ZONE_PRECISE_MOUTH, BODY_ZONE_PRECISE_EYES) //Mouth only. Sorry, perverts. No eye/ear penetration for you today.
 			if(target.is_mouth_covered())
-				to_chat(user, span_danger("Looks like [target]'s mouth is covered!"))
+				to_chat(user, span_danger(LANG("obj.135b3b1c1449c35e", list(target))))
 				return FALSE
 
 			message = (user == target) ? pick("licks [src] seductively",
@@ -161,7 +162,7 @@
 		else
 			var/obj/item/organ/genital/anus = target.get_organ_slot(ORGAN_SLOT_ANUS)
 			if(!anus?.is_exposed())
-				to_chat(user, span_danger("Looks like [target]'s anus is covered!"))
+				to_chat(user, span_danger(LANG("obj.4f1653fe600f1eb8", list(target))))
 				return FALSE
 
 			message = (user == target) ? pick("puts [src] into [target.p_their()] anus",
@@ -230,7 +231,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 /obj/item/clothing/sextoy/dildo/custom_dildo/examine(mob/user)
 	. = ..()
 	if(!size_changed && color_changed && change_sprite)
-		. += span_notice("Alt-click to change it's size.")
+		. += span_notice(LANG("obj.e4adb7a5e1021e26", null))
 
 /obj/item/clothing/sextoy/dildo/custom_dildo/click_alt(mob/living/user)
 	if(!color_changed)
@@ -257,13 +258,13 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	if(!src || !user || user.incapacitated || !in_range(user, src))
 		return FALSE
 
-	var/color_choice = tgui_input_list(user, "Choose a color for your dildo.", "Dildo Color", GLOB.dildo_colors)
+	var/color_choice = tgui_input_list(user, LANG("obj.c73d5af2c5ab6b8b", null), LANG("obj.42633708a7ec5ab9", null), GLOB.dildo_colors)
 	if(color_choice)
 		sanitize_inlist(color_choice, GLOB.dildo_colors, "Red")
 		color = GLOB.dildo_colors[color_choice]
 
 	update_icon_state()
-	var/transparency_choice = tgui_input_number(user, "Choose the transparency of your dildo. Lower is more transparent! (192-255)", "Dildo Transparency", 255, 255, 192)
+	var/transparency_choice = tgui_input_number(user, LANG("obj.67a1442e64bacd58", null), LANG("obj.55445ab9f4f13933", null), 255, 255, 192)
 	if(transparency_choice)
 		sanitize_integer(transparency_choice, 191, 255, 192)
 		alpha = transparency_choice
@@ -342,9 +343,9 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	if(src == user.vagina)
 		toggle(user)
 	else if(src == user.anus)
-		to_chat(user, span_warning("You can't use [src] from this angle!"))
+		to_chat(user, span_warning(LANG("obj.5cec582bc11c4def", list(src))))
 	else
-		to_chat(user, span_warning("You need to equip [src] before you can use it!"))
+		to_chat(user, span_warning(LANG("obj.cfd3a8e38354f444", list(src))))
 
 //dumb way to fix organs overlapping with toys, but WHY NOT. Find a better way if you're not lazy as me.
 /obj/item/clothing/sextoy/dildo/double_dildo/lewd_equipped(mob/living/carbon/human/user, slot)
@@ -420,7 +421,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	if(end_piece)
 		end_piece.moveToNullspace()
 		QDEL_NULL(other_end)
-		user.visible_message(span_notice("[user] releases their grip on one end of the [src]."))
+		user.visible_message(span_notice(LANG("obj.a44d39255f80b15d", list(user, src))))
 		end_in_hand = FALSE
 		return
 
@@ -429,11 +430,11 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	other_end = new /obj/item/clothing/sextoy/dildo/double_dildo_end
 
 	if(!user.put_in_hands(other_end))
-		user.visible_message(span_notice("[user] tries to hold one end of [src] in [user.p_their()] hand, but [user.p_their()] hand isn't empty!"))
+		user.visible_message(span_notice(LANG("obj.310e4eefb4bb3493", list(user, src, user.p_their(), user.p_their()))))
 		return FALSE
 
 	other_end.parent_end = WEAKREF(src)
-	user.visible_message(span_notice("[user] holds one end of [src] in [user.p_their()] hand."))
+	user.visible_message(span_notice(LANG("obj.5c4c936154d31988", list(user, src, user.p_their()))))
 	end_in_hand = TRUE
 	return TRUE
 

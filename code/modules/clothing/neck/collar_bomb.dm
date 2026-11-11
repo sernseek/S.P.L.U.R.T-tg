@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///Special neckwear that kills its wearer if triggered, by either its specific remote or assemblies.
 /obj/item/clothing/neck/collar_bomb
 	name = "collar bomb"
@@ -36,7 +37,7 @@
 	. = ..()
 	if(user.get_item_by_slot(ITEM_SLOT_NECK) == src)
 		return
-	. += span_tinynotice("It has a [EXAMINE_HINT("wire")] panel that could be interacted with...")
+	. += span_tinynotice(LANG("obj.5676e60223b98be9", list(EXAMINE_HINT("wire"))))
 
 /obj/item/clothing/neck/collar_bomb/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(!is_wire_tool(tool))
@@ -65,15 +66,15 @@
 
 	playsound(src, 'sound/effects/snap.ogg', 75, TRUE)
 	if(!ishuman(loc))
-		balloon_alert_to_viewers("dud...")
+		balloon_alert_to_viewers(LANG("obj.e44381cc34e4e2d8", null))
 		active = FALSE
 		return
 	var/mob/living/carbon/human/brian = loc
 	if(brian.get_item_by_slot(ITEM_SLOT_NECK) != src)
-		balloon_alert_to_viewers("dud...")
+		balloon_alert_to_viewers(LANG("obj.e44381cc34e4e2d8", null))
 		active = FALSE
 		return
-	visible_message(span_warning("[src] goes off, outright decapitating [brian]!"), span_hear("You hear a fleshy boom!"))
+	visible_message(span_warning(LANG("obj.f00f5dfbc276b67b", list(src, brian))), span_hear(LANG("obj.adfdeca90884f2d8", null)))
 	playsound(src, SFX_EXPLOSION, 30, TRUE)
 	brian.apply_damage(200, BRUTE, BODY_ZONE_HEAD)
 	var/obj/item/bodypart/head/myhead = brian.get_bodypart(BODY_ZONE_HEAD)
@@ -99,7 +100,7 @@
 	. = ..()
 	if(DOING_INTERACTION_WITH_TARGET(user, src))
 		return
-	balloon_alert_to_viewers("pushing the button...")
+	balloon_alert_to_viewers(LANG("obj.5291b250016d7ece", null))
 	if(!do_after(user, 1.2 SECONDS, target = src))
 		return
 	playsound(user, 'sound/machines/click.ogg', 25, TRUE)

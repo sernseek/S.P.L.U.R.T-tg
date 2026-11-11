@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/reagent/consumable/ethanol/panty_dropper
 	name = "Liquid Panty Dropper"
 	description = "You feel it's not named like that for nothing."
@@ -25,7 +26,7 @@
 
 /datum/reagent/consumable/ethanol/lean/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	var/mob/living/carbon/human/H = drinker
-	var/message = "I LOVE LEAN!!"
+	var/message = LANG("datum.2728d7fbb6b43508", null)
 	drinker.set_dizzy(50)
 	drinker.set_jitter(50)
 	drinker.set_drugginess(50)
@@ -41,7 +42,7 @@
 			if(!H.undergoing_cardiac_arrest() && H.can_heartattack() && prob(1))
 				H.set_heartattack(TRUE)
 				if(H.stat == STABLE)
-					H.visible_message(span_userdanger("[H] clutches at [H.p_their()] chest as if [H.p_their()] heart stopped!")) // too much lean :(
+					H.visible_message(span_userdanger(LANG("datum.a043844a532a0911", list(H, H.p_their(), H.p_their())))) // too much lean :(
 	..()
 
 /datum/reagent/consumable/ethanol/cum_in_a_hot_tub
@@ -297,9 +298,9 @@
 	need_mob_update += drinker.adjust_stamina_loss(max(-heal_amt * 5, -20), updating_stamina = FALSE, required_biotype = affected_biotype)
 	if(need_mob_update)
 		drinker.updatehealth()
-	drinker.visible_message(span_warning("[drinker] seems refreshed and well rested!"), span_notice("One taste of [LOWER_TEXT(name)] fills you with energy!"))
+	drinker.visible_message(span_warning(LANG("datum.e5f2ba5b87351065", list(drinker))), span_notice(LANG("datum.59cacafbea489818", list(LOWER_TEXT(name)))))
 	if(!drinker.stat && heal_points == 20) //brought us out of softcrit
-		drinker.visible_message(span_danger("[drinker] lurches to [drinker.p_their()] feet!"), span_boldnotice("Nothing a short rest cannot fix."))
+		drinker.visible_message(span_danger(LANG("datum.672c82cc0fb62d86", list(drinker, drinker.p_their()))), span_boldnotice(LANG("datum.2ea7d4d3389e7d59", null)))
 
 /datum/reagent/consumable/ethanol/gem_grape_juice/on_mob_life(mob/living/drinker, seconds_per_tick, metabolization_ratio)
 	. = ..()
@@ -341,9 +342,9 @@
 	need_mob_update += drinker.adjust_stamina_loss(max(-heal_amt * 5, -20), updating_stamina = FALSE, required_biotype = affected_biotype)
 	if(need_mob_update)
 		drinker.updatehealth()
-	drinker.visible_message(span_warning("[drinker] seems refreshed and well rested!"), span_notice("One taste of [LOWER_TEXT(name)] fills you with energy!"))
+	drinker.visible_message(span_warning(LANG("datum.e5f2ba5b87351065", list(drinker))), span_notice(LANG("datum.59cacafbea489818", list(LOWER_TEXT(name)))))
 	if(!drinker.stat && heal_points == 20) //brought us out of softcrit
-		drinker.visible_message(span_danger("[drinker] lurches to [drinker.p_their()] feet!"), span_boldnotice("Nothing a short rest cannot fix."))
+		drinker.visible_message(span_danger(LANG("datum.672c82cc0fb62d86", list(drinker, drinker.p_their()))), span_boldnotice(LANG("datum.2ea7d4d3389e7d59", null)))
 
 /datum/reagent/consumable/ethanol/gem_grape_soda/on_mob_life(mob/living/drinker, seconds_per_tick, metabolization_ratio)
 	. = ..()

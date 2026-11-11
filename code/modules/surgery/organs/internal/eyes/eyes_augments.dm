@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/eyes/robotic
 	name = "robotic eyes"
 	desc = "Your vision is augmented."
@@ -14,7 +15,7 @@
 		return
 	if(prob(100 / severity))
 		return
-	to_chat(owner, span_warning("Static obfuscates your vision!"))
+	to_chat(owner, span_warning(LANG("obj.f5f60c634a525c54", null)))
 	owner.flash_act(visual = 1)
 
 /obj/item/organ/eyes/robotic/basic
@@ -34,7 +35,7 @@
 		return
 	if(prob(10 * severity))
 		apply_organ_damage(20 * severity)
-		to_chat(owner, span_warning("Your eyes start to fizzle in their sockets!"))
+		to_chat(owner, span_warning(LANG("obj.cfeef29f67dc8cbd", null)))
 		do_sparks(2, TRUE, owner)
 		owner.emote("scream")
 
@@ -224,8 +225,8 @@
 		if("pick_color")
 			var/new_color = tgui_color_picker(
 				usr,
-				"Choose eye color color:",
-				"High Luminosity Eyes Menu",
+				LANG("obj.a0f56336883c6a39", null),
+				LANG("obj.902240663aabfbc8", null),
 				light_color_string
 			)
 			if(new_color)
@@ -480,13 +481,13 @@
 
 /obj/item/organ/eyes/night_vision/maintenance_adapted/penlight_examine(mob/living/viewer, obj/item/examtool)
 	if(!owner.is_blind())
-		to_chat(owner, span_danger("Your eyes sizzle agonizingly as light is shone on them!"))
+		to_chat(owner, span_danger(LANG("obj.6bc9e530201d49fd", null)))
 		apply_organ_damage(20 * examtool.light_power) //that's 0.5 lightpower for a penlight, so one penlight shining is equivalent to two seconds in a lit area
 	return span_danger("[owner.p_Their()] eyes [penlight_message]")
 
 /obj/item/organ/eyes/night_vision/maintenance_adapted/on_life(seconds_per_tick)
 	if(owner.get_eye_protection() <= FLASH_PROTECTION_SENSITIVE && !owner.is_blind() && isturf(owner.loc) && owner.has_light_nearby(light_amount=0.5)) //we allow a little more than usual so we can produce light from the adapted eyes
-		to_chat(owner, span_danger("Your eyes! They burn in the light!"))
+		to_chat(owner, span_danger(LANG("obj.72bcfe060fc801ee", null)))
 		apply_organ_damage(10) //blind quickly
 		playsound(owner, 'sound/machines/grill/grillsizzle.ogg', 50)
 	else
@@ -591,7 +592,7 @@
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
-	balloon_alert(user, "perceptual scanners overriden")
+	balloon_alert(user, LANG("obj.607cca260c87fab9", null))
 	return TRUE
 
 /obj/item/organ/eyes/robotic/tacvisor/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
@@ -785,13 +786,13 @@
 	var/threat_level = victim.assess_threat(threat_flags, lasercolor)
 	switch (threat_level)
 		if (THREAT_ASSESS_MAXIMUM to INFINITY)
-			override_strings += span_boldwarning("Assessed threat level of [threat_level]! Extreme danger of criminal activity!")
+			override_strings += span_boldwarning(LANG("obj.c69a29d768558396", list(threat_level)))
 		if (THREAT_ASSESS_DANGEROUS to THREAT_ASSESS_MAXIMUM)
-			override_strings += span_warning("Assessed threat level of [threat_level]. Criminal scum detected!")
+			override_strings += span_warning(LANG("obj.1f3809812f30bbd3", list(threat_level)))
 		if (1 to THREAT_ASSESS_DANGEROUS)
-			override_strings += span_notice("Assessed threat level of [threat_level]. Probably not dangerous... yet.")
+			override_strings += span_notice(LANG("obj.8dfb2f752d3f02d9", list(threat_level)))
 		else
-			override_strings += span_notice("Seems to be a trustworthy individual.")
+			override_strings += span_notice(LANG("obj.8779a8db418cfdc8", null))
 
 	examine_overrides[EXAMINE_OVERRIDE_PRIORITY_IFF] = override_strings
 
@@ -874,7 +875,7 @@
 
 /obj/item/organ/eyes/robotic/tacvisor/screwdriver_act(mob/living/user, obj/item/tool)
 	user_controls = !user_controls
-	balloon_alert(user, "user controls [user_controls ? "enabled" : "disabled"]")
+	balloon_alert(user, LANG("obj.099da056d705fe15", list(user_controls ? "enabled" : "disabled")))
 	if (user_controls)
 		add_item_action(/datum/action/item_action/organ_action/use)
 	else
@@ -884,8 +885,8 @@
 
 /obj/item/organ/eyes/robotic/tacvisor/examine(mob/user)
 	. = ..()
-	. += span_notice("Its settings can be changed with a [EXAMINE_HINT("multitool")].")
-	. += span_notice("User configuration switch is currently in the [user_controls ? "on" : "off"] position, and could be flipped wtih a [EXAMINE_HINT("screwdriver")].")
+	. += span_notice(LANG("obj.2760a9aa989e7f6a", list(EXAMINE_HINT("multitool"))))
+	. += span_notice(LANG("obj.9a382023b631d9ff", list(user_controls ? "on" : "off", EXAMINE_HINT("screwdriver"))))
 
 /obj/item/organ/eyes/robotic/tacvisor/proc/on_entered(mob/living/source)
 	if (source in direct_view_tracking)

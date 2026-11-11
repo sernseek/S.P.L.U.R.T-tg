@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Power Tools Belt Overlays
 /obj/item/crowbar/power/get_belt_overlay()
 	if(tool_behaviour != TOOL_WIRECUTTER)
@@ -38,7 +39,7 @@
 
 	tool_behaviour = (active ? second_tool_behavior : first_tool_behavior)
 	if(user)
-		balloon_alert(user, "attached [tool_behaviour == first_tool_behavior ? inactive_text : active_text]")
+		balloon_alert(user, LANG("obj.07b7e630c2be57ee", list(tool_behaviour == first_tool_behavior ? inactive_text : active_text)))
 	playsound(src, 'sound/items/tools/change_jaws.ogg', 50, TRUE)
 	if(tool_behaviour != TOOL_WIRECUTTER)
 		RemoveElement(/datum/element/cuffsnapping, snap_time_weak_handcuffs, snap_time_strong_handcuffs)

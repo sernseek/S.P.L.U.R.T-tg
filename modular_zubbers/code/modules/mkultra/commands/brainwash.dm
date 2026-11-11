@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/mkultra_command/mind_control
 	name = "Brainwash"
 	description = "Brainwash your victim with a new objective. This is mechanic backed brainwashing that gives your victim the brainwashed antag status."
@@ -10,7 +11,7 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	var/text = tgui_input_text(source, title = "Brainwash Input", max_length = 150)
+	var/text = tgui_input_text(source, title = LANG("datum.acb48f897b828efc", null), max_length = 150)
 	if(!text)
 		return FALSE
 	brainwash(owner, text)

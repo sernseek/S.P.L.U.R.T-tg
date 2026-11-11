@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// SKYRAT MODULE SKYRAT_XENO_REDO
 
 /mob/living/carbon/alien/adult/skyrat/drone
@@ -49,10 +50,10 @@
 /datum/action/cooldown/alien/skyrat/heal_aura/Activate()
 	. = ..()
 	if(aura_active)
-		owner.balloon_alert(owner, "already healing")
+		owner.balloon_alert(owner, LANG("datum.aadb480b2b261fbf", null))
 		return FALSE
-	owner.balloon_alert(owner, "healing aura started")
-	to_chat(owner, span_danger("We emit pheromones that encourage sisters near us to heal themselves for the next [aura_duration / 10] seconds."))
+	owner.balloon_alert(owner, LANG("datum.e81b0d623dabc53e", null))
+	to_chat(owner, span_danger(LANG("datum.95bce89709c1d36c", list(aura_duration / 10))))
 	addtimer(CALLBACK(src, PROC_REF(aura_deactivate)), aura_duration)
 	aura_active = TRUE
 	aura_healing_component = owner.AddComponent(/datum/component/aura_healing, range = aura_range, requires_visibility = TRUE, brute_heal = aura_healing_amount, burn_heal = aura_healing_amount, limit_to_trait = TRAIT_XENO_HEAL_AURA, healing_color = aura_healing_color)
@@ -63,4 +64,4 @@
 		return
 	aura_active = FALSE
 	QDEL_NULL(aura_healing_component)
-	owner.balloon_alert(owner, "healing aura ended")
+	owner.balloon_alert(owner, LANG("datum.285ca5e8149dccfd", null))

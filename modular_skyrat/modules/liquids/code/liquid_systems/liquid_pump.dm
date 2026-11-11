@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Right now it's a structure that works off of magic, as it'd require an internal power source for what its supposed to do
 /obj/structure/liquid_pump
 	name = "portable liquid pump"
@@ -29,23 +30,23 @@
 
 /obj/structure/liquid_pump/attack_hand(mob/user)
 	if(!anchored)
-		to_chat(user, span_warning("[src] needs to be anchored first!"))
+		to_chat(user, span_warning(LANG("obj.ed8d24fe49cd10d1", list(src))))
 		return
-	to_chat(user, span_notice("You turn [src] [turned_on ? "off" : "on"]."))
+	to_chat(user, span_notice(LANG("obj.c2fd54ba4e8294af", list(src, turned_on ? "off" : "on"))))
 	toggle_working()
 
 /obj/structure/liquid_pump/click_alt(mob/living/user)
-	to_chat(user, span_notice("You flick [src]'s spewing mode [spewing_mode ? "off" : "on"]."))
+	to_chat(user, span_notice(LANG("obj.a22a1b249e56fccc", list(src, spewing_mode ? "off" : "on"))))
 	spewing_mode = !spewing_mode
 	update_icon()
 	return CLICK_ACTION_SUCCESS
 
 /obj/structure/liquid_pump/examine(mob/user)
 	. = ..()
-	. += span_notice("It's anchor bolts are [anchored ? "down and secured" : "up"].")
-	. += span_notice("It's currently [turned_on ? "ON" : "OFF"].")
-	. += span_notice("It's mode currently is set to [spewing_mode ? "SPEWING" : "SIPHONING"]. (Alt-click to switch)")
-	. += span_notice("The pressure gauge shows [reagents.total_volume]/[reagents.maximum_volume].")
+	. += span_notice(LANG("obj.2590e6d3c6721758", list(anchored ? "down and secured" : "up")))
+	. += span_notice(LANG("obj.a0457e2d9ecf3e0c", list(turned_on ? "ON" : "OFF")))
+	. += span_notice(LANG("obj.94fb911f5a80a268", list(spewing_mode ? "SPEWING" : "SIPHONING")))
+	. += span_notice(LANG("obj.e59f8bc265e82fb0", list(reagents.total_volume, reagents.maximum_volume)))
 
 /obj/structure/liquid_pump/process()
 	if(!isturf(loc))

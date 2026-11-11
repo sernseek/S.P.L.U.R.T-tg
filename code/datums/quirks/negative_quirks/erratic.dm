@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/erratic
 	name = "Erratic"
 	desc = "You mood swings like a pendulum, causing your personality to change on a whim every so often."
@@ -40,14 +41,14 @@
 	if(random_index % 2 == 0)
 		random_index = 0
 		replace_personalities(base_personalities)
-		to_chat(quirk_holder, span_notice("You feel... normal."))
+		to_chat(quirk_holder, span_notice(LANG("datum.96e9f6879d00fa5e", null)))
 		announce_personality_change()
 		return
 
 	var/max = CONFIG_GET(number/max_personalities)
 	var/list/new_personality = prob(1) ? list() : SSpersonalities.select_random_personalities(max - 2, max + 1)
 	replace_personalities(new_personality)
-	to_chat(quirk_holder, span_notice("You feel... different."))
+	to_chat(quirk_holder, span_notice(LANG("datum.5c7c958b3c010851", null)))
 	announce_personality_change()
 
 /datum/quirk/erratic/proc/replace_personalities(list/new_personalities)
@@ -58,4 +59,4 @@
 	var/list/new_personality = list()
 	for(var/datum/personality/personality_type as anything in quirk_holder.personalities)
 		new_personality += initial(personality_type.name)
-	to_chat(quirk_holder, span_green("Your personality is now: [english_list(new_personality)]."))
+	to_chat(quirk_holder, span_green(LANG("datum.74d7da23f6538db2", list(lang_english_list(new_personality)))))

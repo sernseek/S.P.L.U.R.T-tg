@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /client
 	var/datum/player_playtime/playtime_menu
 	var/next_valve_grief_warning = 0
@@ -72,7 +73,7 @@
 
 			var/mob/target = get_mob_by_key(params["ckey"])
 			if(!target)
-				to_chat(usr, span_notice("Player not found."))
+				to_chat(usr, span_notice(LANG("datum.b3f1e0ba5cdc5967", null)))
 				return
 
 			var/client/C = usr.client

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/heretic_knowledge/spell/paranoias_eye
 	name = "Paranoia's Eye"
 	desc = "Forces nearby heathens to hallucinate everyone around them as a dangerous heretic, including you. Completely obscures identities. Lasts for one minute. (Can be casted without a focus)"
@@ -29,13 +30,13 @@
 		if (IS_HERETIC_OR_MONSTER(iter_living))
 			continue
 		if (iter_living.can_block_magic(antimagic_flags))
-			to_chat(iter_living, span_warning("You shiver as you sense an eldritch incursion bounce off your mind."))
+			to_chat(iter_living, span_warning(LANG("datum.a5e8c85aea2b3645", null)))
 			iter_living.emote("shiver")
 			continue
 		iter_living.cause_hallucination(/datum/hallucination/delusion/paranoias_eye, "Heretic Hallucination Spell", duration = 1 MINUTES)
 		iter_living.adjust_eye_blur_up_to(20 SECONDS, 30 SECONDS)
-		to_chat(iter_living, span_hypnophrase("LIGHT BLEEDS THROUGH THE CRACK IN THE GATE. I AM BLINDED - SOUL AND BODY."))
-	to_chat(owner, span_warning("You make the subtle kinetoglyph. The way is now open."))
+		to_chat(iter_living, span_hypnophrase(LANG("datum.33977ec92fd00dcc", null)))
+	to_chat(owner, span_warning(LANG("datum.8e4eb030e73c1ed7", null)))
 
 /datum/hallucination/delusion/paranoias_eye
 	dynamic_delusion = TRUE

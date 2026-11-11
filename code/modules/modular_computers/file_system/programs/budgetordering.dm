@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/computer_file/program/budgetorders
 	filename = "orderapp"
 	filedesc = "NT Shopping Network"
@@ -141,7 +142,7 @@
 
 		cart_list[order.pack.name] = list(list(
 			"cost_type" = order.cost_type,
-			"object" = order.pack.name,
+			"object" = lang_reverse_text(order.pack.name), // ZH EDIT CHANGE - I18N - ORIGINAL: "object" = order.pack.name, （购物车显示用译名；remove 走 id=安全）
 			"cost" = order.get_final_cost(),
 			"id" = order.id,
 			"amount" = 1,
@@ -189,11 +190,11 @@
 				return
 			if(SSshuttle.supply.getDockedId() == docking_home)
 				SSshuttle.moveShuttle(cargo_shuttle, docking_away, TRUE)
-				computer.say("The supply shuttle is departing.")
+				computer.say(LANG("datum.c8889dde4d5b29e6", null))
 				user.investigate_log("sent the supply shuttle away.", INVESTIGATE_CARGO)
 			else
 				user.investigate_log("called the supply shuttle.", INVESTIGATE_CARGO)
-				computer.say("The supply shuttle has been called and will arrive in [SSshuttle.supply.timeLeft(600)] minute\s.")
+				computer.say(LANG("datum.8a1a83d6d1e41e94", list(SSshuttle.supply.timeLeft(600))))
 				SSshuttle.moveShuttle(cargo_shuttle, docking_home, TRUE)
 			. = TRUE
 		if("loan")
@@ -210,7 +211,7 @@
 				return
 			else
 				SSshuttle.shuttle_loan.loan_shuttle()
-				computer.say("The supply shuttle has been loaned to CentCom.")
+				computer.say(LANG("datum.a29fce78fecf59e8", null))
 				user.investigate_log("accepted a shuttle loan event.", INVESTIGATE_CARGO)
 				user.log_message("accepted a shuttle loan event.", LOG_GAME)
 				. = TRUE
@@ -243,28 +244,28 @@
 
 			if(self_paid)
 				if(!istype(id_card_customer))
-					computer.say("No ID card detected.")
+					computer.say(LANG("datum.9caa768c0177ac98", null))
 					return
 				if(IS_DEPARTMENTAL_CARD(id_card_customer))
-					computer.say("[id_card_customer] cannot be used to make purchases.")
+					computer.say(LANG("datum.8cd2261a41a75ff7", list(id_card_customer)))
 					return
 				account = id_card_customer.registered_account
 				name = id_card_customer.registered_account.account_holder
 				if(!istype(account))
-					computer.say("Invalid bank account.")
+					computer.say(LANG("datum.3ad4c19308c51a2e", null))
 					return
 
 			var/reason = ""
 			var/datum/bank_account/personal_department
 			if((requestonly && !self_paid) || !(computer.stored_id?.GetID()))
-				reason = tgui_input_text(user, "Reason", name, max_length = MAX_MESSAGE_LEN)
+				reason = tgui_input_text(user, LANG("datum.ba5380f4e7abe6d9", null), name, max_length = MAX_MESSAGE_LEN)
 				if(isnull(reason) || ..())
 					return
 
 			if(id_card_customer?.registered_account?.account_job && !self_paid) //Find a budget to pull from
 				personal_department = SSeconomy.get_dep_account(id_card_customer.registered_account.account_job.paycheck_department)
 				if(!(personal_department.account_holder == "Cargo Budget"))
-					var/dept_choice = tgui_alert(user, "Which department are you requesting this for?", "Choose request department", list("Cargo Budget", "[personal_department.account_holder]"))
+					var/dept_choice = tgui_alert(user, LANG("datum.b7de779abff270c2", null), LANG("datum.788586826babe8fa", null), list("Cargo Budget", "[personal_department.account_holder]"))
 					if(!dept_choice)
 						return
 					if(dept_choice == "Cargo Budget")
@@ -272,12 +273,12 @@
 
 			if((pack.order_flags & ORDER_GOODY) && !self_paid && !pack.allow_non_private_purchase) // BUBBER EDIT - allow_non_private_purchase check, matches orderconsole.dm and expressconsole.dm
 				playsound(computer, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
-				computer.say("ERROR: Small crates may only be purchased by private accounts.")
+				computer.say(LANG("datum.90374cfbf570e042", null))
 				return
 
 			if(SSshuttle.supply.get_order_count(pack) == OVER_ORDER_LIMIT)
 				playsound(computer, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
-				computer.say("ERROR: No more then [CARGO_MAX_ORDER] of any pack may be ordered at once")
+				computer.say(LANG("datum.6627f598fbb8c20c", list(CARGO_MAX_ORDER)))
 				return
 
 			if(!self_paid)
@@ -289,17 +290,17 @@
 				SO.generateRequisition(T)
 				computer.stored_paper -= 1
 				if(computer.stored_paper <= 4)
-					computer.say("Paper's storage has only [computer.stored_paper] papers. Refill please!")
+					computer.say(LANG("datum.4fa8c3724cda33f8", list(computer.stored_paper)))
 					if(computer.stored_paper <= 1)
-						computer.say("Only 1 paper has left, refill please!")
+						computer.say(LANG("datum.61d6b734795d0630", null))
 			else
-				computer.say("Requisition cannot be printed, paper storage is empty. Please insert more paper!")
+				computer.say(LANG("datum.65148df3e9007669", null))
 			if((requestonly && !self_paid) || !(computer.stored_id?.GetID()))
 				SSshuttle.request_list += SO
 			else
 				SSshuttle.shopping_list += SO
 				if(self_paid)
-					computer.say("Order processed. The price will be charged to [account.account_holder]'s bank account on delivery.")
+					computer.say(LANG("datum.cf813d0cbcc0517b", list(account.account_holder)))
 			playsound(computer, 'sound/effects/coin2.ogg', 40, TRUE)
 			. = TRUE
 		if("remove")

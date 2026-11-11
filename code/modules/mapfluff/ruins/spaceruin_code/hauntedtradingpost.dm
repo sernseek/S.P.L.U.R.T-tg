@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //code & items for the hauntedtradingpost.dmm ruin
 //CONTAINS: [Lore Papers],[Outpost ID Cards],[Gimmick Treasure],[Hazards & Traps],[Custom Turrets]
 
@@ -290,7 +291,7 @@
 
 /obj/effect/overloader_trap/proc/trap_alerted()
 	if(host_machine in loc) //if someone breaks or moves the machine before the trap goes off, this should fail to do anything
-		visible_message(span_boldwarning("Sparks fly from [host_machine] as it shakes vigorously!"))
+		visible_message(span_boldwarning(LANG("obj.6e0411c5994b8690", list(host_machine))))
 		do_sparks(number = 3, source = host_machine)
 		host_machine.Shake(2, 1, trigger_delay)
 		addtimer(CALLBACK(src, PROC_REF(trap_effect)), trigger_delay)
@@ -299,7 +300,7 @@
 	for(var/mob/living/living_mob in range(shock_range, src))
 		if(faction_check_atom(living_mob))
 			continue
-		to_chat(living_mob, span_warning("You are struck by an arc of electricity!"))
+		to_chat(living_mob, span_warning(LANG("obj.4a5b8a5234c4a694", null)))
 		src.Beam(living_mob, icon_state = "lightning[rand(1,12)]", time = 0.5 SECONDS)
 		living_mob.electrocute_act(shock_damage, host_machine, 1, SHOCK_NOGLOVES, stun_duration, jitter_time, stutter_time)
 	for(var/obj/item/food/deadmouse in range(shock_range, src))

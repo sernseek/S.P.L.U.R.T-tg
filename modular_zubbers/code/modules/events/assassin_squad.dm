@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/syndicate_assassination_attempt
 	name = "Syndicate Assasination Attempt"
 	typepath = /datum/round_event/syndicate_assassination_attempt
@@ -104,7 +105,7 @@
 	alert_ghosts(victim)
 
 /datum/round_event/syndicate_assassination_attempt/proc/alert_ghosts(mob/victim)
-	notify_ghosts("[victim.name] is being attacked by the syndicate!", source = victim, header = "Assassination in progress")
+	notify_ghosts(LANG("datum.984ae5ea8bcd7a8d", list(victim.name)), source = victim, header = "Assassination in progress")
 
 /datum/round_event/syndicate_assassination_attempt/proc/get_blacklisted_areas()
 	return GLOB.expected_erp_areas.Copy()

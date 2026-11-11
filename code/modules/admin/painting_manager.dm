@@ -1,4 +1,5 @@
-ADMIN_VERB(painting_manager, R_ADMIN, "Paintings Manager", "View and redact paintings.", ADMIN_CATEGORY_MAIN)
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+ADMIN_VERB(painting_manager, R_ADMIN, "画作管理器", "View and redact paintings.", ADMIN_CATEGORY_MAIN)
 	var/static/datum/paintings_manager/ui = new
 	ui.ui_interact(user.mob)
 
@@ -55,7 +56,7 @@ ADMIN_VERB(painting_manager, R_ADMIN, "Paintings Manager", "View and redact pain
 		if("rename")
 			//Modify the metadata
 			var/old_title = chosen_painting.title
-			var/new_title = tgui_input_text(user, "New painting title?", "Painting Rename", chosen_painting.title, max_length = MAX_NAME_LEN)
+			var/new_title = tgui_input_text(user, LANG("datum.4af395accb8a3a8e", null), LANG("datum.04fca8db80e94e30", null), chosen_painting.title, max_length = MAX_NAME_LEN)
 			if(!new_title)
 				return
 			chosen_painting.title = new_title
@@ -63,7 +64,7 @@ ADMIN_VERB(painting_manager, R_ADMIN, "Paintings Manager", "View and redact pain
 			return TRUE
 		if("rename_author")
 			var/old_name = chosen_painting.creator_name
-			var/new_name = tgui_input_text(user, "New painting author name?", "Painting Rename", chosen_painting.creator_name, max_length = MAX_NAME_LEN)
+			var/new_name = tgui_input_text(user, LANG("datum.889a2fbb86fbeb88", null), LANG("datum.04fca8db80e94e30", null), chosen_painting.creator_name, max_length = MAX_NAME_LEN)
 			if(!new_name)
 				return
 			chosen_painting.creator_name = new_name
@@ -83,7 +84,7 @@ ADMIN_VERB(painting_manager, R_ADMIN, "Paintings Manager", "View and redact pain
 			log_admin("[key_name(user)] has removed tag [params["tag"]] from persistent painting made by [chosen_painting.creator_ckey] with id [chosen_painting.md5].")
 			return TRUE
 		if("add_tag")
-			var/tag_name = tgui_input_text(user, "New tag name?", "Add Tag", max_length = MAX_NAME_LEN)
+			var/tag_name = tgui_input_text(user, LANG("datum.5133b1745241c6b8", null), LANG("datum.ac1b86079dfdc49d", null), max_length = MAX_NAME_LEN)
 			if(!tag_name)
 				return
 			if(!chosen_painting.tags)

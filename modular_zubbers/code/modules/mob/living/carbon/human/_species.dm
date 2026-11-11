@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species
 	var/sort_bottom = FALSE
 //Whether or not a given species is sorted to the bottom of the list. We mainly want to do this for species that are used only for ghostroles, and template species.
@@ -23,16 +24,16 @@
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = FA_ICON_BRAIN,
-			SPECIES_PERK_NAME = "Cortical Augmentation",
-			SPECIES_PERK_DESC = "[plural_form] have an augmented brain, making them vulnerable to EMPs. On the bright side, their brains can be repaired with a multitool.",
+			SPECIES_PERK_NAME = LANG("datum.ec8d1e0a7e06bc44", null),
+			SPECIES_PERK_DESC = LANG("datum.444d8c408a675ea0", list(plural_form)),
 		))
 
 	if ((brain_flags & ORGAN_ROBOTIC) && !(brain_flags & ORGAN_ORGANIC))
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = FA_ICON_BRAIN,
-			SPECIES_PERK_NAME = "Superior Cortical Augmentation",
-			SPECIES_PERK_DESC = "[plural_form] have an augmented brain: Their brains can be repaired with a multitool, and aren't at risk from biological processes. However, they are vulnerable to EMPs.",
+			SPECIES_PERK_NAME = LANG("datum.edaeaf3b9d638ea0", null),
+			SPECIES_PERK_DESC = LANG("datum.c49c310e5bd81458", list(plural_form)),
 		))
 
 	return to_add

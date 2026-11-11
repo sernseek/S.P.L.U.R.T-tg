@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// This deathrattle group does not care about the area someone dies in.
 #define DEATHRATTLE_AREA_NOLIST		0
 /// This deathrattle group uses its `area_list` as a blacklist: if someone dies in these areas, they DO NOT cause an alert.
@@ -106,7 +107,7 @@
 
 		// Deliberately the same message framing as ghost deathrattle
 		var/mob/living/recipient = implant.imp_in
-		to_chat(recipient, "<i>You hear a strange, robotic voice in your head...</i> \"[span_robot("<b>[name]</b> has died at <b>[area_name]</b>.")]\"")
+		to_chat(recipient, LANG("datum.dabd65ca808cce08", list(span_robot("<b>[name]</b> has died at <b>[area_name]</b>."))))
 		recipient.playsound_local(get_turf(recipient), sound, vol = 75, vary = FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
 /obj/item/implant/deathrattle
@@ -133,7 +134,7 @@
 
 /obj/item/implant/deathrattle/can_be_implanted_in(mob/living/target)
 	if(!current_group)
-		balloon_alert(target, "deathrattle needs configuration!")
+		balloon_alert(target, LANG("obj.1142b55d2b2829fd", null))
 		return FALSE
 	// Can be implanted in anything that's a mob. Syndicate cyborgs, talking fish, humans...
 	return TRUE

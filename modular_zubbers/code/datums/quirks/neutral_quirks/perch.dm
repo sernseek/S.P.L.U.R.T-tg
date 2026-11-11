@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/perch
 	name = "Perch"
 	desc = "In some way, you're able to hang from the ceiling. Only devious things can come of this."
@@ -39,13 +40,13 @@
 	if(check_above(cast_on))
 		RegisterSignal(cast_on, COMSIG_MOVABLE_MOVED, PROC_REF(on_step))
 		cast_on.AddElement(/datum/element/forced_gravity, NEGATIVE_GRAVITY)
-		owner.visible_message("<span class='notice'>[owner] ascends and sticks to the ceiling!")
+		owner.visible_message(LANG("datum.064423bc532a9ec0", list(owner)))
 		hangin = TRUE
 
 /datum/action/cooldown/spell/perch/proc/unflip(mob/living/flipper)
 	qdel(flipper.RemoveElement(/datum/element/forced_gravity, NEGATIVE_GRAVITY))
 	UnregisterSignal(flipper, COMSIG_MOVABLE_MOVED)
-	owner.visible_message("<span class='notice'>[owner] lowers themselves to the ground!")
+	owner.visible_message(LANG("datum.3e7e599d50382ce5", list(owner)))
 	hangin = FALSE
 
 /// Unflips the owner on movement
@@ -57,6 +58,6 @@
 	var/turf/open/current_turf = get_turf(target)
 	var/turf/open/openspace/turf_above = get_step_multiz(target, UP)
 	if(current_turf && istype(turf_above))
-		to_chat(target, span_warning("There's only open air above you, nothing to hang from!"))
+		to_chat(target, span_warning(LANG("datum.a3cd75d3fd594782", null)))
 		return FALSE
 	return TRUE

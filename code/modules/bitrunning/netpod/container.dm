@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/netpod/Exited(atom/movable/gone, direction)
 	. = ..()
 	if(!state_open && gone == occupant)
@@ -10,9 +11,9 @@
 
 
 /obj/machinery/netpod/container_resist_act(mob/living/user)
-	user.visible_message(span_notice("[occupant] emerges from [src]!"),
-		span_notice("You climb out of [src]!"),
-		span_notice("With a hiss, you hear a machine opening."))
+	user.visible_message(span_notice(LANG("obj.8616ec7ef6eb4cb4", list(occupant, src))),
+		span_notice(LANG("obj.adaf0a2d27164b52", list(src))),
+		span_notice(LANG("obj.f867c29d88684f1e", null)))
 	open_machine()
 
 
@@ -48,9 +49,9 @@
 		return ITEM_INTERACT_SUCCESS
 
 	user.visible_message(
-		span_danger("[user] starts prying open [src]!"),
-		span_notice("You start to pry open [src]."),
-		span_notice("You hear loud prying on metal.")
+		span_danger(LANG("obj.44411a9a23efb065", list(user, src))),
+		span_notice(LANG("obj.68c3aeb6cb28ee15", list(src))),
+		span_notice(LANG("obj.e8e1ff73b4a188b4", null))
 	)
 	playsound(src, 'sound/machines/airlock/airlock_alien_prying.ogg', 100, TRUE)
 

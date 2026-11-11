@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CARGO_CUT 0.05
 
 /datum/supply_pack/company_import
@@ -17,7 +18,7 @@
 	contains = list(item_type)
 	name = "[item_type::name] Single-Pack"
 	if(desc == initial(desc))
-		desc = "Contains one [item_type::name]."
+		desc = LANG("datum.f8838e5b5bc224b8", list(item_type::name))
 	if(CONFIG_GET(flag/permit_pins) && item_type && istype(item_type, /obj/item/gun))
 		desc += " The gun will come with a permit pin installed."
 

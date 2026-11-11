@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define OXY_CANDLE_RELEASE_TEMP (T20C + 10) // 30 celsius, it's hot. Will be even hotter with hotspot expose
 
 /obj/item/oxygen_candle
@@ -14,7 +15,7 @@
 /obj/item/oxygen_candle/attack_self(mob/user)
 	if(!pulled)
 		playsound(src, 'sound/effects/fuse.ogg', 75, 1)
-		balloon_alert(user, "cord pulled")
+		balloon_alert(user, LANG("obj.b0c31e2d9b734306", null))
 		icon_state = "oxycandle_burning"
 		pulled = TRUE
 		processing = TRUE

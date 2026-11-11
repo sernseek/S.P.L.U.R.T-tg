@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // cd, visibility duration
 GLOBAL_LIST_INIT(mansus_eye_commands_regex, list(
 	construct_mansus_eye_regex("silence") = list(60 SECONDS, 10 SECONDS),
@@ -63,11 +64,11 @@ GLOBAL_LIST_INIT(mansus_eye_commands_regex, list(
 /obj/item/mansus_eye/examine(mob/user)
 	. = ..()
 
-	. += span_warning("Allows its user to view its surroundings with x-ray vision, and create localized negative effects on those nearby.")
-	. += span_boldnotice("This item is heavily limited. If stored in a secure place, its owner is unlikely to get a new one.")
+	. += span_warning(LANG("obj.f5f0c7a243c64f20", null))
+	. += span_boldnotice(LANG("obj.2af48f47be132453", null))
 
 	if (owner == null && IS_HERETIC_OR_MONSTER(user))
-		. += span_hypnophrase("Use the eye in-hand to bind to it, enabling its use.")
+		. += span_hypnophrase(LANG("obj.24ac4b7901cc339f", null))
 
 /obj/item/mansus_eye/proc/on_view_enabled(client/owner_client)
 	var/mob/living/curr_mob = owner.resolve()
@@ -75,8 +76,8 @@ GLOBAL_LIST_INIT(mansus_eye_commands_regex, list(
 		return
 	owner_client.setup_popup("heretic_eye_popup", 18, 18, 1, "Mind's Eye")
 	cam_screen.display_to(curr_mob)
-	to_chat(curr_mob, span_warning("You blink twice, and look through your distant eye."))
-	to_chat(curr_mob, span_boldnotice("Speaking certain phrases will cause localized effects around your eye. Check your ability description for info."))
+	to_chat(curr_mob, span_warning(LANG("obj.565d62ffbfcc327d", null)))
+	to_chat(curr_mob, span_boldnotice(LANG("obj.89b56117c2328a74", null)))
 	RegisterSignal(owner_client, COMSIG_POPUP_CLEARED, PROC_REF(on_screen_clear))
 	RegisterSignal(owner_client.mob, COMSIG_MOVABLE_SAY_QUOTE, PROC_REF(intercept_commands))
 	update_view()
@@ -110,13 +111,13 @@ GLOBAL_LIST_INIT(mansus_eye_commands_regex, list(
 	if (!COOLDOWN_FINISHED(src, ability_cooldown))
 		if (isnull(owner_mob))
 			return
-		to_chat(owner_mob, span_warning("Your eye is still recovering from its last use..."))
-		balloon_alert(owner_mob, "on cooldown!")
+		to_chat(owner_mob, span_warning(LANG("obj.b537086f9e2393df", null)))
+		balloon_alert(owner_mob, LANG("obj.d4ae5d4dded19efe", null))
 		return
 
 	if (!isturf(loc))
 		if (!isnull(owner_mob))
-			to_chat(owner_mob, span_warning("Your eye can't act while in a container!"))
+			to_chat(owner_mob, span_warning(LANG("obj.aa5277497eb8c147", null)))
 		return
 
 	var/list/spec = GLOB.mansus_eye_commands_regex[found_regex]
@@ -124,8 +125,8 @@ GLOBAL_LIST_INIT(mansus_eye_commands_regex, list(
 	animate(src, alpha = 255, time = 2 SECONDS)
 	addtimer(CALLBACK(src, PROC_REF(become_invisible)), spec[2])
 	if (!isnull(owner_mob))
-		balloon_alert(owner_mob, "success!")
-		to_chat(owner_mob, span_warning("You speak, and the eye obeys."))
+		balloon_alert(owner_mob, LANG("obj.61c91505eebd8dd4", null))
+		to_chat(owner_mob, span_warning(LANG("obj.f5229d4368d29fc0", null)))
 
 	var/list/targets = get_hearers_in_view(cam_range, src)
 
@@ -135,42 +136,42 @@ GLOBAL_LIST_INIT(mansus_eye_commands_regex, list(
 				if (IS_HERETIC_OR_MONSTER(iter_living))
 					continue
 				if (iter_living.can_block_magic(MAGIC_RESISTANCE|MAGIC_RESISTANCE_MIND))
-					to_chat(iter_living, span_warning("You feel something gazing at you, but its quickly deflected by your antimagic."))
+					to_chat(iter_living, span_warning(LANG("obj.fae4d53bfdab1f21", null)))
 					continue
 				iter_living.adjust_silence_up_to(30 SECONDS, 60 SECONDS)
-				to_chat(iter_living, span_userdanger("You feel an invisible thread come over your lips! Something within view is staring at you!"))
+				to_chat(iter_living, span_userdanger(LANG("obj.1d652ab9be930b79", null)))
 		if ("blind")
 			for (var/mob/living/iter_living in targets)
 				if (IS_HERETIC_OR_MONSTER(iter_living))
 					continue
 				if (iter_living.can_block_magic(MAGIC_RESISTANCE|MAGIC_RESISTANCE_MIND))
-					to_chat(iter_living, span_warning("You feel something gazing at you, but its quickly deflected by your antimagic."))
+					to_chat(iter_living, span_warning(LANG("obj.fae4d53bfdab1f21", null)))
 					continue
 				iter_living.adjust_temp_blindness_up_to(15 SECONDS, 60 SECONDS)
-				to_chat(iter_living, span_userdanger("You suddenly lose the ability to see! Something within view is staring at you!"))
+				to_chat(iter_living, span_userdanger(LANG("obj.ca2ce17b8bbf4033", null)))
 		if ("deafen")
 			for (var/mob/living/carbon/iter_living in targets)
 				if (IS_HERETIC_OR_MONSTER(iter_living))
 					continue
 				if (iter_living.can_block_magic(MAGIC_RESISTANCE|MAGIC_RESISTANCE_MIND))
-					to_chat(iter_living, span_warning("You feel something gazing at you, but its quickly deflected by your antimagic."))
+					to_chat(iter_living, span_warning(LANG("obj.fae4d53bfdab1f21", null)))
 					continue
 				var/obj/item/organ/ears/ears = iter_living.get_organ_slot(ORGAN_SLOT_EARS)
 				if (isnull(ears))
 					return
 				ears.adjust_temporary_deafness(30 SECONDS)
-				to_chat(iter_living, span_userdanger("You suddenly lose the ability to hear! Something within view is staring at you!"))
+				to_chat(iter_living, span_userdanger(LANG("obj.bb185ff29b7485ca", null)))
 		if ("sleep")
 			for (var/mob/living/carbon/iter_living in targets)
 				if (IS_HERETIC_OR_MONSTER(iter_living))
 					continue
 				if (iter_living.can_block_magic(MAGIC_RESISTANCE|MAGIC_RESISTANCE_MIND))
-					to_chat(iter_living, span_warning("You feel something gazing at you, but its quickly deflected by your antimagic."))
+					to_chat(iter_living, span_warning(LANG("obj.fae4d53bfdab1f21", null)))
 					continue
 				iter_living.adjust_drowsiness_up_to(15 SECONDS, 120 SECONDS)
 				iter_living.adjust_eye_blur_up_to(30 SECONDS, 120 SECONDS)
 				iter_living.adjust_stamina_loss(20)
-				to_chat(iter_living, span_userdanger("Something within your view gazes at you, and you suddenly feel tired..."))
+				to_chat(iter_living, span_userdanger(LANG("obj.fd1a6724788962af", null)))
 
 /obj/item/mansus_eye/proc/become_invisible()
 	animate(src, alpha = initial(src.alpha), time = 2 SECONDS)
@@ -188,15 +189,15 @@ GLOBAL_LIST_INIT(mansus_eye_commands_regex, list(
 
 	if (!IS_HERETIC_OR_MONSTER(living_user))
 		living_user.adjust_temp_blindness_up_to(3 SECONDS, 10 SECONDS)
-		to_chat(living_user, span_userdanger("The eye stares back!"))
+		to_chat(living_user, span_userdanger(LANG("obj.e7f762224e34c590", null)))
 		return TRUE
 
 	if (isnull(owner?.resolve()))
 		set_new_owner(living_user)
 		return TRUE
 
-	to_chat(living_user, span_warning("This eye is already claimed by an Acolyte!"))
-	balloon_alert(living_user, "already claimed!")
+	to_chat(living_user, span_warning(LANG("obj.2578a1bb87a2c46e", null)))
+	balloon_alert(living_user, LANG("obj.3ca44c79234ea06a", null))
 	return TRUE
 
 /obj/item/mansus_eye/proc/set_new_owner(mob/living/carbon/new_owner, silent = FALSE)
@@ -209,7 +210,7 @@ GLOBAL_LIST_INIT(mansus_eye_commands_regex, list(
 	owner = WEAKREF(new_owner)
 	action.Grant(new_owner)
 	if (!silent)
-		to_chat(new_owner, span_notice("The eye binds to you, and you sense its cognition behind your own..."))
+		to_chat(new_owner, span_notice(LANG("obj.ba78e22ebb5cc4ed", null)))
 
 /datum/action/cooldown/mansus_eye
 	name = "watching eye"

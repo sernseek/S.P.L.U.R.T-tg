@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/mecha_parts/mecha_equipment/weapon
 	name = "mecha weapon"
 	abstract_type = /obj/item/mecha_parts/mecha_equipment/weapon
@@ -38,7 +39,7 @@
 	bay.detach()
 	bay.forceMove(src) //for later detaching
 	attach(mech, attach_right)
-	user.visible_message(span_notice("[user] inserts something into [src]."), span_notice("You attach the [initial(name)] into the concealed weapon bay."))
+	user.visible_message(span_notice(LANG("obj.70d1eef54e8146c3", list(user, src))), span_notice(LANG("obj.6d214c5221f719ea", list(initial(name)))))
 	return TRUE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/detach(atom/moveto)
@@ -200,7 +201,7 @@
 	var/has_molten = FALSE
 	for (var/obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/thegun in themech.flat_equipment)
 		if (istype(thegun, /obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/cryo))
-			to_chat(user, span_warning("[themech] already has [thegun] installed!"))
+			to_chat(user, span_warning(LANG("obj.221888f2085b8389", list(themech, thegun))))
 			return ITEM_INTERACT_BLOCKING
 		if (istype(thegun, /obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/inferno))
 			has_molten = TRUE
@@ -215,7 +216,7 @@
 	var/has_cryo = FALSE
 	for (var/obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/thegun in themech.flat_equipment)
 		if (istype(thegun, /obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/inferno))
-			to_chat(user, span_warning("[themech] already has [thegun] installed!"))
+			to_chat(user, span_warning(LANG("obj.221888f2085b8389", list(themech, thegun))))
 			return ITEM_INTERACT_BLOCKING
 		if (istype(thegun, /obj/item/mecha_parts/mecha_equipment/weapon/energy/thermal/cryo))
 			has_cryo = TRUE
@@ -271,14 +272,14 @@
 	if(!action_checks(target))
 		return
 	playsound(chassis, 'sound/items/airhorn/airhorn.ogg', 100, TRUE)
-	to_chat(source, "[icon2html(src, source)]<font color='red' size='5'>HONK</font>")
+	to_chat(source, LANG("obj.a7e4a2c8e6052c3b", list(icon2html(src, source))))
 	for(var/mob/living/carbon/M in ohearers(6, chassis))
 		if(HAS_TRAIT(M, TRAIT_DEAF))
 			continue
 		var/turf/turf_check = get_turf(M)
 		if(isspaceturf(turf_check) && !turf_check.Adjacent(src)) //in space nobody can hear you honk.
 			continue
-		to_chat(M, "<font color='red' size='7'>HONK</font>")
+		to_chat(M, LANG("obj.09f6523a4e825cd0", null))
 		M.SetSleeping(0)
 		M.adjust_stutter(40 SECONDS)
 		M.sound_damage(deafen = 30 SECONDS)
@@ -577,7 +578,7 @@
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/punching_glove/action(mob/source, atom/target, list/modifiers)
 	. = ..()
 	if(.)
-		to_chat(usr, "[icon2html(src, usr)]<font color='red' size='5'>HONK</font>")
+		to_chat(usr, LANG("obj.a7e4a2c8e6052c3b", list(icon2html(src, usr))))
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/punching_glove/proj_init(obj/item/punching_glove/PG)
 	if(!istype(PG))
@@ -668,14 +669,14 @@
 		. = ..()
 		var/mob/living/mobtarget = target
 		if(mobtarget.move_resist == MOVE_FORCE_OVERPOWERING) //No megafauna or bolted AIs, please.
-			balloon_alert(source, "too strong!")
+			balloon_alert(source, LANG("obj.efd191e8dac4a04c", null))
 			return
 		if(secmech.cargo_hold.contents.len >= secmech.cargo_hold.cargo_capacity)
-			balloon_alert(source, "no room!")
+			balloon_alert(source, LANG("obj.ad6c6384cbc2d930", null))
 			return
 
 		playsound(chassis, clampsound, 50, FALSE, -6)
-		mobtarget.visible_message(span_notice("[chassis] lifts [mobtarget] into its internal holding cell."),span_userdanger("[chassis] grips you with [src] and prepares to load you into [secmech.cargo_hold]!"))
+		mobtarget.visible_message(span_notice(LANG("obj.ed706a6a6a71275b", list(chassis, mobtarget))),span_userdanger(LANG("obj.e672bef88f1d88bc", list(chassis, src, secmech.cargo_hold))))
 		if(!do_after_cooldown(mobtarget, source, flags = MECH_DO_AFTER_DIR_CHANGE_FLAG|MECH_DO_AFTER_ADJACENCY_FLAG))
 			return
 		mobtarget.forceMove(secmech.cargo_hold)

@@ -26,6 +26,9 @@ type AbductorConsoleData = {
 };
 
 type ConsoleItem = {
+  // ZH EDIT ADDITION - I18N: English identifier for act('buy'); `name` is the localized
+  // display text. Falls back to `name` if the server didn't send an id.
+  id?: string;
   name: string;
   cost: number;
   desc: string;
@@ -85,10 +88,16 @@ const Abductsoft = (props) => {
     for (let itemIndex = 0; itemIndex < category.items.length; itemIndex++) {
       const item = category.items[itemIndex];
       items.push({
-        id: item.name,
+        id: item.id ?? item.name, // ZH EDIT CHANGE - I18N - ORIGINAL: id: item.name,
         name: item.name,
         category: category.name,
-        cost: `${item.cost} Credits`,
+        // ZH EDIT CHANGE - I18N: 整串是运行期产物、永远不是目录键；包成元素后
+        // 按 children 模板 `{0} Credits` 进目录 - ORIGINAL: cost: `${item.cost} Credits`,
+        cost: (
+          <>
+            <span>{item.cost}</span> Credits
+          </>
+        ),
         desc: item.desc,
         disabled: (credits || 0) < item.cost,
         icon: item.icon,
@@ -109,10 +118,16 @@ const Abductsoft = (props) => {
         </LabeledList>
       </Section>
       <GenericUplink
-        currency={`${credits} Credits`}
+        // ZH EDIT CHANGE - I18N - ORIGINAL: currency={`${credits} Credits`}
+        currency={
+          <>
+            <span>{credits}</span> Credits
+          </>
+        }
         categories={categoriesList}
         items={items}
-        handleBuy={(item) => act('buy', { name: item.name })}
+        // ZH EDIT CHANGE - I18N: 回传英文 id（item.name 现在是译名）- ORIGINAL: { name: item.name }
+        handleBuy={(item) => act('buy', { name: item.id })}
       />
     </>
   );

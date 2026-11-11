@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/assembly/infra
 	name = "infrared emitter"
 	desc = "Emits a visible or invisible beam and is triggered when the beam is interrupted."
@@ -38,7 +39,7 @@
 
 /obj/item/assembly/infra/examine(mob/user)
 	. = ..()
-	. += span_notice("The infrared trigger is [on ? "on" : "off"].")
+	. += span_notice(LANG("obj.d58826b7e853246b", list(on ? "on" : "off")))
 
 /// Checks if the passed movable can block the beam.
 /obj/item/assembly/infra/proc/atom_blocks_beam(atom/movable/beam_atom)
@@ -165,7 +166,7 @@
 
 	pulse()
 	audible_message(
-		message = span_infoplain("[icon2html(src, hearers(holder || src))] *beep* *beep* *beep*"),
+		message = span_infoplain(LANG("obj.a31e23785cc68a0a", list(icon2html(src, hearers(holder || src))))),
 		hearing_distance = hearing_range,
 	)
 	playsound(src, 'sound/machines/beep/triple_beep.ogg', ASSEMBLY_BEEP_VOLUME, TRUE, extrarange = hearing_range - SOUND_RANGE + 1, falloff_distance = hearing_range)

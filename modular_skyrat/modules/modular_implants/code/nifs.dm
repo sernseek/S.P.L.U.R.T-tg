@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define NIF_CALIBRATION_STAGE_1 0
 #define NIF_CALIBRATION_STAGE_1_END  0.1
 #define NIF_CALIBRATION_STAGE_2 0.2
@@ -130,7 +131,7 @@
 	. = ..()
 
 	if(linked_mob && stored_ckey != insertee.ckey && theft_protection)
-		insertee.audible_message(span_warning("[src] lets out a negative buzz before forcefully removing itself from [insertee]'s brain."))
+		insertee.audible_message(span_warning(LANG("obj.8e231416378c1111", list(src, insertee))))
 		playsound(insertee, 'sound/machines/buzz/buzz-sigh.ogg', 30, TRUE)
 		Remove(insertee)
 		forceMove(get_turf(insertee))
@@ -266,11 +267,11 @@
 	if(!blood_drain)
 		power_usage += (blood_drain_rate * blood_conversion_rate)
 
-		balloon_alert(linked_mob, "blood draining disabled")
+		balloon_alert(linked_mob, LANG("obj.07112999c74ee54a", null))
 		return TRUE
 
 	power_usage -= (blood_drain_rate * blood_conversion_rate)
-	balloon_alert(linked_mob, "blood draining enabled")
+	balloon_alert(linked_mob, LANG("obj.109abd50f5efc4cb", null))
 	return TRUE
 
 ///Checks if the NIF is able to draw blood as a power source?
@@ -298,10 +299,10 @@
 			var/random_ailment = rand(1, side_effect_risk)
 			switch(random_ailment)
 				if(1)
-					to_chat(linked_mob, span_warning("You feel sick to your stomach!"))
+					to_chat(linked_mob, span_warning(LANG("obj.822899b3b9122f9c", null)))
 					linked_mob.adjust_disgust(25)
 				if(2)
-					to_chat(linked_mob, span_warning("You feel a wave of fatigue roll over you!"))
+					to_chat(linked_mob, span_warning(LANG("obj.32585a146969391c", null)))
 					linked_mob.adjust_stamina_loss(50)
 
 		if(NIF_CALIBRATION_STAGE_FINISHED to INFINITY)
@@ -387,11 +388,11 @@
 		nif_icon = tag
 
 	if(alert)
-		to_chat(linked_mob, span_warning("[nif_icon] <b>NIF Alert</b>: [message_to_send]"))
+		to_chat(linked_mob, span_warning(LANG("obj.7c9e38dd12fd0d1a", list(nif_icon, message_to_send))))
 		linked_mob.playsound_local(linked_mob, bad_sound, 60, FALSE)
 		return
 
-	to_chat(linked_mob, span_cyan("[nif_icon] <b>NIF Message</b>: [message_to_send]"))
+	to_chat(linked_mob, span_cyan(LANG("obj.10c3dd1ee8ce4414", list(nif_icon, message_to_send))))
 	linked_mob.playsound_local(linked_mob, good_sound, 60, FALSE)
 
 

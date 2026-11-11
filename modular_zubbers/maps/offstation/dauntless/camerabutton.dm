@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/assembly/control/camkillswitch
 	name = "camera network kill switch"
 	desc = "A small electronic device that cuts feed for an entire network."
@@ -10,7 +11,7 @@
 
 /obj/item/assembly/control/camkillswitch/activate()
 	if(!COOLDOWN_FINISHED(src, use_cooldown))
-		say("Camera network is reloading! Please wait a moment.")
+		say(LANG("obj.421e397b0847d1f7", null))
 		return
 
 	var/list/cameras = SScameras.get_available_camera_by_tag_list(camera_network)

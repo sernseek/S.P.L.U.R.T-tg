@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //////////////////////////////////////
 ///////ENTHRAL VELVET CHORDS//////////
 //////////////////////////////////////
@@ -24,12 +25,12 @@
 
 /datum/action/item_action/organ_action/velvet/Trigger(mob/clicker, trigger_flags)
 	. = ..()
-	var/command = input(owner, "Speak in a sultry tone", "Command")
+	var/command = input(owner, LANG("datum.ac7b89974be8a46d", null), LANG("datum.a4e844da7c4e52d5", null))
 	if(QDELETED(src) || QDELETED(owner))
 		return
 	if(!command)
 		return
-	owner.say(".x[command]")
+	owner.say(LANG("datum.4744c02d0184bdbc", list(command)))
 
 /obj/item/organ/vocal_cords/velvet/can_speak_with()
 	return TRUE

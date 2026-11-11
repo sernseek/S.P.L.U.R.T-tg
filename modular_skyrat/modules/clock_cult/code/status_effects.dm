@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/status_effect/interdiction
 	id = "interdicted"
 	duration = 2.6 SECONDS
@@ -12,7 +13,7 @@
 		owner.toggle_move_intent(owner)
 		owner.adjust_confusion_up_to(1 SECONDS, 1 SECONDS)
 		running_toggled = TRUE
-		to_chat(owner, span_warning("You know you shouldn't be running here."))
+		to_chat(owner, span_warning(LANG("datum.4c77c579be3d232f", null)))
 
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/clock_interdiction)
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define HARMONIC_REGEN_BOOST 0.1
 
 /datum/component/nanites
@@ -252,20 +253,20 @@
 		if(0 to NANITE_EXCESS_MINOR) //Minor excess amount, the extra nanites are quietly expelled without visible effects
 			return
 		if((NANITE_EXCESS_MINOR + 0.1) to NANITE_EXCESS_VOMIT) //Enough nanites getting rejected at once to be visible to the naked eye
-			host_mob.visible_message(span_warning("A grainy grey slurry starts oozing out of [host_mob]."), span_warning("A grainy grey slurry starts oozing out of your skin."), null, 4);
+			host_mob.visible_message(span_warning(LANG("datum.82d871f6c869793a", list(host_mob))), span_warning(LANG("datum.66a0ef0b7d7dafee", null)), null, 4);
 		if((NANITE_EXCESS_VOMIT + 0.1) to NANITE_EXCESS_BURST) //Nanites getting rejected in massive amounts, but still enough to make a semi-orderly exit through vomit
 			if(iscarbon(host_mob))
 				var/mob/living/carbon/C = host_mob
-				host_mob.visible_message(span_warning("[host_mob] vomits a grainy grey slurry!"), span_warning("You suddenly vomit a metallic-tasting grainy grey slurry!"), null);
+				host_mob.visible_message(span_warning(LANG("datum.c0f610f378b2d7e4", list(host_mob))), span_warning(LANG("datum.6eb652dee3472697", null)), null);
 				C.vomit(VOMIT_CATEGORY_NANITE, /obj/effect/decal/cleanable/vomit/nanites, FLOOR(excess / 100, 1))
 			else
-				host_mob.visible_message(span_warning("A metallic grey slurry bursts out of [host_mob]'s skin!"), span_userdanger("A metallic grey slurry violently bursts out of your skin!"), null);
+				host_mob.visible_message(span_warning(LANG("datum.78cbf30807bc16b9", list(host_mob))), span_userdanger(LANG("datum.9f59739183ea8f04", null)), null);
 				if(isturf(host_mob.drop_location()))
 					var/turf/T = host_mob.drop_location()
 					T.add_vomit_floor(host_mob, /obj/effect/decal/cleanable/vomit/nanites, VOMIT_CATEGORY_NANITE, 0)
 		if((NANITE_EXCESS_BURST + 0.1) to INFINITY) //Way too many nanites, they just leave through the closest exit before they harm/poison the host
-			host_mob.visible_message(span_warning("A torrent of metallic grey slurry violently bursts out of [host_mob]'s face and floods out of [host_mob.p_their()] skin!"),
-								span_userdanger("A torrent of metallic grey slurry violently bursts out of your eyes, ears, and mouth, and floods out of your skin!"));
+			host_mob.visible_message(span_warning(LANG("datum.8ffc6a55bbe88483", list(host_mob, host_mob.p_their()))),
+								span_userdanger(LANG("datum.983819117b9d99c6", null)));
 			host_mob.adjust_eye_blur_up_to(15, 1 MINUTES)
 			host_mob.Paralyze(120)
 			if(iscarbon(host_mob))
@@ -451,20 +452,20 @@
 
 	if(!full_scan)
 		if(!stealth)
-			to_chat(user, span_notice("<b>Nanites Detected</b>"))
-			to_chat(user, span_notice("Saturation: [nanite_volume]/[max_nanites]"))
+			to_chat(user, span_notice(LANG("datum.7077e63b60618ca5", null)))
+			to_chat(user, span_notice(LANG("datum.0d43f7e9bc7e90fe", list(nanite_volume, max_nanites))))
 			return TRUE
 	else
-		to_chat(user, span_info("NANITES DETECTED"))
+		to_chat(user, span_info(LANG("datum.093c4da8c1ef1472", null)))
 		to_chat(user, span_info("================"))
-		to_chat(user, span_info("Saturation: [nanite_volume]/[max_nanites]"))
-		to_chat(user, span_info("Safety Threshold: [safety_threshold]"))
-		to_chat(user, span_info("Cloud ID: [cloud_id ? cloud_id : "None"]"))
-		to_chat(user, span_info("Cloud Sync: [cloud_active ? "Active" : "Disabled"]"))
+		to_chat(user, span_info(LANG("datum.0d43f7e9bc7e90fe", list(nanite_volume, max_nanites))))
+		to_chat(user, span_info(LANG("datum.d03fd5ca152687c8", list(safety_threshold))))
+		to_chat(user, span_info(LANG("datum.482360c928890460", list(cloud_id ? cloud_id : "None"))))
+		to_chat(user, span_info(LANG("datum.fdcd69085cc40232", list(cloud_active ? "Active" : "Disabled"))))
 		to_chat(user, span_info("================"))
-		to_chat(user, span_info("Program List:"))
+		to_chat(user, span_info(LANG("datum.6736c57182f4ceb0", null)))
 		if(!diagnostics)
-			to_chat(user, span_alert("Nanite debugging disabled."))
+			to_chat(user, span_alert(LANG("datum.d48447944cd29152", null)))
 		else
 			for(var/X in programs)
 				var/datum/nanite_program/NP = X

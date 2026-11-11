@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/mop/Initialize(mapload)
 	. = ..()
 
@@ -26,12 +27,12 @@
 
 	var/free_space = reagents.maximum_volume - reagents.total_volume
 	if(free_space <= 0)
-		to_chat(user, span_warning("Your [src] can't absorb any more liquid!"))
+		to_chat(user, span_warning(LANG("obj.5b8b31a2b129be53", list(src))))
 		return TRUE
 
 	var/datum/reagents/tempr = liquids.take_reagents_flat(free_space)
 	tempr.trans_to(reagents, tempr.total_volume)
-	to_chat(user, span_notice("You soak \the [src] with some liquids."))
+	to_chat(user, span_notice(LANG("obj.966933a819450c5d", list(src))))
 	qdel(tempr)
 	user.changeNext_move(CLICK_CD_RANGE) // This used to be CLICK_CD_MELEE, which is painfully slow
 	return TRUE

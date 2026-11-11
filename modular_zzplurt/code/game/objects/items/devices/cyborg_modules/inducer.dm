@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Cyborg inducer. Uses up the cyborg's internal battery.
 // Ported from BlueMoon, original code by FelixRuin (kudos to him)
 
@@ -30,9 +31,9 @@
 	. = ..()
 	internal_cell = get_cell()
 	if(internal_cell)
-		. += "<span class='notice'>Its display shows: [display_energy(internal_cell.charge)].</span>"
+		. += LANG("obj.589e2c6c7dd919cb", list(display_energy(internal_cell.charge)))
 	else
-		. += "<span class='notice'>Its display is dark.</span>"
+		. += LANG("obj.8c974432c0cbbb96", null)
 
 
 /obj/item/borg/cyborg_inducer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
@@ -62,11 +63,11 @@
 /obj/item/borg/cyborg_inducer/proc/can_be_used(mob/user)
 	internal_cell = get_cell()
 	if(!internal_cell)
-		to_chat(user, "<span class='warning'>Unit doesn't have a power cell installed!</span>")
+		to_chat(user, LANG("obj.923126c77b7d7b4b", null))
 		return FALSE
 
 	if(!internal_cell.charge)
-		to_chat(user, "<span class='warning'>Unit's battery is dead!</span>")
+		to_chat(user, LANG("obj.436967113699299d", null))
 		return FALSE
 	return TRUE
 
@@ -74,7 +75,7 @@
 	if(isturf(this_atom))
 		return FALSE
 	if(this_atom.get_cell() == get_cell())
-		to_chat(user, "<span class='warning'>Error: Power loop detected!</span>")
+		to_chat(user, LANG("obj.df1d99e1771b0d32", null))
 		return FALSE
 	if(status == IND_STATUS_CHARGING)
 		return TRUE
@@ -84,17 +85,17 @@
 
 	if(this_atom.get_cell())
 		if(istype(this_atom, /obj/item/gun/energy) && !can_charge_guns)
-			to_chat(user, "<span class='warning'>Error: Unable to inteface with the device.</span>")
+			to_chat(user, LANG("obj.5ac600494da14628", null))
 			return FALSE
 		var/obj/item/stock_parts/power_store/cell/this_cell = this_atom.get_cell()
 		var/done_any = FALSE
 
 		if(this_cell.charge >= this_cell.maxcharge)
-			to_chat(user, "<span class='notice'>[this_atom] is fully charged!</span>")
+			to_chat(user, LANG("obj.00964eed74685d03", list(this_atom)))
 			recharging = FALSE
 			status = IND_STATUS_IDLE
 			return TRUE
-		user.visible_message("[user] starts recharging [this_atom] with [src]...","<span class='notice'>You start recharging [this_atom] with [src]...</span>")
+		user.visible_message(LANG("obj.e705cbfadeaf87ca", list(user, this_atom, src)),LANG("obj.178d38ec00275a3c", list(this_atom, src)))
 		while(this_cell.charge < this_cell.maxcharge)
 			if(do_after(user, 10, target = user) && internal_cell.charge && (internal_cell.maxcharge * MINIMAL_CHARGE_TRESHOLD < internal_cell.charge))
 				done_any = TRUE
@@ -104,7 +105,7 @@
 			else
 				break
 		if(done_any)
-			user.visible_message("[user] finishes recharging [this_atom].","<span class='notice'>You finish recharging [this_atom].</span>")
+			user.visible_message(LANG("obj.1ab0f1dd75c9dfaa", list(user, this_atom)),LANG("obj.8fe68680a4a6cb0d", list(this_atom)))
 		recharging = FALSE
 		status = IND_STATUS_IDLE
 		return TRUE

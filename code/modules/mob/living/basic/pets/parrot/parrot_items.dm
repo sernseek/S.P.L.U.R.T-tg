@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/strippable_item/parrot_headset
 	key = STRIPPABLE_ITEM_PARROT_HEADSET
 
@@ -11,7 +12,7 @@
 		return FALSE
 
 	if (!istype(equipping, /obj/item/radio/headset))
-		to_chat(user, span_warning("[equipping] won't fit!"))
+		to_chat(user, span_warning(LANG("datum.adfcc7cae9ca08fe", list(equipping))))
 		return FALSE
 
 	return TRUE
@@ -34,7 +35,7 @@
 
 	parrot_source.ears = radio
 
-	to_chat(user, span_notice("You fit [radio] onto [source]."))
+	to_chat(user, span_notice(LANG("datum.3277646666b4bd41", list(radio, source))))
 
 /datum/strippable_item/parrot_headset/start_unequip(atom/source, mob/user)
 	. = ..()
@@ -47,7 +48,7 @@
 
 	if (!IS_UNCONSCIOUS_OR_CRIT(parrot_source))
 		var/list/list_of_channels = parrot_source.get_available_channels()
-		parrot_source.say("[list_of_channels ? "[pick(list_of_channels)] " : null]BAWWWWWK LEAVE THE HEADSET BAWKKKKK!", forced = "attempted headset removal")
+		parrot_source.say(LANG("datum.a8861083e2845a0a", list(list_of_channels ? "[pick(list_of_channels)] " : null)), forced = "attempted headset removal")
 
 	return TRUE
 

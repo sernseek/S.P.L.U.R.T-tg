@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/species/pod
 	// A mutation caused by a human being ressurected in a revival pod. These regain health in light, and begin to wither in darkness.
 	name = "\improper Podperson"
@@ -67,24 +68,22 @@
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 		SPECIES_PERK_ICON = "lightbulb",
-		SPECIES_PERK_NAME = "Photosynthetic",
-		SPECIES_PERK_DESC = "As long as you are conscious, and within a well-lit area, you will slowly heal brute, burn, toxin and oxygen damage and gain nutrition - and never get fat! \
-		However, if you are LOW on nutrition, you will progressively take brute damage until you die or enter the light once more."
+		SPECIES_PERK_NAME = LANG("datum.6510b18833d2d26e", null),
+		SPECIES_PERK_DESC = LANG("datum.87c94bb33189be66", null)
 	))
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "biohazard",
-		SPECIES_PERK_NAME = "Weedkiller Susceptability",
-		SPECIES_PERK_DESC = "Being a floral life form, you are susceptable to anti-florals and will take extra toxin damage from it!"
+		SPECIES_PERK_NAME = LANG("datum.2b40f90fec2bb295", null),
+		SPECIES_PERK_DESC = LANG("datum.084b9148ab14c25a", null)
 	))
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "briefcase-medical",
-		SPECIES_PERK_NAME = "Semi-Complex Biology",
-		SPECIES_PERK_DESC = "Your biology is extremely complex, making ordinary health scanners unable to scan you. Make sure the doctor treating you either has a \
-		plant analyzer or a advanced health scanner!"
+		SPECIES_PERK_NAME = LANG("datum.9193e0463daf1743", null),
+		SPECIES_PERK_DESC = LANG("datum.b94772867ec0e506", null)
 	))
 
 	return to_add

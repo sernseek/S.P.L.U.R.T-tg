@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define DEFAULT_SHELF_CAPACITY 3 // Default capacity of the shelf
 #define DEFAULT_SHELF_USE_DELAY 1 SECONDS // Default interaction delay of the shelf
 #define DEFAULT_SHELF_VERTICAL_OFFSET 10 // Vertical pixel offset of shelving-related things. Set to 10 by default due to this leaving more of the crate on-screen to be clicked.
@@ -40,12 +41,12 @@
 
 /obj/structure/cargo_shelf/examine(mob/user)
 	. = ..()
-	. += span_notice("There are some <b>bolts</b> holding [src] together.")
+	. += span_notice(LANG("obj.cbaba87674e4e252", list(src)))
 	if(shelf_contents.Find(null)) // If there's an empty space in the shelf, let the examiner know.
-		. += span_notice("You could <b>drag and drop</b> a crate into [src].")
+		. += span_notice(LANG("obj.7b54145c3997dc3f", list(src)))
 	if(contents.len) // If there are any crates in the shelf, let the examiner know.
-		. += span_notice("You could <b>drag and drop</b> a crate out of [src].")
-		. += span_notice("[src] contains:")
+		. += span_notice(LANG("obj.602498c3a2d80407", list(src)))
+		. += span_notice(LANG("obj.1c59f63b40d05d8d", list(src)))
 		for(var/obj/structure/closet/crate/crate in shelf_contents)
 			. += "	[icon2html(crate, user)] [crate]"
 
@@ -58,13 +59,13 @@
 	return ..()
 
 /obj/structure/cargo_shelf/relay_container_resist_act(mob/living/user, obj/structure/closet/crate)
-	to_chat(user, span_notice("You begin attempting to knock [crate] out of [src]"))
+	to_chat(user, span_notice(LANG("obj.131cb2d04cddeb1a", list(crate, src))))
 	if(do_after(user, 30 SECONDS, target = crate))
 		if(!user || IS_UNCONSCIOUS_OR_CRIT(user) || user.loc != crate || crate.loc != src)
 			return // If the user is in a strange condition, return early.
-		visible_message(span_warning("[crate] falls off of [src]!"),
-						span_notice("You manage to knock [crate] free of [src]"),
-						span_notice("You hear a thud."))
+		visible_message(span_warning(LANG("obj.73a87d5938a52dba", list(crate, src))),
+						span_notice(LANG("obj.5415abf54d9d72c2", list(crate, src))),
+						span_notice(LANG("obj.34acf327d0f39f88", null)))
 		crate.forceMove(drop_location()) // Drop the crate onto the shelf,
 		step_rand(crate, 1) // Then try to push it somewhere.
 		crate.layer = initial(crate.layer) // Reset the crate back to having the default layer, otherwise we might get strange interactions.
@@ -79,7 +80,7 @@
 /obj/structure/cargo_shelf/proc/load(obj/structure/closet/crate/crate, mob/user)
 	var/next_free = shelf_contents.Find(null) // Find the first empty slot in the shelf.
 	if(!next_free) // If we don't find an empty slot, return early.
-		balloon_alert(user, "shelf full!")
+		balloon_alert(user, LANG("obj.2f9c35506ec45831", null))
 		return FALSE
 	if(do_after(user, use_delay, target = crate))
 		if(shelf_contents[next_free] != null)
@@ -103,7 +104,7 @@
 	if(!unload_turf)
 		unload_turf = get_turf(user) // If a turf somehow isn't passed into the proc, put it at the user's feet.
 	if(!unload_turf.Enter(crate)) // If moving the crate from the shelf to the desired turf would bump, don't do it! Thanks Kapu1178 for the help here. - Generic DM
-		unload_turf.balloon_alert(user, "no room!")
+		unload_turf.balloon_alert(user, LANG("obj.ad6c6384cbc2d930", null))
 		return FALSE
 	if(do_after(user, use_delay, target = crate))
 		if(!shelf_contents.Find(crate))
@@ -128,12 +129,12 @@
 		switch(pick(1, 1, 1, 1, 2, 2, 3)) // Randomly pick whether to do nothing, open the crate, or break it open.
 			if(2) // Open the crate!
 				if(crate.open()) // Break some open, cause a little chaos.
-					crate.visible_message(span_warning("[crate]'s lid falls open!"))
+					crate.visible_message(span_warning(LANG("obj.5a91897158332f0b", list(crate))))
 				else // If we somehow fail to open the crate, just break it instead!
-					crate.visible_message(span_warning("[crate] falls apart!"))
+					crate.visible_message(span_warning(LANG("obj.08142e6f8a225816", list(crate))))
 					crate.deconstruct()
 			if(3) // Break that crate!
-				crate.visible_message(span_warning("[crate] falls apart!"))
+				crate.visible_message(span_warning(LANG("obj.08142e6f8a225816", list(crate))))
 				crate.deconstruct()
 		shelf_contents[shelf_contents.Find(crate)] = null
 	if(!(flags_1 & NO_DEBRIS_AFTER_DECONSTRUCTION))
@@ -167,13 +168,12 @@
 	if(building)
 		return
 	building = TRUE
-	to_chat(user, span_notice("You start constructing a cargo shelf..."))
+	to_chat(user, span_notice(LANG("obj.782e78e1246e135a", null)))
 	if(do_after(user, 50, target = user, show_progress = TRUE))
 		if(!user.temporarilyRemoveItemFromInventory(src))
 			return
 		var/obj/structure/cargo_shelf/R = new /obj/structure/cargo_shelf(get_turf(src))
-		user.visible_message("<span class='notice'>[user] assembles \a [R].\
-			</span>", span_notice("You assemble \a [R]."))
+		user.visible_message(LANG("obj.3acfb0fe43511910", list(user, R)), span_notice(LANG("obj.e671a0568840ef34", list(R))))
 		R.add_fingerprint(user)
 		qdel(src)
 	building = FALSE
@@ -193,13 +193,12 @@
 	if(building)
 		return
 	building = TRUE
-	to_chat(user, span_notice("You start constructing a gun rack..."))
+	to_chat(user, span_notice(LANG("obj.f65a540a9eae4fe8", null)))
 	if(do_after(user, 50, target = user, show_progress = TRUE))
 		if(!user.temporarilyRemoveItemFromInventory(src))
 			return
 		var/obj/structure/rack/gunrack/R = new /obj/structure/rack/gunrack(get_turf(src))
-		user.visible_message("<span class='notice'>[user] assembles \a [R].\
-			</span>", span_notice("You assemble \a [R]."))
+		user.visible_message(LANG("obj.3acfb0fe43511910", list(user, R)), span_notice(LANG("obj.e671a0568840ef34", list(R))))
 		R.add_fingerprint(user)
 		qdel(src)
 	building = FALSE
@@ -219,13 +218,12 @@
 	if(building)
 		return
 	building = TRUE
-	to_chat(user, span_notice("You start constructing a standard shelf..."))
+	to_chat(user, span_notice(LANG("obj.5b2ecdde08e393be", null)))
 	if(do_after(user, 50, target = user, show_progress = TRUE))
 		if(!user.temporarilyRemoveItemFromInventory(src))
 			return
 		var/obj/structure/rack/shelf/R = new /obj/structure/rack/shelf(get_turf(src))
-		user.visible_message("<span class='notice'>[user] assembles \a [R].\
-			</span>", span_notice("You assemble \a [R]."))
+		user.visible_message(LANG("obj.3acfb0fe43511910", list(user, R)), span_notice(LANG("obj.e671a0568840ef34", list(R))))
 		R.add_fingerprint(user)
 		qdel(src)
 	building = FALSE

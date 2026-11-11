@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
  * LAVA
  * PLASMA LAVA
@@ -212,14 +213,14 @@
 
 	if(istype(tool, /obj/item/stack/rods/lava))
 		if(locate(/obj/structure/lattice/catwalk/lava, src))
-			to_chat(user, span_warning("There is already a lattice here!"))
+			to_chat(user, span_warning(LANG("turf.d5f505cf6fa8b287", null)))
 			return ITEM_INTERACT_BLOCKING
 
 		if(!astype(tool, /obj/item/stack/rods/lava).use(1))
-			to_chat(user, span_warning("You need one rod to build a heatproof lattice."))
+			to_chat(user, span_warning(LANG("turf.236268e246ae3b38", null)))
 			return ITEM_INTERACT_BLOCKING
 
-		to_chat(user, span_notice("You construct a lattice."))
+		to_chat(user, span_notice(LANG("turf.b8bd3ae8f6533c4d", null)))
 		playsound(src, 'sound/items/weapons/genhit.ogg', 50, TRUE)
 		new /obj/structure/lattice/catwalk/lava(locate(x, y, z))
 		return ITEM_INTERACT_SUCCESS
@@ -228,7 +229,7 @@
 	if(istype(tool, /obj/item/cigarette))
 		var/obj/item/cigarette/ciggie = tool
 		if(ciggie.lit)
-			to_chat(user, span_warning("\The [ciggie] is already lit!"))
+			to_chat(user, span_warning(LANG("turf.79fd2c4ba5e911c8", list(ciggie))))
 			return ITEM_INTERACT_BLOCKING
 
 		var/clumsy_modifier = HAS_TRAIT(user, TRAIT_CLUMSY) ? 2 : 1
@@ -516,16 +517,16 @@
 		burn_human.del_and_replace_bodypart(plasmalimb, special = TRUE)
 		burn_human.update_body_parts()
 		burn_human.emote("scream")
-		burn_human.visible_message(span_warning("[burn_human]'s [burn_limb.plaintext_zone] melts down to the bone!"), \
-			span_userdanger("You scream out in pain as your [burn_limb.plaintext_zone] melts down to the bone, held together only by strands of purple fungus!"))
+		burn_human.visible_message(span_warning(LANG("turf.f6e44587f791fa98", list(burn_human, burn_limb.plaintext_zone))), \
+			span_userdanger(LANG("turf.3ed42d9b4d0b904e", list(burn_limb.plaintext_zone))))
 
 	// If all of your limbs are plasma then congrats: you are plasma man
 	if(length(immune_parts) || length(transform_parts))
 		return
 	burn_human.ignite_mob()
 	burn_human.set_species(/datum/species/plasmaman)
-	burn_human.visible_message(span_warning("[burn_human] bursts into flame as the last of [burn_human.p_their()] body is coated in fungus!"), \
-		span_userdanger("Your senses numb as what remains of your flesh sloughs off, revealing the plasma-encrusted bone beneath!"))
+	burn_human.visible_message(span_warning(LANG("turf.17bf16b277745e35", list(burn_human, burn_human.p_their()))), \
+		span_userdanger(LANG("turf.02776be21c8b15e3", null)))
 
 //mafia specific tame happy plasma (normal atmos, no slowdown)
 /turf/open/lava/plasma/mafia

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/effect/mob_spawn/ghost_role/human/primitive_catgirl
 	name = "hole in the ground"
 	desc = "A clearly hand dug hole in the ground that appears to lead into a small cave of some kind? It's pretty dark in there."
@@ -50,12 +51,12 @@
 		else
 			uses += 1
 
-		visible_message(span_warning("[consumed_mob] slowly and with finality falls into [src]. There was no thump..."))
+		visible_message(span_warning(LANG("obj.61fed88b7067df78", list(consumed_mob, src))))
 
 		var/delivery_key = consumed_mob.fingerprintslast
 		var/mob/living/delivery_mob = get_mob_by_key(delivery_key)
 		if(delivery_mob && (delivery_mob.mind?.has_antag_datum(/datum/antagonist/primitive_catgirl)) && (delivery_key in team.players_spawned) && (prob(60)))
-			to_chat(delivery_mob, span_warning("A strange feeling fills your chest. [src] seems to echo your name, pleased..."))
+			to_chat(delivery_mob, span_warning(LANG("obj.c6d3ea21fa92786d", list(src))))
 			team.players_spawned -= delivery_key
 
 		qdel(consumed_mob)
@@ -64,9 +65,9 @@
 	. = ..()
 
 	if(uses)
-		. += span_notice("You can see <b>[uses]</b> figures sound asleep down there.")
+		. += span_notice(LANG("obj.9ae8a28da183e1f1", list(uses)))
 	else
-		. += span_notice("It looks pretty empty.")
+		. += span_notice(LANG("obj.8e9d619bedff2e61", null))
 
 	return .
 
@@ -74,7 +75,7 @@
 	if(!(user.key in team.players_spawned)) // One spawn per person
 		return TRUE
 	if(!silent)
-		to_chat(user, span_warning("It'd be weird if there were multiple of you in that cave, wouldn't it?"))
+		to_chat(user, span_warning(LANG("obj.3adad72eb1406588", null)))
 	return FALSE
 
 /obj/effect/mob_spawn/ghost_role/human/primitive_catgirl/special(mob/living/spawned_mob, mob/mob_possessor, apply_prefs)

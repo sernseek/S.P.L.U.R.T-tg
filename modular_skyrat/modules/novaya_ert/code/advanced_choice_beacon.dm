@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/advanced_choice_beacon
 	name = "advanced choice beacon"
 	desc = "A beacon that will send whatever your heart desires, providing Nanotrasen approves it."
@@ -111,8 +112,8 @@
 
 /obj/item/storage/toolbox/emergency/turret/nri/attackby(obj/item/I, mob/living/user, params)
 	if(I.tool_behaviour == TOOL_WRENCH && user.combat_mode)
-		user.visible_message(span_danger("[user] bashes [src] with [I]!"), \
-			span_danger("You bash [src] with [I]!"), null, COMBAT_MESSAGE_RANGE)
+		user.visible_message(span_danger(LANG("obj.2a0f4de079b6287d", list(user, src, I))), \
+			span_danger(LANG("obj.acf5f95aa290b2ea", list(src, I))), null, COMBAT_MESSAGE_RANGE)
 		playsound(src, "sound/items/tools/drill_use.ogg", 80, TRUE, -1)
 		var/obj/machinery/porta_turret/syndicate/pod/toolbox/nri/turret = new(get_turf(loc))
 		turret.add_faction(FACTION_NEUTRAL, FACTION_ERT)

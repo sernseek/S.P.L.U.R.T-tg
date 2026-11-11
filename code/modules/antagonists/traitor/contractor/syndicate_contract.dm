@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/syndicate_contract
 	///The 'id' of this particular contract. Used to keep track of statuses from TGUI.
 	var/id
@@ -154,8 +155,7 @@
 	if(!contractor_id || !contractor_id.registered_account)
 		return
 	contractor_id.registered_account.adjust_money(ransom * 0.35)
-	contractor_id.registered_account.bank_card_talk("We've processed the ransom, agent. \
-		Here's your cut - your balance is now [contractor_id.registered_account.account_balance] [MONEY_SYMBOL].", TRUE)
+	contractor_id.registered_account.bank_card_talk(LANG("datum.f0b5bcaadddeef5d", list(contractor_id.registered_account.account_balance, MONEY_SYMBOL)), TRUE)
 
 #define VICTIM_EXPERIENCE_START 0
 #define VICTIM_EXPERIENCE_FIRST_HIT 1
@@ -189,27 +189,25 @@
 			victim.flash_act()
 			victim.adjust_confusion(1 SECONDS)
 			victim.adjust_eye_blur(5 SECONDS)
-			to_chat(victim, span_warning("You feel strange..."))
+			to_chat(victim, span_warning(LANG("datum.3b633447ee414575", null)))
 			time_until_next = 6 SECONDS
 		if(VICTIM_EXPERIENCE_FIRST_HIT)
-			to_chat(victim, span_warning("That pod did something to you..."))
+			to_chat(victim, span_warning(LANG("datum.6b099046f0cc0817", null)))
 			victim.adjust_dizzy(3.5 SECONDS)
 			time_until_next = 6.5 SECONDS
 		if(VICTIM_EXPERIENCE_SECOND_HIT)
-			to_chat(victim, span_warning("Your head pounds... It feels like it's going to burst out your skull!"))
+			to_chat(victim, span_warning(LANG("datum.ffba7237d392146d", null)))
 			victim.flash_act()
 			victim.adjust_confusion(2 SECONDS)
 			victim.adjust_eye_blur(3 SECONDS)
 			time_until_next = 3 SECONDS
 		if(VICTIM_EXPERIENCE_THIRD_HIT)
-			to_chat(victim, span_warning("Your head pounds..."))
+			to_chat(victim, span_warning(LANG("datum.8020c435cdf61aa9", null)))
 			time_until_next = 10 SECONDS
 		if(VICTIM_EXPERIENCE_LAST_HIT)
 			victim.flash_act()
 			victim.Unconscious(200)
-			to_chat(victim, span_hypnophrase("A million voices echo in your head... <i>\"Your mind held many valuable secrets - \
-				we thank you for providing them. Your value is expended, and you will be ransomed back to your station. We always get paid, \
-				so it's only a matter of time before we ship you back...\"</i>"))
+			to_chat(victim, span_hypnophrase(LANG("datum.3b2020136bd0549a", null)))
 			victim.adjust_eye_blur(10 SECONDS)
 			victim.adjust_dizzy(1.5 SECONDS)
 			victim.adjust_confusion(2 SECONDS)
@@ -282,4 +280,4 @@
 	victim.adjust_dizzy(3.5 SECONDS)
 	victim.adjust_confusion(2 SECONDS)
 	//Bubberstation change, adds flavourtext that they forget who contracted them.
-	to_chat(victim, span_big(span_hypnophrase("You don't remember anything leading up to being abducted by the syndicate - All you can remember is a million voices echoing through your mind and pain whenever you try to think of anything further.")))
+	to_chat(victim, span_big(span_hypnophrase(LANG("datum.96b8a5a79617d401", null))))

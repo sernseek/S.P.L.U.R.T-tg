@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_LIST_INIT(mkultra_commands, subtypesof(/datum/mkultra_command))
 
 /datum/mkultra_command
@@ -48,7 +49,7 @@ GLOBAL_LIST_INIT(mkultra_commands, subtypesof(/datum/mkultra_command))
 		return FALSE
 
 	if(cooldown && !COOLDOWN_FINISHED(src, ultra_cooldown))
-		to_chat(source, span_notice("[owner] hasn't finished internalizing your [LOWER_TEXT(name)] command!"))
+		to_chat(source, span_notice(LANG("datum.f7c7447344dc6a29", list(owner, LOWER_TEXT(name)))))
 		return FALSE
 	else
 		if(feedback)

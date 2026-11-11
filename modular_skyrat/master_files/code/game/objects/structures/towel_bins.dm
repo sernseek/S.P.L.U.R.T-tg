@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/towel_bin
 	name = "towel bin"
 	desc = "Seeing this really makes you think of how much worse your life would have been without towels. Seriously, who doesn't use towels?"
@@ -24,9 +25,9 @@
 /obj/structure/towel_bin/examine(mob/user)
 	. = ..()
 	if(amount <= 0)
-		. += "There are no towels in the bin."
+		. += LANG("obj.e7cf57215f7d0145", null)
 	else
-		. += "There [amount == 1 ? "is one towel" : "are [amount] towels"] in the bin."
+		. += LANG("obj.c911e9144b3f2f32", list(amount == 1 ? "is one towel" : "are [amount] towels"))
 
 
 /obj/structure/towel_bin/update_icon_state()
@@ -50,11 +51,11 @@
 
 /obj/structure/towel_bin/screwdriver_act(mob/living/user, obj/item/tool)
 	if(amount)
-		to_chat(user, span_warning("[src] must be empty first!"))
+		to_chat(user, span_warning(LANG("obj.c4f74ff0cd65bc6d", list(src))))
 		return ITEM_INTERACT_SUCCESS
 
 	if(tool.use_tool(src, user, 0.5 SECONDS, volume = 50))
-		to_chat(user, span_notice("You disassemble [src]."))
+		to_chat(user, span_notice(LANG("obj.fd5c1c1d92627348", list(src))))
 		new /obj/item/stack/rods(loc, 2)
 		qdel(src)
 		return ITEM_INTERACT_SUCCESS
@@ -73,15 +74,15 @@
 			return
 		LAZYADD(towels, attacking_item)
 		amount++
-		to_chat(user, span_notice("You put [attacking_item] in [src]."))
+		to_chat(user, span_notice(LANG("obj.de7df6459b40f465", list(attacking_item, src))))
 		update_appearance()
 
 	else if(amount && !hidden && attacking_item.w_class < WEIGHT_CLASS_BULKY) //make sure there's sheets to hide it among, make sure nothing else is hidden in there.
 		if(!user.transferItemToLoc(attacking_item, src))
-			to_chat(user, span_warning("[attacking_item] is stuck to your hand, you cannot hide it among the sheets!"))
+			to_chat(user, span_warning(LANG("obj.5bd9a4b3c3e5b4d1", list(attacking_item))))
 			return
 		hidden = attacking_item
-		to_chat(user, span_notice("You hide [attacking_item] among the sheets."))
+		to_chat(user, span_notice(LANG("obj.98e101dea5a24720", list(attacking_item))))
 
 
 /obj/structure/towel_bin/attack_paw(mob/user, list/modifiers)
@@ -117,7 +118,7 @@
  */
 /obj/structure/towel_bin/proc/take_towel_out(mob/user, tk = FALSE)
 	if(amount <= 0)
-		to_chat(user, span_warning("You can't figure out how to take a towel out of [src] when it doesn't contain any!"))
+		to_chat(user, span_warning(LANG("obj.4707dc2160db288e", list(src))))
 		return
 
 	amount--
@@ -132,12 +133,12 @@
 		towel = new (loc)
 
 	towel.forceMove(drop_location())
-	to_chat(user, span_notice("You [tk ? "telekinetically remove" : "take"] \a [towel] out of [src]."))
+	to_chat(user, span_notice(LANG("obj.82db7dcc700cba40", list(tk ? "telekinetically remove" : "take", towel, src))))
 	update_appearance()
 
 	if(hidden)
 		if(!tk)
-			to_chat(user, span_notice("\A [hidden] falls out of [towel]!"))
+			to_chat(user, span_notice(LANG("obj.733a1772bdbd824f", list(hidden, towel))))
 
 		hidden.forceMove(drop_location())
 		hidden = null

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Items with this component will have a chance to get knocked off
 /// (unequipped and sent to the ground) when the wearer is disarmed or knocked down.
 /datum/component/knockoff
@@ -53,8 +54,8 @@
 		return
 
 	source.visible_message(
-		span_warning("[attacker] knocks off [source]'s [item_parent.name]!"),
-		span_userdanger("[attacker] knocks off your [item_parent.name]!"),
+		span_warning(LANG("datum.867067e2ff664cac", list(attacker, source, item_parent.name))),
+		span_userdanger(LANG("datum.4f056328c9108821", list(attacker, item_parent.name))),
 	)
 
 /// Signal proc for [COMSIG_LIVING_STATUS_KNOCKDOWN] on the mob who's equipped our parent
@@ -76,8 +77,8 @@
 		return
 
 	source.visible_message(
-		span_warning("[source]'s [item_parent.name] get[item_parent.p_s()] knocked off!"),
-		span_userdanger("Your [item_parent.name] [item_parent.p_were()] knocked off!"),
+		span_warning(LANG("datum.94a570018ef089b2", list(source, item_parent.name, item_parent.p_s()))),
+		span_userdanger(LANG("datum.7baae46a18637919", list(item_parent.name, item_parent.p_were()))),
 	)
 
 /// Signal proc for [COMSIG_ITEM_EQUIPPED]

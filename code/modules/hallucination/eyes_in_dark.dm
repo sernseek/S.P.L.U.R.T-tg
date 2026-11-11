@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/hallucination/eyes_in_dark
 	random_hallucination_weight = 2
 	hallucination_tier = HALLUCINATION_TIER_COMMON
@@ -28,7 +29,7 @@
 		return FALSE
 
 	if(prob(5))
-		to_chat(hallucinator, span_warning("You feel like you're being watched..."))
+		to_chat(hallucinator, span_warning(LANG("datum.2209b8343bbf7216", null)))
 
 	var/turf/selected = pick(valid)
 	feedback_details += "Eye coords: [selected.x], [selected.y], [selected.z]"

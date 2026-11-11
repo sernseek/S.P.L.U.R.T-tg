@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_LIST_EMPTY(cargo_marks)
 
 /// The stock beacon palette. One swatch per department, so a beacon can be read at a glance from across the room.
@@ -68,12 +69,12 @@ GLOBAL_LIST_INIT(cargo_beacon_palette, list(
 
 /obj/item/cargo_teleporter/examine(mob/user)
 	. = ..()
-	. += span_notice("Use it in your hand to stake out a telebeacon. It supports [CARGO_TELEPORTER_MAX_MARKERS], and has [length(marker_children)] deployed.")
-	. += span_notice("[EXAMINE_HINT("Alt-click")] to pick a departmental colour for the next beacon it stakes out, or [EXAMINE_HINT("Ctrl-click")] to recall every beacon it owns.")
+	. += span_notice(LANG("obj.be69f5cb2bb1f79c", list(CARGO_TELEPORTER_MAX_MARKERS, length(marker_children))))
+	. += span_notice(LANG("obj.7bc32be0971f937e", list(EXAMINE_HINT("Alt-click"), EXAMINE_HINT("Ctrl-click"))))
 	if(COOLDOWN_FINISHED(src, use_cooldown))
-		. += span_green("The capacitor light is steady green. It is ready to fire.")
+		. += span_green(LANG("obj.9b17794aea62bd76", null))
 	else
-		. += span_warning("The capacitor light is blinking amber. [DisplayTimeText(COOLDOWN_TIMELEFT(src, use_cooldown))] until recharge.")
+		. += span_warning(LANG("obj.ff3df39307c7dac5", list(DisplayTimeText(COOLDOWN_TIMELEFT(src, use_cooldown)))))
 
 /obj/item/cargo_teleporter/update_overlays()
 	. = ..()
@@ -82,14 +83,14 @@ GLOBAL_LIST_INIT(cargo_beacon_palette, list(
 	. += emissive_appearance(icon, light_state, src)
 
 /obj/item/cargo_teleporter/click_alt(mob/user)
-	var/picked = tgui_input_list(user, "Paint the next telebeacon", "[src]", GLOB.cargo_beacon_palette + CARGO_BEACON_CUSTOM)
+	var/picked = tgui_input_list(user, LANG("obj.b750e28b9b2e83d3", null), "[src]", GLOB.cargo_beacon_palette + CARGO_BEACON_CUSTOM)
 	if(isnull(picked) || QDELETED(src) || !user.is_holding(src))
 		return CLICK_ACTION_BLOCKING
 	if(picked == CARGO_BEACON_CUSTOM)
 		pick_painting_tool_color(user, beacon_color)
 		return CLICK_ACTION_SUCCESS
 	set_painting_tool_color(GLOB.cargo_beacon_palette[picked])
-	balloon_alert(user, "next beacon: [LOWER_TEXT(picked)]")
+	balloon_alert(user, LANG("obj.4827a483853b0851", list(LOWER_TEXT(picked))))
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/cargo_teleporter/set_painting_tool_color(chosen_color)
@@ -99,30 +100,30 @@ GLOBAL_LIST_INIT(cargo_beacon_palette, list(
 
 /obj/item/cargo_teleporter/item_ctrl_click(mob/user)
 	if(!length(marker_children))
-		balloon_alert(user, "no beacons out!")
+		balloon_alert(user, LANG("obj.8079f3420fc445f3", null))
 		return CLICK_ACTION_BLOCKING
-	balloon_alert(user, "beacons recalled")
+	balloon_alert(user, LANG("obj.cc99804299b816d2", null))
 	recall_beacons()
 	return CLICK_ACTION_SUCCESS
 
 /obj/item/cargo_teleporter/attack_self(mob/user, list/modifiers)
 	if(length(marker_children) >= CARGO_TELEPORTER_MAX_MARKERS)
-		balloon_alert(user, "beacon limit reached!")
+		balloon_alert(user, LANG("obj.5d055e37080dd0e7", null))
 		return
 	var/turf/stake_turf = get_turf(src)
 	if(locate(/obj/effect/decal/cleanable/cargo_mark) in stake_turf)
-		balloon_alert(user, "beacon already here!")
+		balloon_alert(user, LANG("obj.d931c22ed4c39a8b", null))
 		return
 	var/obj/effect/decal/cleanable/cargo_mark/spawned_marker = new(stake_turf)
 	spawned_marker.parent_item = src
 	spawned_marker.recolor(beacon_color)
 	marker_children += spawned_marker
 	playsound(src, 'sound/machines/click.ogg', 50, TRUE)
-	to_chat(user, span_notice("You stake out a telebeacon below your feet."))
+	to_chat(user, span_notice(LANG("obj.2ef181f929156832", null)))
 
 /obj/item/cargo_teleporter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(istype(interacting_with, /obj/effect/decal/cleanable/cargo_mark))
-		to_chat(user, span_notice("You recall [interacting_with] using [src]."))
+		to_chat(user, span_notice(LANG("obj.0e12dc93c7983ae6", list(interacting_with, src))))
 		playsound(interacting_with, 'sound/machines/click.ogg', 50, TRUE)
 		qdel(interacting_with)
 		return ITEM_INTERACT_SUCCESS
@@ -130,13 +131,13 @@ GLOBAL_LIST_INIT(cargo_beacon_palette, list(
 	if(lifting)
 		return ITEM_INTERACT_BLOCKING
 	if(!COOLDOWN_FINISHED(src, use_cooldown))
-		balloon_alert(user, "still recharging!")
+		balloon_alert(user, LANG("obj.26defd6f9b56ea97", null))
 		return ITEM_INTERACT_BLOCKING
 	if(!length(GLOB.cargo_marks))
-		balloon_alert(user, "no beacons deployed!")
+		balloon_alert(user, LANG("obj.d5133e88e46d048b", null))
 		return ITEM_INTERACT_BLOCKING
 
-	var/obj/effect/decal/cleanable/cargo_mark/choice = tgui_input_list(user, "Select which telebeacon to send the items to?", "Telebeacon Selection", GLOB.cargo_marks)
+	var/obj/effect/decal/cleanable/cargo_mark/choice = tgui_input_list(user, LANG("obj.c8fb8a274195c729", null), LANG("obj.6f722075a59875dd", null), GLOB.cargo_marks)
 	if(QDELETED(choice) || QDELETED(src) || QDELETED(interacting_with))
 		return ITEM_INTERACT_BLOCKING
 	if(get_dist(user, interacting_with) > 1 || !user.is_holding(src))
@@ -221,7 +222,7 @@ GLOBAL_LIST_INIT(cargo_beacon_palette, list(
 	playsound(src, 'sound/machines/ping.ogg', 30, TRUE)
 	if(ismob(loc))
 		var/mob/holder = loc
-		balloon_alert(holder, "ready")
+		balloon_alert(holder, LANG("obj.4b65ad37c49a9f86", null))
 
 /datum/design/cargo_teleporter
 	name = "Cargo Teleporter"

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //LISTS - CAN NOT DO VV_DO_TOPIC BECAUSE LISTS AREN'T DATUMS :(
 /client/proc/vv_do_list(list/target, href_list)
 	var/target_index = text2num(GET_VV_VAR_TARGET)
@@ -9,7 +10,7 @@
 				mod_list(target, null, "list", "contents", target_index, autodetect_class = FALSE)
 			if(href_list[VV_HK_LIST_REMOVE])
 				var/variable = target[target_index]
-				var/prompt = tgui_alert(usr,"Do you want to remove item number [target_index] from list?", "Confirm", list("Yes", "No"))
+				var/prompt = tgui_alert(usr,LANG("client.f56dacd6a6ea1230", list(target_index)), LANG("client.3c1da715a16e1d9e", null), list("Yes", "No"))
 				if (prompt != "Yes")
 					return
 				target.Cut(target_index, target_index+1)

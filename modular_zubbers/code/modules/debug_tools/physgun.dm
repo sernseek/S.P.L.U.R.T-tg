@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define TRAIT_PHYSGUN_PAUSE "physgun_pause"
 #define PHYSGUN_EFFECTS "physgun_effects"
 /obj/item/physic_manipulation_tool
@@ -66,10 +67,10 @@
 			playsound(user, 'modular_zubbers/sound/phystools/physgun_cant_grab.ogg', 100, TRUE)
 			return
 		if(!COOLDOWN_FINISHED(src, grab_cooldown) && !handled_atom)
-			user.balloon_alert(user, "on cooldown!")
+			user.balloon_alert(user, LANG("obj.d4ae5d4dded19efe", null))
 			return
 		if(!range_check(target, user) && !handled_atom)
-			user.balloon_alert(user, "too far!")
+			user.balloon_alert(user, LANG("obj.f5e75781e8f1dc46", null))
 			return
 		catch_atom(target, user)
 		COOLDOWN_START(src, grab_cooldown, use_cooldown)
@@ -83,20 +84,20 @@
 
 /obj/item/physic_manipulation_tool/click_alt(mob/user)
 	. = ..()
-	var/choised_color = tgui_color_picker(usr, "Pick new effect color", "Physgun color") // BUBBERSTATION EDIT: TGUI COLOR PICKER
+	var/choised_color = tgui_color_picker(usr, LANG("obj.e7991b52ed47f1f3", null), LANG("obj.b4739d45ac78eb49", null)) // BUBBERSTATION EDIT: TGUI COLOR PICKER
 	effects_color = choised_color
 	color = choised_color
 	update_appearance()
 
 /obj/item/physic_manipulation_tool/examine(mob/user)
 	. = ..()
-	. += span_notice("Express manual:")
-	. += span_notice("Use ALT + LMB on the device to pick color.")
-	. += span_notice("Use LMB on the object to drag the object.")
-	. += span_green("Use RMB while dragging to freeze the object.")
-	. += span_red("Use LMB while dragging to release the object.")
-	. += span_notice("Use CTRL + LMB while dragging to throw the object.")
-	. += span_notice("Use ALT + LMB while dragging to rotate object.")
+	. += span_notice(LANG("obj.3dde38dfbc689702", null))
+	. += span_notice(LANG("obj.d958dd25d9ecd428", null))
+	. += span_notice(LANG("obj.743633237e94dc4b", null))
+	. += span_green(LANG("obj.5215e302ee36e8cc", null))
+	. += span_red(LANG("obj.8a2ef640ca7cf4c1", null))
+	. += span_notice(LANG("obj.c8c0ffb9a1be564a", null))
+	. += span_notice(LANG("obj.869013572ca184c1", null))
 
 /**
  * The movement of the dragged object.
@@ -177,7 +178,7 @@
 	. = COMSIG_MOB_CANCEL_CLICKON
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		if(!advanced)
-			physgun_user.balloon_alert(physgun_user, "not enough power!")
+			physgun_user.balloon_alert(physgun_user, LANG("obj.7005f2d2db44de44", null))
 			return
 		pause_atom(handled_atom)
 		return
@@ -192,7 +193,7 @@
 /obj/item/physic_manipulation_tool/proc/on_living_resist(mob/living)
 	SIGNAL_HANDLER
 	if(force_grab)
-		handled_atom.balloon_alert(handled_atom, "can't escape!")
+		handled_atom.balloon_alert(handled_atom, LANG("obj.49a104d16a627e2b", null))
 		return
 	if(handled_atom)
 		release_atom()
@@ -325,7 +326,7 @@
 	SIGNAL_HANDLER
 
 	if(force)
-		owner.balloon_alert(owner, "can't escape!")
+		owner.balloon_alert(owner, LANG("datum.49a104d16a627e2b", null))
 		return
 
 	if(!HAS_TRAIT(owner, TRAIT_PHYSGUN_PAUSE))

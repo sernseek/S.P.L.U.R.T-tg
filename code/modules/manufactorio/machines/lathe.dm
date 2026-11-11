@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/power/manufacturing/lathe // this is a heavily gutted autolathe
 	name = "manufacturing lathe"
 	desc = "Lathes the set recipe until it runs out of resources. Only accepts sheets or other kinds of material stacks."
@@ -43,7 +44,7 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/power/manufacturing/lathe/click_ctrl_shift(mob/living/user)
-	balloon_alert_to_viewers("materials dumped")
+	balloon_alert_to_viewers(LANG("obj.1c4fca6a03d52655", null))
 	materials.retrieve_all()
 
 /obj/machinery/power/manufacturing/lathe/RefreshParts()
@@ -57,14 +58,14 @@
 	var/datum/design/design
 	if(!isnull(design_id))
 		design = SSresearch.techweb_design_by_id(design_id)
-	. += span_notice("It is set to print [!isnull(design) ? design.name : "nothing, set with a multitool"].")
+	. += span_notice(LANG("obj.4568ae45838af79f", list(!isnull(design) ? design.name : "nothing, set with a multitool")))
 	if(isnull(design))
 		return
-	. += span_notice("It needs:")
+	. += span_notice(LANG("obj.2a2a51555bce7b17", null))
 	for(var/valid_type, amount in design.materials)
 		var/atom/ingredient = valid_type
 
-		. += "[amount / SHEET_MATERIAL_AMOUNT] sheets of [initial(ingredient.name)]"
+		. += LANG("obj.4e0d6e3ec67bc977", list(amount / SHEET_MATERIAL_AMOUNT, initial(ingredient.name)))
 
 /obj/machinery/power/manufacturing/lathe/update_overlays()
 	. = ..()
@@ -94,7 +95,7 @@
 	for(var/id in stored_research.researched_designs)
 		var/datum/design/design = SSresearch.techweb_design_by_id(id)
 		name_to_id[design.name] = id
-	var/result = tgui_input_list(user, "Select Design", "Select Design", sort_list(name_to_id))
+	var/result = tgui_input_list(user, LANG("obj.57e1c12648db34cb", null), LANG("obj.57e1c12648db34cb", null), sort_list(name_to_id))
 	if(isnull(result))
 		return ITEM_INTERACT_FAILURE
 	design_id = name_to_id[result]

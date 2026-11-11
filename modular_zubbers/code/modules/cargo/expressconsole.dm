@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/circuitboard/computer/cargo/express/interdyne
 	name = "Interdyne Express Supply Console"
 	build_path = /obj/machinery/computer/cargo/express/interdyne
@@ -18,7 +19,7 @@
 
 /obj/machinery/computer/cargo/express/interdyne/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(user)
-		to_chat(user, span_notice("You try to change the routing protocols, however the machine displays a runtime error and reboots."))
+		to_chat(user, span_notice(LANG("obj.2ea4824e092ad2c1", null)))
 	return FALSE//never let this console be emagged
 
 //Tarkons console

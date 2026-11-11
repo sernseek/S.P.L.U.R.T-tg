@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/emote_panel
 	var/list/blacklisted_emotes = list("me", "help")
 
@@ -17,7 +18,7 @@
 				keys += emote.key
 				emotes += list(list(
 					"key" = emote.key,
-					"name" = emote.name,
+					"name" = lang_localize_display_name(emote.name), // ZH EDIT - I18N: 纯显示，act 走同条负载的 emote_key。ORIGINAL: "name" = emote.name,
 					"hands" = emote.hands_use_check,
 					"visible" = emote.emote_type & EMOTE_VISIBLE,
 					"audible" = emote.emote_type & EMOTE_AUDIBLE,
@@ -42,7 +43,7 @@
 			var/datum/emote/emote = GLOB.emote_list[emote_key][1]
 			var/emote_param
 			if(emote.message_param && use_params)
-				emote_param = tgui_input_text(ui.user, "Add params to the emote...", emote.message_param, max_length = MAX_MESSAGE_LEN)
+				emote_param = tgui_input_text(ui.user, LANG("datum.476824738e5f4b43", null), emote.message_param, max_length = MAX_MESSAGE_LEN)
 			ui.user.emote(emote_key, message = emote_param, intentional = TRUE)
 		if("preview_sound")
 			var/emote_key = params["emote_key"]
@@ -51,10 +52,10 @@
 			var/datum/emote/emote = GLOB.emote_list[emote_key][1]
 			var/emote_sound = get_sfx(emote.get_sound(ui.user))
 			if(!emote_sound)
-				to_chat(ui.user, span_warning("Couldn't get a preview sound for [emote.name]."), type = MESSAGE_TYPE_INFO)
+				to_chat(ui.user, span_warning(LANG("datum.5bfca82f082148f4", list(emote.name))), type = MESSAGE_TYPE_INFO)
 				return
 			SEND_SOUND(ui.user, sound(emote_sound, volume = 75))
-			to_chat(ui.user, span_warning("Previewed sound for [emote.name]."), type = MESSAGE_TYPE_INFO)
+			to_chat(ui.user, span_warning(LANG("datum.db3d4a006036ace4", list(emote.name))), type = MESSAGE_TYPE_INFO)
 
 /datum/emote_panel/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)

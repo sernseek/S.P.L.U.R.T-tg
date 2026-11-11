@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //--- BOWIE'S KNIFE (bowie knife)---
 
 
@@ -37,12 +38,12 @@
 /obj/item/storage/belt/bowie_sheath/click_alt(mob/user)
 	if(length(contents))
 		var/obj/item/knife = contents[1]
-		user.visible_message(span_notice("[user] takes [knife] out of [src]."), span_notice("You take [knife] out of [src]."))
+		user.visible_message(span_notice(LANG("obj.1f34f194a347a912", list(user, knife, src))), span_notice(LANG("obj.604c7b94ff4abde3", list(knife, src))))
 		user.put_in_hands(knife)
 		update_appearance()
 		return CLICK_ACTION_SUCCESS
 	else
-		to_chat(user, span_warning("[src] is empty!"))
+		to_chat(user, span_warning(LANG("obj.02d482cc1aef0cef", list(src))))
 		return CLICK_ACTION_BLOCKING
 
 /obj/item/storage/belt/bowie_sheath/update_icon_state()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Command
  */
@@ -369,7 +370,7 @@
 	if(isnull(slipper))
 		return TRUE
 	if(!istype(slipper.get_item_by_slot(ITEM_SLOT_FEET), /obj/item/clothing/shoes/clown_shoes))
-		to_chat(slipper,span_warning("[src] failed to slip anyone. Perhaps I shouldn't have abandoned my legacy..."))
+		to_chat(slipper,span_warning(LANG("obj.4b056c9b204490b2", list(src))))
 		return FALSE
 	return TRUE
 
@@ -385,7 +386,7 @@
 			playsound(src,'sound/machines/ping.ogg',30,TRUE)
 
 /obj/item/modular_computer/pda/clown/proc/after_sitcom_laugh(mob/victim)
-	victim.visible_message("[src] lets out a burst of laughter!")
+	victim.visible_message(LANG("obj.47ce06074d7c2c87", list(src)))
 
 /obj/item/modular_computer/pda/mime
 	name = "mime PDA"

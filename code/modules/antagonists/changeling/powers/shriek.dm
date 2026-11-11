@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/changeling/resonant_shriek
 	name = "Resonant Shriek"
 	desc = "Our lungs and vocal cords shift, allowing us to emit a noise that deafens and confuses non-changelings, causing them to lose some control over their movements. \
@@ -14,7 +15,7 @@
 /datum/action/changeling/resonant_shriek/sting_action(mob/user)
 	..()
 	if(user.movement_type & VENTCRAWLING)
-		user.balloon_alert(user, "can't shriek in pipes!")
+		user.balloon_alert(user, LANG("datum.b47e559cbdd94726", null))
 		return FALSE
 	playsound(user, 'sound/effects/screech.ogg', 100)
 	for(var/mob/living/living in get_hearers_in_view(4, user))
@@ -45,11 +46,11 @@
 /datum/action/changeling/dissonant_shriek/sting_action(mob/user)
 	..()
 	if(user.movement_type & VENTCRAWLING)
-		user.balloon_alert(user, "can't shriek in pipes!")
+		user.balloon_alert(user, LANG("datum.b47e559cbdd94726", null))
 		return FALSE
 	//BUBBER EDIT: NO PULSE IF YOU'RE ON COOLDOWN
 	if(!COOLDOWN_FINISHED(src, dissonant_shriek_cooldown))
-		user.balloon_alert(user, "throat is sore!")
+		user.balloon_alert(user, LANG("datum.c0fd910a58134c37", null))
 		return FALSE
 	//BUBBER EDIT: NO PULSE IF YOU'RE ON COOLDOWN
 	empulse(get_turf(user), 2, 5, 1, emp_source = src)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Actual volume is REAGENTS_BASE_VOLUME plus REAGENTS_BASE_VOLUME * rating for each matterbin
 #define REAGENTS_BASE_VOLUME 100
 
@@ -54,7 +55,7 @@
 		return CONTEXTUAL_SCREENTIP_SET
 
 	if(held_item.tool_behaviour == TOOL_SCREWDRIVER)
-		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] panel"
+		context[SCREENTIP_CONTEXT_LMB] = LANG("obj.45725a89b7fc8d2e", list(panel_open ? "Close" : "Open"))
 		return CONTEXTUAL_SCREENTIP_SET
 	else if(held_item.tool_behaviour == TOOL_WRENCH)
 		context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Una" : "A"]nchor"
@@ -66,17 +67,17 @@
 /obj/machinery/smoke_machine/examine(mob/user)
 	. = ..()
 
-	. += span_notice("Reagent capacity <b>[reagents.total_volume]/[reagents.maximum_volume]</b>.")
-	. += span_notice("Operating at <b>[round((efficiency / 26) * 100)]%</b> efficiency.")
+	. += span_notice(LANG("obj.61f3c745ef65cf9a", list(reagents.total_volume, reagents.maximum_volume)))
+	. += span_notice(LANG("obj.3384fac877826d0c", list(round((efficiency / 26) * 100))))
 
-	. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "closed" : "open"].")
+	. += span_notice(LANG("obj.f3fabb12d30acb3c", list(EXAMINE_HINT("screwed"), panel_open ? "closed" : "open")))
 	if(panel_open)
-		. += span_notice("It can be [EXAMINE_HINT("pried")] apart.")
+		. += span_notice(LANG("obj.fa5fc7965e12e9d0", list(EXAMINE_HINT("pried"))))
 
 	if(anchored)
-		. += span_notice("It can be [EXAMINE_HINT("wrenched")] loose.")
+		. += span_notice(LANG("obj.ea58af4170499ebd", list(EXAMINE_HINT("wrenched"))))
 	else
-		. += span_warning("It needs to be [EXAMINE_HINT("anchored")] in place to work.")
+		. += span_warning(LANG("obj.7b276a07e8727d37", list(EXAMINE_HINT("anchored"))))
 
 /obj/machinery/smoke_machine/update_icon_state()
 	if(!is_operational || !on || !reagents.total_volume)
@@ -116,13 +117,13 @@
 		var/obj/item/reagent_containers/RC = tool
 		var/units = RC.reagents.trans_to(src, RC.amount_per_transfer_from_this, transferred_by = user)
 		if(units)
-			to_chat(user, span_notice("You transfer [units] units of the solution to [src]."))
+			to_chat(user, span_notice(LANG("obj.62a86c6bef675ddc", list(units, src))))
 			return ITEM_INTERACT_SUCCESS
 		return ITEM_INTERACT_BLOCKING
 
 /obj/machinery/smoke_machine/wrench_act(mob/living/user, obj/item/tool)
 	if(on)
-		balloon_alert(user, "turn off first!")
+		balloon_alert(user, LANG("obj.19a396d6413f5298", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(default_unfasten_wrench(user, tool, time = 4 SECONDS) == SUCCESSFUL_UNFASTEN)
@@ -132,14 +133,14 @@
 
 /obj/machinery/smoke_machine/screwdriver_act(mob/living/user, obj/item/tool)
 	if(on)
-		balloon_alert(user, "turn off first!")
+		balloon_alert(user, LANG("obj.19a396d6413f5298", null))
 		return ITEM_INTERACT_BLOCKING
 
 	return default_deconstruction_screwdriver(user, tool)
 
 /obj/machinery/smoke_machine/crowbar_act(mob/living/user, obj/item/tool)
 	if(on)
-		balloon_alert(user, "turn off first!")
+		balloon_alert(user, LANG("obj.19a396d6413f5298", null))
 		return ITEM_INTERACT_BLOCKING
 
 	return default_deconstruction_crowbar(user, tool)
@@ -174,7 +175,7 @@
 	tank_data["currentVolume"] = reagents.total_volume
 	var/list/tankContents = list()
 	for(var/datum/reagent/reagent in reagents.reagent_list)
-		tankContents += list(list("name" = reagent.name, "volume" = round(reagent.volume, CHEMICAL_VOLUME_ROUNDING)))
+		tankContents += list(list("name" = lang_localize_display_name(reagent.name), "volume" = round(reagent.volume, CHEMICAL_VOLUME_ROUNDING))) // ZH EDIT - I18N: 试剂名纯显示。ORIGINAL: "name" = reagent.name
 	tank_data["contents"] = tankContents
 	.["tank"] = tank_data
 

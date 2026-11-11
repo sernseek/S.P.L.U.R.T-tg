@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // How many times we try to generate the code
 #define MAX_CODEGEN_RETRY_ATTEMPTS 5
 // There are 10 digits
@@ -244,13 +245,13 @@
 	for(var/i in 1 to code_length)
 		if(code_input[i] < solution[i])
 			playsound(holder, "sound/machines/defib/defib_saftyOff.ogg", 100)
-			holder.visible_message(span_notice("[holder] pings low."))
+			holder.visible_message(span_notice(LANG("datum.52d82d9c7ef8f4f3", list(holder))))
 		else if(code_input[i] > solution[i])
 			playsound(holder, "sound/machines/defib/defib_saftyOn.ogg", 100)
-			holder.visible_message(span_notice("[holder] pings high."))
+			holder.visible_message(span_notice(LANG("datum.ab7227ecacdaa651", list(holder))))
 		else
 			playsound(holder, "sound/machines/defib/defib_ready.ogg", 100)
-			holder.visible_message(span_notice("[holder] pings affirmatively."))
+			holder.visible_message(span_notice(LANG("datum.8e9e010227809e20", list(holder))))
 		sleep(0.5 SECONDS)
 	..()
 
@@ -302,7 +303,7 @@
 		playsound(holder, "sound/machines/synth/synth_no.ogg", 100)
 		sleep(0.25 SECONDS)
 
-	holder.visible_message(span_notice("[holder] emits [bulls] high-pitched beeps and [cows] low-pitched ones."))
+	holder.visible_message(span_notice(LANG("datum.60f2b1454ade5097", list(holder, bulls, cows))))
 
 	..()
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// How much brute damage their body regenerates per second while using blood regeneration.
 #define BLOOD_REGEN_BRUTE_AMOUNT 2
 /// How much burn damage their body regenerates per second while using blood regeneration.
@@ -59,7 +60,7 @@
 	if(!owner || !ishuman(owner))
 		return FALSE
 
-	to_chat(owner, span_notice("You feel the tumor inside you pulse faster as the absence of light eases its work, allowing it to knit your flesh and reconstruct your body."))
+	to_chat(owner, span_notice(LANG("datum.45f95ed09e445afc", null)))
 
 	return TRUE
 
@@ -95,7 +96,7 @@
 	if(!owner)
 		return
 
-	to_chat(owner, span_notice("You feel the pulse of the tumor in your chest returning back to normal."))
+	to_chat(owner, span_notice(LANG("datum.9815cfe44f32219a", null)))
 
 
 /datum/status_effect/blood_regen_active/tick(seconds_between_ticks)

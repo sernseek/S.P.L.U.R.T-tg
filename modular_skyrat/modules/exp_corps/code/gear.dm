@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Gateway Medkit, no more combat defibs!
 /obj/item/storage/medkit/expeditionary
 	name = "combat medical kit"
@@ -68,7 +69,7 @@
 	atom_integrity = max_integrity
 	if(user)
 		UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
-		to_chat(user, span_notice("You fix the damage on [src]."))
+		to_chat(user, span_notice(LANG("obj.f3448f65ee774bf1", list(src))))
 
 /obj/item/pointman_broken
 	name = "broken pointman shield"

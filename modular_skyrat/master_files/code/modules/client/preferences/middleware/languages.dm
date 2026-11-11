@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/asset/spritesheet/languages
 	name = "languages"
 	early = TRUE
@@ -139,8 +140,8 @@
 	if(preferences.languages && preferences.languages.len == max_languages) // too many languages
 		return TRUE
 	var/choice = tgui_input_list(user, \
-								"Choose understanding level", \
-								title = "Language level", \
+								LANG("datum.5f668d2f393a4845", null), \
+								title = LANG("datum.d9a952ee62b318ae", null), \
 								items = list("Understood", "Understood and Spoken"), \
 								default = "Cancel")
 	var/flags = UNDERSTOOD_LANGUAGE

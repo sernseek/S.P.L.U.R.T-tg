@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define KNIFE_HITSOUND 'sound/items/weapons/bladeslice.ogg'
 #define KNIFE_USESOUND 'sound/items/weapons/bladeslice.ogg'
 #define KNIFE_ATTACK_VERB_CONTINUOUS list("slashes", "tears", "slices", "tears", "lacerates", "rips", "dices", "cuts", "rends")
@@ -47,7 +48,7 @@
 /obj/item/organ/cyberimp/arm/toolkit/armblade/emag_act()
 	if(obj_flags & EMAGGED)
 		return FALSE
-	to_chat(usr, span_notice("You unlock [src]'s integrated energy arm blade! You madman!"))
+	to_chat(usr, span_notice(LANG("obj.c57c6dab67db3aa4", list(src))))
 	items_list += WEAKREF(new /obj/item/melee/implantarmblade/energy(src))
 	obj_flags |= EMAGGED
 	return TRUE
@@ -74,7 +75,7 @@
 	playsound(get_turf(user), 'sound/items/tools/change_drill.ogg', 50, TRUE)
 	if(tool_behaviour != TOOL_WIRECUTTER)
 		tool_behaviour = TOOL_WIRECUTTER
-		to_chat(user, span_notice("You shift [src] into Precision mode, for wirecutting."))
+		to_chat(user, span_notice(LANG("obj.0181c2e17995bb37", list(src))))
 		icon_state = "precision_wolverine"
 		inhand_icon_state = "precision_wolverine"
 		force = cutter_force
@@ -87,7 +88,7 @@
 		attack_verb_simple = CUTTER_ATTACK_VERB_SIMPLE
 	else
 		tool_behaviour = TOOL_KNIFE
-		to_chat(user, span_notice("You shift [src] into Killing mode, for slicing."))
+		to_chat(user, span_notice(LANG("obj.4b13aa2c3217dc8e", list(src))))
 		icon_state = "wolverine"
 		inhand_icon_state = "wolverine"
 		force = knife_force
@@ -113,7 +114,7 @@
 
 	name = "enhanced razor claws"
 	desc += span_warning("\n\nThese have undergone a special honing process; they'll kill people even faster than they used to.")
-	user.visible_message(span_warning("[user] sharpens [src], [stone] disintegrating!"), span_warning("You sharpen [src], making it much more deadly than before, but [stone] disintegrates under the stress."))
+	user.visible_message(span_warning(LANG("obj.d6b60633eaffdd73", list(user, src, stone))), span_warning(LANG("obj.e31199e51969e5e8", list(src, stone))))
 	playsound(src, 'sound/items/unsheath.ogg', 25, TRUE)
 	qdel(stone)
 	return ..()
@@ -178,7 +179,7 @@
 /obj/item/organ/cyberimp/arm/toolkit/botany/emag_act()
 	if(obj_flags & EMAGGED)
 		return FALSE
-	to_chat(usr, span_notice("You unlock [src]'s deluxe landscaping equipment!"))
+	to_chat(usr, span_notice(LANG("obj.463118d0d005e3c4", list(src))))
 	items_list += WEAKREF(new /obj/item/implant_mounted_chainsaw(src)) //time to landscape the station
 	obj_flags |= EMAGGED
 	return TRUE
@@ -197,7 +198,7 @@
 /obj/item/organ/cyberimp/arm/toolkit/janitor/emag_act()
 	if(obj_flags & EMAGGED)
 		return FALSE
-	to_chat(usr, span_notice("You unlock [src]'s integrated deluxe cleaning supplies!"))
+	to_chat(usr, span_notice(LANG("obj.1667a03fc221ebde", list(src))))
 	items_list += WEAKREF(new /obj/item/soap/syndie(src)) //We add not replace.
 	items_list += WEAKREF(new /obj/item/reagent_containers/spray/cyborg_lube(src))
 	obj_flags |= EMAGGED
@@ -211,7 +212,7 @@
 /obj/item/organ/cyberimp/arm/toolkit/lighter/emag_act()
 	if(obj_flags & EMAGGED)
 		return FALSE
-	to_chat(usr, span_notice("You unlock [src]'s integrated Zippo lighter! Finally, classy smoking!"))
+	to_chat(usr, span_notice(LANG("obj.924324ef4b9a13a7", list(src))))
 	items_list += WEAKREF(new /obj/item/lighter(src)) //Now you can choose between bad and worse!
 	obj_flags |= EMAGGED
 	return TRUE

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/team/beno
 	name = "Lost Aliens"
 
@@ -74,10 +75,10 @@
 	mob_type = chosen_beno
 
 	new_mob_name = initial(new_mob_name)
-	new_mob_name = sanitize_name(tgui_input_text(user, "Set your name.", new_mob_name, max_length = MAX_NAME_LEN))
+	new_mob_name = sanitize_name(tgui_input_text(user, LANG("obj.2a28caf0358ceec2", null), new_mob_name, max_length = MAX_NAME_LEN))
 
 	new_mob_desc = initial(new_mob_desc)
-	new_mob_desc = tgui_input_text(user, "Set your description.", new_mob_desc, max_length = MAX_MESSAGE_LEN)
+	new_mob_desc = tgui_input_text(user, LANG("obj.0eb3493e2bc4c4ef", null), new_mob_desc, max_length = MAX_MESSAGE_LEN)
 
 	return TRUE
 

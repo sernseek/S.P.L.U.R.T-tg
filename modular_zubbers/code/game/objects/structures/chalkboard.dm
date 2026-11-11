@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/chalkboard
 	name = "Chalkboard"
 	icon = 'modular_zubbers/icons/obj/structures/chalkboard.dmi'
@@ -10,11 +11,11 @@
 
 /obj/structure/chalkboard/examine(mob/user)
 	. = ..()
-	. += "A board used by professors and old folk to lecture."
+	. += LANG("obj.910bf6d2b6c9cea2", null)
 	if(written_text)
-		. += "It reads:\n"
-		. += "[written_text]\n"
-		. += "Right-click with an open hand to erase."
+		. += LANG("obj.73f3a4d5ceb266a4", null)
+		. += LANG("obj.9cd8fadece4c3f2d", list(written_text))
+		. += LANG("obj.f2d8510ad640f8aa", null)
 
 //We want people to be able to write on it, so a left click interaction.
 /obj/structure/chalkboard/attackby(obj/item/attacking_item, mob/user)
@@ -22,7 +23,7 @@
 	//We begin by allowing our player to write on the chalkboard using the white crayon.
 	if(istype(attacking_item, /obj/item/toy/crayon/white))
 		if(length_char(written_text) < MAX_MESSAGE_LEN) //Check to see if the written text is too long before continuing
-			var/input_message = tgui_input_text(user, "What would you like to write on the chalkboard?", "Lecture time!", max_length = CHAT_MESSAGE_MAX_LENGTH, multiline = TRUE)
+			var/input_message = tgui_input_text(user, LANG("obj.c122a323a11758fa", null), LANG("obj.356af4387c97b36f", null), max_length = CHAT_MESSAGE_MAX_LENGTH, multiline = TRUE)
 			if(do_after(user, 5 SECONDS, target = src))
 				written_text += "[input_message]\n"
 				say(input_message, sanitize = FALSE)
@@ -30,23 +31,23 @@
 					icon_state = "chalkboard_filled"
 					update_appearance()
 		else
-			to_chat(user, span_warning("It appears there's no more space on the chalkboard..."))
+			to_chat(user, span_warning(LANG("obj.5f943c3b636b0467", null)))
 	else if(istype(attacking_item, /obj/item/toy/crayon/green)) //What are you, stupid?
-		tgui_input_text(user, "What would you like to write on the chalkboard?", "Lecture time!", max_length = CHAT_MESSAGE_MAX_LENGTH, multiline = TRUE) //Fake them out.
+		tgui_input_text(user, LANG("obj.c122a323a11758fa", null), LANG("obj.356af4387c97b36f", null), max_length = CHAT_MESSAGE_MAX_LENGTH, multiline = TRUE) //Fake them out.
 		if(do_after(user, 5 SECONDS, target = src))
-			to_chat(user, span_warning("Green chalk on a green board isn't a very good idea. It seems you need some white crayon to write on this. Idiot."))
+			to_chat(user, span_warning(LANG("obj.24c1dd89a2c0e29e", null)))
 			if(ishuman(user))
 				var/mob/living/carbon/human/idiot = user
 				idiot.add_mood_event("chalkboard", /datum/mood_event/green_idiot)
-	else to_chat(user, span_warning("It seems you need some white crayon to write on this."))
+	else to_chat(user, span_warning(LANG("obj.92642b4cb4672ffa", null)))
 
 /obj/structure/chalkboard/attack_hand_secondary(mob/user)
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
-	to_chat(user, span_warning("You pick up the eraser and begin to clear the board."))
+	to_chat(user, span_warning(LANG("obj.6500f076d29baa8a", null)))
 	if(!written_text)
-		to_chat(user, span_warning("You pick up the eraser and give the board a few pap-paps, but it has nothing on it to erase."))
+		to_chat(user, span_warning(LANG("obj.bbcc3d6c416ee53d", null)))
 		if(ishuman(user))
 			var/mob/living/carbon/human/papper = user
 			papper.add_mood_event("chalkboard", /datum/mood_event/cathartic_eraser)
@@ -59,7 +60,7 @@
 /obj/structure/chalkboard/wrench_act_secondary(mob/living/user, obj/item/tool)
 	if(obj_flags & NO_DEBRIS_AFTER_DECONSTRUCTION)
 		return FALSE
-	to_chat(user, span_notice("You start deconstructing [src]..."))
+	to_chat(user, span_notice(LANG("obj.08e1925c5d86f79d", list(src))))
 	if(tool.use_tool(src, user, 4 SECONDS, volume=50))
 		playsound(loc, 'sound/items/deconstruct.ogg', 50, TRUE)
 		deconstruct()

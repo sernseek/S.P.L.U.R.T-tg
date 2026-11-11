@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/nanite_scanner
 	name = "nanite scanner"
 	icon = 'modular_zubbers/icons/obj/devices/nanite_devices.dmi'
@@ -18,15 +19,15 @@
 
 /obj/item/nanite_scanner/attack(mob/living/M, mob/living/carbon/human/user)
 	user.visible_message(
-		span_notice("[user] analyzes [M]'s nanites."),
-		span_notice("You analyze [M]'s nanites.")
+		span_notice(LANG("obj.4ad9216e40631098", list(user, M))),
+		span_notice(LANG("obj.79e787219ae48215", list(M)))
 	)
 
 	add_fingerprint(user)
 
 	var/response = SEND_SIGNAL(M, COMSIG_NANITE_SCAN, user, TRUE)
 	if(!response)
-		to_chat(user, span_info("No nanites detected in the subject."))
+		to_chat(user, span_info(LANG("obj.532e0bf981260def", null)))
 
 /obj/item/storage/box/disks_nanite
 	name = "nanite program disks box"

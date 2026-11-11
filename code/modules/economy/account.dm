@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define DUMPTIME 3000
 ///Amount of money you need to lose to get the negative moodlet.
 #define NO_MY_MONEY 10000
@@ -235,12 +236,12 @@
 		return TRUE
 	var/datum/bank_account/department_account = SSeconomy.get_dep_account(account_job.paycheck_department)
 	if(isnull(department_account))
-		bank_card_talk("ERROR: [event] aborted, unable to contact departmental account.")
+		bank_card_talk(LANG("datum.c2a57dc42eb07a8d", list(event)))
 		return FALSE
 	if(!transfer_money(department_account, money_to_transfer))
-		bank_card_talk("ERROR: [event] aborted, departmental funds insufficient.")
+		bank_card_talk(LANG("datum.7a86f744611896cd", list(event)))
 		return FALSE
-	bank_card_talk("[event] processed, account now holds [account_balance] [MONEY_SYMBOL].")
+	bank_card_talk(LANG("datum.4cd20f13fbb84ab3", list(event, account_balance, MONEY_SYMBOL)))
 	return TRUE
 
 /**

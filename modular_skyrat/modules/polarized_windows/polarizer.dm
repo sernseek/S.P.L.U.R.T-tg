@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/assembly/control/polarizer
 	name = "window polarization remote controller"
 	desc = "A small electronic device able to control the polarization status of linked windows remotely."
@@ -12,7 +13,7 @@
 /obj/item/assembly/control/polarizer/examine(mob/user)
 	. = ..()
 
-	. += span_notice("Use it <b>in your hand</b> or with a <b>multitool</b> to change its channel ID.")
+	. += span_notice(LANG("obj.9d1d60313c9c2dd8", null))
 
 
 /obj/item/assembly/control/polarizer/multitool_act(mob/living/user)
@@ -20,13 +21,13 @@
 
 
 /obj/item/assembly/control/polarizer/attack_self(mob/living/user)
-	var/change_id = tgui_input_number(user, "Set [src]'s ID", "Polarization ID", text2num(id), 1000)
+	var/change_id = tgui_input_number(user, LANG("obj.9369c29f5f15b1de", list(src)), LANG("obj.48940215f9d72725", null), text2num(id), 1000)
 	if(!change_id || QDELETED(user) || QDELETED(src) || !usr.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return
 
 	id = "[change_id]"
-	balloon_alert(user, "id changed")
-	to_chat(user, span_notice("You change the ID to [id]."))
+	balloon_alert(user, LANG("obj.3852daee6363f0cd", null))
+	to_chat(user, span_notice(LANG("obj.7fe56c167316abeb", list(id))))
 
 
 /obj/item/assembly/control/polarizer/activate()

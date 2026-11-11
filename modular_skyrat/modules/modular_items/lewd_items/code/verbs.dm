@@ -1,15 +1,16 @@
-GAME_VERB(/mob/living/carbon/human, climax_verb, "Climax", "IC")
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+GAME_VERB(/mob/living/carbon/human, climax_verb, "高潮", "IC")
 	if(!has_status_effect(/datum/status_effect/climax_cooldown))
-		if(tgui_alert(usr, "Are you sure you want to cum?", "Climax", list("Yes", "No")) == "Yes")
+		if(tgui_alert(usr, LANG("mob.b5f29a08ed50f940", null), LANG("mob.39f677eb73c61f5a", null), list("Yes", "No")) == "Yes")
 			if(IS_UNCONSCIOUS(usr))
-				to_chat(usr, span_warning("You can't climax right now..."))
+				to_chat(usr, span_warning(LANG("mob.9143876ccadf80e7", null)))
 				return
 			else
 				climax(TRUE)
 	else
-		to_chat(src, span_warning("You can't cum right now!"))
+		to_chat(src, span_warning(LANG("mob.b424220869039f8a", null)))
 
-GAME_VERB(/mob/living, reflexes_verb, "Toggle Reflexes", "IC")
+GAME_VERB(/mob/living, reflexes_verb, "切换敏捷反应", "IC")
 	if(!HAS_TRAIT_FROM(src, TRAIT_QUICKREFLEXES, REF(src)))
 		ADD_TRAIT(src, TRAIT_QUICKREFLEXES, REF(src))
 		to_chat(src, span_notice("[get_reflexes_gain_text()]"))
@@ -36,11 +37,11 @@ GAME_VERB(/mob/living, reflexes_verb, "Toggle Reflexes", "IC")
 	if(CONFIG_GET(flag/disable_lewd_items))
 		UNASSIGN_GAME_VERB(src, /mob/living/carbon/human, safeword)
 
-GAME_VERB_DESC(/mob/living/carbon/human, remove_lewd_items, "Remove Lewd Items", "Removes any and all lewd items from you.", "OOC")
+GAME_VERB_DESC(/mob/living/carbon/human, remove_lewd_items, "移除不雅物品", "Removes any and all lewd items from you.", "OOC")
 	// literally just another way to safeword
 	safeword()
 
-GAME_VERB_DESC(/mob/living/carbon/human, safeword, "OOC Safe Word", "Removes any and all lewd items from you.", "OOC")
+GAME_VERB_DESC(/mob/living/carbon/human, safeword, "OOC 安全词", "Removes any and all lewd items from you.", "OOC")
 	SEND_SIGNAL(src, COMSIG_OOC_ESCAPE)
 	log_message("[key_name(src)] used the OOC Safe Word verb.", LOG_ATTACK)
 	for(var/obj/item/equipped_item in get_equipped_items())
@@ -61,30 +62,30 @@ GAME_VERB_DESC(/mob/living/carbon/human, safeword, "OOC Safe Word", "Removes any
 
 	return TRUE
 
-GAME_VERB(/mob/living/carbon/human, lick, "Lick", "IC")
+GAME_VERB(/mob/living/carbon/human, lick, "舔", "IC")
 	VERB_ARG_TYPED(target, VERB_ARG_TYPE_MOB, VERB_ARG_SOURCE_VIEW, /mob/living/carbon/human)
 	if(!istype(target) || !(target in get_adjacent_humans()))
 		return FALSE
 
 	var/taste = target?.dna?.features["taste"]
 	if(!taste)
-		to_chat(src, span_warning("[target] doesn't seem to have a taste."))
+		to_chat(src, span_warning(LANG("mob.77fc7cc54a3486a2", list(target))))
 		return FALSE
 
-	to_chat(src, span_notice("[target] tastes like [taste]."))
-	to_chat(target, span_notice("[src] licks you."))
+	to_chat(src, span_notice(LANG("mob.bed05d4616376ba8", list(target, taste))))
+	to_chat(target, span_notice(LANG("mob.c262fc2bc1bcf54b", list(src))))
 
-GAME_VERB(/mob/living/carbon/human, smell, "Smell", "IC")
+GAME_VERB(/mob/living/carbon/human, smell, "闻", "IC")
 	VERB_ARG_TYPED(target, VERB_ARG_TYPE_MOB, VERB_ARG_SOURCE_VIEW, /mob/living/carbon/human)
 	if(!istype(target) || !(target in get_adjacent_humans()))
 		return FALSE
 
 	var/smell = target?.dna?.features["smell"]
 	if(!smell)
-		to_chat(src, span_warning("[target] doesn't seem to have a smell."))
+		to_chat(src, span_warning(LANG("mob.2a8abd411466dfc2", list(target))))
 		return FALSE
 
-	to_chat(src, span_notice("[target] smells like [smell]."))
+	to_chat(src, span_notice(LANG("mob.28205dc00f302dac", list(target, smell))))
 
 /// Returns a list containing all of the humans adjacent to the user.
 /mob/living/proc/get_adjacent_humans()

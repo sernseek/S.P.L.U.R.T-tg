@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * This proc is designed to be lightweight and straight forward, clients are finicky and joining all the time.
  * FALSE = Deny connection
@@ -22,12 +23,12 @@
 	return TRUE
 
 /mob/dead/new_player/proc/connect_to_second_server()
-	var/choice = tgui_alert(src, "The server is currently experiencing high demand, please consider joining our secondary server.", "High Demand", list("Stay here", "Connect me!"))
+	var/choice = tgui_alert(src, LANG("mob.23267011996bb560", null), LANG("mob.110d8143aba4270c", null), list("Stay here", "Connect me!"))
 	if(!client)
 		return
 	if(choice != "Connect me!")
 		return
-	to_chat(client, span_notice("So long, spaceman."))
+	to_chat(client, span_notice(LANG("mob.d8314d370bae45a0", null)))
 	var/overflow_server_ip = CONFIG_GET(string/overflow_server_ip)
 	if(!overflow_server_ip)
 		message_admins("WARNING: Overflow server IP not set!")

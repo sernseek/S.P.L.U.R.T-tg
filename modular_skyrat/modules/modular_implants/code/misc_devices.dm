@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///NIFSoft Remover. This is mostly here so that security and antags have a way to remove NIFSofts from someome
 /obj/item/nifsoft_remover
 	name = "Lopland 'Wrangler' NIF-Cutter"
@@ -21,25 +22,25 @@
 	var/obj/item/organ/cyberimp/brain/nif/target_nif = target_mob.get_organ_by_type(/obj/item/organ/cyberimp/brain/nif)
 
 	if(!target_nif || !length(target_nif.loaded_nifsofts))
-		balloon_alert(user, "[target_mob] has no NIFSofts!")
+		balloon_alert(user, LANG("obj.5a99110417f722f3", list(target_mob)))
 		return
 
 	var/list/installed_nifsofts = target_nif.loaded_nifsofts
-	var/datum/nifsoft/nifsoft_to_remove = tgui_input_list(user, "Chose a NIFSoft to remove.", "[src]", installed_nifsofts)
+	var/datum/nifsoft/nifsoft_to_remove = tgui_input_list(user, LANG("obj.440711be6483c64c", null), "[src]", installed_nifsofts)
 
 	if(!nifsoft_to_remove)
 		return FALSE
 
-	user.visible_message(span_warning("[user] starts to use [src] on [target_mob]"), span_notice("You start to use [src] on [target_mob]"))
+	user.visible_message(span_warning(LANG("obj.8ed85cda65affad7", list(user, src, target_mob))), span_notice(LANG("obj.859f1e8aba41e843", list(src, target_mob))))
 	if(!do_after(user, 5 SECONDS, target_mob))
-		balloon_alert(user, "removal cancelled!")
+		balloon_alert(user, LANG("obj.b68bc72bbe9099eb", null))
 		return FALSE
 
 	if(!target_nif.remove_nifsoft(nifsoft_to_remove))
-		balloon_alert(user, "removal failed!")
+		balloon_alert(user, LANG("obj.a23e6cd710d52d6f", null))
 		return FALSE
 
-	to_chat(user, span_notice("You successfully remove [nifsoft_to_remove]."))
+	to_chat(user, span_notice(LANG("obj.a417f8b878683647", list(nifsoft_to_remove))))
 	user.log_message("removed [nifsoft_to_remove] from [target_mob]" ,LOG_GAME)
 
 	if(create_disk)
@@ -81,18 +82,18 @@
 
 	var/obj/item/organ/cyberimp/brain/nif/installed_nif = mob_to_repair.get_organ_by_type(/obj/item/organ/cyberimp/brain/nif)
 	if(!installed_nif)
-		balloon_alert(user, "[mob_to_repair] lacks a NIF")
+		balloon_alert(user, LANG("obj.c2be126a1053c4ed", list(mob_to_repair)))
 
 	if(!do_after(user, 5 SECONDS, mob_to_repair))
-		balloon_alert(user, "repair cancelled")
+		balloon_alert(user, LANG("obj.e082eabc2c75806e", null))
 		return FALSE
 
 	if(!installed_nif.adjust_durability(repair_amount))
-		balloon_alert(user, "target NIF is at max duarbility")
+		balloon_alert(user, LANG("obj.bc92a91c0ff09470", null))
 		return FALSE
 
-	to_chat(user, span_notice("You successfully repair [mob_to_repair]'s NIF"))
-	to_chat(mob_to_repair, span_notice("[user] successfully repairs your NIF"))
+	to_chat(user, span_notice(LANG("obj.66cdf7de812133bc", list(mob_to_repair))))
+	to_chat(mob_to_repair, span_notice(LANG("obj.bfe025a50e7ce92c", list(user))))
 
 	uses -= 1
 	if(!uses)
@@ -139,21 +140,21 @@
 		compatible_glasses_names += glasses_name
 
 	if(length(compatible_glasses_names))
-		. += span_cyan("\n This item will work on the following glasses: [english_list(compatible_glasses_names)].")
+		. += span_cyan(LANG("obj.32a36f7c4c856e16", list(english_list(compatible_glasses_names))))
 
 	return .
 
 /obj/item/nif_hud_adapter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	var/obj/item/clothing/glasses/target_glasses = interacting_with
 	if(!istype(target_glasses) || !is_type_in_list(target_glasses, glasses_whitelist))
-		balloon_alert(user, "incompatible!")
+		balloon_alert(user, LANG("obj.fbc9e3cdde5b4ae2", null))
 		return NONE
 
 	if(HAS_TRAIT(target_glasses, TRAIT_NIFSOFT_HUD_GRANTER))
-		balloon_alert(user, "already upgraded!")
+		balloon_alert(user, LANG("obj.7d09f139044f50ff", null))
 		return ITEM_INTERACT_BLOCKING
 
-	user.visible_message(span_notice("[user] upgrades [target_glasses] with [src]."), span_notice("You upgrade [target_glasses] to be NIF HUD compatible."))
+	user.visible_message(span_notice(LANG("obj.39467e1b1ded8a4c", list(user, target_glasses, src))), span_notice(LANG("obj.ed90886c2fa749fd", list(target_glasses))))
 	target_glasses.name = "\improper HUD-upgraded " + target_glasses.name
 	target_glasses.AddElement(/datum/element/nifsoft_hud)
 	playsound(target_glasses.loc, 'sound/items/weapons/circsawhit.ogg', 50, vary = TRUE)

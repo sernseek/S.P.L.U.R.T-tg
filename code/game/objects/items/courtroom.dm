@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Contains:
 // Gavel
 // Sound Block
@@ -21,7 +22,7 @@
 	AddElement(/datum/element/kneejerk)
 
 /obj/item/gavelhammer/suicide_act(mob/living/user)
-	user.visible_message(span_suicide("[user] has sentenced [user.p_them()]self to death with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(span_suicide(LANG("obj.394cd9d265af51ef", list(user, user.p_them(), src, user.p_theyre()))))
 	playsound(loc, 'sound/items/gavel.ogg', 50, TRUE, -1)
 	return BRUTELOSS
 
@@ -40,6 +41,6 @@
 	if(!istype(tool, /obj/item/gavelhammer))
 		return NONE
 	playsound(loc, 'sound/items/gavel.ogg', 100, TRUE)
-	user.visible_message(span_warning("[user] strikes [src] with [tool]."))
+	user.visible_message(span_warning(LANG("obj.42c638b658c7d275", list(user, src, tool))))
 	user.changeNext_move(CLICK_CD_MELEE)
 	return ITEM_INTERACT_SUCCESS

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/cyberimp/arm/toolkit/power_cord
 	name = "synth interfacing hardware"
 	desc = "Stores an interfacing tool that provides various functions for synths."
@@ -66,7 +67,7 @@
 	// SPLURT EDIT START - https://github.com/SPLURT-Station/S.P.L.U.R.T-tg/issues/453
 	// Only robotic species can use this
 	if(!(user.mob_biotypes & MOB_ROBOTIC))
-		to_chat(user, span_warning("You plug into [target], but nothing happens! It seems you don't have an internal cell to charge."))
+		to_chat(user, span_warning(LANG("obj.41a05d3eac0784f5", list(target))))
 		return
 	// SPLURT EDIT END
 	
@@ -76,20 +77,20 @@
 
 	var/obj/item/organ/stomach/synth/synth_cell = user.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(QDELETED(synth_cell) || !istype(synth_cell))
-		to_chat(user, span_warning("You plug into [target], but nothing happens! It seems you don't have an internal cell to charge."))
+		to_chat(user, span_warning(LANG("obj.41a05d3eac0784f5", list(target))))
 		return
 
 	if(nutrition_level_joules >= SYNTH_CHARGE_ALMOST_FULL)
-		user.balloon_alert(user, "cell fully charged!")
+		user.balloon_alert(user, LANG("obj.63ae3ffe8640410e", null))
 		return
 
-	user.visible_message(span_notice("[user] inserts a power connector into [target]."), span_notice("You begin to draw power from [target]."))
+	user.visible_message(span_notice(LANG("obj.4551481e6ba75b91", list(user, target))), span_notice(LANG("obj.19533075f8a84212", list(target))))
 	do_power_draw(target, user)
 
 	if(QDELETED(target))
 		return
 
-	user.visible_message(span_notice("[user] unplugs from [target]."), span_notice("You unplug from [target]."))
+	user.visible_message(span_notice(LANG("obj.804f894022c0a7d5", list(user, target))), span_notice(LANG("obj.71e012131b16178e", list(target))))
 
 /**
  * Runs a loop to charge a synth cell (stomach) from a power cell or APC.
@@ -126,7 +127,7 @@
 		nutrition_level_joules = user.nutrition * SYNTH_JOULES_PER_NUTRITION
 		energy_needed = SYNTH_CHARGE_MAX - nutrition_level_joules
 		if(energy_needed < (SYNTH_CHARGE_MAX - SYNTH_CHARGE_ALMOST_FULL))
-			user.balloon_alert(user, "cell fully charged!")
+			user.balloon_alert(user, LANG("obj.63ae3ffe8640410e", null))
 			break
 
 		// Check if the charge level of the cell is below the minimum.

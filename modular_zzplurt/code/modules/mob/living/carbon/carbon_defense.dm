@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define ASS_SLAP_EXTRA_RANGE -1
 #define BADTOUCH_RETALIATE_CHANCE 5
 #define BADTOUCH_RETALIATE_DAMAGE 5
@@ -27,12 +28,12 @@
 
 		// Display messages
 		visible_message(
-			span_danger("[src] tries to slap [target]'s ass, but [src.p_their()] hand bounces off it like solid steel!"),
-			span_danger("You try to slap [target]'s ass, but your hand bounces off it like solid steel!"),
-			"You hear a loud clang!",
+			span_danger(LANG("mob.f2605ea02a33208b", list(src, target, src.p_their()))),
+			span_danger(LANG("mob.87949e9f5f982098", list(target))),
+			LANG("mob.0fe126f3bc18e949", null),
 			ignored_mobs = list(target)
 		)
-		to_chat(target, span_danger("[src] tries to slap your ass, but [src.p_their()] hand bounces off it!"))
+		to_chat(target, span_danger(LANG("mob.f343a1f26002711c", list(src, src.p_their()))))
 
 		// End here
 		return
@@ -45,8 +46,8 @@
 		// Check for cooldown
 		if(!COOLDOWN_FINISHED(quirk_jiggle, wiggle_cooldown))
 			// Display message
-			target.visible_message(span_warning("[target]'s big butt is still [ASS_JIGGLE_VERBS_1] about way too much to get a good smack!!"), \
-			span_boldwarning("[src] tries to smack your jiggly ass, but can't get a lock on it!"))
+			target.visible_message(span_warning(LANG("mob.f5294905b36229c0", list(target, ASS_JIGGLE_VERBS_1))), \
+			span_boldwarning(LANG("mob.eac5f4513028405a", list(src))))
 
 			// End here
 			return
@@ -64,12 +65,12 @@
 
 		// Display message
 		visible_message(
-			span_purple("[src] slaps [target] right on the ass, and sends it [ASS_JIGGLE_VERBS_1]!"),
-			span_purple("You slap [target] on the ass, and send it [ASS_JIGGLE_VERBS_1]! How satisfying!"),
-			"You hear a slap.",
+			span_purple(LANG("mob.181f805706a07d72", list(src, target, ASS_JIGGLE_VERBS_1))),
+			span_purple(LANG("mob.db5fe7a2968d6de3", list(target, ASS_JIGGLE_VERBS_1))),
+			LANG("mob.977bc0690fa19d32", null),
 			ignored_mobs = list(target)
 		)
-		to_chat(target, span_purple("[src] smacks your big fat butt, and sends it [ASS_JIGGLE_VERBS_1]! It [ASS_JIGGLE_VERBS_2] about and throws you off balance!"))
+		to_chat(target, span_purple(LANG("mob.b0fa21c53c7ecd8a", list(src, ASS_JIGGLE_VERBS_1, ASS_JIGGLE_VERBS_2))))
 
 		// Apply effects
 		do_ass_slap_animation(target)
@@ -193,8 +194,8 @@
 	playsound(get_turf(src), 'sound/effects/wounds/crack1.ogg', 50, 1, -1)
 
 	// Display message
-	toucher.visible_message(span_warning("[src] twists [toucher]\'s arm in retaliation for touching [p_them()]!"), \
-		span_boldwarning("Your arm gets twisted in [src]\'s grasp!"))
+	toucher.visible_message(span_warning(LANG("mob.ecf5d747b37bfd3c", list(src, toucher, p_them()))), \
+		span_boldwarning(LANG("mob.7d0d10eb3f147d9d", list(src))))
 
 	// Drop toucher's held item
 	toucher.dropItemToGround(toucher.get_active_held_item())

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * The base object for the quantum server
  */
@@ -79,7 +80,7 @@
 		return
 
 	if(held_item.tool_behaviour == TOOL_SCREWDRIVER)
-		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] Panel"
+		context[SCREENTIP_CONTEXT_LMB] = LANG("obj.3a1f9b9bcb4eed7a", list(panel_open ? "Close" : "Open"))
 		return CONTEXTUAL_SCREENTIP_SET
 	else if(held_item.tool_behaviour == TOOL_CROWBAR && panel_open)
 		context[SCREENTIP_CONTEXT_LMB] = "Deconstruct"
@@ -88,30 +89,30 @@
 /obj/machinery/quantum_server/examine(mob/user)
 	. = ..()
 
-	. += span_infoplain("Can be resource intensive to run. Ensure adequate power supply.")
+	. += span_infoplain(LANG("obj.fb160dbb86fa62bd", null))
 
-	. += span_notice("Its maintenance panel can be [EXAMINE_HINT("screwed")] [panel_open ? "close" : "open"].")
+	. += span_notice(LANG("obj.f3fabb12d30acb3c", list(EXAMINE_HINT("screwed"), panel_open ? "close" : "open")))
 	if(panel_open)
-		. += span_notice("It can be [EXAMINE_HINT("pried")] apart.")
+		. += span_notice(LANG("obj.fa5fc7965e12e9d0", list(EXAMINE_HINT("pried"))))
 
 	var/upgraded = FALSE
 	if(capacitor_coefficient < 1)
-		. += span_infoplain("- Its coolant capacity reduces cooldown time by [(1 - capacitor_coefficient) * 100]%.")
+		. += span_infoplain(LANG("obj.c88196ab8039ad4f", list((1 - capacitor_coefficient) * 100)))
 		upgraded = TRUE
 
 	if(servo_bonus > 0.2)
-		. += span_infoplain("- Its manipulation potential is increasing rewards by [servo_bonus]x.")
-		. += span_infoplain("- Injury from unsafe ejection reduced [servo_bonus * 100]%.")
+		. += span_infoplain(LANG("obj.f66d7d5ae8846d02", list(servo_bonus)))
+		. += span_infoplain(LANG("obj.8f8831fb0e4a24f3", list(servo_bonus * 100)))
 		upgraded = TRUE
 
 	if(!upgraded)
-		. += span_notice("Its output is suboptimal. Improved components will grant domain information, reduce cooldowns and increase rewards.")
+		. += span_notice(LANG("obj.59921e18571ce6c6", null))
 
 	if(!is_ready)
-		. += span_notice("It is currently cooling down. Give it a few moments.")
+		. += span_notice(LANG("obj.05e7947b0af45a96", null))
 
 	if(isobserver(user) && (obj_flags & EMAGGED))
-		. += span_notice("Ominous warning lights are blinking red. This server has been tampered with.")
+		. += span_notice(LANG("obj.1682df33b78033e4", null))
 
 
 /obj/machinery/quantum_server/emag_act(mob/user, obj/item/card/emag/emag_card)
@@ -125,7 +126,7 @@
 	threat_prob_max *= 2
 
 	add_overlay(mutable_appearance('icons/obj/machines/bitrunning.dmi', "emag_overlay"))
-	balloon_alert(user, "system jailbroken...")
+	balloon_alert(user, LANG("obj.61d25b48c49a02e3", null))
 	playsound(src, 'sound/effects/sparks/sparks1.ogg', 35, vary = TRUE)
 
 
@@ -163,16 +164,16 @@
 
 /obj/machinery/quantum_server/crowbar_act(mob/living/user, obj/item/crowbar)
 	if(!is_ready)
-		balloon_alert(user, "it's scalding hot!")
+		balloon_alert(user, LANG("obj.906576e576280743", null))
 		return ITEM_INTERACT_FAILURE
 	if(length(avatar_connection_refs))
-		balloon_alert(user, "all clients must disconnect!")
+		balloon_alert(user, LANG("obj.706e5aeac7556fd2", null))
 		return ITEM_INTERACT_FAILURE
 	return default_deconstruction_crowbar(user, crowbar)
 
 /obj/machinery/quantum_server/screwdriver_act(mob/living/user, obj/item/screwdriver)
 	if(!is_ready)
-		balloon_alert(user, "it's scalding hot!")
+		balloon_alert(user, LANG("obj.906576e576280743", null))
 		return ITEM_INTERACT_FAILURE
 	return default_deconstruction_screwdriver(user, screwdriver)
 

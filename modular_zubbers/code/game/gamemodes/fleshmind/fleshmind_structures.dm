@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Corrupt Structures
  *
@@ -139,7 +140,7 @@
 	if(disabled)
 		return
 	do_sparks(4, FALSE, src)
-	balloon_alert_to_viewers("grinds to a halt")
+	balloon_alert_to_viewers(LANG("obj.539e32ab6bbb2f17", null))
 	Shake(10, 0, duration)
 	disabled = TRUE
 	addtimer(CALLBACK(src, PROC_REF(enable)), duration)
@@ -153,7 +154,7 @@
 /obj/structure/fleshmind/structure/proc/enable()
 	if(!disabled)
 		return
-	balloon_alert_to_viewers("whirrs back to life")
+	balloon_alert_to_viewers(LANG("obj.28067a01889d4a67", null))
 	disabled = FALSE
 	update_appearance()
 
@@ -220,7 +221,7 @@
 	if(!user.can_interact_with(src))
 		return
 	toggle_door()
-	to_chat(user, span_notice("You [door_state ? "close" : "open"] [src]!"))
+	to_chat(user, span_notice(LANG("obj.22d557f300d422c9", list(door_state ? "close" : "open", src))))
 
 /obj/structure/fleshmind/structure/wireweed_door/Bumped(atom/movable/bumped_atom)
 	. = ..()
@@ -290,7 +291,7 @@
 
 /obj/structure/fleshmind/structure/core/Initialize(mapload, spawn_controller = TRUE)
 	. = ..()
-	notify_ghosts("New fleshmind core at [get_area(src)]", src)
+	notify_ghosts(LANG("obj.2be8f8cd72248756", list(get_area(src))), src)
 	update_appearance()
 	if(!(src in GLOB.fleshmind_cores))
 		GLOB.fleshmind_cores += src
@@ -366,12 +367,12 @@
 
 	if(our_controller)
 		if(isliving(user))
-			. += span_notice("Your GPS tracks to this thing!")
+			. += span_notice(LANG("obj.3544adede25621bd", null))
 		if(isobserver(user))
 			if(COOLDOWN_FINISHED(our_controller, level_up_cooldown) || level_calculation > 0)
-				. += "Level: [our_controller.level] | Points to Next Level: [level_calculation]"
+				. += LANG("obj.688c08001cf0cc69", list(our_controller.level, level_calculation))
 			else
-				. += "Level: [our_controller.level] | Time to Next Level: [time_calculation] Seconds"
+				. += LANG("obj.e16c61057c0a0afe", list(our_controller.level, time_calculation))
 
 /obj/structure/fleshmind/structure/core/proc/core_attack_atom(atom/thing)
 	. = FALSE
@@ -390,7 +391,7 @@
 		mecha_thing.take_damage(attack_damage, attack_damage_type, MELEE, 0, get_dir(mecha_thing, src))
 		has_attacked = TRUE
 	if(has_attacked)
-		thing.visible_message(span_warning("\The [src] strikes [thing]!"), span_userdanger("\The [src] strikes you!"))
+		thing.visible_message(span_warning(LANG("obj.94b564b8029ab696", list(src, thing))), span_userdanger(LANG("obj.6ff9207043913894", list(src))))
 		playsound(loc, 'sound/effects/blob/attackblob.ogg', 100, TRUE)
 		do_attack_animation(thing, ATTACK_EFFECT_PUNCH)
 		return TRUE
@@ -441,7 +442,7 @@
 		new /obj/structure/fleshmind/structure/wireweed_wall(iterating_turf)
 
 /obj/structure/fleshmind/structure/core/proc/rally_troops()
-	balloon_alert_to_viewers("lets out an earbleeding shriek!")
+	balloon_alert_to_viewers(LANG("obj.0351131ea15be528", null))
 	playsound(src, 'modular_skyrat/modules/horrorform/sound/horror_scream.ogg', 100, TRUE)
 	for(var/mob/living/basic/fleshmind/mob_in_range in range(rally_range, src))
 		if(faction_check_atom(mob_in_range))
@@ -563,7 +564,7 @@
 			continue
 		iterating_mob.Knockdown(100)
 		iterating_mob.apply_status_effect(/datum/status_effect/jitter, 20 SECONDS)
-		to_chat(iterating_mob, span_userdanger("A terrible howl tears through your mind, the voice senseless, soulless."))
+		to_chat(iterating_mob, span_userdanger(LANG("obj.b1d3e94f9f81d08a", null)))
 
 /**
  * Whisperer
@@ -643,7 +644,7 @@
 	if(!triggered_mob)
 		return
 	triggered_mob.adjust_hallucinations(10 SECONDS)
-	to_chat(triggered_mob, span_notice("You feel your brain tingle."))
+	to_chat(triggered_mob, span_notice(LANG("obj.c83b34c97a882373", null)))
 
 /**
  * The Assembler
@@ -699,7 +700,7 @@
 	if(!user.can_interact_with(src))
 		return
 
-	var/chosen_override_type = tgui_input_list(user, "Select override mob to spawn", "Override Mob", monster_types)
+	var/chosen_override_type = tgui_input_list(user, LANG("obj.da3819f1becef8ba", null), LANG("obj.8e62be599a97b650", null), monster_types)
 
 	if(!chosen_override_type)
 		return
@@ -720,7 +721,7 @@
 
 	RegisterSignal(spawned_mob, COMSIG_LIVING_DEATH, PROC_REF(mob_death))
 
-	visible_message(span_danger("[spawned_mob] emerges from [src]."))
+	visible_message(span_danger(LANG("obj.50fe0335ad7eb4b0", list(spawned_mob, src))))
 
 /obj/structure/fleshmind/structure/assembler/proc/mob_death(mob/living/dead_guy, gibbed)
 	SIGNAL_HANDLER

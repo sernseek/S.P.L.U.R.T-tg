@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Makes anything it attaches to capable of permanently removing something's ability to produce light.
  *
@@ -61,9 +62,9 @@
 		return
 
 	food.visible_message(
-		span_danger("Something dark in [eater] lashes out at [food] and [food.p_their()] light goes out in an instant!"),
-		span_userdanger("You feel something dark in [eater] lash out and gnaw through your light in an instant! It recedes just as fast, but you can feel that [eater.p_theyve()] left something hungry behind."),
-		span_danger("You feel a gnawing pulse eat at your sight.")
+		span_danger(LANG("datum.b1697d423b3c54c3", list(eater, food, food.p_their()))),
+		span_userdanger(LANG("datum.4f97db3640b9e9d6", list(eater, eater.p_theyve()))),
+		span_danger(LANG("datum.33d7bfd51c4c8cd4", null))
 	)
 
 /**

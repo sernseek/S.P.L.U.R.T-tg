@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/bot/mulebot
 	name = "\improper MULEbot"
 	desc = "A Multiple Utility Load Effector bot."
@@ -111,12 +112,12 @@
 	. = ..()
 	if(bot_access_flags & BOT_COVER_MAINTS_OPEN)
 		if(cell)
-			. += span_notice("It has \a [cell] installed.")
-			. += span_info("You can use a <b>crowbar</b> to remove it.")
+			. += span_notice(LANG("mob.4243143d622ce537", list(cell)))
+			. += span_info(LANG("mob.ada3b30bfa2053f7", null))
 		else
-			. += span_notice("It has an empty compartment where a <b>power cell</b> can be installed.")
+			. += span_notice(LANG("mob.63e1a12ed1e3fb52", null))
 	if(load) //observer check is so we don't show the name of the ghost that's sitting on it to prevent metagaming who's ded.
-		. += span_notice("\A [isobserver(load) ? "ghostly figure" : load] is on its load platform.")
+		. += span_notice(LANG("mob.98314f8a059937cd", list(isobserver(load) ? "ghostly figure" : load)))
 
 /mob/living/basic/bot/mulebot/get_cell()
 	return cell
@@ -132,11 +133,11 @@
 /mob/living/basic/bot/mulebot/turn_on(mob/user)
 	if(bot_access_flags & BOT_COVER_MAINTS_OPEN)
 		if(user)
-			to_chat(user, span_warning("[src]'s maintenance panel is open!"))
+			to_chat(user, span_warning(LANG("mob.100cd79e2de2f97c", list(src))))
 		return FALSE
 	if(!has_power())
 		if(user)
-			to_chat(user, span_warning("[src] has no power!"))
+			to_chat(user, span_warning(LANG("mob.84948dc215a024fe", list(src))))
 		return FALSE
 	return ..()
 
@@ -175,16 +176,16 @@
 /mob/living/basic/bot/mulebot/proc/buzz(type)
 	switch(type)
 		if(MULEBOT_MOOD_SIGH)
-			audible_message(span_hear("[src] makes a sighing buzz."))
+			audible_message(span_hear(LANG("mob.f7366c55f85a4242", list(src))))
 			playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 50, FALSE)
 		if(MULEBOT_MOOD_ANNOYED)
-			audible_message(span_hear("[src] makes an annoyed buzzing sound."))
+			audible_message(span_hear(LANG("mob.b73d2a12c89c7867", list(src))))
 			playsound(src, 'sound/machines/buzz/buzz-two.ogg', 50, FALSE)
 		if(MULEBOT_MOOD_DELIGHT)
-			audible_message(span_hear("[src] makes a delighted ping!"))
+			audible_message(span_hear(LANG("mob.c4b5365b3df7c715", list(src))))
 			playsound(src, 'sound/machines/ping.ogg', 50, FALSE)
 		if(MULEBOT_MOOD_CHIME)
-			audible_message(span_hear("[src] makes a chiming sound!"))
+			audible_message(span_hear(LANG("mob.3582e919b25a0cef", list(src))))
 			playsound(src, 'sound/machines/chime.ogg', 50, FALSE)
 	flick("[base_icon_state]1", src)
 

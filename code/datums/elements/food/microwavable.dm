@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Atoms that can be microwaved from one type to another.
 /datum/element/microwavable
 	element_flags = ELEMENT_BESPOKE
@@ -97,6 +98,6 @@
 	SIGNAL_HANDLER
 
 	if(initial(result_typepath.gender) == PLURAL)
-		examine_list += span_notice("[source] can be [span_bold("microwaved")] into some [initial(result_typepath.name)].")
+		examine_list += span_notice(LANG("datum.224db63491ac5e2c", list(source, span_bold("microwaved"), initial(result_typepath.name))))
 	else
-		examine_list += span_notice("[source] can be [span_bold("microwaved")] into \a [initial(result_typepath.name)].")
+		examine_list += span_notice(LANG("datum.73ea291d962a7b4f", list(source, span_bold("microwaved"), initial(result_typepath.name))))

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/circuitboard/computer/arcade/minesweeper
 	name = "Minesweeper"
 	greyscale_colors = CIRCUIT_COLOR_GENERIC
@@ -161,23 +162,23 @@
 			board.play_snd('modular_zubbers/sound/arcade/minesweeper_boardpress.ogg')
 			if(board.ticket_count >= 1)
 				new /obj/item/stack/arcadeticket(loc, 1)
-				to_chat(user, span_notice("[src] dispenses a ticket!"))
+				to_chat(user, span_notice(LANG("obj.a21fb8ef5c9fa7b0", list(src))))
 				board.ticket_count -= 1
 			else
-				to_chat(user, span_notice("You don't have any stored tickets!"))
+				to_chat(user, span_notice(LANG("obj.445c950ae852622a", null)))
 			return TRUE
 
 /obj/machinery/computer/arcade/minesweeper/emag_act(mob/living/user)
 	if(obj_flags & EMAGGED)
 		return
-	desc = "An arcade machine that generates grids. It's clunking and sparking everywhere, almost as if threatening to explode at any moment!"
+	desc = LANG("obj.093e81b70bea4526", null)
 	do_sparks(5, 1, src)
 	obj_flags |= EMAGGED
 	if(board.game_status != MINESWEEPER_CONTINUE)
-		to_chat(user, span_warning("An ominous tune plays from the arcade's speakers!"))
+		to_chat(user, span_warning(LANG("obj.3cde84042e2f43eb", null)))
 		playsound(user, 'modular_zubbers/sound/arcade/minesweeper_emag1.ogg', 100, 0, extrarange = 3, falloff_exponent = 10)
 	else	//Can't let you do that, star fox!
-		to_chat(user, span_warning("The machine buzzes and sparks... the game has been reset!"))
+		to_chat(user, span_warning(LANG("obj.667fcddf29612944", null)))
 		playsound(user, 'sound/machines/buzz/buzz-sigh.ogg', 100, 0, extrarange = 3, falloff_exponent = 10)	//Loud buzz
 		board.game_status = MINESWEEPER_IDLE
 
@@ -356,7 +357,7 @@
 
 /datum/minesweeper/proc/new_game()
 	if(!COOLDOWN_FINISHED(src, new_game_cd))
-		host.say("Please wait [COOLDOWN_TIMELEFT(src, new_game_cd)/10] more seconds before starting a new game.")
+		host.say(LANG("datum.aed71062d30f8620", list(COOLDOWN_TIMELEFT(src, new_game_cd)/10)))
 		return
 	COOLDOWN_START(src, new_game_cd, 1.5 SECONDS)
 	generate_new_board(difficulty)
@@ -440,7 +441,7 @@
 	switch(result)
 		if(MINESWEEPER_VICTORY)
 			play_snd('modular_zubbers/sound/arcade/minesweeper_win.ogg')
-			host.say("You cleared the board of all mines! Congratulations!")
+			host.say(LANG("datum.2d5d573b42ef4980", null))
 			user.won_game()
 			if(emaggable && host.obj_flags & EMAGGED && value >= 1)
 				var/itemname

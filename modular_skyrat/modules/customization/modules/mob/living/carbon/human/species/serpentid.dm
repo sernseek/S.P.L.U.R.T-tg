@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BASE_CLOTH_X_1 1
 #define BASE_CLOTH_Y_1 1
 
@@ -96,50 +97,50 @@
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = FA_ICON_SHIELD,
-		SPECIES_PERK_NAME = "Durable Chitin",
-		SPECIES_PERK_DESC = "Giant Armored Serpentid chitin is very robust and protects them from pressure and low temperature hazards, while also providing decent brute resistance."
+		SPECIES_PERK_NAME = LANG("datum.d4cfd1db0d4271a1", null),
+		SPECIES_PERK_DESC = LANG("datum.d8435da2cb44e8fa", null)
 	))
 
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = FA_ICON_WEIGHT_HANGING,
-		SPECIES_PERK_NAME = "Heavy Skeleton",
-		SPECIES_PERK_DESC = "Giant Armored Serpentid are large and heavy, this makes them excellent at avoiding slipping and being grabbed."
+		SPECIES_PERK_NAME = LANG("datum.2cebc23efcac12cf", null),
+		SPECIES_PERK_DESC = LANG("datum.3ca6bdeacc902050", null)
 	))
 
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = FA_ICON_USER_NINJA,
-		SPECIES_PERK_NAME = "Active Camouflage",
-		SPECIES_PERK_DESC = "The cells in a Giant Armored Serpentid's body are able to camouflage themselves to an extent, making the GAS appear translucent to the naked eye."
+		SPECIES_PERK_NAME = LANG("datum.4b2fff67528bc336", null),
+		SPECIES_PERK_DESC = LANG("datum.343a9b64274f0ce7", null)
 	))
 
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 		SPECIES_PERK_ICON = FA_ICON_EYE,
-		SPECIES_PERK_NAME = "Shielded Eyes",
-		SPECIES_PERK_DESC = "Giant Armored Serpentid have sensitive eyes, luckily they have eyeshields that can be used to make up for this."
+		SPECIES_PERK_NAME = LANG("datum.e9cf4530f8bedd5c", null),
+		SPECIES_PERK_DESC = LANG("datum.091903a9a217bf85", null)
 	))
 
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 		SPECIES_PERK_ICON = FA_ICON_FACE_ANGRY,
-		SPECIES_PERK_NAME = "Threat Display",
-		SPECIES_PERK_DESC = "Giant Armored Serpentid are not good at communication, however, they can perform a threat display to show when they want to attack someone."
+		SPECIES_PERK_NAME = LANG("datum.b4d0fff32ce505a5", null),
+		SPECIES_PERK_DESC = LANG("datum.727c475d0d42f7b5", null)
 	))
 
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "star-of-life",
-		SPECIES_PERK_NAME = "Custom Body",
-		SPECIES_PERK_DESC = "Giant Armored Serpentid have a non-humanoid body and can't wear most clothes."
+		SPECIES_PERK_NAME = LANG("datum.9f30fdf1b84d1150", null),
+		SPECIES_PERK_DESC = LANG("datum.74adac0d5ed60206", null)
 	))
 
 	perk_descriptions += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = FA_ICON_TEMPERATURE_HALF,
-		SPECIES_PERK_NAME = "Cold-Blooded",
-		SPECIES_PERK_DESC = "Giant Armored Serpentid are a cold blooded species and are vulnerable to temperature changes in their environment."
+		SPECIES_PERK_NAME = LANG("datum.b536ac3a7fdf8241", null),
+		SPECIES_PERK_DESC = LANG("datum.04c24559694d9817", null)
 	))
 
 	return perk_descriptions

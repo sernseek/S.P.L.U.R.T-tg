@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/antagonist/space_dragon
 	name = "\improper Space Dragon"
 	roundend_category = "space dragons"
@@ -33,11 +34,8 @@
 
 /datum/antagonist/space_dragon/greet()
 	. = ..()
-	to_chat(owner, "<b>Through endless time and space we have moved. We do not remember from where we came, we do not know where we will go.  All of space belongs to us.\n\
-					It is an empty void, of which our kind was the apex predator, and there was little to rival our claim to this title.\n\
-					But now, we find intruders spread out amongst our claim, willing to fight our teeth with magics unimaginable, their dens like lights flickering in the depths of space.\n\
-					Today, we will snuff out one of those lights.</b>")
-	to_chat(owner, span_boldwarning("You have five minutes to find a safe location to place down the first rift.  If you take longer than five minutes to place a rift, you will be returned from whence you came."))
+	to_chat(owner, LANG("datum.bc4ebe338e05afa2", null))
+	to_chat(owner, span_boldwarning(LANG("datum.249b1dd7ee4fd587", null)))
 	owner.announce_objectives()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/effects/magic/demon_attack1.ogg', 80)
 
@@ -141,11 +139,11 @@
 		return
 	riftTimer = min(riftTimer + 1, maxRiftTimer + 1)
 	if(riftTimer == (maxRiftTimer - 60))
-		to_chat(owner.current, span_boldwarning("You have a minute left to summon the rift! Get to it!"))
+		to_chat(owner.current, span_boldwarning(LANG("datum.0dca4626f918811d", null)))
 		return
 	if(riftTimer >= maxRiftTimer)
 		// BUBBER CHANGE START: dragons don't die to not summoning a rift
-		to_chat(owner.current, span_boldwarning("You've failed to summon the rift in a timely manner! You will be slowed down until you do so!"))
+		to_chat(owner.current, span_boldwarning(LANG("datum.9a9700a54cf2aa48", null)))
 		owner.current.add_movespeed_modifier(/datum/movespeed_modifier/dragon_depression)
 		riftTimer = -1
 		// BUBBER CHANGE END
@@ -167,7 +165,7 @@
 	if(rifts_charged != 3 && !objective_complete) // BUBBER ADDITION
 		if(owner.current.stat == DEAD)
 			return
-		to_chat(owner.current, span_warning("You will be able to make a new rift in 5 minutes."))
+		to_chat(owner.current, span_warning(LANG("datum.8f400b2de3cf562b", null)))
 		addtimer(CALLBACK(src, PROC_REF(give_rift_ability)), 5 MINUTES)
 	SEND_SOUND(owner.current, sound('sound/vehicles/rocketlaunch.ogg'))
 	for(var/obj/structure/carp_rift/rift as anything in rift_list)
@@ -195,8 +193,7 @@
 	permanant_empower()
 	var/datum/objective/summon_carp/main_objective = locate() in objectives
 	main_objective?.completed = TRUE
-	priority_announce("A large amount of lifeforms have been detected approaching [station_name()] at extreme speeds. \
-		Remaining crew are advised to evacuate as soon as possible.", "[command_name()] Wildlife Observations", has_important_message = TRUE)
+	priority_announce(LANG("datum.479b0b2fbc151ac8", list(station_name())), LANG("datum.9ecd04f6ac2e1e13", list(command_name())), has_important_message = TRUE)
 	sound_to_playing_players('sound/mobs/non-humanoids/space_dragon/space_dragon_roar.ogg', volume = 75)
 	for(var/obj/structure/carp_rift/rift as anything in rift_list)
 		rift.carp_stored = 999999

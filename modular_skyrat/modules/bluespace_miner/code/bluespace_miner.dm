@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BLUESPACE_MINER_TOO_HOT (1<<0)
 #define BLUESPACE_MINER_LOW_PRESSURE (1<<1)
 #define BLUESPACE_MINER_HIGH_PRESSURE (1<<2)
@@ -72,11 +73,11 @@
 /obj/machinery/bluespace_miner/examine(mob/user)
 	. = ..()
 	if(obj_flags & EMAGGED)
-		. += span_warning("The safeties are turned off!")
+		. += span_warning(LANG("obj.14c445f6b351c46a", null))
 	// We don't need to run any more checks if this is functioning. Genuinely the old code is terrible
 	if(mining_stat)
 		if(mining_stat & BLUESPACE_MINER_TOO_CLOSE)
-			. += span_warning("[src] is in a suboptimal environment: TOO CLOSE TO ANOTHER BLUESPACE MINER")
+			. += span_warning(LANG("obj.8be8b3cddb3c8566", list(src)))
 			return . // This needs relocation to fix so we won't bother with the rest
 		if(mining_stat & BLUESPACE_MINER_TOO_HOT)
 			. += span_warning("[src] is in a suboptimal environment: " + span_boldwarning("TEMPERATURE TOO HIGH!"))
@@ -181,16 +182,16 @@
 	if(probability_mod)
 		ore_chance[probability_mod] /= 3
 		probability_mod = null
-		balloon_alert(user, "probability change disabled")
+		balloon_alert(user, LANG("obj.2dc7e9425466acf1", null))
 		return TRUE
 
-	var/choice = tgui_input_list(user, "Which would you like to triple?", "Probability Change", ore_chance)
+	var/choice = tgui_input_list(user, LANG("obj.e8a256e6205e86aa", null), LANG("obj.72b6445df9be0d55", null), ore_chance)
 	if(!choice)
 		return FALSE
 
 	ore_chance[choice] *= 3
 	probability_mod = choice
-	balloon_alert(user, "probability change enabled")
+	balloon_alert(user, LANG("obj.2df6c0cbcbfe17c2", null))
 	return TRUE
 
 /obj/machinery/bluespace_miner/crowbar_act(mob/living/user, obj/item/tool)
@@ -213,11 +214,11 @@
 
 /obj/machinery/bluespace_miner/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)
-		balloon_alert(user, "already emagged!")
+		balloon_alert(user, LANG("obj.9bab397b17f019dd", null))
 		return FALSE
 	ore_chance += list(/obj/item/stack/sheet/mineral/bananium = 1)
 	obj_flags |= EMAGGED
-	balloon_alert_to_viewers("fizzles!")
+	balloon_alert_to_viewers(LANG("obj.5eb4084bfd7d1b11", null))
 	return TRUE
 
 /obj/item/circuitboard/machine/bluespace_miner

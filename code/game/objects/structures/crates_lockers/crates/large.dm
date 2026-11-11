@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/closet/crate/large
 	name = "large crate"
 	desc = "A hefty wooden crate. You'll need a crowbar to get it open."
@@ -27,13 +28,13 @@
 /obj/structure/closet/crate/large/attack_hand(mob/user, list/modifiers)
 	add_fingerprint(user)
 	if(!tear_manifest(user))
-		to_chat(user, span_warning("You need a crowbar to pry this open!"))
+		to_chat(user, span_warning(LANG("obj.310b3e222ee3c0e4", null)))
 
 /obj/structure/closet/crate/large/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(user.combat_mode)
 		return ITEM_INTERACT_SKIP_TO_ATTACK //Stops it from opening and turning invisible when items are used on it.
 
-	to_chat(user, span_warning("You need a crowbar to pry this open!"))
+	to_chat(user, span_warning(LANG("obj.310b3e222ee3c0e4", null)))
 	return ITEM_INTERACT_BLOCKING //Just stop. Do nothing. Don't turn into an invisible sprite. Don't open like a locker.
 								  //The large crate has no non-attack interactions other than the crowbar, anyway.
 
@@ -42,9 +43,9 @@
 		tear_manifest(user)
 	if(!open(user))
 		return ITEM_INTERACT_BLOCKING
-	user.visible_message(span_notice("[user] pries \the [src] open."), \
-						span_notice("You pry open \the [src]."), \
-						span_hear("You hear splitting wood."))
+	user.visible_message(span_notice(LANG("obj.5e000044b93769be", list(user, src))), \
+						span_notice(LANG("obj.75ea16c7ae69c19c", list(src))), \
+						span_hear(LANG("obj.5fcb16ad6c46c22a", null)))
 	playsound(src.loc, 'sound/items/weapons/slashmiss.ogg', 75, TRUE)
 
 	var/turf/dump = get_turf(src)

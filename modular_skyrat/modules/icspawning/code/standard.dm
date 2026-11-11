@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // SKYRAT MODULE IC-SPAWNING https://github.com/Skyrat-SS13/Skyrat-tg/pull/104
 /obj/item/gun/energy/taser/debug
 	ammo_type = list(/obj/item/ammo_casing/energy/electrode/debug)
@@ -190,12 +191,12 @@
 
 		// If it's not a /datum/stock_part subtype either, something has gone wrong and devs should probably be alerted.
 		if(found_matching < parts_amount_required)
-			to_chat(user, span_notice("Something went wrong manufacturing [req_component]. Alert the devs, and let them know what machine it was!"))
+			to_chat(user, span_notice(LANG("obj.d0d5efc6f1198152", list(req_component))))
 
 /// BSTs' special Bluespace RPED can manufacture parts on Alt-RMB, either cables, glass, machine boards, or stock parts.
 /obj/item/storage/part_replacer/bluespace/tier4/bst/click_alt_secondary(mob/user)
 	// Ask the user what they want to make, or if they want to clear the storage.
-	var/spawn_selection = tgui_input_list(user, "Pick a part, or clear storage", "RPED Manufacture", list("Clear All Items", "Toggle Auto-Clear", "Cables", "Glass", "Spare T4s", "Machine Board", "Stock Part", "Beaker"))
+	var/spawn_selection = tgui_input_list(user, LANG("obj.c4ebf8f60737f2d0", null), LANG("obj.389a719cddfec5d6", null), list("Clear All Items", "Toggle Auto-Clear", "Cables", "Glass", "Spare T4s", "Machine Board", "Stock Part", "Beaker"))
 	// If they didn't cancel out of the list selection, we do things.  Clear-all removes all items, auto-clear destroys left-overs after upgrades, and everything else is pretty self-explanatory.
 	// Machine boards and stock parts use a recursive subtype selector.
 	if(isnull(spawn_selection))
@@ -206,7 +207,7 @@
 			qdel(stored_item)
 	else if(spawn_selection == "Toggle Auto-Clear")
 		auto_clear = !auto_clear
-		to_chat(user, span_notice("The RPED will now [(auto_clear ? "destroy" : "keep")] items left-over after upgrades."))
+		to_chat(user, span_notice(LANG("obj.fd17f6f1ed629d58", list((auto_clear ? "destroy" : "keep")))))
 	else if(spawn_selection == "Cables")
 		atom_storage.attempt_insert(new /obj/item/stack/cable_coil(src), user, TRUE)
 	else if(spawn_selection == "Glass")
@@ -263,7 +264,7 @@
 			items_temp["[initial(path_as_obj.name)]: [path]"] = path
 
 	// Finally, once the listed is generated, ask the user what they want to spawn.
-	var/target_item = tgui_input_list(user, "Select Subtype", "RPED Manufacture", sort_list(items_temp))
+	var/target_item = tgui_input_list(user, LANG("obj.e04b699e8783ee80", null), LANG("obj.389a719cddfec5d6", null), sort_list(items_temp))
 	if(target_item)
 		// If they select something, and the name:path binding is valid, then either spawn it, OR, if it has subtypes, and isn't the parent type, recurse to let them pick a subtype.
 		if(items_temp[target_item])

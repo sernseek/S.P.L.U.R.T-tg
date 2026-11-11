@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BUILDING_WALL_ABILITY "building wall ability"
 
 /datum/action/cooldown/mob_cooldown/bot/build_girder
@@ -21,12 +22,12 @@
 	if(DOING_INTERACTION(owner, BUILDING_WALL_ABILITY))
 		return TRUE
 	if(!isopenturf(target) || isgroundlessturf(target))
-		owner.balloon_alert(owner, "cant build here!")
+		owner.balloon_alert(owner, LANG("datum.f3cc30a32265c77e", null))
 		return TRUE
 	var/obj/item/stack/rods/our_rods = locate() in owner
 	var/turf/turf_target = target
 	if(turf_target.is_blocked_turf())
-		owner.balloon_alert(owner, "blocked!")
+		owner.balloon_alert(owner, LANG("datum.62d831a3dbaf3612", null))
 		return TRUE
 	var/obj/effect/constructing_effect/effect = new(turf_target, 3 SECONDS)
 
@@ -74,7 +75,7 @@
 	for(var/obj/item/stack/managed_stack in user.contents)
 		data["stacks"] += list(list(
 			"stack_reference" = REF(managed_stack),
-			"stack_name" = managed_stack.name,
+			"stack_name" = managed_stack.lang_localize_name_for_display(managed_stack.name), // ZH EDIT - I18N: 纯显示；atom 版守玩家改名。ORIGINAL: "stack_name" = managed_stack.name,
 			"stack_amount" = managed_stack.amount,
 			"stack_maximum_amount" = managed_stack.max_amount,
 			"stack_icon" = managed_stack.icon,
@@ -100,7 +101,7 @@
 			if(isnull(my_sheet))
 				return
 			if(is_type_in_typecache(my_sheet, eject_blacklist))
-				to_chat(owner, span_warning("You're unable to eject [my_sheet]!"))
+				to_chat(owner, span_warning(LANG("datum.64a4f43cf6c59362", list(my_sheet))))
 				return
 
 			my_sheet.forceMove(owner.drop_location())

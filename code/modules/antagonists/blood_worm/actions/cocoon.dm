@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon
 	cooldown_time = 30 SECONDS
 	shared_cooldown = NONE
@@ -38,11 +39,11 @@
 		return FALSE
 	if (HAS_TRAIT(owner, TRAIT_SHAPESHIFTED))
 		if (feedback)
-			owner.balloon_alert(owner, "not while shapeshifted!")
+			owner.balloon_alert(owner, LANG("datum.bcb9f4a7dc7fb989", null))
 		return FALSE
 	if (!isturf(owner.loc))
 		if (feedback)
-			owner.balloon_alert(owner, "get on the ground!")
+			owner.balloon_alert(owner, LANG("datum.cb9add096b8893b8", null))
 		return FALSE
 	if (!check_consumed_blood(feedback))
 		return FALSE
@@ -52,18 +53,18 @@
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/Activate(atom/target)
 	owner.visible_message(
-		message = span_danger("\The [owner] start[owner.p_s()] growing a cocoon!"),
-		self_message = span_notice("You start growing a cocoon."),
-		blind_message = span_hear("You start hearing fleshy knitting!")
+		message = span_danger(LANG("datum.229c768094f6886e", list(owner, owner.p_s()))),
+		self_message = span_notice(LANG("datum.b0afd33ed8391930", null)),
+		blind_message = span_hear(LANG("datum.283ac16e1073d677", null))
 	)
 
 	if (!do_after(owner, 5 SECONDS, extra_checks = CALLBACK(src, PROC_REF(check_consumed_blood))))
 		return FALSE
 
 	owner.visible_message(
-		message = span_danger("\The [owner] enter[owner.p_s()] a cocoon!"),
-		self_message = span_green("You enter your freshly grown cocoon!"),
-		blind_message = span_hear("You stop hearing fleshy knitting!")
+		message = span_danger(LANG("datum.96f3dc08bc3dcb30", list(owner, owner.p_s()))),
+		self_message = span_green(LANG("datum.c130aa548104d205", null)),
+		blind_message = span_hear(LANG("datum.be4bff8551c8b933", null))
 	)
 
 	cocoon = new cocoon_type(get_turf(owner))
@@ -98,9 +99,9 @@
 			continue // Harms potential hosts.
 
 		unfortunate_observer.visible_message(
-			message = span_danger("\The [unfortunate_observer] is splashed with a wave of corrosive blood!"),
-			self_message = span_userdanger("You're splashed with a wave of corrosive blood! YEOWCH!"),
-			blind_message = span_hear("You hear sizzling!")
+			message = span_danger(LANG("datum.bbb15cbb79e1abbf", list(unfortunate_observer))),
+			self_message = span_userdanger(LANG("datum.362061e9b2b00151", null)),
+			blind_message = span_hear(LANG("datum.86226ff1675d7fdd", null))
 		)
 
 		unfortunate_observer.Knockdown(3 SECONDS)
@@ -147,13 +148,13 @@
 /// Cancels the incubation process, destroying the cocoon early.
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/proc/cancel()
 	cocoon.visible_message(
-		message = span_danger("\The [cocoon] fall[cocoon.p_s()] apart, expelling \the [owner] within."),
-		blind_message = span_danger("You hear a splat!"),
+		message = span_danger(LANG("datum.0724b48d54ea9271", list(cocoon, cocoon.p_s(), owner))),
+		blind_message = span_danger(LANG("datum.b20f4309d737baab", null)),
 		ignored_mobs = owner
 	)
 
 	if (!QDELETED(owner) && owner.stat != DEAD)
-		to_chat(owner, span_userdanger("Your cocoon falls apart!"))
+		to_chat(owner, span_userdanger(LANG("datum.17956ba66f6e5ce3", null)))
 
 	playsound(cocoon, 'sound/effects/splat.ogg', vol = 60, vary = TRUE, ignore_walls = FALSE)
 
@@ -202,7 +203,7 @@
 
 	if (total_consumed_blood < total_blood_required)
 		if (feedback)
-			worm.balloon_alert(worm, "only at [FLOOR(total_consumed_blood / total_blood_required * 100, 1)]% of required growth!")
+			worm.balloon_alert(worm, LANG("datum.c505c45dff402bf2", list(FLOOR(total_consumed_blood / total_blood_required * 100, 1))))
 		return FALSE
 	return TRUE
 
@@ -226,7 +227,7 @@
 	total_blood_required = 500
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/hatchling/Activate(atom/target)
-	if (tgui_alert(owner, "Are you sure? After [cocoon_time / 10] seconds, you will become a juvenile, gaining stat increases and the ability to spit corrosive blood, but losing the ability to ventcrawl.", "Mature", list("Yes", "No"), 30 SECONDS) != "Yes")
+	if (tgui_alert(owner, LANG("datum.3480740d0ac4cd4b", list(cocoon_time / 10)), LANG("datum.2c43205ccf9e23c2", null), list("Yes", "No"), 30 SECONDS) != "Yes")
 		return
 	if (!IsAvailable(feedback = TRUE))
 		return
@@ -262,7 +263,7 @@
 	total_blood_required = 1500
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/juvenile/Activate(atom/target)
-	if (tgui_alert(owner, "Are you sure? After [cocoon_time / 10] seconds, you will become an adult, gaining stat increases and the ability to spit bursts of corrosive blood by right-clicking with Spit Blood while outside of a host.", "Mature", list("Yes", "No"), 30 SECONDS) != "Yes")
+	if (tgui_alert(owner, LANG("datum.42c1db7201c45205", list(cocoon_time / 10)), LANG("datum.2c43205ccf9e23c2", null), list("Yes", "No"), 30 SECONDS) != "Yes")
 		return
 	if (!IsAvailable(feedback = TRUE))
 		return
@@ -314,7 +315,7 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/adult/Activate(atom/target)
-	if (tgui_alert(owner, "Are you sure? After [cocoon_time / 10] seconds, you will create [num_hatchlings + 1] new hatchlings, including yourself.", "Reproduce", list("Yes", "No"), 30 SECONDS) != "Yes")
+	if (tgui_alert(owner, LANG("datum.3f5e2f61f91fead5", list(cocoon_time / 10, num_hatchlings + 1)), LANG("datum.04221edf84a4d38d", null), list("Yes", "No"), 30 SECONDS) != "Yes")
 		return
 	if (!IsAvailable(feedback = TRUE))
 		return
@@ -322,10 +323,10 @@
 	return ..()
 
 /datum/action/cooldown/mob_cooldown/blood_worm/cocoon/adult/handle_timer()
-	cocoon.balloon_alert(owner, "polling ghosts")
+	cocoon.balloon_alert(owner, LANG("datum.e5fd6096b859d6d9", null))
 
 	candidates = SSpolling.poll_ghost_candidates(
-		question = "Would you like to become a newly hatched blood worm? (x[num_hatchlings])",
+		question = LANG("datum.6bcdaa9bc5a6084f", list(num_hatchlings)), // ZH EDIT CHANGE - I18N - ORIGINAL: question = "Would you like to become a newly hatched blood worm? (x[num_hatchlings])",
 		role = ROLE_BLOOD_WORM_INFESTATION,
 		check_jobban = ROLE_BLOOD_WORM,
 		poll_time = cocoon_time,
@@ -347,9 +348,9 @@
 		return
 	if (num_candidates <= 0)
 		cancel()
-		owner.balloon_alert(owner, "no candidates!") // We can't host this balloon alert on a deleted cocoon.
+		owner.balloon_alert(owner, LANG("datum.8430d6f7f2614ff0", null)) // We can't host this balloon alert on a deleted cocoon.
 		return
-	if (num_candidates < num_hatchlings && tgui_alert(owner, "There are only [num_candidates]/[num_hatchlings] candidates for hatchlings, want to proceed anyway?", "Ghost Shortage", list("Yes", "No"), 10 SECONDS) != "Yes")
+	if (num_candidates < num_hatchlings && tgui_alert(owner, LANG("datum.18557cf7856006b5", list(num_candidates, num_hatchlings)), LANG("datum.52fa9576ec697c15", null), list("Yes", "No"), 10 SECONDS) != "Yes")
 		cancel()
 		return
 
@@ -394,7 +395,7 @@
 			continue
 
 		// Sucks, but that's just how it is sometimes.
-		to_chat(candidate, span_warning("The blood worm cocoon you rolled a hatchling spot for was canceled. Sorry."))
+		to_chat(candidate, span_warning(LANG("datum.d454c120838caea6", null)))
 
 /obj/structure/blood_worm_cocoon/adult
 	name = "large blood cocoon"

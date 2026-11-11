@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //The SmartDarts themselves
 /obj/item/reagent_containers/syringe/smartdart
 	name = "SmartDart"
@@ -113,13 +114,13 @@
 	var/prevention_used = smartdart.transfer_smartdart_reagents(owner, transfer_per_second * seconds_per_tick, show_message = SPT_PROB(15, seconds_per_tick))
 	if(prevention_used && !prevention_announced)
 		prevention_announced = TRUE
-		owner.visible_message(span_notice("[smartdart] lets out a short beep."), span_notice("You hear a short beep from [smartdart]."))
+		owner.visible_message(span_notice(LANG("datum.70ed195a773c44dd", list(smartdart))), span_notice(LANG("datum.5c77481efbb9e0ca", list(smartdart))))
 		playsound(smartdart, 'sound/machines/ping.ogg', 50, TRUE, -1)
 
 //Code that handles the base interactions involving smartdarts
 /obj/item/reagent_containers/syringe/smartdart/interact_with_atom(atom/target, mob/living/user, list/modifiers)
 	if(target.reagents)
-		to_chat(user, span_warning("The [src] is unable to manually inject chemicals."))
+		to_chat(user, span_warning(LANG("obj.2ec07bb24e08cbc6", list(src))))
 	return NONE
 //A majority of this code is from the original syringes.dm file.
 /obj/item/reagent_containers/syringe/smartdart/interact_with_atom_secondary(atom/target, mob/living/user, list/modifiers)
@@ -127,23 +128,23 @@
 		return ITEM_INTERACT_BLOCKING
 
 	if(reagents.total_volume >= reagents.maximum_volume)
-		to_chat(user, span_notice("[src] is full."))
+		to_chat(user, span_notice(LANG("obj.8e2d390ca03cb226", list(src))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(isliving(target))
-		to_chat(user, span_warning("The [src] is unable to take blood."))
+		to_chat(user, span_warning(LANG("obj.719f56cfb328352d", list(src))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!target.reagents.total_volume)
-		to_chat(user, span_warning("[target] is empty!"))
+		to_chat(user, span_warning(LANG("obj.02d482cc1aef0cef", list(target))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!target.is_drawable(user))
-		to_chat(user, span_warning("You cannot directly remove reagents from [target]!"))
+		to_chat(user, span_warning(LANG("obj.09f8190132db8a6a", list(target))))
 		return ITEM_INTERACT_BLOCKING
 
 	var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transferred_by = user) // transfer from, transfer to - who cares?
-	to_chat(user, span_notice("You fill [src] with [trans] units of the solution. It now contains [reagents.total_volume] units."))
+	to_chat(user, span_notice(LANG("obj.24df3147e3d1fd89", list(src, trans, reagents.total_volume))))
 
 	return ITEM_INTERACT_SUCCESS
 
@@ -172,14 +173,14 @@
 /obj/item/gun/syringe/smartdart/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(istype(tool, /obj/item/reagent_containers/syringe/smartdart))
 		return ..()
-	to_chat(user, span_notice("The [tool] is unable to fit inside of the [src]! Try using a <b>SmartDart</b> instead."))
+	to_chat(user, span_notice(LANG("obj.02db237eb45e51e6", list(tool, src))))
 	return ITEM_INTERACT_BLOCKING
 
 /obj/item/gun/syringe/smartdart/examine(mob/user)
 	. = ..()
 
 	for(var/obj/item/reagent_containers/syringe/dart as anything in syringes)
-		. += "There is a [dart] loaded."
+		. += LANG("obj.56ffcb662a6d5289", list(dart))
 
 //Smartdart projectiles
 /obj/item/ammo_casing/syringegun/dart

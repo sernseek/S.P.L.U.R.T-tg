@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/destructible/clockwork/gear_base
 	name = "gear base"
 	desc = "A large cog lying on the floor at feet level."
@@ -21,7 +22,7 @@
 		return
 
 	if(!can_unwrench)
-		balloon_alert(user, "cannot be unwrenched!")
+		balloon_alert(user, LANG("obj.1924f91dda458f97", null))
 		return
 
 	balloon_alert(user, "[anchored ? "unwrenching" : "wrenching"]...")
@@ -29,7 +30,7 @@
 	if(!tool.use_tool(src, user, 2 SECONDS, volume = 50))
 		return
 
-	visible_message(span_notice("[user] [anchored ? "unwrenches" : "wrenches down"] [src]."), span_notice("You [anchored ? "unwrench" : "wrench"] [src]."))
+	visible_message(span_notice(LANG("obj.6afbb5c3aa5fc504", list(user, anchored ? "unwrenches" : "wrenches down", src))), span_notice(LANG("obj.d6171b714b8cf981", list(anchored ? "unwrench" : "wrench", src))))
 
 	anchored = !anchored
 	update_icon_state()

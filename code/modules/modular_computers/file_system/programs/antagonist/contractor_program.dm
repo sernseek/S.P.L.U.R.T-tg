@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/computer_file/program/contract_uplink
 	filename = "contractor uplink"
 	filedesc = "Syndicate Contractor Uplink"
@@ -88,9 +89,9 @@
 				if(ishuman(user))
 					var/mob/living/carbon/human/H = user
 					if(H.put_in_hands(crystals))
-						to_chat(H, span_notice("Your payment materializes into your hands!"))
+						to_chat(H, span_notice(LANG("datum.4aa8fb3aaf42c4e5", null)))
 					else
-						to_chat(user, span_notice("Your payment materializes onto the floor."))
+						to_chat(user, span_notice(LANG("datum.0c1e67dafef27476", null)))
 
 				traitor_data.uplink_handler.contractor_hub.contract_TC_payed_out += traitor_data.uplink_handler.contractor_hub.contract_TC_to_redeem
 				traitor_data.uplink_handler.contractor_hub.contract_TC_to_redeem = 0

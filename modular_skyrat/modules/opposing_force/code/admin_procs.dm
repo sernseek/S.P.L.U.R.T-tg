@@ -1,5 +1,6 @@
-ADMIN_VERB(request_more_opfor, R_FUN, "Request OPFOR", "Request players sign up for opfor if they have antag on.", ADMIN_CATEGORY_FUN)
-	var/confirm = tgui_alert(user, "Please confirm you want to ask all antagonist enabled players to submit an OPFOR?", "Confirm Request OPFOR", list("Yes", "No"))
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+ADMIN_VERB(request_more_opfor, R_FUN, "征集 OPFOR 申请", "Request players sign up for opfor if they have antag on.", ADMIN_CATEGORY_FUN)
+	var/confirm = tgui_alert(user, LANG("datum.02f068f7c59fc213", null), LANG("datum.59cb30a2da1db45a", null), list("Yes", "No"))
 	if(confirm != "Yes")
 		return
 
@@ -11,7 +12,7 @@ ADMIN_VERB(request_more_opfor, R_FUN, "Request OPFOR", "Request players sign up 
 	message_admins("[ADMIN_LOOKUP(user)] has requested more OPFOR players! (Asked: [asked] players)")
 
 
-ADMIN_VERB(view_opfors, R_ADMIN, "View OPFORs", "View OPFORs.", ADMIN_CATEGORY_GAME)
+ADMIN_VERB(view_opfors, R_ADMIN, "查看 OPFOR 申请", "View OPFORs.", ADMIN_CATEGORY_GAME)
 	user.mob.client?.view_opfors()
 
 /client/proc/view_opfors()

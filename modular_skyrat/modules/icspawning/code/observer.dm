@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // SKYRAT MODULE IC-SPAWNING https://github.com/Skyrat-SS13/Skyrat-tg/pull/104
 
 /mob/dead/observer/CtrlClickOn(mob/target)
@@ -35,7 +36,7 @@
 	/// Quirk/loadout options
 	var/list/quirk_loadout_options = list("Quirks Only", "Loadout Only", "Quirks & Loadout", "None")
 
-	teleport_option = tgui_alert(user, "How would you like to be spawned in?", "IC Quick Spawn", teleport_options)
+	teleport_option = tgui_alert(user, LANG("mob.6e23e22ea5ddc108", null), LANG("mob.158170ae3d18f7bd", null), teleport_options)
 	if(!teleport_option || teleport_option == teleport_options[3])
 		return
 
@@ -45,16 +46,16 @@
 			for(var/datum/pod_style/style as anything in typesof(/datum/pod_style))
 				pod_styles[style::ui_name] = style
 
-		pod_style = tgui_input_list(user, "Which style of pod?", "IC Quick Spawn", pod_styles)
+		pod_style = tgui_input_list(user, LANG("mob.8297f70a4d274814", null), LANG("mob.158170ae3d18f7bd", null), pod_styles)
 		pod_style = pod_styles[pod_style]
 		if(!pod_style)
 			return
 
-	character_option = tgui_alert(user, "Which character to spawn as?", "IC Quick Spawn", character_options)
+	character_option = tgui_alert(user, LANG("mob.123300ed656c4b41", null), LANG("mob.158170ae3d18f7bd", null), character_options)
 	if(!character_option || character_option == character_options[3])
 		return
 
-	outfit_option = tgui_input_list(user, "Which outfit to use?", "IC Quick Spawn", outfit_options)
+	outfit_option = tgui_input_list(user, LANG("mob.58483519d1234ff5", null), LANG("mob.158170ae3d18f7bd", null), outfit_options)
 	if(outfit_option == outfit_options[4])
 		outfit_option = user.client.robust_dress_shop_skyrat()
 	else
@@ -64,12 +65,12 @@
 
 	// The give return option is only relevant if the user is spawning in someone else
 	if(target != user)
-		give_return = tgui_alert(user, "Do you want to give them the power to return? Not recommended for non-admins.", "IC Quick Spawn", list("No", "Yes"))
+		give_return = tgui_alert(user, LANG("mob.5de7b3531874baea", null), LANG("mob.158170ae3d18f7bd", null), list("No", "Yes"))
 		if(!give_return)
 			return
 
 	if(character_option == character_options[1])
-		give_quirks_loadout = tgui_input_list(user, "Include quirks/loadout?", "IC Quick Spawn", quirk_loadout_options)
+		give_quirks_loadout = tgui_input_list(user, LANG("mob.a83ee03870471d93", null), LANG("mob.158170ae3d18f7bd", null), quirk_loadout_options)
 		if(!give_quirks_loadout)
 			return
 
@@ -110,6 +111,10 @@
 		var/obj/structure/closet/supplypod/podspawn/empty_pod = new(null, pod_style)
 		new_player.forceMove(empty_pod)
 		new /obj/effect/pod_landingzone(current_turf, empty_pod)
+		// The new body spawns inside the ghost, so the ghost may only go once the body is out.
+		// Deleting it earlier raced the key transfer: under lag the body was deleted with the ghost.
+		QDEL_IN(user, 1)
+
 
 /client/proc/robust_dress_shop_skyrat()
 	var/list/baseoutfits = list("Custom","As Job...", "As Plasmaman...")
@@ -121,7 +126,7 @@
 		var/datum/outfit/path_as_outfit = path
 		outfits[initial(path_as_outfit.name)] = path
 
-	var/dresscode = tgui_input_list(src, "Select outfit", "Robust quick dress shop", baseoutfits + sort_list(outfits))
+	var/dresscode = tgui_input_list(src, LANG("client.05436964d3c2a6ef", null), LANG("client.0287867f7f10323a", null), baseoutfits + sort_list(outfits))
 
 	if (isnull(dresscode))
 		return
@@ -136,7 +141,7 @@
 			var/datum/outfit/O = path
 			job_outfits[initial(O.name)] = path
 
-		dresscode = input("Select job equipment", "Robust quick dress shop") as null|anything in sort_list(job_outfits)
+		dresscode = input(LANG("client.5d3c14c3d9fe6fa0", null), LANG("client.0287867f7f10323a", null)) as null|anything in sort_list(job_outfits)
 		dresscode = job_outfits[dresscode]
 		if(isnull(dresscode))
 			return
@@ -148,7 +153,7 @@
 			var/datum/outfit/O = path
 			plasmaman_outfits[initial(O.name)] = path
 
-		dresscode = input("Select plasmeme equipment", "Robust quick dress shop") as null|anything in sort_list(plasmaman_outfits)
+		dresscode = input(LANG("client.2d3ee6f2b303e94b", null), LANG("client.0287867f7f10323a", null)) as null|anything in sort_list(plasmaman_outfits)
 		dresscode = plasmaman_outfits[dresscode]
 		if(isnull(dresscode))
 			return
@@ -157,7 +162,7 @@
 		var/list/custom_names = list()
 		for(var/datum/outfit/req_outfit in GLOB.custom_outfits)
 			custom_names[req_outfit.name] = req_outfit
-		var/selected_name = input("Select outfit", "Robust quick dress shop") as null|anything in sort_list(custom_names)
+		var/selected_name = input(LANG("client.05436964d3c2a6ef", null), LANG("client.0287867f7f10323a", null)) as null|anything in sort_list(custom_names)
 		dresscode = custom_names[selected_name]
 		if(isnull(dresscode))
 			return

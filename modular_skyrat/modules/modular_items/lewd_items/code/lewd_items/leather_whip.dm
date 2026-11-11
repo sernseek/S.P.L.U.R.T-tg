@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Yes, whip is mask item, because character can take it in mouth. For some BDSM scenarios it would be cool, but if you make it better with same functionality - go ahead, make me proud.
 
 /obj/item/clothing/mask/leatherwhip
@@ -100,9 +101,9 @@
 /obj/item/clothing/mask/leatherwhip/examine(mob/user)
 	. = ..()
 	if(!color_changed)
-		. += span_notice("Alt-click to change it's color.")
+		. += span_notice(LANG("obj.ffa2b27c6831e98e", null))
 	else if(!form_changed)
-		. += span_notice("Alt-click to change it's form.")
+		. += span_notice(LANG("obj.02d4106baddec89c", null))
 
 //to change color
 /obj/item/clothing/mask/leatherwhip/click_alt(mob/user)
@@ -175,13 +176,13 @@
 	var/message = ""
 	//and there is code for successful check, so we are whipping someone
 	if(!target.check_erp_prefs(/datum/preference/toggle/erp/sex_toy, user, src))
-		to_chat(user, span_danger("[target] doesn't want you to do that."))
+		to_chat(user, span_danger(LANG("obj.8d0a01828f0e2a19", list(target))))
 		return
 
 	switch(user.zone_selected) //to let code know what part of body we gonna whip
 		if(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 			if(carbon_target && !carbon_target.has_feet())
-				to_chat(user, span_danger("Looks like [target] is missing their legs!"))
+				to_chat(user, span_danger(LANG("obj.79442a68b8626f29", list(target))))
 				return
 
 			if(current_whip_type == "hard")
@@ -226,7 +227,7 @@
 
 		if(BODY_ZONE_PRECISE_GROIN)
 			if(carbon_target && !carbon_target.is_bottomless())
-				to_chat(user, span_danger("Looks like [target]'s butt is covered!"))
+				to_chat(user, span_danger(LANG("obj.9ff2c0634217c851", list(target))))
 				return
 			if(current_whip_type == "weak")
 				message = (user == target) ? pick("whips [target.p_them()]self with [src]",
@@ -299,9 +300,9 @@
 	switch(current_whip_type)
 		if("hard")
 			current_whip_type = "weak"
-			to_chat(user, span_notice("[src] feels softer. Easy mode!"))
+			to_chat(user, span_notice(LANG("obj.a8075e2f93bd4df3", list(src))))
 		if("weak")
 			current_whip_type = "hard"
-			to_chat(user, span_notice("[src] is now hard. Someone need to be punished!"))
+			to_chat(user, span_notice(LANG("obj.9791a27bad53e7f0", list(src))))
 	update_icon()
 	update_icon_state()

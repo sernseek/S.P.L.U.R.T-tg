@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Mail is tamper-evident and unresealable, postmarked by CentCom for an individual recepient.
 /obj/item/mail
 	name = "mail"
@@ -116,9 +117,9 @@
 
 /obj/item/mail/multitool_act(mob/living/user, obj/item/tool)
 	if(user.get_inactive_held_item() == src)
-		balloon_alert(user, "nothing to disable!")
+		balloon_alert(user, LANG("obj.aeb44e917e3ebf3a", null))
 		return TRUE
-	balloon_alert(user, "hold it!")
+	balloon_alert(user, LANG("obj.45de64ed902de0a5", null))
 	return FALSE
 
 
@@ -134,10 +135,10 @@
 		// If the recipient's mind has gone, then anyone can open their mail
 		// whether a mind can actually be qdel'd is an exercise for the reader
 		if(recipient && recipient != user?.mind)
-			to_chat(user, span_notice("You can't open somebody else's mail! That's <em>illegal</em>!"))
+			to_chat(user, span_notice(LANG("obj.3c532cacdd668e62", null)))
 			return FALSE
 
-	balloon_alert(user, "unwrapping...")
+	balloon_alert(user, LANG("obj.a2fd2139c7ca21c1", null))
 	if(!do_after(user, 1.5 SECONDS, target = user))
 		return FALSE
 	return TRUE
@@ -158,21 +159,21 @@
 /obj/item/mail/examine_more(mob/user)
 	. = ..()
 	if(!postmarked)
-		. += span_info("This mail has no postmarking of any sort...")
+		. += span_info(LANG("obj.e7373605ccb7ab79", null))
 	else
-		. += span_notice("<i>You notice the postmarking on the front of the mail...</i>")
+		. += span_notice(LANG("obj.b43590104f8f217a", null))
 	var/datum/mind/recipient = recipient_ref.resolve()
 	if(recipient)
-		. += span_info("[postmarked ? "Certified NT" : "Uncertfieid"] mail for [recipient].")
+		. += span_info(LANG("obj.570e523763ad64f3", list(postmarked ? "Certified NT" : "Uncertfieid", recipient)))
 	else if(postmarked)
-		. += span_info("Certified mail for [GLOB.station_name].")
+		. += span_info(LANG("obj.70f9eaa8aea24f27", list(GLOB.station_name)))
 	else
-		. += span_info("This is a dead letter mail with no recipient.")
-	. += span_info("Distribute by hand or via destination tagger using the certified NT disposal system.")
+		. += span_info(LANG("obj.56d6be0630f80f2c", null))
+	. += span_info(LANG("obj.76368db6fc7ed9df", null))
 
 /// Accepts a mind to initialize goodies for a piece of mail.
 /obj/item/mail/proc/initialize_for_recipient(datum/mind/recipient)
-	name = "[initial(name)] for [recipient.name] ([recipient.assigned_role.title])"
+	name = LANG("obj.f8df833da95927d9", list(initial(name), recipient.name, recipient.assigned_role.title)) // ZH EDIT CHANGE - I18N - ORIGINAL: name = "[initial(name)] for [recipient.name] ([recipient.assigned_role.title])"
 	recipient_ref = WEAKREF(recipient)
 
 	var/mob/living/body = recipient.current
@@ -228,15 +229,20 @@
 			/obj/effect/decal/cleanable/ash,
 		))
 
+	// ZH EDIT CHANGE START - I18N - junk 邮件名与 important 前缀走 LANG 模板（动态拼接绕过所有翻译层）
+	// 形容词槽走 lang_word_pool：GLOB.adjectives 是 375 个极常见英文单词，进目录就是扩大全局
+	// 误翻面，所以按 locale 换整张表（strings/names/adjectives.zh-Hans.txt）。见 lang_word_pool。
+	var/list/adjective_pool = lang_word_pool("strings/names/adjectives.txt", GLOB.adjectives)
 	var/list/junk_names = list(
-		/obj/item/paper/pamphlet/gateway = "[initial(name)] for [pick(GLOB.adjectives)] adventurers",
-		/obj/item/paper/pamphlet/violent_video_games = "[initial(name)] for the truth about the arcade centcom doesn't want to hear",
-		/obj/item/paper/fluff/junkmail_redpill = "[initial(name)] for those feeling [pick(GLOB.adjectives)] working at Nanotrasen",
-		/obj/effect/decal/cleanable/ash = "[initial(name)] with INCREDIBLY IMPORTANT ARTIFACT- DELIVER TO SCIENCE DIVISION. HANDLE WITH CARE.",
+		/obj/item/paper/pamphlet/gateway = LANG("obj.475d43c5dfeef053", list(initial(name), pick(adjective_pool))),
+		/obj/item/paper/pamphlet/violent_video_games = LANG("obj.624cd388041db9c9", list(initial(name))),
+		/obj/item/paper/fluff/junkmail_redpill = LANG("obj.aeb10bfeb4a01f24", list(initial(name), pick(adjective_pool))),
+		/obj/effect/decal/cleanable/ash = LANG("obj.d175bb60ea962354", list(initial(name))),
 	)
 
 	color = pick(department_colors) //eh, who gives a shit.
-	name = special_name ? junk_names[junk] : "important [initial(name)]"
+	name = special_name ? junk_names[junk] : LANG("obj.29ffcf7e23a62abd", list(initial(name)))
+	// ZH EDIT CHANGE END
 
 	junk = new junk(src)
 	return TRUE
@@ -365,13 +371,13 @@
 /obj/item/paper/fluff/junkmail_redpill/Initialize(mapload)
 	var/obj/machinery/nuclearbomb/selfdestruct/self_destruct = locate() in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/nuclearbomb/selfdestruct)
 	if(!self_destruct || !prob(nuclear_option_odds)) // 1 in 1000 chance of getting 2 random nuke code characters.
-		add_raw_text("<i>You need to escape the simulation. Don't forget the numbers, they help you remember:</i> '[rand(0,9)][rand(0,9)][rand(0,9)]...'")
+		add_raw_text(LANG("obj.511a69efd9298ff4", list(rand(0,9), rand(0,9), rand(0,9))))
 		return ..()
 
 	if(self_destruct.r_code == NUKE_CODE_UNSET)
 		self_destruct.r_code = random_nukecode()
 		message_admins("Through junkmail, the self-destruct code was set to \"[self_destruct.r_code]\".")
-	add_raw_text("<i>You need to escape the simulation. Don't forget the numbers, they help you remember:</i> '[self_destruct.r_code[rand(1,5)]][self_destruct.r_code[rand(1,5)]]...'")
+	add_raw_text(LANG("obj.8dccdc6ee2d4f245", list(self_destruct.r_code[rand(1,5)], self_destruct.r_code[rand(1,5)])))
 	return ..()
 
 /obj/item/paper/fluff/junkmail_redpill/true //admin letter enabling players to brute force their way through the nuke code if they're so inclined.
@@ -424,20 +430,20 @@
 	if(armed == FALSE || user.get_inactive_held_item() != src)
 		return ..()
 	if(IS_WEAKREF_OF(user.mind, made_by_ref))
-		balloon_alert(user, "disarming trap...")
+		balloon_alert(user, LANG("obj.4536ffac5bc52fb6", null))
 		if(!do_after(user, 2 SECONDS, target = src))
 			return FALSE
-		balloon_alert(user, "disarmed")
+		balloon_alert(user, LANG("obj.c8412f942d9103b9", null))
 		playsound(src, 'sound/machines/defib/defib_ready.ogg', vol = 100, vary = TRUE)
 		armed = FALSE
 		return TRUE
-	balloon_alert(user, "tinkering with something...")
+	balloon_alert(user, LANG("obj.d5bcb83a74bb8043", null))
 
 	if(!do_after(user, 2 SECONDS, target = src))
 		after_unwrap(user)
 		return FALSE
 	if(prob(50))
-		balloon_alert(user, "disarmed something...?")
+		balloon_alert(user, LANG("obj.68845a5d484c95bb", null))
 		playsound(src, 'sound/machines/defib/defib_ready.ogg', vol = 100, vary = TRUE)
 		armed = FALSE
 		return TRUE
@@ -503,20 +509,20 @@
 
 /obj/item/storage/mail_counterfeit_device/examine_more(mob/user)
 	. = ..()
-	. += span_notice("<i>You notice the manufacturer information on the side of the device...</i>")
-	. += "\t[span_info("Guerilla Letter Assembler")]"
-	. += "\t[span_info("GLA Postal Service, right on schedule.")]"
+	. += span_notice(LANG("obj.ebc5cab9b0986b83", null))
+	. += LANG("obj.294efb1fdb8925bb", list(span_info("Guerilla Letter Assembler")))
+	. += LANG("obj.294efb1fdb8925bb", list(span_info("GLA Postal Service, right on schedule.")))
 	return .
 
 /obj/item/storage/mail_counterfeit_device/attack_self(mob/user, modifiers)
-	var/mail_type = tgui_alert(user, "Make it look like an envelope or like normal mail?", "Mail Counterfeiting", list("Mail", "Envelope"))
+	var/mail_type = tgui_alert(user, LANG("obj.9a949a9ef1e11618", null), LANG("obj.c9a1116a8cf9cf1b", null), list("Mail", "Envelope"))
 	if(isnull(mail_type))
 		return FALSE
 	if(loc != user)
 		return FALSE
 	mail_type = LOWER_TEXT(mail_type)
 
-	var/mail_armed = tgui_alert(user, "Arm it?", "Mail Counterfeiting", list("Yes", "No")) == "Yes"
+	var/mail_armed = tgui_alert(user, LANG("obj.fb5e99361ac0ebd5", null), LANG("obj.c9a1116a8cf9cf1b", null), list("Yes", "No")) == "Yes"
 	if(isnull(mail_armed))
 		return FALSE
 	if(loc != user)
@@ -532,7 +538,7 @@
 		mail_recipients += locked_mind
 		mail_recipients_for_input += avoid_assoc_duplicate_keys(person.name, used_names)
 
-	var/recipient = tgui_input_list(user, "Choose a recipient", "Mail Counterfeiting", mail_recipients_for_input)
+	var/recipient = tgui_input_list(user, LANG("obj.45062d17fbe70f3f", null), LANG("obj.c9a1116a8cf9cf1b", null), mail_recipients_for_input)
 	if(isnull(recipient))
 		return FALSE
 	if(!(src in user.contents))
@@ -550,7 +556,7 @@
 	shady_mail.made_by_cached_name = user.mind.name
 
 	if(index == 1)
-		var/mail_name = tgui_input_text(user, "Enter mail title, or leave it blank", "Mail Counterfeiting", max_length = MAX_LABEL_LEN)
+		var/mail_name = tgui_input_text(user, LANG("obj.7ddc9b907685d617", null), LANG("obj.c9a1116a8cf9cf1b", null), max_length = MAX_LABEL_LEN)
 		if(!(src in user.contents))
 			return FALSE
 		if(reject_bad_text(mail_name, max_length = MAX_LABEL_LEN, ascii_only = FALSE))

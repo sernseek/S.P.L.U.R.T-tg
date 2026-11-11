@@ -1,15 +1,16 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/carbon/human/get_medhud_examine_info(mob/living/user, datum/record/crew/target_record)
 	. = ..()
 
 	if (target_record?.past_medical_records)
-		. += "<a href='byond://?src=[REF(src)];hud=m;medrecords=1;examine_time=[world.time]'>\[View medical records\]</a>"
+		. += LANG("mob.068e479e35c3c007", list(REF(src), world.time))
 	if (target_record?.past_general_records)
-		. += "<a href='byond://?src=[REF(src)];hud=m;genrecords=1;examine_time=[world.time]'>\[View general records\]</a>"
+		. += LANG("mob.66dc1bfb01f57d56", list(REF(src), world.time))
 
 /mob/living/carbon/human/get_sechud_examine_info(mob/living/user, datum/record/crew/target_record)
 	. = ..()
 
 	if (target_record?.past_security_records)
-		. += "<a href='byond://?src=[REF(src)];hud=s;secrecords=1;examine_time=[world.time]'>\[View past security records\]</a>"
+		. += LANG("mob.02f6be9a30450e5c", list(REF(src), world.time))
 	if (target_record?.past_general_records)
-		. += "<a href='byond://?src=[REF(src)];hud=m;genrecords=1;examine_time=[world.time]'>\[View general records\]</a>"
+		. += LANG("mob.66dc1bfb01f57d56", list(REF(src), world.time))

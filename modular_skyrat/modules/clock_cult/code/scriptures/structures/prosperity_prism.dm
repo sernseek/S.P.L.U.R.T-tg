@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/scripture/create_structure/prosperity_prism
 	name = "Prosperity Prism"
 	desc = "Creates a prism that will remove all forms of damage from nearby servants over time, along with purging poisons. Requires power from a sigil of transmission."
@@ -17,7 +18,7 @@
 		return FALSE
 
 	if(locate(/obj/structure/destructible/clockwork/gear_base/powered/prosperity_prism) in range(3)) // No stacking heals for you
-		user.balloon_alert(user, "too close to another prism!")
+		user.balloon_alert(user, LANG("datum.c1020d0354492e06", null))
 		return FALSE
 
 	return TRUE

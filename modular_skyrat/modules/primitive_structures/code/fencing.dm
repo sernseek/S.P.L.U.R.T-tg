@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Short wooden fences, oh me oh my
 
 /obj/structure/railing/wooden_fencing
@@ -47,7 +48,7 @@
 /// Proc that checks if the gate is open or not, then closes/opens the gate repsectively
 /obj/structure/railing/wooden_fencing/gate/proc/open_or_close(mob/user)
 	if(!user.can_interact_with(src))
-		balloon_alert(user, "can't interact")
+		balloon_alert(user, LANG("obj.586fde8f976a45e0", null))
 		return
 	opened = !opened
 	set_density(!opened)

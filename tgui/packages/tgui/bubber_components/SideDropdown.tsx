@@ -89,7 +89,7 @@ export function SideDropdown(props: Props) {
     onClick,
     onSelected,
     options = [],
-    placeholder = 'Select...',
+    placeholder,
     selected,
     width = 15,
   } = props;
@@ -224,9 +224,11 @@ export function SideDropdown(props: Props) {
           {!iconOnly && (
             <>
               <span className="Dropdown__selected-text">
+                {/* ZH EDIT CHANGE - I18N: default moved here so the extractor sees it. ORIGINAL: placeholder = 'Select...' in destructuring */}
                 {displayText ||
                   (selected && getOptionValue(selected)) ||
-                  placeholder}
+                  placeholder ||
+                  'Select...'}
               </span>
 
               {!noChevron && (

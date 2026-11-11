@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Active follow states keyed by enthralled mob -> state data.
 GLOBAL_LIST_EMPTY(mkultra_follow_states)
 // Self-call states keyed by enthralled mob -> allowed/self name list.
@@ -344,10 +345,16 @@ GLOBAL_LIST_EMPTY(mkultra_modular_command_specs)
 	var/text = texts[key]
 	if(!istext(text))
 		return null
+	var/list/translations = lang_scoped_table("mkultra_texts.json") // ZH EDIT - named placeholders are not global reverse keys
+	text = translations[text] || text // Translate the template before inserting user data.
 	if(islist(subs))
 		for(var/k in subs)
 			text = replacetext(text, "{[k]}", "[subs[k]]")
 	return text
+
+/proc/mkultra_speech_text(text)
+	var/list/translations = lang_scoped_table("mkultra_texts.json")
+	return translations[text] || text
 
 /proc/mkultra_flatten_patterns(patterns)
 	var/list/out = list()
@@ -438,7 +445,7 @@ GLOBAL_LIST_EMPTY(mkultra_modular_command_specs)
 		if(!force_debug)
 			var/list/subs = list("master" = user, "phase" = target_phase)
 			var/prompt = mkultra_cmd_text("phase_set", "prompt", subs) || "You feel a heavy influence-[user] wants to set your enthrallment to phase [target_phase]. Do you consent?"
-			var/choice = tgui_alert(humanoid, prompt, "Phase Set Request", list("Yes", "No"))
+			var/choice = tgui_alert(humanoid, prompt, LANG("_root.16ec343ffc434bf6", null), list("Yes", "No"))
 			if(choice != "Yes")
 				continue
 
@@ -539,7 +546,7 @@ GLOBAL_LIST_EMPTY(mkultra_modular_command_specs)
 		return null
 	var/list/entry = list("type" = "legacy", "action" = action)
 	if(action == "speak" || action == "echo")
-		var/phrase = html_decode(stripped_input(user, "Enter the phrase spoken. Abusing this to self antag is bannable.", MAX_MESSAGE_LEN))
+		var/phrase = html_decode(stripped_input(user, LANG("_root.20e345cd95ac81b7", null), MAX_MESSAGE_LEN))
 		phrase = trim(phrase)
 		if(!length(phrase))
 			return null
@@ -552,7 +559,7 @@ GLOBAL_LIST_EMPTY(mkultra_modular_command_specs)
 	var/message = null
 	switch(cmd_name)
 		if("cum_lock")
-			var/choice = input(user, "Lock or unlock climax?", "Cum Lock") in list("Lock", "Unlock", "Cancel")
+			var/choice = input(user, LANG("_root.e68c6aa53fdfea33", null), LANG("_root.1fab1f78718d5680", null)) in list("Lock", "Unlock", "Cancel")
 			if(choice == "Lock")
 				message = "can't cum"
 			else if(choice == "Unlock")
@@ -560,32 +567,32 @@ GLOBAL_LIST_EMPTY(mkultra_modular_command_specs)
 		if("cum")
 			message = "cum"
 		if("emote")
-			var/emote_text = html_decode(stripped_input(user, "Enter the emote to force (example: bow).", MAX_MESSAGE_LEN))
+			var/emote_text = html_decode(stripped_input(user, LANG("_root.feccb3a091ab6c61", null), MAX_MESSAGE_LEN))
 			emote_text = trim(emote_text)
 			if(length(emote_text))
 				message = "[emote_text] for me"
 		if("follow")
-			var/choice = input(user, "Start or stop following?", "Follow") in list("Start", "Stop", "Cancel")
+			var/choice = input(user, LANG("_root.103f398812326873", null), LANG("_root.d0e743a6eef5f435", null)) in list("Start", "Stop", "Cancel")
 			if(choice == "Start")
 				message = "follow me"
 			else if(choice == "Stop")
 				message = "stop following"
 		if("master_title")
-			var/title = html_decode(stripped_input(user, "Enter the title the pet should use (example: Master).", MAX_MESSAGE_LEN))
+			var/title = html_decode(stripped_input(user, LANG("_root.fadd3d380f1d90d0", null), MAX_MESSAGE_LEN))
 			title = trim(title)
 			if(length(title))
 				message = "call me [title]"
 		if("think_of_me")
-			var/title = html_decode(stripped_input(user, "Enter the honorific the pet should think of you as.", MAX_MESSAGE_LEN))
+			var/title = html_decode(stripped_input(user, LANG("_root.f50d57db411a8145", null), MAX_MESSAGE_LEN))
 			title = trim(title)
 			if(length(title))
 				message = "think of me as [title]"
 		if("phase_set")
-			var/phase = input(user, "Pick a phase (1-4).", "Phase Set") as num
+			var/phase = input(user, LANG("_root.35da0ea95b9049dc", null), LANG("_root.20feab00c0e4a8a8", null)) as num
 			if(isnum(phase) && phase >= 1 && phase <= 4)
 				message = "forscenessake phaseset [round(phase)]"
 		if("strip_slot")
-			var/slot = html_decode(stripped_input(user, "Enter a slot to strip (or 'all' for everything). Leave blank for default strip.", MAX_MESSAGE_LEN))
+			var/slot = html_decode(stripped_input(user, LANG("_root.dde9a9e7b03095e4", null), MAX_MESSAGE_LEN))
 			slot = trim(slot)
 			if(length(slot))
 				message = "strip [slot]"
@@ -596,21 +603,21 @@ GLOBAL_LIST_EMPTY(mkultra_modular_command_specs)
 		if("lust_down")
 			message = "calm down"
 		if("selfcall")
-			var/names = html_decode(stripped_input(user, "Enter name(s) (comma separated).", MAX_MESSAGE_LEN))
+			var/names = html_decode(stripped_input(user, LANG("_root.9c6a3a3abed00ff3", null), MAX_MESSAGE_LEN))
 			names = trim(names)
 			if(length(names))
 				message = "call yourself [names]"
 		if("selfcall_off")
 			message = "selfcall off"
 		if("wear")
-			var/slot = html_decode(stripped_input(user, "Enter slot to wear on (optional).", MAX_MESSAGE_LEN))
+			var/slot = html_decode(stripped_input(user, LANG("_root.0215e3d384f01dc3", null), MAX_MESSAGE_LEN))
 			slot = trim(slot)
 			if(length(slot))
 				message = "wear this on [slot]"
 			else
 				message = "wear"
 		if("arousal_lock")
-			var/choice = input(user, "Lock hard, lock limp, or release?", "Arousal Lock") in list("Hard", "Limp", "Release", "Cancel")
+			var/choice = input(user, LANG("_root.09faf254cf48d89c", null), LANG("_root.dbeaf0ca806079d6", null)) in list("Hard", "Limp", "Release", "Cancel")
 			if(choice == "Hard")
 				message = "perma hard"
 			else if(choice == "Limp")
@@ -618,22 +625,22 @@ GLOBAL_LIST_EMPTY(mkultra_modular_command_specs)
 			else if(choice == "Release")
 				message = "reset arousal"
 		if("worship")
-			var/choice = input(user, "Start or stop worship?", "Worship") in list("Start", "Stop", "Cancel")
+			var/choice = input(user, LANG("_root.31c732ddb7f75358", null), LANG("_root.b4d84a570c32bbb4", null)) in list("Start", "Stop", "Cancel")
 			if(choice == "Stop")
 				message = "stop worship"
 			else if(choice == "Start")
-				var/part = html_decode(stripped_input(user, "Enter the body part to worship (example: hands).", MAX_MESSAGE_LEN))
+				var/part = html_decode(stripped_input(user, LANG("_root.67b6ad8562f6f99d", null), MAX_MESSAGE_LEN))
 				part = trim(part)
 				if(length(part))
 					message = "worship my [part]"
 		if("heat")
-			var/choice = input(user, "Enable or disable heat?", "Heat") in list("On", "Off", "Cancel")
+			var/choice = input(user, LANG("_root.9079fad7d89b80e4", null), LANG("_root.663e9652056c5318", null)) in list("On", "Off", "Cancel")
 			if(choice == "On")
 				message = "go into heat"
 			else if(choice == "Off")
 				message = "stop heat"
 		if("well_trained")
-			var/choice = input(user, "Enable or disable training?", "Well Trained") in list("On", "Off", "Cancel")
+			var/choice = input(user, LANG("_root.42e33987345fa9a5", null), LANG("_root.934fc38560940acb", null)) in list("On", "Off", "Cancel")
 			if(choice == "On")
 				message = "well trained"
 			else if(choice == "Off")
@@ -641,21 +648,21 @@ GLOBAL_LIST_EMPTY(mkultra_modular_command_specs)
 		if("piss_self")
 			message = "piss yourself"
 		if("sissy")
-			var/choice = input(user, "Enable or disable sissy mode?", "Sissy") in list("On", "Off", "Cancel")
+			var/choice = input(user, LANG("_root.26836375bf3d2333", null), LANG("_root.f63c6858bcd38980", null)) in list("On", "Off", "Cancel")
 			if(choice == "On")
 				message = "sissy mode"
 			else if(choice == "Off")
 				message = "sissy off"
 		if("pet_tether")
-			var/choice = input(user, "Enable or disable pet tether mood?", "Pet Tether") in list("On", "Off", "Cancel")
+			var/choice = input(user, LANG("_root.ec70c534776d472d", null), LANG("_root.2e8c4fd6e56863e6", null)) in list("On", "Off", "Cancel")
 			if(choice == "On")
 				message = "pet tether on"
 			else if(choice == "Off")
 				message = "pet tether off"
 		if("slot_lock")
-			var/choice = input(user, "Lock or unlock a slot?", "Slot Lock") in list("Lock", "Unlock", "Cancel")
+			var/choice = input(user, LANG("_root.6c69e039226c2402", null), LANG("_root.1a048e69a38d0b81", null)) in list("Lock", "Unlock", "Cancel")
 			if(choice == "Lock" || choice == "Unlock")
-				var/slot = html_decode(stripped_input(user, "Enter the slot name to target (example: neck).", MAX_MESSAGE_LEN))
+				var/slot = html_decode(stripped_input(user, LANG("_root.06ce3542fdb1a3c2", null), MAX_MESSAGE_LEN))
 				slot = trim(slot)
 				if(length(slot))
 					var/verb = (choice == "Lock") ? "lock" : "unlock"
@@ -702,9 +709,9 @@ GLOBAL_LIST_EMPTY(mkultra_modular_command_specs)
 			enthralled_mob.adjust_stutter(5 SECONDS)
 			enthralled_mob.StaminaKnockdown(60)
 			enthralled_mob.Stun(60)
-			to_chat(enthralled_mob, span_warning("Your muscles seize up, then start spasming wildy!"))
+			to_chat(enthralled_mob, span_warning(LANG("_root.32143f405f93cad1", null)))
 		else if(action == "kneel")
-			to_chat(enthralled_mob, span_hear("You drop to the ground unsurreptitiously."))
+			to_chat(enthralled_mob, span_hear(LANG("_root.ca6ef850f33c1f58", null)))
 			enthralled_mob.toggle_resting()
 		else if(action == "strip")
 			if(ishuman(enthralled_mob))
@@ -713,7 +720,7 @@ GLOBAL_LIST_EMPTY(mkultra_modular_command_specs)
 				for(var/obj/item/storage_item in items)
 					if(storage_item == human_mob.w_uniform || storage_item == human_mob.wear_suit)
 						human_mob.dropItemToGround(storage_item, TRUE)
-				to_chat(enthralled_mob, span_hear("You feel compelled to strip your clothes."))
+				to_chat(enthralled_mob, span_hear(LANG("_root.6070fa537bd1ba8c", null)))
 		else if(action == "trance")
 			if(ishuman(enthralled_mob))
 				var/mob/living/carbon/human/human_mob = enthralled_mob
@@ -1002,7 +1009,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 			var/removed = mkultra_strip_all(humanoid)
 			if(removed)
 				mkultra_add_cooldown(enthrall_chem, 5)
-				to_chat(user, "<span class='notice'><i>You order [humanoid] to get naked, and they hurriedly comply.</i></span>")
+				to_chat(user, LANG("_root.bd6d48b78d9050e1", list(humanoid)))
 				addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, humanoid, "<span class='love'>You strip down completely for [enthrall_chem.enthrall_gender].</span>"), 5)
 			else
 				mkultra_debug("strip all found nothing to remove on [humanoid]")
@@ -1014,7 +1021,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 			continue
 		mkultra_debug("strip dropping [to_drop] from [humanoid] slot [mkultra_slot_name(slot_id)]")
 		mkultra_add_cooldown(enthrall_chem, 4)
-		to_chat(user, "<span class='notice'><i>You command [humanoid] to strip [mkultra_slot_name(slot_id)], and they comply.</i></span>")
+		to_chat(user, LANG("_root.49b88641cfb548dd", list(humanoid, mkultra_slot_name(slot_id))))
 		addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, humanoid, "<span class='love'>You obediently remove your [mkultra_slot_name(slot_id)].</span>"), 5)
 
 	// Always consume so base handler doesn't also strip.
@@ -1047,7 +1054,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 		mkultra_add_cooldown(enthrall_chem, 3)
 		mkultra_debug("lust up applied to [humanoid] (+[lust_delta])")
 		addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, humanoid, "<span class='love'>Heat floods your body at [enthrall_chem.enthrall_gender]'s command.</span>"), 5)
-		to_chat(user, "<span class='notice'><i>[humanoid] flushes as you stoke their lust.</i></span>")
+		to_chat(user, LANG("_root.a5ac251bf10a2d51", list(humanoid)))
 		handled = TRUE
 
 	return handled
@@ -1079,7 +1086,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 		mkultra_add_cooldown(enthrall_chem, 3)
 		mkultra_debug("lust down applied to [humanoid] (-[lust_delta])")
 		addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, humanoid, "<span class='notice'>You force yourself to cool down at [enthrall_chem.enthrall_gender]'s order.</span>"), 5)
-		to_chat(user, "<span class='notice'><i>[humanoid] reins their arousal back under your command.</i></span>")
+		to_chat(user, LANG("_root.9d7b1544fa38e91a", list(humanoid)))
 		handled = TRUE
 
 	return handled
@@ -1647,7 +1654,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 
 		if(get_dist(humanoid, user) > 1)
 			mkultra_debug("wear fail: [humanoid] not adjacent to [user]")
-			to_chat(user, "<span class='warning'><i>[humanoid] needs to be right next to you to take it.</i></span>")
+			to_chat(user, LANG("_root.9a2eeee83f44aee1", list(humanoid)))
 			return TRUE
 
 		var/success = mkultra_do_wear(humanoid, user, slot_text)
@@ -2466,7 +2473,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 		message = copytext(message, length(found_string) + 1)//I have no idea what this does
 
 	if(debug == TRUE)
-		to_chat(world, "[user]'s power is [power_multiplier].")
+		to_chat(world, LANG("_root.0dd31768ca3ee97b", list(user, power_multiplier)))
 
 	//Mixables
 	var/static/regex/enthrall_words = regex("relax|obey|love|serve|so easy|ara ara")
@@ -2606,7 +2613,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 						addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "<span class='big warning'>The snapping of your [enthrall_chem.enthrall_gender]'s fingers brings you back to your enthralled state, obedient and ready to serve.</b></span>"), 5)
 					else
 						addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "<span class='big warning'>The snapping of [enthrall_chem.enthrall_mob]'s fingers brings you back to being under their influence.</b></span>"), 5)
-					to_chat(user, "<span class='notice'><i>You wake up [enthrall_listener]!</i></span>")
+					to_chat(user, LANG("_root.103d22812d71cad0", list(enthrall_listener)))
 
 	//tier 1
 
@@ -2622,101 +2629,101 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 				if(0)
 					continue
 				if(1)
-					addtimer(CALLBACK(humanoid, /atom/movable/proc/say, "I feel happy being with you."), 5)
+					addtimer(CALLBACK(humanoid, /atom/movable/proc/say, mkultra_speech_text("I feel happy being with you.")), 5)
 					continue
 				if(2)
-					speaktrigger += "[(enthrall_chem.lewd?"I think I'm in love with you... ":"I find you really inspirational, ")]" //'
+					speaktrigger += "[(enthrall_chem.lewd?mkultra_speech_text("I think I'm in love with you... "):mkultra_speech_text("I find you really inspirational, "))]" //'
 				if(3)
-					speaktrigger += "[(enthrall_chem.lewd?"I'm devoted to being your pet":"I'm commited to following your cause!")]! "
+					speaktrigger += "[(enthrall_chem.lewd?mkultra_speech_text("I'm devoted to being your pet"):mkultra_speech_text("I'm commited to following your cause!"))]! "
 				if(4)
-					speaktrigger += "[(enthrall_chem.lewd?"You are my whole world and all of my being belongs to you, ":"I cannot think of anything else but aiding your cause, ")] "//Redflags!!
+					speaktrigger += "[(enthrall_chem.lewd?mkultra_speech_text("You are my whole world and all of my being belongs to you, "):mkultra_speech_text("I cannot think of anything else but aiding your cause, "))] "//Redflags!!
 
 			//mood
 			if(humanoid.mob_mood)
 				switch(humanoid.mob_mood.sanity_level)
 					if(SANITY_GREAT to INFINITY)
-						speaktrigger += "I'm beyond elated!! " //did you mean byond elated? hohoho
+						speaktrigger += mkultra_speech_text("I'm beyond elated!! ") //did you mean byond elated? hohoho
 					if(SANITY_NEUTRAL to SANITY_GREAT)
-						speaktrigger += "I'm really happy! "
+						speaktrigger += mkultra_speech_text("I'm really happy! ")
 					if(SANITY_DISTURBED to SANITY_NEUTRAL)
-						speaktrigger += "I'm a little sad, "
+						speaktrigger += mkultra_speech_text("I'm a little sad, ")
 					if(SANITY_UNSTABLE to SANITY_DISTURBED)
-						speaktrigger += "I'm really upset, "
+						speaktrigger += mkultra_speech_text("I'm really upset, ")
 					if(SANITY_CRAZY to SANITY_UNSTABLE)
-						speaktrigger += "I'm about to fall apart without you! "
+						speaktrigger += mkultra_speech_text("I'm about to fall apart without you! ")
 					if(SANITY_INSANE to SANITY_CRAZY)
-						speaktrigger += "Hold me, please.. "
+						speaktrigger += mkultra_speech_text("Hold me, please.. ")
 
 			//withdrawl_active
 			switch(enthrall_chem.withdrawl_progress)
 				if(10 to 36) //denial
-					speaktrigger += "I missed you, "
+					speaktrigger += mkultra_speech_text("I missed you, ")
 				if(36 to 66) //barganing
-					speaktrigger += "I missed you, but I knew you'd come back for me! "
+					speaktrigger += mkultra_speech_text("I missed you, but I knew you'd come back for me! ")
 				if(66 to 90) //anger
-					speaktrigger += "I couldn't take being away from you like that, "
+					speaktrigger += mkultra_speech_text("I couldn't take being away from you like that, ")
 				if(90 to 140) //depression
-					speaktrigger += "I was so scared you'd never come back, "
+					speaktrigger += mkultra_speech_text("I was so scared you'd never come back, ")
 				if(140 to INFINITY) //acceptance
-					speaktrigger += "I'm hurt that you left me like that... I felt so alone... "
+					speaktrigger += mkultra_speech_text("I'm hurt that you left me like that... I felt so alone... ")
 
 			//hunger
 			switch(humanoid.nutrition)
 				if(0 to NUTRITION_LEVEL_STARVING)
-					speaktrigger += "I'm famished, please feed me..! "
+					speaktrigger += mkultra_speech_text("I'm famished, please feed me..! ")
 				if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
-					speaktrigger += "I'm so hungry... "
+					speaktrigger += mkultra_speech_text("I'm so hungry... ")
 				if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FED)
-					speaktrigger += "I'm hungry, "
+					speaktrigger += mkultra_speech_text("I'm hungry, ")
 				if(NUTRITION_LEVEL_FED to NUTRITION_LEVEL_WELL_FED)
-					speaktrigger += "I'm sated, "
+					speaktrigger += mkultra_speech_text("I'm sated, ")
 				if(NUTRITION_LEVEL_WELL_FED to NUTRITION_LEVEL_FULL)
-					speaktrigger += "I've a full belly! "
+					speaktrigger += mkultra_speech_text("I've a full belly! ")
 				if(NUTRITION_LEVEL_FULL to INFINITY)
-					speaktrigger += "I'm fat... "
+					speaktrigger += mkultra_speech_text("I'm fat... ")
 
 			//health
 			switch(humanoid.health)
 				if(100 to INFINITY)
-					speaktrigger += "I feel fit, "
+					speaktrigger += mkultra_speech_text("I feel fit, ")
 				if(80 to 99)
-					speaktrigger += "I ache a little bit, "
+					speaktrigger += mkultra_speech_text("I ache a little bit, ")
 				if(40 to 80)
-					speaktrigger += "I'm really hurt, "
+					speaktrigger += mkultra_speech_text("I'm really hurt, ")
 				if(0 to 40)
-					speaktrigger += "I'm in a lot of pain, help! "
+					speaktrigger += mkultra_speech_text("I'm in a lot of pain, help! ")
 				if(-INFINITY to 0)
-					speaktrigger += "I'm barely concious and in so much pain, please help me! "
+					speaktrigger += mkultra_speech_text("I'm barely concious and in so much pain, please help me! ")
 			//toxin
 			switch(humanoid.get_tox_loss())
 				if(10 to 30)
-					speaktrigger += "I feel a bit queasy... "
+					speaktrigger += mkultra_speech_text("I feel a bit queasy... ")
 				if(30 to 60)
-					speaktrigger += "I feel nauseous... "
+					speaktrigger += mkultra_speech_text("I feel nauseous... ")
 				if(60 to INFINITY)
-					speaktrigger += "My head is pounding and I feel like I'm going to be sick... "
+					speaktrigger += mkultra_speech_text("My head is pounding and I feel like I'm going to be sick... ")
 			//oxygen
 			if (humanoid.get_oxy_loss() >= 25)
-				speaktrigger += "I can't breathe! "
+				speaktrigger += mkultra_speech_text("I can't breathe! ")
 			//deaf..?
 			if (HAS_TRAIT(humanoid, TRAIT_DEAF))//How the heck you managed to get here I have no idea, but just in case!
-				speaktrigger += "I can barely hear you! "
+				speaktrigger += mkultra_speech_text("I can barely hear you! ")
 			//And the brain damage. And the brain damage. And the brain damage. And the brain damage. And the brain damage.
 			switch(humanoid.get_organ_loss(ORGAN_SLOT_BRAIN))
 				if(20 to 40)
-					speaktrigger += "I have a mild head ache, "
+					speaktrigger += mkultra_speech_text("I have a mild head ache, ")
 				if(40 to 80)
-					speaktrigger += "I feel disorentated and confused, "
+					speaktrigger += mkultra_speech_text("I feel disorentated and confused, ")
 				if(80 to 120)
-					speaktrigger += "My head feels like it's about to explode, "
+					speaktrigger += mkultra_speech_text("My head feels like it's about to explode, ")
 				if(120 to 160)
-					speaktrigger += "You are the only thing keeping my mind sane, "
+					speaktrigger += mkultra_speech_text("You are the only thing keeping my mind sane, ")
 				if(160 to INFINITY)
-					speaktrigger += "I feel like I'm on the brink of losing my mind, "
+					speaktrigger += mkultra_speech_text("I feel like I'm on the brink of losing my mind, ")
 
 			//collar
 			if(humanoid.wear_neck?.kink_collar == TRUE && enthrall_chem.lewd)
-				speaktrigger += "I love the collar you gave me, "
+				speaktrigger += mkultra_speech_text("I love the collar you gave me, ")
 			//End
 			if(enthrall_chem.lewd)
 				speaktrigger += "[enthrall_chem.enthrall_gender]!"
@@ -2736,7 +2743,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 			else
 				carbon_mob.adjust_silence((10 SECONDS * power_multiplier) * enthrall_chem.phase)
 			addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, carbon_mob, "<span class='notice'>You are unable to speak!</b></span>"), 5)
-			to_chat(user, "<span class='notice'><i>You silence [carbon_mob].</i></span>")
+			to_chat(user, LANG("_root.60cc62339ab61a4e", list(carbon_mob)))
 			enthrall_chem.cooldown += 3
 
 	//SPEAK
@@ -2746,7 +2753,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 			REMOVE_TRAIT(carbon_mob, TRAIT_MUTE, "enthrall")
 			carbon_mob.set_silence(0 SECONDS)
 			enthrall_chem.cooldown += 3
-			to_chat(user, "<span class='notice'><i>You [(enthrall_chem.lewd?"allow [carbon_mob] to speak again":"encourage [carbon_mob] to speak again")].</i></span>")
+			to_chat(user, LANG("_root.d670048bd89eb2cd", list((enthrall_chem.lewd?"allow [carbon_mob] to speak again":"encourage [carbon_mob] to speak again"))))
 
 
 	//Antiresist
@@ -2758,7 +2765,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 			addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "<span class='big warning'>Your mind clouds over, as you find yourself unable to resist!</b></span>"), 5)
 			enthrall_chem.status_strength = (1 * power_multiplier * enthrall_chem.phase)
 			enthrall_chem.cooldown += 15//Too short? yes, made 15
-			to_chat(user, "<span class='notice'><i>You frustrate [enthrall_listener]'s attempts at resisting.</i></span>")
+			to_chat(user, LANG("_root.4083597aa4eb667b", list(enthrall_listener)))
 
 	//RESIST
 	else if((findtext(message, resist_words)))
@@ -2769,7 +2776,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 			enthrall_chem.owner_resist()
 			enthrall_chem.cooldown += 2
 			addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, carbon_mob, "<span class='notice'>You are spurred into resisting from [user]'s words!'</b></span>"), 5)
-			to_chat(user, "<span class='notice'><i>You spark resistance in [carbon_mob].</i></span>")
+			to_chat(user, LANG("_root.1ca92fa705d0b3bf", list(carbon_mob)))
 
 	//FORGET (A way to cancel the process)
 	else if((findtext(message, forget_words)))
@@ -2783,8 +2790,8 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 			switch(enthrall_chem.phase)
 				if(1 to 2)
 					enthrall_chem.phase = -1
-					to_chat(carbon_mob, "<span class='big warning'>You have no recollection of being enthralled by [enthrall_chem.enthrall_mob]!</b></span>")
-					to_chat(user, "<span class='notice'><i>You revert [carbon_mob] back to their state before enthrallment.</i></span>")
+					to_chat(carbon_mob, LANG("_root.f9a112d526252642", list(enthrall_chem.enthrall_mob)))
+					to_chat(user, LANG("_root.5e6b313c7b1d221a", list(carbon_mob)))
 				if(3)
 					enthrall_chem.phase = 0
 					enthrall_chem.cooldown = 0
@@ -2792,7 +2799,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 						addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, carbon_mob, "<span class='big warning'>You revert to yourself before being enthralled by your [enthrall_chem.enthrall_gender], with no memory of what happened.</b></span>"), 5)
 					else
 						addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, carbon_mob, "<span class='big warning'>You revert to who you were before, with no memory of what happened with [enthrall_chem.enthrall_mob].</b></span>"), 5)
-					to_chat(user, "<span class='notice'><i>You put [carbon_mob] into a sleeper state, ready to turn them back at the snap of your fingers.</i></span>")
+					to_chat(user, LANG("_root.db34c61db8e2602c", list(carbon_mob)))
 
 	//ATTRACT
 	else if((findtext(message, attract_words)))
@@ -2802,7 +2809,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 			enthrall_listener.throw_at(get_step_towards(user,enthrall_listener), 3 * power_multiplier, 1 * power_multiplier)
 			enthrall_chem.cooldown += 3
 			addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "<span class='notice'>You are drawn towards [user]!</b></span>"), 5)
-			to_chat(user, "<span class='notice'><i>You draw [enthrall_listener] towards you!</i></span>")
+			to_chat(user, LANG("_root.0bff94c286850ef1", list(enthrall_listener)))
 
 	//SLEEP
 	else if((findtext(message, sleep_words)))
@@ -2813,7 +2820,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 					carbon_mob.Sleeping(45 * power_multiplier)
 					enthrall_chem.cooldown += 10
 					addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, carbon_mob, "<span class='notice'>Drowsiness suddenly overwhelms you as you fall asleep!</b></span>"), 5)
-					to_chat(user, "<span class='notice'><i>You send [carbon_mob] to sleep.</i></span>")
+					to_chat(user, LANG("_root.42a13b0eb5e610f9", list(carbon_mob)))
 
 	//STRIP
 	else if((findtext(message, strip_words)))
@@ -2844,7 +2851,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 						enthrall_listener.toggle_move_intent()
 						enthrall_chem.cooldown += 1
 						addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "<span class='notice'>You slow down to a walk.</b></span>"), 5)
-						to_chat(user, "<span class='notice'><i>You encourage [enthrall_listener] to slow down.</i></span>")
+						to_chat(user, LANG("_root.7c5bf4374b79fd05", list(enthrall_listener)))
 
 	//RUN
 	else if((findtext(message, run_words)))
@@ -2857,7 +2864,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 						enthrall_listener.toggle_move_intent()
 						enthrall_chem.cooldown += 1
 						addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "<span class='notice'>You speed up into a jog!</b></span>"), 5)
-						to_chat(user, "<span class='notice'><i>You encourage [enthrall_listener] to pick up the pace!</i></span>")
+						to_chat(user, LANG("_root.e81207bb745269b2", list(enthrall_listener)))
 
 	//LIE DOWN
 	else if(findtext(message, liedown_words))
@@ -2869,7 +2876,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 					enthrall_listener.toggle_resting()
 					enthrall_chem.cooldown += 10
 					addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "[(enthrall_chem.lewd?"<span class='love'>You eagerly lie down!":"<span class='notice'>You suddenly lie down!")]</b></span>"), 5)
-					to_chat(user, "<span class='notice'><i>You encourage [enthrall_listener] to lie down.</i></span>")
+					to_chat(user, LANG("_root.1113e30a11273dba", list(enthrall_listener)))
 
 	//KNOCKDOWN
 	else if(findtext(message, knockdown_words))
@@ -2881,7 +2888,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 					enthrall_listener.StaminaKnockdown(30 * power_multiplier * enthrall_chem.phase)
 					enthrall_chem.cooldown += 8
 					addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "<span class='notice'>You suddenly drop to the ground!</b></span>"), 5)
-					to_chat(user, "<span class='notice'><i>You encourage [enthrall_listener] to drop down to the ground.</i></span>")
+					to_chat(user, LANG("_root.7b28e72366594c43", list(enthrall_listener)))
 
 	//tier3
 
@@ -2894,11 +2901,11 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 				var/speaktrigger = ""
 				carbon_mob.emote("me", EMOTE_VISIBLE, "whispers something quietly.")
 				if (get_dist(user, carbon_mob) > 1)//Requires user to be next to their pet.
-					to_chat(user, "<span class='warning'>You need to be next to your pet to hear them!</b></span>")
+					to_chat(user, LANG("_root.736a50add93a3e3a", null))
 					continue
 				for (var/trigger in enthrall_chem.custom_triggers)
 					speaktrigger += "[trigger], "
-				to_chat(user, "<b>[carbon_mob]</b> whispers, \"<i>[speaktrigger] are my triggers.</i>\"")//So they don't trigger themselves!
+				to_chat(user, LANG("_root.873677d14c37ac0e", list(carbon_mob, speaktrigger)))//So they don't trigger themselves!
 				addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, carbon_mob, "<span class='notice'>You whisper your triggers to [(enthrall_chem.lewd?"Your [enthrall_chem.enthrall_gender]":"[enthrall_chem.enthrall_mob]")].</span>"), 5)
 
 
@@ -2909,26 +2916,26 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 			var/datum/status_effect/chem/enthrall/enthrall_chem = humanoid.has_status_effect(/datum/status_effect/chem/enthrall)
 			if(enthrall_chem.phase == 3)
 				if (get_dist(user, humanoid) > 1)//Requires user to be next to their pet.
-					to_chat(user, "<span class='warning'>You need to be next to your pet to give them a new trigger!</b></span>")
+					to_chat(user, LANG("_root.7bac0ad73dff0b4e", null))
 					continue
 				if(!enthrall_chem.lewd)
-					to_chat(user, "<span class='warning'>[humanoid] seems incapable of being implanted with triggers.</b></span>")
+					to_chat(user, LANG("_root.d67a9845491d6490", list(humanoid)))
 					continue
 				if(istype(enthrall_chem, /datum/status_effect/chem/enthrall/pet_chip/mk2))
 					user.emote("me", EMOTE_VISIBLE, "puts their hands upon [humanoid.name]'s head and looks deep into their eyes, whispering something to them.")
 					user.SetStun(1000)//Hands are handy, so you have to stay still
 					humanoid.SetStun(1000)
 					if (enthrall_chem.mental_capacity >= 5)
-						var/trigger = html_decode(stripped_input(user, "Enter the trigger phrase", MAX_MESSAGE_LEN))
+						var/trigger = html_decode(stripped_input(user, LANG("_root.3c3d5a475012bc73", null), MAX_MESSAGE_LEN))
 						trigger = trim(trigger)
 						if(!length(trigger))
-							to_chat(user, "<span class='warning'>Your pet looks at you confused, it seems they don't understand that trigger!</b></span>")
+							to_chat(user, LANG("_root.9df601a2102b778d", null))
 							user.SetStun(0)
 							humanoid.SetStun(0)
 							continue
-						var/command_count = input(user, "How many commands should this trigger run? (1-5)", "Command Count") as num
+						var/command_count = input(user, LANG("_root.a104c4dca9a6257a", null), LANG("_root.4292d51b48dafad2", null)) as num
 						if(!isnum(command_count) || command_count < 1 || command_count > 5)
-							to_chat(user, "<span class='warning'>You must choose between 1 and 5 commands.</b></span>")
+							to_chat(user, LANG("_root.9c1923b591efcd66", null))
 							user.SetStun(0)
 							humanoid.SetStun(0)
 							continue
@@ -2939,7 +2946,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 						var/list/commands = list()
 						var/cancelled = FALSE
 						for(var/i = 1; i <= command_count; i++)
-							var/choice = input(user, "Pick command #[i]", "Command #[i]") in command_options
+							var/choice = input(user, LANG("_root.055593e178f6971d", list(i)), LANG("_root.eb08131fa1ecd843", list(i))) in command_options
 							if(!choice || choice == "Cancel")
 								cancelled = TRUE
 								break
@@ -2969,9 +2976,9 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 						enthrall_chem.custom_triggers[trigger] = list("commands" = commands)
 						enthrall_chem.mental_capacity -= 5
 						addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, humanoid, "<span class='notice'>[(enthrall_chem.lewd?"your [enthrall_chem.enthrall_gender]":"[enthrall_chem.enthrall_mob]")] whispers you a new trigger.</span>"), 5)
-						to_chat(user, "<span class='notice'><i>You sucessfully set the trigger word [trigger] in [humanoid]</i></span>")
+						to_chat(user, LANG("_root.10efd8be496378b7", list(trigger, humanoid)))
 					else
-						to_chat(user, "<span class='warning'>Your pet looks at you with a vacant blase expression, you don't think you can program anything else into them</b></span>")
+						to_chat(user, LANG("_root.3474be821b655c20", null))
 					user.SetStun(0)
 					humanoid.SetStun(0)
 				else
@@ -2979,13 +2986,13 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 					user.SetStun(1000)//Hands are handy, so you have to stay still
 					humanoid.SetStun(1000)
 					if (enthrall_chem.mental_capacity >= 5)
-						var/trigger = html_decode(stripped_input(user, "Enter the trigger phrase", MAX_MESSAGE_LEN))
+						var/trigger = html_decode(stripped_input(user, LANG("_root.3c3d5a475012bc73", null), MAX_MESSAGE_LEN))
 						var/custom_words_words_list = list("Speak", "Echo", "Shock", "Kneel", "Strip", "Trance", "Cancel")
-						var/trigger2 = input(user, "Pick an effect", "Effects") in custom_words_words_list
+						var/trigger2 = input(user, LANG("_root.17d169d78f97a870", null), LANG("_root.d0811660d870a0c3", null)) in custom_words_words_list
 						trigger2 = LOWER_TEXT(trigger2)
 						if ((findtext(trigger2, custom_words_words)))
 							if (trigger2 == "speak" || trigger2 == "echo")
-								var/trigger3 = html_decode(stripped_input(user, "Enter the phrase spoken. Abusing this to self antag is bannable.", MAX_MESSAGE_LEN))
+								var/trigger3 = html_decode(stripped_input(user, LANG("_root.20e345cd95ac81b7", null), MAX_MESSAGE_LEN))
 								enthrall_chem.custom_triggers[trigger] = list(trigger2, trigger3)
 								if(findtext(trigger3, "admin"))
 									message_admins("FERMICHEM: [user] maybe be trying to abuse MKUltra by implanting by [humanoid] with [trigger], triggering [trigger2], to send [trigger3].")
@@ -2993,11 +3000,11 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 								enthrall_chem.custom_triggers[trigger] = trigger2
 							enthrall_chem.mental_capacity -= 5
 							addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, humanoid, "<span class='notice'>[(enthrall_chem.lewd?"your [enthrall_chem.enthrall_gender]":"[enthrall_chem.enthrall_mob]")] whispers you a new trigger.</span>"), 5)
-							to_chat(user, "<span class='notice'><i>You sucessfully set the trigger word [trigger] in [humanoid]</i></span>")
+							to_chat(user, LANG("_root.10efd8be496378b7", list(trigger, humanoid)))
 						else
-							to_chat(user, "<span class='warning'>Your pet looks at you confused, it seems they don't understand that effect!</b></span>")
+							to_chat(user, LANG("_root.5bc8d00be0de85ab", null))
 					else
-						to_chat(user, "<span class='warning'>Your pet looks at you with a vacant blase expression, you don't think you can program anything else into them</b></span>")
+						to_chat(user, LANG("_root.3474be821b655c20", null))
 					user.SetStun(0)
 					humanoid.SetStun(0)
 
@@ -3008,24 +3015,24 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 			var/datum/status_effect/chem/enthrall/enthrall_chem = humanoid.has_status_effect(/datum/status_effect/chem/enthrall)
 			if(enthrall_chem.phase == 3)
 				if (get_dist(user, humanoid) > 1)//Requires user to be next to their pet.
-					to_chat(user, "<span class='warning'>You need to be next to your pet to give them a new echophrase!</b></span>")
+					to_chat(user, LANG("_root.51621620ceef4a42", null))
 					continue
 				if(!enthrall_chem.lewd)
-					to_chat(user, "<span class='warning'>[humanoid] seems incapable of being implanted with an echoing phrase.</b></span>")
+					to_chat(user, LANG("_root.dec6ac29b38fc03a", list(humanoid)))
 					continue
 				else
 					user.emote("me", EMOTE_VISIBLE, "puts their hands upon [humanoid.name]'s head and looks deep into their eyes, whispering something to them.")
 					user.SetStun(1000)//Hands are handy, so you have to stay still
 					humanoid.SetStun(1000)
-					var/trigger = stripped_input(user, "Enter the loop phrase", MAX_MESSAGE_LEN)
+					var/trigger = stripped_input(user, LANG("_root.409b03a822122dac", null), MAX_MESSAGE_LEN)
 					var/custom_span = list("Notice", "Warning", "Hypnophrase", "Love", "Velvet")
-					var/trigger2 = input(user, "Pick the style", "Style") in custom_span
+					var/trigger2 = input(user, LANG("_root.e606861d28ca6223", null), LANG("_root.7ab1868c793e32dc", null)) in custom_span
 					trigger2 = LOWER_TEXT(trigger2)
 					enthrall_chem.custom_echo = trigger
 					enthrall_chem.custom_span = trigger2
 					user.SetStun(0)
 					humanoid.SetStun(0)
-					to_chat(user, "<span class='notice'><i>You sucessfully set an echoing phrase in [humanoid]</i></span>")
+					to_chat(user, LANG("_root.92d080e3e79867dc", list(humanoid)))
 
 	//CUSTOM OBJECTIVE
 	else if((findtext(message, objective_words)))
@@ -3034,16 +3041,16 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 			var/datum/status_effect/chem/enthrall/enthrall_chem = humanoid.has_status_effect(/datum/status_effect/chem/enthrall)
 			if(enthrall_chem.phase == 3)
 				if (get_dist(user, humanoid) > 1)//Requires user to be next to their pet.
-					to_chat(user, "<span class='warning'>You need to be next to your pet to give them a new objective!</b></span>")
+					to_chat(user, LANG("_root.b2e8146e2a81fc2e", null))
 					continue
 				else
 					user.emote("me", EMOTE_VISIBLE, "puts their hands upon [humanoid.name]'s head and looks deep into their eyes, whispering something to them.'")
 					user.SetStun(1000)//So you can't run away!
 					humanoid.SetStun(1000)
 					if (enthrall_chem.mental_capacity >= 200)
-						var/datum/objective/brainwashing/objective = stripped_input(user, "Add an objective to give your pet.", MAX_MESSAGE_LEN)
+						var/datum/objective/brainwashing/objective = stripped_input(user, LANG("_root.6cfb7adb04872b40", null), MAX_MESSAGE_LEN)
 						if(!LAZYLEN(objective))
-							to_chat(user, "<span class='warning'>You can't give your pet an objective to do nothing!</b></span>")
+							to_chat(user, LANG("_root.79d7f4486b5ebe3e", null))
 							continue
 						//Pets don't understand harm
 						objective = replacetext(LOWER_TEXT(objective), "kill", "hug")
@@ -3056,9 +3063,9 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 						addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, humanoid, "<span class='notice'>[(enthrall_chem.lewd?"Your [enthrall_chem.enthrall_gender]":"[enthrall_chem.enthrall_mob]")] whispers you a new objective.</span>"), 5)
 						brainwash(humanoid, objective)
 						enthrall_chem.mental_capacity -= 200
-						to_chat(user, "<span class='notice'><i>You sucessfully give an objective to [humanoid]</i></span>")
+						to_chat(user, LANG("_root.79f6822e1d2b9086", list(humanoid)))
 					else
-						to_chat(user, "<span class='warning'>Your pet looks at you with a vacant blas expression, you don't think you can program anything else into them</b></span>")
+						to_chat(user, LANG("_root.241cd806064fed3c", null))
 					user.SetStun(0)
 					humanoid.SetStun(0)
 
@@ -3068,9 +3075,9 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 			var/mob/living/carbon/human/humanoid = enthrall_victim
 			var/datum/status_effect/chem/enthrall/enthrall_chem = humanoid.has_status_effect(/datum/status_effect/chem/enthrall)
 			if(enthrall_chem.phase >= 3 && enthrall_chem.lewd)
-				var/instill = stripped_input(user, "Instill an emotion in [humanoid].", MAX_MESSAGE_LEN)
+				var/instill = stripped_input(user, LANG("_root.09782098d9a04aff", list(humanoid)), MAX_MESSAGE_LEN)
 				to_chat(humanoid, "<i>[instill]</i>")
-				to_chat(user, "<span class='notice'><i>You sucessfully instill a feeling in [humanoid]</i></span>")
+				to_chat(user, LANG("_root.b5a6fec6840cfa5a", list(humanoid)))
 				enthrall_chem.cooldown += 1
 
 	//RECOGNISE
@@ -3082,7 +3089,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 				if(user.ckey == enthrall_chem.enthrall_ckey && user.real_name == enthrall_chem.enthrall_mob.real_name)
 					enthrall_chem.enthrall_mob = user
 					addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, humanoid, "<span class='nicegreen'>[(enthrall_chem.lewd?"You hear the words of your [enthrall_chem.enthrall_gender] again!! They're back!!":"You recognise the voice of [enthrall_chem.enthrall_mob].")]</b></span>"), 5)
-					to_chat(user, "<span class='notice'><i>[humanoid] looks at you with sparkling eyes, recognising you!</i></span>")
+					to_chat(user, LANG("_root.3405e76a5384aa0b", list(humanoid)))
 
 	//I dunno how to do state objectives without them revealing they're an antag
 
@@ -3098,7 +3105,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 					enthrall_chem.cooldown += 5
 					addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "<span class='notice'>You begin to lick your wounds.</b></span>"), 5)
 					enthrall_listener.Stun(15 * power_multiplier)
-					to_chat(user, "<span class='notice'><i>[enthrall_listener] begins to lick their wounds.</i></span>")
+					to_chat(user, LANG("_root.0216538d90bd3cc8", list(enthrall_listener)))
 
 	//STUN
 	else if(findtext(message, stun_words))
@@ -3110,7 +3117,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 					enthrall_listener.Stun(40 * power_multiplier)
 					enthrall_chem.cooldown += 8
 					addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "<span class='notice'>Your muscles freeze up!</b></span>"), 5)
-					to_chat(user, "<span class='notice'><i>You cause [enthrall_listener] to freeze up!</i></span>")
+					to_chat(user, LANG("_root.5b90a555f25f936e", list(enthrall_listener)))
 
 	//HALLUCINATE
 	else if(findtext(message, hallucinate_words))
@@ -3120,7 +3127,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 			switch(enthrall_chem.phase)
 				if(3 to INFINITY)
 					new /datum/hallucination/delusion(carbon_mob, TRUE, null,150 * power_multiplier,0)
-					to_chat(user, "<span class='notice'><i>You send [carbon_mob] on a trip.</i></span>")
+					to_chat(user, LANG("_root.456f852bcbdc52ca", list(carbon_mob)))
 
 	//HOT
 	else if(findtext(message, hot_words))
@@ -3131,7 +3138,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 				if(3 to INFINITY)
 					enthrall_listener.adjust_bodytemperature(50 * power_multiplier)//This seems nuts, reduced it, but then it didn't do anything, so I reverted it.
 					addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "<span class='notice'>You feel your metabolism speed up!</b></span>"), 5)
-					to_chat(user, "<span class='notice'><i>You speed [enthrall_listener]'s metabolism up!</i></span>")
+					to_chat(user, LANG("_root.c9a2ce6208881820", list(enthrall_listener)))
 
 	//COLD
 	else if(findtext(message, cold_words))
@@ -3142,7 +3149,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 				if(3 to INFINITY)
 					enthrall_listener.adjust_bodytemperature(-50 * power_multiplier)
 					addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "<span class='notice'>You feel your metabolism slow down!</b></span>"), 5)
-					to_chat(user, "<span class='notice'><i>You slow [enthrall_listener]'s metabolism down!</i></span>")
+					to_chat(user, LANG("_root.72512a25cd3a4acc", list(enthrall_listener)))
 
 	//GET UP
 	else if(findtext(message, getup_words))
@@ -3156,7 +3163,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 					enthrall_listener.SetUnconscious(0) //i said get up i don't care if you're being tased
 					enthrall_chem.cooldown += 10 //This could be really strong
 					addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "<span class='notice'>You jump to your feet from sheer willpower!</b></span>"), 5)
-					to_chat(user, "<span class='notice'><i>You spur [enthrall_listener] to their feet!</i></span>")
+					to_chat(user, LANG("_root.62de245068f197a1", list(enthrall_listener)))
 
 	//PACIFY
 	else if(findtext(message, pacify_words))
@@ -3168,7 +3175,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 					enthrall_chem.status = "pacify"
 					enthrall_chem.cooldown += 10
 					addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, enthrall_listener, "<span class='notice'>You feel like never hurting anyone ever again.</b></span>"), 5)
-					to_chat(user, "<span class='notice'><i>You remove any intent to harm from [enthrall_listener]'s mind.</i></span>")
+					to_chat(user, LANG("_root.ab1b537095b55706", list(enthrall_listener)))
 
 	//CHARGE
 	else if(findtext(message, charge_words))
@@ -3180,7 +3187,7 @@ GLOBAL_LIST_INIT(mkultra_strip_slot_lookup, list(
 					enthrall_chem.status_strength = 2* power_multiplier
 					enthrall_chem.status = "charge"
 					enthrall_chem.cooldown += 10
-					to_chat(user, "<span class='notice'><i>You rally [enthrall_listener], leading them into a charge!</i></span>")
+					to_chat(user, LANG("_root.969259c9208f6e7d", list(enthrall_listener)))
 
 	if(message_admins || debug)//Do you want this in?
 		message_admins("[ADMIN_LOOKUPFLW(user)] has said '[log_message]' with a Velvet Voice, affecting [english_list(listeners)], with a power multiplier of [power_multiplier].")

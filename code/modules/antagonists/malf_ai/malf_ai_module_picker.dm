@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The datum and interface for the malf unlock menu, which lets them choose actions to unlock.
 /datum/module_picker
 	var/name = "Malfunction Modules Menu"
@@ -79,7 +80,7 @@
 		return
 	//Bubber edit begin - nuke station easier to bus
 	if(istype(AM, /datum/ai_module/malf/destructive/nuke_station) && !AI.can_purchase_nuke)
-		to_chat(AI, span_warning("Unable to purchase Nuke Station, contact your employer for assistance!"))
+		to_chat(AI, span_warning(LANG("datum.5192e73ccfaf0f77", null)))
 		return
 	//Bubber edit end
 	if(!AI || AI.stat == DEAD)

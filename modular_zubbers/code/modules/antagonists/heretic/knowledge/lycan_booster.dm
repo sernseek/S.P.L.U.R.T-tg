@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/heretic_knowledge/lycan_booster
 	name = "Lycanthropy Awakening"
 	desc = "Sacrifice a heart, a slab of meat, and a dead mouse to massively improve the combat performance of a cursekin's lycan form, including \
@@ -16,14 +17,14 @@
 
 	var/mob/living/carbon/human/found_human = locate() in range(loc, 1)
 	if (!iscursekin(found_human))
-		loc.balloon_alert(user, "target must be a cursekin!")
+		loc.balloon_alert(user, LANG("datum.c036fe5360aec961", null))
 		return FALSE
 	return TRUE
 
 /datum/heretic_knowledge/lycan_booster/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
 	var/mob/living/carbon/human/found_human = locate() in range(loc, 1)
 	if (!iscursekin(found_human))
-		loc.balloon_alert(user, "target must be a cursekin!")
+		loc.balloon_alert(user, LANG("datum.c036fe5360aec961", null))
 		return FALSE
 
 	found_human.add_gaian_physique()

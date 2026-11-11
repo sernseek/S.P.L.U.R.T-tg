@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 CONTAINS:
 RSF
@@ -67,7 +68,7 @@ RSF
 
 /obj/item/rsf/examine(mob/user)
 	. = ..()
-	. += span_notice("It currently holds [matter]/[max_matter] [discriptor].")
+	. += span_notice(LANG("obj.25302ee3548c73d1", list(matter, max_matter, discriptor)))
 
 /obj/item/rsf/cyborg
 	matter = 30
@@ -78,7 +79,7 @@ RSF
 
 	var/tempMatter = matter_by_item[tool.type] + matter
 	if(tempMatter > max_matter)
-		to_chat(user, span_warning("\The [src] can't hold any more [discriptor]!"))
+		to_chat(user, span_warning(LANG("obj.085ce82195453d7d", list(src, discriptor))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(isstack(tool))
@@ -88,7 +89,7 @@ RSF
 		qdel(tool)
 	matter = tempMatter //We add its value
 	playsound(src.loc, 'sound/machines/click.ogg', 10, TRUE)
-	to_chat(user, span_notice("\The [src] now holds [matter]/[max_matter] [discriptor]."))
+	to_chat(user, span_notice(LANG("obj.35fc48da5ecbc93e", list(src, matter, max_matter, discriptor))))
 	icon_state = base_icon_state//and set the icon state to the base state
 	return ITEM_INTERACT_SUCCESS
 
@@ -146,18 +147,18 @@ RSF
 		var/mob/living/silicon/robot/R = user
 		var/end_charge = R.cell.charge - charge
 		if(end_charge < 0)
-			to_chat(user, span_warning("You do not have enough power to use [src]."))
+			to_chat(user, span_warning(LANG("obj.3655dca17a6d6171", list(src))))
 			icon_state = spent_icon_state
 			return FALSE
 		R.cell.charge = end_charge
 		return TRUE
 	else
 		if(matter - 1 < 0)
-			to_chat(user, span_warning("\The [src] doesn't have enough [discriptor] left."))
+			to_chat(user, span_warning(LANG("obj.f891397a6e4f2ea9", list(src, discriptor))))
 			icon_state = spent_icon_state
 			return FALSE
 		matter--
-		to_chat(user, span_notice("\The [src] now holds [matter]/[max_matter] [discriptor]."))
+		to_chat(user, span_notice(LANG("obj.35fc48da5ecbc93e", list(src, matter, max_matter, discriptor))))
 		return TRUE
 
 ///Helper proc that iterates through all the things we are allowed to spawn on, and sees if the passed atom is one of them
@@ -182,9 +183,9 @@ RSF
 /obj/item/rsf/cookiesynth/emag_act(mob/user, obj/item/card/emag/emag_card)
 	obj_flags ^= EMAGGED
 	if(obj_flags & EMAGGED)
-		balloon_alert(user, "reagent safety checker shorted out")
+		balloon_alert(user, LANG("obj.4180f3fbb6f08fff", null))
 	else
-		balloon_alert(user, "reagent safety checker reset")
+		balloon_alert(user, LANG("obj.dce1fd863b8091f8", null))
 	return TRUE
 
 /obj/item/rsf/cookiesynth/attack_self(mob/user)
@@ -194,10 +195,10 @@ RSF
 	if(((obj_flags & EMAGGED) || (P?.emagged)) && !toxin)
 		toxin = TRUE
 		to_dispense = /obj/item/food/cookie/sleepy
-		to_chat(user, span_alert("Cookie Synthesizer hacked."))
+		to_chat(user, span_alert(LANG("obj.52e7145194858474", null)))
 	else
 		toxin = FALSE
 		to_dispense = /obj/item/food/cookie
-		to_chat(user, span_notice("Cookie Synthesizer reset."))
+		to_chat(user, span_notice(LANG("obj.20a52c4ebd14d050", null)))
 
 #undef OBJECT_OR_LIST_ELEMENT

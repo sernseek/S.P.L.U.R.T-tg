@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MAX_ICON_NOTICES 8
 #define MAX_CASES 8
 #define MAX_EVIDENCE_Y 3500
@@ -45,18 +46,18 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 	if(!istype(tool, /obj/item/paper) && !istype(tool, /obj/item/photo))
 		return NONE
 	if(!cases.len)
-		to_chat(user, "There are no cases!")
+		to_chat(user, LANG("obj.46f0ed87beb8c486", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(attaching_evidence)
-		to_chat(user, "You already attaching evidence!")
+		to_chat(user, LANG("obj.05e0afaf99e55f2b", null))
 		return ITEM_INTERACT_BLOCKING
 
 	attaching_evidence = TRUE
-	var/name = tgui_input_text(user, "Please enter the evidence name", "Detective's Board", max_length = MAX_NAME_LEN)
+	var/name = tgui_input_text(user, LANG("obj.cae7aff5a144a4ac", null), LANG("obj.a7f441baa845f7f2", null), max_length = MAX_NAME_LEN)
 	if(!name)
 		name = tool.name
-	var/desc = tgui_input_text(user, "Please enter the evidence description", "Detective's Board", max_length = MAX_DESC_LEN)
+	var/desc = tgui_input_text(user, LANG("obj.43fd273086519caf", null), LANG("obj.a7f441baa845f7f2", null), max_length = MAX_DESC_LEN)
 	if(!desc)
 		desc = tool.desc
 
@@ -67,18 +68,18 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 	cases[current_case].notices++
 	var/datum/evidence/evidence = new (name, desc, tool)
 	cases[current_case].evidences += evidence
-	to_chat(user, span_notice("You pin the [tool] to the detective board."))
+	to_chat(user, span_notice(LANG("obj.a05c72526afa5f99", list(tool))))
 	attaching_evidence = FALSE
 	update_appearance(UPDATE_ICON)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/detectiveboard/wrench_act_secondary(mob/living/user, obj/item/tool)
 	. = ..()
-	balloon_alert(user, "[anchored ? "un" : ""]securing...")
+	balloon_alert(user, LANG("obj.e4901a5f7f1b9614", list(anchored ? "un" : "")))
 	tool.play_tool_sound(src)
 	if(tool.use_tool(src, user, 6 SECONDS))
 		playsound(loc, 'sound/items/deconstruct.ogg', 50, TRUE)
-		balloon_alert(user, "[anchored ? "un" : ""]secured")
+		balloon_alert(user, LANG("obj.97c3405220b343d0", list(anchored ? "un" : "")))
 		deconstruct()
 		return TRUE
 
@@ -98,7 +99,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 		var/list/data_case = list("ref"=REF(case),"name" = case.name, "color" = case.color)
 		var/list/data_evidences = list()
 		for(var/datum/evidence/evidence in case.evidences)
-			var/list/data_evidence = list("ref" = REF(evidence), "name" = evidence.name, "type" = evidence.evidence_type, "description" = evidence.description, "x"=evidence.x, "y"=evidence.y)
+			var/list/data_evidence = list("ref" = REF(evidence), "name" = lang_localize_display_name(evidence.name), "type" = evidence.evidence_type, "description" = evidence.description, "x"=evidence.x, "y"=evidence.y) // ZH EDIT - I18N: 证物名纯显示（act 走 ref）。/datum/evidence 不是 atom，用无 trait 版；案件名是玩家自己输入的，不翻
 			var/list/data_connections = list()
 			for(var/datum/evidence/connection in evidence.connections)
 				data_connections += REF(connection) // TODO: create array of strings
@@ -147,10 +148,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 		if("add_case")
 			if(cases.len == MAX_CASES)
 				return FALSE
-			var/new_case = tgui_input_text(user, "Please enter the case name", "Detective's Board", max_length = MAX_NAME_LEN)
+			var/new_case = tgui_input_text(user, LANG("obj.cb9afd4ea0b55f85", null), LANG("obj.a7f441baa845f7f2", null), max_length = MAX_NAME_LEN)
 			if(!new_case)
 				return FALSE
-			var/case_color = tgui_input_list(user, "Please choose case color", "Detective's Board", case_colors)
+			var/case_color = tgui_input_list(user, LANG("obj.856cf889ebbd978e", null), LANG("obj.a7f441baa845f7f2", null), case_colors)
 			if(!case_color)
 				return FALSE
 
@@ -174,7 +175,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 				update_appearance(UPDATE_ICON)
 				return TRUE
 		if("rename_case")
-			var/new_name = tgui_input_text(user, "Please enter the new name for the case",  "Detective's Board", max_length = MAX_NAME_LEN)
+			var/new_name = tgui_input_text(user, LANG("obj.f8ec0ea5c42c98c5", null),  LANG("obj.a7f441baa845f7f2", null), max_length = MAX_NAME_LEN)
 			if(new_name)
 				var/datum/case/case = locate(params["case_ref"]) in cases
 				case.name = new_name
@@ -247,7 +248,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 	item.forceMove(drop_location())
 	if(user)
 		user.put_in_hands(item)
-		balloon_alert(user, "removed from board")
+		balloon_alert(user, LANG("obj.a9ab49eb0bcede15", null))
 	cases[current_case].notices--
 	update_appearance(UPDATE_ICON)
 

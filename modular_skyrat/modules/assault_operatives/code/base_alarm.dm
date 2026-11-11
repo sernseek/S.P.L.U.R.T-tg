@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/base_alarm
 	name = "base alarm"
 	desc = "Pull this to alert the guards!"
@@ -41,7 +42,7 @@
 
 /obj/machinery/base_alarm/attack_hand(mob/user)
 	add_fingerprint(user)
-	to_chat(user, span_notice("You trigger [src]!"))
+	to_chat(user, span_notice(LANG("obj.fdae92676c0a68e3", list(src))))
 	playsound(src, 'sound/machines/pda_button/pda_button1.ogg', 100)
 	trigger_alarm()
 

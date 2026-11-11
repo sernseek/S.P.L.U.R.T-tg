@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/stack/medical/wrap
 	/// The amount of direct hits our limb can take before we fall off.
 	var/integrity = 2
@@ -80,7 +81,7 @@
 	integrity--
 	if(integrity <= 0)
 		if(gauzed_bodypart.owner)
-			to_chat(gauzed_bodypart.owner, span_warning("The [name] on your [gauzed_bodypart.name] tears and falls off!"))
+			to_chat(gauzed_bodypart.owner, span_warning(LANG("obj.43b5ae242a62d12d", list(name, gauzed_bodypart.name))))
 		qdel(src)
 
 /// Returns TRUE if we can generate an overlay, false otherwise.

@@ -1,13 +1,14 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/smite/skibidi
 	name = "Toiletification"
 
 /datum/smite/skibidi/effect(client/user, mob/living/target)
 	. = ..()
 	if(!iscarbon(target))
-		to_chat(user, span_warning("This must be used on a carbon mob."), confidential = TRUE)
+		to_chat(user, span_warning(LANG("datum.0c41c4cfc5eec94d", null)), confidential = TRUE)
 		return
 	playsound(target, 'sound/machines/toilet_flush.ogg', 80, TRUE)
-	target.visible_message("[target] is suddenly transformed into a toilet!")
+	target.visible_message(LANG("datum.a208d1e878781577", list(target)))
 	new /obj/structure/toilet/skibidi(target.loc, target)
 
 /obj/structure/toilet/skibidi
@@ -46,7 +47,7 @@
 /obj/structure/toilet/skibidi/examine(mob/user)
 	. = ..()
 	if(trapped)
-		. += span_warning("[trapped] [trapped.p_are()] trapped inside.")
+		. += span_warning(LANG("obj.fc1f68c85c949350", list(trapped, trapped.p_are())))
 
 /obj/structure/toilet/skibidi/examine_more(mob/user)
 	. = ..()
@@ -115,7 +116,7 @@
 		return
 
 	playsound(src, 'sound/machines/toilet_flush.ogg', 80, TRUE)
-	audible_message("[src] flushes [entered] down [p_themselves()]!")
+	audible_message(LANG("obj.161f4719afebb6bc", list(src, entered, p_themselves())))
 	register_skibidi(entered)
 
 /obj/structure/toilet/skibidi/proc/register_skibidi(mob/living/carbon/human/trapped)

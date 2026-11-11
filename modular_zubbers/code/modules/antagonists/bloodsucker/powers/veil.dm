@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/bloodsucker/veil
 	name = "Veil of Many Faces"
 	desc = "Disguise yourself in the illusion of another identity."
@@ -30,9 +31,9 @@
 
 /datum/action/cooldown/bloodsucker/veil/get_power_explanation_extended()
 	. = list()
-	. += "Activating Veil of Many Faces will shroud you in smoke and forge you a new identity."
-	. += "Your name and appearance will be completely randomized, and turning the ability off again will undo it all."
-	. += "Clothes, gear, and Security/Medical HUD status is kept the same while this power is active."
+	. += LANG("datum.55621e8a2ede33e3", null)
+	. += LANG("datum.6cd6b1291b28386c", null)
+	. += LANG("datum.8f0cc8f88464bc9a", null)
 
 /datum/action/cooldown/bloodsucker/veil/ActivatePower(atom/target)
 	. = ..()
@@ -40,7 +41,7 @@
 //	if(blahblahblah)
 //		Disguise_Outfit()
 	veil_user()
-	owner.balloon_alert(owner, "veil turned on.")
+	owner.balloon_alert(owner, LANG("datum.18bda39ab2e27529", null))
 	return TRUE
 
 /* // Meant to disguise your character's clothing into fake ones.
@@ -52,7 +53,7 @@
 /datum/action/cooldown/bloodsucker/veil/proc/veil_user()
 	// Change Name/Voice
 	var/mob/living/carbon/human/user = owner
-	to_chat(owner, span_warning("You mystify the air around your person. Your identity is now altered."))
+	to_chat(owner, span_warning(LANG("datum.b322aa1188b2027f", null)))
 
 	// Store Prev Appearance
 	disguise_name = generate_random_name(user.gender, TRUE)
@@ -138,7 +139,7 @@
 	user.update_body_parts(update_limb_data = TRUE) // Body itself, maybe skin color?
 
 	cast_effect() // POOF
-	owner.balloon_alert(owner, "veil turned off.")
+	owner.balloon_alert(owner, LANG("datum.45e3a97d538e8866", null))
 
 	UnregisterSignal(user, COMSIG_HUMAN_GET_VISIBLE_NAME)
 

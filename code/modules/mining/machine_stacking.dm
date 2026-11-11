@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**********************Mineral stacking unit console**************************/
 
 /obj/machinery/mineral/stacking_unit_console
@@ -33,7 +34,7 @@
 
 /obj/machinery/mineral/stacking_unit_console/multitool_act(mob/living/user, obj/item/multitool/M)
 	M.set_buffer(src)
-	balloon_alert(user, "saved to multitool buffer")
+	balloon_alert(user, LANG("obj.84afb909aab2db8b", null))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/mineral/stacking_unit_console/ui_interact(mob/user, datum/tgui/ui)
@@ -144,7 +145,7 @@
 
 	console = multi_tool.buffer
 	console.machine = src
-	to_chat(user, span_notice("You link [src] to the console in [multi_tool]'s buffer."))
+	to_chat(user, span_notice(LANG("obj.f4834a8bd7b2157c", list(src, multi_tool))))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/mineral/stacking_machine/proc/rotate(input)

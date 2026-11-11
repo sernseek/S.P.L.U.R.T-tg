@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/mind
 	/// Is our mind currently clocked out of their job?
 	var/clocked_out_of_job = FALSE
@@ -71,11 +72,11 @@
 
 	var/important = job_is_CMD_or_SEC()
 	if(important)
-		if(tgui_alert(usr, "You are a member of security and/or command, make sure that you ahelp before punching out! If you decide to punch back in later, you will need to go to the Head of Personnel or Head of Security. Do you wish to continue?", "[src]", list("No", "Yes")) != "Yes")
+		if(tgui_alert(usr, LANG("datum.ba0f4939013680b3", null), "[src]", list("No", "Yes")) != "Yes")
 			return FALSE
 
 	if(istype(authenticated_card.trim, /datum/id_trim/job/prisoner))
-		tgui_alert(usr, "You cannot clock out of prison. Nice try, inmate.")
+		tgui_alert(usr, LANG("datum.209e2ceeb3560efc", null))
 		return TRUE
 
 	log_econ("[authenticated_card.registered_name] clocked out from role [authenticated_card.get_trim_assignment()]")
@@ -117,7 +118,7 @@
 
 	var/datum/job/clocked_in_job = id_component.stored_trim.job
 	if(!SSjob.OccupyRole(clocked_in_job.title))
-		computer.say("[capitalize(clocked_in_job.title)] has no free slots available, unable to punch in!")
+		computer.say(LANG("datum.5c039ce847deab67", list(capitalize(clocked_in_job.title))))
 		return FALSE
 
 
@@ -234,8 +235,8 @@
 
 	shame_box.locked_contents = english_list(shamebox_items)
 	do_harmless_sparks(number = 4, source = shame_box)
-	to_chat(human_user, span_warning("You feel weight lifted off your shoulders as items are teleported off your body!"))
-	to_chat(human_user, span_notice("Items moved to lockbox: [shame_box.locked_contents]."))
+	to_chat(human_user, span_warning(LANG("datum.27eca51e943fbed9", null)))
+	to_chat(human_user, span_notice(LANG("datum.fb8a87c6857f71ad", list(shame_box.locked_contents))))
 	computer.say(
 		message = "A service contract between Nanotrasen and Lustwish stipulates that company issued batons, masks, restraints, and other equipment are not to be used for recreational purposes. Employees may purchase recreational provisions from an approved vendor. Your restricted items have been placed in a lockbox to be retrieved after punch in.",
 		forced = TRUE,

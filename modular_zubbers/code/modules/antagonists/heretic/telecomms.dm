@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/signal/subspace/vocal/proc/on_heard(atom/movable/hearer)
 	if (!isliving(hearer))
 		return
@@ -6,8 +7,8 @@
 		living_hearer.mob_mood?.adjust_sanity(-5)
 		living_hearer.apply_status_effect(/datum/status_effect/heretic_comms_immunity)
 		if (prob(20))
-			to_chat(living_hearer, span_warning("The words from the radio ring in your head, wrong, all sorts of wrong..."))
-			to_chat(living_hearer, span_warning("You get the feeling that disabling any nearby radios would help."))
+			to_chat(living_hearer, span_warning(LANG("datum.203486d939024def", null)))
+			to_chat(living_hearer, span_warning(LANG("datum.dda438bae8e9272e", null)))
 			living_hearer.adjust_organ_loss(ORGAN_SLOT_BRAIN, 10, BRAIN_DAMAGE_MILD)
 			living_hearer.adjust_hallucinations_up_to(40 SECONDS, 5 MINUTES)
 
@@ -21,8 +22,8 @@
 	. = ..()
 
 	if (GLOB.processors_cursed)
-		. += span_warning("A terrible secret has been unleashed. It will pass with time...")
-		. += span_notice("You can disable the processors to prevent the mindbending effects of the curse - just remember to turn them on later.")
+		. += span_warning(LANG("obj.e20be280feaa2e0c", null))
+		. += span_notice(LANG("obj.0b20add33b2fd891", null))
 
 /datum/status_effect/heretic_comms_immunity // antispam
 	id = "heretic_comms_immunity"

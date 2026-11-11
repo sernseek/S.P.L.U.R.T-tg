@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // If an item has the processable item, it can be processed into another item with a specific tool. This adds generic behaviour for those actions to make it easier to set-up generically.
 /datum/element/processable
 	element_flags = ELEMENT_BESPOKE
@@ -67,7 +68,7 @@
 		var/found_table = locate(/obj/structure/table) in found_location
 		var/found_tray = locate(/obj/item/storage/bag/tray) in found_location || locate(/obj/item/plate/oven_tray) in found_location
 		if(!found_turf && !istype(found_location, /obj/item/storage/bag/tray) || found_turf && !(found_table || found_tray))
-			to_chat(user, span_notice("You cannot make [initial(result_atom_type.name)] here! You need a table or at least a tray."))
+			to_chat(user, span_notice(LANG("datum.9ecc1a57f8c69743", list(initial(result_atom_type.name)))))
 			return
 
 	mutable_recipes += list(list(TOOL_PROCESSING_RESULT = result_atom_type, TOOL_PROCESSING_AMOUNT = amount_created, TOOL_PROCESSING_TIME = time_to_process, TOOL_PROCESSING_SOUND = sound_to_play))
@@ -84,15 +85,15 @@
 	// but at least it's readable?
 	if(amount_created > 1)
 		if(result_gender == PLURAL)
-			examine_list += span_notice("It can be turned into [amount_created] [result_name] with [span_bold(tool_desc)]!")
+			examine_list += span_notice(LANG("datum.eb167b605caac254", list(amount_created, result_name, span_bold(tool_desc))))
 		else
-			examine_list += span_notice("It can be turned into [amount_created] [result_name][plural_s(result_name)] with [span_bold(tool_desc)]!")
+			examine_list += span_notice(LANG("datum.71fd00508496d242", list(amount_created, result_name, plural_s(result_name), span_bold(tool_desc))))
 
 	else
 		if(result_gender == PLURAL)
-			examine_list += span_notice("It can be turned into some [result_name] with [span_bold(tool_desc)]!")
+			examine_list += span_notice(LANG("datum.9e1ea9319f087158", list(result_name, span_bold(tool_desc))))
 		else
-			examine_list += span_notice("It can be turned into \a [result_name] with [span_bold(tool_desc)]!")
+			examine_list += span_notice(LANG("datum.737700ae95d9b156", list(result_name, span_bold(tool_desc))))
 
 /**
  * Adds context sensitivy directly to the processable file for screentips
@@ -111,6 +112,6 @@
 	if (held_item.tool_behaviour != tool_behaviour)
 		return NONE
 
-	context[SCREENTIP_CONTEXT_LMB] = "[screentip_verb] into [initial(result_atom_type.name)]"
+	context[SCREENTIP_CONTEXT_LMB] = LANG("datum.3cab818460921ef2", list(screentip_verb, initial(result_atom_type.name)))
 
 	return CONTEXTUAL_SCREENTIP_SET

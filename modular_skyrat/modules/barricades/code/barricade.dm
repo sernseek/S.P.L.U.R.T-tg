@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Snow, wood, sandbags, metal, plasteel
 
 /obj/structure/deployable_barricade
@@ -46,9 +47,9 @@
 /obj/structure/deployable_barricade/examine(mob/user)
 	. = ..()
 	if(!is_wired && can_wire)
-		. += span_info("Barbed wire could be added with some <b>cable</b>.")
+		. += span_info(LANG("obj.874e0dbc193805e3", null))
 	if(is_wired)
-		. += span_info("It has barbed wire along the top.")
+		. += span_info(LANG("obj.af883e8496076389", null))
 
 /obj/structure/deployable_barricade/proc/on_try_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER
@@ -117,15 +118,15 @@
 	if(!is_wired)
 		return FALSE
 
-	user.visible_message(span_notice("[user] begins to remove the barbed wire on [src]."),
-	span_notice("You start removing the barbed wire on [src]."))
+	user.visible_message(span_notice(LANG("obj.80723fc60e0f501b", list(user, src))),
+	span_notice(LANG("obj.6c617fd1ee0c80cb", list(src))))
 
 	if(!do_after(user, 2 SECONDS, src))
 		return TRUE
 
 	playsound(src, 'sound/items/tools/wirecutter.ogg', 25, TRUE)
-	user.visible_message(span_notice("[user] removed the barbed wire on [src]."),
-	span_notice("You removed the barbed wire on [src]."))
+	user.visible_message(span_notice(LANG("obj.9beb2b84fb822a5e", list(user, src))),
+	span_notice(LANG("obj.520b25e6993011f3", list(src))))
 	modify_max_integrity(max_integrity - 50)
 	can_wire = TRUE
 	is_wired = FALSE
@@ -147,7 +148,7 @@
 /obj/structure/deployable_barricade/ex_act(severity)
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
-			visible_message(span_danger("[src] explodes!"))
+			visible_message(span_danger(LANG("obj.e64b7ad721a42632", list(src))))
 			deconstruct(FALSE)
 			return
 		if(EXPLODE_HEAVY)
@@ -202,16 +203,16 @@
 		else
 			. += image('modular_skyrat/modules/barricades/icons/barricade.dmi', icon_state = "[barricade_type]_closed_wire")
 
-GAME_VERB_SRC(/obj/structure/deployable_barricade, rotate, oview(1), "Rotate barricade counterclockwise <", "Object")
+GAME_VERB_SRC(/obj/structure/deployable_barricade, rotate, oview(1), "逆时针旋转路障 <", "Object")
 	if(anchored)
-		to_chat(usr, span_warning("It is secured to the floor, you can't turn it!"))
+		to_chat(usr, span_warning(LANG("obj.f9fc930f7a07a9e4", null)))
 		return FALSE
 
 	setDir(turn(dir, 90))
 
-GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate barricade clockwise >", "Object")
+GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "顺时针旋转路障 >", "Object")
 	if(anchored)
-		to_chat(usr, span_warning("It is secured to the floor, you can't turn it!"))
+		to_chat(usr, span_warning(LANG("obj.f9fc930f7a07a9e4", null)))
 		return FALSE
 
 	setDir(turn(dir, 270))
@@ -221,7 +222,7 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
 	if(anchored)
-		to_chat(usr, span_warning("It is secured to the floor, you can't turn it!"))
+		to_chat(usr, span_warning(LANG("obj.f9fc930f7a07a9e4", null)))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	setDir(turn(dir, 270))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -301,10 +302,10 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 			return
 
 		if(D.get_amount() < 1)
-			to_chat(user, span_warning("You need at least one board to repair [src]!"))
+			to_chat(user, span_warning(LANG("obj.328ca11c45930ed9", list(src))))
 			return
 
-		visible_message(span_notice("[user] begins to repair [src]."))
+		visible_message(span_notice(LANG("obj.0c406e109cebc3ba", list(user, src))))
 
 		if(!do_after(user,20, src) || get_integrity() >= max_integrity)
 			return
@@ -313,7 +314,7 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 			return
 
 		repair_damage(max_integrity)
-		visible_message(span_notice("[user] repairs [src]."))
+		visible_message(span_notice(LANG("obj.639f2d4fef2753bc", list(user, src))))
 
 
 /*----------------------*/
@@ -361,28 +362,28 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 /obj/structure/deployable_barricade/metal/click_alt(mob/user)
 	if(portable_type)
 		if(anchored)
-			to_chat(user, span_warning("[src] cannot be folded up while anchored to the ground!"))
+			to_chat(user, span_warning(LANG("obj.377172956c34e4a7", list(src))))
 			return CLICK_ACTION_BLOCKING
 		if(barricade_upgrade_type)
-			to_chat(user, span_warning("[src] cannot be folded up with upgrades attached, remove them first!"))
+			to_chat(user, span_warning(LANG("obj.c3ea731e52973eee", list(src))))
 			return CLICK_ACTION_BLOCKING
 		if(get_integrity() < max_integrity)
-			to_chat(user, span_warning("[src] cannot be folded up while damaged!"))
+			to_chat(user, span_warning(LANG("obj.144e028bb1cbf813", list(src))))
 			return CLICK_ACTION_BLOCKING
-		user.visible_message(span_notice("[user] starts folding [src] up!"), span_notice("You start folding [src] up!"))
+		user.visible_message(span_notice(LANG("obj.30058b49c8929eb2", list(user, src))), span_notice(LANG("obj.59bcce8120ffd9ff", list(src))))
 		if(do_after(user, 5 SECONDS, src))
 			if(QDELETED(src)) //Copied encase we change states.
 				return
 			if(anchored)
-				to_chat(user, span_warning("[src] cannot be folded up while anchored to the ground!"))
+				to_chat(user, span_warning(LANG("obj.377172956c34e4a7", list(src))))
 				return CLICK_ACTION_BLOCKING
 			if(barricade_upgrade_type)
-				to_chat(user, span_warning("[src] cannot be folded up with upgrades attached, remove them first!"))
+				to_chat(user, span_warning(LANG("obj.c3ea731e52973eee", list(src))))
 				return CLICK_ACTION_BLOCKING
 			if(get_integrity() < max_integrity)
-				to_chat(user, span_warning("[src] cannot be folded up while damaged!"))
+				to_chat(user, span_warning(LANG("obj.144e028bb1cbf813", list(src))))
 				return CLICK_ACTION_BLOCKING
-			user.visible_message(span_notice("[user] folds [src] up!"), span_notice("You neatly fold [src] up!"))
+			user.visible_message(span_notice(LANG("obj.b0a8936b90cc6cb3", list(user, src))), span_notice(LANG("obj.331d19d812f41f7b", list(src))))
 			playsound(src, 'sound/items/tools/ratchet.ogg', 25, TRUE)
 			fold_up()
 			return CLICK_ACTION_SUCCESS
@@ -422,10 +423,10 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 			return attempt_barricade_upgrade(I, user, params)
 
 		if(metal_sheets.get_amount() < repair_amount)
-			to_chat(user, span_warning("You need at least two sheets of metal to repair [src]!"))
+			to_chat(user, span_warning(LANG("obj.19ab82990d7c0cc9", list(src))))
 			return FALSE
 
-		visible_message(span_notice("[user] begins to repair [src]."))
+		visible_message(span_notice(LANG("obj.0c406e109cebc3ba", list(user, src))))
 
 		if(!do_after(user, 2 SECONDS, src) || get_integrity() >= max_integrity)
 			return FALSE
@@ -434,26 +435,26 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 			return FALSE
 
 		repair_damage(max_integrity * 0.3)
-		visible_message(span_notice("[user] repairs [src]."))
+		visible_message(span_notice(LANG("obj.639f2d4fef2753bc", list(user, src))))
 	return ..()
 
 /obj/structure/deployable_barricade/metal/proc/attempt_barricade_upgrade(obj/item/stack/sheet/iron/metal_sheets, mob/user, params)
 	if(barricade_upgrade_type)
-		to_chat(user, span_warning("[src] is already upgraded."))
+		to_chat(user, span_warning(LANG("obj.d6f59b38c61e751c", list(src))))
 		return FALSE
 	if(get_integrity() < max_integrity)
-		to_chat(user, span_warning("You cannot upgrade [src] until it has been repaired!"))
+		to_chat(user, span_warning(LANG("obj.a0c57669713c2367", list(src))))
 		return FALSE
 
 	if(metal_sheets.get_amount() < BARRICADE_UPGRADE_REQUIRED_SHEETS)
-		to_chat(user, span_warning("You need at least <b>[BARRICADE_UPGRADE_REQUIRED_SHEETS]</b> to upgrade [src]!"))
+		to_chat(user, span_warning(LANG("obj.5f195636221dd66c", list(BARRICADE_UPGRADE_REQUIRED_SHEETS, src))))
 		return FALSE
 
 	var/static/list/cade_types = list(BARRICADE_TYPE_BOMB = image(icon = 'modular_skyrat/modules/barricades/icons/barricade.dmi', icon_state = "explosive_obj"), BARRICADE_TYPE_MELEE = image(icon = 'modular_skyrat/modules/barricades/icons/barricade.dmi', icon_state = "brute_obj"), BARRICADE_TYPE_ACID = image(icon = 'modular_skyrat/modules/barricades/icons/barricade.dmi', icon_state = "burn_obj"))
 	var/choice = show_radial_menu(user, src, cade_types, require_near = TRUE, tooltips = TRUE)
 
-	user.visible_message(span_notice("[user] starts attaching [choice] to [src]."),
-		span_notice("You start attaching [choice] to [src]."))
+	user.visible_message(span_notice(LANG("obj.62ceeafc7ced33e3", list(user, choice, src))),
+		span_notice(LANG("obj.1a6fb9cad635769e", list(choice, src))))
 	if(!do_after(user, 2 SECONDS, src))
 		return FALSE
 
@@ -470,8 +471,8 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 
 	barricade_upgrade_type = choice
 
-	user.visible_message(span_notice("[user] attaches[choice] to [src]."),
-		span_notice("You attach [choice] to [src]."))
+	user.visible_message(span_notice(LANG("obj.0e8ba51b91d11d7f", list(user, choice, src))),
+		span_notice(LANG("obj.c1fbc99dd596332a", list(choice, src))))
 
 	playsound(src, 'sound/items/tools/screwdriver.ogg', 25, TRUE)
 	update_icon()
@@ -480,17 +481,17 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 	. = ..()
 	switch(build_state)
 		if(BARRICADE_METAL_FIRM)
-			. += span_info("The cover plate is <b>screwed</b> in place.")
+			. += span_info(LANG("obj.005242a65e079402", null))
 		if(BARRICADE_METAL_ANCHORED)
-			. += span_info("The cover plate is <i>unscrewed</i>, but it is <b>bolted</b> to the ground.")
+			. += span_info(LANG("obj.f828552a07a65673", null))
 		if(BARRICADE_METAL_LOOSE)
-			. += span_info("The anchor points are <i>unbolted</i>, use a <b>crowbar</b> to disassemble it.")
+			. += span_info(LANG("obj.4cb2ab2da9b58f91", null))
 
 	if(barricade_upgrade_type)
-		. += span_info("It has [barricade_upgrade_type] installed.")
+		. += span_info(LANG("obj.03f6cd955e644352", list(barricade_upgrade_type)))
 
 	if(portable_type)
-		. += span_info("Alt+click to fold it up into it's portable form.")
+		. += span_info(LANG("obj.525d29c4654a3cc1", null))
 
 /obj/structure/deployable_barricade/metal/welder_act(mob/living/user, obj/item/I)
 	var/obj/item/weldingtool/welding_tool = I
@@ -499,15 +500,15 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 		return FALSE
 
 	if(get_integrity() <= max_integrity * 0.3)
-		to_chat(user, span_warning("[src] is too damaged to be repaired with a welder!"))
+		to_chat(user, span_warning(LANG("obj.e83158002032943b", list(src))))
 		return TRUE
 
 	if(get_integrity() >= max_integrity)
-		to_chat(user, span_warning("[src] does not need repairing."))
+		to_chat(user, span_warning(LANG("obj.805c0a9279c41699", list(src))))
 		return TRUE
 
-	user.visible_message(span_notice("[user] starts welding the damage on [src]."),
-	span_notice("You start welding the damage on [src]."))
+	user.visible_message(span_notice(LANG("obj.667d23cd93f57a43", list(user, src))),
+	span_notice(LANG("obj.389c229074a801dd", list(src))))
 	playsound(src, 'sound/items/tools/welder2.ogg', 25, TRUE)
 
 	if(!do_after(user, 5 SECONDS, src))
@@ -517,11 +518,11 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 		return TRUE
 
 	if(!welding_tool.use(2))
-		to_chat(user, span_warning("Not enough fuel!"))
+		to_chat(user, span_warning(LANG("obj.b6baa52c63f20be0", null)))
 		return TRUE
 
-	user.visible_message(span_notice("[user] welds the damage on [src]."),
-	span_notice("You weld the damage on [src]."))
+	user.visible_message(span_notice(LANG("obj.ff8cbda58aace807", list(user, src))),
+	span_notice(LANG("obj.4d8f671aa4cae497", list(src))))
 	repair_damage(150)
 	update_icon()
 	playsound(src, 'sound/items/tools/welder2.ogg', 25, TRUE)
@@ -534,8 +535,8 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 			playsound(src, 'sound/items/tools/screwdriver.ogg', 25, TRUE)
 			if(!do_after(user, 1 SECONDS, src))
 				return TRUE
-			user.visible_message (span_notice ("[user] secures the panel on [src]."),
-			span_notice ("You secure the panel on [src]."))
+			user.visible_message (span_notice (LANG("obj.38ae2388af3fae03", list(user, src))),
+			span_notice (LANG("obj.87614176fec335ab", list(src))))
 			build_state = BARRICADE_METAL_FIRM
 			return TRUE
 
@@ -545,8 +546,8 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 			if(!do_after(user, 1 SECONDS, src))
 				return TRUE
 
-			user.visible_message (span_notice ("[user] removes the panel from [src]."),
-			span_notice ("You remove the panel from [src], revealing some <b>bolts</b> beneath it."))
+			user.visible_message (span_notice (LANG("obj.16243e85470a9c83", list(user, src))),
+			span_notice (LANG("obj.d9e0a3fe896255ae", list(src))))
 			build_state = BARRICADE_METAL_ANCHORED
 			return TRUE
 
@@ -557,8 +558,8 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 			playsound(src, 'sound/items/tools/ratchet.ogg', 25, TRUE)
 			if(!do_after(user, 1 SECONDS, src))
 				return TRUE
-			user.visible_message (span_notice ("[user] loosens the anchor bolts on [src]."),
-			span_notice ("You loosen the anchor bolts on [src]."))
+			user.visible_message (span_notice (LANG("obj.2fdd55da2ca3fa3b", list(user, src))),
+			span_notice (LANG("obj.cb19021b5b9697e7", list(src))))
 			build_state = BARRICADE_METAL_LOOSE
 			anchored = FALSE
 			modify_max_integrity(initial(max_integrity) * 0.5)
@@ -568,20 +569,20 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 		if(BARRICADE_METAL_LOOSE) //Anchor bolts loosened step. Apply crowbar to unseat the panel and take apart the whole thing. Apply wrench to resecure anchor bolts
 			var/turf/mystery_turf = get_turf(src)
 			if(!isopenturf(mystery_turf))
-				to_chat(user, span_warning("You cannot install [src] here!"))
+				to_chat(user, span_warning(LANG("obj.99d960da20291f51", list(src))))
 				return TRUE
 
 			for(var/obj/structure/deployable_barricade/B in loc)
 				if(B != src && B.dir == dir)
-					to_chat(user, span_warning("There is already a barricade here."))
+					to_chat(user, span_warning(LANG("obj.66f7c23332b3cf88", null)))
 					return TRUE
 
 			playsound(src, 'sound/items/tools/ratchet.ogg', 25, TRUE)
 			if(!do_after(user, 1 SECONDS, src))
 				return TRUE
 
-			user.visible_message(span_notice("[user] tightens the anchor bolts on [src]."),
-			span_notice("You tighten the anchor bolts on [src]."))
+			user.visible_message(span_notice(LANG("obj.ca7600925200625b", list(user, src))),
+			span_notice(LANG("obj.662dddebd7ce5976", list(src))))
 			build_state = BARRICADE_METAL_ANCHORED
 			anchored = TRUE
 			modify_max_integrity(initial(max_integrity))
@@ -592,33 +593,33 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 /obj/structure/deployable_barricade/metal/crowbar_act(mob/living/user, obj/item/I)
 	switch(build_state)
 		if(BARRICADE_METAL_LOOSE) //Anchor bolts loosened step. Apply crowbar to unseat the panel and take apart the whole thing. Apply wrench to resecure anchor bolts
-			user.visible_message(span_notice("[user] begins to disassemble [src]."),
-			span_notice("You start to disassemble [src]."))
+			user.visible_message(span_notice(LANG("obj.d985cafd64825abb", list(user, src))),
+			span_notice(LANG("obj.ad4c8d5d0fb2e409", list(src))))
 
 			playsound(src, 'sound/items/tools/crowbar.ogg', 25, 1)
 			if(!do_after(user, 5 SECONDS, src))
 				return TRUE
 
-			user.visible_message(span_notice("[user] disassembles [src]."),
-			span_notice("You disassemble [src]."))
+			user.visible_message(span_notice(LANG("obj.64d85c99dc62f8de", list(user, src))),
+			span_notice(LANG("obj.fd5c1c1d92627348", list(src))))
 			playsound(src, 'sound/items/deconstruct.ogg', 25, 1)
 			deconstruct(TRUE)
 			return TRUE
 
 		if(BARRICADE_METAL_FIRM)
 			if(!barricade_upgrade_type) //Check to see if we actually have upgrades to remove.
-				to_chat(user, span_warning("This barricade has no installed upgrades to remove!"))
+				to_chat(user, span_warning(LANG("obj.d85d0630d87e7137", null)))
 				return TRUE
 
-			user.visible_message(span_notice("[user] begins to detach the armor plates from [src]."),
-			span_notice("You begin to detach the armor plates from [src]."))
+			user.visible_message(span_notice(LANG("obj.63ac9a62a2591693", list(user, src))),
+			span_notice(LANG("obj.4515011da5cf0204", list(src))))
 
 			playsound(src, 'sound/items/tools/crowbar.ogg', 25, 1)
 			if(!do_after(user, 5 SECONDS, src))
 				return TRUE
 
-			user.visible_message(span_notice("[user] detaches the armor plates from [src]."),
-			span_notice("You detach the armor plates from [src]."))
+			user.visible_message(span_notice(LANG("obj.170aa5d03ee0418e", list(user, src))),
+			span_notice(LANG("obj.5c156e87228e538b", list(src))))
 			playsound(src, 'sound/items/deconstruct.ogg', 25, 1)
 
 			switch(barricade_upgrade_type)
@@ -675,22 +676,22 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 /obj/structure/deployable_barricade/metal/plasteel/crowbar_act(mob/living/user, obj/item/I)
 	switch(build_state)
 		if(BARRICADE_METAL_LOOSE) //Anchor bolts loosened step. Apply crowbar to unseat the panel and take apart the whole thing. Apply wrench to resecure anchor bolts
-			user.visible_message(span_notice("[user] begins to disassemble [src]."),
-			span_notice("You start to disassemble [src]."))
+			user.visible_message(span_notice(LANG("obj.d985cafd64825abb", list(user, src))),
+			span_notice(LANG("obj.ad4c8d5d0fb2e409", list(src))))
 
 			playsound(src, 'sound/items/tools/crowbar.ogg', 25, 1)
 			if(!do_after(user, 5 SECONDS, src))
 				return TRUE
 
-			user.visible_message(span_notice("[user] disassembles [src]."),
-			span_notice("You disassemble [src]."))
+			user.visible_message(span_notice(LANG("obj.64d85c99dc62f8de", list(user, src))),
+			span_notice(LANG("obj.fd5c1c1d92627348", list(src))))
 			playsound(src, 'sound/items/deconstruct.ogg', 25, 1)
 			deconstruct(TRUE)
 			return TRUE
 		if(BARRICADE_METAL_FIRM)
 			linked = !linked
-			user.visible_message(span_notice("[user] has [linked ? "linked" : "unlinked" ] [src]."),
-			span_notice("You [linked ? "link" : "unlink" ] [src]."))
+			user.visible_message(span_notice(LANG("obj.907137916a025b21", list(user, linked ? "linked" : "unlinked", src))),
+			span_notice(LANG("obj.d6171b714b8cf981", list(linked ? "link" : "unlink", src))))
 			for(var/direction in GLOB.cardinals)
 				for(var/obj/structure/deployable_barricade/metal/plasteel/cade in get_step(src, direction))
 					cade.update_icon()
@@ -713,8 +714,8 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 	closed = !closed
 	density = !density
 
-	user?.visible_message(span_notice("[user] [closed ? "lowers" : "raises"] [src] ."),
-		span_notice("You [closed ? "lower" : "raise"] [src]."))
+	user?.visible_message(span_notice(LANG("obj.ce980fc2bc8b47eb", list(user, closed ? "lowers" : "raises", src))),
+		span_notice(LANG("obj.d6171b714b8cf981", list(closed ? "lower" : "raise", src))))
 
 	if(!linked)
 		update_icon()
@@ -760,10 +761,10 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 
 /obj/item/quickdeploy/examine(mob/user)
 	. = ..()
-	. += "This [src.name] is set up deploy [initial(thing_to_deploy.name)]." // initial() since thing_to_deploy is a typepath
+	. += LANG("obj.df62e7d82672cd1a", list(src.name, initial(thing_to_deploy.name))) // initial() since thing_to_deploy is a typepath
 
 /obj/item/quickdeploy/attack_self(mob/user)
-	to_chat(user, span_notice("You start deploying [src] in front of you."))
+	to_chat(user, span_notice(LANG("obj.fcec36d9ce9c8f13", list(src))))
 	playsound(src, 'sound/items/tools/ratchet.ogg', 25, 1)
 	if(!do_after(usr, delay, src))
 		return
@@ -775,7 +776,7 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 
 /obj/item/quickdeploy/proc/can_place(mob/user)
 	if(isnull(thing_to_deploy)) //Spaghetti or wrong type spawned
-		to_chat(user, span_warning("Nothing happens... [src] must be defective."))
+		to_chat(user, span_warning(LANG("obj.4f85533d79d687b9", list(src))))
 		return FALSE
 	return TRUE
 
@@ -791,25 +792,25 @@ GAME_VERB_SRC(/obj/structure/deployable_barricade, revrotate, oview(1), "Rotate 
 
 	var/turf/mystery_turf = user.loc
 	if(!isopenturf(mystery_turf))
-		to_chat(user, span_warning("You cannot deploy [src] here!"))
+		to_chat(user, span_warning(LANG("obj.eacbf1523f212090", list(src))))
 		return FALSE
 
 	var/turf/open/placement_loc = mystery_turf
 	if(placement_loc.density) //We shouldn't be building here.
-		to_chat(user, span_warning("You cannot deploy [src] here!"))
+		to_chat(user, span_warning(LANG("obj.eacbf1523f212090", list(src))))
 		return FALSE
 
 	for(var/obj/thing in user.loc)
 		if(!thing.density) //not dense, move on
 			continue
 		if(!(thing.flags_1 & ON_BORDER_1)) //dense and non-directional, end
-			to_chat(user, span_warning("There is no room deploy [src] here."))
+			to_chat(user, span_warning(LANG("obj.40691b67d75fd4b3", list(src))))
 			return FALSE
 		if(thing.dir != user.dir)
 			continue
-		to_chat(user, span_warning("There is no room deploy [src] here."))
+		to_chat(user, span_warning(LANG("obj.40691b67d75fd4b3", list(src))))
 		return FALSE
-	to_chat(user, span_notice("You start deploying [src]..."))
+	to_chat(user, span_notice(LANG("obj.de73e39734f68940", list(src))))
 	return TRUE
 
 /obj/item/quickdeploy/barricade/plasteel

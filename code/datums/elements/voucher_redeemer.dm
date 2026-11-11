@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Accepts a [voucher_type] and a [set_type] and allows the user to redeem the voucher for items from a set.
  */
@@ -50,9 +51,14 @@
 	for(var/set_name in set_instances)
 		var/datum/voucher_set/current_set = set_instances[set_name]
 		var/datum/radial_menu_choice/option = new
+		// ZH EDIT ADDITION - i18n: show the reversed name/description in the radial menu. The radial choice_id
+		// (cached_options key) stays the english set_name, so show_radial_menu's selection → set_instances[selection]
+		// lookup is unaffected; option.name is display-only (radial.dm uses it for the label + "Info:" tooltip title).
+		// lang_reverse_text no-ops on en / en locale.
+		option.name = lang_reverse_text(set_name)
 		option.image = image(icon = current_set.icon, icon_state = current_set.icon_state)
 		if(current_set.description)
-			option.info = span_boldnotice(current_set.description)
+			option.info = span_boldnotice(lang_reverse_text(current_set.description))
 		cached_options[set_name] = option
 
 /datum/element/voucher_redeemer/proc/redeem_voucher_async(atom/source, mob/living/redeemer, obj/item/voucher)
@@ -68,7 +74,7 @@
 	chosen_set.spawn_set(source.drop_location())
 	if(chosen_set.blackbox_key)
 		SSblackbox.record_feedback("tally", chosen_set.blackbox_key, 1, selection)
-	source.balloon_alert(redeemer, "redeemed [LOWER_TEXT(selection)]")
+	source.balloon_alert(redeemer, LANG("datum.21c0fbfe0d82069f", list(LOWER_TEXT(selection))))
 	qdel(voucher)
 
 /datum/element/voucher_redeemer/proc/check_menu(obj/item/voucher, mob/living/redeemer)

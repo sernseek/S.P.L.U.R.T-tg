@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/antfarm
 	name = "ant farm"
 	desc = "Though it may look natural, this was not made by ants."
@@ -31,14 +32,14 @@
 	if(!mapload)
 		var/turf/src_turf = get_turf(src)
 		if(!src_turf.GetComponent(/datum/component/simple_farm))
-			src_turf.balloon_alert_to_viewers("must be on farmable surface")
+			src_turf.balloon_alert_to_viewers(LANG("obj.18694f10a5214b78", null))
 			return INITIALIZE_HINT_QDEL
 
 		for(var/obj/structure/antfarm/found_farm in range(2, get_turf(src)))
 			if(found_farm == src)
 				continue
 
-			src_turf.balloon_alert_to_viewers("too close to another farm")
+			src_turf.balloon_alert_to_viewers(LANG("obj.9a5e582c2e0dd0cf", null))
 			return INITIALIZE_HINT_QDEL
 
 	START_PROCESSING(SSobj, src)
@@ -57,7 +58,7 @@
 
 	if(!has_ants)
 		if(prob(ant_chance))
-			balloon_alert_to_viewers("ants have appeared!")
+			balloon_alert_to_viewers(LANG("obj.38cb8d43792ec485", null))
 			has_ants = TRUE
 
 		return
@@ -67,13 +68,13 @@
 
 /obj/structure/antfarm/examine(mob/user)
 	. = ..()
-	. += span_notice("<br>There are currently [has_ants ? "" : "no "]ants in the farm.")
-	. += span_notice("To add ants, feed the farm some food.")
+	. += span_notice(LANG("obj.d22d28bbe99edf80", list(has_ants ? "" : "no ")))
+	. += span_notice(LANG("obj.89a51ec74aa8a28e", null))
 
 /obj/structure/antfarm/attackby(obj/item/attacking_item, mob/user, params)
 	if(istype(attacking_item, /obj/item/food))
 		qdel(attacking_item)
-		balloon_alert(user, "food has been placed")
+		balloon_alert(user, LANG("obj.9bf1051b82bbaedd", null))
 		user.mind?.adjust_experience(/datum/skill/primitive, 5)
 		ant_chance++
 		if(prob(user.mind.get_skill_modifier(/datum/skill/primitive, SKILL_PROBS_MODIFIER)))
@@ -81,7 +82,7 @@
 		return
 
 	if(istype(attacking_item, /obj/item/storage/bag/plants))
-		balloon_alert(user, "feeding the ants")
+		balloon_alert(user, LANG("obj.585ba266c316f44b", null))
 		var/skill_modifier = user.mind.get_skill_modifier(/datum/skill/primitive, SKILL_SPEED_MODIFIER)
 		for(var/obj/item/food/selected_food in attacking_item.contents)
 			if(!do_after(user, 1 SECONDS * skill_modifier, src))

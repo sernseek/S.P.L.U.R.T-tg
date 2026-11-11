@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MODLIMB_TIME_ADJUST 40
 
 /datum/quirk/modularlimbs
@@ -71,11 +72,11 @@
 /datum/action/cooldown/spell/modularlimbs/cast(mob/living/carbon/cast_on)
 	. = ..()
 	if(HAS_TRAIT(cast_on, TRAIT_NODISMEMBER))
-		to_chat(cast_on, span_notice("You concentrate really hard, but nothing happens."))
+		to_chat(cast_on, span_notice(LANG("datum.46d68b019691a839", null)))
 		return
 
 	if(cast_on.handcuffed)
-		to_chat(cast_on, span_alert("You can't get a good enough grip with your hands bound."))
+		to_chat(cast_on, span_alert(LANG("datum.ac619cad1cefbd49", null)))
 		return
 
 	var/list/parts = list()
@@ -87,7 +88,7 @@
 		parts += to_remove
 
 	if(!length(parts))
-		to_chat(cast_on, span_notice("You can't shed any more limbs!"))
+		to_chat(cast_on, span_notice(LANG("datum.e23c223d110e6937", null)))
 		return
 
 	var/obj/item/bodypart/to_remove = pick(parts)
@@ -95,7 +96,7 @@
 	playsound(cast_on, 'sound/effects/cartoon_sfx/cartoon_pop.ogg', 70)
 
 // New verb to alter limbs
-GAME_VERB_PROC_SRC_DESC(/mob/living, alterlimbs, view(), "Alter Limbs", "Remove or attach a limb!", "IC")
+GAME_VERB_PROC_SRC_DESC(/mob/living, alterlimbs, view(), "改造肢体", "Remove or attach a limb!", "IC")
 	// Define mobs involved
 	var/mob/living/carbon/human/mob_initiator = usr
 	var/mob/living/carbon/human/mob_target = src
@@ -104,13 +105,13 @@ GAME_VERB_PROC_SRC_DESC(/mob/living, alterlimbs, view(), "Alter Limbs", "Remove 
 	// This causes a runtime error
 	if(mob_initiator == mob_target)
 		// Alert initiator and return
-		to_chat(mob_initiator, span_warning("You cannot alter your own limbs! Ask someone else for help."))
+		to_chat(mob_initiator, span_warning(LANG("mob.5db537519cdb2447", null)))
 		return
 
 	// Check if initiator is adjacent
 	if(!mob_target.Adjacent(mob_initiator))
 		// Alert initiator and return
-		to_chat(mob_initiator, span_warning("You must be adjacent to [mob_target] to do this!"))
+		to_chat(mob_initiator, span_warning(LANG("mob.179f2299189e04b4", list(mob_target))))
 		return
 
 	// Note: Limb attachment is redundant with TRAIT_LIMBATTACHMENT
@@ -124,12 +125,12 @@ GAME_VERB_PROC_SRC_DESC(/mob/living, alterlimbs, view(), "Alter Limbs", "Remove 
 		// Check if a limb already exists
 		if(mob_target.get_bodypart(part_held.body_zone))
 			// Alert initiator and return
-			to_chat(mob_initiator, span_warning("[mob_target.p_They()] already [mob_target.p_have()] a limb attached there!"))
+			to_chat(mob_initiator, span_warning(LANG("mob.cdec13170b3acd51", list(mob_target.p_They(), mob_target.p_have()))))
 			return
 
 		// Limb does not already exist!
 		// Alert target of interaction attempt
-		mob_target.visible_message(span_warning("[mob_initiator] is attempting to attach \the [part_held] onto [mob_target]!"), span_userdanger("[mob_initiator] is attempting to attach \the [part_held] to you!"))
+		mob_target.visible_message(span_warning(LANG("mob.5048758c5208c855", list(mob_initiator, part_held, mob_target))), span_userdanger(LANG("mob.3f6a4e8f6971162c", list(mob_initiator, part_held))))
 
 		// Attempt interaction timer
 		if(do_after(mob_initiator, MODLIMB_TIME_ADJUST, target = mob_target))
@@ -137,13 +138,13 @@ GAME_VERB_PROC_SRC_DESC(/mob/living, alterlimbs, view(), "Alter Limbs", "Remove 
 			part_held.try_attach_limb(mob_target)
 
 			// Alert users and return
-			mob_target.visible_message(span_warning("[mob_initiator] successfully attaches \the [part_held] onto [mob_target]"), span_warning("[mob_initiator] has successfully attached \the [part_held.name] onto you; you can use that limb again!"))
+			mob_target.visible_message(span_warning(LANG("mob.70227f004cd1379d", list(mob_initiator, part_held, mob_target))), span_warning(LANG("mob.51eead3c6d5c3cc5", list(mob_initiator, part_held.name))))
 			return
 
 		// Interaction timer failed
 		else
 			// Alert users and return
-			to_chat(mob_initiator, span_warning("You and [mob_target] must both stand still for you to alter their limbs!"))
+			to_chat(mob_initiator, span_warning(LANG("mob.f724cbb22984f4f5", list(mob_target))))
 			return
 
 	// Initiator is not holding a body part!
@@ -151,11 +152,11 @@ GAME_VERB_PROC_SRC_DESC(/mob/living, alterlimbs, view(), "Alter Limbs", "Remove 
 	// Check for valid target region
 	if(mob_initiator.zone_selected == BODY_ZONE_CHEST || mob_initiator.zone_selected == BODY_ZONE_HEAD)
 		// Alert initiator and return
-		to_chat(mob_initiator, span_warning("You must target either an arm or a leg!"))
+		to_chat(mob_initiator, span_warning(LANG("mob.26196b188b0e8b80", null)))
 		return
 	if(mob_initiator.zone_selected == BODY_ZONE_PRECISE_GROIN || mob_initiator.zone_selected == BODY_ZONE_PRECISE_EYES || mob_initiator.zone_selected == BODY_ZONE_PRECISE_MOUTH)
 		// Alert initiator and return
-		to_chat(mob_initiator, span_warning("There is no limb here; select an arm or a leg!"))
+		to_chat(mob_initiator, span_warning(LANG("mob.bf561a3e10f42073", null)))
 		return
 
 	// Define target body part
@@ -164,13 +165,13 @@ GAME_VERB_PROC_SRC_DESC(/mob/living, alterlimbs, view(), "Alter Limbs", "Remove 
 	// Check if the limb exists to be removed
 	if(!part_target)
 		// Alert initiator and return
-		to_chat(mob_initiator, span_warning("[mob_target.p_They()] [mob_target.p_are()] already missing that limb!"))
+		to_chat(mob_initiator, span_warning(LANG("mob.aa3c6946ae8d0611", list(mob_target.p_They(), mob_target.p_are()))))
 		return
 
 	// Check if part is irremovable
 	if(part_target.bodypart_flags & BODYPART_UNREMOVABLE)
 		// Alert initiator and return
-		to_chat(mob_initiator, span_warning("[mob_target.p_Their()] limb is too firmly attached!"))
+		to_chat(mob_initiator, span_warning(LANG("mob.70cd188f71b9dd2c", list(mob_target.p_Their()))))
 		return
 
 	// Region is valid and has a limb!
@@ -179,7 +180,7 @@ GAME_VERB_PROC_SRC_DESC(/mob/living, alterlimbs, view(), "Alter Limbs", "Remove 
 	var/part_name = part_target.name
 
 	// Alert users of interaction attempt
-	mob_target.visible_message(span_warning("[mob_initiator] is attempting to remove [mob_target]'s [part_name]!"), span_userdanger("[mob_initiator] is attempting to disconnect your [part_name]!"))
+	mob_target.visible_message(span_warning(LANG("mob.6033612e71a4039c", list(mob_initiator, mob_target, part_name))), span_userdanger(LANG("mob.3400700c674f0833", list(mob_initiator, part_name))))
 
 	// Attempt interaction timer
 	if(do_after(mob_initiator, MODLIMB_TIME_ADJUST, target = mob_target))
@@ -189,7 +190,7 @@ GAME_VERB_PROC_SRC_DESC(/mob/living, alterlimbs, view(), "Alter Limbs", "Remove 
 		// Check if redefined target matches
 		if(part_target != part_target_check)
 			// Alert initiator and return
-			to_chat(mob_initiator, span_warning("You cannot target a different limb while already removing one!"))
+			to_chat(mob_initiator, span_warning(LANG("mob.fd12b54adfe66690", null)))
 			return
 
 		// Remove targeted limb
@@ -203,13 +204,13 @@ GAME_VERB_PROC_SRC_DESC(/mob/living, alterlimbs, view(), "Alter Limbs", "Remove 
 		mob_target.update_equipment_speed_mods()
 
 		// Alert users and return
-		mob_target.visible_message(span_warning("[mob_initiator] forcefully disconnects [mob_target]'s [part_name]!"), span_userdanger("[mob_initiator] has forcefully disconnected your [part_name]!"))
+		mob_target.visible_message(span_warning(LANG("mob.5baa4769d05d64dc", list(mob_initiator, mob_target, part_name))), span_userdanger(LANG("mob.7b4fcfd44afe5212", list(mob_initiator, part_name))))
 		return
 
 	// Interaction timer failed
 	else
 		// Alert users and return
-		to_chat(mob_initiator, span_warning("You and [mob_target] must both stand still for you to alter their limbs!"))
+		to_chat(mob_initiator, span_warning(LANG("mob.f724cbb22984f4f5", list(mob_target))))
 		return
 
 #undef MODLIMB_TIME_ADJUST

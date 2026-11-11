@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/ballistic
 	/// Does this gun have mag and nomag on mob variance?
 	var/alt_icons = FALSE
@@ -52,8 +53,8 @@
 	if(istype(ammobox, /obj/item/ammo_box) && box_reload_penalty)
 		box_load = TRUE
 		user.changeNext_move(box_reload_delay) // cooldown to simulate having to fumble for another round
-		balloon_alert(user, "reload encumbered!")
-	to_chat(user, span_notice("You load [num_loaded] [cartridge_wording]\s into [src][box_load ?  ", but it takes some extra effort" : ""]."))
+		balloon_alert(user, LANG("obj.17b39d39f88c4382", null))
+	to_chat(user, span_notice(LANG("obj.5f22e75b43e04379", list(num_loaded, cartridge_wording, src, box_load ?  ", but it takes some extra effort" : ""))))
 
 /obj/effect/temp_visual/dir_setting/firing_effect
 	light_system = OVERLAY_LIGHT

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/scripture/integration_cog
 	name = "Integration Cog"
 	desc = "Fabricates an integration cog, which can be inserted into APCs to draw power and unlock scriptures."
@@ -9,11 +10,11 @@
 
 /datum/scripture/integration_cog/invoke_success()
 	if(invoker.put_in_hands(new /obj/item/clockwork/integration_cog))
-		to_chat(invoker, span_brass("You summon an integration cog into your hands."))
+		to_chat(invoker, span_brass(LANG("datum.8f2169480a99e73d", null)))
 		playsound(src, 'sound/machines/click.ogg', 50)
 		return TRUE
 
 	else
-		to_chat(invoker, span_brass("You summon an integration cog on the floor."))
+		to_chat(invoker, span_brass(LANG("datum.2b41480c84a97b2d", null)))
 		playsound(src, 'sound/machines/click.ogg', 50)
 		return FALSE

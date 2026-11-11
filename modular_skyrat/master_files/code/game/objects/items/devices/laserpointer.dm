@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/laser_pointer
 	//Whether the laser pointer is capable of receiving upgrades
 	var/upgradable = TRUE
@@ -20,18 +21,18 @@
 
 /obj/item/laser_pointer/screwdriver_act(mob/living/user, obj/item/tool)
 	if(!upgradable)
-		balloon_alert(user, "can't remove integrated diode!")
+		balloon_alert(user, LANG("obj.0c1764f567365537", null))
 		return
 	return ..()
 
 /obj/item/laser_pointer/attackby(obj/item/attack_item, mob/user, params)
 	if(istype(attack_item, /obj/item/stock_parts/micro_laser) || istype(attack_item, /obj/item/stack/ore/bluespace_crystal))
 		if(!upgradable)
-			balloon_alert(user, "can't upgrade integrated parts!")
+			balloon_alert(user, LANG("obj.e0b58e884b740f09", null))
 			return
 	return ..()
 
 /obj/item/laser_pointer/examine(mob/user)
 	. = ..()
 	if(!upgradable)
-		. += span_notice("The diode and the lens are both cheap, integrated components. This pointer cannot be upgraded.")
+		. += span_notice(LANG("obj.54abf7892e2eb466", null))

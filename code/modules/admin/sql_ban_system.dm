@@ -1,7 +1,110 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MAX_ADMINBANS_PER_ADMIN 1
 #define MAX_ADMINBANS_PER_HEADMIN 3
 
 #define MAX_REASON_LENGTH 600
+
+// ZH EDIT ADDITION START - I18N - Keep localized labels separate from canonical role-ban identifiers.
+#define ROLEBAN_FIELD_PREFIX "ban_role_"
+#define ROLEBAN_GROUP_PREFIX "ban_group_"
+
+GLOBAL_LIST_INIT(roleban_other_job_lists, list(
+	"Abstract" = list("Appearance", "Emote", "Deadchat", "OOC", "Urgent Adminhelp"),
+))
+
+GLOBAL_LIST_INIT(roleban_long_job_lists, list(
+	"Ghost and Other Roles" = list(
+		ROLE_PAI,
+		ROLE_BOT,
+		ROLE_BRAINWASHED,
+		ROLE_DEATHSQUAD,
+		ROLE_DRONE,
+		ROLE_LAVALAND,
+		ROLE_MIND_TRANSFER,
+		ROLE_POSIBRAIN,
+		ROLE_SENTIENCE,
+		ROLE_RECOVERED_CREW,
+	),
+	"Antagonist Positions" = list(
+		ROLE_ABDUCTOR,
+		ROLE_ALIEN,
+		ROLE_BLOB,
+		ROLE_BLOOD_WORM,
+		ROLE_BROTHER,
+		ROLE_CHANGELING,
+		ROLE_CULTIST,
+		ROLE_FUGITIVE,
+		ROLE_FUGITIVE_HUNTER,
+		ROLE_GLITCH,
+		ROLE_HERETIC,
+		ROLE_HIVE,
+		ROLE_MALF,
+		ROLE_NINJA,
+		ROLE_OPERATIVE,
+		ROLE_CLOWN_OPERATIVE,
+		ROLE_OVERTHROW,
+		ROLE_PARADOX_CLONE,
+		ROLE_REV,
+		ROLE_REVENANT,
+		ROLE_REV_HEAD,
+		ROLE_SPACE_DRAGON,
+		ROLE_SPIDER,
+		ROLE_SPY,
+		ROLE_SYNDICATE,
+		ROLE_TRAITOR,
+		ROLE_VOIDWALKER,
+		ROLE_WIZARD,
+		ROLE_BORER,
+		ROLE_ASSAULT_OPERATIVE,
+		ROLE_BLOODSUCKER,
+		ROLE_VASSAL,
+		ROLE_WIRE_PRIEST,
+	),
+	"Skyrat Ban Options" = list(
+		BAN_PACIFICATION,
+		BAN_DONOTREVIVE,
+		BAN_RESPAWN,
+		BAN_MOB_CONTROL,
+		BAN_GHOST_ROLE_SPAWNER,
+		BAN_GHOST_TAKEOVER,
+		BAN_EORG,
+		BAN_ANTAGONIST,
+		BAN_OPFOR,
+		BAN_LOOC,
+	),
+))
+
+/proc/roleban_field_name(role)
+	return "[ROLEBAN_FIELD_PREFIX][url_encode(role)]"
+
+/proc/roleban_group_field_name(group)
+	return "[ROLEBAN_GROUP_PREFIX][md5(group)]"
+
+/// Decodes a submitted role-ban field and rejects values that were not offered by the server.
+/proc/roleban_role_from_field(field_name, allow_server = FALSE)
+	if(!istext(field_name) || copytext(field_name, 1, length(ROLEBAN_FIELD_PREFIX) + 1) != ROLEBAN_FIELD_PREFIX)
+		return
+	var/role = url_decode(copytext(field_name, length(ROLEBAN_FIELD_PREFIX) + 1))
+	if(allow_server && role == "Server")
+		return role
+	for(var/datum/job_department/department as anything in SSjob.joinable_departments)
+		for(var/datum/job/job_datum as anything in department.get_jobban_jobs())
+			if(job_datum.title == role)
+				return role
+	for(var/group in GLOB.roleban_other_job_lists)
+		if(role in GLOB.roleban_other_job_lists[group])
+			return role
+	for(var/group in GLOB.roleban_long_job_lists)
+		if(role in GLOB.roleban_long_job_lists[group])
+			return role
+// ZH EDIT ADDITION END
+
+// ZH EDIT ADDITION START - I18N - Test hook for recognizing forged role fields without decoding them.
+/proc/is_roleban_field_name(field_name)
+	return istext(field_name) && copytext(field_name, 1, length(ROLEBAN_FIELD_PREFIX) + 1) == ROLEBAN_FIELD_PREFIX
+// ZH EDIT ADDITION END
+
+
 
 /**
  * Checks client ban cache or, if it doesn't exist, queries the DB ban table to see if the player's
@@ -327,7 +430,7 @@
 		<input type='hidden' name='old_globalban' value='[global_ban]'>
 		<input type='hidden' name='page' value='[page]'>
 		<input type='hidden' name='adminkey' value='[admin_key]'>
-		<input type='hidden' name='role' value='[role]'>
+		<input type='hidden' name='role' value='[roleban_field_name(role)]'>
 		<br>
 		When ticked, edits here will also affect bans created with matching ckey, IP, CID and time. Use this to edit all role bans which were made at the same time.
 		"}
@@ -354,123 +457,69 @@
 		var/break_counter = 0
 		output += "<div class='row'>"
 
+		// ZH EDIT ADDITION START - I18N - Machine identifiers are encoded separately from localized labels.
 		for(var/datum/job_department/department as anything in SSjob.joinable_departments)
 			var/label_class = department.get_label_class()
 			var/department_name = department.department_name
-			output += "<div class='column'><label class='rolegroup [label_class]' style='background-color: [department.ui_color];'><input type='checkbox' name='[label_class]' class='hidden' onClick='header_click_all_checkboxes(this)'> \
+			var/department_field = roleban_group_field_name(label_class)
+			output += "<div class='column'><label class='rolegroup [label_class]' style='background-color: [department.ui_color];'><input type='checkbox' name='[department_field]' class='hidden' onClick='header_click_all_checkboxes(this)'> \
 			[department_name]</label><div class='content'>"
 			for(var/datum/job/job_datum as anything in department.get_jobban_jobs())
 				if(break_counter > 0 && (break_counter % 3 == 0))
 					output += "<br>"
 				break_counter++
 				var/job_name = job_datum.title
+				var/job_field = roleban_field_name(job_name)
 				if(length(job_datum.departments_list) > 1) //This job is in multiple departments, so we need to check all the boxes.
 					// Clicking this will also toggle all the other boxes, minus this one.
 					var/department_index = job_datum.departments_list.Find(department.type)
 					if(!department_index)
 						stack_trace("Failed to find a department index for [department.type] in the departments_list of [job_datum.type]")
 					output += {"<label class='inputlabel checkbox'>[job_name]
-						<input type='checkbox' id='[job_name]_[department_index]' name='[job_name]' class='[label_class]' value='1'
+						<input type='checkbox' id='[job_field]_[department_index]' name='[job_field]' class='[department_field]' value='1'
 						onClick='toggle_other_checkboxes(this, \"[length(job_datum.departments_list)]\", \"[department_index]\")'">
 						<div class='inputbox[(job_name in banned_from) ? " banned" : ""]'></div></label>
 						"}
 				else
 					output += {"<label class='inputlabel checkbox'>[job_name]
-							<input type='checkbox' name='[job_name]' class='[label_class]' value='1'>
+							<input type='checkbox' name='[job_field]' class='[department_field]' value='1'>
 							<div class='inputbox[(job_name in banned_from) ? " banned" : ""]'></div></label>
 							"}
 			output += "</div></div>"
 			break_counter = 0
+		// ZH EDIT ADDITION END
 
-		var/list/other_job_lists = list(
-			"Abstract" = list("Appearance", "Emote", "Deadchat", "OOC", "Urgent Adminhelp"),
-			)
-		for(var/department in other_job_lists)
-			output += "<div class='column'><label class='rolegroup [ckey(department)]'><input type='checkbox' name='[department]' class='hidden' onClick='header_click_all_checkboxes(this)'>[department]</label><div class='content'>"
+		// ZH EDIT ADDITION START - I18N - Reuse the same canonical option lists for rendering and validation.
+		for(var/department in GLOB.roleban_other_job_lists)
+			var/other_group_field = roleban_group_field_name(department)
+			output += "<div class='column'><label class='rolegroup [ckey(department)]'><input type='checkbox' name='[other_group_field]' class='hidden' onClick='header_click_all_checkboxes(this)'>[department]</label><div class='content'>"
 			break_counter = 0
-			for(var/job in other_job_lists[department])
+			for(var/job in GLOB.roleban_other_job_lists[department])
 				if(break_counter > 0 && (break_counter % 3 == 0))
 					output += "<br>"
+				var/other_role_field = roleban_field_name(job)
 				output += {"<label class='inputlabel checkbox'>[job]
-							<input type='checkbox' name='[job]' class='[department]' value='1'>
+							<input type='checkbox' name='[other_role_field]' class='[other_group_field]' value='1'>
 							<div class='inputbox[(job in banned_from) ? " banned" : ""]'></div></label>
 				"}
 				break_counter++
 			output += "</div></div>"
-		var/list/long_job_lists = list(
-			"Ghost and Other Roles" = list(
-				ROLE_PAI,
-				ROLE_BOT,
-				ROLE_BRAINWASHED,
-				ROLE_DEATHSQUAD,
-				ROLE_DRONE,
-				ROLE_LAVALAND,
-				ROLE_MIND_TRANSFER,
-				ROLE_POSIBRAIN,
-				ROLE_SENTIENCE,
-				ROLE_RECOVERED_CREW,
-			),
-			"Antagonist Positions" = list(
-				ROLE_ABDUCTOR,
-				ROLE_ALIEN,
-				ROLE_BLOB,
-				ROLE_BLOOD_WORM,
-				ROLE_BROTHER,
-				ROLE_CHANGELING,
-				ROLE_CULTIST,
-				ROLE_FUGITIVE,
-				ROLE_FUGITIVE_HUNTER,
-				ROLE_GLITCH,
-				ROLE_HERETIC,
-				ROLE_HIVE,
-				ROLE_MALF,
-				ROLE_NINJA,
-				ROLE_OPERATIVE,
-				ROLE_CLOWN_OPERATIVE,
-				ROLE_OVERTHROW,
-				ROLE_PARADOX_CLONE,
-				ROLE_REV,
-				ROLE_REVENANT,
-				ROLE_REV_HEAD,
-				ROLE_SPACE_DRAGON,
-				ROLE_SPIDER,
-				ROLE_SPY,
-				ROLE_SYNDICATE,
-				ROLE_TRAITOR,
-				ROLE_VOIDWALKER,
-				ROLE_WIZARD,
-				ROLE_BORER, // SKYRAT EDIT ADDITION
-				ROLE_ASSAULT_OPERATIVE, // SKYRAT EDIT ADDITION
-				ROLE_BLOODSUCKER,// BUBBER EDIT
-				ROLE_VASSAL, // BUBBER EDIT
-				ROLE_WIRE_PRIEST, // BUBBER EDIT
-			),
-			"Skyrat Ban Options" = list(
-				BAN_PACIFICATION,
-				BAN_DONOTREVIVE,
-				BAN_RESPAWN,
-				BAN_MOB_CONTROL,
-				BAN_GHOST_ROLE_SPAWNER,
-				BAN_GHOST_TAKEOVER,
-				BAN_EORG,
-				BAN_ANTAGONIST,
-				BAN_OPFOR,
-				BAN_LOOC, // SKYRAT EDIT ADDITION - LOOC muting again
-			), // SKYRAT EDIT ADDITION - EXTRA_BANS
-		)
-		for(var/department in long_job_lists)
-			output += "<div class='column'><label class='rolegroup long [ckey(department)]'><input type='checkbox' name='[department]' class='hidden' onClick='header_click_all_checkboxes(this)'>[department]</label><div class='content'>"
+		for(var/department in GLOB.roleban_long_job_lists)
+			var/long_group_field = roleban_group_field_name(department)
+			output += "<div class='column'><label class='rolegroup long [ckey(department)]'><input type='checkbox' name='[long_group_field]' class='hidden' onClick='header_click_all_checkboxes(this)'>[department]</label><div class='content'>"
 			break_counter = 0
-			for(var/job in long_job_lists[department])
+			for(var/job in GLOB.roleban_long_job_lists[department])
 				if(break_counter > 0 && (break_counter % 10 == 0))
 					output += "<br>"
+				var/long_role_field = roleban_field_name(job)
 				output += {"<label class='inputlabel checkbox'>[job]
-							<input type='checkbox' name='[job]' class='[department]' value='1'>
+							<input type='checkbox' name='[long_role_field]' class='[long_group_field]' value='1'>
 							<div class='inputbox[(job in banned_from) ? " banned" : ""]'></div></label>
 				"}
 				break_counter++
 			output += "</div></div>"
 		output += "</div>"
+		// ZH EDIT ADDITION END
 	output += "</form>"
 	panel.set_content(output.Join())
 	panel.open()
@@ -480,7 +529,7 @@
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
-		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
+		to_chat(usr, span_danger(LANG("datum.cfa9a5781ea2050f", null)), confidential = TRUE)
 		return
 	var/list/error_state = list()
 	var/player_key
@@ -579,7 +628,11 @@
 			changes += list("Reason" = "[href_list["oldreason"]]<br>to<br>[reason]")
 		if(!changes.len)
 			error_state += "No changes were detected."
-		roles_to_ban += href_list["role"]
+		var/edit_role = roleban_role_from_field(href_list["role"], allow_server = TRUE) // ZH EDIT CHANGE - I18N - decode and validate canonical role
+		if(edit_role)
+			roles_to_ban += edit_role
+		else
+			error_state += "Invalid role ban option."
 	else
 		severity = href_list["radioseverity"]
 		if(!severity)
@@ -588,20 +641,27 @@
 			if("server")
 				roles_to_ban += "Server"
 			if("role")
-				href_list.Remove("Command", "Security", "Engineering", "Medical", "Science", "Supply", "Silicon", "Abstract", "Service", "Ghost and Other Roles", "Antagonist Positions") //remove the role banner hidden input values
+				// ZH EDIT ADDITION START - I18N - Ignore group controls; decode and validate only stable role fields.
 				var/delimiter_pos = href_list.Find("roleban_delimiter")
-				if(href_list.len == delimiter_pos)
-					error_state += "Role ban was selected but no roles to ban were selected."
-				else if(delimiter_pos == 0)
+				if(delimiter_pos == 0)
 					error_state += "roleban_delimiter not found in href. Report this to coders."
 				else
-					href_list.Cut(1, delimiter_pos+1)//remove every list element before and including roleban_delimiter so we have a list of only the roles to ban
-					for(var/key in href_list) //flatten into a list of only unique keys
-						roles_to_ban |= key
+					href_list.Cut(1, delimiter_pos + 1)
+					for(var/key in href_list)
+						if(!is_roleban_field_name(key))
+							continue
+						var/canonical_role = roleban_role_from_field(key)
+						if(!canonical_role)
+							error_state += "Invalid role ban option."
+							continue
+						roles_to_ban |= canonical_role
+					if(!roles_to_ban.len)
+						error_state += "Role ban was selected but no roles to ban were selected."
+				// ZH EDIT ADDITION END
 			else
 				error_state += "No ban type was selected."
 	if(error_state.len)
-		to_chat(usr, span_danger("Ban not [edit_id ? "edited" : "created"] because the following errors were present:\n[error_state.Join("\n")]"), confidential = TRUE)
+		to_chat(usr, span_danger(LANG("datum.d4b5f42a4a539f2d", list(edit_id ? "edited" : "created", error_state.Join("\n")))), confidential = TRUE)
 		return
 	if(edit_id)
 		edit_ban(edit_id, player_key, ip_check, player_ip, cid_check, player_cid, use_last_connection, applies_to_admins, duration, interval, reason, global_ban, mirror_edit, old_key, old_ip, old_cid, old_applies, page, admin_key, changes, roles_to_ban[1] == "Server") // SKYRAT EDIT CHANGE - MULTISERVER
@@ -612,7 +672,7 @@
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
-		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
+		to_chat(usr, span_danger(LANG("datum.cfa9a5781ea2050f", null)), confidential = TRUE)
 		return
 	var/player_ckey = ckey(player_key)
 	if(player_ckey)
@@ -631,11 +691,11 @@
 					player_cid = query_create_ban_get_player.item[3]
 		else
 			if(use_last_connection)
-				if(tgui_alert(usr, "[player_key]/([player_ckey]) has not been seen before, unable to use IP and CID from last connection. Are you sure you want to create a ban for them?", "Unknown key", list("Yes", "No", "Cancel")) != "Yes")
+				if(tgui_alert(usr, LANG("datum.5fd7453d775995cf", list(player_key, player_ckey)), LANG("datum.eaa1ede339926ab5", null), list("Yes", "No", "Cancel")) != "Yes")
 					qdel(query_create_ban_get_player)
 					return
 			else
-				if(tgui_alert(usr, "[player_key]/([player_ckey]) has not been seen before, are you sure you want to create a ban for them?", "Unknown key", list("Yes", "No", "Cancel")) != "Yes")
+				if(tgui_alert(usr, LANG("datum.601f14ecf464eb70", list(player_key, player_ckey)), LANG("datum.eaa1ede339926ab5", null), list("Yes", "No", "Cancel")) != "Yes")
 					qdel(query_create_ban_get_player)
 					return
 		qdel(query_create_ban_get_player)
@@ -723,7 +783,7 @@
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
-		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
+		to_chat(usr, span_danger(LANG("datum.cfa9a5781ea2050f", null)), confidential = TRUE)
 		return
 	var/datum/browser/unban_panel = new(usr, "unbanpanel", "Unbanning Panel", 850, 600)
 	unban_panel.add_stylesheet("unbanpanelcss", 'html/admin/unbanpanel.css')
@@ -871,11 +931,11 @@
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
-		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
+		to_chat(usr, span_danger(LANG("datum.cfa9a5781ea2050f", null)), confidential = TRUE)
 		return
 	var/target = ban_target_string(player_key, player_ip, player_cid)
 	// Make sure the only input that doesn't early return is "Yes" - This is the only situation in which we want the unban to proceed.
-	if(tgui_alert(usr, "Please confirm unban of [target] from [role].", "Unban confirmation", list("Yes", "No")) != "Yes")
+	if(tgui_alert(usr, LANG("datum.596e7033f899b47b", list(target, role)), LANG("datum.c825fbbb4f6bfade", null), list("Yes", "No")) != "Yes")
 		return
 	var/kn = key_name(usr)
 	var/kna = key_name_admin(usr)
@@ -899,11 +959,11 @@
 	var/client/C = GLOB.directory[player_key]
 	if(C)
 		build_ban_cache(C)
-		to_chat(C, span_boldannounce("[usr.client.key] has removed a ban from [role] for your key."), confidential = TRUE)
+		to_chat(C, span_boldannounce(LANG("datum.f70743131c059129", list(usr.client.key, role))), confidential = TRUE)
 	for(var/client/i in GLOB.clients - C)
 		if(i.address == player_ip || i.computer_id == player_cid)
 			build_ban_cache(i)
-			to_chat(i, span_boldannounce("[usr.client.key] has removed a ban from [role] for your IP or CID."), confidential = TRUE)
+			to_chat(i, span_boldannounce(LANG("datum.890bcc2c0611d229", list(usr.client.key, role))), confidential = TRUE)
 	unban_panel(player_key, admin_key, player_ip, player_cid, page)
 
 /// Sometimes an admin did not intend to unban a player. This proc undoes an unbanning operation by setting the unbanned_ keys in the DB back to null.
@@ -911,12 +971,12 @@
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
-		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
+		to_chat(usr, span_danger(LANG("datum.cfa9a5781ea2050f", null)), confidential = TRUE)
 		return
 
 	var/target = ban_target_string(player_key, player_ip, player_cid)
 	// Make sure the only input that doesn't early return is "Yes" - This is the only situation in which we want the unban to proceed.
-	if(tgui_alert(usr, "Please confirm undoing of unban of [target] from [role].", "Reban confirmation", list("Yes", "No")) != "Yes")
+	if(tgui_alert(usr, LANG("datum.17e6ba7712273ba1", list(target, role)), LANG("datum.73642c50e9b4d605", null), list("Yes", "No")) != "Yes")
 		return
 
 	if(applies_to_admins && !can_place_additional_admin_ban(usr.client.ckey))
@@ -953,7 +1013,7 @@
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
-		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
+		to_chat(usr, span_danger(LANG("datum.cfa9a5781ea2050f", null)), confidential = TRUE)
 		return
 	var/player_ckey = ckey(player_key)
 	var/bantime
@@ -980,11 +1040,11 @@
 					player_cid = query_edit_ban_get_player.item[4]
 		else
 			if(use_last_connection)
-				if(tgui_alert(usr, "[player_key]/([player_ckey]) has not been seen before, unable to use IP and CID from last connection. Are you sure you want to edit a ban for them?", "Unknown key", list("Yes", "No", "Cancel")) != "Yes")
+				if(tgui_alert(usr, LANG("datum.e07887e1e8a4c4c9", list(player_key, player_ckey)), LANG("datum.eaa1ede339926ab5", null), list("Yes", "No", "Cancel")) != "Yes")
 					qdel(query_edit_ban_get_player)
 					return
 			else
-				if(tgui_alert(usr, "[player_key]/([player_ckey]) has not been seen before, are you sure you want to edit a ban for them?", "Unknown key", list("Yes", "No", "Cancel")) != "Yes")
+				if(tgui_alert(usr, LANG("datum.b7154afff87ff642", list(player_key, player_ckey)), LANG("datum.eaa1ede339926ab5", null), list("Yes", "No", "Cancel")) != "Yes")
 					qdel(query_edit_ban_get_player)
 					return
 		qdel(query_edit_ban_get_player)
@@ -1068,7 +1128,7 @@
 	if(!check_rights(R_BAN))
 		return
 	if(!SSdbcore.Connect())
-		to_chat(usr, span_danger("Failed to establish database connection."), confidential = TRUE)
+		to_chat(usr, span_danger(LANG("datum.cfa9a5781ea2050f", null)), confidential = TRUE)
 		return
 	var/datum/db_query/query_get_ban_edits = SSdbcore.NewQuery({"
 		SELECT edits FROM [format_table_name("ban")] WHERE id = :ban_id
@@ -1127,7 +1187,7 @@
 		if(check_rights(R_PERMISSIONS, show_msg = FALSE) && (can_edit_rights_flags() & R_EVERYTHING) == R_EVERYTHING) //edit rights are a more effective way to check hierarchical rank since many non-headmins have R_PERMISSIONS now
 			max_adminbans = MAX_ADMINBANS_PER_HEADMIN
 		if(adminban_count >= max_adminbans)
-			to_chat(usr, span_danger("You've already logged [max_adminbans] admin ban(s) or more. Do not abuse this function!"), confidential = TRUE)
+			to_chat(usr, span_danger(LANG("datum.259091f00edad401", list(max_adminbans))), confidential = TRUE)
 			qdel(query_check_adminban_count)
 			return FALSE
 	qdel(query_check_adminban_count)
@@ -1159,7 +1219,7 @@
 	var/is_admin = FALSE
 	if(player_client)
 		build_ban_cache(player_client)
-		to_chat(player_client, span_boldannounce("[banned_player_message]<br><span class='danger'>To appeal this ban go to [appeal_url]"), confidential = TRUE)
+		to_chat(player_client, span_boldannounce(LANG("datum.d22adb7d42ac9ce9", list(banned_player_message, appeal_url))), confidential = TRUE)
 		if(GLOB.admin_datums[player_client.ckey] || GLOB.deadmins[player_client.ckey])
 			is_admin = TRUE
 		if(kick_banned_players && (!is_admin || (is_admin && applies_to_admins)))
@@ -1168,7 +1228,7 @@
 	for(var/client/other_player_client in GLOB.clients - player_client)
 		if(other_player_client.address == banned_player_ip || other_player_client.computer_id == banned_player_cid)
 			build_ban_cache(other_player_client)
-			to_chat(other_player_client, span_boldannounce("[banned_other_message]<br><span class='danger'>To appeal this ban go to [appeal_url]"), confidential = TRUE)
+			to_chat(other_player_client, span_boldannounce(LANG("datum.d22adb7d42ac9ce9", list(banned_other_message, appeal_url))), confidential = TRUE)
 			if(GLOB.admin_datums[other_player_client.ckey] || GLOB.deadmins[other_player_client.ckey])
 				is_admin = TRUE
 			if(kick_banned_players && (!is_admin || (is_admin && applies_to_admins)))
@@ -1177,3 +1237,5 @@
 #undef MAX_ADMINBANS_PER_ADMIN
 #undef MAX_ADMINBANS_PER_HEADMIN
 #undef MAX_REASON_LENGTH
+#undef ROLEBAN_FIELD_PREFIX
+#undef ROLEBAN_GROUP_PREFIX

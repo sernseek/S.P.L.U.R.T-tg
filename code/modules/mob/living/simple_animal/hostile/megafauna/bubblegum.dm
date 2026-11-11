@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BUBBLEGUM_SMASH (health <= maxHealth*0.5) // angery
 #define BUBBLEGUM_CAN_ENRAGE (enrage_till + (enrage_time * 2) <= world.time)
 #define BUBBLEGUM_IS_ENRAGED (enrage_till > world.time)
@@ -204,7 +205,7 @@ Difficulty: Hard
 	SLEEP_CHECK_DEATH(4, src)
 	for(var/mob/living/L in T)
 		if(!faction_check_atom(L))
-			to_chat(L, span_userdanger("[src] rends you!"))
+			to_chat(L, span_userdanger(LANG("mob.50c5c2923818975d", list(src))))
 			playsound(T, attack_sound, 100, TRUE, -1)
 			var/limb_to_hit = L.get_bodypart(L.get_random_valid_zone(even_weights = TRUE))
 			L.apply_damage(10, BRUTE, limb_to_hit, L.run_armor_check(limb_to_hit, MELEE, null, null, armour_penetration), wound_bonus = CANT_WOUND)
@@ -221,7 +222,7 @@ Difficulty: Hard
 	for(var/mob/living/L in T)
 		if(!faction_check_atom(L))
 			if(IS_UNCONSCIOUS_OR_CRIT(L))
-				to_chat(L, span_userdanger("[src] drags you through the blood!"))
+				to_chat(L, span_userdanger(LANG("mob.6a83cdbe82a563e7", list(src))))
 				playsound(T, 'sound/effects/magic/enter_blood.ogg', 100, TRUE, -1)
 				var/turf/targetturf = get_step(src, dir)
 				L.forceMove(targetturf)
@@ -300,7 +301,7 @@ Difficulty: Hard
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/projectile_hit(obj/projectile/hitting_projectile, def_zone, piercing_hit, blocked)
 	if(BUBBLEGUM_IS_ENRAGED)
-		visible_message(span_danger("[src] deflects the [hitting_projectile]! [p_They()] can't be hit with ranged weapons while enraged!"), span_userdanger("You deflect the projectile!"))
+		visible_message(span_danger(LANG("mob.3eec35f197b2d072", list(src, hitting_projectile, p_They()))), span_userdanger(LANG("mob.a6070bffecbba822", null)))
 		playsound(src, SFX_BULLET_MISS, 300, TRUE)
 		return BULLET_ACT_BLOCK
 	return ..()

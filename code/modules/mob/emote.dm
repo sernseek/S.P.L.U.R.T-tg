@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///How confused a carbon must be before they will vomit
 #define BEYBLADE_PUKE_THRESHOLD (30 SECONDS)
 ///How must nutrition is lost when a carbon pukes
@@ -24,7 +25,7 @@
 
 	if(!length(key_emotes))
 		if(intentional && !force_silence)
-			to_chat(src, span_notice("'[act]' emote does not exist. Say *help for a list."))
+			to_chat(src, span_notice(LANG("mob.264e137fab6e3751", list(act))))
 		return FALSE
 	var/silenced = FALSE
 	for(var/datum/emote/emote in key_emotes)
@@ -41,7 +42,7 @@
 		SEND_SIGNAL(src, COMSIG_MOB_EMOTED(emote.key))
 		return TRUE
 	if(intentional && !silenced && !force_silence)
-		to_chat(src, span_notice("Unusable emote '[act]'. Say *help for a list."))
+		to_chat(src, span_notice(LANG("mob.e7eda12bf560053a", list(act))))
 	return FALSE
 
 /datum/emote/help
@@ -136,13 +137,13 @@
 	if(prob(20))
 		flippy_mcgee.Knockdown(1.5 SECONDS)
 		flippy_mcgee.visible_message(
-			span_notice("[flippy_mcgee] attempts to do a flip and falls over, what a doofus!"),
-			span_notice("You attempt to do a flip while still off balance from the last flip and fall down!")
+			span_notice(LANG("datum.b5bb2363b32f34fa", list(flippy_mcgee))),
+			span_notice(LANG("datum.4c981e649fc800be", null))
 		)
 	flippy_mcgee.set_dizzy_if_lower(BEYBLADE_DIZZINESS_DURATION)
 	flippy_mcgee.adjust_confusion_up_to(BEYBLADE_CONFUSION_INCREMENT, BEYBLADE_CONFUSION_LIMIT)
 	if(sickness > (BEYBLADE_PUKE_THRESHOLD * 0.5))
-		to_chat(user, span_warning("You feel woozy from flipping."))
+		to_chat(user, span_warning(LANG("datum.638a4d7945d861c1", null)))
 // BUBBER EDIT CHANGE END
 
 
@@ -181,7 +182,7 @@
 		return
 
 	if(prob(BEYBLADE_DIZZINESS_PROBABILITY))
-		to_chat(user, span_warning("You feel woozy from spinning."))
+		to_chat(user, span_warning(LANG("datum.884abfdf59f34f4a", null)))
 		user.set_dizzy_if_lower(BEYBLADE_DIZZINESS_DURATION)
 		user.adjust_confusion_up_to(BEYBLADE_CONFUSION_INCREMENT, BEYBLADE_CONFUSION_LIMIT)
 

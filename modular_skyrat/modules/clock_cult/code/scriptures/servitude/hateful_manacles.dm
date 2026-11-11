@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/scripture/slab/hateful_manacles
 	name = "Hateful Manacles"
 	desc = "Forms replicant manacles around a target's wrists that function like handcuffs, restraining the target."
@@ -18,12 +19,12 @@
 		return FALSE
 
 	if(target_carbon.handcuffed)
-		target_carbon.balloon_alert(invoker, "already restrained!")
+		target_carbon.balloon_alert(invoker, LANG("datum.1f241543e3f0ad24", null))
 		return FALSE
 
 	playsound(target_carbon, 'sound/items/weapons/handcuffs.ogg', 30, TRUE, -2)
-	target_carbon.visible_message(span_danger("[invoker] forms a well of energy around [target_carbon], brass appearing at their wrists!"),\
-						span_userdanger("[invoker] is trying to restrain you!"))
+	target_carbon.visible_message(span_danger(LANG("datum.ef41cf6551462fa4", list(invoker, target_carbon))),\
+						span_userdanger(LANG("datum.61017d12d714600b", list(invoker))))
 
 	if(!do_after(invoker, 3 SECONDS, target = target_carbon))
 		return FALSE

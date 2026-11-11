@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define LARGE_MORTAR_STAMINA_MINIMUM 50 //What is the amount of stam damage that we prevent mortar use at
 #define LARGE_MORTAR_STAMINA_USE 70 //How much stam damage is given to people when the mortar is used
 
@@ -25,9 +26,9 @@
 
 /obj/structure/large_mortar/examine(mob/user)
 	. = ..()
-	. += span_notice("It currently contains <b>[length(contents)]/[maximum_contained_items]</b> items.")
-	. += span_notice("It can be (un)secured with <b>Right Click</b>")
-	. += span_notice("You can empty all of the items out of it with <b>Alt Click</b>")
+	. += span_notice(LANG("obj.fdec676b9c1661e3", list(length(contents), maximum_contained_items)))
+	. += span_notice(LANG("obj.48a3e387c72052ad", null))
+	. += span_notice(LANG("obj.71ecf66287778829", null))
 
 /obj/structure/large_mortar/Destroy()
 	drop_everything_contained()
@@ -35,11 +36,11 @@
 
 /obj/structure/large_mortar/click_alt(mob/user)
 	if(!length(contents))
-		balloon_alert(user, "nothing inside")
+		balloon_alert(user, LANG("obj.1c3a27a165608d55", null))
 		return CLICK_ACTION_BLOCKING
 
 	drop_everything_contained()
-	balloon_alert(user, "removed all items")
+	balloon_alert(user, LANG("obj.35edb25f79ae774e", null))
 	return CLICK_ACTION_SUCCESS
 
 /// Drops all contents at the mortar
@@ -74,11 +75,11 @@
 
 	if(istype(tool, /obj/item/storage/bag))
 		if(length(contents) >= maximum_contained_items)
-			balloon_alert(user, "already full!")
+			balloon_alert(user, LANG("obj.e28c7f55e1d974b1", null))
 			return ITEM_INTERACT_BLOCKING
 
 		if(!length(tool.contents))
-			balloon_alert(user, "nothing to transfer!")
+			balloon_alert(user, LANG("obj.7e39eb3741bf83f2", null))
 			return ITEM_INTERACT_BLOCKING
 
 		for(var/obj/item/target_item in tool.contents)
@@ -89,20 +90,20 @@
 				target_item.forceMove(src)
 
 		if (length(contents) >= maximum_contained_items)
-			balloon_alert(user, "filled")
+			balloon_alert(user, LANG("obj.24e1316745ee6537", null))
 
 		else
-			balloon_alert(user, "transferred")
+			balloon_alert(user, LANG("obj.1ce4361d9c08aad1", null))
 
 		return ITEM_INTERACT_SUCCESS
 
 	if(istype(tool, /obj/item/pestle))
 		if(!anchored)
-			balloon_alert(user, "not secured!")
+			balloon_alert(user, LANG("obj.801f0be9a529882b", null))
 			return ITEM_INTERACT_BLOCKING
 
 		if(!length(contents) && reagents.total_volume == 0)
-			balloon_alert(user, "mortar empty!")
+			balloon_alert(user, LANG("obj.39b5d6cdb676a212", null))
 			return ITEM_INTERACT_BLOCKING
 
 		var/list/choose_options = list(
@@ -113,7 +114,7 @@
 		var/picked_option = show_radial_menu(user, src, choose_options, radius = 38, require_near = TRUE)
 
 		if(user.get_stamina_loss() > LARGE_MORTAR_STAMINA_MINIMUM)
-			balloon_alert(user, "too tired!")
+			balloon_alert(user, LANG("obj.6ba63ace20a73a48", null))
 			return ITEM_INTERACT_BLOCKING
 
 		if(!in_range(src, user) || !user.is_holding(tool) || !picked_option)
@@ -135,13 +136,13 @@
 			has_resource = length(contents) > 0
 
 		if(!has_resource)
-			balloon_alert(user, "nothing to [act_verb]!")
+			balloon_alert(user, LANG("obj.90aa33129bf16ccb", list(act_verb)))
 			return ITEM_INTERACT_BLOCKING
 
 		balloon_alert_to_viewers("[act_verb_ing]...")
 		var/skill_modifier = user.mind?.get_skill_modifier(/datum/skill/primitive, SKILL_SPEED_MODIFIER)
 		if(!do_after(user, 5 SECONDS * skill_modifier, target = src))
-			balloon_alert_to_viewers("stopped [act_verb_ing]")
+			balloon_alert_to_viewers(LANG("obj.a2a87f6e6b60ed51", list(act_verb_ing)))
 			return ITEM_INTERACT_BLOCKING
 
 		user.adjust_stamina_loss(LARGE_MORTAR_STAMINA_USE) //This is a bit more tiring than a normal sized mortar and pestle
@@ -149,7 +150,7 @@
 			if("Juice")
 				for(var/obj/item/target_item as anything in contents)
 					if (reagents.total_volume >= reagents.maximum_volume)
-						balloon_alert(user, "overflowing!")
+						balloon_alert(user, LANG("obj.509afd4b61a9d333", null))
 						break
 
 					if (target_item.juice_typepath())
@@ -161,7 +162,7 @@
 			if("Grind")
 				for(var/obj/item/target_item as anything in contents)
 					if (reagents.total_volume >= reagents.maximum_volume)
-						balloon_alert(user, "overflowing!")
+						balloon_alert(user, LANG("obj.509afd4b61a9d333", null))
 						break
 
 					if (target_item.grind_results() || target_item.reagents?.total_volume)
@@ -173,11 +174,11 @@
 		return ITEM_INTERACT_SUCCESS
 
 	if(!tool.grind_results() && !tool.juice_typepath() && !tool.reagents?.total_volume)
-		balloon_alert(user, "can't grind this!")
+		balloon_alert(user, LANG("obj.4cd150fff7630cfc", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(length(contents) >= maximum_contained_items)
-		balloon_alert(user, "already full!")
+		balloon_alert(user, LANG("obj.e28c7f55e1d974b1", null))
 		return ITEM_INTERACT_BLOCKING
 
 	tool.forceMove(src)
@@ -186,30 +187,30 @@
 ///Juices the passed target item, and transfers any contained chems to the mortar as well
 /obj/structure/large_mortar/proc/juice_target_item(obj/item/to_be_juiced, mob/living/carbon/human/user)
 	if(to_be_juiced.flags_1 & HOLOGRAM_1)
-		to_chat(user, span_notice("You try to juice [to_be_juiced], but it fades away!"))
+		to_chat(user, span_notice(LANG("obj.89badf16da556d7a", list(to_be_juiced))))
 		qdel(to_be_juiced)
 		return
 
 	if(!to_be_juiced.juice(src.reagents, user))
-		to_chat(user, span_danger("You fail to juice [to_be_juiced]."))
+		to_chat(user, span_danger(LANG("obj.9d6b7d5a879b8fcb", list(to_be_juiced))))
 
-	to_chat(user, span_notice("You juice [to_be_juiced] into a liquid."))
+	to_chat(user, span_notice(LANG("obj.b2cacd3ebd8dc838", list(to_be_juiced))))
 	QDEL_NULL(to_be_juiced)
 
 ///Grinds the passed target item, and transfers any contained chems to the mortar as well
 /obj/structure/large_mortar/proc/grind_target_item(obj/item/to_be_ground, mob/living/carbon/human/user)
 	if(to_be_ground.flags_1 & HOLOGRAM_1)
-		to_chat(user, span_notice("You try to grind [to_be_ground], but it fades away!"))
+		to_chat(user, span_notice(LANG("obj.2708cfa5091c138b", list(to_be_ground))))
 		qdel(to_be_ground)
 		return
 
 	if(!to_be_ground.grind(src.reagents, user))
 		if(isstack(to_be_ground))
-			to_chat(usr, span_notice("[src] attempts to grind as many pieces of [to_be_ground] as possible."))
+			to_chat(usr, span_notice(LANG("obj.10d463a7660f5ddc", list(src, to_be_ground))))
 		else
-			to_chat(user, span_danger("You fail to grind [to_be_ground]."))
+			to_chat(user, span_danger(LANG("obj.b0102c6717af1327", list(to_be_ground))))
 
-	to_chat(user, span_notice("You break [to_be_ground] into a fine powder."))
+	to_chat(user, span_notice(LANG("obj.095775cc216baf01", list(to_be_ground))))
 	QDEL_NULL(to_be_ground)
 
 #undef LARGE_MORTAR_STAMINA_MINIMUM

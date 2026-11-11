@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/antagonist/highlander
 	name = "\improper Highlander"
 	var/obj/item/claymore/highlander/sword
@@ -43,8 +44,7 @@
 	. = ..()
 
 /datum/antagonist/highlander/greet()
-	to_chat(owner, span_bolddanger("Your [sword.name] cries out for blood. Claim the lives of others, and your own will be restored!\n\
-	Activate it in your hand, and it will lead to the nearest target. Attack the nuclear authentication disk with it, and you will store it."))
+	to_chat(owner, span_bolddanger(LANG("datum.7bdc61a2954e467f", list(sword.name))))
 
 	owner.announce_objectives()
 
@@ -88,8 +88,7 @@
 	name = "\improper highlander"
 
 /datum/antagonist/highlander/robot/greet()
-	to_chat(owner, span_bolddanger("Your integrated claymore cries out for blood. Claim the lives of others, and your own will be restored!\n\
-	Activate it in your hand, and it will lead to the nearest target. Attack the nuclear authentication disk with it, and you will store it."))
+	to_chat(owner, span_bolddanger(LANG("datum.e5a2a909f5ee8ad7", null)))
 
 /datum/antagonist/highlander/robot/give_equipment()
 	var/mob/living/silicon/robot/robotlander = owner.current

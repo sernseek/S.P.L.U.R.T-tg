@@ -39,6 +39,10 @@
 		var/datum/design/design = SSresearch.techweb_designs[id]
 		all_designs[design.id] = design.type
 
+	// The security cyborg design is deliberately omitted from the node when disabled.
+	if(CONFIG_GET(flag/disable_secborg))
+		all_designs -= "borg_upgrade_disablercooler"
+
 	for (var/node_id in SSresearch.techweb_nodes)
 		var/datum/techweb_node/node = SSresearch.techweb_nodes[node_id]
 		for (var/design_id in node.design_ids)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/hallowed
 	name = "Hallowed"
 	desc = "You have been blessed by a higher power, or otherwise become a deacon imbued with holy energy. Your divine presence gives you the power of a chaplain, and drives away unholy magics!"
@@ -53,7 +54,7 @@
 	SIGNAL_HANDLER
 
 	// Alert user of holy water effect.
-	to_chat(quirk_holder, span_nicegreen("The holy water nourishes you!"))
+	to_chat(quirk_holder, span_nicegreen(LANG("datum.8d319f20c2a8c9c7", null)))
 
 	// Add positive mood.
 	quirk_holder.add_mood_event("fav_food", /datum/mood_event/favorite_food)

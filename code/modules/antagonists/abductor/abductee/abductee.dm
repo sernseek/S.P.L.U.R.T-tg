@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * ## Abductees
  *
@@ -16,7 +17,7 @@
 	. = ..()
 
 /datum/antagonist/abductee/greet()
-	to_chat(owner, span_warning("<b>Your mind snaps!</b>"))
+	to_chat(owner, span_warning(LANG("datum.01fb4b5c1a912034", null)))
 	to_chat(owner, "<big>[span_warning("<b>You can't remember how you got here...</b>")]</big>")
 	owner.announce_objectives()
 	play_stinger()

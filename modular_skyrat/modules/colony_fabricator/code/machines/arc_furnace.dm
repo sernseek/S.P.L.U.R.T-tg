@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define RADIAL_CHOICE_USE "use"
 #define RADIAL_CHOICE_EJECT "eject"
 
@@ -43,7 +44,7 @@
 /obj/machinery/arc_furnace/examine(mob/user)
 	. = ..()
 	if(length(contents))
-		. += span_notice("It has <b>[contents[1]]</b> sitting in it.")
+		. += span_notice(LANG("obj.1b5808be89f6bb3e", list(contents[1])))
 
 // previously NO_DECONSTRUCTION
 /obj/machinery/arc_furnace/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/screwdriver)
@@ -72,16 +73,16 @@
 
 /obj/machinery/arc_furnace/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(operating)
-		balloon_alert(user, "furnace busy")
+		balloon_alert(user, LANG("obj.8de55ff8d655fcad", null))
 		return TRUE
 
 	if(length(contents))
-		balloon_alert(user, "furnace full")
+		balloon_alert(user, LANG("obj.b8dcd0aaa04aac08", null))
 		return TRUE
 
 	if(istype(attacking_item, /obj/item/stack/ore))
 		attacking_item.forceMove(src)
-		balloon_alert(user, "ore added")
+		balloon_alert(user, LANG("obj.73a2d20cafdd5eff", null))
 		update_appearance()
 		return TRUE
 
@@ -96,7 +97,7 @@
 		return
 
 	if(!length(contents))
-		balloon_alert(user, "it's empty!")
+		balloon_alert(user, LANG("obj.76a90f7c0f5ea424", null))
 		return
 
 	var/choice = show_radial_menu(user, src, radial_options, require_near = !issilicon(user))
@@ -130,15 +131,15 @@
 /// Starts the smelting process, checking if the machine has power or if its broken at all
 /obj/machinery/arc_furnace/proc/smelt_it_up(mob/user)
 	if(machine_stat & (NOPOWER|BROKEN))
-		balloon_alert(user, "button doesn't respond")
+		balloon_alert(user, LANG("obj.6de0942f4ac779ae", null))
 		return
 	if(operating)
-		balloon_alert(user, "already smelting")
+		balloon_alert(user, LANG("obj.26f62a97eeec02f4", null))
 		return
 
 	var/obj/item/stack/ore/ore_to_smelt = contents[1]
 	if(!istype(ore_to_smelt))
-		balloon_alert(user, "nothing to smelt")
+		balloon_alert(user, LANG("obj.441869ff5b198e21", null))
 
 	operating = TRUE
 	/// How long the smelting is going to take based off the stack size

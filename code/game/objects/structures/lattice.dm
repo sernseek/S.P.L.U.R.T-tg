@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/lattice
 	name = "lattice"
 	desc = "A lightweight support lattice. These hold our station together."
@@ -73,7 +74,7 @@
 /obj/structure/lattice/wirecutter_act(mob/living/user, obj/item/tool)
 	if(resistance_flags & INDESTRUCTIBLE)
 		return NONE
-	to_chat(user, span_notice("Slicing [name] joints ..."))
+	to_chat(user, span_notice(LANG("obj.fb439332822a6b82", list(name))))
 	deconstruct()
 	return ITEM_INTERACT_SUCCESS
 
@@ -180,10 +181,10 @@
 		return ..()
 	var/obj/item/stack/tile/iron/attacking_tiles = tool
 	if(!attacking_tiles.use(1))
-		to_chat(user, span_warning("You need one floor tile to build atop [src]."))
+		to_chat(user, span_warning(LANG("obj.d712a62a4ff6eaf3", list(src))))
 		return ITEM_INTERACT_BLOCKING
 
-	to_chat(user, span_notice("You construct new plating with [src] as support."))
+	to_chat(user, span_notice(LANG("obj.abc628e11e62e00e", list(src))))
 	playsound(src, 'sound/items/weapons/genhit.ogg', 50, TRUE)
 
 	var/turf/base = get_turf(src)
@@ -211,7 +212,7 @@
 
 /obj/structure/lattice/catwalk/boulder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(ismetaltile(tool))
-		balloon_alert(user, "too unstable!")
+		balloon_alert(user, LANG("obj.8bf071cedad62606", null))
 		return ITEM_INTERACT_BLOCKING
 	return ..()
 
@@ -232,7 +233,7 @@
  * Handles platforms deleting themselves with a visual effect and message.
  */
 /obj/structure/lattice/catwalk/boulder/proc/self_destruct()
-	visible_message(span_notice("\The [src] sinks and dissapears!"))
+	visible_message(span_notice(LANG("obj.26edfdec50d45992", list(src))))
 	playsound(src, 'sound/effects/gas_hissing.ogg', 20)
 	remove_shared_particles(warning_particle)
 	deconstruct()

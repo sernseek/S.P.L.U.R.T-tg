@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CONSTANT_DOSE_SAFE_LIMIT 60
 #define METABOLISM_END_LIMB_DAMAGE 20
 
@@ -74,13 +75,13 @@
 
 	if(constant_dose_time < CONSTANT_DOSE_SAFE_LIMIT || !our_guy.blood_volume)
 		our_guy.visible_message(
-				span_danger("[our_guy]'s eyes fade from their evil looking red back to normal..."),
-				span_danger("Your vision slowly returns to normal as you lose your unnatural strength...")
+				span_danger(LANG("datum.1693b7d5a9dcdf40", list(our_guy))),
+				span_danger(LANG("datum.54f0b59d14f60001", null))
 		)
 	else
 		our_guy.visible_message(
-			span_danger("[our_guy]'s veins violently explode, spraying blood everywhere!"),
-			span_danger("Your veins burst from the sheer stress put on them!")
+			span_danger(LANG("datum.0936e06bfda8adc7", list(our_guy))),
+			span_danger(LANG("datum.31068ee4523544c1", null))
 		)
 
 		var/obj/item/bodypart/bodypart = pick(our_guy.bodyparts)

@@ -85,10 +85,14 @@
 		var/list/slot_strings = list()
 		for(var/slot in required_slots)
 			var/list/slot_list = parse_slot_flags(slot)
-			slot_strings += (length(slot_list) == 1 ? "" : "one of ") + english_list(slot_list, and_text = " or ")
-		. += span_notice("Requires the MOD unit to have the following slots: [english_list(slot_strings)]")
+			// ZH EDIT CHANGE START - i18n - 插槽名逐个本地化；整串「one of back or belt」不是目录键
+			var/slots_text = lang_english_list(slot_list, and_text = " or ")
+			slot_strings += length(slot_list) == 1 ? slots_text : LANG("obj.a0560b1a2a3fe194", list(slots_text))
+			// ORIGINAL: slot_strings += (length(slot_list) == 1 ? "" : "one of ") + english_list(slot_list, and_text = " or ")
+			// ZH EDIT CHANGE END
+		. += span_notice(LANG("obj.e4f545814896c91d", list(lang_english_list(slot_strings))))
 	if(HAS_TRAIT(user, TRAIT_DIAGNOSTIC_HUD))
-		. += span_notice("Complexity level: [complexity]")
+		. += span_notice(LANG("obj.9d8f41bd7a7dd5c9", list(complexity)))
 
 /// Looks through the MODsuit's parts to see if it has the parts required to support this module
 /obj/item/mod/module/proc/has_required_parts(list/parts, need_active = FALSE)
@@ -115,18 +119,22 @@
 /// Called when the module is selected from the TGUI, radial or the action button
 /obj/item/mod/module/proc/on_select(mob/activator)
 	if(!mod.wearer && !(allow_flags & MODULE_ALLOW_UNWORN)) //No wearer and cannot be used unworn
-		balloon_alert(activator, "not equipped!")
+		balloon_alert(activator, LANG("obj.75eba58d4f426d00", null))
 		return
 	if(((!mod.active || mod.activating) && !(allow_flags & (MODULE_ALLOW_INACTIVE | MODULE_ALLOW_UNWORN))) || module_type == MODULE_PASSIVE) // not active
-		balloon_alert(activator, "not active!")
+		balloon_alert(activator, LANG("obj.ec29f255cfec6270", null))
 		return
 	if(!has_required_parts(mod.mod_parts, need_active = TRUE) && !(allow_flags & MODULE_ALLOW_UNWORN)) // Doesn't have parts
-		balloon_alert(activator, "required parts inactive!")
+		balloon_alert(activator, LANG("obj.0c3910886c4419cb", null))
 		var/list/slot_strings = list()
 		for(var/slot in required_slots)
 			var/list/slot_list = parse_slot_flags(slot)
-			slot_strings += (length(slot_list) == 1 ? "" : "one of ") + english_list(slot_list, and_text = " or ")
-		to_chat(activator, span_warning("[src] requires these slots to be deployed: [english_list(slot_strings)]"))
+			// ZH EDIT CHANGE START - i18n - 插槽名逐个本地化；整串「one of back or belt」不是目录键
+			var/slots_text = lang_english_list(slot_list, and_text = " or ")
+			slot_strings += length(slot_list) == 1 ? slots_text : LANG("obj.a0560b1a2a3fe194", list(slots_text))
+			// ORIGINAL: slot_strings += (length(slot_list) == 1 ? "" : "one of ") + english_list(slot_list, and_text = " or ")
+			// ZH EDIT CHANGE END
+		to_chat(activator, span_warning(LANG("obj.00dff316e4903068", list(src, lang_english_list(slot_strings)))))
 		playsound(src, 'sound/machines/scanner/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return
 	if(module_type != MODULE_USABLE)
@@ -148,14 +156,14 @@
 /// Called when the module is activated
 /obj/item/mod/module/proc/activate(mob/activator)
 	if(!COOLDOWN_FINISHED(src, cooldown_timer))
-		balloon_alert(activator, "on cooldown!")
+		balloon_alert(activator, LANG("obj.d4ae5d4dded19efe", null))
 		return FALSE
 	if(((!mod.active || mod.activating) && !(allow_flags & MODULE_ALLOW_INACTIVE)) || !mod.get_charge()) // SKYRAT EDIT ADDITION: INACTIVE USE
-		balloon_alert(activator, "unpowered!")
+		balloon_alert(activator, LANG("obj.3d363622252e11ee", null))
 		return FALSE
 	if(!(allow_flags & MODULE_ALLOW_PHASEOUT) && istype(mod.wearer.loc, /obj/effect/dummy/phased_mob))
 		//specifically a to_chat because the user is phased out.
-		to_chat(activator, span_warning("You cannot activate this right now."))
+		to_chat(activator, span_warning(LANG("obj.b36732cb487e1527", null)))
 		return FALSE
 	if(SEND_SIGNAL(src, COMSIG_MODULE_TRIGGERED, mod.wearer) & MOD_ABORT_USE)
 		return FALSE
@@ -165,17 +173,17 @@
 		mod.selected_module = src
 		if(device)
 			if(mod.wearer.put_in_hands(device))
-				balloon_alert(activator, "[device] extended")
+				balloon_alert(activator, LANG("obj.36e9dcb535782054", list(device)))
 				RegisterSignal(mod.wearer, COMSIG_ATOM_EXITED, PROC_REF(on_exit))
 				RegisterSignal(mod.wearer, COMSIG_KB_MOB_DROPITEM_DOWN, PROC_REF(dropkey))
 			else
-				balloon_alert(activator, "can't extend [device]!")
+				balloon_alert(activator, LANG("obj.bf5d9b71aa309bcd", list(device)))
 				mod.wearer.transferItemToLoc(device, src, force = TRUE)
 				return FALSE
 		else
 			var/used_button = mod.wearer.client?.prefs.read_preference(/datum/preference/choiced/mod_select) || MIDDLE_CLICK
 			update_signal(used_button)
-			balloon_alert(mod.wearer, "[src] activated, [used_button]-click to use") // As of now, only wearers can "use" mods
+			balloon_alert(mod.wearer, LANG("obj.eedb8f15f1fcd115", list(src, used_button))) // As of now, only wearers can "use" mods
 	active = TRUE
 	SEND_SIGNAL(src, COMSIG_MODULE_ACTIVATED)
 	SEND_SIGNAL(mod, COMSIG_MOD_MODULE_ACTIVATED, src)
@@ -220,14 +228,14 @@
 /// Called when the module is used
 /obj/item/mod/module/proc/used(mob/activator)
 	if(!COOLDOWN_FINISHED(src, cooldown_timer))
-		balloon_alert(activator, "on cooldown!")
+		balloon_alert(activator, LANG("obj.d4ae5d4dded19efe", null))
 		return FALSE
 	if(!check_power(use_energy_cost))
-		balloon_alert(activator, "not enough charge!")
+		balloon_alert(activator, LANG("obj.07f43d6c1593cca8", null))
 		return FALSE
 	if(!(allow_flags & MODULE_ALLOW_PHASEOUT) && istype(mod.wearer.loc, /obj/effect/dummy/phased_mob))
 		//specifically a to_chat because the user is phased out.
-		to_chat(activator, span_warning("You cannot activate this right now."))
+		to_chat(activator, span_warning(LANG("obj.b36732cb487e1527", null)))
 		return FALSE
 	if(SEND_SIGNAL(src, COMSIG_MODULE_TRIGGERED, mod.wearer) & MOD_ABORT_USE)
 		return FALSE

@@ -1,20 +1,21 @@
-GAME_VERB(/mob/living/carbon, army_crawl, "Army Crawl", "IC")
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+GAME_VERB(/mob/living/carbon, army_crawl, "匍匐前进", "IC")
 	var/mob/living/carbon/crawler = src
 
 	if(HAS_TRAIT(crawler, TRAIT_PRONE))
-		visible_message("[crawler] starts to get up")
+		visible_message(LANG("mob.af3c556fa0a40fcc", list(crawler)))
 		if(!do_after(crawler, 3 SECONDS))
 			return
 		SEND_SIGNAL(crawler, COMSIG_MOVABLE_REMOVE_PRONE_STATE)
 	else if(crawler.can_army_crawl())
-		visible_message("[crawler] begins to lower themself further")
+		visible_message(LANG("mob.32a53d26cb174138", list(crawler)))
 		if(!do_after(crawler, 3 SECONDS, extra_checks = CALLBACK(crawler, PROC_REF(can_army_crawl))))
 			if(!crawler.resting)
-				balloon_alert(crawler, "must be laying down!")
+				balloon_alert(crawler, LANG("mob.3d044f09f91d888b", null))
 			return
 		crawler.AddComponent(/datum/component/prone_mob, block_hands = TRUE)
 	else
-		balloon_alert(crawler, "must be laying down!")
+		balloon_alert(crawler, LANG("mob.3d044f09f91d888b", null))
 
 /mob/living/carbon/proc/can_army_crawl()
 	return resting

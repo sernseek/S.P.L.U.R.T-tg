@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Butt smothering interactions - smother target's face with butt
 /datum/interaction/lewd/butt_smother
 	name = "Butt Smother"
@@ -88,11 +89,11 @@
 		if(intent == "harm")
 			target_arousal += 10
 			target_pleasure += 6
-			to_chat(target, span_purple("You can't breathe at all! It's so hot! You need more!"))
+			to_chat(target, span_purple(LANG("datum.d56405bc117f9b0e", null)))
 		else
 			target_arousal += 8
 			target_pleasure += 4
-			to_chat(target, span_purple("You can barely breathe with their ass on your face... it's incredible!"))
+			to_chat(target, span_purple(LANG("datum.557ac17b4e9a0ec0", null)))
 
 	. = ..()
 

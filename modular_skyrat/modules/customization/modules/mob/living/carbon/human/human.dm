@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //	This DMI holds our radial icons for the 'hide mutant parts' verb
 #define HIDING_RADIAL_DMI 'modular_skyrat/modules/customization/modules/mob/living/carbon/human/MOD_sprite_accessories/icons/radial.dmi'
 
@@ -83,9 +84,9 @@
 /mob/living/carbon/human/species/serpentid
 	race = /datum/species/gas
 
-GAME_VERB_DESC(/mob/living/carbon/human, toggle_undies, "Toggle underwear visibility", "Allows you to toggle which underwear should show or be hidden. Underwear will obscure genitals.", "IC")
+GAME_VERB_DESC(/mob/living/carbon/human, toggle_undies, "切换内衣可见性", "Allows you to toggle which underwear should show or be hidden. Underwear will obscure genitals.", "IC")
 	if(IS_UNCONSCIOUS_OR_CRIT(src))
-		to_chat(usr, span_warning("You can't toggle underwear visibility right now..."))
+		to_chat(usr, span_warning(LANG("mob.f9be4f776be7059d", null)))
 		return
 
 	var/underwear_button = underwear_visibility & UNDERWEAR_HIDE_UNDIES ? "Show underwear" : "Hide underwear"
@@ -93,7 +94,7 @@ GAME_VERB_DESC(/mob/living/carbon/human, toggle_undies, "Toggle underwear visibi
 	var/socks_button = underwear_visibility & UNDERWEAR_HIDE_SOCKS ? "Show socks" : "Hide socks"
 	var/bra_button = underwear_visibility & UNDERWEAR_HIDE_BRA ? "Show bra" : "Hide bra"
 	var/list/choice_list = list("[underwear_button]" = "underwear", "[bra_button]" = "bra", "[undershirt_button]" = "shirt", "[socks_button]" = "socks","show all" = "show", "Hide all" = "hide")
-	var/picked_visibility = input(src, "Choose visibility setting", "Show/Hide underwear") as null|anything in choice_list
+	var/picked_visibility = input(src, LANG("mob.8c64f99ef4ee8711", null), LANG("mob.4522a2a85a23c231", null)) as null|anything in choice_list
 	if(picked_visibility)
 		var/picked_choice = choice_list[picked_visibility]
 		switch(picked_choice)
@@ -120,7 +121,7 @@ GAME_VERB_DESC(/mob/living/carbon/human, toggle_undies, "Toggle underwear visibi
 		if(dna && dna.species)
 			dna.species.spec_revival(src)
 
-GAME_VERB_DESC(/mob/living/carbon/human, toggle_mutant_part_visibility, "Show/Hide Mutant Parts", "Allows you to choose to try and hide your mutant bodyparts under your clothes.", "IC")
+GAME_VERB_DESC(/mob/living/carbon/human, toggle_mutant_part_visibility, "显示/隐藏突变部位", "Allows you to choose to try and hide your mutant bodyparts under your clothes.", "IC")
 	mutant_part_visibility()
 
 /mob/living/carbon/human/proc/mutant_part_visibility(quick_toggle, re_do)
@@ -140,7 +141,7 @@ GAME_VERB_DESC(/mob/living/carbon/human, toggle_mutant_part_visibility, "Show/Hi
 
 	// Stat check
 	if(IS_UNCONSCIOUS_OR_CRIT(usr))
-		to_chat(usr, span_warning("You can't do this right now..."))
+		to_chat(usr, span_warning(LANG("mob.2ac07e40c8ea777a", null)))
 		return
 
 	// Only show the 'reveal all' button if we are already hiding something
@@ -188,16 +189,16 @@ GAME_VERB_DESC(/mob/living/carbon/human, toggle_mutant_part_visibility, "Show/Hi
 
 	// Choice to action
 	if(pick == "reveal all")
-		to_chat(usr, span_notice("You are no longer trying to hide your mutant parts."))
+		to_chat(usr, span_notice(LANG("mob.7838d2eb5f781f85", null)))
 		LAZYNULL(try_hide_mutant_parts)
 		update_body_parts()
 		return
 
 	else if(pick in try_hide_mutant_parts)
-		to_chat(usr, span_notice("You are no longer trying to hide your [pick]."))
+		to_chat(usr, span_notice(LANG("mob.c7aa196d1eb4e05f", list(pick))))
 		LAZYREMOVE(try_hide_mutant_parts, pick)
 	else
-		to_chat(usr, span_notice("You are now trying to hide your [pick]."))
+		to_chat(usr, span_notice(LANG("mob.b9b0d5b7ff25acc7", list(pick))))
 		LAZYOR(try_hide_mutant_parts, pick)
 	update_body_parts()
 	// automatically re-do the menu after making a selection
@@ -207,17 +208,17 @@ GAME_VERB_DESC(/mob/living/carbon/human, toggle_mutant_part_visibility, "Show/Hi
 #define DEFAULT_TIME 30
 #define MAX_TIME 36000 // 10 hours
 
-GAME_VERB_DESC(/mob/living/carbon/human, acting, "Feign Impairment", "Pretend to be impaired for a defined duration.", "IC")
+GAME_VERB_DESC(/mob/living/carbon/human, acting, "假装伤残", "Pretend to be impaired for a defined duration.", "IC")
 	if(IS_UNCONSCIOUS_OR_CRIT(usr))
-		to_chat(usr, span_warning("You can't do this right now..."))
+		to_chat(usr, span_warning(LANG("mob.2ac07e40c8ea777a", null)))
 		return
 
 	var/static/list/choices = list("drunkenness", "stuttering", "jittering")
-	var/impairment = tgui_input_list(src, "Select an impairment to perform:", "Impairments", choices)
+	var/impairment = tgui_input_list(src, LANG("mob.bb8313b7f616682d", null), LANG("mob.7fb01f5bb08d9260", null), choices)
 	if(!impairment)
 		return
 
-	var/duration = tgui_input_number(src, "How long would you like to feign [impairment] for?", "Duration in seconds", DEFAULT_TIME, MAX_TIME)
+	var/duration = tgui_input_number(src, LANG("mob.75c5068d3d57492b", list(impairment)), LANG("mob.7840540c2c8b72a1", null), DEFAULT_TIME, MAX_TIME)
 	switch(impairment)
 		if("drunkenness")
 			var/mob/living/living_user = usr
@@ -231,7 +232,7 @@ GAME_VERB_DESC(/mob/living/carbon/human, acting, "Feign Impairment", "Pretend to
 
 	if(duration)
 		addtimer(CALLBACK(src, PROC_REF(acting_expiry), impairment), duration SECONDS)
-		to_chat(src, "You are now feigning [impairment].")
+		to_chat(src, LANG("mob.cd620af2fc91a6df", list(impairment)))
 
 /mob/living/carbon/human/proc/acting_expiry(impairment)
 	if(impairment)
@@ -241,7 +242,7 @@ GAME_VERB_DESC(/mob/living/carbon/human, acting, "Feign Impairment", "Pretend to
 			if(istype(living_user))
 				living_user.clear_mood_event("drunk")
 		// Notify the user
-		to_chat(src, "You are no longer feigning [impairment].")
+		to_chat(src, LANG("mob.616e1bed0c006092", list(impairment)))
 
 #undef DEFAULT_TIME
 #undef MAX_TIME

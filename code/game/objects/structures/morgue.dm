@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///The cooldown between messages when attempting to break out of a morgue tray.
 #define BREAKOUT_COOLDOWN (5 SECONDS)
 ///The amount of time it takes to break out of a morgue tray.
@@ -78,7 +79,7 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	if(locked)
 		if(COOLDOWN_FINISHED(src, breakout_message_cooldown))
 			COOLDOWN_START(src, breakout_message_cooldown, BREAKOUT_COOLDOWN)
-			to_chat(user, span_warning("[src]'s door won't budge!"))
+			to_chat(user, span_warning(LANG("obj.c4e897cb78099448", list(src))))
 		return
 	open()
 
@@ -87,10 +88,10 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	if(.)
 		return
 	if(locked)
-		to_chat(user, span_danger("It's locked."))
+		to_chat(user, span_danger(LANG("obj.c706331d8d8e2d98", null)))
 		return
 	if(!connected)
-		to_chat(user, "That doesn't appear to have a tray.")
+		to_chat(user, LANG("obj.33df40731963f2a6", null))
 		return
 	if(connected.loc == src)
 		open()
@@ -116,15 +117,15 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	user.visible_message(null, \
-		span_notice("You lean on the back of [src] and start pushing the tray open... (this will take about [DisplayTimeText(BREAKDOWN_TIME)].)"), \
-		span_hear("You hear a metallic creaking from [src]."))
+		span_notice(LANG("obj.03c1b8cc689e06f3", list(src, DisplayTimeText(BREAKDOWN_TIME)))), \
+		span_hear(LANG("obj.a1d9c5733c600b1c", list(src))))
 	if(!do_after(user, BREAKDOWN_TIME, target = src))
 		return
 	if(!user || IS_UNCONSCIOUS_OR_CRIT(user) || user.loc != src)
 		return
 	user.visible_message(
-		span_warning("[user] successfully broke out of [src]!"),
-		span_notice("You successfully break out of [src]!"),
+		span_warning(LANG("obj.37696909131e91b5", list(user, src))),
+		span_notice(LANG("obj.81c31f6b9b00625a", list(src))),
 	)
 	open()
 
@@ -338,7 +339,7 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 /obj/structure/bodycontainer/morgue/proc/handle_bodybag_enter(obj/structure/closet/body_bag/arrived_bag)
 	if(!arrived_bag.tag_name)
 		return
-	name = "[initial(name)] - ([arrived_bag.tag_name])"
+	name = "[lang_reverse_text(initial(name))] - ([arrived_bag.tag_name])"  // ZH EDIT CHANGE - i18n: initial(name) 是编译期英文原值，会覆盖掉 /atom/Initialize 反查好的中文名 - ORIGINAL: name = "[initial(name)] - ([arrived_bag.tag_name])"
 	update_appearance(UPDATE_ICON)
 
 /obj/structure/bodycontainer/morgue/proc/handle_bodybag_exit(obj/structure/closet/body_bag/exited_bag)
@@ -367,17 +368,17 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 
 /obj/structure/bodycontainer/morgue/examine(mob/user)
 	. = ..()
-	. += span_notice("The speaker is [beeper ? "enabled" : "disabled"]. Alt-click to toggle it.")
+	. += span_notice(LANG("obj.3f64bee0d27e7cde", list(beeper ? "enabled" : "disabled")))
 
 /obj/structure/bodycontainer/morgue/click_alt(mob/user)
 	beeper = !beeper
-	to_chat(user, span_notice("You turn the speaker function [beeper ? "on" : "off"]."))
+	to_chat(user, span_notice(LANG("obj.81afc37167d6be93", list(beeper ? "on" : "off"))))
 	return CLICK_ACTION_SUCCESS
 
 /obj/structure/bodycontainer/morgue/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)
 		return FALSE
-	balloon_alert(user, "alert system overloaded")
+	balloon_alert(user, LANG("obj.a5315f1afc331c4d", null))
 	obj_flags |= EMAGGED
 	update_appearance(UPDATE_ICON)
 	return TRUE
@@ -444,7 +445,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	return ..()
 
 /obj/structure/bodycontainer/crematorium/attack_robot(mob/user) //Borgs can't use crematoriums without help
-	to_chat(user, span_warning("[src] is locked against you."))
+	to_chat(user, span_warning(LANG("obj.c79322c0b92b7a71", list(src))))
 	return
 
 /obj/structure/bodycontainer/crematorium/connect_to_shuttle(mapload, obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
@@ -467,10 +468,10 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	// Make sure we don't delete the actual morgue and its tray
 	var/list/conts = get_all_contents() - src - connected
 	if(!length(conts))
-		audible_message(span_hear("You hear a hollow crackle."))
+		audible_message(span_hear(LANG("obj.8caced47034e52fb", null)))
 		return
 
-	audible_message(span_hear("You hear a roar as the crematorium activates."))
+	audible_message(span_hear(LANG("obj.ba096ac4d5497010", null)))
 	locked = TRUE
 	update_appearance()
 
@@ -573,7 +574,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	if (connected)
 		connected.close()
 	else
-		to_chat(user, span_warning("That's not connected to anything!"))
+		to_chat(user, span_warning(LANG("obj.276fd2808bbd5bdb", null)))
 	add_fingerprint(user)
 
 /obj/structure/tray/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
@@ -601,7 +602,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 			return
 	O.forceMove(src.loc)
 	if (user != O)
-		visible_message(span_warning("[user] stuffs [O] into [src]."))
+		visible_message(span_warning(LANG("obj.5235890c7d667124", list(user, O, src))))
 
 /*
  * Crematorium tray

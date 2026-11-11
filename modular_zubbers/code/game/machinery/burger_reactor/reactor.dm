@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_VAR_INIT(active_rbmk_machines, list())
 
 /obj/machinery/power/rbmk2
@@ -210,7 +211,7 @@ GLOBAL_VAR_INIT(active_rbmk_machines, list())
 /obj/machinery/power/rbmk2/exchange_parts(mob/user, obj/item/storage/part_replacer/replacer_tool)
 
 	if(active)
-		balloon_alert(user, "turn off before upgrading!")
+		balloon_alert(user, LANG("obj.81f59132de55e92f", null))
 		return FALSE
 
 	. = ..()
@@ -228,12 +229,12 @@ GLOBAL_VAR_INIT(active_rbmk_machines, list())
 	if(attacking_item.use_tool(src, user, 4 SECONDS, volume = 50) && jam(user,FALSE))
 		if(prob(100-atom_integrity))
 			take_damage(damage_to_deal*0.5,armour_penetration=100)
-			balloon_alert(user, "unjam failed!")
+			balloon_alert(user, LANG("obj.6b86c104c6c46a75", null))
 			return TRUE
 		take_damage(damage_to_deal,armour_penetration=100)
 		if(atom_integrity > 0)
 			src.Shake(duration=0.5 SECONDS)
-			balloon_alert(user, "unjammed!")
+			balloon_alert(user, LANG("obj.a1f4b10efe573cf9", null))
 			if(meltdown) //You turned it off, but at what cost?
 				radiation_pulse(src,max_range=6,threshold = RAD_FULL_INSULATION, chance = 100)
 			toggle_active(user,FALSE,disable_jam=TRUE)
@@ -247,7 +248,7 @@ GLOBAL_VAR_INIT(active_rbmk_machines, list())
 		src.add_fingerprint(user)
 		stored_rod.add_fingerprint(user)
 		if(remove_rod(user))
-			balloon_alert(user, "rod removed!")
+			balloon_alert(user, LANG("obj.ef4127ab410d2317", null))
 		return TRUE
 
 /obj/machinery/power/rbmk2/proc/remove_rod(mob/living/user,do_throw=FALSE)
@@ -395,7 +396,7 @@ GLOBAL_VAR_INIT(active_rbmk_machines, list())
 
 	if(venting) //Can't change when they're already on.
 		if(user)
-			balloon_alert(user, "turn vents off first")
+			balloon_alert(user, LANG("obj.05f7fc92ce503dfc", null))
 		return FALSE
 
 	vent_reverse_direction = desired_state
@@ -403,7 +404,7 @@ GLOBAL_VAR_INIT(active_rbmk_machines, list())
 	if(user)
 		user.log_message("had vents set to [vent_reverse_direction ? "reverse" : "normal"] by [src]", LOG_GAME)
 		investigate_log("had vents set to [vent_reverse_direction ? "reverse" : "normal"] by [key_name(user)] at [AREACOORD(src)].", INVESTIGATE_ENGINE)
-		balloon_alert(user, "vents switched to [vent_reverse_direction ? "pulling" : "pushing"]")
+		balloon_alert(user, LANG("obj.fe3b480c4afdfb7c", list(vent_reverse_direction ? "pulling" : "pushing")))
 	else
 		var/turf/our_turf = get_turf(src)
 		log_game("[src] had vents set to [vent_reverse_direction ? "reverse" : "normal"] at [AREACOORD(our_turf)]")
@@ -511,7 +512,7 @@ GLOBAL_VAR_INIT(active_rbmk_machines, list())
 		if("autovent")
 			if(auto_vent_upgrade)
 				auto_vent = !auto_vent
-				balloon_alert(user, "auto venting is [auto_vent ? "on" : "off"]")
+				balloon_alert(user, LANG("obj.5c046a2e58e37a1d", list(auto_vent ? "on" : "off")))
 			. = TRUE
 		if("activate")
 			toggle_active(user)
@@ -532,7 +533,7 @@ GLOBAL_VAR_INIT(active_rbmk_machines, list())
 			if(overclocked_upgrade)
 				var/turf/machine_turf = get_turf(src)
 				overclocked = !overclocked
-				balloon_alert(user, "overclocking is [overclocked ? "on" : "off"]")
+				balloon_alert(user, LANG("obj.0b85453330574c3e", list(overclocked ? "on" : "off")))
 				investigate_log("had the overclock turned [overclocked ? "on" : "off"] by [key_name(user)] at [AREACOORD(machine_turf)].", INVESTIGATE_ENGINE)
 				user.log_message("turned the overclock [overclocked ? "on" : "off"] of [src]", LOG_GAME)
 			. = TRUE
@@ -542,43 +543,43 @@ GLOBAL_VAR_INIT(active_rbmk_machines, list())
 
 	. = ..()
 
-	. += span_notice("A digital display on the side side says <b>MAX SAFE POWER: [display_power(safeties_max_power_generation)], WARRANTY VOID IF EXCEEDED</b>.")
+	. += span_notice(LANG("obj.df8ff394ee20335e", list(display_power(safeties_max_power_generation))))
 
 
 	if(active)
-		. += span_notice("It's running.")
+		. += span_notice(LANG("obj.cfd0fb4fc412472b", null))
 		if(HAS_TRAIT(user, TRAIT_CLUMSY))
-			. += span_clown("I better go catch it!")
+			. += span_clown(LANG("obj.0c99446e33caa3c5", null))
 	else
-		. += span_warning("It isn't running.")
+		. += span_warning(LANG("obj.19c3fb5f4c9d8eba", null))
 
 	if(linked_supermatter)
-		. += span_notice("It is currently linked to an adjacent supermatter crystal, feeding power directly into it at high efficiency.")
+		. += span_notice(LANG("obj.4830784b20a25ebd", null))
 	else if(!power || !powernet)
-		. += span_warning("It is not connected to a power cable.")
+		. += span_warning(LANG("obj.5a2cca645a0e96bf", null))
 
 	if(!venting)
-		. += span_warning("The vents are closed.")
+		. += span_warning(LANG("obj.7206c8ab931a35e9", null))
 
 	if(!stored_rod)
-		. += span_warning("It it is missing an RB-MK2 reactor rod.")
+		. += span_warning(LANG("obj.0c73fc70b61b3d23", null))
 	else if(jammed)
-		. += span_danger("The reactor rod is jammed! <b>Pry</b> the rod back in to unjam in!")
+		. += span_danger(LANG("obj.ca628566ef4b72da", null))
 	else if(meltdown)
-		. += span_danger("The reactor rod is leaping erractically! Lower the power output!")
+		. += span_danger(LANG("obj.4d1617506ffc1b80", null))
 	else
-		. += span_notice("There is an RB-MK2 reactor rod installed. <b>Bolt</b> it down to activate, or remove it with ALT+CLICK.")
+		. += span_notice(LANG("obj.a3f2ba71438c936b", null))
 
 
 /obj/machinery/power/rbmk2/examine_more(mob/user)
 	. = ..()
-	. += span_notice("It is running at <b>[power_efficiency*100]%</b> power efficiency.")
-	. += span_notice("It can output in environments up to <b>[vent_pressure]kPa</b>.")
-	. += span_notice("It can handle an estimated power load of <b>[display_power(max_power_generation)]</b> before going critical.")
+	. += span_notice(LANG("obj.f26dad54543ea6a7", list(power_efficiency*100)))
+	. += span_notice(LANG("obj.86da2e45bab88090", list(vent_pressure)))
+	. += span_notice(LANG("obj.ce3eec20da257972", list(display_power(max_power_generation))))
 	if(!linked_supermatter)
-		. += span_notice("Is is not currently linked to an adjacent supermatter crystal.")
-		. += span_notice("Building an RB-MK2 reactor directly adjacent to a normal-sized supermatter crystal will link them together and supply energy to the supermatter crystal.")
-		. += span_notice("Doing this requires at least 30 moles of Hyper-Noblium present in the reactor rod, along with the normal tritium as fuel.")
+		. += span_notice(LANG("obj.dc52b455471737e0", null))
+		. += span_notice(LANG("obj.e81d1c9df5454038", null))
+		. += span_notice(LANG("obj.2ef6fbea1347d9c0", null))
 
 
 

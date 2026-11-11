@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define BERSERK_MAX_CHARGE 100
 #define PROJECTILE_HIT_MULTIPLIER 1.5
 #define DAMAGE_TO_CHARGE_SCALE 1
@@ -43,7 +44,7 @@
 
 /obj/item/clothing/neck/warrior_cape/examine()
 	. = ..()
-	. += span_warning("Struggle against the tide, no matter how strong it may be.")
+	. += span_warning(LANG("obj.8c27505d7879a4f1", null))
 
 /obj/item/clothing/suit/hooded/berserker/gatsu
 	name = "berserker armor"
@@ -70,7 +71,7 @@
 
 /obj/item/clothing/suit/hooded/berserker/gatsu/examine()
 	. = ..()
-	. += span_warning("Berserk mode requires the suit's helmet to be equipped, and can only be charged by taking damage.")
+	. += span_warning(LANG("obj.ec3125a7c638edcb", null))
 
 /obj/item/clothing/head/hooded/berserker/gatsu
 	name = "berserker helmet"
@@ -89,7 +90,7 @@
 
 /obj/item/clothing/head/hooded/berserker/gatsu/examine()
 	. = ..()
-	. += span_warning("Berserk mode is usable at 100% charge and requires the helmet to be closed in order to remain active.") //woag!!!
+	. += span_warning(LANG("obj.5c2e5945183d30f9", null)) //woag!!!
 
 /obj/item/clothing/head/hooded/berserker/gatsu/process(seconds_per_tick)
 	if(berserk_active)
@@ -110,7 +111,7 @@
 		berserk_value *= PROJECTILE_HIT_MULTIPLIER
 	berserk_charge = clamp(round(berserk_charge + berserk_value), 0, BERSERK_MAX_CHARGE)
 	if(berserk_charge >= BERSERK_MAX_CHARGE)
-		balloon_alert(owner, "berserk charged")
+		balloon_alert(owner, LANG("obj.b9d33b7adf7f3079", null))
 
 /obj/item/clothing/head/hooded/berserker/gatsu/IsReflect()
 	if(berserk_active)
@@ -150,7 +151,7 @@
 
 /obj/item/claymore/dragonslayer/examine()
 	. = ..()
-	. += span_warning("Tempered against lavaland foes and bosses through supernatural energies. Right click to dodge at the cost of stamina.")
+	. += span_warning(LANG("obj.d676d4cd5f64d4cc", null))
 
 /obj/item/claymore/dragonslayer/attack(mob/living/target, mob/living/carbon/human/user)
 	var/is_nemesis_faction = FALSE
@@ -192,7 +193,7 @@
 
 /datum/status_effect/dodgeroll_iframes/proc/whiff()
 	SIGNAL_HANDLER
-	owner.balloon_alert_to_viewers("MISS!")
+	owner.balloon_alert_to_viewers(LANG("datum.d7cdacf623ef709d", null))
 	playsound(src, 'sound/items/weapons/thudswoosh.ogg', 50, TRUE, -1)
 	return SUCCESSFUL_BLOCK
 
@@ -203,7 +204,7 @@
 
 /obj/item/claymore/dragonslayer/very_fucking_loud/examine()
 	. = ..()
-	. += span_userdanger("CLANG")
+	. += span_userdanger(LANG("obj.5df80a1ac5e469cc", null))
 
 /obj/structure/closet/crate/necropolis/gladiator
 	name = "gladiator chest"

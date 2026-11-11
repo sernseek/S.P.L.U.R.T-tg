@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/implant/camouflage
 	name = "experimental camouflage implant"
 	desc = "Allows its owner to blend in with their surroundings. Cool!"
@@ -7,7 +8,7 @@
 	. = ..()
 
 	if(prob(15 * severity))
-		visible_message(span_warning("The cloaking systems inside your implant begin to overload!"), blind_message = span_hear("You hear a fizzle, and the snapping of sparks."))
+		visible_message(span_warning(LANG("obj.08a49fe6b510e579", null)), blind_message = span_hear(LANG("obj.e05f9532d0137e10", null)))
 		for(var/datum/action/item_action/camouflage/cloaking_ability in actions)
 			cloaking_ability.remove_cloaking()
 
@@ -36,7 +37,7 @@
 		remove_cloaking()
 	else
 		owner.alpha = camouflage_alpha
-		to_chat(owner, span_notice("You activate your camouflage and blend into your surroundings..."))
+		to_chat(owner, span_notice(LANG("datum.6f31e526019aa7c2", null)))
 		cloaking = TRUE
 
 /**
@@ -49,7 +50,7 @@
 /datum/action/item_action/camouflage/proc/remove_cloaking()
 	do_sparks(2, FALSE, owner)
 	owner.alpha = initial(owner.alpha)
-	to_chat(owner, span_notice("You disable your camouflage, and become visible once again."))
+	to_chat(owner, span_notice(LANG("datum.cfddf70080998e1e", null)))
 	cloaking = FALSE
 
 /obj/item/reagent_containers/hypospray/medipen/invisibility

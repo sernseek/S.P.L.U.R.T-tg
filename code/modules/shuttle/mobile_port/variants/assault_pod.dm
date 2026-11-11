@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/docking_port/mobile/assault_pod
 	name = "assault pod"
 	shuttle_id = "steel_rain"
@@ -32,7 +33,7 @@
 
 
 /obj/item/assault_pod/attack_self(mob/living/user)
-	var/target_area = tgui_input_list(user, "Area to land", "Landing Zone", GLOB.teleportlocs)
+	var/target_area = tgui_input_list(user, LANG("obj.56e38f67b665cdd8", null), LANG("obj.232df88b69edddf5", null), GLOB.teleportlocs)
 	if(isnull(target_area))
 		return
 	if(isnull(GLOB.teleportlocs[target_area]))
@@ -59,7 +60,7 @@
 		if(S.shuttleId == shuttle_id)
 			S.possible_destinations = "[landing_zone.shuttle_id]"
 
-	to_chat(user, span_notice("Landing zone set."))
+	to_chat(user, span_notice(LANG("obj.c23839a989f73a64", null)))
 
 	qdel(src)
 

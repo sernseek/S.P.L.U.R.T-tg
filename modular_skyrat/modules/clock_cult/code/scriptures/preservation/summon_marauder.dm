@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MAXIMUM_MARAUDERS 2
 
 /datum/scripture/marauder
@@ -27,7 +28,7 @@
 		selected = pick(candidates)
 
 	if(!selected)
-		to_chat(invoker, span_brass("<i>There are no ghosts willing to be a Clockwork Marauder!</i>"))
+		to_chat(invoker, span_brass(LANG("datum.55e31e60f0925e08", null)))
 		invoke_fail()
 
 		if(invocation_chant_timer)
@@ -41,9 +42,9 @@
 
 /datum/scripture/marauder/invoke_success()
 	var/mob/living/basic/clockwork_marauder/new_mob = new (get_turf(invoker))
-	new_mob.visible_message(span_notice("[new_mob] flashes into existance!"))
+	new_mob.visible_message(span_notice(LANG("datum.85df479e2d0b2d1d", list(new_mob))))
 	new_mob.key = selected.key
-	to_chat(new_mob, span_brass("You are a Clockwork Marauder! You have a [new_mob.shield_health]-hit shield that will protect you against any damage taken. Have a servant repair you with a welder, should you or your shield become too damaged."))
+	to_chat(new_mob, span_brass(LANG("datum.8504fe2798a10e5a", list(new_mob.shield_health))))
 	selected = null
 
 
@@ -53,7 +54,7 @@
 		return FALSE
 
 	if(length(GLOB.clockwork_marauders) >= MAXIMUM_MARAUDERS)
-		to_chat(user, span_brass("Your limited power prevents you from creating more than [MAXIMUM_MARAUDERS] Clockwork Marauders."))
+		to_chat(user, span_brass(LANG("datum.abea725a58fd6093", list(MAXIMUM_MARAUDERS))))
 		return FALSE
 
 	return TRUE

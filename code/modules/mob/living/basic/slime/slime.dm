@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define SLIME_EXTRA_SHOCK_COST 3
 #define SLIME_EXTRA_SHOCK_THRESHOLD 8
 #define SLIME_BASE_SHOCK_PERCENTAGE 10
@@ -5,6 +6,11 @@
 
 /mob/living/basic/slime
 	name = "grey baby slime (123)"
+	// ZH EDIT ADDITION START - i18n: 上一次由 update_name() 自动生成的名字。用它判断「这是自动名
+	// 还是玩家改的名」，取代原来「正则解析显示名」的做法——理由见 update_name() 的注释。
+	/// The last name update_name() generated for us. Empty means "never auto-named yet".
+	VAR_PRIVATE/last_auto_name
+	// ZH EDIT ADDITION END
 	icon = 'icons/mob/simple/slimes.dmi'
 	icon_state = "grey-baby"
 	pass_flags = PASSTABLE | PASSGRILLE
@@ -184,12 +190,13 @@
 
 
 /mob/living/basic/slime/update_name()
-	///Checks if the slime has a generic name, in the format of baby/adult slime (123)
-	var/static/regex/slime_name_regex = new("\\w+ (baby|adult) slime \\(\\d+\\)")
-	if(slime_name_regex.Find(name))
-		var/slime_id = rand(1, 1000)
-		name = "[slime_type.colour] [life_stage] slime ([slime_id])"
-		real_name = name
+	// ZH EDIT - Remember generated names instead of parsing their localized spelling.
+	if(!isnull(last_auto_name) && name != last_auto_name)
+		return ..()
+	var/slime_id = rand(1, 1000)
+	name = "[lang_reverse_text("[slime_type.colour] [life_stage] slime")] ([slime_id])"
+	real_name = name
+	last_auto_name = name
 	return ..()
 
 /mob/living/basic/slime/regenerate_icons()
@@ -212,9 +219,9 @@
 /mob/living/basic/slime/get_status_tab_items()
 	. = ..()
 	if(!hunger_disabled)
-		. += "Nutrition: [nutrition]/[SLIME_MAX_NUTRITION]"
-		. += "Growth: [amount_grown]/[SLIME_EVOLUTION_THRESHOLD]"
-		. += "Power Level: [powerlevel]/[SLIME_MAX_POWER]"
+		. += LANG("mob.2a47f665c5b214de", list(nutrition, SLIME_MAX_NUTRITION))
+		. += LANG("mob.cf98c2408cb411b9", list(amount_grown, SLIME_EVOLUTION_THRESHOLD))
+		. += LANG("mob.29e74d49feca76d4", list(powerlevel, SLIME_MAX_POWER))
 
 /mob/living/basic/slime/mouse_drop_dragged(atom/target_atom, mob/user)
 	if(isliving(target_atom) && target_atom != src && user == src)
@@ -236,19 +243,19 @@
 
 	switch(powerlevel)
 		if(SLIME_MIN_POWER to SLIME_EXTRA_SHOCK_COST)
-			. += "It is flickering gently with harmless levels of electrical activity."
+			. += LANG("mob.36e2b4323b45dd4f", null)
 
 		if(SLIME_EXTRA_SHOCK_COST to SLIME_MEDIUM_POWER)
-			. += "It is glowing brightly with medium levels electrical activity."
+			. += LANG("mob.e3d0050d67ad491b", null)
 
 
 		if(SLIME_MEDIUM_POWER to SLIME_MAX_POWER)
-			. += "It is glowing alarmingly with high levels of electrical activity."
+			. += LANG("mob.2bd9f8e875dcda77", null)
 
 		if(SLIME_MAX_POWER)
-			. += span_boldwarning("It is radiating with massive levels of electrical activity!")
+			. += span_boldwarning(LANG("mob.fa596d2004689f04", null))
 	if(overcrowded)
-		. += span_warning("It seems too overcroweded to properly reproduce!")
+		. += span_warning(LANG("mob.4e40c4c1b9d09ada", null))
 
 ///Changes the slime's current life state
 /mob/living/basic/slime/proc/set_life_stage(new_life_stage = SLIME_LIFE_STAGE_BABY, initial = FALSE)
@@ -292,7 +299,7 @@
 		return COMPONENT_HOSTILE_NO_ATTACK
 
 	if(isAI(target)) //The aI is not tasty!
-		target.balloon_alert(our_slime, "not tasty!")
+		target.balloon_alert(our_slime, LANG("mob.2e3a7b7b39a11d0e", null))
 		return COMPONENT_HOSTILE_NO_ATTACK
 
 	if(our_slime.buckled == target) //If you try to attack the creature you are latched on, you instead cancel feeding
@@ -307,9 +314,9 @@
 		if(prob(stunprob) && our_slime.powerlevel >= SLIME_EXTRA_SHOCK_COST)
 			our_slime.powerlevel = clamp(our_slime.powerlevel - SLIME_EXTRA_SHOCK_COST, SLIME_MIN_POWER, SLIME_MAX_POWER)
 			borg_target.apply_damage(our_slime.powerlevel * rand(6, 10), BRUTE, spread_damage = TRUE, wound_bonus = CANT_WOUND)
-			borg_target.visible_message(span_danger("\The [our_slime] shocks [borg_target]!"), span_userdanger("\The [our_slime] shocks you!"))
+			borg_target.visible_message(span_danger(LANG("mob.c6b46e10621079a5", list(our_slime, borg_target))), span_userdanger(LANG("mob.4f1c8faa98afdfeb", list(our_slime))))
 		else
-			borg_target.visible_message(span_danger("\The [our_slime] fails to hurt [borg_target]!"), span_userdanger("\The [our_slime] failed to hurt you!"))
+			borg_target.visible_message(span_danger(LANG("mob.70672dce10cf30b1", list(our_slime, borg_target))), span_userdanger(LANG("mob.8ecc512c2219c1f6", list(our_slime))))
 
 		return COMPONENT_HOSTILE_NO_ATTACK
 
@@ -319,7 +326,7 @@
 		if(!prob(stunprob))
 			return NONE // normal attack
 
-		carbon_target.visible_message(span_danger("\The [our_slime] shocks [carbon_target]!"), span_userdanger("\The [our_slime] shocks you!"))
+		carbon_target.visible_message(span_danger(LANG("mob.c6b46e10621079a5", list(our_slime, carbon_target))), span_userdanger(LANG("mob.4f1c8faa98afdfeb", list(our_slime))))
 
 		do_sparks(5, TRUE, carbon_target)
 		var/power = our_slime.powerlevel + rand(0,3)
@@ -336,8 +343,8 @@
 		var/mob/living/basic/slime/target_slime = target
 		if(target_slime.buckled)
 			target_slime.stop_feeding(silent = TRUE)
-			visible_message(span_danger("[our_slime] pulls [target_slime] off!"), \
-				span_danger("You pull [target_slime] off!"))
+			visible_message(span_danger(LANG("mob.0146af566eb16ac3", list(our_slime, target_slime))), \
+				span_danger(LANG("mob.64f4dd58981ca81b", list(target_slime))))
 			return NONE // normal attack
 
 		var/is_adult_slime = our_slime.life_stage == SLIME_LIFE_STAGE_ADULT
@@ -352,7 +359,7 @@
 ///Spawns a crossed slimecore item
 /mob/living/basic/slime/proc/spawn_corecross()
 	var/static/list/crossbreeds = subtypesof(/obj/item/slimecross)
-	visible_message(span_danger("[src] shudders, its mutated core consuming the rest of its body!"))
+	visible_message(span_danger(LANG("mob.bb3c2a538e326f54", list(src))))
 	playsound(src, 'sound/effects/magic/smoke.ogg', 50, TRUE)
 	var/selected_crossbreed_path
 	for(var/crossbreed_path in crossbreeds)
@@ -363,7 +370,7 @@
 	if(selected_crossbreed_path)
 		new selected_crossbreed_path(loc)
 	else
-		visible_message(span_warning("The mutated core shudders, and collapses into a puddle, unable to maintain its form."))
+		visible_message(span_warning(LANG("mob.43eb182eedcc99b8", null)))
 	qdel(src)
 
 ///Proc for slime core removal surgery, tries to remove cores from a dead slime.

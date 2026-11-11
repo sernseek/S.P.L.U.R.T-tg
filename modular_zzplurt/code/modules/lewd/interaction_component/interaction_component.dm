@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/interactable
 	/// List of preferences that have been modified and need to be saved
 	var/list/modified_preferences = list()
@@ -354,7 +355,7 @@
 			mob_belly.genital_size = min(mob_belly.genital_size + growth_amount, BELLY_MAX_SIZE)
 			to_update += mob_belly
 			if(mob_belly.genital_size > prev_size)
-				human_self.visible_message(span_lewd("\The <b>[human_self]</b>'s belly bloats outwards as it gets pumped full of [LOWER_TEXT(initial(fluid_source.internal_fluid_datum:name))]!"))
+				human_self.visible_message(span_lewd(LANG("datum.ead474c8b1143f6a", list(human_self, LOWER_TEXT(initial(fluid_source.internal_fluid_datum:name))))))
 
 		// Handle butt inflation when belly gets big enough from anal
 		if(slot == ORGAN_SLOT_ANUS && mob_belly.genital_size >= 3)
@@ -370,7 +371,7 @@
 				mob_butt.genital_size = min(mob_butt.genital_size + growth_amount, BUTT_MAX_SIZE)
 				to_update += mob_butt
 				if(mob_butt.genital_size > prev_size)
-					human_self.visible_message(span_lewd("\The <b>[human_self]</b>'s ass swells outwards as it gets pumped full of [LOWER_TEXT(initial(fluid_source.internal_fluid_datum:name))]!"))
+					human_self.visible_message(span_lewd(LANG("datum.7d2ae20c7174aa2f", list(human_self, LOWER_TEXT(initial(fluid_source.internal_fluid_datum:name))))))
 
 	// Handle penis and testicles inflation
 	else if(slot == ORGAN_SLOT_PENIS)
@@ -419,7 +420,7 @@
 			mob_penis.Insert(human_self, 0, FALSE)
 			mob_penis.genital_size = 4
 			mob_penis.girth = 3
-			human_self.visible_message(span_lewd("\The <b>[human_self]</b>'s crotch feels warm as something suddenly sprouts between their legs."))
+			human_self.visible_message(span_lewd(LANG("datum.5b3088614e019707", list(human_self))))
 
 		if(mob_penis && human_self.client?.prefs.read_preference(/datum/preference/toggle/erp/penis_enlargement))
 			var/prev_size = mob_penis.genital_size
@@ -428,7 +429,7 @@
 			mob_penis.girth = min(mob_penis.girth + (growth_amount * 0.5), PENIS_MAX_GIRTH)
 			to_update += mob_penis
 			if(mob_penis.genital_size > prev_size || mob_penis.girth > prev_girth)
-				human_self.visible_message(span_lewd("\The <b>[human_self]</b>'s penis swells larger as it gets pumped full of [LOWER_TEXT(initial(fluid_source.internal_fluid_datum:name))]!"))
+				human_self.visible_message(span_lewd(LANG("datum.b7e83324d0aecf7e", list(human_self, LOWER_TEXT(initial(fluid_source.internal_fluid_datum:name))))))
 
 		var/obj/item/organ/genital/testicles/mob_testicles = human_self.get_organ_slot(ORGAN_SLOT_TESTICLES)
 		if(!mob_testicles && human_self.client?.prefs.read_preference(/datum/preference/toggle/erp/new_genitalia_growth))
@@ -442,7 +443,7 @@
 			mob_testicles.genital_size = min(mob_testicles.genital_size + (growth_amount * 0.5), TESTICLES_MAX_SIZE)
 			to_update += mob_testicles
 			if(mob_testicles.genital_size > prev_size)
-				human_self.visible_message(span_lewd("\The <b>[human_self]</b>'s balls grow heavier as they get pumped full of [LOWER_TEXT(initial(fluid_source.internal_fluid_datum:name))]!"))
+				human_self.visible_message(span_lewd(LANG("datum.5670e1fb76f80f92", list(human_self, LOWER_TEXT(initial(fluid_source.internal_fluid_datum:name))))))
 
 	// Handle breast inflation
 	else if(slot == ORGAN_SLOT_BREASTS)
@@ -458,11 +459,11 @@
 			mob_breasts.genital_size = BREASTS_MIN_SIZE
 
 			if(mob_breasts.visibility_preference == GENITAL_ALWAYS_SHOW || human_self.is_topless())
-				human_self.visible_message(span_notice("[human_self]'s bust suddenly expands!"))
-				to_chat(human_self, span_purple("Your chest feels warm, tingling with sensitivity as it expands outward."))
+				human_self.visible_message(span_notice(LANG("datum.f8b3ed185129d464", list(human_self))))
+				to_chat(human_self, span_purple(LANG("datum.252d5a55d6e7014a", null)))
 			else
-				human_self.visible_message(span_notice("The area around [human_self]'s chest suddenly bounces a bit."))
-				to_chat(human_self, span_purple("Your chest feels warm, tingling with sensitivity as it strains against your clothes."))
+				human_self.visible_message(span_notice(LANG("datum.26d09cded709aaa5", list(human_self))))
+				to_chat(human_self, span_purple(LANG("datum.3ccb45320a4c6707", null)))
 
 		if(mob_breasts && human_self.client?.prefs.read_preference(/datum/preference/toggle/erp/breast_enlargement))
 			var/prev_size = mob_breasts.genital_size
@@ -470,17 +471,17 @@
 			to_update += mob_breasts
 			if(mob_breasts.genital_size > prev_size)
 				if(mob_breasts.visibility_preference == GENITAL_ALWAYS_SHOW || human_self.is_topless())
-					human_self.visible_message(span_lewd("\The <b>[human_self]</b>'s breasts swell larger as they get pumped full of [LOWER_TEXT(initial(fluid_source.internal_fluid_datum:name))]!"))
+					human_self.visible_message(span_lewd(LANG("datum.3a518c68681271c7", list(human_self, LOWER_TEXT(initial(fluid_source.internal_fluid_datum:name))))))
 				else
-					human_self.visible_message(span_lewd("\The area around [human_self]'s chest suddenly bounces a bit."))
+					human_self.visible_message(span_lewd(LANG("datum.74bb1f6a6e95f8c7", list(human_self))))
 
 	for(var/obj/item/organ/genital/genital in to_update)
 		call(/datum/reagent/drug/aphrodisiac::update_appearance())(human_self, genital)
 
-GAME_VERB_PROC_SRC_DESC(/mob/living, interact_with, view(), "Interact With", "Perform an interaction with someone.", "IC")
+GAME_VERB_PROC_SRC_DESC(/mob/living, interact_with, view(), "与……互动", "Perform an interaction with someone.", "IC")
 	var/datum/component/interactable/menu = GetComponent(/datum/component/interactable)
 	if(!menu)
-		to_chat(src, span_warning("You must have done something really bad to not have an interaction component."))
+		to_chat(src, span_warning(LANG("mob.da7adc4c9228d783", null)))
 		return
 
 	menu.open_interaction_menu(src, usr)

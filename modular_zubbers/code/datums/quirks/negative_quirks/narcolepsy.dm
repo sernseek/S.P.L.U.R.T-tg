@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/narcolepsy
 	name = "Narcolepsy"
 	desc = "You may fall asleep at any moment and feel tired often."
@@ -18,7 +19,7 @@
 
 	var/obj/item/storage/pill_bottle/prescription_stimulant/stimmies = new()
 	if(quirk_holder.equip_to_storage(stimmies, ITEM_SLOT_BACK, del_on_fail = TRUE, initial = TRUE, indirect_action = TRUE))
-		to_chat(quirk_holder, span_info("You have been given a bottle of mild stimulants to assist in staying awake this shift..."))
+		to_chat(quirk_holder, span_info(LANG("datum.b3489d847644db7c", null)))
 
 /datum/quirk/narcolepsy/remove()
 	. = ..()
@@ -46,10 +47,10 @@
 		sleep_chance = sleep_chance / 2
 
 	if(!drowsy && SPT_PROB(sleep_chance, seconds_per_tick))
-		to_chat(owner, span_warning("You feel tired..."))
+		to_chat(owner, span_warning(LANG("datum.240066c6c8e08bb6", null)))
 		owner.adjust_drowsiness(rand(30 SECONDS, 60 SECONDS))
 
 	else if(drowsy && SPT_PROB(sleep_chance, seconds_per_tick))
-		to_chat(owner, span_warning("You fall asleep."))
+		to_chat(owner, span_warning(LANG("datum.09d9036bcc71737c", null)))
 		owner.Sleeping(rand(20 SECONDS, 30 SECONDS))
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define POWERATOR_FACTION_STATION "station"
 #define POWERATOR_FACTION_INTERDYNE "interdyne"
 #define POWERATOR_FACTION_TARKON "tarkon"
@@ -99,7 +100,7 @@
 			context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Unanchor" : "Anchor"]"
 			return CONTEXTUAL_SCREENTIP_SET
 		if(TOOL_SCREWDRIVER)
-			context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] panel"
+			context[SCREENTIP_CONTEXT_LMB] = LANG("obj.45725a89b7fc8d2e", list(panel_open ? "Close" : "Open"))
 			return CONTEXTUAL_SCREENTIP_SET
 		if(TOOL_CROWBAR)
 			if(panel_open)
@@ -109,21 +110,21 @@
 /obj/machinery/powerator/examine(mob/user)
 	. = ..()
 	if(panel_open)
-		. += span_warning("The maintenance panel is currently open, preventing [src] from working!")
+		. += span_warning(LANG("obj.cf05318ffc63e43b", list(src)))
 
 	if(!anchored)
-		. += span_warning("The anchors are not bolted to the floor, preventing [src] from working!")
+		. += span_warning(LANG("obj.c5bc2a98954a6414", list(src)))
 
 	if(machine_stat & (NOPOWER | BROKEN))
-		. += span_warning("There is either damage or no power being supplied, preventing [src] from working!")
+		. += span_warning(LANG("obj.f4dece2badc67514", list(src)))
 
 	if(!attached_cable)
-		. += span_warning("There is no power cable underneath, preventing [src] from working!")
+		. += span_warning(LANG("obj.4ef22516793869ad", list(src)))
 
-	. += span_notice("Current Power: [display_power(current_power)]/[display_power(max_power)]")
-	. += span_notice("This machine has made [credits_made] credits from selling power so far.")
+	. += span_notice(LANG("obj.68520cce41141c49", list(display_power(current_power), display_power(max_power))))
+	. += span_notice(LANG("obj.e89755371c72d748", list(credits_made)))
 	if(length(powerator_list[powerator_faction]) > 1)
-		. += span_notice("Multiple powerators detected, total efficiency reduced by [(powerator_penalty_multiplier_list[powerator_faction])*100]%")
+		. += span_notice(LANG("obj.542067bb4b80d348", list((powerator_penalty_multiplier_list[powerator_faction])*100)))
 
 /obj/machinery/powerator/RefreshParts()
 	. = ..()
@@ -192,7 +193,7 @@
 
 /obj/machinery/powerator/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
-	var/new_power = tgui_input_number(user, "How much power (in kilowatts) would you like to draw? Max: [display_power(max_power)]", "Power Draw", energy_to_power(current_power) / (1 KILO WATTS), energy_to_power(max_power) / (1 KILO WATTS), 1)
+	var/new_power = tgui_input_number(user, LANG("obj.41cd1b9716d8095b", list(display_power(max_power))), LANG("obj.7057368a596d4af9", null), energy_to_power(current_power) / (1 KILO WATTS), energy_to_power(max_power) / (1 KILO WATTS), 1)
 	if(!isnum(new_power))
 		return TRUE
 	current_power = power_to_energy(new_power) KILO WATTS

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/ammo_casing
 	name = "bullet casing"
 	desc = "A bullet casing."
@@ -104,9 +105,9 @@
 		return "Our legal team has determined the offensive nature of these [span_warning(caliber)] rounds to be esoteric."
 	// No dividing by 0
 	if(initial_damage)
-		readout += "Most monkeys our legal team subjected to these [span_warning(caliber)] rounds succumbed to their wounds after [span_warning("[HITS_TO_CRIT((initial(exam_proj.damage) * proj_damage_mult) * pellets)] shot\s")] at point-blank, taking [span_warning("[pellets] shot\s")] per round."
+		readout += LANG("obj.2f3bec6ed96defc6", list(span_warning(caliber), span_warning("[HITS_TO_CRIT((initial(exam_proj.damage) * proj_damage_mult) * pellets)] shot\s"), span_warning("[pellets] shot\s")))
 	if(initial_stamina)
-		readout += "[!readout.len ? "Most monkeys" : "More fortunate monkeys"] collapsed from exhaustion after [span_warning("[HITS_TO_CRIT((initial(exam_proj.stamina) * proj_damage_mult) * pellets)] impact\s")] of these [span_warning("[caliber]")] rounds."
+		readout += LANG("obj.67914d2b0bd980ce", list(!readout.len ? "Most monkeys" : "More fortunate monkeys", span_warning("[HITS_TO_CRIT((initial(exam_proj.stamina) * proj_damage_mult) * pellets)] impact\s"), span_warning("[caliber]")))
 	return readout.Join("\n") // Sending over a single string, rather than the whole list
 
 /obj/item/ammo_casing/update_icon_state()
@@ -114,7 +115,7 @@
 	return ..()
 
 /obj/item/ammo_casing/update_desc()
-	desc = "[initial(desc)][loaded_projectile ? null : " This one is spent."]"
+	desc = "[lang_reverse_text(initial(desc))][loaded_projectile ? null : lang_reverse_text(" This one is spent.")]" // ZH EDIT CHANGE - i18n: initial(desc) 是编译期英文原值，会把 /atom/Initialize 反查好的中文 desc 覆盖回英文 - ORIGINAL: desc = "[initial(desc)][loaded_projectile ? null : " This one is spent."]"
 	return ..()
 
 /*
@@ -155,10 +156,10 @@
 			boolets++
 
 	if (!boolets)
-		to_chat(user, span_warning("You fail to collect anything!"))
+		to_chat(user, span_warning(LANG("obj.937731d05b6b5f25", null)))
 		return FALSE
 	box.update_appearance()
-	to_chat(user, span_notice("You collect [boolets] [box.casing_phrasing]\s. [box] now contains [box.stored_ammo.len] [box.casing_phrasing]\s."))
+	to_chat(user, span_notice(LANG("obj.150417efb67533ec", list(boolets, box.casing_phrasing, box, box.stored_ammo.len, box.casing_phrasing))))
 	return TRUE
 
 /obj/item/ammo_casing/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)

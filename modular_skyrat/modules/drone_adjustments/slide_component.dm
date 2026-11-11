@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/sliding_under
 	///The atom that has this component
 	var/atom/atom_parent
@@ -38,10 +39,10 @@
 	if(!do_after(user, 5 SECONDS, atom_parent))
 		return
 	user.forceMove(get_turf(atom_parent))
-	atom_parent.balloon_alert_to_viewers("something squeezes through!")
+	atom_parent.balloon_alert_to_viewers(LANG("datum.6d03cee8f08263f0", null))
 
 /datum/component/sliding_under/proc/ExamineMessage(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 	if(!is_type_in_list(user, allowed_mobs))
 		return
-	examine_list += span_warning("Ctrl + Click [atom_parent] to slide under!")
+	examine_list += span_warning(LANG("datum.b5ad7b03d1af7324", list(atom_parent)))

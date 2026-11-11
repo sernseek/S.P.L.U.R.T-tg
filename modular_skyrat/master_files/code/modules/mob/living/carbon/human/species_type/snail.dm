@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define SHELL_TRANSPARENCY_ALPHA 90
 
 /datum/species/snail
@@ -97,7 +98,7 @@
 	if(!istype(core, /obj/item/assembly/signaler/anomaly/bluespace))
 		return ..()
 
-	to_chat(user, span_notice("You insert [core] into your shell, and it starts to glow blue with expanded storage potential!"))
+	to_chat(user, span_notice(LANG("obj.cc80616ad6ceebeb", list(core))))
 	playsound(src, 'sound/machines/click.ogg', 50, TRUE)
 	add_filter("bluespace_shell", 2, list("type" = "outline", "color" = COLOR_BLUE_LIGHT, "size" = 1))
 	storage_core = TRUE
@@ -136,50 +137,50 @@
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "home",
-			SPECIES_PERK_NAME = "Shellback",
-			SPECIES_PERK_DESC = "Snails have a shell fused to their back. It offers great storage and most importantly gives them 50% brute damage reduction from behind, or while resting. Alt click to change the sprite!",
+			SPECIES_PERK_NAME = LANG("datum.31ac3010b10176d6", null),
+			SPECIES_PERK_DESC = LANG("datum.49c4052fe77d4bca", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "wine-glass",
-			SPECIES_PERK_NAME = "Poison Resistance",
-			SPECIES_PERK_DESC = "Snails have a higher tolerance for poison owing to their robust livers.",
+			SPECIES_PERK_NAME = LANG("datum.58a08b84edc33091", null),
+			SPECIES_PERK_DESC = LANG("datum.43585714fded221a", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "heart",
-			SPECIES_PERK_NAME = "Double Hearts",
-			SPECIES_PERK_DESC = "Snails have two hearts, meaning it'll take more to break theirs.",
+			SPECIES_PERK_NAME = LANG("datum.fd76a328d03aa24c", null),
+			SPECIES_PERK_DESC = LANG("datum.572cd88892dbf455", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "water",
-			SPECIES_PERK_NAME = "Water Breathing",
-			SPECIES_PERK_DESC = "Snails can breathe underwater.",
+			SPECIES_PERK_NAME = LANG("datum.9bbbe5853d04147a", null),
+			SPECIES_PERK_DESC = LANG("datum.4e76a8d65a3b4c63", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "bone",
-			SPECIES_PERK_NAME = "Boneless",
-			SPECIES_PERK_DESC = "Snails are invertebrates, meaning they don't take bone wounds, but are easier to delimb.",
+			SPECIES_PERK_NAME = LANG("datum.a143e0d94daaca4d", null),
+			SPECIES_PERK_DESC = LANG("datum.4944b8489951375c", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "crutch",
-			SPECIES_PERK_NAME = "Sheer Mollusk Speed",
-			SPECIES_PERK_DESC = "Snails move incredibly slow while standing. They move much faster while crawling, and can stick to the floors when the gravity is out.",
+			SPECIES_PERK_NAME = LANG("datum.8f51cd7246b49ee5", null),
+			SPECIES_PERK_DESC = LANG("datum.303c0639ed839c3a", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "frown",
-			SPECIES_PERK_NAME = "Weak Fighter",
-			SPECIES_PERK_DESC = "Snails punch half as hard as a human.",
+			SPECIES_PERK_NAME = LANG("datum.7f7dd4dbeee8f8f7", null),
+			SPECIES_PERK_DESC = LANG("datum.54497d7259f11a07", null),
 		),
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "skull",
-			SPECIES_PERK_NAME = "Salt Weakness",
-			SPECIES_PERK_DESC = "Salt burns snails, and salt piles will block their path.",
+			SPECIES_PERK_NAME = LANG("datum.c10b2ef09727cde8", null),
+			SPECIES_PERK_DESC = LANG("datum.41b43876fdaf7adb", null),
 		),
 	)
 

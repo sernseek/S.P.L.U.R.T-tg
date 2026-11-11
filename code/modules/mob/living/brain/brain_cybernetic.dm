@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/brain/cybernetic
 	name = "cybernetic brain"
 	desc = "A mechanical brain found inside of androids. Not to be confused with a positronic brain."
@@ -74,14 +75,14 @@ EDIT END */
 /obj/item/organ/brain/cybernetic/check_for_repair(obj/item/item, mob/user)
 	if (item.tool_behaviour == TOOL_MULTITOOL && (organ_flags & ORGAN_ROBOTIC)) //robotic repair option
 		if (brainmob?.health <= HEALTH_THRESHOLD_DEAD) //if the brain is fucked anyway, do nothing
-			to_chat(user, span_warning("[src] is far too damaged, there's nothing else we can do for it!"))
+			to_chat(user, span_warning(LANG("obj.57f2d422a8170aff", list(src))))
 			return TRUE
 
 		if (DOING_INTERACTION(user, src))
-			to_chat(user, span_warning("you're already repairing [src]!"))
+			to_chat(user, span_warning(LANG("obj.7ca3d4a6af54efd3", list(src))))
 			return TRUE
 
-		user.visible_message(span_notice("[user] slowly starts to repair [src] with [item]."), span_notice("You slowly start to repair [src] with [item]."))
+		user.visible_message(span_notice(LANG("obj.30049e423910790d", list(user, src, item))), span_notice(LANG("obj.6f08d6ebf9a550e2", list(src, item))))
 		var/did_repair = FALSE
 		while(damage > 0)
 			if(item.use_tool(src, user, 3 SECONDS, volume = 50))
@@ -92,24 +93,24 @@ EDIT END */
 
 		if (did_repair)
 			if (damage > 0)
-				user.visible_message(span_notice("[user] partially repairs [src] with [item]."), span_notice("You partially repair [src] with [item]."))
+				user.visible_message(span_notice(LANG("obj.6500d6a28d98bee6", list(user, src, item))), span_notice(LANG("obj.e25e65d9c3c3f8a9", list(src, item))))
 			else
-				user.visible_message(span_notice("[user] fully repairs [src] with [item], causing its warning light to stop flashing."), span_notice("You fully repair [src] with [item], causing its warning light to stop flashing."))
+				user.visible_message(span_notice(LANG("obj.c7f2f52798302172", list(user, src, item))), span_notice(LANG("obj.90b5d6b85893bf6d", list(src, item))))
 		else
-			to_chat(user, span_warning("You failed to repair [src] with [item]!"))
+			to_chat(user, span_warning(LANG("obj.8a2acaecf89afc87", list(src, item))))
 
 		return TRUE
 	else if(damage && item.is_drainable() && item.reagents.has_reagent(/datum/reagent/medicine/mannitol) && (organ_flags & ORGAN_ORGANIC)) //ganic repair option (this is for the cortical children)
 		if(brainmob?.health <= HEALTH_THRESHOLD_DEAD) //if the brain is fucked anyway, do nothing
-			to_chat(user, span_warning("[src] is far too damaged, there's nothing else we can do for it!"))
+			to_chat(user, span_warning(LANG("obj.57f2d422a8170aff", list(src))))
 			return TRUE
 
-		user.visible_message(span_notice("[user] starts to slowly pour the contents of [item] onto [src]."), span_notice("You start to slowly pour the contents of [item] onto [src]."))
+		user.visible_message(span_notice(LANG("obj.36b950010de56066", list(user, item, src))), span_notice(LANG("obj.09d70374d6ac85e0", list(item, src))))
 		if(!do_after(user, 3 SECONDS, src))
-			to_chat(user, span_warning("You failed to pour the contents of [item] onto [src]!"))
+			to_chat(user, span_warning(LANG("obj.6c40dd899344a99a", list(item, src))))
 			return TRUE
 		var/and_bright_shade = !shade_color ? "" : " and turn a slightly brighter shade of [shade_color]"
-		user.visible_message(span_notice("[user] pours the contents of [item] onto [src], causing it to reform its original shape[and_bright_shade]."), span_notice("You pour the contents of [item] onto [src], causing it to reform its original shape[and_bright_shade]."))
+		user.visible_message(span_notice(LANG("obj.66fef8d1fe5ee2db", list(user, item, src, and_bright_shade))), span_notice(LANG("obj.029c8ce39691eb90", list(item, src, and_bright_shade))))
 		var/amount = item.reagents.get_reagent_amount(/datum/reagent/medicine/mannitol)
 		var/healto = max(0, damage - amount * 2)
 		item.reagents.remove_all(ROUND_UP(item.reagents.total_volume / amount * (damage - healto) * 0.5)) //only removes however much solution is needed while also taking into account how much of the solution is mannitol
@@ -128,9 +129,9 @@ EDIT END */
 //BUBBER EDIT END
 	switch(severity)
 		if (EMP_HEAVY)
-			to_chat(owner, span_boldwarning("You feel [pick("like your brain is being fried", "a sharp pain in your head")]!")) //BUBBER EDIT - added alert text for getting EMP'd.
+			to_chat(owner, span_boldwarning(LANG("obj.a2506f010ad69444", list(pick("like your brain is being fried", "a sharp pain in your head"))))) //BUBBER EDIT - added alert text for getting EMP'd.
 			owner.adjust_organ_loss(ORGAN_SLOT_BRAIN, (20*emp_dmg_mult), emp_dmg_max) //BUBBER EDIT - cap implemented
 		if (EMP_LIGHT)
-			to_chat(owner, span_warning("You feel [pick("disoriented", "confused", "dizzy")].")) //BUBBER EDIT - added alert text for getting EMP'd.
+			to_chat(owner, span_warning(LANG("obj.20f1ebe8a80b36d9", list(pick("disoriented", "confused", "dizzy"))))) //BUBBER EDIT - added alert text for getting EMP'd.
 			owner.adjust_organ_loss(ORGAN_SLOT_BRAIN, (10*emp_dmg_mult), emp_dmg_max) //BUBBER EDIT - cap implemented
 

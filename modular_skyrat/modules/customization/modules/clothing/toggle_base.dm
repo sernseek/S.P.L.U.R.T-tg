@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/toggle_clothes
 	var/toggled = FALSE
 	var/toggled_icon_state
@@ -16,7 +17,7 @@
 
 /datum/component/toggle_clothes/proc/handle_examine(datum/source, mob/user, list/examine_text)
 	SIGNAL_HANDLER
-	examine_text += span_notice("This item is toggleable! Alt Click to toggle!")
+	examine_text += span_notice(LANG("datum.f02d08bac03792e0", null))
 
 /datum/component/toggle_clothes/proc/clothing_toggle(obj/item/clothing/source, mob/living/clicker)
 	SIGNAL_HANDLER
@@ -26,7 +27,7 @@
 		original_icon_state = initial(source.post_init_icon_state)
 	toggled = !toggled
 	source.icon_state = (toggled ? toggled_icon_state : original_icon_state)
-	to_chat(clicker, "You toggle \the [source]!")
+	to_chat(clicker, LANG("datum.b56511b13a3a6db0", list(source)))
 	if(source.loc == clicker)
 		clicker.update_clothing(source.slot_flags)
 	source.update_appearance(UPDATE_ICON)

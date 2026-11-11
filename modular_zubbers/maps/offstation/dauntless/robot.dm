@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/borg/upgrade/syndicate_access
 	name = "Syndicate cyborg access override"
 	desc = "Makes any model of cyborg appear as a syndicate cyborg to syndicate targetting systems, additionally giving them access to syndicate airlocks. \
@@ -10,8 +11,8 @@
 	. = ..()
 	// Turns out this is all you need for access to the doors. See code\game\machinery\_machinery.dm
 	R.add_faction(ROLE_SYNDICATE)
-	to_chat(R, span_alert("Additional access detected! Remote camera interface destroyed."))
-	to_chat(user, span_warning("The cyborg whirrs a bit as additional access levels are added, and the remote camera module shorts out a fuse."))
+	to_chat(R, span_alert(LANG("obj.51c5672b72384d40", null)))
+	to_chat(user, span_warning(LANG("obj.46ffbb5624375772", null)))
 	// Remove the camera, much like how the camera is removed for ghost cafe cyborgs
 	if(!QDELETED(R.builtInCamera))
 		QDEL_NULL(R.builtInCamera)
@@ -23,7 +24,7 @@
 
 /obj/item/borg/upgrade/syndicate_access/dauntless/examine_more(mob/user)
 	. = ..()
-	. += span_notice("This one seems to include an Interdyne communication chip. How neat!")
+	. += span_notice(LANG("obj.c0482fc855524934", null))
 
 /obj/item/borg/upgrade/syndicate_access/dauntless/action(mob/living/silicon/robot/R, user)
 	. = ..()

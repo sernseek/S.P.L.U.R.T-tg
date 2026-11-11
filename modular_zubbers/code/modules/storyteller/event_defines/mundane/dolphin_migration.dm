@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Similar to space carp event
 /// Has the exact same announcement to mess with the meta of telling it's carps.
 /// Dolphins and Manatees however don't path to station, so they will just float harmlessly
@@ -28,7 +29,7 @@
 	var/fluff_signal = /datum/round_event/carp_migration::fluff_signal // Steal directly from the carp event
 
 /datum/round_event/dolphin_migration/announce(fake)
-	priority_announce("[fluff_signal] have been detected near [station_name()], please stand-by.", "Lifesign Alert")
+	priority_announce(LANG("datum.0d4f8b0909bcd519", list(fluff_signal, station_name())), "Lifesign Alert")
 
 /datum/round_event/dolphin_migration/start()
 	for(var/obj/effect/landmark/carpspawn/spawn_point in GLOB.landmarks_list)

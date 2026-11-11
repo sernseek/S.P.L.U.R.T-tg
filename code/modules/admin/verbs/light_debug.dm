@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /proc/debug_light_sources()
 	GLOB.light_debug_enabled = TRUE
@@ -256,7 +257,7 @@ GLOBAL_LIST_EMPTY(light_debugged_atoms)
 		if("set_on")
 			parent.set_light(l_on = params["value"])
 		if("change_color")
-			var/chosen_color = tgui_color_picker(ui.user, "Pick new color", "[parent]", parent.light_color)
+			var/chosen_color = tgui_color_picker(ui.user, LANG("atom.d23daf0bdf35b7be", null), "[parent]", parent.light_color)
 			if(chosen_color)
 				parent.set_light(l_color = chosen_color)
 		if("set_power")

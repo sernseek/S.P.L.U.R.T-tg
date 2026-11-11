@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/way_destination
 	abstract_type = /datum/way_destination
 	var/name
@@ -174,7 +175,7 @@
 			continue
 		if(honk_victim.soundbang_act(SOUNDBANG_NORMAL, stun_pwr = 5, damage_pwr = 15, deafen_pwr = 30)) //Ear protection will prevent these effects
 			honk_victim.set_jitter_if_lower(120 SECONDS)
-			to_chat(honk_victim, span_clown("HOOOOONK!"))
+			to_chat(honk_victim, span_clown(LANG("datum.ebb68c3e402db574", null)))
 
 /datum/way_destination/anomalies
 	name = "The Chaossphere"

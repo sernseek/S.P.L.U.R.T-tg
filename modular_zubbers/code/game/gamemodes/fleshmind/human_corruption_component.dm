@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/component/human_corruption
 	/// A hard ref to our controller.
 	var/datum/fleshmind_controller/our_controller
@@ -38,8 +39,8 @@
 
 	var/mob/living/carbon/human/infected_human = parent
 
-	to_chat(infected_human, span_hypnophrase("Your mind feels at ease, your mind feels one with the flesh."))
-	to_chat(infected_human, span_userdanger("IMPORTANT INFO, MUST READ: [CONTROLLED_MOB_POLICY]"))
+	to_chat(infected_human, span_hypnophrase(LANG("datum.e85e6952d84e0583", null)))
+	to_chat(infected_human, span_userdanger(LANG("datum.3d0ad8417e1b4d82", list(CONTROLLED_MOB_POLICY))))
 
 	RegisterSignal(infected_human, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(update_parent_overlays))
 	RegisterSignal(infected_human, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
@@ -108,17 +109,17 @@
 /datum/component/human_corruption/proc/on_examine(atom/examined, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 
-	examine_list += "<b>[p_They()] have strange wires wrappped around [p_them()]!</b>"
+	examine_list += LANG("datum.a607708e7cee95ec", list(p_They(), p_them()))
 
 /datum/component/human_corruption/proc/core_death(obj/structure/fleshmind/structure/core/deleting_core, force)
 	SIGNAL_HANDLER
 
-	to_chat(parent, span_userdanger("Your mind screams as you feel a processor core dying!"))
+	to_chat(parent, span_userdanger(LANG("datum.ab9a9b684a1934b0", null)))
 
 /datum/component/human_corruption/proc/component_death(obj/structure/fleshmind/structure/core/deleting_core, force)
 	SIGNAL_HANDLER
 
-	to_chat(parent, span_userdanger("Your mechanical implants fail catastrophically as your link to the hive is cut off!"))
+	to_chat(parent, span_userdanger(LANG("datum.f91b4edeaa15f8a1", null)))
 
 	var/mob/living/carbon/human/parent_human = parent
 	INVOKE_ASYNC(parent_human, TYPE_PROC_REF(/mob, emote), "scream")
@@ -144,7 +145,7 @@
 	INVOKE_ASYNC(parent_human, TYPE_PROC_REF(/mob, emote), "scream")
 	parent_human.apply_status_effect(/datum/status_effect/jitter, 20 SECONDS)
 	parent_human.Knockdown(10)
-	to_chat(parent_human, span_userdanger("You feel your implants freeze up!"))
+	to_chat(parent_human, span_userdanger(LANG("datum.475b4d8bcdf80ec4", null)))
 
 /datum/component/human_corruption/proc/host_death()
 	SIGNAL_HANDLER

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // The idea here is to give heretics something to restore things they would need medbay for but not a cure-all
 // A bubber edit changes the heal flag in eldritch_flask.dm
 /datum/heretic_knowledge/ether
@@ -11,4 +12,4 @@
 /obj/item/ether/examine(mob/user)
 	. = ..()
 
-	. += span_notice("If consumed, allows the user to regrow limbs, organs, as well as purging mutations and diseases.")
+	. += span_notice(LANG("obj.357fbaec591443d3", null))

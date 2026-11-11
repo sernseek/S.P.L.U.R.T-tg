@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/mob_cooldown/blood_worm/eject
 	name = "Leave Host"
 	desc = "Leave your host, taking their blood with you."
@@ -21,11 +22,11 @@
 	var/mob/living/carbon/human/host = worm.host
 
 	host.visible_message(
-		message = span_danger("\The [host] collapse[host.p_s()] and start[host.p_s()] shaking violently!"),
+		message = span_danger(LANG("datum.2aecc8d18d27edc3", list(host, host.p_s(), host.p_s()))),
 		ignored_mobs = owner
 	)
 
-	to_chat(owner, span_danger("You begin leaving your host..."))
+	to_chat(owner, span_danger(LANG("datum.5185a56568e6642d", null)))
 
 	host.add_traits(list(TRAIT_FLOORED, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED), REF(src))
 

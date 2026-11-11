@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/mutation/strong_legs
 	name = "Strong Legs"
 	desc = "Strengtens the calves of the subject, allowing them to leap across gaps."
@@ -74,7 +75,7 @@
 		var/turf/new_turf = get_turf(bumped_window)
 		bumped_window.deconstruct(disassembled = FALSE)
 		source.apply_damage(damage = 5, damagetype = BRUTE)
-		source.visible_message(span_warning("[source] slams [source.p_their()] body through the window!"))
+		source.visible_message(span_warning(LANG("datum.17bd7224ac82cea4", list(source, source.p_their()))))
 		for(var/obj/structure/grille/poorgrille in new_turf)
 			on_grille_bump(source, poorgrille, do_move = FALSE)
 		source.forceMove(new_turf)
@@ -87,7 +88,7 @@
 			harsh_crash = TRUE
 			var/obj/item/bodypart/affecting = source.get_bodypart(BODY_ZONE_HEAD)
 			affecting.force_wound_upwards(/datum/wound/blunt/bone/severe)
-		source.visible_message(span_warning("[source] smacks [source.p_their()] head against the window[harsh_crash ? " and cracks their skull open" : ""]! Ouch."))
+		source.visible_message(span_warning(LANG("datum.0f7994c3b1c841a9", list(source, source.p_their(), harsh_crash ? " and cracks their skull open" : ""))))
 
 /datum/action/cooldown/mob_cooldown/leap/proc/on_grille_bump(mob/living/carbon/source, obj/structure/grille/bumped_grille, do_move = TRUE)
 	bumped_grille.shock(source, 70)

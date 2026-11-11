@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/nanite_program
 	var/name = "Generic Nanite Program"
 	var/desc = "Warn a coder if you can read this."
@@ -314,7 +315,7 @@
 		qdel(src)
 
 /datum/nanite_program/proc/send_user_message(message)
-	to_chat(host_mob, "<i>You hear a strange, robotic voice in your head...</i> \"[span_robot("[message]")]\"")
+	to_chat(host_mob, LANG("datum.dabd65ca808cce08", list(span_robot("[message]"))))
 
 ///A nanite program containing a behaviour protocol. Only one protocol of each class can be active at once.
 /datum/nanite_program/protocol

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/circuitboard/machine/rodstopper
 	name = "Rodstopper (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
@@ -19,7 +20,7 @@
 
 /obj/machinery/rodstopper/examine(mob/user)
 	. = ..()
-	. += span_warning("It will create a localized reality-collapse when stopping a rod, keep your distance!")
+	. += span_warning(LANG("obj.c3cd73d1bfe53bcf", null))
 
 /obj/machinery/rodstopper/Initialize(mapload)
 	. = ..()
@@ -27,5 +28,5 @@
 
 /obj/machinery/rodstopper/proc/warn_area()
 	playsound(src, 'sound/announcer/alarm/bloblarm.ogg', 100)
-	say("Warning! Please clear the area! Failure to do so will result in your immediate annihilation!")
+	say(LANG("obj.eb8ed86449a84175", null))
 	addtimer(CALLBACK(src, PROC_REF(warn_area)), 15 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE) // the sound is 7 seconds, however.

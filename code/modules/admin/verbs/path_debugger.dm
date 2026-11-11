@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 
 /obj/pathfind_guy
@@ -126,16 +127,16 @@ GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 
 /datum/action/innate/path_debug/jps/Activate()
 	. = ..()
-	max_distance = tgui_input_number(owner, "How far should we be allowed to try and path", "Max Distance", min_value = 1, default = 30)
-	min_distance = tgui_input_number(owner, "How close should we try and get to the target before stopping", "Min Distance", min_value = 0, default = 0)
-	allowed_on_space = tgui_alert(owner, "Are we allowed to path over space?", "Space Pathing", buttons = list("Yes", "No")) == "Yes"
-	var/text_blacklist = tgui_input_text(owner, "Enter any turf path you want to blacklist (You get one)", "Turf Blacklist")
+	max_distance = tgui_input_number(owner, LANG("datum.4624fa9a22f0a5ba", null), LANG("datum.dff79737ba376b81", null), min_value = 1, default = 30)
+	min_distance = tgui_input_number(owner, LANG("datum.e9a0dfbc69dfde8d", null), LANG("datum.30292e8c6e2e8b4c", null), min_value = 0, default = 0)
+	allowed_on_space = tgui_alert(owner, LANG("datum.f889120369e58cb1", null), LANG("datum.eb09a6bfff4d5e2b", null), buttons = list("Yes", "No")) == "Yes"
+	var/text_blacklist = tgui_input_text(owner, LANG("datum.908958059b4f9906", null), LANG("datum.3f55b0ffd884f04c", null))
 	if(text_blacklist)
 		blacklisted_turf = pick_closest_path(text_blacklist)
 	else
 		blacklisted_turf = null
 	diagonal_handling = DIAGONAL_DO_NOTHING
-	switch(tgui_input_list(owner, "Pick how you want to handle diagonal moves", "Diagonal Moves", list("Leave Them Be", "Drop All", "Drop Odd Ones")))
+	switch(tgui_input_list(owner, LANG("datum.ebaf7921cd3bba1d", null), LANG("datum.b6ddfc804c054549", null), list("Leave Them Be", "Drop All", "Drop Odd Ones")))
 		if("Leave Them Be")
 			diagonal_handling = DIAGONAL_DO_NOTHING
 		if("Drop All")
@@ -195,9 +196,9 @@ GLOBAL_DATUM_INIT(pathfind_dude, /obj/pathfind_guy, new())
 
 /datum/action/innate/path_debug/sssp/Activate()
 	. = ..()
-	max_distance = tgui_input_number(owner, "How far should we be allowed to try and path", "Max Distance", min_value = 1, default = 30)
-	allowed_on_space = tgui_alert(owner, "Are we allowed to path over space?", "Space Pathing", buttons = list("Yes", "No")) == "Yes"
-	var/text_blacklist = tgui_input_text(owner, "Enter any turf path you want to blacklist (You get one)", "Turf Blacklist")
+	max_distance = tgui_input_number(owner, LANG("datum.4624fa9a22f0a5ba", null), LANG("datum.dff79737ba376b81", null), min_value = 1, default = 30)
+	allowed_on_space = tgui_alert(owner, LANG("datum.f889120369e58cb1", null), LANG("datum.eb09a6bfff4d5e2b", null), buttons = list("Yes", "No")) == "Yes"
+	var/text_blacklist = tgui_input_text(owner, LANG("datum.908958059b4f9906", null), LANG("datum.3f55b0ffd884f04c", null))
 	if(text_blacklist)
 		blacklisted_turf = pick_closest_path(text_blacklist)
 	else

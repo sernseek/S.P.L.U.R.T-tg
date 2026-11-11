@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/ammo_box/magazine/security
 	name = "pistol magazine (9mm Murphy)"
 	desc = "A 9mm handgun magazine, suitable for the Nanotrasen Service Pistol. It comes with a more robust spring than the average magazine and weight to boot."
@@ -27,7 +28,7 @@
 		return
 	if(was_ejected)
 		playsound(get_turf(src.loc), 'sound/effects/explosion/explosion1.ogg', 40, 1)
-		visible_message(span_warning("[src] crumbles into scrap from the force of the impact"))
+		visible_message(span_warning(LANG("obj.e477aba5367810fd", list(src))))
 		if(isliving(hit_atom))
 			var/mob/living/hit_mob = hit_atom
 			hit_mob.Knockdown(2 SECONDS)

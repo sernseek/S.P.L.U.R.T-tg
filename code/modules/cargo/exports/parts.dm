@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Circuit boards, spare parts, etc.
 
 /datum/export/solar_assembly
@@ -42,4 +43,4 @@
 /datum/export/refill_canister/total_printout(datum/export_report/ex, notes = TRUE)
 	. = ..()
 	if(. && notes)
-		. += " Thank you for restocking the station!"
+		. += LANG("datum.04332c3906fb0d72", null)

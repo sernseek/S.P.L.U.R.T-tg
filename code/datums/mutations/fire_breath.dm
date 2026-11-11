@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/mutation/firebreath
 	name = "Fire Breath"
 	desc = "The subject can breathe fire at will."
@@ -56,7 +57,7 @@
 
 	our_lizard.adjust_fire_stacks(cone_levels)
 	our_lizard.ignite_mob()
-	to_chat(our_lizard, span_warning("Something in front of your mouth catches fire!"))
+	to_chat(our_lizard, span_warning(LANG("datum.d8083dc6b6e6610f", null)))
 
 /datum/action/cooldown/spell/cone/staggered/fire_breath/after_cast(atom/cast_on)
 	. = ..()

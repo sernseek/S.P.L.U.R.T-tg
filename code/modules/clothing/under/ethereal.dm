@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/under/ethereal_tunic
 	name = "ethereal tunic"
 	desc = "A simple sleeveless tunic worn over an undersuit, it glows in the dark!"
@@ -34,6 +35,6 @@
 	. = ..()
 	if(isethereal(user) && (slot & ITEM_SLOT_ICLOTHING))
 		var/mob/living/carbon/human/ethereal = user
-		to_chat(ethereal, span_notice("[src] gently quivers for a moment as you put it on."))
+		to_chat(ethereal, span_notice(LANG("obj.f7caee674fa7d689", list(src))))
 		set_greyscale(ethereal.dna.species.fixed_mut_color)
 		ethereal.update_worn_undersuit()

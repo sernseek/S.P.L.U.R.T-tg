@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// SKYRAT MODULE SKYRAT_XENO_REDO
 
 /mob/living/carbon/alien/adult/skyrat
@@ -103,32 +104,32 @@
 	var/mob/living/carbon/alien/adult/skyrat/evolver = owner
 
 	if(!istype(evolver))
-		to_chat(owner, span_warning("You aren't an alien, you can't evolve!"))
+		to_chat(owner, span_warning(LANG("datum.679f91de5760c114", null)))
 		return FALSE
 
 	type_to_evolve_into = evolver.next_evolution
 	if(!type_to_evolve_into)
-		to_chat(evolver, span_bolddanger("Something is wrong... We can't evolve into anything? (This is broken report it on GitHub)"))
+		to_chat(evolver, span_bolddanger(LANG("datum.49c3ff7107f2b4f5", null)))
 		CRASH("Couldn't find an evolution for [owner] ([owner.type]).")
 
 	if(!isturf(evolver.loc))
 		return FALSE
 
 	if(get_alien_type(type_to_evolve_into))
-		evolver.balloon_alert(evolver, "too many of our evolution already")
+		evolver.balloon_alert(evolver, LANG("datum.7c7ff7bc813817ac", null))
 		return FALSE
 
 	var/obj/item/organ/alien/hivenode/node = evolver.get_organ_by_type(/obj/item/organ/alien/hivenode)
 	if(!node)
-		to_chat(evolver, span_bolddanger("We can't sense our node's connection to the hive... We can't evolve!"))
+		to_chat(evolver, span_bolddanger(LANG("datum.8420dd6ec28471d6", null)))
 		return FALSE
 
 	if(node.recent_queen_death)
-		to_chat(evolver, span_bolddanger("The death of our queen... We can't seem to gather the mental energy required to evolve..."))
+		to_chat(evolver, span_bolddanger(LANG("datum.d3d40929bc2c6eed", null)))
 		return FALSE
 
 	if(evolver.has_evolved_recently)
-		evolver.balloon_alert(evolver, "can evolve in 1.5 minutes") //Make that 1.5 variable later, but it keeps fucking up for me :(
+		evolver.balloon_alert(evolver, LANG("datum.e6efa7f0fb8f7147", null)) //Make that 1.5 variable later, but it keeps fucking up for me :(
 		return FALSE
 
 	var/new_beno = new type_to_evolve_into(evolver.loc)

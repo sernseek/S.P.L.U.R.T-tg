@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Ye old forbidden book, the Codex Cicatrix.
 /obj/item/codex_cicatrix
 	name = "Codex Cicatrix"
@@ -33,8 +34,8 @@
 	if(!IS_HERETIC(user))
 		return
 
-	. += span_notice("Can be used to tap influences for additional knowledge points.")
-	. += span_notice("Can also be used to draw or remove transmutation runes with ease.")
+	. += span_notice(LANG("obj.1e85c6202619ede4", null))
+	. += span_notice(LANG("obj.62905648fffe0df7", null))
 
 /obj/item/codex_cicatrix/attack_self(mob/user, modifiers)
 	. = ..()
@@ -93,13 +94,13 @@
 /obj/item/codex_cicatrix/morbus/examine(mob/user)
 	. = ..()
 	if(IS_HERETIC(user))
-		. += span_info("Can be used to cast a curse with blood in your offhand by right clicking a rune.")
+		. += span_info(LANG("obj.21c83dc54b3cf6d9", null))
 		return
-	. += span_danger("The eyes stop blinking. They stare at you. Their gaze burns...")
+	. += span_danger(LANG("obj.470944292d1f7e3f", null))
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/human_user = user
-	to_chat(human_user, span_userdanger("Your mind burns as you stare at the pages!"))
+	to_chat(human_user, span_userdanger(LANG("obj.db48b66711d5376e", null)))
 	human_user.adjust_organ_loss(ORGAN_SLOT_BRAIN, 10, 190)
 	human_user.add_mood_event("gates_of_mansus", /datum/mood_event/gates_of_mansus)
 
@@ -116,7 +117,7 @@
 	// BUBBER EDIT ADDITION BEGIN - blacklist certain ones
 	curse_list -= "Curse of Transmutation" // can just kill ppl with certain species :(
 	// BUBBER EDIT ADDITION END
-	var/selected_curse = tgui_input_list(user, "Cast any curse", "Select a curse!", curse_list, timeout = 0)
+	var/selected_curse = tgui_input_list(user, LANG("obj.dea5e403d6cfd9c5", null), LANG("obj.fb34bebc38ad3c25", null), curse_list, timeout = 0)
 	if(!selected_curse)
 		return NONE
 
@@ -125,7 +126,7 @@
 
 	var/atom/held_offhand = user.get_inactive_held_item()
 	if(!held_offhand)
-		user.balloon_alert(user, "no catalyst!")
+		user.balloon_alert(user, LANG("obj.33fc357e3448ecf4", null))
 		return
 	var/blood_samples = list()
 	for(var/blood in GET_ATOM_BLOOD_DNA(held_offhand))
@@ -135,7 +136,7 @@
 			continue
 		blood_samples += usable_reagent.data[BLOOD_DATA_DNA]
 	if(isnull(blood_samples))
-		user.balloon_alert(user, "no blood!")
+		user.balloon_alert(user, LANG("obj.ce2814af84b667b1", null))
 		return ITEM_INTERACT_BLOCKING
 
 	var/curse_type = curse_list[selected_curse]

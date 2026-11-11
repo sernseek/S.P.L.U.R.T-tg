@@ -1,0 +1,838 @@
+//! Catalog ownership and liveness checks.
+//!
+//! DM extraction owns ordinary locale catalog files, TGUI owns `tgui.json`, and
+//! underscore-prefixed files are manually maintained runtime domains.  The audit
+//! only garbage-collects entries in the first category.
+
+use anyhow::{Context as _, Result};
+use std::collections::{BTreeMap, BTreeSet};
+use std::path::{Path, PathBuf};
+
+use crate::governance::{CatalogDomains, CatalogOwner};
+
+#[derive(Debug)]
+struct CatalogEntry {
+    file_name: String,
+    key: String,
+    value: String,
+    ownership: CatalogOwner,
+}
+
+/// Historical catalog entries for dialog values which are still canonical input identifiers.
+/// Keep the exact key/value pairs for catalog continuity; they must never be rewritten at use sites.
+const RETAINED_DIALOG_HISTORY: &[(&str, &str)] = &[
+    ("client.41ba0ff5611f0b93", "Yes"),
+    ("obj.41ba0ff5611f0b93", "Yes"),
+    ("datum.707d7f85626f91a9", "(new custom antag)"),
+];
+
+fn retained_dialog_history(entries: &[CatalogEntry]) -> BTreeSet<String> {
+    entries.iter().filter(|entry| {
+        entry.ownership == CatalogOwner::Extract
+            && RETAINED_DIALOG_HISTORY.iter().any(|(key, value)| entry.key == *key && entry.value == *value)
+    }).map(|entry| entry.key.clone()).collect()
+}
+
+fn read_catalog(path: &Path) -> Result<BTreeMap<String, String>> {
+    let text = std::fs::read_to_string(path)
+        .with_context(|| format!("无法读取目录文件：{}", path.display()))?;
+    serde_json::from_str(&text).with_context(|| format!("目录 JSON 解析失败：{}", path.display()))
+}
+
+fn catalog_files(dir: &Path) -> Result<Vec<PathBuf>> {
+    let mut files = Vec::new();
+    for entry in std::fs::read_dir(dir)
+        .with_context(|| format!("无法读取 locale 目录：{}", dir.display()))?
+    {
+        let path = entry?.path();
+        if path.is_file() && path.extension().and_then(|ext| ext.to_str()) == Some("json") {
+            files.push(path);
+        }
+    }
+    files.sort();
+    Ok(files)
+}
+
+fn collect_entries(en_dir: &Path, domains: &CatalogDomains) -> Result<Vec<CatalogEntry>> {
+    let mut entries = Vec::new();
+    for path in catalog_files(en_dir)? {
+        let file_name = path
+            .file_name()
+            .and_then(|name| name.to_str())
+            .context("目录文件名不是 UTF-8")?
+            .to_owned();
+        let ownership = domains
+            .get(&file_name)
+            .with_context(|| format!("{} 未登记在 catalog-domains.json", path.display()))?
+            .owner;
+        for (key, value) in read_catalog(&path)? {
+            entries.push(CatalogEntry {
+                file_name: file_name.clone(),
+                key,
+                value,
+                ownership,
+            });
+        }
+    }
+    Ok(entries)
+}
+
+fn is_stale(entry: &CatalogEntry, live_keys: &BTreeSet<String>) -> bool {
+    entry.ownership == CatalogOwner::Extract && !live_keys.contains(&entry.key)
+}
+
+/// Verb names are compiled-in metadata. `verbs` replaces their English literals with translations,
+/// so extraction cannot rediscover their English keys. Match only a translated `set name` in the
+/// same namespace against an existing English key and its paired locale value.
+fn injected_verb_keys(dme: &Path, catalog_root: &Path, entries: &[CatalogEntry]) -> Result<BTreeSet<String>> {
+    let mut candidates: BTreeMap<(String, String), Vec<String>> = BTreeMap::new();
+    for locale_dir in locale_dirs(catalog_root)? {
+        let Some(locale) = locale_dir.file_name().and_then(|s| s.to_str()) else { continue };
+        if locale == "en" {
+            continue;
+        }
+        let root = dme.parent().unwrap_or_else(|| Path::new("."));
+        let scoped = crate::catalog::load_verb_names(root, locale)?;
+        let mut locale_files = BTreeMap::new();
+        for entry in entries.iter().filter(|entry| {
+            entry.ownership == CatalogOwner::Extract && crate::extract::is_safe_verb_name(&entry.value)
+        }) {
+            let localized = if let Some(catalog) = locale_files.get(&entry.file_name) {
+                catalog
+            } else {
+                let path = locale_dir.join(&entry.file_name);
+                let catalog = if path.exists() { read_catalog(&path)? } else { BTreeMap::new() };
+                locale_files.entry(entry.file_name.clone()).or_insert(catalog)
+            };
+            let Some(translation) = scoped.get(&entry.key).or_else(|| localized.get(&entry.key)) else { continue };
+            if translation.is_empty() || translation == &entry.value {
+                continue;
+            }
+            let Some((namespace, _)) = entry.key.split_once('.') else { continue };
+            candidates.entry((namespace.to_owned(), translation.clone())).or_default().push(entry.key.clone());
+        }
+    }
+    let mut context = dm::Context::default();
+    context.set_print_severity(Some(dm::Severity::Error));
+    let pp = dm::preprocessor::Preprocessor::new(&context, dme.to_path_buf())?;
+    let mut parser = dm::parser::Parser::new(&context, dm::indents::IndentProcessor::new(&context, pp));
+    parser.enable_procs();
+    let (fatal, tree) = parser.parse_object_tree_2();
+    if fatal || context.errors().iter().any(|e| e.severity() == dm::Severity::Error) {
+        anyhow::bail!("DM 解析失败，无法校验已注入的 verb 名称");
+    }
+    let mut keys = BTreeSet::new();
+    for ty in tree.iter_types() {
+        let namespace = crate::keys::namespace_for(&ty.path);
+        // GAME_VERB also generates a /datum/verb_metadata subtype whose `name` is the same
+        // compiled-in verb literal. Extraction historically cataloged that separate datum key.
+        if ty.path.starts_with("/datum/verb_metadata/") {
+            if let Some(name_var) = ty.vars.get("name") {
+                if let Some(text) = name_var.value.expression.as_ref().and_then(crate::extract::plain_string) {
+                    if let Some(found) = candidates.get(&(namespace.clone(), text)) {
+                        keys.extend(found.iter().cloned());
+                    }
+                }
+            }
+        }
+        for (_name, proc) in ty.procs.iter() {
+            for value in proc.value.iter() {
+                let Some(block) = &value.code else { continue };
+                for statement in block.iter() {
+                    let dm::ast::Statement::Setting { name, value, .. } = &statement.elem else { continue };
+                    if name.as_str() != "name" { continue; }
+                    let Some(text) = crate::extract::plain_string(value) else { continue };
+                    if let Some(found) = candidates.get(&(namespace.clone(), text)) {
+                        keys.extend(found.iter().cloned());
+                    }
+                }
+            }
+        }
+    }
+    Ok(keys)
+}
+
+/// Keys a generated sidecar still records although extraction no longer produces them and no
+/// `LANG` call references them.  A missing sidecar is not an error: it is regenerated by extract.
+fn stale_sidecar_keys(path: &Path, live_keys: &BTreeSet<String>) -> Result<Vec<String>> {
+    let Ok(text) = std::fs::read_to_string(path) else {
+        return Ok(Vec::new());
+    };
+    let sidecar: BTreeMap<String, serde_json::Value> = serde_json::from_str(&text)
+        .with_context(|| format!("sidecar JSON 解析失败：{}", path.display()))?;
+    Ok(sidecar
+        .into_keys()
+        .filter(|key| !live_keys.contains(key))
+        .collect())
+}
+
+fn locale_dirs(catalog_root: &Path) -> Result<Vec<PathBuf>> {
+    let mut dirs = Vec::new();
+    for entry in std::fs::read_dir(catalog_root)
+        .with_context(|| format!("无法读取目录根：{}", catalog_root.display()))?
+    {
+        let path = entry?.path();
+        if path.is_dir() {
+            dirs.push(path);
+        }
+    }
+    dirs.sort();
+    Ok(dirs)
+}
+
+/// Remove only entries proved stale in DM-extractor-owned files.  Every edit is
+/// parsed and staged before the first write, so malformed locale data cannot
+/// leave a partially-applied collection.
+fn apply_stale(
+    catalog_root: &Path,
+    domains: &CatalogDomains,
+    stale: &[&CatalogEntry],
+) -> Result<usize> {
+    let mut stale_by_file: BTreeMap<&str, BTreeSet<&str>> = BTreeMap::new();
+    for entry in stale {
+        debug_assert_eq!(entry.ownership, CatalogOwner::Extract);
+        stale_by_file
+            .entry(&entry.file_name)
+            .or_default()
+            .insert(&entry.key);
+    }
+
+    let mut staged = Vec::new();
+    let mut removed = 0usize;
+    for locale_dir in locale_dirs(catalog_root)? {
+        for (&file_name, keys) in &stale_by_file {
+            let path = locale_dir.join(file_name);
+            if !path.exists() {
+                continue;
+            }
+            let ownership = domains
+                .get(file_name)
+                .with_context(|| format!("{file_name} 未登记在 catalog-domains.json"))?
+                .owner;
+            if ownership != CatalogOwner::Extract {
+                anyhow::bail!(
+                    "拒绝修改非自动目录文件：{}（manual/TGUI ownership is immutable）",
+                    path.display()
+                );
+            }
+            let mut catalog = read_catalog(&path)?;
+            let before = catalog.len();
+            catalog.retain(|key, _| !keys.contains(key.as_str()));
+            removed += before - catalog.len();
+            if catalog.len() != before {
+                staged.push((path, catalog));
+            }
+        }
+    }
+
+    for (path, catalog) in staged {
+        crate::catalog::write_preserving_indent(&path, &catalog)?;
+    }
+    Ok(removed)
+}
+
+/// Audit automatic catalog liveness against the exact extractor plus current
+/// `LANG` references.  The default is a read-only CI check; `apply` performs the
+/// same analysis and removes only proven-stale automatic entries from matching
+/// locale files.
+/// 同一句英文在两个 forward 命名空间里译得不一样时，运行时的反查表会把它**整条略过**
+/// （见 `lang_build_runtime_domain` 的 ambiguous 处理）——那个决定是对的（旧行为是按文件
+/// 加载顺序随便挑一条），但代价是这些条目在**所有反查路径**上都够不着：聊天整行落地、
+/// examine 显示边界、TGUI 负载 overlay 全部 miss，而正向 `LANG(key)` 仍然正常，所以只在
+/// 玩家那边显形、在目录里完全看不出来。
+///
+/// 这一类由 MT 持续再生（同一句英文被抽进两个命名空间 = 两个 key = 分两批送去翻译），
+/// 所以必须有门禁，不然清一次长回来一次。
+///
+/// `global_reverse` 文件是显式决策层，会覆盖 forward 的候选，所以那里给了值的英文不算丢。
+const AMBIGUITY_ALLOWLIST: &[(&str, &str)] = &[
+    ("Central", "area 的「中央指挥部」与 obj 的「中央区」是两个地方，强行统一必错一个"),
+    ("Lizard", "物种名（蜥蜴人）与动物（蜥蜴），同形异义"),
+    (
+        "{0} is hit by \\a {1}{2}!",
+        "英文相同但 {2} 含义不同：mob 是被击中的器官、obj 是「未造成伤害」的后缀从句，中文语序必须各自安排",
+    ),
+    (
+        "brush",
+        "mob 是 `response_help_simple` 的动词（轻擦一棵树）、obj 是考古刷子的名字，同形异义。\
+         统一成任何一个都会在另一边出错（玩家实测报的正是「刷子」被当成动词用）。歧义被略过之后，\
+         刷子的物品名仍由类型表按类型直接取键，不受影响",
+    ),
+    // 以下五条是单值形态的攻击动词（`attack_verb_continuous = "gore"`）进目录后与同形名词撞上的，
+    // 道理同 brush：名词一侧是物品/生物名，由类型表按类型取键；动词一侧回落英文，强于错译。
+    ("gore", "动词「顶刺」（mob 的攻击动词）与名词「血腥」，同形异义"),
+    ("pipes", "动词「用管子敲」（掠夺者的攻击动词）与名词「管道」，同形异义"),
+    ("slice", "动词「切」（攻击动词）与名词「切片」（食物），同形异义"),
+    ("slices", "动词「切」（攻击动词）与名词「切片」（食物），同形异义"),
+    ("slime", "动词「黏击」（攻击动词）与生物「史莱姆」，同形异义"),
+    ("clean", "攻击动词「擦净」与状态形容词「干净」同形异义"),
+    ("harmbatons", "眷族使用伤害警棍与泡沫警棍的攻击动作不同，不能统一"),
+    ("Subtler Anti-Ghost", "输入框标题可翻译，同名动词的译名仅供命令工具使用，不能加入运行时反查"),
+];
+
+/// 译文里出现、而原文里没有的 `%VAR` 占位符。
+///
+/// 这一类占位符（`%PERSON` / `%RANK` / `%MAXHEALTHRATIO%` / `%PRONOUN_Their`）是**运行期**才被
+/// 替换的，替换发生在反查之后。MT 看不懂它们：实测 25 条 `%PRONOUN_Their eyes …` 被翻成
+/// `%PRONOUN_眼睛…` —— 代词那半截被吃掉，`REPLACE_PRONOUNS` 的正则再也匹配不上，玩家直接
+/// 看到 `%PRONOUN_` 这串东西。比不翻难看得多。
+///
+/// **允许少、不允许多**：中文常常整条省掉人称代词（而且 `GET_TARGET_PRONOUN` 返回的是英文词，
+/// 保留反而会在中文句子里插进一个英文单词），所以译文可以一个占位符都不留；但凡出现原文里
+/// 没有的形态，就是被切坏了。
+/// 形态：`%` + **全大写**首段（≥2 字符）+ 若干 `_单词` 段 + 可选的收尾 `%`。
+///
+/// 三条边界都是实测逼出来的：
+///   · `%SOMETHINGs`（英文复数直接贴在占位符后面）—— 首段遇小写就停，token 是 `%SOMETHING`，
+///     中文那边写 `%SOMETHING` 才不会被误报；
+///   · `10% Auxetics` / `10%Auxetics` —— 首段必须**整段大写**，`Auxetics` 一个大写字母带一串
+///     小写，不算占位符（否则百分号写法会被当成切坏的占位符）；
+///   · `%PRONOUN_Their` —— `_单词` 段可以是首字母大写的普通词。
+fn placeholder_tokens(text: &str) -> Vec<String> {
+    let chars: Vec<char> = text.chars().collect();
+    let mut out = Vec::new();
+    let mut i = 0;
+    while i < chars.len() {
+        if chars[i] != '%' {
+            i += 1;
+            continue;
+        }
+        let mut j = i + 1;
+        while j < chars.len() && (chars[j].is_ascii_uppercase() || chars[j].is_ascii_digit()) {
+            j += 1;
+        }
+        if j - (i + 1) < 2 {
+            i += 1;
+            continue;
+        }
+        // `_单词` 段：`%PRONOUN_Their`。只认 ASCII 字母，`_眼睛` 这种切坏的形态到此为止，
+        // token 退化成 `%PRONOUN` —— 原文里没有这个 token，正好被报出来。
+        while j < chars.len() && chars[j] == '_' {
+            let mut k = j + 1;
+            while k < chars.len() && chars[k].is_ascii_alphabetic() {
+                k += 1;
+            }
+            if k == j + 1 {
+                break;
+            }
+            j = k;
+        }
+        let mut token: String = chars[i..j].iter().collect();
+        if j < chars.len() && chars[j] == '%' {
+            token.push('%');
+            i = j + 1;
+        } else {
+            i = j;
+        }
+        out.push(token);
+    }
+    out
+}
+
+fn stray_placeholders(source: &str, translated: &str) -> Vec<String> {
+    let allowed: BTreeSet<String> = placeholder_tokens(source).into_iter().collect();
+    let mut stray: Vec<String> = placeholder_tokens(translated)
+        .into_iter()
+        .filter(|token| !allowed.contains(token))
+        .collect();
+    stray.sort();
+    stray.dedup();
+    stray
+}
+
+/// 译文是纯 ASCII、是原文的字符子集、且更短。
+///
+/// MT 会吃掉纯 ASCII 译文里的字符：`H.A.R.S.` → `H..R.S.`、血型 `A+` → `+`。
+/// 去冠词 / 去复数（`the`/`a`/`an`/`s`/`es`）与占位符骨架里丢掉空格、复数槽是有意的，不当错误。
+fn is_article_token(word: &str) -> bool {
+    let w = word.trim_start_matches('\\').to_ascii_lowercase();
+    matches!(w.as_str(), "the" | "a" | "an")
+}
+
+fn normalize_articles_plurals(s: &str) -> String {
+    let mut buf = String::new();
+    for word in s.split_whitespace() {
+        if is_article_token(word) {
+            continue;
+        }
+        buf.push_str(&word.to_ascii_lowercase());
+    }
+    if buf.ends_with("es") && buf.len() > 2 {
+        buf.truncate(buf.len() - 2);
+    } else if buf.ends_with('s') && buf.len() > 1 {
+        buf.pop();
+    }
+    buf
+}
+
+fn is_placeholder_skeleton(s: &str) -> bool {
+    let chars: Vec<char> = s.chars().collect();
+    let mut i = 0;
+    let mut rest = String::new();
+    while i < chars.len() {
+        if chars[i] == '{' {
+            let mut j = i + 1;
+            while j < chars.len() && chars[j].is_ascii_digit() {
+                j += 1;
+            }
+            if j < chars.len() && chars[j] == '}' && j > i + 1 {
+                i = j + 1;
+                continue;
+            }
+        }
+        rest.push(chars[i]);
+        i += 1;
+    }
+    rest.chars()
+        .all(|c| c.is_ascii_whitespace() || c.is_ascii_punctuation())
+}
+
+fn ascii_subset_damage(source: &str, translated: &str) -> bool {
+    if translated == source {
+        return false;
+    }
+    if !translated.is_ascii() {
+        return false;
+    }
+    if translated.chars().count() >= source.chars().count() {
+        return false;
+    }
+    let src_chars: BTreeSet<char> = source.chars().collect();
+    if !translated.chars().all(|c| src_chars.contains(&c)) {
+        return false;
+    }
+    if normalize_articles_plurals(source) == normalize_articles_plurals(translated) {
+        return false;
+    }
+    if is_placeholder_skeleton(source) && is_placeholder_skeleton(translated) {
+        return false;
+    }
+    true
+}
+
+/// 返回「forward 内部冲突且没有 global_reverse 覆盖」的英文源串及其相互冲突的译文。
+fn forward_only_ambiguities(
+    catalog_root: &Path,
+    domains: &CatalogDomains,
+    locale: &str,
+) -> Result<BTreeMap<String, BTreeSet<String>>> {
+    let en_dir = catalog_root.join("en");
+    let locale_dir = catalog_root.join(locale);
+    let mut forward: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+    let mut global_reverse: BTreeSet<String> = BTreeSet::new();
+    for entry in std::fs::read_dir(&en_dir)
+        .with_context(|| format!("无法读取英文目录：{}", en_dir.display()))?
+    {
+        let path = entry?.path();
+        let Some(file_name) = path.file_name().and_then(|name| name.to_str()) else {
+            continue;
+        };
+        if !file_name.ends_with(".json") {
+            continue;
+        }
+        let Some(policy) = domains.get(file_name) else {
+            continue;
+        };
+        let english = read_catalog(&path)?;
+        match policy.domain.as_str() {
+            "global_reverse" => global_reverse.extend(english.into_values()),
+            "forward" => {
+                let localized_path = locale_dir.join(file_name);
+                if !localized_path.exists() {
+                    continue;
+                }
+                let localized = read_catalog(&localized_path)?;
+                for (key, source) in english {
+                    let translated = localized.get(&key).cloned().unwrap_or_else(|| source.clone());
+                    forward.entry(source).or_default().insert(translated);
+                }
+            }
+            _ => {}
+        }
+    }
+    forward.retain(|source, translations| {
+        translations.len() > 1 && !global_reverse.contains(source)
+    });
+    Ok(forward)
+}
+
+pub fn run(dme: &Path, catalog_root: &Path, apply: bool) -> Result<()> {
+    let en_dir = catalog_root.join("en");
+    let domains = CatalogDomains::load(catalog_root)?;
+    let entries = collect_entries(&en_dir, &domains)?;
+    let mut live_keys = crate::extract::live_keys(dme, &en_dir)?;
+    let injected = injected_verb_keys(dme, catalog_root, &entries)?;
+    eprintln!("catalog ownership: {} 个已注入译文的 verb key 保留为 live", injected.len());
+    live_keys.extend(injected);
+    let retained = retained_dialog_history(&entries);
+    eprintln!("catalog ownership: {} 个对话框历史键保留为 canonical 数据", retained.len());
+    live_keys.extend(retained);
+
+    let automatic = entries
+        .iter()
+        .filter(|entry| entry.ownership == CatalogOwner::Extract)
+        .count();
+    let manual = entries
+        .iter()
+        .filter(|entry| entry.ownership == CatalogOwner::Manual)
+        .count();
+    let tgui = entries
+        .iter()
+        .filter(|entry| entry.ownership == CatalogOwner::Tgui)
+        .count();
+    let stale: Vec<&CatalogEntry> = entries
+        .iter()
+        .filter(|entry| is_stale(entry, &live_keys))
+        .collect();
+
+    eprintln!(
+        "catalog ownership: DM 自动 {} 条（live {} / stale {}），manual/domain {} 条（保留），TGUI {} 条（交由 TGUI extractor）",
+        automatic,
+        automatic - stale.len(),
+        stale.len(),
+        manual,
+        tgui
+    );
+    for entry in &stale {
+        eprintln!(
+            "stale: strings/i18n/en/{} {} = {:?}",
+            entry.file_name, entry.key, entry.value
+        );
+    }
+
+    // Generated sidecars merge like the catalogs do, so they need the same liveness gate.
+    // `scopes.json` is not read by the runtime, but a dead entry there is a silent record of a
+    // key scheme that no longer exists, and nothing else in the toolchain would ever report it.
+    let scopes_path = catalog_root.join("scopes.json");
+    let stale_scopes = stale_sidecar_keys(&scopes_path, &live_keys)?;
+    if !stale_scopes.is_empty() {
+        eprintln!(
+            "stale sidecar: {} 有 {} 个条目的 key 已不再被抽取或 LANG 引用（跑一次 `nova-i18n extract` 即裁剪）",
+            scopes_path.display(),
+            stale_scopes.len()
+        );
+        for key in stale_scopes.iter().take(10) {
+            eprintln!("  {key}");
+        }
+    }
+
+    // 译文里凭空出现的 `%VAR` 占位符 = MT 把它切坏了，玩家会直接看到那串东西。
+    // 纯 ASCII 真子集且更短 = MT 吃掉了缩写/型号里的字符（H.A.R.S.→H..R.S.）。
+    let mut broken_total = 0usize;
+    let mut ascii_shrunk_total = 0usize;
+    for locale_dir in locale_dirs(catalog_root)? {
+        let Some(locale) = locale_dir.file_name().and_then(|name| name.to_str()) else {
+            continue;
+        };
+        if locale == "en" || locale == "qps-ploc" {
+            continue;
+        }
+        for entry in std::fs::read_dir(&locale_dir)? {
+            let path = entry?.path();
+            let Some(file_name) = path.file_name().and_then(|name| name.to_str()) else {
+                continue;
+            };
+            if !file_name.ends_with(".json") {
+                continue;
+            }
+            let english_path = catalog_root.join("en").join(file_name);
+            if !english_path.exists() {
+                continue;
+            }
+            let english = read_catalog(&english_path)?;
+            for (key, translated) in read_catalog(&path)? {
+                let Some(source) = english.get(&key) else {
+                    continue;
+                };
+                let stray = stray_placeholders(source, &translated);
+                if !stray.is_empty() {
+                    broken_total += 1;
+                    if broken_total <= 10 {
+                        eprintln!(
+                            "placeholder [{locale}] {file_name} {key}: 译文里多出 {} —— 原文是 {source:?}",
+                            stray.join(" ")
+                        );
+                    }
+                }
+                if ascii_subset_damage(source, &translated) {
+                    ascii_shrunk_total += 1;
+                    if ascii_shrunk_total <= 10 {
+                        eprintln!(
+                            "ascii-subset [{locale}] {file_name} {key}: {translated:?} ⊂ {source:?} 且更短（不像去冠词/去复数）"
+                        );
+                    }
+                }
+            }
+        }
+    }
+    if broken_total > 0 {
+        anyhow::bail!(
+            "{broken_total} 条译文含原文里没有的 %VAR 占位符（多半是 MT 把 %PRONOUN_/%VAR% 切坏了）；\
+             这类占位符在**反查之后**才被运行期替换，切坏了玩家就会直接看到它"
+        );
+    }
+    if ascii_shrunk_total > 0 {
+        anyhow::bail!(
+            "{ascii_shrunk_total} 条译文是纯 ASCII、原文的字符子集、且更短（MT 吃字符：H.A.R.S.→H..R.S.）。\
+             去冠词/去复数与占位符骨架不报"
+        );
+    }
+
+    // **英文主目录里不该有汉字。**
+    //
+    // 来源是 verb 注入：中文构建（`build-verbs-zh.sh`）把译名写进 verb 的显示名，若在那种树上跑
+    // extract，中文就被当成「英文原文」写进 en 目录（实测积了 317 条：`"> 打响指"`、`"适应视口"`）。
+    // 后果不止是脏数据 —— coverage 会把它们算成「已译」，而反查表拿中文当英文键，永远查不到。
+    //
+    // `emit` 的 `contains_cjk` 闸只挡**新抽**；目录只合并不裁剪，已经写进去的旧键要手工摘
+    // （`tools/i18n/prune-cjk-en.mjs`）。那是一次性脚本、要人记得跑，所以这里补一道**常驻**门禁：
+    // 复发时 catalog-audit 当场报错，而不是等下一次有人偶然发现。
+    let cjk_in_english: Vec<String> = entries
+        .iter()
+        .filter(|entry| entry.ownership != CatalogOwner::Tgui)
+        // **只看没人引用的 key。** 目录里有一类源串**故意**是中英对照（新人软管制那批模块写成
+        // `【中文 / English】…<br>…`），它们是活的 LANG key、正确状态就是「译文 == 源串」，
+        // 绝不能当污染摘掉。verb 注入进来的那批则从不经 LANG，必然无人引用 —— 这条判据把两者分开。
+        .filter(|entry| !live_keys.contains(&entry.key))
+        .filter(|entry| {
+            entry
+                .value
+                .chars()
+                .any(|c| matches!(c as u32, 0x3400..=0x9FFF | 0xF900..=0xFAFF))
+        })
+        .map(|entry| format!("{} {} = {:?}", entry.file_name, entry.key, entry.value))
+        .collect();
+    if !cjk_in_english.is_empty() {
+        for line in cjk_in_english.iter().take(20) {
+            eprintln!("cjk-in-english: {line}");
+        }
+        anyhow::bail!(
+            "{} 条英文主目录条目的值含汉字（verb 注入污染）。\
+             且无人引用 —— verb 注入的特征。摘除：`node tools/i18n/prune-cjk-en.mjs`；\
+             防复发：不要在中文 verb 构建的树上跑 extract",
+            cjk_in_english.len()
+        );
+    }
+
+    let allowed: BTreeSet<&str> = AMBIGUITY_ALLOWLIST.iter().map(|(source, _)| *source).collect();
+    let mut ambiguous_total = 0usize;
+    for locale_dir in locale_dirs(catalog_root)? {
+        let Some(locale) = locale_dir.file_name().and_then(|name| name.to_str()) else {
+            continue;
+        };
+        // en 是源侧；qps-ploc 由 `nova-i18n pseudo` 机械生成，一句英文包一层括号，天然不冲突。
+        if locale == "en" || locale == "qps-ploc" {
+            continue;
+        }
+        let ambiguities = forward_only_ambiguities(catalog_root, &domains, locale)?;
+        let unexpected: Vec<_> = ambiguities
+            .iter()
+            .filter(|(source, _)| !allowed.contains(source.as_str()))
+            .collect();
+        if unexpected.is_empty() {
+            continue;
+        }
+        ambiguous_total += unexpected.len();
+        eprintln!(
+            "reverse ambiguity [{}]: {} 句英文在两个 forward 命名空间里译得不一样 —— 反查表会整条略过它们",
+            locale,
+            unexpected.len()
+        );
+        for (source, translations) in unexpected.iter().take(10) {
+            let variants: Vec<&str> = translations.iter().map(String::as_str).collect();
+            eprintln!("  {source:?} -> {}", variants.join(" | "));
+        }
+    }
+
+    if stale.is_empty() && stale_scopes.is_empty() && ambiguous_total == 0 {
+        return Ok(());
+    }
+    if ambiguous_total > 0 {
+        anyhow::bail!(
+            "{} 句英文的译文在 forward 命名空间之间不一致；统一成一条，或确认它确属同形异义后加进 AMBIGUITY_ALLOWLIST 并写明理由",
+            ambiguous_total
+        );
+    }
+    if stale.is_empty() {
+        anyhow::bail!(
+            "{} 含 {} 个失效条目；`nova-i18n extract` 会重写该 sidecar",
+            scopes_path.display(),
+            stale_scopes.len()
+        );
+    }
+    if !apply {
+        anyhow::bail!(
+            "发现 {} 条失去 extracted literal / LANG reference 的自动目录项；只读检查未修改文件（确认后使用 `nova-i18n catalog-audit --apply`）",
+            stale.len()
+        );
+    }
+
+    let removed = apply_stale(catalog_root, &domains, &stale)?;
+    eprintln!(
+        "已从各 locale 的自动目录文件移除 {} 个条目；manual/domain 与 TGUI 文件未修改。",
+        removed
+    );
+    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn dialog_history_requires_exact_key_value_and_ownership() {
+        let entry = |key: &str, value: &str, ownership| CatalogEntry {
+            file_name: "client.json".to_owned(),
+            key: key.to_owned(),
+            value: value.to_owned(),
+            ownership,
+        };
+        let entries = vec![
+            entry("client.41ba0ff5611f0b93", "Yes", CatalogOwner::Extract),
+            entry("obj.41ba0ff5611f0b93", "No", CatalogOwner::Extract),
+            entry("datum.707d7f85626f91a9", "(new custom antag)", CatalogOwner::Manual),
+        ];
+        assert_eq!(retained_dialog_history(&entries), BTreeSet::from(["client.41ba0ff5611f0b93".to_owned()]));
+    }
+
+    #[test]
+    fn translated_verb_names_keep_only_matching_namespace_keys_alive() {
+        let dir = std::env::temp_dir().join(format!("nova-i18n-verb-audit-{}", std::process::id()));
+        std::fs::create_dir_all(dir.join("zh-Hans")).unwrap();
+        std::fs::create_dir_all(dir.join("tools/i18n")).unwrap();
+        let dme = dir.join("test.dme");
+        std::fs::write(&dme, "/client/verb/test()\n\tset name = \"穿梭机面板\"\n\treturn\n/datum/verb_metadata\n\tvar/name\n/datum/verb_metadata/test\n\tname = \"穿梭机面板\"\n").unwrap();
+        std::fs::write(dir.join("zh-Hans/client.json"), r#"{"client.b":"其他面板"}"#).unwrap();
+        std::fs::write(dir.join("zh-Hans/obj.json"), r#"{"obj.a":"穿梭机面板"}"#).unwrap();
+        std::fs::write(dir.join("tools/i18n/verb-names.zh-Hans.json"), r#"{"client.a":"穿梭机面板","datum.a":"穿梭机面板"}"#).unwrap();
+        let entry = |file: &str, key: &str| CatalogEntry {
+            file_name: file.to_owned(),
+            key: key.to_owned(),
+            value: "Shuttle Panel".to_owned(),
+            ownership: CatalogOwner::Extract,
+        };
+        let entries = vec![
+            entry("client.json", "client.a"),
+            entry("client.json", "client.b"),
+            entry("obj.json", "obj.a"),
+            entry("datum.json", "datum.a"),
+        ];
+        let keys = injected_verb_keys(&dme, &dir, &entries).unwrap();
+        assert_eq!(keys, BTreeSet::from(["client.a".to_owned(), "datum.a".to_owned()]));
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
+    fn sidecar_entries_follow_the_same_liveness_rule() {
+        let dir = std::env::temp_dir().join(format!("nova-i18n-sidecar-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("scopes.json");
+        std::fs::write(
+            &path,
+            r##"{"obj.live":["/obj/item"],"#atmos_scan().deadbeef":["/"]}"##,
+        )
+        .unwrap();
+        let live = BTreeSet::from(["obj.live".to_owned()]);
+
+        assert_eq!(
+            stale_sidecar_keys(&path, &live).unwrap(),
+            vec!["#atmos_scan().deadbeef".to_owned()]
+        );
+        // A missing sidecar is regenerated by extract, not an audit failure.
+        assert!(stale_sidecar_keys(&dir.join("absent.json"), &live)
+            .unwrap()
+            .is_empty());
+        std::fs::remove_dir_all(&dir).ok();
+    }
+
+    /// 反查表的歧义规则有两条边，两条都要验：forward 之间冲突要报，而 `global_reverse`
+    /// 显式给了值的那些**不算冲突**（运行时那一层会覆盖 forward 候选）。只验前一条的话，
+    /// 门禁会把几百条本来好好的条目报成错。
+    #[test]
+    fn forward_conflicts_report_unless_a_global_reverse_file_decides() {
+        let dir = std::env::temp_dir().join(format!("nova-i18n-ambig-{}", std::process::id()));
+        let en = dir.join("en");
+        let zh = dir.join("zh-Hans");
+        std::fs::create_dir_all(&en).unwrap();
+        std::fs::create_dir_all(&zh).unwrap();
+        std::fs::write(
+            dir.join("catalog-domains.json"),
+            r#"{"version":2,"files":{
+                "obj.json":{"domain":"forward","owner":"extract"},
+                "datum.json":{"domain":"forward","owner":"extract"},
+                "_decided.json":{"domain":"global_reverse","owner":"manual"}}}"#,
+        )
+        .unwrap();
+        for (dir_path, obj, datum, decided) in [
+            (&en, r#"{"obj.a":"Flip","obj.b":"Open"}"#, r#"{"datum.a":"Flip","datum.b":"Open"}"#, r#"{"Open":"Open"}"#),
+            (&zh, r#"{"obj.a":"翻个面","obj.b":"打开"}"#, r#"{"datum.a":"翻转","datum.b":"开门"}"#, r#"{"Open":"打开"}"#),
+        ] {
+            std::fs::write(dir_path.join("obj.json"), obj).unwrap();
+            std::fs::write(dir_path.join("datum.json"), datum).unwrap();
+            std::fs::write(dir_path.join("_decided.json"), decided).unwrap();
+        }
+
+        let domains = CatalogDomains::load(&dir).unwrap();
+        let found = forward_only_ambiguities(&dir, &domains, "zh-Hans").unwrap();
+
+        assert_eq!(found.keys().collect::<Vec<_>>(), vec!["Flip"]);
+        assert_eq!(
+            found["Flip"],
+            BTreeSet::from(["翻个面".to_owned(), "翻转".to_owned()])
+        );
+        std::fs::remove_dir_all(&dir).ok();
+    }
+
+    /// 占位符完整性：**允许少、不允许多**，而「多」的判定全靠 tokenizer 的三条边界。
+    #[test]
+    fn only_placeholders_absent_from_the_source_are_reported() {
+        // MT 实际产出的坏形态：代词那半截被吃掉，REPLACE_PRONOUNS 再也匹配不上。
+        assert_eq!(
+            stray_placeholders("%PRONOUN_Their teeth are big and sharp.", "%PRONOUN_牙齿又大又尖。"),
+            vec!["%PRONOUN".to_owned()]
+        );
+        // 整条省掉人称代词是**对的**（GET_TARGET_PRONOUN 返回英文词，留着会插进中文句子）。
+        assert!(stray_placeholders("%PRONOUN_Their teeth are big.", "牙齿又大又尖。").is_empty());
+        // 英文复数直接贴在占位符后面：token 到小写就停，两侧都是 %SOMETHING。
+        assert!(
+            stray_placeholders("There is a circle of %SOMETHINGs.", "一圈%SOMETHING。").is_empty()
+        );
+        // 百分号不是占位符 —— 首段必须整段大写，`Auxetics` 不算。
+        assert!(stray_placeholders("Made with 10% Auxetics.", "由 10%Auxetics 制成。").is_empty());
+        // 带收尾 % 的形态照常成对。
+        assert!(stray_placeholders("under -%MAXHEALTHRATIO% health", "低于 -%MAXHEALTHRATIO%").is_empty());
+        assert_eq!(
+            stray_placeholders("under -%MAXHEALTHRATIO% health", "低于 -%MAXHEALTH% 的目标"),
+            vec!["%MAXHEALTH%".to_owned()]
+        );
+    }
+
+    /// 纯 ASCII 真子集且更短：去冠词/去复数/占位符骨架不报，吃掉缩写里的字母才报。
+    #[test]
+    fn ascii_subset_shorter_skips_articles_plurals_and_catches_eaten_letters() {
+        assert!(!ascii_subset_damage("The Outer Spess", "Outer Spess"));
+        assert!(!ascii_subset_damage("the Codex Gigas", "Codex Gigas"));
+        assert!(!ascii_subset_damage("RCDS", "RCD"));
+        assert!(!ascii_subset_damage("PDAS", "PDA"));
+        assert!(!ascii_subset_damage("{0} {1}. {2}", "{0}{1}. {2}"));
+        assert!(!ascii_subset_damage("{0} {1}{2} {3}{4}", "{0}{1}{3}{4}"));
+        assert!(ascii_subset_damage("H.A.R.S.", "H..R.S."));
+        assert!(ascii_subset_damage("A+", "+"));
+    }
+
+    #[test]
+    fn only_dead_automatic_entries_are_stale() {
+        let live = BTreeSet::from(["obj.live".to_owned()]);
+        let entry = |ownership, key: &str| CatalogEntry {
+            file_name: "fixture.json".to_owned(),
+            key: key.to_owned(),
+            value: "value".to_owned(),
+            ownership,
+        };
+
+        assert!(!is_stale(&entry(CatalogOwner::Extract, "obj.live"), &live));
+        assert!(is_stale(&entry(CatalogOwner::Extract, "obj.dead"), &live));
+        assert!(!is_stale(&entry(CatalogOwner::Manual, "obj.dead"), &live));
+        assert!(!is_stale(&entry(CatalogOwner::Tgui, "obj.dead"), &live));
+    }
+}

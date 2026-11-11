@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/spell/stimpack
 	name = "Magic Stimpack"
 	desc = "This spell magically injects stimulants straight into your blood. Won't work on species with no reagent reactions!"
@@ -10,7 +11,7 @@
 
 /datum/action/cooldown/spell/stimpack/cast(mob/living/cast_on)
 	. = ..()
-	cast_on.balloon_alert(cast_on, "speeding up")
+	cast_on.balloon_alert(cast_on, LANG("datum.f2aa128966218e9c", null))
 	cast_on.SetKnockdown(0)
 	cast_on.set_stamina_loss(0)
 	cast_on.set_resting(FALSE)

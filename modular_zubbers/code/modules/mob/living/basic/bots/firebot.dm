@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/bot/firebot
 	desc = "A little fire extinguishing bot. He looks rather anxious. Giving him a piece of <b>hot ice</b> would be quite an upgrade."
 
@@ -25,8 +26,8 @@
 	if(!istype(given_item, /obj/item/stack/sheet/hot_ice))
 		return ..()
 	var/obj/item/stack/sheet/hot_ice/ice = given_item
-	balloon_alert(user, "inserted")
-	to_chat(user, span_warning("You give a piece of hot ice to the firebot. He seems rather happy! His foam will now bring air temperature toward 20C."))
+	balloon_alert(user, LANG("mob.c638b4d25766050c", null))
+	to_chat(user, span_warning(LANG("mob.d328ac8e052e072f", null)))
 	var/atom/movable/to_move = ice.split_stack(1)
 	to_move.forceMove(src)
 	src.change_mob_type(/mob/living/basic/bot/firebot/hotice_upgrade, delete_old_mob = TRUE)

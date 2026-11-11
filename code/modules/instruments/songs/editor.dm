@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/song/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
@@ -21,12 +22,12 @@
 	data["sustain_mode"] = sustain_mode
 	switch(sustain_mode)
 		if(SUSTAIN_LINEAR)
-			data["sustain_mode_button"] = "Linear Sustain Duration (in seconds)"
+			data["sustain_mode_button"] = LANG("_root.instrument_sustain_linear", null) // ZH EDIT CHANGE - I18N: 纯按钮标签 - ORIGINAL: data["sustain_mode_button"] = "Linear Sustain Duration (in seconds)"
 			data["sustain_mode_duration"] = sustain_linear_duration / 10
 			data["sustain_mode_min"] = INSTRUMENT_MIN_TOTAL_SUSTAIN
 			data["sustain_mode_max"] = INSTRUMENT_MAX_TOTAL_SUSTAIN
 		if(SUSTAIN_EXPONENTIAL)
-			data["sustain_mode_button"] = "Exponential Falloff Factor (% per decisecond)"
+			data["sustain_mode_button"] = LANG("_root.instrument_sustain_exponential", null) // ZH EDIT CHANGE - I18N: 纯按钮标签 - ORIGINAL: data["sustain_mode_button"] = "Exponential Falloff Factor (% per decisecond)"
 			data["sustain_mode_duration"] = sustain_exponential_dropoff
 			data["sustain_mode_min"] = INSTRUMENT_EXP_FALLOFF_MIN
 			data["sustain_mode_max"] = INSTRUMENT_EXP_FALLOFF_MAX
@@ -105,12 +106,12 @@
 		if("import_song")
 			var/song_text = ""
 			do
-				song_text = tgui_input_text(user, "Please paste the entire song, formatted:", name, max_length = (MUSIC_MAXLINES * MUSIC_MAXLINECHARS), multiline = TRUE)
+				song_text = tgui_input_text(user, LANG("datum.c6ac2bcadd7ff160", null), name, max_length = (MUSIC_MAXLINES * MUSIC_MAXLINECHARS), multiline = TRUE)
 				if(!in_range(parent, user))
 					return
 
 				if(length_char(song_text) >= MUSIC_MAXLINES * MUSIC_MAXLINECHARS)
-					var/should_continue = tgui_alert(user, "Your message is too long! Would you like to continue editing it?", "Warning", list("Yes", "No"))
+					var/should_continue = tgui_alert(user, LANG("datum.77b54c36eebbd522", null), LANG("datum.acf3640b5e935a18", null), list("Yes", "No"))
 					if(should_continue != "Yes")
 						break
 			while(length_char(song_text) > MUSIC_MAXLINES * MUSIC_MAXLINECHARS)
@@ -122,7 +123,7 @@
 			tempo = sanitize_tempo(5) // default 120 BPM
 			return TRUE
 		if("add_new_line")
-			var/newline = tgui_input_text(user, "Enter your line", parent.name, max_length = MUSIC_MAXLINECHARS)
+			var/newline = tgui_input_text(user, LANG("datum.82770ab143182ebc", null), parent.name, max_length = MUSIC_MAXLINECHARS)
 			if(!newline || !in_range(parent, user))
 				return
 			if(lines.len > MUSIC_MAXLINES)
@@ -140,7 +141,7 @@
 			var/line_to_edit = params["line_editing"]
 			if(line_to_edit > lines.len || line_to_edit < 1)
 				return FALSE
-			var/new_line_text = tgui_input_text(user, "Enter your line ", parent.name, lines[line_to_edit], max_length = MUSIC_MAXLINECHARS)
+			var/new_line_text = tgui_input_text(user, LANG("datum.9981ce49b20f45d3", null), parent.name, lines[line_to_edit], max_length = MUSIC_MAXLINECHARS)
 			if(isnull(new_line_text) || !in_range(parent, user))
 				return FALSE
 			lines[line_to_edit] = new_line_text
@@ -209,13 +210,13 @@
 			tempo = sanitize_tempo(5) // default 120 BPM
 		if(lines.len > MUSIC_MAXLINES)
 			if(user)
-				to_chat(user, "Too many lines!")
+				to_chat(user, LANG("datum.fa21178bba3926f6", null))
 			lines.Cut(MUSIC_MAXLINES + 1)
 		var/linenum = 1
 		for(var/l in lines)
 			if(length_char(l) > MUSIC_MAXLINECHARS)
 				if(user)
-					to_chat(user, "Line [linenum] too long!")
+					to_chat(user, LANG("datum.29bfb118ee692c2b", list(linenum)))
 				lines.Remove(l)
 			else
 				linenum++

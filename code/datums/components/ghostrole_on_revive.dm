@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Proc ghosts to enter the body when it get's revived
 /datum/component/ghostrole_on_revive
 	/// If revived and no ghosts, just die again?
@@ -104,7 +105,7 @@
 /datum/component/ghostrole_on_revive/proc/brain_examine(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 
-	examine_list += span_info("Another soul may take [source.p_their()] place if put in a body...")
+	examine_list += span_info(LANG("datum.743906f65f841907", list(source.p_their())))
 
 /datum/component/ghostrole_on_revive/proc/on_revive(mob/living/source)
 	SIGNAL_HANDLER
@@ -131,7 +132,7 @@
 				jobbans |= ROLE_SYNDICATE
 
 	var/mob/dead/observer/chosen_one = SSpolling.poll_ghosts_for_target(
-		question = "Would you like to play as [revive_title]?",
+		question = LANG("datum.4db997b8b9c98f68", list(revive_title)),
 		check_jobban = jobbans,
 		poll_time = 15 SECONDS,
 		checked_target = reviving,
@@ -152,7 +153,7 @@
 
 	else if(refuse_revival_if_failed)
 		reviving.death()
-		reviving.visible_message(span_deadsay("[reviving]'s soul is struggling to return!"))
+		reviving.visible_message(span_deadsay(LANG("datum.61967927b84e9d33", list(reviving))))
 
 
 /datum/component/ghostrole_on_revive/proc/add_orbit_twitching(mob/living/parent_mob)

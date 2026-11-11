@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/supplypod_beacon
 	name = "Supply Pod Beacon"
 	desc = "A device that can be linked to an Express Supply Console for precision supply pod deliveries."
@@ -61,11 +62,11 @@
 
 /obj/item/supplypod_beacon/examine(user)
 	. = ..()
-	. += span_notice("It looks like it has a few anchoring bolts.")
+	. += span_notice(LANG("obj.b1b81fb64e354b87", null))
 	if(!express_console)
-		. += span_notice("[src] is not currently linked to an Express Supply console.")
+		. += span_notice(LANG("obj.50d943ab326043f5", list(src)))
 	else
-		. += span_notice("Alt-click to unlink it from the Express Supply console.")
+		. += span_notice(LANG("obj.26c0d52999bb3404", null))
 
 /obj/item/supplypod_beacon/Destroy()
 	if(express_console)
@@ -96,11 +97,11 @@
 	update_status(SP_LINKED)
 	if (express_console.using_beacon)
 		update_status(SP_READY)
-	to_chat(user, span_notice("[src] linked to [C]."))
+	to_chat(user, span_notice(LANG("obj.4b694d3fc409d887", list(src, C))))
 
 /obj/item/supplypod_beacon/click_alt(mob/user)
 	if(!express_console)
-		to_chat(user, span_alert("There is no linked console."))
+		to_chat(user, span_alert(LANG("obj.13b210e2728e0ba9", null)))
 		return CLICK_ACTION_BLOCKING
 	unlink_console()
 	return CLICK_ACTION_SUCCESS

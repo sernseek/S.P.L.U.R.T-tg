@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define HYPNOEYES_COOLDOWN_NORMAL 3 SECONDS
 #define HYPNOEYES_COOLDOWN_BRAINWASH 30 SECONDS
 #define HYPNOEYES_ACTION_TIME 5 SECONDS
@@ -98,7 +99,7 @@
 	// Check for carbon owner
 	if(!iscarbon(owner))
 		// Warn user and return
-		to_chat(owner, span_warning("You shouldn't have this ability!"))
+		to_chat(owner, span_warning(LANG("datum.83b2111fac2e6acc", null)))
 		return FALSE
 
 	// Define action owner
@@ -107,7 +108,7 @@
 	// Check if owner has eye protection
 	if(action_owner.get_eye_protection() > 0)
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("Your eyes need to be visible for this ability to work."))
+		to_chat(action_owner, span_warning(LANG("datum.2b9e69e2895540e4", null)))
 		return FALSE
 
 	// Define owner's eyes
@@ -116,13 +117,13 @@
 	// Check if eyes exist
 	if(!istype(owner_eyes))
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("You need eyes to use this ability!"))
+		to_chat(action_owner, span_warning(LANG("datum.f51d1d7de89fce6c", null)))
 		return FALSE
 
 	// Check if owner is blind
 	if(action_owner.is_blind())
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("Your blind [owner_eyes] are of no use."))
+		to_chat(action_owner, span_warning(LANG("datum.dd9f27221f364aeb", list(owner_eyes))))
 		return FALSE
 
 	// All checks passed
@@ -147,7 +148,7 @@
 	if(mode_brainwash)
 		// Set ability text
 		name = "Brainwash"
-		desc = "Stare deeply into someone's eyes, and force them to become your loyal slave."
+		desc = LANG("datum.ab60e9730e06de67", null)
 
 		// Set cooldown time
 		cooldown_time = HYPNOEYES_COOLDOWN_BRAINWASH
@@ -166,7 +167,7 @@
 	else
 		// Set ability text
 		name = "Hypnotize"
-		desc = "Stare deeply into someone's eyes, drawing them into a hypnotic slumber."
+		desc = LANG("datum.fcba9f224e8a90b6", null)
 
 		// Set cooldown time
 		cooldown_time = HYPNOEYES_COOLDOWN_NORMAL
@@ -188,7 +189,7 @@
 	StartCooldown()
 
 	// Alert user
-	to_chat(owner, span_warning("Your hypnotic power [toggle_message] You'll need time to adjust before using it again."))
+	to_chat(owner, span_warning(LANG("datum.acbc813e755f8344", list(toggle_message))))
 
 	// Log interaction
 	log_admin("[key_name(owner)] [log_message_type] hypnotic brainwashing powers.")
@@ -203,38 +204,38 @@
 	// Check for target
 	if(!grab_target)
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("You need to grab someone first!"))
+		to_chat(action_owner, span_warning(LANG("datum.afd14500cbd8fd4b", null)))
 		return
 
 	// Check for cyborg
 	if(iscyborg(grab_target))
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("You can't [term_hypno] a cyborg!"))
+		to_chat(action_owner, span_warning(LANG("datum.184ceb00c95fd7ef", list(term_hypno))))
 		return
 
 	// Check for alien
 	// Taken from eyedropper check
 	if(isalien(grab_target))
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("[grab_target] does not seem to have any eyes!"))
+		to_chat(action_owner, span_warning(LANG("datum.da40cb59976bb93d", list(grab_target))))
 		return
 
 	// Check for carbon human target
 	if(!ishuman(grab_target))
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("That's not a valid creature!"))
+		to_chat(action_owner, span_warning(LANG("datum.021f9f543f510b34", null)))
 		return
 
 	// Check if target is alive
 	if(!isliving(grab_target))
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("You can't [term_hypno] the dead!"))
+		to_chat(action_owner, span_warning(LANG("datum.b16c56a7f802dee3", list(term_hypno))))
 		return
 
 	// Check for aggressive grab
 	if(action_owner.grab_state < GRAB_AGGRESSIVE)
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("You need a stronger grip before trying to [term_hypno] [grab_target]!"))
+		to_chat(action_owner, span_warning(LANG("datum.3bb72bd331a21a7b", list(term_hypno, grab_target))))
 		return
 
 	// Define target
@@ -243,13 +244,13 @@
 	// Check for sleep
 	if(action_target.IsSleeping())
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("You can't [term_hypno] [action_target] whilst [action_target.p_theyre()] asleep!"))
+		to_chat(action_owner, span_warning(LANG("datum.53e8f7f8589f0ecf", list(term_hypno, action_target, action_target.p_theyre()))))
 		return
 
 	// Check if target has a mind
 	if(!action_target.mind)
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("[grab_target] doesn't have a compatible mind!"))
+		to_chat(action_owner, span_warning(LANG("datum.60a15d00de7bc451", list(grab_target))))
 		return
 
 	/* Unused: Replaced by get_eye_protection
@@ -276,70 +277,70 @@
 	// Check if target has eye protection
 	if(action_target.get_eye_protection())
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("You have difficulty focusing on [action_target]'s eyes due to some form of eye protection, and are left unable to [term_hypno] [action_target.p_them()]."))
-		to_chat(action_target, span_notice("[action_owner] stares intensely at you, but stops after a moment."))
+		to_chat(action_owner, span_warning(LANG("datum.48004c896bf3522a", list(action_target, term_hypno, action_target.p_them()))))
+		to_chat(action_target, span_notice(LANG("datum.13302d6cfbdddc58", list(action_owner))))
 		return
 
 	// Check if target is blind
 	if(action_target.is_blind())
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("You stare deeply into [action_target]'s eyes, but see nothing but emptiness."))
+		to_chat(action_owner, span_warning(LANG("datum.07a389274c98aa1b", list(action_target))))
 		return
 
 	// Check for mental anti-magic
 	// This should not apply to the Hallowed quirk!
 	if(action_target.can_block_magic(MAGIC_RESISTANCE_MIND))
 		// Warn the users, then return
-		to_chat(action_owner, span_warning("You stare deeply into [action_target]'s eyes. [action_target.p_They()] stare[action_target.p_s()] back at you as if nothing had happened."))
-		to_chat(action_target, span_notice("[action_owner] stares intensely into your eyes for a moment. You sense nothing out of the ordinary from [action_owner.p_them()]."))
+		to_chat(action_owner, span_warning(LANG("datum.935daca84b95d400", list(action_target, action_target.p_They(), action_target.p_s()))))
+		to_chat(action_target, span_notice(LANG("datum.3cfe772130de4ae9", list(action_owner, action_owner.p_them()))))
 		return
 
 	// Check if client has denied hypnosis preference
 	if(action_target.client?.prefs.read_preference(/datum/preference/choiced/erp_status_hypno) == "No")
 		// Warn the users, then return
-		to_chat(action_owner, span_warning("You sense that [action_target] is not comfortable with this type of interaction, and decide to respect [action_target.p_their()] preferences."))
-		to_chat(action_target, span_notice("[action_owner] stares into your eyes with a strange conviction, but turns away after a moment."))
+		to_chat(action_owner, span_warning(LANG("datum.072ff654216d3b70", list(action_target, action_target.p_their()))))
+		to_chat(action_target, span_notice(LANG("datum.f6ac2361ed5f627a", list(action_owner))))
 		return
 
 	// Check for mindshield implant
 	if(HAS_TRAIT(action_target, TRAIT_MINDSHIELD))
 		// Warn the users, then return
-		to_chat(action_owner, span_warning("You stare deeply into [action_target]'s eyes, but hear a faint buzzing from [action_target.p_their()] head. It seems something is interfering."))
-		to_chat(action_target, span_notice("[action_owner] stares intensely into your eyes for a moment, before a buzzing sound emits from your head."))
+		to_chat(action_owner, span_warning(LANG("datum.078830ea920dc803", list(action_target, action_target.p_their()))))
+		to_chat(action_target, span_notice(LANG("datum.1882d9982d25f054", list(action_owner))))
 		return
 
 	// Check if target mind is unconvertable
 	if(HAS_MIND_TRAIT(action_target, TRAIT_UNCONVERTABLE))
 		// Warn the users, then return
-		to_chat(action_owner, span_warning("You stare deeply into [action_target]'s eyes, but nothing happens. Your power cannot control [action_target.p_them()]."))
-		to_chat(action_target, span_notice("[action_owner] stares intensely into your eyes for a moment, then stops."))
+		to_chat(action_owner, span_warning(LANG("datum.0be3651f13f098b9", list(action_target, action_target.p_them()))))
+		to_chat(action_target, span_notice(LANG("datum.86dd4b2c9ffdc410", list(action_owner))))
 		return
 
 	// Check for sleep immunity
 	// This is required for SetSleeping to trigger
 	if(HAS_TRAIT(action_target, TRAIT_SLEEPIMMUNE) || !(action_target.status_flags & CANUNCONSCIOUS))
 		// Warn the users, then return
-		to_chat(action_owner, span_warning("You stare deeply into [action_target]'s eyes, and see nothing but unrelenting energy. You won't be able to subdue [action_target.p_them()] in this state!"))
-		to_chat(action_target, span_notice("[action_owner] stares intensely into your eyes, but sees something unusual about you..."))
+		to_chat(action_owner, span_warning(LANG("datum.c02f6c848f68b71d", list(action_target, action_target.p_them()))))
+		to_chat(action_target, span_notice(LANG("datum.ab6fc54f821ab8e1", list(action_owner))))
 		return
 
 	// Check for combat mode
 	if(action_target.combat_focus)
 		// Warn the users, then return
-		to_chat(action_owner, span_warning("[action_target] is acting too defensively! You'll need [action_target.p_them()] to lower [action_target.p_their()] guard first!"))
-		to_chat(action_target, span_notice("[action_owner] tries to stare into your eyes, but can't get a read on you."))
+		to_chat(action_owner, span_warning(LANG("datum.31353a543a11f5f2", list(action_target, action_target.p_them(), action_target.p_their()))))
+		to_chat(action_target, span_notice(LANG("datum.8f72e011d45f513e", list(action_owner))))
 		return
 
 	// Display chat messages
-	to_chat(action_owner, span_notice("You stare deeply into [action_target]'s eyes..."))
-	to_chat(action_target, span_warning("[action_owner] stares intensely into your eyes..."))
+	to_chat(action_owner, span_notice(LANG("datum.3119ed1e140888e4", list(action_target))))
+	to_chat(action_target, span_warning(LANG("datum.9a77798c6267b4ed", list(action_owner))))
 
 	// Try to perform action timer
 	if(!do_after(action_owner, HYPNOEYES_ACTION_TIME, action_target))
 		// Action timer was interrupted
 		// Warn the user, then return
-		to_chat(action_owner, span_warning("You lose concentration on [action_target], and fail to [term_hypno] [action_target.p_them()]!"))
-		to_chat(action_target, span_notice("[action_owner]'s gaze is broken prematurely, freeing you from any potential effects."))
+		to_chat(action_owner, span_warning(LANG("datum.5915acf95f544717", list(action_target, term_hypno, action_target.p_them()))))
+		to_chat(action_target, span_notice(LANG("datum.e4a30e55c20e7245", list(action_owner))))
 		return
 
 	// Define blank response
@@ -349,20 +350,20 @@
 	if(!findtext(action_target.client?.prefs.read_preference(/datum/preference/choiced/erp_status_nc), "Yes"))
 		// Non-consensual is NOT enabled
 		// Define warning suffix
-		var/warning_target = (mode_brainwash ? "You will become a brainwashed victim, and be required to follow all orders given. [action_owner] accepts all responsibility for antagonistic orders." : "These are only suggestions, and you may disobey cases that strongly violate your character.")
+		var/warning_target = (mode_brainwash ? LANG("datum.1fa8e88f5942f9ac", list(action_owner)) : LANG("datum.114a4699aab42726", null))
 
 		// Prompt target for consent response
-		input_consent = alert(action_target, "Will you fall into a hypnotic stupor? This will allow [action_owner] to issue hypnotic [term_suggest]s. [warning_target]", "Hypnosis", "Yes", "No")
+		input_consent = alert(action_target, LANG("datum.18f79dd470194a34", list(action_owner, term_suggest, warning_target)), LANG("datum.d9547f3371f46edf", null), "Yes", "No")
 
 	// When consent is denied
 	if(input_consent == "No")
 		// Warn the users, then return
-		to_chat(action_owner, span_warning("[action_target]'s attention breaks, despite the attempt to [term_hypno] [action_target.p_them()]! [action_target.p_they()] clearly don't want this!"))
-		to_chat(action_target, span_notice("Your concentration breaks as you realize you have no interest in following [action_owner]'s words!"))
+		to_chat(action_owner, span_warning(LANG("datum.b369aac2c3183e94", list(action_target, term_hypno, action_target.p_them(), action_target.p_they()))))
+		to_chat(action_target, span_notice(LANG("datum.80dc13ddc7b04b67", list(action_owner))))
 		return
 
 	// Display local message
-	action_target.visible_message(span_warning("[action_target] falls into a deep slumber!"), span_danger("Your eyelids gently shut as you fall into a deep slumber. All you can hear is [action_owner]'s voice as you commit to following all of their [term_suggest]s."))
+	action_target.visible_message(span_warning(LANG("datum.9ac83e3b04be990f", list(action_target))), span_danger(LANG("datum.4c29b887c6922c29", list(action_owner, term_suggest))))
 
 	// Set sleeping
 	action_target.SetSleeping(HYPNOEYES_SLEEP_TIME)
@@ -371,15 +372,15 @@
 	action_target.set_drowsiness_if_lower(HYPNOEYES_DROWSINESS)
 
 	// Define warning suffix
-	var/warning_owner = (mode_brainwash ? "You are responsible for any antagonistic actions they take as a result of the brainwashing." : "This is only a suggestion, and [action_target.p_they()] may disobey if it violates [action_target.p_their()] character.")
+	var/warning_owner = (mode_brainwash ? LANG("datum.bdfa250806449140", null) : LANG("datum.c320c98a3c4e8186", list(action_target.p_they(), action_target.p_their())))
 
 	// Prompt action owner for response
-	var/input_suggestion = input("What [term_suggest] do you give [action_target]? Leave blank to release [action_target.p_them()] instead. [warning_owner]", "Hypnotic [term_suggest]", null, null)
+	var/input_suggestion = input(LANG("datum.5ce211c54bdafd69", list(term_suggest, action_target, action_target.p_them(), warning_owner)), LANG("datum.2ac650fdcd2cd265", list(term_suggest)), null, null)
 
 	// Check if input text exists
 	if(!input_suggestion)
 		// Alert user of no input
-		to_chat(action_owner, "You decide not to give [action_target] a [term_suggest].")
+		to_chat(action_owner, LANG("datum.6c30956d3ecee0fc", list(action_target, term_suggest)))
 
 		// Remove sleep, then return
 		action_target.SetSleeping(0)
@@ -402,13 +403,13 @@
 	StartCooldown()
 
 	// Display message to action owner
-	to_chat(action_owner, "You whisper your [term_suggest] in a smooth calming voice to [action_target].")
+	to_chat(action_owner, LANG("datum.83290e4ff6729102", list(term_suggest, action_target)))
 
 	// Play a sound effect
 	conditional_pref_sound(action_target, 'sound/effects/magic/smoke.ogg', 20, 1)
 
 	// Display local message
-	action_target.visible_message(span_warning("[action_target] wakes up from their deep slumber!"), span_danger("Your eyelids gently open as you see [action_owner]'s face staring back at you."))
+	action_target.visible_message(span_warning(LANG("datum.6b47c804ca61d7d2", list(action_target))), span_danger(LANG("datum.a9e1be82854fe491", list(action_owner))))
 
 	// Remove sleep, then return
 	action_target.SetSleeping(0)

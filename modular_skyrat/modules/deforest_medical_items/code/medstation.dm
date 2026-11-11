@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/biogenerator/medstation
 	name = "wall med-station"
 	desc = "An advanced machine seen in frontier outposts and colonies capable of turning organic plant matter into \
@@ -24,7 +25,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/biogenerator/medstation, 29)
 	productivity = 1
 
 /obj/machinery/biogenerator/medstation/default_unfasten_wrench(mob/user, obj/item/wrench/tool, time)
-	user.balloon_alert(user, "deconstructing...")
+	user.balloon_alert(user, LANG("obj.44f0e678d88c8044", null))
 	tool.play_tool_sound(src)
 	if(tool.use_tool(src, user, 1 SECONDS))
 		playsound(loc, 'sound/items/deconstruct.ogg', 50, TRUE)

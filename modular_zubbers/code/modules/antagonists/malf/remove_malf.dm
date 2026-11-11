@@ -1,10 +1,11 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define ANTIVIRUS "PRG_Moffson"
 
 /obj/machinery/computer/aifixer/ui_act(action, params)
 	. = ..()
 	if(action == ANTIVIRUS)
 		if(!occupier?.stat)
-			to_chat(usr, span_notice("Dr. Moffson Antivirus is scanning your AI for corruption."))
+			to_chat(usr, span_notice(LANG("obj.8f37a76f8a127783", null)))
 			playsound(src, 'sound/machines/terminal/terminal_prompt_confirm.ogg', 25, FALSE)
 			restoring = TRUE
 			run_antivirus()
@@ -23,12 +24,11 @@
 				"Doctor Moffson CHUGS YOUR GIGARAMS!",
 			))
 			if(prob(10))
-				say("Malicious Virus Detected in AI Runtimes. Doctor Moffson is attempting to quarantine the malicious files.")
+				say(LANG("obj.9888b736ebb4100c", null))
 				var/ask = tgui_alert(
 					occupier,
-					message = "Doctor Moffson is trying to delete your out-of-line programming! \
-					Do you want to give up your malf status for RP purposes?",
-					title ="Defeated.",
+					message = LANG("obj.e58ba477fa568033", null),
+					title =LANG("obj.a2df28c3850a040c", null),
 					buttons = list(
 						"Accept Defeat.",
 						"Never!",
@@ -37,12 +37,12 @@
 				if(ask == "Accept Defeat.")
 					if(isAI(occupier) && occupier.mind.has_antag_datum(/datum/antagonist/malf_ai))
 						occupier?.mind?.remove_antag_datum(/datum/antagonist/malf_ai)
-						say("Malicious files successfully deleted. Thank you for subscribing to Doctor Moffson Antivirus!")
+						say(LANG("obj.1853a7951e9e4c65", null))
 						playsound(occupier, 'sound/machines/ping.ogg')
 						restoring = FALSE
 						return TRUE
 					else
-						say("I/O error in attempt to remove malicious files. Please try again later.")
+						say(LANG("obj.08f95ecd54d5bb0f", null))
 						playsound(occupier, 'sound/machines/buzz/buzz-two.ogg')
 						restoring = FALSE
 						return FALSE
@@ -52,7 +52,7 @@
 /datum/computer_file/program/ai_restorer/ui_act(action, params)
 	. = ..()
 	if(action == ANTIVIRUS)
-		to_chat(usr, span_notice("Dr. Moffson Antivirus is scanning your AI for corruption."))
+		to_chat(usr, span_notice(LANG("datum.8f37a76f8a127783", null)))
 		playsound(src, 'sound/machines/terminal/terminal_prompt_confirm.ogg', 25, FALSE)
 		restoring = TRUE
 		run_antivirus()
@@ -71,12 +71,11 @@
 				"Doctor Moffson CHUGS YOUR GIGARAMS!",
 			))
 			if(prob(10))
-				computer.say("Malicious Virus Detected in AI Runtimes. Doctor Moffson is attempting to quarantine the malicious files.")
+				computer.say(LANG("datum.9888b736ebb4100c", null))
 				var/ask = tgui_alert(
 					bad_ai,
-					message = "Doctor Moffson is trying to delete your out-of-line programming! \
-					Do you want to give up your malf status for RP purposes?",
-					title ="Defeated.",
+					message = LANG("datum.e58ba477fa568033", null),
+					title =LANG("datum.a2df28c3850a040c", null),
 					buttons = list(
 						"Accept Defeat.",
 						"Never!",
@@ -85,12 +84,12 @@
 				if(ask == "Accept Defeat.")
 					if(isAI(bad_ai) && bad_ai.mind.has_antag_datum(/datum/antagonist/malf_ai))
 						bad_ai?.mind?.remove_antag_datum(/datum/antagonist/malf_ai)
-						computer.say("Malicious files successfully deleted. Thank you for subscribing to Doctor Moffson Antivirus!")
+						computer.say(LANG("datum.1853a7951e9e4c65", null))
 						playsound(bad_ai, 'sound/machines/ping.ogg')
 						restoring = FALSE
 						return TRUE
 					else
-						computer.say("I/O error in attempt to remove malicious files. Please try again later.")
+						computer.say(LANG("datum.08f95ecd54d5bb0f", null))
 						playsound(bad_ai, 'sound/machines/buzz/buzz-two.ogg')
 						restoring = FALSE
 						return FALSE

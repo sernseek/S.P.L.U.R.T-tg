@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define SUMMONED_ITEM_ALPHA 180
 #define SUMMONED_ITEM_LIGHT 2
 
@@ -48,16 +49,16 @@
 	if(!.)
 		return FALSE
 
-	if(tgui_alert(linked_mob, "Do you wish to summon a new item or dispel an already existing item?", program_name, list("Summon", "Dispel")) == "Dispel")
+	if(tgui_alert(linked_mob, LANG("datum.775d81f733b780bf", null), program_name, list("Summon", "Dispel")) == "Dispel")
 		refund_activation_cost()
 		if(!length(summoned_items))
-			linked_mob.balloon_alert(linked_mob, "you have no summoned items!")
+			linked_mob.balloon_alert(linked_mob, LANG("datum.cfcf4fa534771656", null))
 			return FALSE
 
-		var/obj/item/choice = tgui_input_list(linked_mob, "Choose an object to desummon.", program_name, summoned_items)
+		var/obj/item/choice = tgui_input_list(linked_mob, LANG("datum.e66b28a27cc3dd91", null), program_name, summoned_items)
 
 		if(!choice)
-			linked_mob.balloon_alert(linked_mob, "you did not choose an item!")
+			linked_mob.balloon_alert(linked_mob, LANG("datum.610e41588c83a7a2", null))
 			return FALSE
 
 		summoned_items -= choice
@@ -65,7 +66,7 @@
 		return TRUE
 
 	if(length(summoned_items) >= max_summoned_items)
-		linked_mob.balloon_alert(linked_mob, "you have the max amount of items summoned!")
+		linked_mob.balloon_alert(linked_mob, LANG("datum.91442b687ea959a3", null))
 		refund_activation_cost()
 		return FALSE
 
@@ -84,7 +85,7 @@
 	new_item.name = name_tag + new_item.name
 
 	if(!linked_mob.put_in_hands(new_item))
-		linked_mob.balloon_alert(linked_mob, "[new_item] fails to materialize in your hands!")
+		linked_mob.balloon_alert(linked_mob, LANG("datum.8f2a5cc6d035a1ae", list(new_item)))
 		qdel(new_item)
 		refund_activation_cost()
 		return FALSE

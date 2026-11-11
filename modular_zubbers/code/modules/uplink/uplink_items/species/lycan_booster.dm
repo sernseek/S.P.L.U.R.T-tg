@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/uplink_item/species_restricted/lycan_booster
 	name = "Lycanthropy Booster"
 	desc = "A highly advanced mix of nanomachines and general 'bad vibes' that will significantly boost the combat performance of your \
@@ -31,10 +32,10 @@
 	var/mob/living/carbon/human/human_user = user
 
 	if (!istype(human_user.dna?.species, /datum/species/human/cursekin))
-		to_chat(human_user, span_warning("You get the feeling your current physiology wouldn't support this booster."))
+		to_chat(human_user, span_warning(LANG("obj.021e68cadcb2cef5", null)))
 		return
 
-	to_chat(human_user, span_bolddanger("As you inject yourself with the serum, you begin to feel more in tune with your lycan curse than ever before. Your claws sharpen, your teeth lengthen..."))
+	to_chat(human_user, span_bolddanger(LANG("obj.e30ca7bb4503d672", null)))
 	human_user.add_gaian_physique()
 
 	qdel(src)
@@ -42,8 +43,8 @@
 /mob/living/carbon/human/proc/add_gaian_physique()
 	ADD_TRAIT(src, TRAIT_GAIAN_PHYSIQUE, SPECIES_TRAIT)
 
-	balloon_alert(src, "lycan form boosted")
-	to_chat(src, span_boldnotice("Your lycan form is now resistant to damage, batons, and immune to damage slowdown. Additionally, your unarmed attacks are far deadlier, and ridiculously strong on grabbed opponents. Consider finding gripper gloves."))
+	balloon_alert(src, LANG("mob.0c6ddb2db06d558d", null))
+	to_chat(src, span_boldnotice(LANG("mob.430038e44560f0da", null)))
 	emote("growl")
 
 	mind?.adjust_experience(/datum/skill/athletics, SKILL_EXP_MASTER, FALSE)

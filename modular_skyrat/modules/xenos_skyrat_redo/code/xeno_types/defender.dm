@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// SKYRAT MODULE SKYRAT_XENO_REDO
 
 /mob/living/carbon/alien/adult/skyrat/defender
@@ -90,7 +91,7 @@
 	victim_living.apply_damage(impact_damage, impact_damage_type, BODY_ZONE_CHEST, wound_bonus = impact_wound_bonus, sharpness = impact_sharpness)
 	shake_camera(victim_living, 4, 3)
 	playsound(victim_living, impact_sound, 100, TRUE, 8, 0.9)
-	to_chat(victim_living, span_userdanger("[caster]'s tail slams into you, throwing you back!"))
+	to_chat(victim_living, span_userdanger(LANG("datum.3f54f4bb028c4b9b", list(caster))))
 
 	victim_living.safe_throw_at(throwtarget, ((clamp((max_throw - (clamp(dist_from_caster - 2, 0, dist_from_caster))), 3, max_throw))), 1, caster, force = repulse_force)
 

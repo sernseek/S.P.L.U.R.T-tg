@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The size of the window that the wiki books open in.
 #define BOOK_WINDOW_BROWSE_SIZE "970x710"
 
@@ -35,7 +36,7 @@
 
 /obj/item/book/manual/wiki/security_space_law/attack_self(mob/user) // Was in /tg/ folder, moved it here, made it 100% chance to learn language since you can spam it inhand anyhow. Saves us all from carpal tunnel.
 	if(user.can_read(src) && !user.has_language(/datum/language/legalese, SPOKEN_LANGUAGE))
-		to_chat(user, span_notice("As you inhale the book's contents, you feel more sophisticated. After reading Space Law just once, you feel like you are an expert in pretending you know Latin. You can now speak Legalese."))
+		to_chat(user, span_notice(LANG("obj.606c6a1b5fd77e96", null)))
 		user.grant_language(/datum/language/legalese, SPOKEN_LANGUAGE) //can speak but not understand
 	else
 		.=..()
@@ -43,11 +44,11 @@
 /obj/item/book/manual/wiki/security_space_law/display_content(mob/living/user)
 	var/wiki_url = "http://wiki.splurt.space" // SPLURT EDIT - it was bubber's first, we are not bubber.
 	if(!wiki_url)
-		user.balloon_alert(user, "this book is empty!")
+		user.balloon_alert(user, LANG("obj.b5b6d6960b6f2eca", null))
 		return
 	credit_book_to_reader(user)
 	if(user.client.byond_version < 516) //Remove this once 516 is stable
-		if(tgui_alert(user, "This book's page will open in your browser. Are you sure?", "Open The Wiki", list("Yes", "No")) != "Yes")
+		if(tgui_alert(user, LANG("obj.a29d550e320c8489", null), LANG("obj.f2d1a8c3556df9da", null), list("Yes", "No")) != "Yes")
 			return
 		DIRECT_OUTPUT(user, link("[wiki_url]/[page_link]"))
 	else

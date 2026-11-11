@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/antagonist/wishgranter
 	name = "\improper Wishgranter Avatar"
 	show_in_antagpanel = FALSE
@@ -17,7 +18,7 @@
 
 /datum/antagonist/wishgranter/greet()
 	. = ..()
-	to_chat(owner, "<B>Your inhibitions are swept away, the bonds of loyalty broken, you are free to murder as you please!</B>")
+	to_chat(owner, LANG("datum.c66634829f899c1d", null))
 	owner.announce_objectives()
 
 /datum/antagonist/wishgranter/proc/give_powers()

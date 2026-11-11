@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define WHITELISTFILE "[global.config.directory]/whitelist.txt"
 
 GLOBAL_LIST(whitelist)
@@ -19,8 +20,8 @@ GLOBAL_LIST(whitelist)
 		return FALSE
 	. = (ckey in GLOB.whitelist)
 
-ADMIN_VERB(whitelist_player, R_BAN, "Whitelist CKey", "Adds a ckey to the Whitelist file.", ADMIN_CATEGORY_MAIN)
-	var/input_ckey = input("CKey to whitelist: (Adds CKey to the whitelist.txt)") as null|text
+ADMIN_VERB(whitelist_player, R_BAN, "将 ckey 加入白名单", "Adds a ckey to the Whitelist file.", ADMIN_CATEGORY_MAIN)
+	var/input_ckey = input(LANG("datum.9437c28d9b1c393f", null)) as null|text
 	// The ckey proc "santizies" it to be its "true" form
 	var/canon_ckey = ckey(input_ckey)
 	if(!input_ckey || !canon_ckey)

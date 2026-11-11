@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define UPGRADED_MEDICELL_PASSFLAGS PASSTABLE | PASSGLASS | PASSGRILLE
 #define MINIMUM_TEMP_DIFFERENCE 25
 #define TEMP_PER_SHOT 30
@@ -409,10 +410,10 @@
 	var/obj/item/clothing/gown = new /obj/item/clothing/suit/toggle/labcoat/hospitalgown/hardlight
 
 	if(wearer.equip_to_slot_if_possible(gown, ITEM_SLOT_OCLOTHING, 1, 1, 1))
-		wearer.visible_message(span_notice("The [gown] covers [wearer] body"), span_notice("The [gown] wraps around your body, covering you"))
+		wearer.visible_message(span_notice(LANG("obj.ad4bb69a992e7825", list(gown, wearer))), span_notice(LANG("obj.e66255c43029773a", list(gown))))
 		return
 	else
-		wearer.visible_message(span_notice("The [gown] fails to fit on [wearer], instantly disentagrating away"), span_notice("The [gown] unable to fit on you, disentagrates into nothing"))
+		wearer.visible_message(span_notice(LANG("obj.1c0ccaf0367536cb", list(gown, wearer))), span_notice(LANG("obj.6455898ad3499cdc", list(gown))))
 		return FALSE
 
 //Salve Medicell
@@ -488,7 +489,7 @@
 	body.forceMove(firer.loc)
 	teleport_effect(body.loc)
 
-	body.visible_message(span_notice("[body]'s body teleports to [firer]!"))
+	body.visible_message(span_notice(LANG("obj.5b3203907e00f7d2", list(body, firer))))
 
 /obj/projectile/energy/medical/utility/body_teleporter/proc/teleport_effect(location)
 	do_sparks(5, 1, get_turf(location))
@@ -505,7 +506,7 @@
 	var/mob/living/carbon/wearer = user
 
 	if((wearer.get_item_by_slot(ITEM_SLOT_OCLOTHING)) == src && !QDELETED(src))
-		to_chat(wearer, span_notice("The [src] disappeared after being removed"))
+		to_chat(wearer, span_notice(LANG("obj.94bdd7bf1bfbf80b", list(src))))
 		qdel(src)
 		return
 
@@ -568,7 +569,7 @@
 		if(has_buckled_mobs())
 			return FALSE
 
-		user.visible_message(span_notice("[user] deactivates \the [src]."), span_notice("You deactivate \the [src]."))
+		user.visible_message(span_notice(LANG("obj.d4d4720bd18d2eaa", list(user, src))), span_notice(LANG("obj.03d7907e8d038ced", list(src))))
 		qdel(src)
 
 //Oppressive Force Relocation
@@ -630,7 +631,7 @@
 		return FALSE
 
 	if(grace_period)
-		to_chat(teleportee, span_warning("You have [(time_allowance / 10)] seconds to leave, if you do not leave in this time, you will be forcibly teleported outside."))
+		to_chat(teleportee, span_warning(LANG("obj.ad51179286a504d9", list((time_allowance / 10)))))
 		teleportee.AddComponent(/datum/component/medigun_relocation, time_allowance, destination_area, area_locked, teleport_areas)
 		return TRUE
 
@@ -642,7 +643,7 @@
 			if(!turf_in_area.is_blocked_turf())
 				turf_list += turf_in_area
 
-	teleportee.visible_message(span_notice("[teleportee] is teleported away!"))
+	teleportee.visible_message(span_notice(LANG("obj.220f1c7cbaa9f581", list(teleportee))))
 
 	do_teleport(teleportee, pick(turf_list), no_effects = FALSE, channel = TELEPORT_CHANNEL_QUANTUM)
 
@@ -685,7 +686,7 @@
 			if(!turf_in_area.is_blocked_turf())
 				turf_list += turf_in_area
 
-	teleportee.visible_message(span_notice("[teleportee] is teleported away!"))
+	teleportee.visible_message(span_notice(LANG("datum.220f1c7cbaa9f581", list(teleportee))))
 
 	do_teleport(teleportee, pick(turf_list), no_effects = FALSE, channel = TELEPORT_CHANNEL_QUANTUM)
 

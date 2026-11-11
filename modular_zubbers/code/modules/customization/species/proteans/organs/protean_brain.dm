@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define TRANSFORM_TRAITS list(TRAIT_RESISTLOWPRESSURE, TRAIT_RESISTHIGHPRESSURE, TRAIT_RESISTHEAT, TRAIT_RESISTCOLD)
 
 /**
@@ -29,7 +30,7 @@
 	handle_refactory(owner.get_organ_slot(ORGAN_SLOT_STOMACH))
 	handle_orchestrator(owner.get_organ_slot(ORGAN_SLOT_HEART))
 	if(owner.stat >= HARD_CRIT && !dead)
-		to_chat(owner, span_red("Your fragile refactory withers away with your mass reduced to scraps. Someone will have to help you."))
+		to_chat(owner, span_red(LANG("obj.20f8d686dd386004", null)))
 		dead = TRUE
 		owner.revive(list(HEAL_DAMAGE, HEAL_ORGANS), TRUE, TRUE) // So we dont get dead human inside of suit
 		qdel(owner.get_organ_slot(ORGAN_SLOT_STOMACH))
@@ -43,7 +44,7 @@
 	if(isnull(organ) || !istype(organ, /obj/item/organ/stomach/protean))
 		owner.adjust_brute_loss(3, forced = TRUE)
 		if(COOLDOWN_FINISHED(src, refactory_cooldown))
-			to_chat(owner, span_warning("Your mass is slowly degrading without your refactory!"))
+			to_chat(owner, span_warning(LANG("obj.4fdd5cf8c0838ef2", null)))
 			COOLDOWN_START(src, refactory_cooldown, 30 SECONDS)
 
 /obj/item/organ/brain/protean/proc/handle_orchestrator(obj/item/organ) // If you're missing an orchestrator, you will have trouble walking.
@@ -57,7 +58,7 @@
 	if(isnull(organ) || !istype(organ, /obj/item/organ/heart/protean))
 		owner.KnockToFloor(TRUE, TRUE, 1 SECONDS)
 		owner.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/protean_slowdown, multiplicative_slowdown = 2)
-		to_chat(owner, span_warning("You're struggling to walk without your orchestrator!"))
+		to_chat(owner, span_warning(LANG("obj.1dea605ce085af5f", null)))
 	else
 		owner.remove_movespeed_modifier(/datum/movespeed_modifier/protean_slowdown)
 
@@ -74,7 +75,7 @@
 	if(!forced)
 		if(!do_after(owner, 5 SECONDS))
 			return
-	owner.visible_message(span_warning("[owner] retreats into [suit]!"))
+	owner.visible_message(span_warning(LANG("obj.9af74be901b41912", list(owner, suit))))
 	owner.extinguish_mob()
 	owner.invisibility = 101
 	new /obj/effect/temp_visual/protean_to_suit(owner.loc, owner.dir)
@@ -93,7 +94,7 @@
 		return
 	var/obj/item/mod/control/pre_equipped/protean/suit = protean.species_modsuit
 	if(dead)
-		to_chat(owner, span_warning("Your mass is destroyed. You are unable to leave."))
+		to_chat(owner, span_warning(LANG("obj.e779b31fd4e25fd5", null)))
 		return
 	if(!forced)
 		if(!do_after(owner, 5 SECONDS, suit, IGNORE_INCAPACITATED))
@@ -120,7 +121,7 @@
 	owner.SetStun(0)
 	owner.remove_traits(TRANSFORM_TRAITS, PROTEAN_TRAIT)
 	owner.apply_status_effect(/datum/status_effect/protean_low_power_mode/reform)
-	owner.visible_message(span_warning("[owner] reforms from [suit]!"))
+	owner.visible_message(span_warning(LANG("obj.33970ef41b4fade4", list(owner, suit))))
 	if(!HAS_TRAIT(suit, TRAIT_NODROP))
 		ADD_TRAIT(suit, TRAIT_NODROP, "protean")
 
@@ -132,10 +133,10 @@
 	var/obj/item/organ/liver/protean/liver = owner.get_organ_slot(ORGAN_SLOT_LIVER)
 
 	if(stomach.metal <= PROTEAN_STOMACH_FULL * 0.6 && istype(stomach))
-		to_chat(owner, span_warning("Not enough metal to heal body!"))
+		to_chat(owner, span_warning(LANG("obj.79f5f5a88120271d", null)))
 		return
 	if(!istype(owner.loc, /obj/item/mod/control))
-		to_chat(owner, span_warning("Not in the open. You must be inside your suit!"))
+		to_chat(owner, span_warning(LANG("obj.d4396b705102dc64", null)))
 		return
 	var/datum/species/protean/species = owner.dna.species
 	if(!do_after(owner, 30 SECONDS, species.species_modsuit, IGNORE_INCAPACITATED))
@@ -174,12 +175,12 @@
 /obj/item/organ/brain/protean/proc/revive()
 	dead = FALSE
 	playsound(owner, 'sound/machines/ping.ogg', 30)
-	to_chat(owner, span_warning("You have regained all your mass!"))
+	to_chat(owner, span_warning(LANG("obj.ee65a3c2bb1faf51", null)))
 	owner.fully_heal()
 	owner.set_stat(STABLE)
 
 /obj/item/organ/brain/protean/proc/revive_timer()
-	balloon_alert_to_viewers("repairing")
+	balloon_alert_to_viewers(LANG("obj.f2b23f18ac237926", null))
 	addtimer(CALLBACK(src, PROC_REF(revive)), 5 MINUTES) // Bump to 5 minutes
 
 /obj/effect/temp_visual/protean_to_suit
@@ -202,10 +203,10 @@
 		return
 	switch(severity)
 		if (EMP_HEAVY)
-			to_chat(owner, span_boldwarning("Your core nanites [pick("buzz erratically", "surge chaotically")]!"))
+			to_chat(owner, span_boldwarning(LANG("obj.22f162b2411d3b4c", list(pick("buzz erratically", "surge chaotically")))))
 			owner.set_drugginess_if_lower(40 SECONDS)
 		if (EMP_LIGHT)
-			to_chat(owner, span_warning("Your core nanites feel [pick("fuzzy", "unruly", "sluggish")]."))
+			to_chat(owner, span_warning(LANG("obj.fe74848dfa1dd334", list(pick("fuzzy", "unruly", "sluggish")))))
 			owner.set_drugginess_if_lower(20 SECONDS)
 
 #undef TRANSFORM_TRAITS

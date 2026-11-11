@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ////////////////////// violent gorilla //////////////////////
 
 /datum/round_event_control/stray_cargo/ape_escape
@@ -74,7 +75,7 @@
 /datum/round_event/stray_cargo/syndie_bombsquad/announce(fake)
 	if(fake)
 		impact_area = find_event_area()
-	priority_announce("The Syndicate has dispatched a bomb squad to attack [impact_area.name]. \n\nSecurity intervention recommended to eliminate threats.\nEngineering intervention recommended to open the bomb and defuse the wires.", "CentCom Department of Intelligence", 'modular_zubbers/sound/alerts/amber.ogg', color_override = "yellow")
+	priority_announce(LANG("datum.b278f68c38976d4c", list(impact_area.name)), "CentCom Department of Intelligence", 'modular_zubbers/sound/alerts/amber.ogg', color_override = "yellow")
 
 ///Apply the syndicate pod skin
 /datum/round_event/stray_cargo/syndie_bombsquad/make_pod()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 // Sends an OOC message to all dem other servers!
 /proc/send_ooc_to_other_server(exp_name, message)
@@ -27,7 +28,7 @@
 		return
 	for(var/client/C in GLOB.clients)
 		if(C.prefs.chat_toggles & CHAT_OOC)
-			to_chat(C, span_crossooc("[span_prefix("CROSSLINK-OOC([server_name]):")] <EM>[sender_name]:</EM> <span class='message linkify'>[message]</span></b>"), type = MESSAGE_TYPE_OOC)
+			to_chat(C, span_crossooc(LANG("_root.962235a4bc819397", list(span_prefix("CROSSLINK-OOC([server_name]):"), sender_name, message))), type = MESSAGE_TYPE_OOC)
 
 
 // Sends an asay message to all deh other servers!
@@ -60,8 +61,8 @@
 		html = msg,
 		confidential = TRUE)
 
-ADMIN_VERB(request_help, R_ADMIN, "Cross-server Help Request", "Sends a loud message to all other servers that we are crosslinked to!", ADMIN_CATEGORY_MAIN)
-	var/help_request_message = tgui_input_text(user, "Input help message!", "Help message", "Send help!", 150, FALSE)
+ADMIN_VERB(request_help, R_ADMIN, "跨服务器求助请求", "Sends a loud message to all other servers that we are crosslinked to!", ADMIN_CATEGORY_MAIN)
+	var/help_request_message = tgui_input_text(user, LANG("datum.05205370de57d90d", null), LANG("datum.3e8a76222f355d0d", null), "Send help!", 150, FALSE)
 	if(!help_request_message)
 		return
 	send2adminchat(user.ckey, "CROSSLINK HELP REQUEST([CONFIG_GET(string/cross_server_name) ? CONFIG_GET(string/cross_server_name) : station_name()]): [help_request_message]")

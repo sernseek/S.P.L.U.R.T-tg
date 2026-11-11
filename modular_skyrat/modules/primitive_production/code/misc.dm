@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/shard/attackby(obj/item/item, mob/user, params)
 	//xenoarch hammer, forging hammer, etc.
 	if(item.tool_behaviour == TOOL_HAMMER)
@@ -18,7 +19,7 @@
 		var/obj/colored_item = new /obj/item/stack/ore/glass/zero_cost(get_turf(src))
 		colored_item.add_atom_colour(added_color, FIXED_COLOUR_PRIORITY)
 		new /obj/effect/decal/cleanable/glass(get_turf(src))
-		user.balloon_alert(user, "[src] shatters!")
+		user.balloon_alert(user, LANG("obj.d0641e1553a22038", list(src)))
 		playsound(src, SFX_SHATTER, 30, TRUE)
 		qdel(src)
 		return TRUE
@@ -32,4 +33,4 @@
 /obj/item/stack/ore/examine(mob/user)
 	. = ..()
 	if(points == 0)
-		. += span_warning("<br> [src] is worthless and will not reward any mining points!")
+		. += span_warning(LANG("obj.c3a3a5a3caaf410a", list(src)))

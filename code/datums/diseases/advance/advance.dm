@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 
 	Advance Disease is a system for medical to Engineer their own disease with symptoms that have effects and properties
@@ -261,6 +262,9 @@
 		if(DISEASE_SPREAD_AIRBORNE)
 			update_spread_flags(DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_FLUIDS | DISEASE_SPREAD_CONTACT_SKIN | DISEASE_SPREAD_AIRBORNE)
 			spread_text = "Respiration"
+	// ZH EDIT ADDITION - I18N: 这些赋值发生在 New() 的反查之后（set_spread 由 Refresh 调用），
+	// 所以要在收尾处再反查一次；lang_reverse_text 对已是中文的值是 no-op，重复调用安全。
+	spread_text = lang_reverse_text(spread_text)
 
 /datum/disease/advance/proc/set_severity(level_sev)
 
@@ -414,7 +418,7 @@
 	symptoms += SSdisease.list_symptoms.Copy()
 	do
 		if(user)
-			var/symptom = tgui_input_list(user, "Choose a symptom to add ([i] remaining)", "Choose a Symptom", sort_list(symptoms, GLOBAL_PROC_REF(cmp_typepaths_asc)))
+			var/symptom = tgui_input_list(user, LANG("_root.7ae826dea7e5a91b", list(i)), LANG("_root.a8c6cdd1fe4e7f5f", null), sort_list(symptoms, GLOBAL_PROC_REF(cmp_typepaths_asc)))
 			if(isnull(symptom))
 				return
 			else if(istext(symptom))
@@ -428,7 +432,7 @@
 
 	if(D.symptoms.len > 0)
 
-		var/new_name = tgui_input_text(user, "Name your new disease", "New Name", max_length = MAX_NAME_LEN)
+		var/new_name = tgui_input_text(user, LANG("_root.50798e0d72410c28", null), LANG("_root.fbcf69b99d6d8089", null), max_length = MAX_NAME_LEN)
 		if(!new_name)
 			return
 		D.Refresh()
@@ -437,7 +441,7 @@
 
 		var/list/targets = list("Random")
 		targets += sort_names(GLOB.human_list)
-		var/target = tgui_input_list(user, "Viable human target", "Disease Target", targets)
+		var/target = tgui_input_list(user, LANG("_root.0aee4b73657b0c2f", null), LANG("_root.62f433be8f261dc5", null), targets)
 		if(isnull(target))
 			return
 		var/mob/living/carbon/human/H
@@ -451,13 +455,13 @@
 					found = H.ForceContractDisease(D)
 					break
 				if(!found)
-					to_chat(user, "Could not find a valid target for the disease.")
+					to_chat(user, LANG("_root.962814fbe44eabc5", null))
 		else
 			H = target
 			if(istype(H) && D.infectable_biotypes & H.mob_biotypes)
 				H.ForceContractDisease(D)
 			else
-				to_chat(user, "Target could not be infected. Check mob biotype compatibility or resistances.")
+				to_chat(user, LANG("_root.5b7affb279d405cb", null))
 				return
 
 		message_admins("[key_name_admin(user)] has triggered a custom virus outbreak of [D.admin_details()] in [ADMIN_LOOKUPFLW(H)]")

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // The mawed crucible, a heretic structure that can create potions from bodyparts and organs.
 /obj/structure/destructible/eldritch_crucible
 	name = "mawed crucible"
@@ -54,16 +55,16 @@
 		return*/ // BUBBER EDIT REMOVAL - expanding knowledge of heretic
 
 	if(current_mass > 0)
-		. += span_notice("You can refill an eldritch flask with this")
+		. += span_notice(LANG("obj.6d48de1f3ca74ce0", null))
 
 	if(current_mass < max_mass)
 		var/to_fill = max_mass - current_mass
-		. += span_notice("[src] requires <b>[to_fill]</b> more organ[to_fill == 1 ? "":"s"] or bodypart[to_fill == 1 ? "":"s"].")
+		. += span_notice(LANG("obj.e3f00bd5cdc0fc5d", list(src, to_fill, to_fill == 1 ? "":"s", to_fill == 1 ? "":"s")))
 	else
-		. += span_boldnotice("[src] is bubbling to the brim with viscous liquid, and is ready to use.")
+		. += span_boldnotice(LANG("obj.b3fb9f79f6ae7cce", list(src)))
 
-	. += span_notice("You can <b>[anchored ? "unanchor and move":"anchor in place"]</b> [src] with a <b>Codex Cicatrix</b> or <b>Mansus Grasp</b>.")
-	. += span_info("The following potions can be brewed:")
+	. += span_notice(LANG("obj.21028f160248803a", list(anchored ? "unanchor and move":"anchor in place", src)))
+	. += span_info(LANG("obj.918b697518c8fe5c", null))
 	for(var/obj/item/eldritch_potion/potion as anything in subtypesof(/obj/item/eldritch_potion))
 		var/potion_string = span_info("\tThe " + initial(potion.name) + " - " + initial(potion.crucible_tip))
 		. += potion_string
@@ -81,26 +82,26 @@
 	if(istype(tool, /obj/item/codex_cicatrix) || istype(tool, /obj/item/melee/touch_attack/mansus_fist))
 		playsound(src, 'sound/items/deconstruct.ogg', 30, TRUE, ignore_walls = FALSE)
 		set_anchored(!anchored)
-		balloon_alert(user, "[anchored ? "":"un"]anchored")
+		balloon_alert(user, LANG("obj.ec9196c7343f779d", list(anchored ? "":"un")))
 		return ITEM_INTERACT_SUCCESS
 	if(istype(tool, /obj/item/reagent_containers/cup/beaker/eldritch))
 		if(current_mass < max_mass)
-			balloon_alert(user, "not full enough!")
+			balloon_alert(user, LANG("obj.38ce68de3dc732ca", null))
 			return ITEM_INTERACT_SUCCESS
 		var/obj/item/reagent_containers/cup/beaker/eldritch/to_fill = tool
 		if(to_fill.reagents.total_volume >= to_fill.reagents.maximum_volume)
-			balloon_alert(user, "flask is full!")
+			balloon_alert(user, LANG("obj.c63806ced7c32664", null))
 			return ITEM_INTERACT_SUCCESS
 		to_fill.reagents.add_reagent(/datum/reagent/eldritch, 50)
 		do_item_attack_animation(src, used_item = tool, animation_type = ATTACK_ANIMATION_BLUNT)
 		current_mass--
-		balloon_alert(user, "refilled flask")
+		balloon_alert(user, LANG("obj.0edbc871377bf975", null))
 		return ITEM_INTERACT_SUCCESS
 
 	if(isbodypart(tool))
 		var/obj/item/bodypart/consumed = tool
 		if(!IS_ORGANIC_LIMB(consumed))
-			balloon_alert(user, "not organic!")
+			balloon_alert(user, LANG("obj.6b93e72551ed530b", null))
 			return ITEM_INTERACT_BLOCKING
 		if(!IS_HERETIC_OR_MONSTER(user))
 			if(user.combat_mode)
@@ -113,10 +114,10 @@
 	if(isorgan(tool))
 		var/obj/item/organ/consumed = tool
 		if(!IS_ORGANIC_ORGAN(consumed))
-			balloon_alert(user, "not organic!")
+			balloon_alert(user, LANG("obj.6b93e72551ed530b", null))
 			return ITEM_INTERACT_BLOCKING
 		if(consumed.organ_flags & ORGAN_VITAL) // Basically, don't eat organs like brains
-			balloon_alert(user, "invalid organ!")
+			balloon_alert(user, LANG("obj.7279062c77b140f4", null))
 			return ITEM_INTERACT_BLOCKING
 		if(!IS_HERETIC_OR_MONSTER(user))
 			if(user.combat_mode)
@@ -142,11 +143,11 @@
 		return TRUE
 
 	if(in_use)
-		balloon_alert(user, "in use!")
+		balloon_alert(user, LANG("obj.d2232fc97a3a2f66", null))
 		return TRUE
 
 	if(current_mass < max_mass)
-		balloon_alert(user, "not full enough!")
+		balloon_alert(user, LANG("obj.38ce68de3dc732ca", null))
 		return TRUE
 
 	INVOKE_ASYNC(src, PROC_REF(show_radial), user)
@@ -195,8 +196,8 @@
 	spawned_pot.is_from_crucible = TRUE // BUBBER EDIT ADDITION - Influence potions cant be drunk by non-heretics
 
 	playsound(src, 'sound/effects/desecration/desecration-02.ogg', 75, TRUE)
-	visible_message(span_notice("[src]'s shining liquid drains into a flask, creating a [spawned_pot.name]!"))
-	balloon_alert(user, "potion created")
+	visible_message(span_notice(LANG("obj.15aea8e2a6a014ac", list(src, spawned_pot.name))))
+	balloon_alert(user, LANG("obj.5ba1ecf23672ed57", null))
 
 	current_mass = 0
 	update_appearance(UPDATE_ICON_STATE)
@@ -214,7 +215,7 @@
 	if(QDELETED(arm))
 		return
 
-	to_chat(user, span_userdanger("[src] grabs your [arm.plaintext_zone]!"))
+	to_chat(user, span_userdanger(LANG("obj.c48315328091f2e5", list(src, arm.plaintext_zone))))
 	arm.dismember()
 	consume_fuel(consumed = arm)
 
@@ -225,15 +226,15 @@
 /obj/structure/destructible/eldritch_crucible/proc/consume_fuel(mob/living/feeder, obj/item/consumed)
 	if(current_mass >= max_mass)
 		if(feeder)
-			balloon_alert(feeder, "crucible full!")
+			balloon_alert(feeder, LANG("obj.b6ed89afa2a82d2c", null))
 		return
 
 	current_mass++
 	playsound(src, 'sound/items/eatfood.ogg', 100, TRUE)
-	visible_message(span_notice("[src] devours [consumed] and fills itself with a little bit of liquid!"))
+	visible_message(span_notice(LANG("obj.71e20609cdaa33a5", list(src, consumed))))
 
 	if(feeder)
-		balloon_alert(feeder, "crubile fed ([current_mass] / [max_mass])")
+		balloon_alert(feeder, LANG("obj.7563b9d9f7c10234", list(current_mass, max_mass)))
 
 	qdel(consumed)
 	update_appearance(UPDATE_ICON_STATE)
@@ -285,18 +286,18 @@
 		return TRUE*/
 		// BUBBER EDIT ADDITION BEGIN - Allows for potion shop gimmicks
 		if (!is_from_crucible)
-			to_chat(user, span_danger("You down some of the liquid from [src]. The taste causes you to retch, and the glass vanishes."))
+			to_chat(user, span_danger(LANG("obj.e4b6db2e05397016", list(src))))
 			user.reagents?.add_reagent(/datum/reagent/eldritch, 10)
 			user.adjust_disgust(50)
 			qdel(src)
 			return TRUE
-		to_chat(user, span_warning("The taste is disgusting, but you force down the potion anyway.")) // BUBBER EDIT ADDITION - Allows for potion shop gimmicks
+		to_chat(user, span_warning(LANG("obj.4cc4884a68d2a5ba", null))) // BUBBER EDIT ADDITION - Allows for potion shop gimmicks
 		qdel(src) // BUBBER EDIT ADDITION - Allows for potion shop gimmicks
 		potion_effect(user) // BUBBER EDIT ADDITION - Allows for potion shop gimmicks
 		return TRUE
 		// BUBBER EDIT ADDITION END
 
-	to_chat(user, span_notice("You drink the viscous liquid from [src], causing the glass to dematerialize."))
+	to_chat(user, span_notice(LANG("obj.27dc7ded7ee57e8e", list(src))))
 	potion_effect(user)
 	qdel(src)
 	return TRUE
@@ -320,7 +321,7 @@
 
 /obj/item/eldritch_potion/crucible_soul/attack_self(mob/user)
 	if(user.has_status_effect(/datum/status_effect/crucible_soul_cooldown))
-		balloon_alert(user, "on cooldown!")
+		balloon_alert(user, LANG("obj.d4ae5d4dded19efe", null))
 		return TRUE
 	return ..()
 

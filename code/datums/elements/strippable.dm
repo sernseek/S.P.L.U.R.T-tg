@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// An element for atoms that, when dragged and dropped onto a mob, opens a strip panel.
 /datum/element/strippable
 	element_flags = ELEMENT_BESPOKE | ELEMENT_DETACH_ON_HOST_DESTROY
@@ -94,7 +95,7 @@
 		return FALSE
 
 	if (HAS_TRAIT(equipping, TRAIT_NODROP))
-		to_chat(user, span_warning("You can't put [equipping] on [source], it's stuck to your hand!"))
+		to_chat(user, span_warning(LANG("datum.73a8373f0ab702ce", list(equipping, source))))
 		return FALSE
 
 	if (equipping.item_flags & ABSTRACT)
@@ -149,14 +150,14 @@
 	var/is_silent = can_be_silent && HAS_TRAIT(user, TRAIT_STICKY_FINGERS)
 	if (!is_silent)
 		source.visible_message(
-			span_warning("[user] tries to remove [source]'s [item.name]."),
-			span_userdanger("[user] tries to remove your [item.name]."),
-			blind_message = span_hear("You hear rustling."),
+			span_warning(LANG("datum.358cb36129977e9f", list(user, source, item.name))),
+			span_userdanger(LANG("datum.c7f04489a1e6b1a0", list(user, item.name))),
+			blind_message = span_hear(LANG("datum.845a0660f70b200e", null)),
 			ignored_mobs = user,
 		)
 	//SKYRAT EDIT CHANGE END
 
-	to_chat(user, span_danger("You try to remove [source]'s [item.name]..."))
+	to_chat(user, span_danger(LANG("datum.b50bc07e8dbad6c5", list(source, item.name))))
 	user.log_message("is stripping [key_name(source)] of [item].", LOG_ATTACK, color="red")
 	source.log_message("is being stripped of [item] by [key_name(user)].", LOG_VICTIM, color="orange", log_globally=FALSE)
 	item.add_fingerprint(src)
@@ -169,7 +170,7 @@
 				LAZYADD(victim_human.afk_thefts, new_entry)
 
 		else if(victim_human.is_blind())
-			to_chat(source, span_userdanger("You feel someone fumble with your belongings."))
+			to_chat(source, span_userdanger(LANG("datum.2c830211c667b658", null)))
 
 	return TRUE
 
@@ -233,7 +234,7 @@
 		return FALSE
 
 	if (!equipping.mob_can_equip(source, item_slot, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
-		to_chat(user, span_warning("\The [equipping] doesn't fit in that place!"))
+		to_chat(user, span_warning(LANG("datum.d9b5cebb62f55045", list(equipping))))
 		return FALSE
 
 	return TRUE

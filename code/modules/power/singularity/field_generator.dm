@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 
 
@@ -89,18 +90,18 @@ no power level overlay is currently in the overlays list.
 
 /obj/machinery/field/generator/interact(mob/user)
 	if(state != FG_WELDED)
-		to_chat(user, span_warning("[src] needs to be firmly secured to the floor first!"))
+		to_chat(user, span_warning(LANG("obj.31b330474ee65671", list(src))))
 		return
 	if(get_dist(src, user) > 1)//Need to actually touch the thing to turn it on
 		return
 	if(active >= FG_CHARGING)
-		to_chat(user, span_warning("You are unable to turn off [src] once it is online!"))
+		to_chat(user, span_warning(LANG("obj.ff845e3a59fbf797", list(src))))
 		return TRUE
 
 	user.visible_message(
-		span_notice("[user] turns on [src]."),
-		span_notice("You turn on [src]."),
-		span_hear("You hear heavy droning."))
+		span_notice(LANG("obj.96d1123903230929", list(user, src))),
+		span_notice(LANG("obj.11cd75631ed337a9", list(src))),
+		span_hear(LANG("obj.b290d1dbddfa4c7a", null)))
 	turn_on()
 	investigate_log("activated by [key_name(user)].", INVESTIGATE_ENGINE)
 
@@ -117,12 +118,12 @@ no power level overlay is currently in the overlays list.
 /obj/machinery/field/generator/can_be_unfasten_wrench(mob/user, silent)
 	if(active)
 		if(!silent)
-			to_chat(user, span_warning("Turn \the [src] off first!"))
+			to_chat(user, span_warning(LANG("obj.d2d51d9a029e9f35", list(src))))
 		return FAILED_UNFASTEN
 
 	else if(state == FG_WELDED)
 		if(!silent)
-			to_chat(user, span_warning("[src] is welded to the floor!"))
+			to_chat(user, span_warning(LANG("obj.9092e2c6bd6db4b5", list(src))))
 		return FAILED_UNFASTEN
 
 	return ..()
@@ -135,34 +136,34 @@ no power level overlay is currently in the overlays list.
 /obj/machinery/field/generator/welder_act(mob/living/user, obj/item/welder)
 	. = ..()
 	if(active)
-		to_chat(user, span_warning("[src] needs to be off!"))
+		to_chat(user, span_warning(LANG("obj.7626ddd37c5cf136", list(src))))
 		return TRUE
 
 	switch(state)
 		if(FG_UNSECURED)
-			to_chat(user, span_warning("[src] needs to be wrenched to the floor!"))
+			to_chat(user, span_warning(LANG("obj.acb3909a82cc6dff", list(src))))
 
 		if(FG_SECURED)
 			if(!welder.tool_start_check(user, amount=1))
 				return TRUE
 			user.visible_message(
-				span_notice("[user] starts to weld [src] to the floor."),
-				span_notice("You start to weld \the [src] to the floor..."),
-				span_hear("You hear welding."))
+				span_notice(LANG("obj.9600c36405630174", list(user, src))),
+				span_notice(LANG("obj.f64483b9a2aa34d0", list(src))),
+				span_hear(LANG("obj.1aa82fa3545466eb", null)))
 			if(welder.use_tool(src, user, 20, volume=50) && state == FG_SECURED)
 				state = FG_WELDED
-				to_chat(user, span_notice("You weld the field generator to the floor."))
+				to_chat(user, span_notice(LANG("obj.dda769aff2421345", null)))
 
 		if(FG_WELDED)
 			if(!welder.tool_start_check(user, amount=1))
 				return TRUE
 			user.visible_message(
-				span_notice("[user] starts to cut [src] free from the floor."),
-				span_notice("You start to cut \the [src] free from the floor..."),
-				span_hear("You hear welding."))
+				span_notice(LANG("obj.078cc3d361bb45af", list(user, src))),
+				span_notice(LANG("obj.bf750efffa794f7c", list(src))),
+				span_hear(LANG("obj.1aa82fa3545466eb", null)))
 			if(welder.use_tool(src, user, 20, volume=50) && state == FG_WELDED)
 				state = FG_SECURED
-				to_chat(user, span_notice("You cut \the [src] free from the floor."))
+				to_chat(user, span_notice(LANG("obj.0568c93c9ccf7e64", list(src))))
 
 	return TRUE
 
@@ -170,7 +171,7 @@ no power level overlay is currently in the overlays list.
 /obj/machinery/field/generator/attack_animal(mob/living/simple_animal/user, list/modifiers)
 	if(user.environment_smash == ENVIRONMENT_SMASH_RWALLS && active == FG_OFFLINE && state != FG_UNSECURED)
 		set_anchored(FALSE)
-		user.visible_message(span_warning("[user] rips [src] free from its moorings!"))
+		user.visible_message(span_warning(LANG("obj.803715ba758daee8", list(user, src))))
 	else
 		..()
 	if(!anchored)
@@ -252,7 +253,7 @@ no power level overlay is currently in the overlays list.
 		check_power_level()
 		return TRUE
 	else
-		visible_message(span_danger("\The [src] shuts down!"), span_hear("You hear something shutting down."))
+		visible_message(span_danger(LANG("obj.6759b49ae864d5ca", list(src))), span_hear(LANG("obj.bc969be1da27657f", null)))
 		turn_off()
 		investigate_log("ran out of power and DEACTIVATED.", INVESTIGATE_ENGINE)
 		power = 0

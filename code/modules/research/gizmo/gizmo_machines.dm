@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// Science object that behaves similairly to to strange objects/relics, but is activated by cracking wire sequences and other functions
 /obj/machinery/gizmo
 	name = "gizmo"
@@ -26,7 +27,7 @@
 /obj/machinery/gizmo/Initialize(mapload)
 	. = ..()
 
-	name = pick(possible_names)
+	name = lang_reverse_text(pick(possible_names)) // ZH EDIT CHANGE - i18n - name 在 ..() 之后赋值（atom Initialize 反查钩子已跑过）→ 显式反查随机名（en locale no-op；词表见 strings/i18n/*/_gizmo_names.json）- ORIGINAL: name = pick(possible_names)
 
 	if(icon_states)
 		base_icon_state = pick(icon_states)
@@ -122,14 +123,14 @@
 
 	on_state = TRUE
 	update_appearance(UPDATE_ICON)
-	visible_message(span_smallnoticeital("[src] hums to life."))
+	visible_message(span_smallnoticeital(LANG("obj.d7b3eac106340e8f", list(src))))
 
 /obj/machinery/gizmo/toggle/proc/off_state(datum/source)
 	SIGNAL_HANDLER
 
 	on_state = FALSE
 	update_appearance(UPDATE_ICON)
-	visible_message(span_smallnoticeital("[src] powers down."))
+	visible_message(span_smallnoticeital(LANG("obj.fcb962ca66279b78", list(src))))
 
 /// A gizmo with a voice activated interface
 /obj/machinery/gizmo/voice

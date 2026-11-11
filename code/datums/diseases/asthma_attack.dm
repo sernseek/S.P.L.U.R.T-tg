@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/disease/asthma_attack
 	form = "Bronchitis"
 	name = "Asthma attack"
@@ -150,7 +151,7 @@
 
 	if (stage < 4 || !SPT_PROB(10, seconds_per_tick))
 		return
-	to_chat(affected_mob, span_warning("You briefly choke on the mucus piling in your throat!"))
+	to_chat(affected_mob, span_warning(LANG("datum.7578fe97c1dbc0fb", null)))
 	affected_mob.losebreath++
 
 
@@ -189,7 +190,7 @@
 
 	if (stage < 4 || !SPT_PROB(15, seconds_per_tick))
 		return
-	to_chat(affected_mob, span_warning("You briefly choke on the mucus piling in your throat!"))
+	to_chat(affected_mob, span_warning(LANG("datum.7578fe97c1dbc0fb", null)))
 	affected_mob.losebreath++
 
 /datum/disease/asthma_attack/critical
@@ -227,7 +228,7 @@
 
 	var/wheeze_chance
 	if (!warned_user && stage >= 5)
-		to_chat(affected_mob, span_userdanger("You feel like your lungs are filling with fluid! It's getting incredibly hard to breathe!"))
+		to_chat(affected_mob, span_userdanger(LANG("datum.743cf751ad79ecc6", null)))
 		warned_user = TRUE
 
 	switch (stage)
@@ -246,7 +247,7 @@
 		if (6)
 			if (!max_stage_reached)
 				max_stage_reached = TRUE
-				to_chat(affected_mob, span_userdanger("You feel your windpipe squeeze shut!"))
+				to_chat(affected_mob, span_userdanger(LANG("datum.371978e867a5a21b", null)))
 			wheeze_chance = 0
 			if (SPT_PROB(10, seconds_per_tick))
 				affected_mob.emote("gag")
@@ -258,5 +259,5 @@
 
 	if (stage < 4 || !SPT_PROB(15, seconds_per_tick))
 		return
-	to_chat(affected_mob, span_warning("You briefly choke on the mucus piling in your throat!"))
+	to_chat(affected_mob, span_warning(LANG("datum.7578fe97c1dbc0fb", null)))
 	affected_mob.losebreath++

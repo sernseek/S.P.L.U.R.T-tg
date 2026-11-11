@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/bloodsucker/ghoul_blood
 	name = "Help Ghoul"
 	desc = "Bring an ex-Ghoul back into the fold, or create blood using a bag. RMB: Check Ghoul status."
@@ -27,7 +28,7 @@
 
 	if(trigger_flags & TRIGGER_SECONDARY_ACTION)
 		if(!revenge_ghoul.ex_ghouls.len)
-			owner.balloon_alert(owner, "no ghouls!")
+			owner.balloon_alert(owner, LANG("datum.38186ffb1f19c5b5", null))
 			return FALSE
 		return TRUE
 
@@ -35,17 +36,17 @@
 		var/mob/living/pulled_target = owner.pulling
 		var/datum/antagonist/ex_ghoul/former_ghoul = IS_EX_GHOUL(pulled_target)
 		if(!former_ghoul)
-			owner.balloon_alert(owner, "not a former ghoul!")
+			owner.balloon_alert(owner, LANG("datum.559073bd85b9ffe3", null))
 			return FALSE
 		target_ref = WEAKREF(owner.pulling)
 		return TRUE
 
 	var/blood_bag = locate(/obj/item/reagent_containers/blood) in user.held_items
 	if(!blood_bag)
-		owner.balloon_alert(owner, "blood bag needed!")
+		owner.balloon_alert(owner, LANG("datum.dc8b416b4dbe60da", null))
 		return FALSE
 	if(istype(blood_bag, /obj/item/reagent_containers/blood/o_minus/bloodsucker))
-		owner.balloon_alert(owner, "already bloodsucker blood!")
+		owner.balloon_alert(owner, LANG("datum.69b7d8f24665881a", null))
 
 	bloodbag = blood_bag
 	return TRUE

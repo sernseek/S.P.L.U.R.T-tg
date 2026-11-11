@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/suit/hooded/wintercoat/fluffy_coat
 	name = "Fluffy Coat"
 	desc = "A very fluffy coat that can glow - the name \"Zen\" Is written on the tag.\n<span class='notice'>This coat can be toggled to glow! Alt-Right Click to toggle!</span>"
@@ -37,7 +38,7 @@
 	var/mob/living/carbon/human/wearer = user
 
 	if(wearer.usable_hands <= 0)
-		balloon_alert(wearer, "you don't have hands!")
+		balloon_alert(wearer, LANG("obj.602a55339e17c0f1", null))
 		return
 
 	toggled = !toggled
@@ -48,7 +49,7 @@
 			glow_light = wearer.mob_light(range = 3, power = 1.5, color = "#9900ff")
 			wearer.add_filter("fluffy_coat_glow", 2, list("type" = "outline", "color" = "#9900ff", "alpha" = 80, "size" = 2))
 
-		to_chat(wearer, span_notice("You activate the glow on \the [src]!"))
+		to_chat(wearer, span_notice(LANG("obj.131d30f44370b8cd", list(src))))
 	else
 		// Remove glow effect
 		if(glow_light)
@@ -56,7 +57,7 @@
 		if(ishuman(wearer))
 			wearer.remove_filter("fluffy_coat_glow")
 
-		to_chat(wearer, span_notice("You deactivate the glow on \the [src]."))
+		to_chat(wearer, span_notice(LANG("obj.d40963d4565d4224", list(src))))
 
 	if(loc == wearer)
 		wearer.update_clothing(slot_flags)

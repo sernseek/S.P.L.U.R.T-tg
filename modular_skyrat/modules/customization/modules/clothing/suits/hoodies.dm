@@ -76,14 +76,14 @@
 
 /obj/item/clothing/suit/toggle/jacket/hoodie/branded/nrti
 	name = "New Reykjavik Technical Institute hoodie"
-	desc = "A warm, gray sweatshirt. It bears the letters NRT on the back, in reference to Sif's premiere technical institute."
+	desc = "A warm, gray sweatshirt. It bears the letters 'NRT' on the back, in reference to Sif's premiere technical institute." // ZH EDIT CHANGE - I18N: ORIGINAL: U+0091 and U+0092 control characters around the abbreviation
 	icon_state = "/obj/item/clothing/suit/toggle/jacket/hoodie/branded/nrti"
 	post_init_icon_state = "hoodie_NRTI"
 	greyscale_colors = "#747474#a83232"
 
 /obj/item/clothing/suit/toggle/jacket/hoodie/branded/mu
 	name = "mojave university hoodie"
-	desc = "A warm, gray sweatshirt.  It bears the letters MU on the front, a lettering to the well-known public college, Mojave University."
+	desc = "A warm, gray sweatshirt.  It bears the letters 'MU' on the front, a lettering to the well-known public college, Mojave University." // ZH EDIT CHANGE - I18N: ORIGINAL: U+0091 and U+0092 control characters around the abbreviation
 	icon_state = "/obj/item/clothing/suit/toggle/jacket/hoodie/branded/mu"
 	post_init_icon_state = "hoodie_MU"
 	greyscale_colors = "#747474#ffffff"
@@ -91,7 +91,7 @@
 
 /obj/item/clothing/suit/toggle/jacket/hoodie/branded/cti
 	name = "CTI hoodie"
-	desc = "A warm, black sweatshirt.  It bears the letters CTI on the back, a lettering to the prestigious university in Tau Ceti, Ceti Technical Institute.  There is a blue supernova embroidered on the front, the emblem of CTI."
+	desc = "A warm, black sweatshirt.  It bears the letters 'CTI' on the back, a lettering to the prestigious university in Tau Ceti, Ceti Technical Institute.  There is a blue supernova embroidered on the front, the emblem of CTI." // ZH EDIT CHANGE - I18N: ORIGINAL: U+0091 and U+0092 control characters around the abbreviation
 	icon_state = "/obj/item/clothing/suit/toggle/jacket/hoodie/branded/cti"
 	post_init_icon_state = "hoodie_CTI"
 	greyscale_colors = "#313131#ffffff"

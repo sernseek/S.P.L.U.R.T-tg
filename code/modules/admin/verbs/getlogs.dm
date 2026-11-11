@@ -1,7 +1,8 @@
-ADMIN_VERB(get_server_logs, R_ADMIN, "Get Server Logs", "View or retrieve logfiles.", ADMIN_CATEGORY_MAIN)
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
+ADMIN_VERB(get_server_logs, R_ADMIN, "获取服务器日志", "View or retrieve logfiles.", ADMIN_CATEGORY_MAIN)
 	user.browseserverlogs()
 
-ADMIN_VERB(get_current_logs, R_ADMIN, "Get Current Logs", "View or retrieve logfiles for the current round.", ADMIN_CATEGORY_MAIN)
+ADMIN_VERB(get_current_logs, R_ADMIN, "获取当前日志", "View or retrieve logfiles for the current round.", ADMIN_CATEGORY_MAIN)
 	user.browseserverlogs(current=TRUE)
 
 /client/proc/browseserverlogs(current=FALSE)
@@ -14,7 +15,7 @@ ADMIN_VERB(get_current_logs, R_ADMIN, "Get Current Logs", "View or retrieve logf
 
 	log_admin("[key_name(src)] accessed file: [path]") // SKYRAT EDIT -- ADDITION
 	message_admins("[key_name_admin(src)] accessed file: [path]")
-	switch(tgui_alert(usr,"View (in game), Open (in your system's text editor), or Download?", path, list("View", "Open", "Download")))
+	switch(tgui_alert(usr,LANG("client.2f0a3fe18d62e840", null), path, list("View", "Open", "Download")))
 		if ("View")
 			src << browse(HTML_SKELETON("<pre style='word-wrap: break-word;'>[html_encode(file2text(file(path)))]</pre>"), list2params(list("window" = "viewfile.[path]")))
 		if ("Open")
@@ -23,4 +24,4 @@ ADMIN_VERB(get_current_logs, R_ADMIN, "Get Current Logs", "View or retrieve logf
 			src << ftp(file(path))
 		else
 			return
-	to_chat(src, "Attempting to send [path], this may take a fair few minutes if the file is very large.", confidential = TRUE)
+	to_chat(src, LANG("client.04c7cd22dc6cb17f", list(path)), confidential = TRUE)

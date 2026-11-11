@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_VAR_INIT(rbmk_did_warning, FALSE)
 
 /datum/round_event_control/rbmk_voidcheck //Vibe check
@@ -58,8 +59,7 @@ GLOBAL_VAR_INIT(rbmk_did_warning, FALSE)
 
 	else
 		priority_announce(
-			"A neighboring station is detecting excess levels of Bluesp!*^#$) Void energy, which is usually a symptom of excessive RB-MK2 reactor use. \
-			Please reduce the amount of active RB-MK2 reactors from [machines_detected] to 12 or risk cata@#&@(^&#^%.",
+			LANG("datum.0f76be0ac5068994", list(machines_detected)),
 			"RB-MK2 Overuse Warning",
 			sound = 'modular_zubbers/sound/alerts/rbmk1.ogg',
 			has_important_message = TRUE

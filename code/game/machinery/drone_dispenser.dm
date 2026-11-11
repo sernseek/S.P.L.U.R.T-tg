@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define DRONE_PRODUCTION "production"
 #define DRONE_RECHARGING "recharging"
 #define DRONE_READY "ready"
@@ -172,13 +173,13 @@
 	. = ..()
 	var/material_requirement_string = "It needs "
 	if (iron_cost > 0)
-		material_requirement_string += "[iron_cost / SHEET_MATERIAL_AMOUNT] iron sheets "
+		material_requirement_string += LANG("obj.ba974162f52d6cd2", list(iron_cost / SHEET_MATERIAL_AMOUNT))
 		if (glass_cost > 0)
-			material_requirement_string += "and "
+			material_requirement_string += LANG("obj.2162713f2ce0b5cb", null)
 	if (glass_cost > 0)
-		material_requirement_string += "[glass_cost / SHEET_MATERIAL_AMOUNT] glass sheets "
+		material_requirement_string += LANG("obj.a420eab2d983dfe9", list(glass_cost / SHEET_MATERIAL_AMOUNT))
 	if (iron_cost > 0 || glass_cost > 0)
-		material_requirement_string += "to produce one drone shell."
+		material_requirement_string += LANG("obj.17773f3d7be90b6a", null)
 		. += span_notice(material_requirement_string)
 	if((mode == DRONE_RECHARGING) && !machine_stat && recharging_text)
 		. += span_warning("[recharging_text]")
@@ -257,27 +258,27 @@
 /obj/machinery/drone_dispenser/crowbar_act(mob/living/user, obj/item/tool)
 	materials.retrieve_all()
 	tool.play_tool_sound(src)
-	to_chat(user, span_notice("You retrieve the materials from [src]."))
+	to_chat(user, span_notice(LANG("obj.a914fe5b5c846ca8", list(src))))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/drone_dispenser/welder_act(mob/living/user, obj/item/tool)
 	if(!(machine_stat & BROKEN))
-		to_chat(user, span_warning("[src] doesn't need repairs."))
+		to_chat(user, span_warning(LANG("obj.5eef566d3215401a", list(src))))
 		return ITEM_INTERACT_BLOCKING
 
 	if(!tool.tool_start_check(user, amount=1))
 		return ITEM_INTERACT_BLOCKING
 
 	user.visible_message(
-		span_notice("[user] begins patching up [src] with [tool]."),
-		span_notice("You begin restoring the damage to [src]..."))
+		span_notice(LANG("obj.afa10dcf6ddbe3cd", list(user, src, tool))),
+		span_notice(LANG("obj.73be3293e780ed1f", list(src))))
 
 	if(!tool.use_tool(src, user, 40, volume=50))
 		return ITEM_INTERACT_BLOCKING
 
 	user.visible_message(
-		span_notice("[user] fixes [src]!"),
-		span_notice("You restore [src] to operation."))
+		span_notice(LANG("obj.6fab948aa1fdea11", list(user, src))),
+		span_notice(LANG("obj.83a8b8a75f74ae54", list(src))))
 
 	set_machine_stat(machine_stat & ~BROKEN)
 	atom_integrity = max_integrity

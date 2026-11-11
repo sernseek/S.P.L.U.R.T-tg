@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/round_event_control/space_dragon
 	name = "Spawn Space Dragon"
 	typepath = /datum/round_event/ghost_role/space_dragon
@@ -17,7 +18,7 @@
 	announce_when = 10
 
 /datum/round_event/ghost_role/space_dragon/announce(fake)
-	priority_announce("A large organic energy flux has been recorded near [station_name()], please stand by.", "Lifesign Alert")
+	priority_announce(LANG("datum.b9fbc05e6341b7d6", list(station_name())), "Lifesign Alert")
 
 /datum/round_event/ghost_role/space_dragon/spawn_role()
 	var/mob/chosen_one = SSpolling.poll_ghost_candidates(check_jobban = ROLE_SPACE_DRAGON, role = ROLE_SPACE_DRAGON, alert_pic = /mob/living/basic/space_dragon, amount_to_pick = 1)

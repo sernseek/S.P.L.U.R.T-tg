@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Bloodsucker clans
  *
@@ -168,8 +169,8 @@
 
 /datum/bloodsucker_clan/proc/level_message(power_name)
 	var/mob/living/carbon/human/human_user = bloodsuckerdatum.owner.current
-	human_user.balloon_alert(human_user, "learned [power_name]!")
-	to_chat(human_user, span_notice("You have learned how to use [power_name]!"))
+	human_user.balloon_alert(human_user, LANG("datum.76fbe9e4e2a2744b", list(power_name)))
+	to_chat(human_user, span_notice(LANG("datum.c22e23611388b2ca", list(power_name))))
 
 /datum/bloodsucker_clan/proc/choose_powers(message, title, options = list())
 	var/mob/living/carbon/human/human_user = bloodsuckerdatum.owner.current
@@ -186,18 +187,18 @@
 	if(cost_rank && bloodsuckerdatum.GetUnspentRank() <= 0)
 		return FALSE
 	if(blood_cost && bloodsuckerdatum.GetBloodVolume() < blood_cost)
-		human_user.balloon_alert(human_user, "not enough blood!")
-		to_chat(human_user, span_notice("You need at the very least [blood_cost] blood to thicken your blood."))
+		human_user.balloon_alert(human_user, LANG("datum.bd9ee67cd3b559be", null))
+		to_chat(human_user, span_notice(LANG("datum.c879457cefc5a246", list(blood_cost))))
 		return FALSE
 	// Prevent Bloodsuckers from purchasing a power while outside of their Coffin.
 	if(requires_coffin && !istype(human_user.loc, /obj/structure/closet/crate/coffin))
-		to_chat(human_user, span_warning("You must be in your Coffin to purchase Powers."))
+		to_chat(human_user, span_warning(LANG("datum.2cd11fe51f2b89fa", null)))
 		return FALSE
 	if(!(initial(power.purchase_flags) & buy_power_flags))
-		to_chat(human_user, span_notice("[initial(power.name)] is not available for purchase."))
+		to_chat(human_user, span_notice(LANG("datum.f74deb316664bf01", list(initial(power.name)))))
 		return FALSE
 	if(!(buy_power_flags & CAN_BUY_OWNED) && locate(power) in bloodsuckerdatum.powers)
-		to_chat(human_user, span_notice("You already know [initial(power.name)]!"))
+		to_chat(human_user, span_notice(LANG("datum.d3b40725d29f42b0", list(initial(power.name)))))
 		return FALSE
 	return TRUE
 
@@ -229,9 +230,7 @@
 		bloodsuckerdatum.SelectReputation(am_fledgling = FALSE, forced = TRUE)
 
 
-	to_chat(bloodsuckerdatum.owner.current, span_notice("You are now a rank [bloodsuckerdatum.GetRank()] Bloodsucker. \
-		Your strength, feed rate, regen rate, and maximum blood capacity have all increased! \n\
-		* Your existing powers have all ranked up as well!"))
+	to_chat(bloodsuckerdatum.owner.current, span_notice(LANG("datum.7adb0db7cf7b54b5", list(bloodsuckerdatum.GetRank()))))
 	bloodsuckerdatum.owner.current.playsound_local(null, 'sound/effects/pope_entry.ogg', 25, TRUE, pressure_affected = FALSE)
 	bloodsuckerdatum.update_static_data_for_all_viewers()
 
@@ -241,7 +240,7 @@
 		bloodsuckerdatum.owner.teach_crafting_recipe(/datum/crafting_recipe/candelabrum)
 		bloodsuckerdatum.owner.teach_crafting_recipe(/datum/crafting_recipe/bloodthrone)
 		bloodsuckerdatum.owner.teach_crafting_recipe(/datum/crafting_recipe/meatcoffin)
-		bloodsuckerdatum.owner.current.balloon_alert(bloodsuckerdatum.owner.current, "new recipes learned! Ghouling unlocked!")
+		bloodsuckerdatum.owner.current.balloon_alert(bloodsuckerdatum.owner.current, LANG("datum.dc37cefa6594afba", null))
 	return TRUE
 
 
@@ -272,16 +271,16 @@
 	var/mob/living/carbon/human/master = bloodsuckerdatum.owner.current
 	var/mob/living/carbon/human/servant = ghouldatum.owner.current
 	if(ghouldatum.special_type || IS_BLOODSUCKER(servant))
-		to_chat(master, span_notice("This Ghoul was already assigned a special position."))
+		to_chat(master, span_notice(LANG("datum.6e1a47bc088b1cf9", null)))
 		return FALSE
 	if(!ghouldatum.owner.can_make_special(creator = bloodsuckerdatum.owner))
-		to_chat(master, span_notice("This Ghoul is unable to gain a Special rank due to innate features."))
+		to_chat(master, span_notice(LANG("datum.ba7644d27530434b", null)))
 		return FALSE
 	if(isprotean(servant))
-		to_chat(master, span_notice("You are unable to make this species your favorite Ghoul."))
+		to_chat(master, span_notice(LANG("datum.f9405e137578b202", null)))
 		return FALSE
 	if(bloodsuckerdatum.GetBloodVolume() < SPECIAL_GHOUL_COST)
-		to_chat(master, span_notice("You need at least 150 blood to make a Ghoul a Favorite Ghoul."))
+		to_chat(master, span_notice(LANG("datum.fac724f5d3e36dcb", null)))
 		return FALSE
 	var/list/options = list()
 	var/list/radial_display = list()
@@ -297,10 +296,10 @@
 		option.info = "[initial(ghouldatums.name)] - [span_boldnotice(initial(ghouldatums.ghoul_description))]"
 		radial_display[initial(ghouldatums.name)] = option
 	if(!length(options))
-		master.balloon_alert(master, "out of Special Ghoul slots!")
+		master.balloon_alert(master, LANG("datum.9bcce52c1bd32ff5", null))
 		return FALSE
 
-	to_chat(master, span_notice("You can change who this Ghoul is, who are they to you? This will cost [SPECIAL_GHOUL_COST] blood."))
+	to_chat(master, span_notice(LANG("datum.aaf81a30eac1ba91", list(SPECIAL_GHOUL_COST))))
 	var/ghoul_response = show_radial_menu(master, servant, radial_display)
 	if(!ghoul_response || !is_valid_ghoul(options[ghoul_response]))
 		return FALSE
@@ -308,17 +307,17 @@
 
 	// let's ask if the ghoul themselves actually wants to be a favorite
 #ifndef BLOODSUCKER_TESTING
-	servant.balloon_alert(master, "asking...")
-	var/ghoul_permission = tgui_alert(servant, initial(ghoul_type.ghoul_description), "Become a Special Ghoul?", list("Yes", "No"), 1 MINUTES) == "Yes"
+	servant.balloon_alert(master, LANG("datum.89326bf549c54c8f", null))
+	var/ghoul_permission = tgui_alert(servant, initial(ghoul_type.ghoul_description), LANG("datum.c4276a2650c1e907", null), list("Yes", "No"), 1 MINUTES) == "Yes"
 	if(!ghoul_permission)
-		servant.balloon_alert(master, "refused!")
+		servant.balloon_alert(master, LANG("datum.b3787e04d7a8aabc", null))
 		return FALSE
 #endif
 	if(QDELETED(src) || QDELETED(master) || QDELETED(servant) || !ghoul_type)
 		return FALSE
 
 	if(bloodsuckerdatum.GetBloodVolume() < SPECIAL_GHOUL_COST)
-		to_chat(master, span_notice("You took too long to make your ghoul, you no longer have enough blood!"))
+		to_chat(master, span_notice(LANG("datum.ed83361388b6f722", null)))
 		return FALSE
 	ghouldatum.make_special(ghoul_type)
 	bloodsuckerdatum.AdjustBloodVolume(-SPECIAL_GHOUL_COST)

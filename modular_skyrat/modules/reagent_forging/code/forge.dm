@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The baseline time to take for doing actions with the forge, like heating glass, setting ceramics, etc.
 #define BASELINE_ACTION_TIME (4 SECONDS)
 
@@ -117,56 +118,56 @@
 
 /obj/structure/reagent_forge/examine(mob/user)
 	. = ..()
-	. += span_notice("You could secure or unsecure it with a wrench.")
-	. += span_notice("You could pry it apart with a crowbar.")
+	. += span_notice(LANG("obj.34c6c87bfaa6960b", null))
+	. += span_notice(LANG("obj.738bc856dd14d31a", null))
 	if(used_tray)
-		. += span_notice("It has [used_tray] in it, which can be removed with an <b>empty hand</b>.")
+		. += span_notice(LANG("obj.3563f40bf009591d", list(used_tray)))
 	else
-		. += span_notice("You can place an <b>oven tray</b> in this to <b>bake</b> any items on it.")
+		. += span_notice(LANG("obj.7928ebc4b7e5acf7", null))
 
 	if(forge_level < FORGE_LEVEL_LEGENDARY)
-		. += span_notice("Using an <b>empty hand</b> on [src] will upgrade it, if your forging skill level is above the current upgrade's level.")
+		. += span_notice(LANG("obj.52e087ef680ea35c", list(src)))
 
 	switch(forge_level)
 		if(FORGE_LEVEL_YOU_PLAY_LIKE_A_NOOB)
-			. += span_notice("This forge has not been upgraded yet.")
+			. += span_notice(LANG("obj.50292b069527e22e", null))
 
 		if(FORGE_LEVEL_NOVICE)
-			. += span_notice("This forge has been upgraded by a novice smith.")
+			. += span_notice(LANG("obj.b72417bda1cec799", null))
 
 		if(FORGE_LEVEL_APPRENTICE)
-			. += span_notice("This forge has been upgraded by an apprentice smith.")
+			. += span_notice(LANG("obj.919a7005fa49639b", null))
 
 		if(FORGE_LEVEL_JOURNEYMAN)
-			. += span_notice("This forge has been upgraded by a journeyman smith.")
+			. += span_notice(LANG("obj.d88ec7b57ab8baff", null))
 
 		if(FORGE_LEVEL_EXPERT)
-			. += span_notice("This forge has been upgraded by an expert smith.")
+			. += span_notice(LANG("obj.becda68dffd940c8", null))
 
 		if(FORGE_LEVEL_MASTER)
-			. += span_notice("This forge has been upgraded by a master smith.")
+			. += span_notice(LANG("obj.eebfe21f982ab86e", null))
 
 		if(FORGE_LEVEL_LEGENDARY)
-			. += span_hierophant("This forge has been upgraded by a legendary smith.") // Legendary skills give you the greatest gift of all, cool text
+			. += span_hierophant(LANG("obj.1674e5f9ba51373c", null)) // Legendary skills give you the greatest gift of all, cool text
 
 	switch(temperature_loss_reduction)
 		if(0)
-			. += span_notice("[src] will lose heat at a normal rate.")
+			. += span_notice(LANG("obj.2a821d816def17e1", list(src)))
 		if(1)
-			. += span_notice("[src] will lose heat slightly slower than usual.")
+			. += span_notice(LANG("obj.84124d1e108ac4ba", list(src)))
 		if(2)
-			. += span_notice("[src] will lose heat a bit slower than usual.")
+			. += span_notice(LANG("obj.e40efdc3aec3963a", list(src)))
 		if(3)
-			. += span_notice("[src] will lose heat much slower than usual.")
+			. += span_notice(LANG("obj.38a9bec5640fde83", list(src)))
 		if(4)
-			. += span_notice("[src] will lose heat signficantly slower than usual.")
+			. += span_notice(LANG("obj.cfa9456120b901b6", list(src)))
 		if(5)
-			. += span_notice("[src] will lose heat at a practically negligible rate.")
+			. += span_notice(LANG("obj.438b6152c0a5bcf2", list(src)))
 
-	. += span_notice("<br>[src] is currently [forge_temperature] degrees hot, going towards [target_temperature] degrees.<br>")
+	. += span_notice(LANG("obj.b24133749d788786", list(src, forge_temperature, target_temperature)))
 
 	if(reagent_forging)
-		. += span_warning("[src] has a fine gold trim, it is ready to imbue chemicals into reagent objects.")
+		. += span_warning(LANG("obj.139ef30d28a90056", list(src)))
 
 	return .
 
@@ -326,7 +327,7 @@
 		baked_item.fire_act(1000) // Overcooked food really does burn, hot hot hot!
 
 		if(SPT_PROB(10, seconds_per_tick))
-			visible_message(span_danger("You smell a burnt smell coming from [src]!")) // Give indication that something is burning in the oven
+			visible_message(span_danger(LANG("obj.6d67c4b61a4de348", list(src)))) // Give indication that something is burning in the oven
 	set_smoke_state(worst_cooked_food_state)
 
 /// Sets the type of particles that the forge should be generating
@@ -384,51 +385,51 @@
 		level_to_upgrade_to = user.mind.get_skill_level(/datum/skill/smithing)
 
 	if((forge_level == level_to_upgrade_to) && !forced)
-		to_chat(user, span_notice("[src] was already upgraded by your level of expertise!"))
+		to_chat(user, span_notice(LANG("obj.b7ba98a8983a4483", list(src))))
 		return
 
 	switch(level_to_upgrade_to) // Remember to carry things over from past levels in case someone skips levels in upgrading
 		if(SKILL_LEVEL_NONE)
 			if(!forced)
-				to_chat(user, span_notice("You'll need some forging skills to really understand how to upgrade [src]."))
+				to_chat(user, span_notice(LANG("obj.555ff34a60cc07f9", list(src))))
 			return
 
 		if(SKILL_LEVEL_NOVICE)
 			if(!forced)
-				to_chat(user, span_notice("With some experience, you've come to realize there are some easily fixable spots with poor insulation..."))
+				to_chat(user, span_notice(LANG("obj.d588bd106157989a", null)))
 			temperature_loss_reduction = 1
 			forge_level = FORGE_LEVEL_NOVICE
 
 		if(SKILL_LEVEL_APPRENTICE)
 			if(!forced)
-				to_chat(user, span_notice("Further insulation and protection of the thinner areas means [src] will lose heat just that little bit slower."))
+				to_chat(user, span_notice(LANG("obj.f48485ab5b9be40d", list(src))))
 			temperature_loss_reduction = 2
 			forge_level = FORGE_LEVEL_APPRENTICE
 
 		if(SKILL_LEVEL_JOURNEYMAN)
 			if(!forced)
-				to_chat(user, span_notice("Some careful placement and stoking of the flame will allow you to keep at least the embers burning..."))
+				to_chat(user, span_notice(LANG("obj.f238749f87091c02", null)))
 			minimum_target_temperature = 25 // Will allow quicker reheating from having no fuel
 			temperature_loss_reduction = 3
 			forge_level = FORGE_LEVEL_JOURNEYMAN
 
 		if(SKILL_LEVEL_EXPERT)
 			if(!forced)
-				to_chat(user, span_notice("[src] has become nearly perfect, able to hold heat for long enough that even a piece of wood can outmatch the longevity of lesser forges."))
+				to_chat(user, span_notice(LANG("obj.3a5c9a07f572a30a", list(src))))
 			temperature_loss_reduction = 4
 			minimum_target_temperature = 25
 			forge_level = FORGE_LEVEL_EXPERT
 
 		if(SKILL_LEVEL_MASTER)
 			if(!forced)
-				to_chat(user, span_notice("The perfect forge for a perfect metalsmith, with your knowledge it should bleed heat so slowly, that not even you will live to see [src] cool."))
+				to_chat(user, span_notice(LANG("obj.bce158add92bb400", list(src))))
 			temperature_loss_reduction = MAX_TEMPERATURE_LOSS_DECREASE
 			minimum_target_temperature = 25
 			forge_level = FORGE_LEVEL_MASTER
 
 		if(SKILL_LEVEL_LEGENDARY)
 			if(!forced)
-				to_chat(user, span_notice("With just the right heat treating technique, metal could be made to accept reagents..."))
+				to_chat(user, span_notice(LANG("obj.f7c6d9ad9a88840f", null)))
 			create_reagent_forge()
 			temperature_loss_reduction = MAX_TEMPERATURE_LOSS_DECREASE
 			minimum_target_temperature = 25 // This won't matter except in a few cases here, but we still need to cover those few cases
@@ -467,7 +468,7 @@
 		return TRUE
 
 	if(used_tray)
-		balloon_alert(user, "remove [used_tray] first")
+		balloon_alert(user, LANG("obj.b155334402850025", list(used_tray)))
 		return TRUE
 
 	if(istype(attacking_item, /obj/item/stack/sheet/mineral/wood)) // Wood is a weak fuel, and will only get the forge up to 50 temperature
@@ -489,7 +490,7 @@
 	if(attacking_item.GetComponent(/datum/component/forge_smithable))
 		var/datum/component/forge_smithable/mycomponent = attacking_item.GetComponent(/datum/component/forge_smithable)
 		mycomponent.heat_for_smithing(FORGE_HEATING_DURATION)
-		balloon_alert(user, "heated [attacking_item]")
+		balloon_alert(user, LANG("obj.760bff133c97f5ea", list(attacking_item)))
 		return TRUE
 
 	if(istype(attacking_item, /obj/item/ceramic))
@@ -512,7 +513,7 @@
 /// Take the given tray and place it inside the forge, updating everything relevant to that
 /obj/structure/reagent_forge/proc/add_tray_to_forge(mob/living/user, obj/item/plate/oven_tray/tray)
 	if(used_tray) // This shouldn't be able to happen but just to be safe
-		balloon_alert_to_viewers("already has tray")
+		balloon_alert_to_viewers(LANG("obj.666f207cebecbdb8", null))
 		return
 
 	if(!user.transferItemToLoc(tray, src, silent = FALSE))
@@ -522,7 +523,7 @@
 	for(var/obj/item/baked_item in tray.contents)
 		SEND_SIGNAL(baked_item, COMSIG_ITEM_OVEN_PLACED_IN, src, user)
 
-	balloon_alert_to_viewers("put [tray] in [src]")
+	balloon_alert_to_viewers(LANG("obj.5c2ac820dda68a88", list(tray, src)))
 	used_tray = tray
 	update_appearance()
 
@@ -530,12 +531,12 @@
 /obj/structure/reagent_forge/proc/remove_tray_from_forge(mob/living/carbon/user)
 	if(!used_tray)
 		if(user)
-			balloon_alert_to_viewers("no tray")
+			balloon_alert_to_viewers(LANG("obj.22bb5c6a0a2f82eb", null))
 		return
 
 	if(user)
 		user.put_in_hands(used_tray)
-		balloon_alert_to_viewers("removed [used_tray]")
+		balloon_alert_to_viewers(LANG("obj.c6b4aa687c2eb2c1", list(used_tray)))
 	else
 		used_tray.forceMove(get_turf(src))
 	used_tray = null
@@ -545,25 +546,25 @@
 
 	if(is_strong_fuel)
 		if(forge_fuel_strong >= 5 MINUTES)
-			balloon_alert(user, "[src] is full on coal")
+			balloon_alert(user, LANG("obj.76e32f4fdf5ade4c", list(src)))
 			return
 	if(forge_fuel_weak >= 5 MINUTES)
-		balloon_alert(user, "[src] is full on wood")
+		balloon_alert(user, LANG("obj.84df715afa6eff57", list(src)))
 		return
 
 	var/obj/item/stack/sheet/stack_sheet = refueling_stack
 	if(!stack_sheet.use(1))
-		balloon_alert(user, "not enough fuel")
+		balloon_alert(user, LANG("obj.ee38f429ab6c8597", null))
 		return
 
 	if(is_strong_fuel)
 		forge_fuel_strong += 5 MINUTES
 	else
 		forge_fuel_weak += 5 MINUTES
-	balloon_alert(user, "fueled [src]")
+	balloon_alert(user, LANG("obj.c537012baac25866", list(src)))
 
 	if(prob(CHARCOAL_CHANCE) && !is_strong_fuel)
-		to_chat(user, span_notice("[src]'s fuel is packed densely enough to have made some charcoal!"))
+		to_chat(user, span_notice(LANG("obj.c19ef717c7f9aa24", list(src))))
 		addtimer(CALLBACK(src, PROC_REF(spawn_coal)), 1 MINUTES)
 
 /// Takes given ore and smelts it, possibly producing extra sheets if upgraded
@@ -571,19 +572,19 @@
 	if(DOING_INTERACTION(user, DOAFTER_SMITHING_FORGE))
 		return
 	if(forge_temperature < MIN_FORGE_TEMP)
-		balloon_alert(user, "forge too cool")
+		balloon_alert(user, LANG("obj.2f50735ea303ecaa", null))
 		return
 
 	var/skill_modifier = user.mind.get_skill_modifier(/datum/skill/smithing, SKILL_SPEED_MODIFIER)
 
 	if(!ore_item.refined_type)
-		balloon_alert(user, "cannot smelt [ore_item]")
+		balloon_alert(user, LANG("obj.502e2301f2e81257", list(ore_item)))
 		return
 
-	balloon_alert_to_viewers("smelting...")
+	balloon_alert_to_viewers(LANG("obj.35f17b710108676a", null))
 
 	if(!do_after(user, skill_modifier * 3 SECONDS, target = src, interaction_key = DOAFTER_SMITHING_FORGE))
-		balloon_alert(user, "stopped smelting [ore_item]")
+		balloon_alert(user, LANG("obj.a3e1343f9a93c641", list(ore_item)))
 		return
 
 	var/src_turf = get_turf(src)
@@ -599,11 +600,11 @@
 /// Handles reagent imbuing
 /obj/structure/reagent_forge/proc/handle_reagent_imbue(obj/attacking_item, mob/living/user)
 	if(!USER_CAN_REAGENT_IMBUE(user))
-		to_chat(user, span_danger("You don't know the right trick to imbue this weapon!"))
+		to_chat(user, span_danger(LANG("obj.72716b357fb748ce", null)))
 		return
 
 	if(attacking_item?.reagents?.total_volume < 1)
-		to_chat(user, span_danger("You need to coat the blade in a reagent before you can imbue it!"))
+		to_chat(user, span_danger(LANG("obj.35e67440d417d1e0", null)))
 		return
 
 	if(DOING_INTERACTION(user, DOAFTER_SMITHING_FORGE))
@@ -611,19 +612,19 @@
 
 	var/datum/component/reagent_imbued/weapon_component = attacking_item.GetComponent(/datum/component/reagent_imbued)
 	if(!weapon_component)
-		balloon_alert(user, "[attacking_item] is unimbueable!")
+		balloon_alert(user, LANG("obj.998173aaec55fd87", list(attacking_item)))
 		return
 
-	balloon_alert_to_viewers("imbuing...")
+	balloon_alert_to_viewers(LANG("obj.d7ed8584e526b9e3", null))
 
 	if(!do_after(user, 10 SECONDS, target = src, interaction_key = DOAFTER_SMITHING_FORGE))
-		balloon_alert(user, "stopped imbuing")
+		balloon_alert(user, LANG("obj.9ea682733bbd731a", null))
 		return
 
 	if(USER_CAN_REAGENT_IMBUE(user))
 		weapon_component.set_reagent_imbue(attacking_item.reagents, clear_source_reagents = TRUE)
 
-	balloon_alert_to_viewers("imbued [attacking_item]")
+	balloon_alert_to_viewers(LANG("obj.c808bc394cb3cfc9", list(attacking_item)))
 	playsound(src, 'sound/effects/magic/demon_consume.ogg', 50, TRUE)
 	return TRUE
 
@@ -633,23 +634,23 @@
 	if(DOING_INTERACTION(user, DOAFTER_SMITHING_FORGE))
 		return
 	if(forge_temperature < MIN_FORGE_TEMP)
-		balloon_alert(user, "forge too cool")
+		balloon_alert(user, LANG("obj.2f50735ea303ecaa", null))
 		return
 
 	var/obj/item/ceramic/ceramic_item = attacking_item
 	var/ceramic_speed = user.mind.get_skill_modifier(/datum/skill/production, SKILL_SPEED_MODIFIER) * BASELINE_ACTION_TIME
 
 	if(!ceramic_item.forge_item)
-		balloon_alert(user, "cannot set [ceramic_item]")
+		balloon_alert(user, LANG("obj.5857f7522bf1cade", list(ceramic_item)))
 		return
 
-	balloon_alert_to_viewers("setting [ceramic_item]")
+	balloon_alert_to_viewers(LANG("obj.9c64b67dcff8bbfa", list(ceramic_item)))
 
 	if(!do_after(user, ceramic_speed, target = src, interaction_key = DOAFTER_SMITHING_FORGE))
-		balloon_alert(user, "stopped setting [ceramic_item]")
+		balloon_alert(user, LANG("obj.c51bbc0464db5aff", list(ceramic_item)))
 		return
 
-	balloon_alert(user, "finished setting [ceramic_item]")
+	balloon_alert(user, LANG("obj.e70febeb40aabf13", list(ceramic_item)))
 	var/obj/item/ceramic/spawned_ceramic = new ceramic_item.forge_item(get_turf(src))
 	user.mind?.adjust_experience(/datum/skill/production, 50)
 	spawned_ceramic.color = ceramic_item.color
@@ -660,17 +661,17 @@
 	if(DOING_INTERACTION(user, DOAFTER_SMITHING_FORGE))
 		return
 	if(forge_temperature < MIN_FORGE_TEMP)
-		balloon_alert(user, "forge too cool")
+		balloon_alert(user, LANG("obj.2f50735ea303ecaa", null))
 		return
 
 	var/obj/item/stack/sheet/glass/glass_item = attacking_item
 	var/glassblowing_speed = user.mind.get_skill_modifier(/datum/skill/production, SKILL_SPEED_MODIFIER) * BASELINE_ACTION_TIME
 	var/glassblowing_amount = BASELINE_HEATING_DURATION / user.mind.get_skill_modifier(/datum/skill/production, SKILL_SPEED_MODIFIER)
 
-	balloon_alert_to_viewers("heating...")
+	balloon_alert_to_viewers(LANG("obj.0dbdb45629f922a6", null))
 
 	if(!do_after(user, glassblowing_speed, target = src, interaction_key = DOAFTER_SMITHING_FORGE) || !glass_item.use(1))
-		balloon_alert(user, "stopped heating [glass_item]")
+		balloon_alert(user, LANG("obj.34c2f70deab9e0ab", list(glass_item)))
 		return
 
 	var/obj/item/glassblowing/molten_glass/spawned_glass = new /obj/item/glassblowing/molten_glass(get_turf(src))
@@ -683,7 +684,7 @@
 	if(DOING_INTERACTION(user, DOAFTER_SMITHING_FORGE))
 		return
 	if(forge_temperature < MIN_FORGE_TEMP)
-		balloon_alert(user, "forge too cool")
+		balloon_alert(user, LANG("obj.2f50735ea303ecaa", null))
 		return
 
 	var/obj/item/glassblowing/metal_cup/metal_item = attacking_item
@@ -691,13 +692,13 @@
 	var/glassblowing_amount = BASELINE_HEATING_DURATION / user.mind.get_skill_modifier(/datum/skill/production, SKILL_SPEED_MODIFIER)
 
 	if(!metal_item.has_sand)
-		balloon_alert(user, "[metal_item] has no sand")
+		balloon_alert(user, LANG("obj.4597fbf74af4fb4c", list(metal_item)))
 		return
 
-	balloon_alert_to_viewers("heating...")
+	balloon_alert_to_viewers(LANG("obj.0dbdb45629f922a6", null))
 
 	if(!do_after(user, glassblowing_speed, target = src, interaction_key = DOAFTER_SMITHING_FORGE))
-		balloon_alert(user, "stopped heating [metal_item]")
+		balloon_alert(user, LANG("obj.34c2f70deab9e0ab", list(metal_item)))
 		return
 
 	metal_item.has_sand = FALSE
@@ -715,23 +716,23 @@
 	var/obj/item/forging/forge_item = tool
 
 	if(!forge_fuel_strong && !forge_fuel_weak)
-		balloon_alert(user, "no fuel in [src]")
+		balloon_alert(user, LANG("obj.689211b8c6beadcc", list(src)))
 		return ITEM_INTERACT_SUCCESS
 
 	if(forge_temperature >= MAX_FORGE_TEMP)
-		balloon_alert(user, "[src] cannot heat further")
+		balloon_alert(user, LANG("obj.24d3a91137a4ad95", list(src)))
 		return ITEM_INTERACT_SUCCESS
 
-	balloon_alert_to_viewers("billowing...")
+	balloon_alert_to_viewers(LANG("obj.d7981a432150c31b", null))
 
 	while(forge_temperature < 91)
 		if(!do_after(user, skill_modifier * forge_item.toolspeed * 15 DECISECONDS, target = src, interaction_key = DOAFTER_SMITHING_FORGE))
-			balloon_alert_to_viewers("stopped billowing")
+			balloon_alert_to_viewers(LANG("obj.5db316f513cb6804", null))
 			return ITEM_INTERACT_SUCCESS
 
 		forge_temperature += 10
 
-	balloon_alert(user, "successfully heated [src]")
+	balloon_alert(user, LANG("obj.7c734f2d88c77ddf", list(src)))
 	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/reagent_forge/tong_act(mob/living/user, obj/item/tool)
@@ -740,14 +741,14 @@
 	var/obj/item/tongs_contents = locate(/obj/item/) in tool.contents
 
 	if(forge_temperature < MIN_FORGE_TEMP)
-		balloon_alert(user, "forge too cool")
+		balloon_alert(user, LANG("obj.2f50735ea303ecaa", null))
 		return ITEM_INTERACT_BLOCKING
 
 	// Here we check the item used on us (tongs) for an incomplete forge item of some kind to heat
 	var/datum/component/forge_smithable/smithable = tongs_contents?.GetComponent(/datum/component/forge_smithable)
 	if(!isnull(smithable))
 		smithable.heat_for_smithing(FORGE_HEATING_DURATION)
-		balloon_alert(user, "heated [tongs_contents]")
+		balloon_alert(user, LANG("obj.760bff133c97f5ea", list(tongs_contents)))
 		return ITEM_INTERACT_SUCCESS
 
 	// Here we check the item used on us (tongs) for a stack of some kind to create an object from
@@ -762,11 +763,11 @@
 		return
 
 	if(forge_temperature < MIN_FORGE_TEMP)
-		balloon_alert(user, "forge too cool")
+		balloon_alert(user, LANG("obj.2f50735ea303ecaa", null))
 		return ITEM_INTERACT_BLOCKING
 
 	if(values_sum(search_stack.mats_per_unit) < SHEET_MATERIAL_AMOUNT)
-		balloon_alert(user, "not enough material in [search_stack]")
+		balloon_alert(user, LANG("obj.90b30619315cb76f", list(search_stack)))
 		return ITEM_INTERACT_BLOCKING
 
 	var/list/my_list = get_filtered_radial_choices(user)
@@ -774,7 +775,7 @@
 	var/skill_modifier = user.mind.get_skill_modifier(/datum/skill/smithing, SKILL_SPEED_MODIFIER)
 
 	if(!user_choice)
-		balloon_alert(user, "nothing chosen")
+		balloon_alert(user, LANG("obj.79ebf8df11e241bb", null))
 		return ITEM_INTERACT_BLOCKING
 
 	// Sets up a list of the materials to give to the item later
@@ -788,22 +789,22 @@
 			material_list[material] = SHEET_MATERIAL_AMOUNT
 
 	if(search_stack.amount < 1)
-		balloon_alert(user, "not enough of [search_stack]")
+		balloon_alert(user, LANG("obj.c5fd95b69c463fb1", list(search_stack)))
 		return ITEM_INTERACT_BLOCKING
 
-	balloon_alert_to_viewers("heating [search_stack]")
+	balloon_alert_to_viewers(LANG("obj.d0bc5f448dd8a4d3", list(search_stack)))
 
 	if(!burn_hand)
 		if(!isnull(tool))
 			if(!do_after(user, skill_modifier * tool.toolspeed * 2 SECONDS, target = src, interaction_key = DOAFTER_SMITHING_FORGE))
-				balloon_alert_to_viewers("stopped heating [search_stack]")
+				balloon_alert_to_viewers(LANG("obj.34c2f70deab9e0ab", list(search_stack)))
 				return ITEM_INTERACT_BLOCKING
 		else
 			stack_trace("[src] had its 'make forgeable item' function called, with burn_hand = false and tool = null! This should never happen!")
 	else
-		to_chat(user, span_warning("Heating the [search_stack] without equipment seems like a bad idea..."))
+		to_chat(user, span_warning(LANG("obj.6fd0129bbebf23a5", list(search_stack))))
 		if(!do_after(user, skill_modifier * 5 SECONDS, target = src, interaction_key = DOAFTER_SMITHING_FORGE))
-			balloon_alert_to_viewers("stopped heating [search_stack]")
+			balloon_alert_to_viewers(LANG("obj.34c2f70deab9e0ab", list(search_stack)))
 			return ITEM_INTERACT_BLOCKING
 
 		var/hand_protected = FALSE
@@ -820,13 +821,13 @@
 			var/hitzone = user.held_index_to_dir(user.active_hand_index) == "r" ? BODY_ZONE_PRECISE_R_HAND : BODY_ZONE_PRECISE_L_HAND
 			user.apply_damage(35, BURN, hitzone)
 			playsound(src, 'sound/effects/wounds/sizzle1.ogg', 50, TRUE)
-			to_chat(user, span_danger("You burn your hand putting [search_stack] in [src]!"))
+			to_chat(user, span_danger(LANG("obj.eb0ca4991afacdb6", list(search_stack, src))))
 			user.add_mood_event("burnt_thumb", /datum/mood_event/burnt_thumb)
 
 	search_stack.forceMove(get_turf(src))
 
 	if(!search_stack.use(1))
-		balloon_alert(user, "not enough of [search_stack]")
+		balloon_alert(user, LANG("obj.c5fd95b69c463fb1", list(search_stack)))
 		return ITEM_INTERACT_BLOCKING
 
 	var/spawn_item = choice_list[user_choice]
@@ -839,7 +840,7 @@
 	if(!isnull(smith_component))
 		COOLDOWN_START(smith_component, heating_remainder, FORGE_HEATING_DURATION)
 
-	balloon_alert(user, "prepared [search_stack] into [user_choice]")
+	balloon_alert(user, LANG("obj.1784b6dbb105c338", list(search_stack, user_choice)))
 
 	return ITEM_INTERACT_SUCCESS
 
@@ -852,27 +853,27 @@
 	var/glassblowing_amount = BASELINE_HEATING_DURATION / user.mind.get_skill_modifier(/datum/skill/production, SKILL_SPEED_MODIFIER)
 
 	if(forge_temperature < MIN_FORGE_TEMP)
-		balloon_alert(user, "not hot enough to start heating [blowing_item]")
+		balloon_alert(user, LANG("obj.acbd16e54c767ebb", list(blowing_item)))
 		return ITEM_INTERACT_SUCCESS
 
 	var/obj/item/glassblowing/molten_glass/find_glass = locate() in blowing_item.contents
 	if(!find_glass)
-		balloon_alert(user, "[blowing_item] does not have any glass to heat up.")
+		balloon_alert(user, LANG("obj.4d57aff91913e9af", list(blowing_item)))
 		return ITEM_INTERACT_SUCCESS
 
 	if(!COOLDOWN_FINISHED(find_glass, remaining_heat))
-		balloon_alert(user, "[find_glass] is still has remaining heat.")
+		balloon_alert(user, LANG("obj.0e8f76b1e74b410f", list(find_glass)))
 		return ITEM_INTERACT_SUCCESS
 
-	to_chat(user, span_notice("You begin heating up [blowing_item]."))
+	to_chat(user, span_notice(LANG("obj.612cae705eee5b4b", list(blowing_item))))
 
 	if(!do_after(user, glassblowing_speed, target = src, interaction_key = DOAFTER_SMITHING_FORGE))
-		balloon_alert(user, "[blowing_item] is interrupted in its heating process.")
+		balloon_alert(user, LANG("obj.9dea8f05ca91dbcb", list(blowing_item)))
 		return ITEM_INTERACT_SUCCESS
 
 	COOLDOWN_START(find_glass, remaining_heat, glassblowing_amount)
 	find_glass.total_time = glassblowing_amount
-	to_chat(user, span_notice("You finish heating up [blowing_item]."))
+	to_chat(user, span_notice(LANG("obj.ea0991c2c0f1859d", list(blowing_item))))
 	user.mind?.adjust_experience(/datum/skill/production, 10)
 	return ITEM_INTERACT_SUCCESS
 
@@ -884,7 +885,7 @@
 
 /obj/structure/reagent_forge/crowbar_act(mob/living/user, obj/item/tool)
 	tool.play_tool_sound(src)
-	balloon_alert(user, "pried apart")
+	balloon_alert(user, LANG("obj.4462066733c487bc", null))
 	deconstruct(TRUE)
 	return TRUE
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /////RESTAURANT/////
 /datum/venue/restaurant
@@ -48,8 +49,8 @@
 		return
 
 	customer_pawn.visible_message(
-		span_danger("[customer_pawn] pushes [order_item] into their mouth-shaped hole!"),
-		span_danger("You push [order_item] into your mouth-shaped hole."),
+		span_danger(LANG("datum.08963d4918e4da97", list(customer_pawn, order_item))),
+		span_danger(LANG("datum.f660969ad621796e", list(order_item))),
 	)
 	playsound(customer_pawn, 'sound/items/eatfood.ogg', rand(10,50), TRUE)
 	qdel(order_item)

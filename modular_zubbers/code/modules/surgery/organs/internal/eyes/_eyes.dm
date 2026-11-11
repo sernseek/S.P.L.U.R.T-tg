@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/eyes/shadekin
 	name = "shadekin eyes"
 	desc = "These eyes are massive, and feel warm to the touch. The shadekin that's missing these is probably feeling very queasy."
@@ -21,9 +22,9 @@
 /obj/item/organ/eyes/robotic/multitool_act(mob/living/user, obj/item/tool)
 	. = ..()
 	// Choose left and right eye color
-	to_chat(user, span_notice("Changing Eye Color: Pressing 'Cancel' or closing out the window will return the eye's current color."))
-	eye_color_left = tgui_color_picker(user, "Pick a new color", "Left Eye Color", eye_color_left)
-	eye_color_right = tgui_color_picker(user, "Pick a new color", "Right Eye Color", eye_color_right)
+	to_chat(user, span_notice(LANG("obj.856089d0bfeefbc7", null)))
+	eye_color_left = tgui_color_picker(user, LANG("obj.d302d29716c6cd0a", null), LANG("obj.e946dcf7fc3e8732", null), eye_color_left)
+	eye_color_right = tgui_color_picker(user, LANG("obj.d302d29716c6cd0a", null), LANG("obj.17ecfbe8cd1a6caf", null), eye_color_right)
 
 /obj/item/organ/eyes/moth
 	eye_icon_state = "motheyes_white"

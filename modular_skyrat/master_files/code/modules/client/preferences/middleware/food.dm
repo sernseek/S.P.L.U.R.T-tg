@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // To make this system not a massive meta-pick for gamers, while still allowing plenty of room for unique combinations.
 #define MINIMUM_REQUIRED_TOXICS 1
 #define MINIMUM_REQUIRED_DISLIKES 3
@@ -20,7 +21,7 @@ GLOBAL_DATUM_INIT(food_prefs_menu, /datum/food_prefs_menu, new)
 
 	var/fail_reason = GLOB.food_prefs_menu.is_food_invalid(preferences)
 	if(fail_reason)
-		to_chat(preferences.parent, span_announce("Your food preferences can't be set because of [fail_reason] choices! Please check your preferences!")) // Sorry, but I don't want folk sleeping on this.
+		to_chat(preferences.parent, span_announce(LANG("datum.b16bdca9b11cf053", list(fail_reason)))) // Sorry, but I don't want folk sleeping on this.
 		return
 
 	var/obj/item/organ/tongue/target_tongue = target.get_organ_slot(ORGAN_SLOT_TONGUE)

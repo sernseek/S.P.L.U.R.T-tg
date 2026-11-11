@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_VAR_INIT(SOOC_COLOR, "#ff5454")
 GLOBAL_VAR_INIT(sooc_allowed, TRUE)	// used with admin verbs to disable sooc - not a config option
 GLOBAL_LIST_EMPTY(ckey_to_sooc_name)
@@ -5,10 +6,10 @@ GLOBAL_LIST_EMPTY(ckey_to_sooc_name)
 #define SOOC_LISTEN_PLAYER 1
 #define SOOC_LISTEN_ADMIN 2
 
-GAME_VERB(/client, sooc, "SOOC", "OOC")
+GAME_VERB(/client, sooc, "安保 OOC", "OOC")
 	VERB_ARG(msg, VERB_ARG_TYPE_TEXT, VERB_ARG_SOURCE_INPUT)
 	if(GLOB.say_disabled)	//This is here to try to identify lag problems
-		to_chat(usr, span_danger("Speech is currently admin-disabled."))
+		to_chat(usr, span_danger(LANG("client.b79ad8a388d1b3a4", null)))
 		return
 
 	if(!mob)
@@ -25,19 +26,19 @@ GAME_VERB(/client, sooc, "SOOC", "OOC")
 	if(!holder)
 		var/job = mob?.mind.assigned_role.title
 		if(!job || !job_lookup[job])
-			to_chat(src, span_danger("You're not a security role!"))
+			to_chat(src, span_danger(LANG("client.2d3c1ccc8de8cd93", null)))
 			return
 		if(job == JOB_SECURITY_CYBORG && !secborg_sooc_eligible(mob)) //SPLURT ADDITION: fired secborgs lose SOOC access
-			to_chat(src, span_danger("You're not a security role!")) //SPLURT ADDITION
+			to_chat(src, span_danger(LANG("client.2d3c1ccc8de8cd93", null))) //SPLURT ADDITION
 			return //SPLURT ADDITION
 		if(!GLOB.sooc_allowed)
-			to_chat(src, span_danger("SOOC is globally muted."))
+			to_chat(src, span_danger(LANG("client.7b81d1c7f84c37cd", null)))
 			return
 		if(prefs.muted & MUTE_OOC)
-			to_chat(src, span_danger("You cannot use OOC (muted)."))
+			to_chat(src, span_danger(LANG("client.058db9ff84dbe18d", null)))
 			return
 	if(is_banned_from(ckey, "OOC"))
-		to_chat(src, span_danger("You have been banned from OOC."))
+		to_chat(src, span_danger(LANG("client.aaaae170c8fb6787", null)))
 		return
 	if(QDELETED(src))
 		return
@@ -51,7 +52,7 @@ GAME_VERB(/client, sooc, "SOOC", "OOC")
 	msg = emoji_parse(msg)
 
 	if(!(prefs.chat_toggles & CHAT_OOC))
-		to_chat(src, span_danger("You have OOC muted."))
+		to_chat(src, span_danger(LANG("client.a877c979d7d49962", null)))
 		return
 
 	mob.log_talk(raw_msg, LOG_OOC, tag="SOOC")
@@ -86,7 +87,7 @@ GAME_VERB(/client, sooc, "SOOC", "OOC")
 		var/mode = listeners[iterated_listener]
 		var/color = (!anon && CONFIG_GET(flag/allow_admin_ooccolor) && iterated_client?.prefs?.read_preference(/datum/preference/color/ooc_color)) ? iterated_client?.prefs?.read_preference(/datum/preference/color/ooc_color) : GLOB.SOOC_COLOR
 		var/name = (mode == SOOC_LISTEN_ADMIN && anon) ? "([key])[keyname]" : keyname
-		to_chat(iterated_client, span_oocplain("<font color='[color]'><b><span class='prefix'>SOOC:</span> <EM>[name]:</EM> <span class='message linkify'>[msg]</span></b></font>"))
+		to_chat(iterated_client, span_oocplain(LANG("client.673249a7bf265186", list(color, name, msg))))
 
 #undef SOOC_LISTEN_PLAYER
 #undef SOOC_LISTEN_ADMIN
@@ -114,9 +115,9 @@ GAME_VERB(/client, sooc, "SOOC", "OOC")
 					listeners[iterated_mob.client] = TRUE //SPLURT ADDITION
 	for(var/iterated_listener in listeners)
 		var/client/iterated_client = iterated_listener
-		to_chat(iterated_client, span_oocplain("<b>The SOOC channel has been globally [GLOB.sooc_allowed ? "enabled" : "disabled"].</b>"))
+		to_chat(iterated_client, span_oocplain(LANG("_root.76719f4cf5e89c52", list(GLOB.sooc_allowed ? "enabled" : "disabled"))))
 
-ADMIN_VERB(togglesooc, R_ADMIN, "Toggle Security OOC", "Toggles Security OOC.", ADMIN_CATEGORY_SERVER)
+ADMIN_VERB(togglesooc, R_ADMIN, "切换安保 OOC", "Toggles Security OOC.", ADMIN_CATEGORY_SERVER)
 	toggle_sooc()
 	log_admin("[key_name(usr)] toggled Security OOC.")
 	message_admins("[key_name_admin(usr)] toggled Security OOC.")

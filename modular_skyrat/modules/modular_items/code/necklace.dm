@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //DEFAULT NECK ITEMS OVERRIDE//
 /obj/item/clothing/neck
 	w_class = WEIGHT_CLASS_SMALL
@@ -28,7 +29,7 @@
 		return
 	if(slot & ITEM_SLOT_NECK)
 		user.grant_language(/datum/language/ashtongue/, source = LANGUAGE_TRANSLATOR)
-		to_chat(user, span_boldnotice("Slipping the necklace on, you feel the insidious creep of the Necropolis enter your bones, and your very shadow. You find yourself with an unnatural knowledge of Ashtongue; but the amulet's eye stares at you."))
+		to_chat(user, span_boldnotice(LANG("obj.39327431fd995359", null)))
 
 /obj/item/clothing/neck/necklace/ashwalker/dropped(mob/user)
 	. = ..()
@@ -37,7 +38,7 @@
 	var/mob/living/carbon/human/H = user
 	if(H.get_item_by_slot(ITEM_SLOT_NECK) == src && !QDELETED(src)) //This can be called as a part of destroy
 		user.remove_language(/datum/language/ashtongue/, source = LANGUAGE_TRANSLATOR)
-		to_chat(user, span_boldnotice("You feel the alien mind of the Necropolis lose its interest in you as you remove the necklace. The eye closes, and your mind does as well, losing its grasp of Ashtongue."))
+		to_chat(user, span_boldnotice(LANG("obj.1df4a36bd6de74c0", null)))
 
 //ASHWALKER TRANSLATOR NECKLACE END//
 

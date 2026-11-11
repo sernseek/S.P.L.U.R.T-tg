@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 	Vending machine refills can be found at /code/modules/vending/ within each vending machine's respective file
 */
@@ -41,11 +42,11 @@
 
 	var/num = get_part_rating()
 	if (!num)
-		. += span_notice("It's empty!")
+		. += span_notice(LANG("obj.b78d0e827268e0c2", null))
 	else if(num == INFINITY)
-		. += span_notice("It's full of supplies!")
+		. += span_notice(LANG("obj.d673f2e4692ea1e0", null))
 	else
-		. += span_notice("It can restock [num] item\s.")
+		. += span_notice(LANG("obj.6fd94d47b77d6817", list(num)))
 
 /obj/item/vending_refill/get_part_rating()
 	. = 0

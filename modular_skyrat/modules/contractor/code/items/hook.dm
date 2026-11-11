@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/magic/hook/contractor
 	name = "SCORPION hook"
 	desc = "A hardlight hook used to non-lethally pull targets much closer to the user."
@@ -17,5 +18,5 @@
 
 /obj/item/gun/magic/hook/contractor/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	if(prob(1))
-		user.say("+GET OVER HERE!+", forced = "scorpion hook")
+		user.say(LANG("obj.99edeb6a83c6e4eb", null), forced = "scorpion hook")
 	return ..()

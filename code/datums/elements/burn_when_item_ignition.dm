@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * This item will be set on fire if a mob clicks on it with something that can ignite objects,
  * OR if a mob clicks it on something else that can ignite objects.
@@ -41,14 +42,14 @@
 		user.ignite_mob()
 		if(user.on_fire)
 			user.visible_message(
-				span_warning("[user] accidentally ignites [user.p_them()]self!"),
-				span_userdanger("You miss [src] and accidentally light yourself on fire!"),
+				span_warning(LANG("datum.6ef9bfb7349da901", list(user, user.p_them()))),
+				span_userdanger(LANG("datum.72ea9a2753009426", list(src))),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 		else
 			user.visible_message(
-				span_warning("[user] accidentally burns [user.p_them()]self!"),
-				span_userdanger("You miss [src] and accidentally burn yourself!"),
+				span_warning(LANG("datum.1be980e180100fec", list(user, user.p_them()))),
+				span_userdanger(LANG("datum.439e95039214c37b", list(src))),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 		return ITEM_INTERACT_SUCCESS

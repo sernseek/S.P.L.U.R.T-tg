@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 /datum/interaction/lewd // Additional variables to be used by interactions that can knot
 	// Can this interaction knot?
@@ -239,22 +240,22 @@
 		else
 			target.adjust_pain(4, user, src, position)
 		target.Stun(80) // stun for dramatic effect
-	user.visible_message(span_lewd("[user] [tie]s their [knot] inside of [target]!"), span_lewd("I [tie] my [knot] inside of [target]."))
+	user.visible_message(span_lewd(LANG("datum.a3a027fc4cd409c5", list(user, tie, knot, target))), span_lewd(LANG("datum.fc7656dfcd125888", list(tie, knot, target))))
 
 	if(target.stat != DEAD)
 		switch(knotted_orifices(target))
 			if(1)
-				to_chat(target, span_userdanger("You have been knotted!"))
+				to_chat(target, span_userdanger(LANG("datum.d4806e4d64e6ff28", null)))
 			if(2)
-				to_chat(target, span_userdanger("You have been double-knotted!"))
+				to_chat(target, span_userdanger(LANG("datum.5368f67a635c9ae8", null)))
 			if(3)
-				to_chat(target, span_userdanger("You have been triple-knotted!"))
+				to_chat(target, span_userdanger(LANG("datum.647d8c1e4e459844", null)))
 			if(4)
-				to_chat(target, span_userdanger("You have been quad-knotted!"))
+				to_chat(target, span_userdanger(LANG("datum.d613fd817fa830b0", null)))
 			if(5 to 9)
-				to_chat(target, span_userdanger("Knotting Spree!"))
+				to_chat(target, span_userdanger(LANG("datum.21300fb0a05bc409", null)))
 			else
-				to_chat(target, span_userdanger("Knotting Frenzy!"))
+				to_chat(target, span_userdanger(LANG("datum.aaba074ca305eca9", null)))
 
 	if(!target.has_status_effect(/datum/status_effect/knotted)) // only apply status if we don't have it already
 		target.apply_status_effect(/datum/status_effect/knotted)
@@ -309,20 +310,20 @@
 					else
 						addtimer(CALLBACK(src, TYPE_PROC_REF(/datum/interaction/lewd, knot_movement_btm), user.knotted_parts[part], user), 1) // if we are the bottom
 	if(partners_to_remove.len)
-		to_chat(user, span_alert("The force of moving with multiple ties is too much, you feel some of your partner's knots come out."))
+		to_chat(user, span_alert(LANG("datum.3d89e1982c2b1474", null)))
 		for(var/mob/living/partner in partners_to_remove)
 			var/knot = "knot"
 			if(partner == user.knotted_parts[ORGAN_SLOT_PENIS])
 				if(iscarbon(user)) // get text overrides, mostly for a horse cock's flare
 					var/obj/item/organ/genital/penis/penis = partner.get_organ_slot(ORGAN_SLOT_PENIS)
 					knot = penis
-				to_chat(partner, span_alert("[user]'s [knot] comes out of you while they are already pulling someone"))
+				to_chat(partner, span_alert(LANG("datum.aa633f2aa6b35b77", list(user, knot))))
 				knot_exit_strict(user, partner)
 			else
 				if(iscarbon(partner)) // get text overrides, mostly for a horse cock's flare
 					var/obj/item/organ/genital/penis/penis = partner.get_organ_slot(ORGAN_SLOT_PENIS)
 					knot = penis.override_string_knot
-				to_chat(partner, span_alert("Your [knot] comes out of [user] while they are already pulling someone"))
+				to_chat(partner, span_alert(LANG("datum.756f43abbe80f4c8", list(knot, user))))
 				knot_exit_strict(partner, user)
 
 // almost identical to /mob/living/start_pulling(atom/movable/AM, state, force = pull_force, supress_message = FALSE)
@@ -426,8 +427,8 @@
 			btm.adjust_arousal(6)
 			btm.adjust_pleasure(9, top, src, btm_position) // Double Nice
 			if(prob(50))
-				to_chat(top, span_love("I feel [btm] tightening over my [knot]."))
-				to_chat(btm, span_love("I feel [top] rubbing inside."))
+				to_chat(top, span_love(LANG("datum.dbbad939677d72ae", list(btm, knot))))
+				to_chat(btm, span_love(LANG("datum.15c4e9d64f00653e", list(top))))
 		else if(top.move_intent == MOVE_INTENT_RUN && prob(5))
 			top.adjust_arousal(3)
 			top.adjust_pleasure(5, btm, src, top_position)
@@ -435,14 +436,14 @@
 			btm.adjust_arousal(3)
 			btm.adjust_pleasure(5, top, src, btm_position)
 			btm.adjust_pain(3, top, src, btm_position)
-			to_chat(top, span_alert("[btm] is being thrown around tugging on my [knot] as I run!"))
-			to_chat(btm, span_alert("I'm being thrown around as [top] runs!"))
+			to_chat(top, span_alert(LANG("datum.c601cd6ba5ae6f83", list(btm, knot))))
+			to_chat(btm, span_alert(LANG("datum.311b2573c5026b40", list(top))))
 		return
 
 	if(prob(5))
 		if(top == btm.knotted_parts["mouth"] && btm.get_oxy_loss() < 80) // if the current top knotted them orally
 			if(btm.client?.prefs?.read_preference(/datum/preference/choiced/erp_status_extmharm) != "No")
-				to_chat(btm, span_warning("I struggle to breath with [top]'s [knot] in my mouth!"))
+				to_chat(btm, span_warning(LANG("datum.7d0bff5be796cebd", list(top, knot))))
 				btm.adjust_oxy_loss(2)
 
 /// Handles aditional pleasure, ect, caused by the btm moving
@@ -489,8 +490,8 @@
 			top.adjust_pleasure(9, btm, src, top_position) // Nice
 			btm.adjust_arousal(6)
 			btm.adjust_pleasure(9, top, src, btm_position) // Double Nice
-			to_chat(top, span_love("I feel [btm] tightening over my [knot]."))
-			to_chat(btm, span_love("I feel [top] rubbing inside."))
+			to_chat(top, span_love(LANG("datum.dbbad939677d72ae", list(btm, knot))))
+			to_chat(btm, span_love(LANG("datum.15c4e9d64f00653e", list(top))))
 		else if(btm.move_intent == MOVE_INTENT_RUN && prob(5))
 			top.adjust_arousal(3)
 			top.adjust_pleasure(5, btm, src, top_position)
@@ -498,14 +499,14 @@
 			btm.adjust_arousal(3)
 			btm.adjust_pleasure(5, top, src, btm_position)
 			btm.adjust_pain(3, top, src, btm_position)
-			to_chat(top, span_alert("I'm being thrown around by my [knot] as [btm] runs!"))
-			to_chat(btm, span_alert("[top] is being thrown around by their [knot] as I run!"))
+			to_chat(top, span_alert(LANG("datum.67db84a40de40edc", list(knot, btm))))
+			to_chat(btm, span_alert(LANG("datum.e09834c5b1ab664a", list(top, knot))))
 		return
 
 	if(prob(5))
 		if(top == btm.knotted_parts["mouth"] && btm.get_oxy_loss() < 80) // if the current top knotted them orally
 			if(btm.client?.prefs?.read_preference(/datum/preference/choiced/erp_status_extmharm) != "No")
-				to_chat(btm, span_warning("I can't catch my breath with [top]'s [knot] in my mouth!"))
+				to_chat(btm, span_warning(LANG("datum.856ea778a53749e4", list(top, knot))))
 				btm.adjust_oxy_loss(3)
 
 /datum/interaction/lewd/proc/knot_remove(mob/living/top, mob/living/btm, forceful_removal = FALSE, notify = TRUE)
@@ -540,14 +541,14 @@
 				conditional_pref_sound(top, 'modular_zzplurt/sound/Scarlet_Reach/segso.ogg', 50, TRUE, -2, ignore_walls = FALSE, pref_to_check = /datum/preference/toggle/erp/sounds)
 				btm.adjust_pain(10, top, src, btm_position)
 				if(notify)
-					top.visible_message(span_notice("[top] yanks their [knot] out of [btm]!"), span_notice("I yank my [knot] out from [btm]."))
+					top.visible_message(span_notice(LANG("datum.697c1b2f132ad0cc", list(top, knot, btm))), span_notice(LANG("datum.c861ab5598a59f9a", list(knot, btm))))
 			else if(notify)
 				conditional_pref_sound(btm, 'sound/misc/moist_impact.ogg', 50, TRUE, -2, ignore_walls = FALSE, pref_to_check = /datum/preference/toggle/erp/sounds)
-				top.visible_message(span_lewd("[top] slips their [knot] out of [btm]!"), span_lewd("I slip my [knot] out from [btm]."))
+				top.visible_message(span_lewd(LANG("datum.6920612624fbad02", list(top, knot, btm))), span_lewd(LANG("datum.fbab986a025c0c7c", list(knot, btm))))
 				btm.adjust_pain(4, top, src, btm_position)
 		else if(notify)
 			conditional_pref_sound(btm, 'sound/misc/moist_impact.ogg', 50, TRUE, -2, ignore_walls = FALSE, pref_to_check = /datum/preference/toggle/erp/sounds)
-			top.visible_message(span_lewd("[top] slips their [knot] out of [btm]!"), span_lewd("I slip my [knot] out from [btm]."))
+			top.visible_message(span_lewd(LANG("datum.6920612624fbad02", list(top, knot, btm))), span_lewd(LANG("datum.fbab986a025c0c7c", list(knot, btm))))
 		btm.add_cum_splatter_floor(get_turf(btm))
 	knot_exit(top, btm)
 
@@ -872,10 +873,10 @@
 
 /datum/status_effect/jaw_gaped/on_apply()
 	ADD_TRAIT(owner, TRAIT_UNINTELLIGIBLE_SPEECH, "jaw_gaped") // might want to make a new one to not risk interfering with an existing mutation
-	to_chat(owner, span_warning("My jaw... It stings!"))
+	to_chat(owner, span_warning(LANG("datum.5670eb79f23d9e9c", null)))
 	return ..()
 
 /datum/status_effect/jaw_gaped/on_remove()
 	REMOVE_TRAIT(owner, TRAIT_UNINTELLIGIBLE_SPEECH, "jaw_gaped") // might want to make a new one to not risk interfering with an existing mutation
 	if(owner.stat == STABLE)
-		to_chat(owner, span_warning("I finally feel my jaw again."))
+		to_chat(owner, span_warning(LANG("datum.e8c201c6e29c915f", null)))

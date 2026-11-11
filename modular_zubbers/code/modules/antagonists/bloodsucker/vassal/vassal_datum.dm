@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/antagonist/ghoul
 	name = "\improper Ghoul"
 	roundend_category = "ghouls"
@@ -141,13 +142,12 @@
 	if(silent)
 		return
 
-	to_chat(owner, span_userdanger("You are now the mortal servant of [master.owner.current], a Bloodsucker!"))
-	to_chat(owner, span_boldannounce("The power of [master.owner.current.p_their()] immortal blood compels you to obey [master.owner.current.p_them()] in all things, even offering your own life to prolong theirs.\n\
-		You are not required to obey any other Bloodsucker, for only [master.owner.current] is your master. The laws of Nanotrasen do not apply to you now; only your vampiric master's word must be obeyed."))
+	to_chat(owner, span_userdanger(LANG("datum.f7428f29f93e4112", list(master.owner.current))))
+	to_chat(owner, span_boldannounce(LANG("datum.67f85980b823396b", list(master.owner.current.p_their(), master.owner.current.p_them(), master.owner.current))))
 	owner.current.playsound_local(null, 'sound/effects/magic/mutate.ogg', 100, FALSE, pressure_affected = FALSE)
 	antag_memory += "You, becoming the mortal servant of <b>[master.owner.current]</b>, a bloodsucking vampire!<br>"
 	/// Message told to your Master.
-	to_chat(master.owner, span_userdanger("[owner.current] has become addicted to your immortal blood. [capitalize(owner.current.p_they(TRUE))] [owner.current.p_are()] now your mortal servant!"))
+	to_chat(master.owner, span_userdanger(LANG("datum.bc76bd0ebb1a4984", list(owner.current, capitalize(owner.current.p_they(TRUE)), owner.current.p_are()))))
 	master.owner.current.playsound_local(null, 'sound/effects/magic/mutate.ogg', 100, FALSE, pressure_affected = FALSE)
 
 /datum/antagonist/ghoul/farewell()
@@ -155,13 +155,12 @@
 		return
 
 	owner.current.visible_message(
-		span_deconversion_message("[owner.current]'s eyes dart feverishly from side to side, and then stop. [owner.current.p_They(TRUE)] seem[owner.current.p_s()] to calm, \
-			like [owner.current.p_they()] [owner.current.p_have()] regained some lost part of [owner.current.p_them()]self."), \
-		span_deconversion_message("With a snap, you are no longer enslaved to [master.owner]! You breathe in heavily, having regained your free will."))
+		span_deconversion_message(LANG("datum.74dbd9318038d1d9", list(owner.current, owner.current.p_They(TRUE), owner.current.p_s(), owner.current.p_they(), owner.current.p_have(), owner.current.p_them()))), \
+		span_deconversion_message(LANG("datum.7f17a7ed9ecb9110", list(master.owner))))
 	owner.current.playsound_local(null, 'sound/effects/magic/mutate.ogg', 100, FALSE, pressure_affected = FALSE)
 	/// Message told to your (former) Master.
 	if(master && master.owner)
-		to_chat(master.owner, span_cult_bold("You feel the bond with your ghoul [owner.current] has somehow been broken!"))
+		to_chat(master.owner, span_cult_bold(LANG("datum.3fc62977e5e79acc", list(owner.current))))
 
 /datum/antagonist/ghoul/admin_add(datum/mind/new_owner, mob/admin)
 	var/list/datum/mind/possible_vampires = list()
@@ -177,11 +176,11 @@
 	if(!length(possible_vampires))
 		message_admins("[key_name_admin(admin)] tried ghoulizing [key_name_admin(new_owner)], but there were no bloodsuckers!")
 		return
-	var/datum/mind/choice = tgui_input_list(admin, "Which bloodsucker should this ghoul belong to?", "Bloodsucker", possible_vampires)
+	var/datum/mind/choice = tgui_input_list(admin, LANG("datum.f6f43e410e1f194a", null), LANG("datum.1678741a8fb4074e", null), possible_vampires)
 	if(!choice)
 		return
 	log_admin("[key_name_admin(admin)] turned [key_name_admin(new_owner)] into a ghoul of [key_name_admin(choice)]!")
 	var/datum/antagonist/bloodsucker/vampire = IS_BLOODSUCKER(choice.current)
 	master = vampire
 	new_owner.add_antag_datum(src)
-	to_chat(choice, span_notice("Through divine intervention, you've gained a new ghoul!"))
+	to_chat(choice, span_notice(LANG("datum.e5f33f67787e8225", null)))

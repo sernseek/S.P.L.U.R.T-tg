@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/carbon/alien/larva
 	name = "alien larva"
 	real_name = "alien larva"
@@ -53,13 +54,13 @@
 // This comment is 12 years old I hope it's fixed by now
 /mob/living/carbon/alien/larva/get_status_tab_items()
 	. = ..()
-	. += "Progress: [amount_grown]/[max_grown]"
+	. += LANG("mob.d20378e1a4b4275a", list(amount_grown, max_grown))
 
 /mob/living/carbon/alien/larva/Login()
 	. = ..()
 	if(!. || !client)
 		return FALSE
-	to_chat(src, "<b>You are an alien larva. Hide from danger until you can evolve.<br>Use say :a to communicate with the hivemind.</b>")
+	to_chat(src, LANG("mob.c898de39169586f6", null))
 
 /mob/living/carbon/alien/larva/adjustPlasma(amount)
 	if(stat != DEAD && amount > 0)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //defines for the spriggan abilities
 #define SPRIGGAN_TELEPORT_ABILITY "spriggan_teleport"
 #define SPRIGGAN_SIGHT_ABILITY "spriggan_sight"
@@ -127,12 +128,12 @@
 /mob/living/basic/spriggan/proc/after_healed(mob/living/healed)
 	do_attack_animation(healed, ATTACK_EFFECT_PUNCH)
 	healed.visible_message(
-		message = span_notice("[src] heals [healed]!"),
-		self_message = span_userdanger("[src] heals you!"),
+		message = span_notice(LANG("mob.56552669f1a88422", list(src, healed))),
+		self_message = span_userdanger(LANG("mob.cffdc7ae5ebe1698", list(src))),
 		vision_distance = COMBAT_MESSAGE_RANGE,
 		ignored_mobs = src,
 	)
-	to_chat(src, span_notice("You heal [healed]!"))
+	to_chat(src, span_notice(LANG("mob.2ac5ea2b9ec8de8c", list(healed))))
 	playsound(healed, heal_sound, 50, TRUE, TRUE, frequency = 1) //-1 frequency plays the sound in reverse, also from the Guardian/Support code
 
 // adds bloodsplatter when attacked

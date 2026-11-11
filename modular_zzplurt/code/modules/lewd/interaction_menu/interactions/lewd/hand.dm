@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Hand/Paw Smothering interaction - dynamically uses paw or hand messages based on user's species
 // Single datum handling both cases per user preference
 
@@ -137,11 +138,11 @@
 		if(intent == "harm")
 			target_arousal += 10
 			target_pleasure += 6
-			to_chat(target, span_purple("You can't breathe at all under their hands/paws! It's so hot! You need more!"))
+			to_chat(target, span_purple(LANG("datum.1318fa5a0e627af1", null)))
 		else
 			target_arousal += 8
 			target_pleasure += 4
-			to_chat(target, span_purple("You can barely breathe with their hands/paws on your face... it's incredible!"))
+			to_chat(target, span_purple(LANG("datum.35dc85933df9d572", null)))
 
 	. = ..()
 

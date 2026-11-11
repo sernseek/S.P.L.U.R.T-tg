@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/bong
 	name = "bong"
 	desc = "Technically known as a water pipe."
@@ -39,12 +40,12 @@
 	if(istype(used_item, /obj/item/food/grown))
 		var/obj/item/food/grown/grown_item = used_item
 		if(packed_item)
-			balloon_alert(user, "already packed!")
+			balloon_alert(user, LANG("obj.1b900999a7ba2de9", null))
 			return
 		if(!HAS_TRAIT(grown_item, TRAIT_DRIED))
-			balloon_alert(user, "needs to be dried!")
+			balloon_alert(user, LANG("obj.e1be820302fcf3c3", null))
 			return
-		to_chat(user, span_notice("You stuff [grown_item] into [src]."))
+		to_chat(user, span_notice(LANG("obj.16ae151750ce356a", list(grown_item, src))))
 		bong_hits = max_hits
 		packed_item = TRUE
 		if(grown_item.reagents)
@@ -54,9 +55,9 @@
 
 	else if(istype(used_item, /obj/item/reagent_containers/hash)) //for hash/dabs
 		if(packed_item)
-			balloon_alert(user, "already packed!")
+			balloon_alert(user, LANG("obj.1b900999a7ba2de9", null))
 			return
-		to_chat(user, span_notice("You stuff [used_item] into [src]."))
+		to_chat(user, span_notice(LANG("obj.16ae151750ce356a", list(used_item, src))))
 		bong_hits = max_hits
 		packed_item = TRUE
 		if(used_item.reagents)
@@ -68,7 +69,7 @@
 		if(!lighting_text)
 			return ..()
 		if(bong_hits <= 0)
-			balloon_alert(user, "nothing to smoke!")
+			balloon_alert(user, LANG("obj.d1082b049bec9a87", null))
 			return ..()
 		light(lighting_text)
 		name = "lit [initial(name)]"
@@ -76,12 +77,12 @@
 /obj/item/bong/attack_self(mob/user)
 	var/turf/location = get_turf(user)
 	if(lit)
-		user.visible_message(span_notice("[user] puts out [src]."), span_notice("You put out [src]."))
+		user.visible_message(span_notice(LANG("obj.f63d4f5a9dc58d37", list(user, src))), span_notice(LANG("obj.00731180d2de7c9a", list(src))))
 		lit = FALSE
 		icon_state = icon_off
 		inhand_icon_state = icon_off
 	else if(!lit && bong_hits > 0)
-		to_chat(user, span_notice("You empty [src] onto [location]."))
+		to_chat(user, span_notice(LANG("obj.4f4fb947b5009a75", list(src, location))))
 		new /obj/effect/decal/cleanable/ash(location)
 		packed_item = FALSE
 		bong_hits = 0
@@ -91,11 +92,11 @@
 /obj/item/bong/attack(mob/hit_mob, mob/user, def_zone)
 	if(!packed_item || !lit)
 		return
-	hit_mob.visible_message(span_notice("[user] starts [hit_mob == user ? "taking a hit from [src]." : "forcing [hit_mob] to take a hit from [src]!"]"), hit_mob == user ? span_notice("You start taking a hit from [src].") : span_userdanger("[user] starts forcing you to take a hit from [src]!"))
+	hit_mob.visible_message(span_notice(LANG("obj.d01a311c5b3f37d4", list(user, hit_mob == user ? "taking a hit from [src]." : "forcing [hit_mob] to take a hit from [src]!"))), hit_mob == user ? span_notice("You start taking a hit from [src].") : span_userdanger("[user] starts forcing you to take a hit from [src]!"))
 	playsound(src, 'sound/effects/chemistry/heatdam.ogg', 50, TRUE)
 	if(!do_after(user, 40))
 		return
-	to_chat(hit_mob, span_notice("You finish taking a hit from the [src]."))
+	to_chat(hit_mob, span_notice(LANG("obj.74879e74c772491b", list(src))))
 	if(reagents.total_volume)
 		reagents.trans_to(hit_mob, reagent_transfer_per_use, transferred_by = user, methods = VAPOR)
 		bong_hits--
@@ -109,7 +110,7 @@
 		else
 			hit_mob.emote("cough")
 	if(bong_hits <= 0)
-		balloon_alert(hit_mob, "out of uses!")
+		balloon_alert(hit_mob, LANG("obj.38056827f3d64042", null))
 		lit = FALSE
 		packed_item = FALSE
 		icon_state = icon_off

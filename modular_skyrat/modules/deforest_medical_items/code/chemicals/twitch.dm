@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CONSTANT_DOSE_SAFE_LIMIT 60
 
 #define TWITCH_SCREEN_FILTER "twitch_screen_filter"
@@ -84,14 +85,14 @@
 
 	if(constant_dose_time < CONSTANT_DOSE_SAFE_LIMIT) // Anything less than this and you'll come out fiiiine, aside from a big hit of stamina damage
 		our_guy.visible_message(
-			span_danger("[our_guy] suddenly slows from their inhuman speeds, coming back with a wicked nosebleed!"),
-			span_danger("You suddenly slow back to normal, a stream of blood gushing from your nose!")
+			span_danger(LANG("datum.b29b9ea6760eae5e", list(our_guy))),
+			span_danger(LANG("datum.12c319cc90a899b6", null))
 		)
 		our_guy.adjust_stamina_loss(constant_dose_time)
 	else // Much longer than that however, and you're not gonna have a good day
 		our_guy.visible_message(
-			span_danger("[our_guy] suddenly snaps back from their inhumans speeds, coughing up a spray of blood!"),
-			span_danger("As you snap back to normal speed you cough up a worrying amount of blood. You feel like you've just been run over by a power loader.")
+			span_danger(LANG("datum.4af78068a886e66d", list(our_guy))),
+			span_danger(LANG("datum.cf19651308e82f0d", null))
 		)
 		our_guy.spray_blood(our_guy.dir, 2) // The before mentioned coughing up blood
 		our_guy.emote("cough")
@@ -120,8 +121,8 @@
 	if(HAS_TRAIT(source, TRAIT_INCAPACITATED))
 		return NONE
 	source.visible_message(
-		span_danger("[source] effortlessly dodges [hitting_projectile]!"),
-		span_userdanger("You effortlessly evade [hitting_projectile]!"),
+		span_danger(LANG("datum.cc7af3a368899481", list(source, hitting_projectile))),
+		span_userdanger(LANG("datum.497150e8e0b33769", list(hitting_projectile))),
 	)
 	playsound(source, pick('sound/items/weapons/bulletflyby.ogg', 'sound/items/weapons/bulletflyby2.ogg', 'sound/items/weapons/bulletflyby3.ogg'), 75, TRUE)
 	source.add_filter(TWITCH_BLUR_EFFECT, 2, gauss_blur_filter(5))
@@ -166,7 +167,7 @@
 	our_guy.adjust_tox_loss(1 * REM * seconds_per_tick, updating_health = FALSE, forced = TRUE, required_biotype = affected_biotype)
 
 	if(SPT_PROB(5, seconds_per_tick))
-		to_chat(our_guy, span_danger("You cough up a splatter of blood!"))
+		to_chat(our_guy, span_danger(LANG("datum.7d3e95cd8d80b0db", null)))
 		our_guy.spray_blood(our_guy.dir, 1)
 		our_guy.emote("cough")
 

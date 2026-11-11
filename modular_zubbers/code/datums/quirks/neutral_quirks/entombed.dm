@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// How much damage should we be taking when the suit's been disabled a while?
 #define ENTOMBED_TICK_DAMAGE 1.5
 
@@ -46,8 +47,8 @@
 			//start the timer and let the player know
 			life_support_timer = addtimer(CALLBACK(src, PROC_REF(life_support_failure), human_holder), life_support_failure_threshold, TIMER_STOPPABLE | TIMER_DELETE_ME)
 
-			to_chat(human_holder, span_danger("Your physiology begins to erratically seize and twitch, bereft of your MODsuit's vital support. <b>Turn it back on as soon as you can!</b>"))
-			human_holder.balloon_alert(human_holder, "suit life support warning!")
+			to_chat(human_holder, span_danger(LANG("datum.6467634a7f40c7c1", null)))
+			human_holder.balloon_alert(human_holder, LANG("datum.de273296d0612433", null))
 			human_holder.set_jitter_if_lower(life_support_failure_threshold) //give us some foley jitter
 			return
 	else
@@ -57,15 +58,15 @@
 			life_support_timer = null
 			life_support_failed = FALSE
 
-			to_chat(human_holder, span_notice("Relief floods your frame as your suit begins sustaining your life once more."))
-			human_holder.balloon_alert(human_holder, "suit life support restored!")
+			to_chat(human_holder, span_notice(LANG("datum.27cc09d663a853ba", null)))
+			human_holder.balloon_alert(human_holder, LANG("datum.aca9c621b1b4c7e1", null))
 			human_holder.adjust_jitter(-(life_support_failure_threshold / 2)) // clear half of it, wow, that was unpleasant
 
 /datum/quirk/equipping/entombed/proc/life_support_failure()
 	// Warn the player and begin the gradual dying process.
 	var/mob/living/carbon/human/human_holder = quirk_holder
 
-	human_holder.visible_message(span_danger("[human_holder] suddenly staggers, a dire pallor overtaking [human_holder.p_their()] features as a feeble 'breep' emanates from their suit..."), span_userdanger("Terror descends as your suit's life support system breeps feebly, and then goes horrifyingly silent."))
+	human_holder.visible_message(span_danger(LANG("datum.727bbb9cf55e6b18", list(human_holder, human_holder.p_their()))), span_userdanger(LANG("datum.dd5fce1e079cf504", null)))
 	human_holder.balloon_alert(human_holder, UNLINT("SUIT LIFE SUPPORT FAILING!"))
 	playsound(human_holder, 'sound/effects/alert.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE) // OH GOD THE STRESS NOISE
 	life_support_failed = TRUE

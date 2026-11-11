@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define ERT_EXPERIENCED_LEADER_CHOOSE_TOP 3
 
 /**
@@ -115,7 +116,7 @@
 	if(team_spawned)
 		message_admins("[created_ert_datum.polldesc] has spawned with the mission: [created_ert_datum.mission]")
 		if(created_ert_datum.notify_players)
-			priority_announce("Central command has responded to your request for a CODE [uppertext(created_ert_datum.code)] Emergency Response Team and have confirmed one to be enroute.", "ERT Request", ANNOUNCER_ERTYES)
+			priority_announce(LANG("_root.e6117052a0815d1e", list(uppertext(created_ert_datum.code))), "ERT Request", ANNOUNCER_ERTYES)
 	//Open the Armory doors
 	if(created_ert_datum.opendoors)
 		for(var/obj/machinery/door/poddoor/ert/door as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/door/poddoor/ert))

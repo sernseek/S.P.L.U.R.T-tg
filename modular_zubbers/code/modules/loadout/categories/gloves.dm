@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Title Capitalization for names please!!!
 
 /datum/loadout_category/gloves
@@ -12,7 +13,7 @@
 /datum/loadout_item/gloves/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only, loadout_placement_preference)
 	if(equipper.dna?.species?.outfit_important_for_life)
 		if(!visuals_only)
-			to_chat(equipper, "Your loadout gloves were not equipped directly due to your species outfit.")
+			to_chat(equipper, LANG("datum.5dec89bd8d9e1089", null))
 			LAZYADD(outfit.backpack_contents, item_path)
 	else
 		if(loadout_placement_preference != LOADOUT_OVERRIDE_JOB && outfit.gloves)

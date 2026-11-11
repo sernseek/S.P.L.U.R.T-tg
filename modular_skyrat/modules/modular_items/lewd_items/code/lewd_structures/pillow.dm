@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //WARNING - Lot's of shitcode here. I'm not the best coder but this stuff works and I'm happy. Improve it if you want, but don't break anything.
 
 /*
@@ -139,7 +140,7 @@
 
 /obj/item/fancy_pillow/attack_self(mob/user)
 	if(IN_INVENTORY)
-		to_chat(user, span_notice("You set [src] down on the floor."))
+		to_chat(user, span_notice(LANG("obj.959f5646803a71e5", list(src))))
 		var/obj/structure/bed/pillow_tiny/pillow_pile = new(get_turf(src))
 		pillow_pile.current_color = current_color
 		pillow_pile.current_form = current_form
@@ -180,7 +181,7 @@
 //picking up the pillow
 
 /obj/structure/bed/pillow_tiny/click_alt(mob/user)
-	to_chat(user, span_notice("You pick up [src]."))
+	to_chat(user, span_notice(LANG("obj.b01fab5a52a2d259", list(src))))
 	var/obj/item/fancy_pillow/taken_pillow = new()
 	user.put_in_hands(taken_pillow)
 
@@ -214,7 +215,7 @@
 		var/obj/item/fancy_pillow/used_pillow = used_item
 		var/obj/structure/chair/pillow_small/pillow_pile
 		if(used_pillow.current_color == current_color)
-			to_chat(user, span_notice("You add [src] to a pile."))
+			to_chat(user, span_notice(LANG("obj.bdea92c36aab7a1f", list(src))))
 			pillow_pile = new(get_turf(src))
 			pillow_pile.current_color = current_color
 			pillow_pile.pillow2_color = used_pillow.current_color
@@ -232,7 +233,7 @@
 			qdel(src)
 			qdel(used_pillow)
 		else
-			to_chat(user, span_notice("You feel that those colours would clash...")) //Too lazy to add multicolor pillow pile sprites.
+			to_chat(user, span_notice(LANG("obj.6bf87a226a0f72c2", null))) //Too lazy to add multicolor pillow pile sprites.
 			return
 	else
 		return ..()
@@ -288,7 +289,7 @@
 
 //Removing pillow from a pile
 /obj/structure/chair/pillow_small/click_alt(mob/user)
-	to_chat(user, span_notice("You take [src] from the pile."))
+	to_chat(user, span_notice(LANG("obj.5b52fe5e18e89f2e", list(src))))
 	var/obj/item/fancy_pillow/taken_pillow = new()
 	var/obj/structure/bed/pillow_tiny/pillow_pile = new(get_turf(src))
 	user.put_in_hands(taken_pillow)
@@ -317,7 +318,7 @@
 		var/obj/item/fancy_pillow/used_pillow = used_item
 		var/obj/structure/bed/pillow_large/pillow_pile
 		if(used_pillow.current_color == current_color)
-			to_chat(user, span_notice("You add [src] to the pile."))
+			to_chat(user, span_notice(LANG("obj.568f8d8a5ffd699b", list(src))))
 			pillow_pile = new(get_turf(src))
 			pillow_pile.current_color = current_color
 			pillow_pile.pillow3_color = used_pillow.current_color
@@ -339,7 +340,7 @@
 			qdel(src)
 			qdel(used_pillow)
 		else
-			to_chat(user, span_notice("You feel that those colours would clash...")) //Too lazy to add multicolor pillow pile sprites.
+			to_chat(user, span_notice(LANG("obj.6bf87a226a0f72c2", null))) //Too lazy to add multicolor pillow pile sprites.
 			return
 	else
 		return ..()
@@ -408,7 +409,7 @@
 
 //Removing pillow from a pile
 /obj/structure/bed/pillow_large/click_alt(mob/user)
-	to_chat(user, span_notice("You take [src] from the pile."))
+	to_chat(user, span_notice(LANG("obj.5b52fe5e18e89f2e", list(src))))
 	var/obj/item/fancy_pillow/taken_pillow = new()
 	var/obj/structure/chair/pillow_small/pillow_pile = new(get_turf(src))
 	user.put_in_hands(taken_pillow)

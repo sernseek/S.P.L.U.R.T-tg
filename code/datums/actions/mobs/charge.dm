@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/action/cooldown/mob_cooldown/charge
 	name = "Charge"
 	button_icon = 'icons/mob/actions/actions_items.dmi'
@@ -174,7 +175,7 @@
 
 /// Actually hit someone
 /datum/action/cooldown/mob_cooldown/charge/proc/hit_target(atom/movable/source, mob/living/target, damage_dealt)
-	target.visible_message(span_danger("[source] slams into [target]!"), span_userdanger("[source] tramples you into the ground!"))
+	target.visible_message(span_danger(LANG("datum.83e05307efab19c9", list(source, target))), span_userdanger(LANG("datum.803afdd17f6f7da7", list(source))))
 	target.apply_damage(damage_dealt, BRUTE, wound_bonus = CANT_WOUND)
 	playsound(get_turf(target), 'sound/effects/meteorimpact.ogg', 100, TRUE)
 	shake_camera(target, 4, 3)
@@ -211,7 +212,7 @@
 		living_source = source
 
 	if(!isliving(target))
-		source.visible_message(span_danger("[source] smashes into [target]!"))
+		source.visible_message(span_danger(LANG("datum.1eb456391fd2d397", list(source, target))))
 		if (recoil_duration >= 0) // Because 0 stun/knockdown is still a valid value
 			living_source?.Stun(recoil_duration, ignore_canstun = TRUE)
 		return
@@ -224,7 +225,7 @@
 				living_source.Stun(recoil_duration, ignore_canstun = TRUE)
 			return
 
-	living_target.visible_message(span_danger("[source] charges into [living_target]!"), span_userdanger("[source] charges into you!"))
+	living_target.visible_message(span_danger(LANG("datum.d1c8f79e5d3548ed", list(source, living_target))), span_userdanger(LANG("datum.2038b59144ebb3bc", list(source))))
 	if (knockdown_duration >= 0)
 		living_target.Knockdown(knockdown_duration)
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // prestidigitation
 /datum/heretic_knowledge/spell/tricksters_cackle
 	name = "Trickster's Promise"
@@ -46,7 +47,7 @@
 		if (isnull(mode))
 			return TRUE
 		cooldown_time = modes[mode]
-		clicker.balloon_alert(clicker, "selected [LOWER_TEXT(mode)]")
+		clicker.balloon_alert(clicker, LANG("datum.e692b9c0125a3236", list(LOWER_TEXT(mode))))
 		return TRUE
 	else
 		return ..()
@@ -84,30 +85,30 @@
 			playsound(owner, 'sound/effects/snap.ogg', 30)
 
 			owner.visible_message(
-				span_warning("[owner] makes a triangle with [owner.p_their()] fingers. You hear a hyena cackle, then suddenly - a stream of confetti fires out from inbetween [owner.p_their()] digits!"),
-				span_notice("You make the triangle-glyph, and much to the Trickster's promise, a stream of confetti flies out from between your fingers!")
+				span_warning(LANG("datum.9fa42bc0cdfda776", list(owner, owner.p_their(), owner.p_their()))),
+				span_notice(LANG("datum.a611de9bdc565f02", null))
 			)
 			return TRUE
 		if ("Clean")
 			if (!cast_on.Adjacent(owner))
-				owner.balloon_alert(owner, "too far!")
+				owner.balloon_alert(owner, LANG("datum.f5e75781e8f1dc46", null))
 				return FALSE
 			cast_on.wash(CLEAN_SCRUB)
 			owner.visible_message(
-				span_warning("[owner] makes a circle with [owner.p_their()] fingers. You hear a hyena sniffle, then suddenly - [cast_on] appears clean as ever!"),
-				span_notice("You make the circle-glyph, and much to the Trickster's promise, [cast_on] is suddenly clean!")
+				span_warning(LANG("datum.7b9ec4e099499e8c", list(owner, owner.p_their(), cast_on))),
+				span_notice(LANG("datum.67ef2f4c494b743f", list(cast_on)))
 			)
-			cast_on.balloon_alert_to_viewers("cleaned!")
+			cast_on.balloon_alert_to_viewers(LANG("datum.484fe294f70e4261", null))
 			return TRUE
 		if ("Add A Glow To Any Item")
 			if (!cast_on.Adjacent(owner))
-				owner.balloon_alert(owner, "too far!")
+				owner.balloon_alert(owner, LANG("datum.f5e75781e8f1dc46", null))
 				return FALSE
 			if (!isitem(cast_on))
-				owner.balloon_alert(owner, "not an item!")
+				owner.balloon_alert(owner, LANG("datum.4f235f088ae71d9c", null))
 				return FALSE
 			if (cast_on.light != null)
-				owner.balloon_alert(owner, "already luminous!")
+				owner.balloon_alert(owner, LANG("datum.f95b5b3a00391c2e", null))
 				return FALSE
 			cast_on.set_light(
 				3,
@@ -116,32 +117,32 @@
 			)
 			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(unset_trickster_light), cast_on), 120 SECONDS)
 			owner.visible_message(
-				span_warning("[owner] makes a diamond with [owner.p_their()] fingers. You hear a hyena grunt, then suddenly - [cast_on] lights up in orange light!"),
-				span_notice("You make the diamond-glyph, and much to the Trickster's promise, [cast_on] is suddenly luminous!")
+				span_warning(LANG("datum.029958f00080a8bd", list(owner, owner.p_their(), cast_on))),
+				span_notice(LANG("datum.17713b50b6ac87c8", list(cast_on)))
 			)
-			cast_on.balloon_alert_to_viewers("glowing!")
+			cast_on.balloon_alert_to_viewers(LANG("datum.35cb92e9d1c46a40", null))
 			return TRUE
 		if ("Enhance Taste & Add Healing To Food")
 			if (!cast_on.Adjacent(owner))
-				owner.balloon_alert(owner, "too far!")
+				owner.balloon_alert(owner, LANG("datum.f5e75781e8f1dc46", null))
 				return FALSE
 			if (!IS_EDIBLE(cast_on))
-				owner.balloon_alert(owner, "inedible!")
+				owner.balloon_alert(owner, LANG("datum.01aad7513918186a", null))
 				return FALSE
 			if (HAS_TRAIT(cast_on, TRAIT_TRICKSTER_TASTE))
-				owner.balloon_alert(owner, "already boosted!")
+				owner.balloon_alert(owner, LANG("datum.b1959eb8347da277", null))
 				return FALSE
 			ADD_TRAIT(cast_on, TRAIT_TRICKSTER_TASTE, REF(src))
 			cast_on.reagents?.add_reagent(/datum/reagent/medicine/omnizine/heretic, 5)
 
 			owner.visible_message(
-				span_warning("[owner] makes a square with [owner.p_their()] fingers. You hear a hyena hum, then suddenly - [cast_on] looks much more appetizing..."),
-				span_notice("You make the square-glyph, and much to the Trickster's promise, [cast_on] is suddenly more appetizing!")
+				span_warning(LANG("datum.c308f8f68d140593", list(owner, owner.p_their(), cast_on))),
+				span_notice(LANG("datum.4e6de341b1ad873a", list(cast_on)))
 			)
 
 			RegisterSignal(cast_on, COMSIG_FOOD_GET_EXTRA_COMPLEXITY, PROC_REF(get_food_boost))
 
-			cast_on.balloon_alert_to_viewers("yummy...")
+			cast_on.balloon_alert_to_viewers(LANG("datum.b0623b6cac60c7bc", null))
 
 			return TRUE
 
@@ -170,4 +171,4 @@
 		0,
 		0
 	)
-	target.visible_message(span_warning("[target]'s light fades..."))
+	target.visible_message(span_warning(LANG("_root.c0346e98d56912df", list(target))))

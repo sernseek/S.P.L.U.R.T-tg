@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/reagent_containers/cup/vial
 	name = "broken hypovial"
 	desc = "You probably shouldn't be seeing this. Shout at a coder."
@@ -70,7 +71,7 @@
 
 /obj/item/reagent_containers/cup/vial/examine(mob/user)
 	. = ..()
-	. += span_notice("Ctrl-Shift-Click to reskin or set a custom color.")
+	. += span_notice(LANG("obj.0f279d68bfec4713", null))
 
 /obj/item/reagent_containers/cup/vial/click_ctrl_shift(mob/user, obj/item/held_item)
 	var/datum/component/reskinable_item/reskin_component = GetComponent(/datum/component/reskinable_item)

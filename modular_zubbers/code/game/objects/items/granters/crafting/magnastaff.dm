@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/book/granter/crafting_recipe/stunstaff_prime
 	name = "diary of a lonely warden"
 	desc = "A relatively clean diary. It reeks of pepperspray and copper."
@@ -16,5 +17,5 @@
 	)
 
 /obj/item/book/granter/crafting_recipe/stunstaff_prime/recoil(mob/living/user)
-	to_chat(user, span_warning("The book turns to dust in your hands."))
+	to_chat(user, span_warning(LANG("obj.00d3a38ea0112407", null)))
 	qdel(src)

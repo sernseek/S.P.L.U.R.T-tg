@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define REMOTE_MODE_OFF "Off"
 #define REMOTE_MODE_SELF "Local"
 #define REMOTE_MODE_TARGET "Targeted"
@@ -24,7 +25,7 @@
 /obj/item/nanite_remote/examine(mob/user)
 	. = ..()
 	if(locked)
-		. += span_notice("Alt-click to unlock.")
+		. += span_notice(LANG("obj.d457f2c9c11e68d2", null))
 
 /obj/item/nanite_remote/click_alt(mob/user)
 	. = ..()
@@ -32,16 +33,16 @@
 		return
 	if(locked)
 		if(allowed(user))
-			to_chat(user, span_notice("You unlock [src]."))
+			to_chat(user, span_notice(LANG("obj.e85c8e13804f7be1", list(src))))
 			locked = FALSE
 			update_appearance()
 		else
-			to_chat(user, span_warning("Access denied."))
+			to_chat(user, span_warning(LANG("obj.077f9b52c530e7f8", null)))
 
 /obj/item/nanite_remote/emag_act(mob/user)
 	if(obj_flags & EMAGGED)
 		return
-	to_chat(user, span_warning("You override [src]'s ID lock."))
+	to_chat(user, span_warning(LANG("obj.944f6640aa457722", list(src))))
 	obj_flags |= EMAGGED
 	if(locked)
 		locked = FALSE
@@ -63,23 +64,23 @@
 /obj/item/nanite_remote/proc/trigger_nanites(atom/interacting_with, mob/living/user, list/modifiers)
 	switch(mode)
 		if(REMOTE_MODE_SELF)
-			to_chat(user, span_notice("You activate [src], signaling the nanites in your bloodstream."))
+			to_chat(user, span_notice(LANG("obj.75d9c646f14d0657", list(src))))
 			signal_mob(user, code, key_name(user))
 			return ITEM_INTERACT_SUCCESS
 		if(REMOTE_MODE_TARGET)
 			if(!istype(interacting_with, /mob/living))
 				return NONE
 			if(isliving(interacting_with) && (get_dist(interacting_with, get_turf(src)) <= 7))
-				to_chat(user, span_notice("You activate [src], signaling the nanites inside [interacting_with]."))
+				to_chat(user, span_notice(LANG("obj.cdc48077a4cf9229", list(src, interacting_with))))
 				signal_mob(interacting_with, code, key_name(user))
 			return ITEM_INTERACT_SUCCESS
 		if(REMOTE_MODE_AOE)
-			to_chat(user, span_notice("You activate [src], signaling the nanites inside every host around you."))
+			to_chat(user, span_notice(LANG("obj.d80d7833adac861a", list(src))))
 			for(var/mob/living/L in view(user, 7))
 				signal_mob(L, code, key_name(user))
 			return ITEM_INTERACT_SUCCESS
 		if(REMOTE_MODE_RELAY)
-			to_chat(user, span_notice("You activate [src], signaling all connected relay nanites."))
+			to_chat(user, span_notice(LANG("obj.1ffd3aa6d28adc4b", list(src))))
 			signal_relay(code, relay_code, key_name(user))
 			return ITEM_INTERACT_SUCCESS
 	return NONE
@@ -193,18 +194,18 @@
 		if(REMOTE_MODE_OFF)
 			return
 		if(REMOTE_MODE_SELF)
-			to_chat(user, span_notice("You activate [src], signaling the nanites in your bloodstream."))
+			to_chat(user, span_notice(LANG("obj.75d9c646f14d0657", list(src))))
 			signal_mob(user, code, key_name(user))
 		if(REMOTE_MODE_TARGET)
 			if(isliving(target) && (get_dist(target, get_turf(src)) <= 7))
-				to_chat(user, span_notice("You activate [src], signaling the nanites inside [target]."))
+				to_chat(user, span_notice(LANG("obj.cdc48077a4cf9229", list(src, target))))
 				signal_mob(target, code, key_name(user))
 		if(REMOTE_MODE_AOE)
-			to_chat(user, span_notice("You activate [src], signaling the nanites inside every host around you."))
+			to_chat(user, span_notice(LANG("obj.d80d7833adac861a", list(src))))
 			for(var/mob/living/L in view(user, 7))
 				signal_mob(L, code, key_name(user))
 		if(REMOTE_MODE_RELAY)
-			to_chat(user, span_notice("You activate [src], signaling all connected relay nanites."))
+			to_chat(user, span_notice(LANG("obj.1ffd3aa6d28adc4b", list(src))))
 			signal_relay(code, relay_code, key_name(user))
 
 /obj/item/nanite_remote/comm/signal_mob(mob/living/M, code, source)

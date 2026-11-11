@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*!
  * # Mecha defence explanation
  * Mechs focus is on a more heavy-but-slower damage approach
@@ -39,15 +40,15 @@
 
 		switch(internal_damage_dealt)
 			if(MECHA_INT_FIRE)
-				visible_message(span_warning("You see fire extinguisher foam comes gushing out of [src] armor seams!"))
+				visible_message(span_warning(LANG("obj.402531eb64604ea5", list(src))))
 			if(MECHA_INT_TEMP_CONTROL)
-				visible_message(span_warning("You see heat radiators of [src] come loose!"))
+				visible_message(span_warning(LANG("obj.7415a7ab71ea4a39", list(src))))
 			if(MECHA_CABIN_AIR_BREACH)
-				visible_message(span_warning("You see internal cabin air pouring out of [src] crew cabin!"))
+				visible_message(span_warning(LANG("obj.beafca8690ff36d1", list(src))))
 			if(MECHA_INT_CONTROL_LOST)
-				visible_message(span_warning("You see servos of [src] giving out sparks!"))
+				visible_message(span_warning(LANG("obj.dc4f4f95499fa357", list(src))))
 			if(MECHA_INT_SHORT_CIRCUIT)
-				visible_message(span_warning("You see circuit board of [src] giving out sparks!"))
+				visible_message(span_warning(LANG("obj.cb36f05247859e29", list(src))))
 	//splurt edit end -- Mecha additions, better armor
 
 /// tries to repair any internal damage and plays fluff for it

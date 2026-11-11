@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //CODE CREDIT TO JJPARK-KB
 //Infinite welding fuel source, lets ashwalkers have infinite fuel without needing high-tech welders.
 
@@ -17,12 +18,12 @@
 /obj/structure/sink/fuel_well/attack_hand(mob/user, list/modifiers)
 	flick("puddle-oil-splash",src)
 	reagents.expose(user, TOUCH, 20) //Covers target in 20u of fuel.
-	to_chat(user, span_notice("You touch the pool of fuel, only to get fuel all over yourself. It would be wise to wash this off with water."))
+	to_chat(user, span_notice(LANG("obj.3c9abb5455d9b98f", null)))
 
 /obj/structure/sink/fuel_well/attackby(obj/item/O, mob/living/user, params)
 	flick("puddle-oil-splash",src)
 	if(O.tool_behaviour == TOOL_SHOVEL) //attempt to deconstruct the puddle with a shovel //attempt to deconstruct the puddle with a shovel
-		to_chat(user, "You fill in the fuel well with soil.")
+		to_chat(user, LANG("obj.acd02742b024df60", null))
 		O.play_tool_sound(src)
 		deconstruct()
 		return 1
@@ -31,21 +32,21 @@
 		if(RG.is_refillable())
 			if(!RG.reagents.holder_full())
 				RG.reagents.add_reagent(dispensedreagent, min(RG.volume - RG.reagents.total_volume, RG.amount_per_transfer_from_this))
-				to_chat(user, span_notice("You fill [RG] from [src]."))
+				to_chat(user, span_notice(LANG("obj.3adf2506e97dc688", list(RG, src))))
 				return TRUE
-			to_chat(user, span_notice("\The [RG] is full."))
+			to_chat(user, span_notice(LANG("obj.03adc6e9eaa5eda9", list(RG))))
 			return FALSE
 	if(O.tool_behaviour == TOOL_WELDER)
 		if(!reagents.has_reagent(/datum/reagent/fuel))
-			to_chat(user, span_warning("[src] is out of fuel!"))
+			to_chat(user, span_warning(LANG("obj.acd296d8b46ae0a0", list(src))))
 			return
 		var/obj/item/weldingtool/W = O
 		if(istype(W) && !W.welding)
 			if(W.reagents.has_reagent(/datum/reagent/fuel, W.max_fuel))
-				to_chat(user, span_warning("Your [W.name] is already full!"))
+				to_chat(user, span_warning(LANG("obj.c927127059a90967", list(W.name))))
 				return
 			reagents.trans_to(W, W.max_fuel, transferred_by = user)
-			user.visible_message(span_notice("[user] refills [user.p_their()] [W.name]."), span_notice("You refill [W]."))
+			user.visible_message(span_notice(LANG("obj.3f21aaca699f8ff3", list(user, user.p_their(), W.name))), span_notice(LANG("obj.e125cbe727e270a3", list(W))))
 			playsound(src, 'sound/effects/refill.ogg', 50, TRUE)
 			W.update_appearance()
 		return

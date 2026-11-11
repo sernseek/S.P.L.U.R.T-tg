@@ -170,6 +170,10 @@
 			if(holder_human.dna.species.lore_protected || !holder_human.dna.features["custom_species_lore"] || holder_human.dna.features["custom_species_lore"] == "")
 				var/list/desc = holder_human.dna.species.get_species_description()
 				var/list/lore = holder_human.dna.species.get_species_lore()
+				// ZH EDIT ADDITION START - I18N: translate default paragraphs before joining them.
+				desc = lang_reverse_string_list(desc)
+				lore = lang_reverse_string_list(lore)
+				// ZH EDIT ADDITION END
 				custom_species_lore += desc.Join("\n\n")
 				custom_species_lore += "\n\n\n"
 				custom_species_lore += lore.Join("\n\n")

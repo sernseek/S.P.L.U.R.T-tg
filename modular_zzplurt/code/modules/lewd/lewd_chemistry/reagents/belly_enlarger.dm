@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 * BELLY ENLARGEMENT
 * Normal function increases the player's belly size
@@ -62,11 +63,11 @@
 		return
 
 	if(mob_belly.genital_size >= (belly_max_size - 2))
-		exposed_mob.visible_message(span_notice("[exposed_mob]'s [pick(words_for_bigger)] belly [pick(public_action_text_list)]"))
-		to_chat(exposed_mob, span_purple("Your [pick(words_for_bigger)] belly [pick(action_text_list)]size [mob_belly.genital_size]."))
+		exposed_mob.visible_message(span_notice(LANG("datum.00b494748ca5a1e9", list(exposed_mob, pick(words_for_bigger), pick(public_action_text_list)))))
+		to_chat(exposed_mob, span_purple(LANG("datum.59beac8175811515", list(pick(words_for_bigger), pick(action_text_list), mob_belly.genital_size))))
 	else
-		exposed_mob.visible_message(span_notice("[exposed_mob]'s belly [pick(public_action_text_list)]"))
-		to_chat(exposed_mob, span_purple("Your belly [pick(action_text_list)]size [mob_belly.genital_size]."))
+		exposed_mob.visible_message(span_notice(LANG("datum.f1bb6cf7f2d9a636", list(exposed_mob, pick(public_action_text_list)))))
+		to_chat(exposed_mob, span_purple(LANG("datum.7e9ebac1f1844397", list(pick(action_text_list), mob_belly.genital_size))))
 
 /datum/chemical_reaction/belly_enlarger
 	results = list(/datum/reagent/drug/aphrodisiac/belly_enlarger = 8)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define SKEWER_DAMAGE 15
 #define SKEWER_BLEED 30
 
@@ -49,7 +50,7 @@
 			continue
 
 		target_stabbed = TRUE
-		to_chat(stabbed_mob, span_userdanger("You are impaled by [src]!"))
+		to_chat(stabbed_mob, span_userdanger(LANG("obj.1af7f6ddc05ff41a", list(src))))
 		stabbed_mob.emote("scream")
 		playsound(src, 'sound/machines/clockcult/brass_skewer.ogg')
 		stabbed_mob.apply_damage(SKEWER_DAMAGE, BRUTE, BODY_ZONE_CHEST)
@@ -73,10 +74,10 @@
 	if(!buckled_mob.break_do_after_checks())
 		return
 */
-	balloon_alert(buckled_mob, "climbing off of [src]...")
+	balloon_alert(buckled_mob, LANG("obj.4e7f325838354855", list(src)))
 
 	if(!do_after(buckled_mob, 5 SECONDS, target = src))
-		balloon_alert(buckled_mob, "failed to climb off [src]")
+		balloon_alert(buckled_mob, LANG("obj.1c11617d4d3fc233", list(src)))
 		return
 
 	return ..()

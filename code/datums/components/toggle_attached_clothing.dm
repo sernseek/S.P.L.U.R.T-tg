@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Component which allows clothing to deploy a different kind of clothing onto you.
  * The simplest example is hooded suits deploying hoods onto your head.
@@ -127,10 +128,10 @@
 		return
 	var/mob/living/carbon/human/wearer = parent_gear.loc
 	if (wearer.is_holding(parent_gear))
-		parent_gear.balloon_alert(wearer, "wear it first!")
+		parent_gear.balloon_alert(wearer, LANG("datum.0396a822e03abf9c", null))
 		return
 	if (wearer.get_item_by_slot(equipped_slot))
-		parent_gear.balloon_alert(wearer, "slot occupied!")
+		parent_gear.balloon_alert(wearer, LANG("datum.1f80dacd4fa085a6", null))
 		return
 	if (!deployable && !create_deployable())
 		return

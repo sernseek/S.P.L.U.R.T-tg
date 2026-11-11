@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_VAR_INIT(changeling_zombies_detected,FALSE)
 
 /proc/can_become_changeling_zombie(datum/parent)
@@ -103,7 +104,7 @@ GLOBAL_VAR_INIT(changeling_zombies_detected,FALSE)
 		var/obj/machinery/cryo_cell/gay_baby_jail = host.loc
 		if(gay_baby_jail.on)
 			gay_baby_jail.visible_message(
-				span_danger("Something thrashes inside [gay_baby_jail]!")
+				span_danger(LANG("datum.3f0fc78c5b0e6f37", list(gay_baby_jail)))
 			)
 			gay_baby_jail.Shake()
 			gay_baby_jail.take_damage(gay_baby_jail.max_integrity*0.2,armour_penetration=100)
@@ -127,9 +128,9 @@ GLOBAL_VAR_INIT(changeling_zombies_detected,FALSE)
 			if(host.regenerate_limb(selected_zone))
 				var/obj/item/bodypart/regenerated_bodypart = host.get_bodypart(selected_zone)
 				host.visible_message(
-					span_danger("[host] reforms and regenerates their [regenerated_bodypart]!"),
-					span_userdanger("You reform and regenerate your [regenerated_bodypart]!"),
-					span_hear("You hear flesh growing!"),
+					span_danger(LANG("datum.935cfeec4e999ef6", list(host, regenerated_bodypart))),
+					span_userdanger(LANG("datum.fef4e112209df0aa", list(regenerated_bodypart))),
+					span_hear(LANG("datum.a898df64a7a3fa4d", null)),
 					COMBAT_MESSAGE_RANGE
 				)
 				playsound(host, 'sound/effects/splat.ogg', 50)
@@ -159,9 +160,9 @@ GLOBAL_VAR_INIT(changeling_zombies_detected,FALSE)
 					if(!can_cure && current_toxin_damage >= CHANGELING_ZOMBIE_TOXINS_THRESHOLD_TO_CURE) //50 toxins to cure
 						can_cure = TRUE
 						host.visible_message(
-							span_danger("[host]'s flesh hardens and shifts around; now would be a good time to cure them!"),
-							span_userdanger("Your flesh shifts and bubbles... this can't be good."),
-							span_hear("You hear flesh growing!"),
+							span_danger(LANG("datum.5adeb62ca5d50cf1", list(host))),
+							span_userdanger(LANG("datum.f26db953b4c96397", null)),
+							span_hear(LANG("datum.a898df64a7a3fa4d", null)),
 							COMBAT_MESSAGE_RANGE
 						)
 					host.adjust_tox_loss(round(CHANGELING_ZOMBIE_TOXINS_PER_SECOND_LIVING * seconds_per_tick * damage_multiplier,0.1))
@@ -172,9 +173,9 @@ GLOBAL_VAR_INIT(changeling_zombies_detected,FALSE)
 							var/datum/wound/slash/flesh/moderate/flesh_wound = new
 							flesh_wound.apply_wound(wound_area)
 							host.visible_message(
-								span_danger("[host]\s [wound_area] twists and contorts violently, like something is trying to break free!"),
-								span_userdanger("Your [wound_area] twists and contorts violently! What's going on?!"),
-								span_hear("You hear flesh breaking!"),
+								span_danger(LANG("datum.a0cae18687cb3b2c", list(host, wound_area))),
+								span_userdanger(LANG("datum.d0281d9590f36e34", list(wound_area))),
+								span_hear(LANG("datum.79c334341bddc829", null)),
 								COMBAT_MESSAGE_RANGE
 							)
 							host.emote("scream")
@@ -182,8 +183,8 @@ GLOBAL_VAR_INIT(changeling_zombies_detected,FALSE)
 							host.emote("groan")
 					else if(current_toxin_damage > CHANGELING_ZOMBIE_TOXINS_THRESHOLD_TO_CURE*0.5)
 						host.visible_message(
-							span_warning("[host] doesn't look too good..."),
-							span_warning("You don't feel too good...")
+							span_warning(LANG("datum.58ed16f8766b8373", list(host))),
+							span_warning(LANG("datum.061900c385103236", null))
 						)
 						host.emote("cough")
 
@@ -200,7 +201,7 @@ GLOBAL_VAR_INIT(changeling_zombies_detected,FALSE)
 
 	host.cure_husk(CHANGELING_DRAIN) //If we don't actually cure the husk, weird shit happens.
 
-	to_chat(host, span_notice("You feel an itching, both inside and outside as your tissues knit and reknit."))
+	to_chat(host, span_notice(LANG("datum.3c911c5750731088", null)))
 
 	host.add_traits(
 		list(
@@ -267,7 +268,7 @@ GLOBAL_VAR_INIT(changeling_zombies_detected,FALSE)
 				if(chosen_turf)
 					GLOB.changeling_zombies_detected = TRUE
 					priority_announce(
-						"Notice: A stolen Wizard Federation virus that \"animes(sic) the dead\" may or may not have accidentally been delivered to the station via supply pod. Please return contents of said supply pod to the nearest Nanotrasen representative. In case of accidental infection, use the cure with the instructions delivered to [chosen_turf.loc].",
+						LANG("datum.e65b6896a0bdc48e", list(chosen_turf.loc)),
 						"Reanimation Virus Alert",
 						ANNOUNCER_ANIMES
 					)

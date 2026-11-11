@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * # Scanner
  *
@@ -53,7 +54,7 @@
  */
 /obj/item/circuit_component/wiremod_scanner/proc/handle_interaction(atom/source, mob/user, atom/target, ...)
 	SIGNAL_HANDLER
-	source.balloon_alert(user, "scanned object")
+	source.balloon_alert(user, LANG("obj.a6c46fa0b65e2ae0", null))
 	playsound(source, SFX_TERMINAL_TYPE, 25, FALSE)
 	attacker.set_output(user)
 	attacking.set_output(target)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/tongue
 	name = "tongue"
 	desc = "A fleshy muscle mostly used for lying."
@@ -65,11 +66,11 @@
 	. = ..()
 	if(HAS_MIND_TRAIT(user, TRAIT_ENTRAILS_READER)|| isobserver(user))
 		if(liked_foodtypes)
-			. += span_info("This tongue has an affinity for the taste of [english_list(bitfield_to_list(liked_foodtypes, FOOD_FLAGS_IC))].")
+			. += span_info(LANG("obj.bb4a08db50ee6504", list(lang_english_list(bitfield_to_list(liked_foodtypes, FOOD_FLAGS_IC)))))
 		if(disliked_foodtypes)
-			. += span_info("This tongue has an aversion for the taste of [english_list(bitfield_to_list(disliked_foodtypes, FOOD_FLAGS_IC))].")
+			. += span_info(LANG("obj.7dd0e374883ef241", list(lang_english_list(bitfield_to_list(disliked_foodtypes, FOOD_FLAGS_IC)))))
 		if(toxic_foodtypes)
-			. += span_info("This tongue's physiology makes [english_list(bitfield_to_list(toxic_foodtypes, FOOD_FLAGS_IC))] toxic.")
+			. += span_info(LANG("obj.8f7b6387e3045cc5", list(lang_english_list(bitfield_to_list(toxic_foodtypes, FOOD_FLAGS_IC)))))
 
 /**
  * Used in setting up the "languages possible" list.
@@ -215,6 +216,23 @@
 		new /regex(@"\bx([\-|r|R]|\b)", "g") = "ecks$1",
 		new /regex(@"\bX([\-|r|R]|\b)", "g") = "ECKS$1",
 	)
+	// ZH EDIT ADDITION START - I18N - 中文版拟声。上面那张表是**字母级**替换（s→sss / s→z），
+	// 中文文本里一个拉丁字母都没有 → 整个效果在中文服上是空转，蜥蜴人说话和常人无异。
+	// 中文没有可替换的对应音字母，硬换字会毁掉词义，所以改成**标点锚定**：句末补一声，
+	// 本来就有的拟声字拉长。全角半角标点都认（中文输入法默认全角）。
+	var/static/list/chinese_speech_replacements = list(
+		new /regex("嘶+", "g") = "嘶嘶嘶",
+		"。" = "嘶。",
+		"！" = "嘶！",
+		"？" = "嘶？",
+		"，" = "嘶，",
+		// 半角标点**必须锚定前一个汉字**：合并英文表之后，裸的 "."/"!"/"?" 会在英文句子上开火，
+		// 把 "She is so sassy." 变成 "…sassy嘶."。锚定之后它只在中文字后面触发。
+		new /regex("(\[一-鿿\])\\.", "g") = "$1嘶.",
+		new /regex("(\[一-鿿\])!", "g") = "$1嘶!",
+		new /regex("(\[一-鿿\])\\?", "g") = "$1嘶?",
+	)
+	// ZH EDIT ADDITION END
 	// SKYRAT EDIT ADDITION START - Russian version
 	var/static/list/russian_speech_replacements = list(
 		new /regex("s+", "g") = "sss",
@@ -236,7 +254,14 @@
 
 /obj/item/organ/tongue/lizard/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/speechmod, replacements = CONFIG_GET(flag/russian_text_formation) ? russian_speech_replacements : speech_replacements, should_modify_speech = CALLBACK(src, PROC_REF(should_modify_speech))) // SKYRAT EDIT CHANGE - ORIGINAL: AddComponent(/datum/component/speechmod, replacements = speech_replacements, should_modify_speech = CALLBACK(src, PROC_REF(should_modify_speech)))
+	// ZH EDIT CHANGE START - I18N - 中文拟声表**叠加**在英文表之上（不是替换）。
+	// 两套规则管的是两种文本形态：`s→sss` 只在拉丁字母上开火、`。→嘶。` 只在中文标点上开火，
+	// 合在一张表里互不干扰。
+	var/static/list/chinese_merged
+	if(lang_locale_is_chinese() && isnull(chinese_merged))
+		chinese_merged = lang_merge_speech_replacements(speech_replacements, chinese_speech_replacements)
+	// ZH EDIT CHANGE END
+	AddComponent(/datum/component/speechmod, replacements = chinese_merged || (CONFIG_GET(flag/russian_text_formation) ? russian_speech_replacements : speech_replacements), should_modify_speech = CALLBACK(src, PROC_REF(should_modify_speech))) // SKYRAT EDIT CHANGE - ORIGINAL: AddComponent(/datum/component/speechmod, replacements = speech_replacements, should_modify_speech = CALLBACK(src, PROC_REF(should_modify_speech)))
 
 /obj/item/organ/tongue/lizard/silver
 	name = "silver tongue"
@@ -282,11 +307,11 @@
 
 	if(isnull(statue))
 		if(feedback)
-			owner.balloon_alert(owner, "you can't seem to statue-ize!")
+			owner.balloon_alert(owner, LANG("datum.1db49ae6bbacf9fa", null))
 		return FALSE // permanently bricked
 	if(IS_UNCONSCIOUS_OR_CRIT(owner))
 		if(feedback)
-			owner.balloon_alert(owner, "you're too weak!")
+			owner.balloon_alert(owner, LANG("datum.65a3f8941adb45e3", null))
 		return FALSE
 
 	return TRUE
@@ -297,13 +322,13 @@
 	var/is_statue = owner.loc == statue
 	if(!is_statue)
 		owner.visible_message(
-			span_notice("[owner] strikes a glorious pose."),
-			span_notice("You strike a glorious pose as you become a statue!"),
+			span_notice(LANG("datum.f310af969a80423c", list(owner))),
+			span_notice(LANG("datum.dd675abfca24cbe8", null)),
 		)
 
 	owner.balloon_alert(owner, is_statue ? "breaking free..." : "striking a pose...")
 	if(!do_after(owner, (is_statue ? 0.5 SECONDS : 3 SECONDS), target = get_turf(owner)))
-		owner.balloon_alert(owner, "interrupted!")
+		owner.balloon_alert(owner, LANG("datum.c67b5d274d6e724b", null))
 		return
 
 	StartCooldown()
@@ -312,15 +337,15 @@
 	statue.desc = "statue depicting [owner.real_name]"
 
 	if(is_statue)
-		statue.visible_message(span_danger("[statue] becomes animated!"))
+		statue.visible_message(span_danger(LANG("datum.9c94ee86eba1a92d", list(statue))))
 		owner.forceMove(get_turf(statue))
 		statue.moveToNullspace()
 		UnregisterSignal(owner, COMSIG_MOVABLE_MOVED)
 
 	else
 		owner.visible_message(
-			span_notice("[owner] hardens into a silver statue."),
-			span_notice("You have become a silver statue!"),
+			span_notice(LANG("datum.aa360fa0e411ba45", list(owner))),
+			span_notice(LANG("datum.b366833ec8137988", null)),
 		)
 		statue.set_visuals(owner.appearance)
 		statue.forceMove(get_turf(owner))
@@ -347,7 +372,7 @@
 	var/mob/living/carbon/carbon_owner = owner
 	UnregisterSignal(carbon_owner, COMSIG_MOVABLE_MOVED)
 
-	to_chat(carbon_owner, span_userdanger("Your existence as a living creature snaps as your statue form crumbles!"))
+	to_chat(carbon_owner, span_userdanger(LANG("datum.fdc912404473091a", null)))
 	carbon_owner.forceMove(get_turf(statue))
 	carbon_owner.dust(just_ash = TRUE, drop_items = TRUE)
 	carbon_owner.investigate_log("has been dusted from having their Silverscale Statue deconstructed / destroyed.", INVESTIGATE_DEATHS)
@@ -415,21 +440,21 @@
 		return
 
 	if(tongue.mothership == mothership)
-		to_chat(tongue_holder, span_notice("[src] is already attuned to the same channel as your own."))
+		to_chat(tongue_holder, span_notice(LANG("obj.927b529d31980879", list(src))))
 
-	tongue_holder.visible_message(span_notice("[tongue_holder] holds [src] in their hands, and concentrates for a moment."), span_notice("You attempt to modify the attenuation of [src]."))
+	tongue_holder.visible_message(span_notice(LANG("obj.4cf26e6b7df267d0", list(tongue_holder, src))), span_notice(LANG("obj.f5ce4436a57f34c7", list(src))))
 	if(do_after(tongue_holder, delay=15, target=src))
-		to_chat(tongue_holder, span_notice("You attune [src] to your own channel."))
+		to_chat(tongue_holder, span_notice(LANG("obj.58fe1589d8544540", list(src))))
 		mothership = tongue.mothership
 
 /obj/item/organ/tongue/abductor/examine(mob/examining_mob)
 	. = ..()
 	if(HAS_MIND_TRAIT(examining_mob, TRAIT_ABDUCTOR_TRAINING) || isobserver(examining_mob))
-		. += span_notice("It can be attuned to a different channel by using it inhand.")
+		. += span_notice(LANG("obj.583cd70c6bbbe26a", null))
 		if(!mothership)
-			. += span_notice("It is not attuned to a specific mothership.")
+			. += span_notice(LANG("obj.6305d16c2681e0c5", null))
 		else
-			. += span_notice("It is attuned to [mothership].")
+			. += span_notice(LANG("obj.1790fafaa9ce1d0b", list(mothership)))
 
 /obj/item/organ/tongue/abductor/modify_speech(datum/source, list/speech_args)
 	//Hacks
@@ -641,14 +666,14 @@
 /obj/item/organ/tongue/robot/on_mob_insert(mob/living/carbon/receiver)
 	. = ..()
 	receiver.grant_language(/datum/language/machine, source = LANGUAGE_TONGUE)
-	to_chat(receiver, span_boldnotice("You gain a new understanding of [/datum/language/machine::name]."))
+	to_chat(receiver, span_boldnotice(LANG("obj.7ce36525de151fef", list(/datum/language/machine::name))))
 
 /obj/item/organ/tongue/robot/on_mob_remove(mob/living/carbon/owner)
 	. = ..()
 	if(QDELING(owner))
 		return
 	owner.remove_language(/datum/language/machine, source = LANGUAGE_TONGUE)
-	to_chat(owner, span_boldnotice("You're not really sure what beeps and boops mean anymore."))
+	to_chat(owner, span_boldnotice(LANG("obj.314e1cd91baaa936", null)))
 
 /obj/item/organ/tongue/snail
 	name = "radula"

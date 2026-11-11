@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Plasma spewing pistol
 // Sprays a wall of plasma that sucks against armor but fucks against unarmored targets
 
@@ -36,21 +37,12 @@
 
 /obj/item/gun/ballistic/automatic/pistol/plasma_thrower/examine(mob/user)
 	. = ..()
-	. += span_notice("You can <b>examine closer</b> to learn a little more about this weapon.")
+	. += span_notice(LANG("obj.b663717df67087e6", null))
 
 /obj/item/gun/ballistic/automatic/pistol/plasma_thrower/examine_more(mob/user)
 	. = ..()
 
-	. += "The 'Słońce' started life as an experiment in advancing the field of accelerated \
-		plasma weaponry. Despite the design's obvious shortcomings in terms of accuracy and \
-		range, the CIN combined military command (which we'll call the CMC from now on) took \
-		interest in the weapon as a means to counter Sol's more advanced armor technology. \
-		As it would turn out, the plasma globules created by the weapon were really not \
-		as effective against armor as the CMC had hoped, quite the opposite actually. \
-		What the plasma did do well however was inflict grievous burns upon anyone unfortunate \
-		enough to get hit by it unprotected. For this reason, the 'Słońce' saw frequent use by \
-		army officers and ship crews who needed a backup weapon to incinerate the odd space \
-		pirate or prisoner of war."
+	. += LANG("obj.ecd75ef3c368bf12", null)
 
 	return .
 
@@ -100,18 +92,12 @@
 /obj/item/gun/ballistic/automatic/pistol/plasma_marksman/examine(mob/user, overclocking)
 	. = ..()
 	if(overclocking)
-		. += span_notice("The weapon is glowing red and steaming!")
-	. += span_notice("You can <b>examine closer</b> to learn a little more about this weapon.")
+		. += span_notice(LANG("obj.a054a65c070ff7b6", null))
+	. += span_notice(LANG("obj.b663717df67087e6", null))
 
 /obj/item/gun/ballistic/automatic/pistol/plasma_marksman/examine_more(mob/user)
 	. = ..()
-	. += "The 'Gwiazda' is a further refinement of the 'Słońce' design, with improved \
-		energy cycling, magnetic launchers built to higher precision, and an overall more \
-		ergonomic design. While it still fails to perform against armor, the weapon is \
-		significantly more accurate and higher powered, at the expense of a much lower fire rate. \
-		Opinions on this weapon within military service were highly mixed, with many preferring \
-		the sheer stopping power a spray of plasma could produce, and others loving the new ability \
-		to hit something in front of them for once."
+	. += LANG("obj.d29b5c842336d57d", null)
 
 	return .
 
@@ -197,7 +183,7 @@
 	playsound(src, 'modular_zubbers/sound/weapons/plasma_explosion.ogg', 100, FALSE, 20, , , , TRUE)
 	for(var/mob/living/carbon/M in orange(20, src))
 		if(!HAS_TRAIT(M, TRAIT_DEAF))
-			to_chat(M, span_warning("You hear a distant pulse of energy, as if a miniature reactor blasting out a shockwave from afar..."))
+			to_chat(M, span_warning(LANG("obj.59207c45af0964ac", null)))
 
 /obj/item/gun/ballistic/automatic/pistol/plasma_marksman/process(seconds_per_tick)
 	var/mob/living/carbon/wielder = ismob(loc) ? loc : null
@@ -208,7 +194,7 @@
 		return
 	if(wielder.is_holding(src))
 		wielder.apply_damage(2.5, BURN, affecting)
-		to_chat(wielder, span_warning("[src] burns your hand, it's too hot!"))
+		to_chat(wielder, span_warning(LANG("obj.b2c3c1c2715920a1", list(src))))
 
 /obj/item/gun/ballistic/automatic/pistol/plasma_marksman/emp_act(severity)
 	. = ..()
@@ -245,12 +231,6 @@
 /obj/item/gun/ballistic/revolver/shotgun_revolver/examine_more(mob/user)
 	. = ..()
 
-	. += "The 'Bóbr' started development as a limited-run sporting weapon before \
-		the military took interest. The market quickly changed from sport shooting \
-		targets, to sport shooting TerraGov strike teams once the conflict broke out. \
-		This pattern is different from the original civilian version, with a military \
-		standard pistol grip and a weather-resistant finish. While the 'Bóbr' was not \
-		a weapon standard issued to every CIN soldier, it was available relatively \
-		cheaply, and thus became rather popular among the ranks."
+	. += LANG("obj.d10f1b51da0c9354", null)
 
 	return .

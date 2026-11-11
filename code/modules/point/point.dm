@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define POINT_TIME (2.5 SECONDS)
 
 /**
@@ -106,7 +107,7 @@
  *
  * overridden here and in /mob/dead/observer for different point span classes and sanity checks
  */
-GAME_VERB_CONTEXT(/mob, pointed, "Point To", "", null, /atom)
+GAME_VERB_CONTEXT(/mob, pointed, "指向", "", null, /atom)
 	VERB_ARG_TYPED(A, VERB_ARG_TYPE_MOB | VERB_ARG_TYPE_OBJ | VERB_ARG_TYPE_TURF, VERB_ARG_SOURCE_VIEW, /atom)
 
 	if(isnull(A) || istype(A, /obj/effect/temp_visual/point) || isarea(A))
@@ -132,7 +133,7 @@ GAME_VERB_CONTEXT(/mob, pointed, "Point To", "", null, /atom)
 				//cooldown handled in the emote.
 				our_carbon.emote("point [pointing_at]")
 			else
-				to_chat(src, span_warning("You need to wait before pointing again!"))
+				to_chat(src, span_warning(LANG("mob.0407d64b8986d8ef", null)))
 				return FALSE
 	point_at(pointing_at, TRUE)
 

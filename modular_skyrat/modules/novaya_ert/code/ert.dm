@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/ert/nri
 	roles = list(/datum/antagonist/ert/nri, /datum/antagonist/ert/nri/medic, /datum/antagonist/ert/nri/engineer)
 	leader_role = /datum/antagonist/ert/nri/commander
@@ -31,7 +32,7 @@
 	if(!ert_team)
 		return
 
-	to_chat(owner, span_boldwarning("<font size=3 color=yellow>You are the [name]</font>"))
+	to_chat(owner, span_boldwarning(LANG("datum.9595c813d57888fb", list(name))))
 
 	var/missiondesc = "Your squad is responding to an emergency situation of [station_name()], with the Pan-Slavic Commonwealth Defense Collegium's approval."
 	if(leader) //If Squad Leader

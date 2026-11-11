@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/bodypart
 	name = "limb"
 	desc = "Why is it detached..."
@@ -364,9 +365,9 @@
 
 	. = ..()
 	if(brute_dam > DAMAGE_PRECISION)
-		. += span_warning("This limb has [brute_dam > 30 ? "severe" : "minor"] bruising.")
+		. += span_warning(LANG("obj.4fb413ed3c7ac554", list(brute_dam > 30 ? "severe" : "minor")))
 	if(burn_dam > DAMAGE_PRECISION)
-		. += span_warning("This limb has [burn_dam > 30 ? "severe" : "minor"] burns.")
+		. += span_warning(LANG("obj.0433916ed2880bd0", list(burn_dam > 30 ? "severe" : "minor")))
 
 	for(var/datum/wound/wound as anything in wounds)
 		var/wound_desc = wound.get_limb_examine_description()
@@ -397,25 +398,40 @@
 		if(!shown_brute && !shown_burn)
 			status = "no damage"
 		else
-			status = "[shown_brute] brute damage and [shown_burn] burn damage"
+			status = LANG("obj.ff12a59166418928", list(shown_brute, shown_burn)) // ZH EDIT CHANGE - I18N - ORIGINAL: status = "[shown_brute] brute damage and [shown_burn] burn damage"
 
 	else
+		// ZH EDIT CHANGE START - I18N - 原逐段拼接成 brute+" and "+burn；整串非状态词键、lang_localize_arg miss（双重伤情残留英文）。
+		// 改为分别取 brute/burn 段，locale≠en 时各自经 _state_words 本地化再用中文「，」连接（en 路径与原逻辑等价）。
+		var/brute_part = ""
 		if(shown_brute > (max_damage * 0.8))
-			status += heavy_brute_msg
+			brute_part = heavy_brute_msg
 		else if(shown_brute > (max_damage * 0.4))
-			status += medium_brute_msg
+			brute_part = medium_brute_msg
 		else if(shown_brute > DAMAGE_PRECISION)
-			status += light_brute_msg
+			brute_part = light_brute_msg
 
-		if(shown_brute > DAMAGE_PRECISION && shown_burn > DAMAGE_PRECISION)
-			status += " and "
-
+		var/burn_part = ""
 		if(shown_burn > (max_damage * 0.8))
-			status += heavy_burn_msg
+			burn_part = heavy_burn_msg
 		else if(shown_burn > (max_damage * 0.2))
-			status += medium_burn_msg
+			burn_part = medium_burn_msg
 		else if(shown_burn > DAMAGE_PRECISION)
-			status += light_burn_msg
+			burn_part = light_burn_msg
+
+		if(GLOB.i18n_server_locale != DEFAULT_UI_LOCALE)
+			if(brute_part && burn_part)
+				status = "[lang_localize_arg(brute_part)]，[lang_localize_arg(burn_part)]"
+			else if(brute_part)
+				status = lang_localize_arg(brute_part)
+			else if(burn_part)
+				status = lang_localize_arg(burn_part)
+		else
+			status += brute_part
+			if(brute_part && burn_part)
+				status += " and "
+			status += burn_part
+		// ZH EDIT CHANGE END - ORIGINAL: 见上方说明（status += heavy/medium/light brute_msg / " and " / burn_msg）
 
 		if(status == "")
 			status = "OK"
@@ -432,7 +448,7 @@
 		else
 			is_disabled += " and"
 
-	check_list += "<span class='[no_damage ? "notice" : "warning"]'>Your [plaintext_zone][is_disabled][self_aware ? " has " : " looks "][status].</span>"
+	check_list += LANG("obj.be1c3f59d72dc049", list(no_damage ? "notice" : "warning", lang_zone(plaintext_zone), is_disabled, self_aware ? " has " : " looks ", status)) // ZH EDIT - i18n: 部位名专用反查（chest/head 等单词不碰储物箱）
 
 	var/adept_organ_feeler = owner == examiner && HAS_TRAIT(examiner, TRAIT_SELF_AWARE)
 	for(var/obj/item/organ/organ in src)
@@ -440,23 +456,23 @@
 			continue
 		var/feeling = organ.feel_for_damage(adept_organ_feeler)
 		if(feeling)
-			check_list += "\t[feeling]"
+			check_list += LANG("obj.294efb1fdb8925bb", list(feeling))
 
 	for(var/datum/wound/wound as anything in wounds)
 		var/wound_desc = wound.get_self_check_description(adept_organ_feeler)
 		if(wound_desc)
-			check_list += "\t[wound_desc]"
+			check_list += LANG("obj.294efb1fdb8925bb", list(wound_desc))
 
 	var/surgery_check = get_surgery_self_check()
 	if(surgery_check)
-		check_list += "\t[surgery_check]"
+		check_list += LANG("obj.294efb1fdb8925bb", list(surgery_check))
 
 	for(var/obj/item/embedded_thing as anything in embedded_objects)
 		if(embedded_thing.get_embed().stealthy_embed)
 			continue
 		var/harmless = embedded_thing.get_embed().is_harmless()
 		var/stuck_wordage = harmless ? "stuck to" : "embedded in"
-		var/embed_text = "\t<a href='byond://?src=[REF(examiner)];embedded_object=[REF(embedded_thing)];embedded_limb=[REF(src)]'>There is [icon2html(embedded_thing, examiner)] \a [embedded_thing] [stuck_wordage] your [plaintext_zone]!</a>"
+		var/embed_text = "\t<a href='byond://?src=[REF(examiner)];embedded_object=[REF(embedded_thing)];embedded_limb=[REF(src)]'>There is [icon2html(embedded_thing, examiner)] \a [embedded_thing] [stuck_wordage] your [lang_zone(plaintext_zone)]!</a>" // ZH EDIT - i18n: 部位名专用反查
 		if (harmless)
 			check_list += span_italics(span_notice(embed_text))
 		else
@@ -473,7 +489,7 @@
 			else
 				check_list += span_warning(tourniquet_text)
 		if(current_gauze)
-			check_list += span_notice("\tThere is some [current_gauze.name] wrapped around it.")
+			check_list += span_notice(LANG("obj.9cb1b8e7d7d1ce17", list(current_gauze.name)))
 	else if(can_bleed())
 		var/bleed_text = ""
 		switch(cached_bleed_rate)
@@ -487,8 +503,8 @@
 				bleed_text = span_warning("It's bleeding profusely!")
 
 		if(bleed_text)
-			check_list += "\t[span_tooltip("You are loosing blood. You should wrap your limb in gauze \
-				or apply pressure to it by grabbing yourself (while targeting the limb) to stem the flow.", bleed_text)]"
+			check_list += LANG("obj.294efb1fdb8925bb", list(span_tooltip("You are loosing blood. You should wrap your limb in gauze \
+				or apply pressure to it by grabbing yourself (while targeting the limb) to stem the flow.", bleed_text)))
 
 	return jointext(check_list, "<br>")
 
@@ -611,17 +627,17 @@
 			if(!human_victim.get_bodypart(body_zone))
 				user.temporarilyRemoveItemFromInventory(src, TRUE)
 				if(!try_attach_limb(victim))
-					to_chat(user, span_warning("[human_victim]'s body rejects [src]!"))
+					to_chat(user, span_warning(LANG("obj.b058d4fc2cf32981", list(human_victim, src))))
 					forceMove(human_victim.loc)
 					return
 				if(check_for_frankenstein(victim))
 					bodypart_flags |= BODYPART_IMPLANTED
 				if(human_victim == user)
-					human_victim.visible_message(span_warning("[human_victim] jams [src] into [human_victim.p_their()] empty socket!"),\
-					span_notice("You force [src] into your empty socket, and it locks into place!"))
+					human_victim.visible_message(span_warning(LANG("obj.48b7c7952f14e472", list(human_victim, src, human_victim.p_their()))),\
+					span_notice(LANG("obj.1f30b9d2cec2391f", list(src))))
 				else
-					human_victim.visible_message(span_warning("[user] jams [src] into [human_victim]'s empty socket!"),\
-					span_notice("[user] forces [src] into your empty socket, and it locks into place!"))
+					human_victim.visible_message(span_warning(LANG("obj.3bf0dccb1b1d31b3", list(user, src, human_victim))),\
+					span_notice(LANG("obj.fe4a786262186701", list(user, src))))
 				return
 	return ..()
 
@@ -651,7 +667,7 @@
 		operation_zone = body_zone
 	for(var/datum/surgery_operation/operation as anything in operations)
 		if ((operation.operation_flags & OPERATION_NO_PATIENT_REQUIRED) && operation.show_as_next_step(src, operation_zone))
-			. += span_notice("You could perform [operation] on [src] with \a [operation.get_recommended_tool()]...")
+			. += span_notice(LANG("obj.26e26c145b4e3db1", list(operation, src, operation.get_recommended_tool())))
 
 //empties the bodypart from its organs and other things inside it
 /obj/item/bodypart/proc/drop_organs(mob/user, violent_removal)
@@ -1869,7 +1885,7 @@
 		return FALSE
 	current_gauze.absorption_capacity -= seep_amt
 	if(current_gauze.absorption_capacity <= 0)
-		owner.visible_message(span_danger("\The [current_gauze.name] on [owner]'s [name] falls away in rags."), span_warning("\The [current_gauze.name] on your [name] falls away in rags."), vision_distance=COMBAT_MESSAGE_RANGE)
+		owner.visible_message(span_danger(LANG("obj.fc7026a00d5a908c", list(current_gauze.name, owner, name))), span_warning(LANG("obj.822624dfa1ee6cfe", list(current_gauze.name, name))), vision_distance=COMBAT_MESSAGE_RANGE)
 		qdel(current_gauze)
 	return TRUE
 
@@ -1951,7 +1967,7 @@
 	if(can_be_disabled && (get_damage() / max_damage) >= robotic_emp_paralyze_damage_percent_threshold)
 		ADD_TRAIT(src, TRAIT_PARALYSIS, EMP_TRAIT)
 		addtimer(TRAIT_CALLBACK_REMOVE(src, TRAIT_PARALYSIS, EMP_TRAIT), time_needed)
-		owner?.visible_message(span_danger("[owner]'s [plaintext_zone] seems to malfunction!"))
+		owner?.visible_message(span_danger(LANG("obj.9c4793c3cab28767", list(owner, plaintext_zone))))
 
 	return TRUE
 

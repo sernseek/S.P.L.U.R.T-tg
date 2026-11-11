@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define CAN_HEAR_MASTERS (1<<0)
 #define CAN_HEAR_ACTIVE_HOLOCALLS (1<<1)
 #define CAN_HEAR_RECORD_MODE (1<<2)
@@ -230,15 +231,15 @@ Possible to do for anyone motivated enough:
 /obj/machinery/holopad/examine(mob/user)
 	. = ..()
 	if(isAI(user) || in_range(user, src) || isobserver(user))
-		. += span_notice("The status display reads: Current projection range: <b>[holo_range]</b> units.")
+		. += span_notice(LANG("obj.9e9729271e6ddfd4", list(holo_range)))
 
 	if(!isAI(user))
 		return
 
-	. += span_info("Use :[/datum/saymode/holopad::key] to speak through the projection.")
-	. += span_info("Right-click to project or cancel a projection.")
-	. += span_info("Alt-click to hangup all active and incomming calls.")
-	. += span_info("Ctrl-click to end projection without jumping to your last location.")
+	. += span_info(LANG("obj.6c81b75ad937eec6", list(/datum/saymode/holopad::key)))
+	. += span_info(LANG("obj.8b5ba1e2ec744a02", null))
+	. += span_info(LANG("obj.7eb5b4630703914e", null))
+	. += span_info(LANG("obj.b81efc0edc537ed5", null))
 
 /obj/machinery/holopad/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
@@ -270,11 +271,11 @@ Possible to do for anyone motivated enough:
 /obj/machinery/holopad/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(istype(tool, /obj/item/disk/holodisk))
 		if(disk)
-			to_chat(user,span_warning("There's already a disk inside [src]!"))
+			to_chat(user,span_warning(LANG("obj.fcccecb315c0c8ce", list(src))))
 			return
 		if (!user.transferItemToLoc(tool, src))
 			return
-		to_chat(user,span_notice("You insert [tool] into [src]."))
+		to_chat(user,span_notice(LANG("obj.8ce99939bf01b695", list(tool, src))))
 		disk = tool
 		return ITEM_INTERACT_SUCCESS
 	return NONE
@@ -329,19 +330,19 @@ Possible to do for anyone motivated enough:
 			if(isAI(usr))
 				var/mob/living/silicon/ai/ai_user = usr
 				ai_user.eyeobj.setLoc(get_turf(src))
-				to_chat(usr, span_info("AIs can not request AI presence. Jumping instead."))
+				to_chat(usr, span_info(LANG("obj.7fa4382975d3fd7b", null)))
 				return
 			if(last_request + 200 < world.time)
 				last_request = world.time
-				to_chat(usr, span_info("You requested an AI's presence."))
+				to_chat(usr, span_info(LANG("obj.6215004134a3e82b", null)))
 				var/area/area = get_area(src)
 				for(var/mob/living/silicon/ai/AI in GLOB.silicon_mobs)
 					if(!AI.client)
 						continue
-					to_chat(AI, span_info("Your presence is requested at <a href='byond://?src=[REF(AI)];jump_to_holopad=[REF(src)]'>\the [area]</a>. <a href='byond://?src=[REF(AI)];project_to_holopad=[REF(src)]'>Project Hologram?</a>"))
+					to_chat(AI, span_info(LANG("obj.85e60a006b953788", list(REF(AI), REF(src), area, REF(AI), REF(src)))))
 				return TRUE
 			else
-				to_chat(usr, span_info("A request for AI presence was already sent recently."))
+				to_chat(usr, span_info(LANG("obj.4c616922acef9ac8", null)))
 				return
 		if("holocall")
 			if(outgoing_call)
@@ -353,7 +354,7 @@ Possible to do for anyone motivated enough:
 					if(A)
 						LAZYADD(callnames[A], I)
 				callnames -= get_area(src)
-				var/result = tgui_input_list(usr, "Choose an area to call", "Holocall", sort_names(callnames))
+				var/result = tgui_input_list(usr, LANG("obj.ec9662ac4b69e43f", null), LANG("obj.b9631c42f63bfc09", null), sort_names(callnames))
 				if(isnull(result))
 					return
 				if(QDELETED(usr) || outgoing_call)
@@ -367,7 +368,7 @@ Possible to do for anyone motivated enough:
 					calling = TRUE
 					return TRUE
 			else
-				to_chat(usr, span_warning("You must stand on the holopad to make a call!"))
+				to_chat(usr, span_warning(LANG("obj.34cbf958e1839d39", null)))
 		if("connectcall")
 			var/datum/holocall/call_to_connect = locate(params["holopad"]) in holo_calls
 			if(!QDELETED(call_to_connect))
@@ -546,7 +547,7 @@ Possible to do for anyone motivated enough:
 
 	if(is_operational)//If the projector has power
 		if(AI && istype(AI.current, /obj/machinery/holopad))
-			to_chat(user, "[span_danger("ERROR:")] \black Image feed in progress.")
+			to_chat(user, LANG("obj.9ea8b9d4ae69d3c1", list(span_danger("ERROR:"))))
 			return
 
 		// What to pull our appearance out of
@@ -572,11 +573,11 @@ Possible to do for anyone motivated enough:
 		set_holo(user, hologram)
 
 		set_holo(user, hologram)
-		visible_message(span_notice("A holographic image of [user] flickers to life before your eyes!"))
+		visible_message(span_notice(LANG("obj.5f8007fc4e858caf", list(user))))
 
 		return hologram
 	else
-		to_chat(user, "[span_danger("ERROR:")] Unable to project hologram.")
+		to_chat(user, LANG("obj.27e6d398be57d4a8", list(span_danger("ERROR:"))))
 
 /*This is the proc for special two-way communication between AI and holopad/people talking near holopad.
 For the other part of the code, check silicon say.dm. Particularly robot talk.*/
@@ -818,16 +819,16 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	hologram.name = "[record.caller_name] (Hologram)"//If someone decides to right click.
 	set_holo(record, hologram)
 
-	visible_message(span_notice("A holographic image of [record.caller_name] flickers to life before your eyes!"))
+	visible_message(span_notice(LANG("obj.5f8007fc4e858caf", list(record.caller_name))))
 	return hologram
 
 /obj/machinery/holopad/proc/replay_start()
 	if(!disk)
-		say("Please insert the disc to play the recording.")
+		say(LANG("obj.b06ab7ae5c613c67", null))
 		return
 
 	if(!disk.record)
-		say("There is no record on the disc. Please check the disk.")
+		say(LANG("obj.23d0a1d3220cc924", null))
 		return
 
 	if(!replay_mode)

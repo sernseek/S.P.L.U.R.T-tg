@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // This code handles the strip menu minutae for re-enabling someone's deactivated entombed suit.
 
 /datum/strippable_item/mob_item_slot/back/get_alternate_actions(atom/source, mob/user)
@@ -18,11 +19,11 @@
 	switch (action_key)
 		if ("entombed_emergency_reactivate")
 			if (!entombed_suit.active)
-				user.visible_message(span_info("[user] begins initiating emergency reactivation procedures on [entombed_suit]..."))
+				user.visible_message(span_info(LANG("datum.ddc7e848068e3f39", list(user, entombed_suit))))
 				if (do_after(user, 3 SECONDS, entombed_suit.wearer))
 					// deploy all our parts so activation actually works
 					for (var/obj/item/part as anything in entombed_suit.mod_parts)
 						entombed_suit.deploy(user, part)
 					entombed_suit.toggle_activate(user, TRUE)
 			else
-				user.balloon_alert(usr, "their suit is already online!")
+				user.balloon_alert(usr, LANG("datum.eefe3e307ee45907", null))

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/pet/poppy
 	name = "Poppy the Safety Inspector"
 	desc = "Safety first!"
@@ -72,7 +73,7 @@
 		var/list/sm_chamber = get_area_turfs(/area/station/engineering/supermatter)
 		if(src.loc in sm_chamber)
 			safety_inspection = FALSE
-			priority_announce("This is a generated message due to an automated signal regarding the safety standards of the engineering department onboard [station_name()]. Due to the station engineers failing to meet the standard set by Central Command, each of them are now at risk of being forcefully enrolled in a re-evaluation program at later notice...", "Concerning the results of a safety inspection", type = "Priority")
+			priority_announce(LANG("mob.c1fa332adfa993d6", list(station_name())), "Concerning the results of a safety inspection", type = "Priority")
 			// It's just flavor, no tangible punishment
 	return ..()
 
@@ -127,9 +128,9 @@
 
 	//emote("sweatdrop") - BUBBER TODO - Make this not lint
 	do_jitter_animation(60)
-	manual_emote("'s fur stands up, [src.p_their()] body trembling...")
+	manual_emote(LANG("mob.de7cb93c48668416", list(src.p_their())))
 
-	notify_ghosts("[src] was startled by the supermatter!",
+	notify_ghosts(LANG("mob.74ac00afc1d01c29", list(src)),
 		source = src,
 		notify_flags = NOTIFY_CATEGORY_NOFLASH,
 		header = "Safety Inspection!",

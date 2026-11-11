@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///Spirit mob that lacks legs but still roams the station as part of the unliving.
 /datum/species/spirit
 	name = "Spirit"
@@ -66,15 +67,15 @@
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "body",
-		SPECIES_PERK_NAME = "Leg-less",
-		SPECIES_PERK_DESC = "Ghosts lack legs and float, preventing you from falling into holes in the ground.",
+		SPECIES_PERK_NAME = LANG("datum.193940a667b5da85", null),
+		SPECIES_PERK_DESC = LANG("datum.76c735b28a094d30", null),
 	))
 
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "shoe-prints",
-		SPECIES_PERK_NAME = "No Feet",
-		SPECIES_PERK_DESC = "You lack feet, therefore the ability to wear any shoes!",
+		SPECIES_PERK_NAME = LANG("datum.94f47af65976281b", null),
+		SPECIES_PERK_DESC = LANG("datum.8e899734d94a993f", null),
 	))
 
 	return to_add
@@ -148,9 +149,8 @@
 	to_add += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "ghost",
-		SPECIES_PERK_NAME = "Incorporeal",
-		SPECIES_PERK_DESC = "Ghost are able to control their body to the extent where you can willingly make yourself able \
-			to phase through anything, including your own equipment.",
+		SPECIES_PERK_NAME = LANG("datum.8d80101d64bb158a", null),
+		SPECIES_PERK_DESC = LANG("datum.d65401318762b682", null),
 	))
 
 	return to_add
@@ -255,5 +255,5 @@
 	SIGNAL_HANDLER
 
 	if(new_loc && HAS_TRAIT(new_loc, TRAIT_TURF_BLESSED))
-		to_chat(source, span_warning("Holy energies block your path!"))
+		to_chat(source, span_warning(LANG("datum.1fa443913aa8cb49", null)))
 		return COMSIG_MOB_CLIENT_BLOCK_PRE_LIVING_MOVE

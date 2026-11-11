@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MONSTER_SPAWN_CHANCE_PER_SEC 0.01 // really itll only happen if noone ever gets to it
 #define SANITY_DECREASE_PER_SEC -5
 
@@ -18,7 +19,7 @@
 /obj/effect/visible_heretic_influence/examine(mob/living/user)
 	. = ..()
 
-	. += span_warning("You can use a [EXAMINE_HINT("anomaly neutralizer")] to remove the influence.")
+	. += span_warning(LANG("obj.1cd5b141a250a232", list(EXAMINE_HINT("anomaly neutralizer"))))
 
 /obj/effect/visible_heretic_influence/Initialize(mapload)
 	. = ..()
@@ -38,7 +39,7 @@
 			continue
 		iter_living.mob_mood?.sanity -= SANITY_DECREASE_PER_SEC
 		if (SPT_PROB(2, seconds_per_tick))
-			to_chat(iter_living, span_warning("Something from [src] whispers into your mind..."))
+			to_chat(iter_living, span_warning(LANG("obj.1d1066cad30da430", list(src))))
 			iter_living.adjust_hallucinations_up_to(10 SECONDS, 60 SECONDS)
 
 	if (!spawned_monster && SPT_PROB(MONSTER_SPAWN_CHANCE_PER_SEC, seconds_per_tick))
@@ -48,7 +49,7 @@
 		new /obj/effect/temp_visual/circle_wave/heretic_monster_spawn(get_turf(src))
 		playsound(get_turf(src),'sound/effects/magic/repulse.ogg', 100, TRUE)
 
-		visible_message(span_bolddanger("Something crawls out of [src]!"))
+		visible_message(span_bolddanger(LANG("obj.011d7f63f3567837", list(src))))
 
 		spawned_monster = TRUE
 

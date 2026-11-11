@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
 	Wounds are specific medical complications that can arise and be applied to (currently) carbons, with a focus on humans. All of the code for and related to this is heavily WIP,
 	and the documentation will be slanted towards explaining what each part/piece is leading up to, until such a time as I finish the core implementations. The original design doc
@@ -229,7 +230,7 @@
 			msg = "<b>[msg]</b>"
 			vis_dist = DEFAULT_MESSAGE_RANGE
 
-		victim.visible_message(msg, span_userdanger("Your [limb.plaintext_zone] [occur_text]!"), vision_distance = vis_dist)
+		victim.visible_message(msg, span_userdanger(LANG("datum.492c44368cd7cbd0", list(limb.plaintext_zone, occur_text))), vision_distance = vis_dist)
 		if(sound_effect)
 			playsound(limb.owner, sound_effect, sound_volume + (20 * severity), TRUE, falloff_exponent = SOUND_FALLOFF_EXPONENT + 2,  ignore_walls = FALSE, falloff_distance = 0)
 
@@ -521,7 +522,7 @@
 	// now that we've determined we have a valid attempt at treating,
 	// we can stomp on their dreams if we're already interacting with the patient or if their part is obscured
 	if(DOING_INTERACTION_WITH_TARGET(user, victim))
-		to_chat(user, span_warning("You're already interacting with [victim]!"))
+		to_chat(user, span_warning(LANG("datum.870487595e26e68b", list(victim))))
 		return ITEM_INTERACT_BLOCKING
 
 	// next we check if the bodypart in actually accessible (not under thick clothing). We skip the species trait check since skellies
@@ -642,7 +643,7 @@
 /datum/wound/proc/get_examine_description(mob/user)
 	. = get_wound_description(user)
 	if(HAS_TRAIT(src, TRAIT_WOUND_SCANNED))
-		. += span_notice("<br>There is a holo-image next to the wound that seems to contain indications for treatment.")
+		. += span_notice(LANG("datum.2fccebab45a5a80d", null))
 
 	return .
 
@@ -652,9 +653,9 @@
 	var/obj/item/stack/medical/wrap/current_gauze = LAZYACCESS(limb.applied_items, LIMB_ITEM_GAUZE)
 	if ((wound_flags & ACCEPTS_GAUZE) && current_gauze)
 		var/sling_condition = get_gauze_condition()
-		desc = "[victim.p_Their()] [limb.plaintext_zone] is [sling_condition]fastened in a sling of [current_gauze.name]"
+		desc = LANG("datum.81f1bbc0a5554507", list(victim.p_Their(), lang_zone(limb.plaintext_zone), sling_condition, current_gauze.name))
 	else
-		desc = "[victim.p_Their()] [limb.plaintext_zone] [examine_desc]"
+		desc = LANG("datum.e4bf1a906e486ccb", list(victim.p_Their(), lang_zone(limb.plaintext_zone), examine_desc))
 
 	desc = modify_desc_before_span(desc, user)
 
@@ -738,15 +739,19 @@
  * Returns what text describes this wound
  */
 /datum/wound/proc/severity_text()
+	// ZH EDIT - I18N - reverse-localize the severity word (display-only; strings/i18n/*/_wound_severity.json).
+	// lang_reverse_text is locale-gated (no-op on en) so english output is unchanged. - ORIGINAL: switch returned the bare english strings
+	var/text
 	switch(severity)
 		if(WOUND_SEVERITY_TRIVIAL)
-			return "Trivial"
+			text = "Trivial"
 		if(WOUND_SEVERITY_MODERATE)
-			return "Moderate"
+			text = "Moderate"
 		if(WOUND_SEVERITY_SEVERE)
-			return "<b>Severe</b>"
+			text = "<b>Severe</b>"
 		if(WOUND_SEVERITY_CRITICAL)
-			return "<b>Critical</b>"
+			text = "<b>Critical</b>"
+	return lang_reverse_text(text)
 
 /// Returns TRUE if our limb is the head or chest, FALSE otherwise.
 /// Essential in the sense of "we cannot live without it".

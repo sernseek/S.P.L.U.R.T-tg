@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define POWERLESS_DURATION 10 MINUTES
 
 // prevents the sm from generating power for x time - maybe a longer term effect too
@@ -24,7 +25,7 @@
 /datum/heretic_knowledge/supermatter_ritual/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)
 	for (var/obj/machinery/power/supermatter_crystal/iter_crys in range(1, loc))
 		return TRUE
-	to_chat(user, span_warning("Failure! You need to perform this ritual under a supermatter crystal."))
+	to_chat(user, span_warning(LANG("datum.5d9b0c1ce4b7d84f", null)))
 	return FALSE
 
 /datum/heretic_knowledge/supermatter_ritual/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
@@ -43,9 +44,9 @@
 	if (isnull(crys))
 		return FALSE
 
-	to_chat(user, span_warning("You begin the ritual..."))
+	to_chat(user, span_warning(LANG("datum.0645c51c7593fc52", null)))
 	if (!do_after(user, 20 SECONDS, crys, IGNORE_HELD_ITEM))
-		to_chat(user, span_boldwarning("Failure! The ritual is aborted."))
+		to_chat(user, span_boldwarning(LANG("datum.333227f962e7fcb3", null)))
 		return FALSE
 
 	crys.cursed = TRUE
@@ -53,7 +54,7 @@
 	addtimer(CALLBACK(crys, TYPE_PROC_REF(/obj/machinery/power/supermatter_crystal, clear_curse)), POWERLESS_DURATION)
 
 	priority_announce(
-		"Thaumatergic anomaly detected in Supermatter Engine. Observing massively reduced power output - expect resolution in ETA [POWERLESS_DURATION / 10] seconds.",
+		LANG("datum.14dca34c1c16e537", list(POWERLESS_DURATION / 10)),
 		"CentCom Thaumatergy Monitor",
 		'sound/machines/engine_alert/engine_alert3.ogg'
 	)
@@ -81,6 +82,6 @@
 	. = ..()
 
 	if (cursed)
-		. += span_boldwarning("This supermatter has been cursed by an Acolyte. It will output significantly less power until the curse diminishes.")
+		. += span_boldwarning(LANG("obj.d061058f750a015a", null))
 
 #undef POWERLESS_DURATION

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/structure/closet/infinite
 	name = "infinite closet"
 	desc = "It's closets, all the way down."
@@ -30,4 +31,4 @@
 
 /obj/structure/closet/infinite/proc/close_on_my_own()
 	if(close())
-		visible_message(span_notice("\The [src] closes on its own."))
+		visible_message(span_notice(LANG("obj.683196641e0f91e0", list(src))))

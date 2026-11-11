@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/colony_recycler
 	name = "materials recycler"
 	desc = "A large crushing machine used to recycle small items inefficiently. Items are inserted by hand, rather than by belt. \
@@ -48,8 +49,8 @@
 
 /obj/machinery/colony_recycler/examine(mob/user)
 	. = ..()
-	. += span_notice("Reclaiming <b>[amount_produced]%</b> of materials salvaged.")
-	. += span_notice("Can be <b>secured</b> with a <b>wrench</b> using <b>Right-Click</b>.")
+	. += span_notice(LANG("obj.546bceb74c741db0", list(amount_produced)))
+	. += span_notice(LANG("obj.b89f5bdb56dc814c", null))
 
 /obj/machinery/colony_recycler/wrench_act_secondary(mob/living/user, obj/item/tool)
 	default_unfasten_wrench(user, tool)

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Antag modules for MODsuits
 
 ///Energy Shield - Gives you a rechargeable energy shield that nullifies attacks.
@@ -248,10 +249,10 @@
 	. = ..()
 	if(!.)
 		return
-	mod.wearer.visible_message(span_warning("[mod.wearer] starts charging a kick!"), \
-		blind_message = span_hear("You hear a charging sound."))
+	mod.wearer.visible_message(span_warning(LANG("obj.d1adb849894a2d29", list(mod.wearer))), \
+		blind_message = span_hear(LANG("obj.cc2e7fe155833cfe", null)))
 	playsound(src, 'sound/items/modsuit/loader_charge.ogg', 75, TRUE)
-	balloon_alert(mod.wearer, "you start charging...")
+	balloon_alert(mod.wearer, LANG("obj.9dc8c02ab4e05ae4", null))
 	animate(mod.wearer, 0.3 SECONDS, pixel_z = 16, flags = ANIMATION_RELATIVE, easing = SINE_EASING|EASE_OUT)
 	addtimer(CALLBACK(mod.wearer, TYPE_PROC_REF(/atom, SpinAnimation), 3, 2), 0.3 SECONDS)
 	if(!do_after(mod.wearer, 1 SECONDS, target = mod))
@@ -320,7 +321,7 @@
 
 /obj/item/mod/module/chameleon/used(mob/activator)
 	if(mod.active || mod.activating)
-		balloon_alert(activator, "unit active!")
+		balloon_alert(activator, LANG("obj.7913b0b70e3a0cf3", null))
 		return FALSE
 	return ..()
 
@@ -328,7 +329,7 @@
 	if(current_disguise)
 		return_look()
 		return
-	var/picked_name = tgui_input_list(activator, "Select look to change into", "Chameleon Settings", possible_disguises)
+	var/picked_name = tgui_input_list(activator, LANG("obj.902ee4e741922cd0", null), LANG("obj.e9bc5fb4dc960d63", null), possible_disguises)
 	if(!possible_disguises[picked_name] || mod.active || mod.activating)
 		return
 	current_disguise = possible_disguises[picked_name]
@@ -349,8 +350,8 @@
 	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, PROC_REF(return_look))
 
 /obj/item/mod/module/chameleon/proc/return_look()
-	mod.name = "[mod.theme.name] [initial(mod.name)]"
-	mod.desc = "[initial(mod.desc)] [mod.theme.desc]"
+	mod.name = "[lang_reverse_text(mod.theme.name)] [initial(mod.name)]" // ZH EDIT CHANGE - I18N - ORIGINAL: mod.name = "[mod.theme.name] [initial(mod.name)]"
+	mod.desc = "[initial(mod.desc)] [lang_reverse_text(mod.theme.desc)]" // ZH EDIT CHANGE - I18N - ORIGINAL: mod.desc = "[initial(mod.desc)] [mod.theme.desc]"
 	mod.icon_state = "[mod.skin]-[initial(mod.icon_state)]"
 	var/list/mod_skin = mod.theme.variants[mod.skin]
 	mod.icon = mod_skin[MOD_ICON_OVERRIDE] || 'icons/obj/clothing/modsuit/mod_clothing.dmi'
@@ -495,10 +496,10 @@
 	if(!. || target == mod.wearer)
 		return
 	if(get_dist(mod.wearer, target) > 6)
-		balloon_alert(mod.wearer, "can't reach that!")
+		balloon_alert(mod.wearer, LANG("obj.b40a17ebc7e69d14", null))
 		return
 	if(istype(target, /obj/machinery/power/apc)) //Bit too strong for a module so this is blacklisted
-		balloon_alert(mod.wearer, "can't disable apc!")
+		balloon_alert(mod.wearer, LANG("obj.0d9212bdac618ef0", null))
 		return
 
 	var/list/things_to_disrupt = list(target)
@@ -540,7 +541,7 @@
 /obj/item/mod/module/stealth/wraith/unstealth(datum/source)
 	if(!stealth_active)
 		return
-	to_chat(mod.wearer, span_warning("[src] gets discharged from contact!"))
+	to_chat(mod.wearer, span_warning(LANG("obj.af764fe44d9000ba", list(src))))
 	do_sparks(2, TRUE, src)
 	drain_power(use_energy_cost)
 	// Don't deactivate() directly as the module may not be active in the first place when stealthing
@@ -554,11 +555,5 @@
 /obj/item/mod/module/stealth/wraith/examine_more(mob/user)
 	. = ..()
 	. += span_info( \
-		"The Wraith Module does not simply bend light around the user to obscure their visual pattern, \
-		but actively attacks and overloads surrounding light emitting objects, repurposing this energy to power the suit. \
-		It is possible that this technology has its origins in Spider Clan advancements, \
-		but the exact source of the Wraith Module is highly disputed. \
-		No group has stepped forward to claim it as their handiwork due to the political consequences of having stolen Spider Clan tech and their inevitable retaliation for such transgressions. \
-		Most point fingers at Cybersun Industries, but murmurs suggest it could even be even more clandestine organizations amongst the Syndicate branches. \
-		Whatever the case, if you are looking at one of these right now, don't show it to a space ninja." \
+		LANG("obj.fdeab78501561196", null) \
 	)

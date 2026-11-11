@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * ## Cat Surgeon
  *
@@ -59,8 +60,8 @@
 		return
 
 	visible_message(
-		span_warning("[src] severs [attacked]'s tail off in one swift swipe!"),
-		span_warning("You sever [attacked]'s tail off."),
+		span_warning(LANG("mob.36c0400361970974", list(src, attacked))),
+		span_warning(LANG("mob.412b8d1aa04a6953", list(attacked))),
 	)
 	tail.Remove(attacked)
 	tail.forceMove(drop_location())

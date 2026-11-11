@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 //Rather than assigning a security officer to each department, Skyrat departments get their own allied Guards!
 //Most related code is in this file; uniform icons are in the relevant department's .dmi
 
@@ -856,15 +857,15 @@
 
 	if(non_departmental_uses_left)
 		if(--non_departmental_uses_left)
-			say("[non_departmental_uses_left] non-departmental uses left!")
+			say(LANG("obj.927fd769d42b836f", list(non_departmental_uses_left)))
 		else
-			say("[src] is out of non-departmental uses! Return to your department and reactivate the baton to refresh it!")
+			say(LANG("obj.95a9feeb5b41685f", list(src)))
 		return .
 
-	target.visible_message(span_warning("[user] prods [target] with [src]. Luckily, it was shut off due to being in the wrong area."), \
-						span_warning("[user] prods you with [src]. Luckily, it was shut off due to being in the wrong area."))
+	target.visible_message(span_warning(LANG("obj.04161b33be7fe0d4", list(user, target, src))), \
+						span_warning(LANG("obj.20b9ea2b5d9b8f99", list(user, src))))
 	turn_off()
-	balloon_alert(user, "wrong department")
+	balloon_alert(user, LANG("obj.9de834ddefd6f41f", null))
 	return TRUE
 
 /obj/item/melee/baton/security/loaded/departmental/attack_self(mob/user)
@@ -874,16 +875,16 @@
 		if(!is_type_in_list(current_area, valid_areas))
 			return
 		if(non_departmental_uses_left < 4)
-			say("Non-departmental uses refreshed!")
+			say(LANG("obj.ab5bbce7c40e96f4", null))
 			non_departmental_uses_left = 4
 
 /obj/item/melee/baton/security/loaded/departmental/emag_act(mob/user)
 	if(!emagged)
 		if(user)
-			user.visible_message(span_warning("Sparks fly from [src]!"),
-							span_warning("You scramble [src]'s departmental lock, allowing it to be used freely!"),
-							span_hear("You hear a faint electrical spark."))
-		balloon_alert(user, "emagged")
+			user.visible_message(span_warning(LANG("obj.4ebe3de564d9fd88", list(src))),
+							span_warning(LANG("obj.8a48054b45d3e545", list(src))),
+							span_hear(LANG("obj.e9bee9b372539a94", null)))
+		balloon_alert(user, LANG("obj.d11dba2fe2307aa0", null))
 		playsound(src, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		obj_flags |= EMAGGED
 		emagged = TRUE

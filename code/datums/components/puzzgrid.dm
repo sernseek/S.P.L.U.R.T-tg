@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define PUZZGRID_CONFIG "[global.config.directory]/puzzgrids.txt"
 #define PUZZGRID_GROUP_COUNT 4
 #define PUZZGRID_MAX_ATTEMPTS 10
@@ -145,14 +146,14 @@
 /datum/component/puzzgrid/proc/out_of_lives()
 	var/atom/movable/movable_parent = parent
 	if (istype(movable_parent))
-		movable_parent.say("Ran out of lives!", forced = "puzzgrid component")
+		movable_parent.say(LANG("datum.6f4ceab660daaf5d", null), forced = "puzzgrid component")
 
 	fail()
 
 /datum/component/puzzgrid/proc/out_of_time()
 	var/atom/movable/movable_parent = parent
 	if (istype(movable_parent))
-		movable_parent.say("Ran out of time!", forced = "puzzgrid component")
+		movable_parent.say(LANG("datum.55ce74a6f44572b3", null), forced = "puzzgrid component")
 
 	fail()
 
@@ -280,7 +281,7 @@
 	var/list/answers = list()
 	var/description
 
-ADMIN_VERB(validate_puzzgrids, R_DEBUG, "Validate Puzzgrid Config", "Validate the puzzgrid config to ensure it's set up correctly.", ADMIN_CATEGORY_DEBUG)
+ADMIN_VERB(validate_puzzgrids, R_DEBUG, "验证 Puzzgrid 配置", "Validate the puzzgrid config to ensure it's set up correctly.", ADMIN_CATEGORY_DEBUG)
 	var/line_number = 0
 
 	for (var/line in world.file2list(PUZZGRID_CONFIG))
@@ -291,16 +292,16 @@ ADMIN_VERB(validate_puzzgrids, R_DEBUG, "Validate Puzzgrid Config", "Validate th
 
 		var/line_json_decoded = safe_json_decode(line)
 		if (isnull(line_json_decoded))
-			to_chat(user, span_warning("Line [line_number] in puzzgrids.txt is not a JSON: [line]"))
+			to_chat(user, span_warning(LANG("datum.326dc9be1292ff1e", list(line_number, line))))
 			continue
 
 		var/datum/puzzgrid/puzzgrid = new
 		var/populate_result = puzzgrid.populate(line_json_decoded)
 
 		if (populate_result != TRUE)
-			to_chat(user, span_warning("Line [line_number] in puzzgrids.txt is not formatted correctly: [populate_result]"))
+			to_chat(user, span_warning(LANG("datum.a800f77279feb40b", list(line_number, populate_result))))
 
-	to_chat(user, span_notice("Validated. If you did not see any errors, you're in the clear."))
+	to_chat(user, span_notice(LANG("datum.7f466809d9ee5fc2", null)))
 
 #undef PUZZGRID_CONFIG
 #undef PUZZGRID_GROUP_COUNT

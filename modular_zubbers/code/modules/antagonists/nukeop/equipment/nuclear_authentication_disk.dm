@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define GRACE_PERIOD 45 MINUTES
 #define LONEOP_DELAY 3
 
@@ -21,11 +22,7 @@
 
 /obj/item/disk/nuclear/proc/begin_nuclear_assault()
 	priority_announce(
-		"ALERT:::SYNDICATE TRANSMISSION DETECTED:::NUCLEAR AUTHENTICATION DISK LOCATION PINPOINTED:::EXPECT IMMINENT NUCLEAR STRIKE - \
-		ETA [LONEOP_DELAY] MINUTES.\
-		\n\
-		\n\
-		SUGGESTION:::THROW ROCKS AT YOUR CAPTAIN.",
+		LANG("obj.06a4a867890d42c2", list(LONEOP_DELAY)),
 		"MILCOM Early Warning System",
 		'sound/machines/engine_alert/engine_alert3.ogg',
 		has_important_message = TRUE,

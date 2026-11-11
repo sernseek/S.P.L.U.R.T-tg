@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /datum/quirk/egg_production
 	name = "Oviparity"
 	desc = "Whether it be genetics or some other factor, you are capable of producing eggs."
@@ -105,7 +106,7 @@
 
 /datum/action/cooldown/spell/egg_production/proc/egg_update(delta, mob/living/egg_holder)
 	eggs_stored = clamp((eggs_stored + delta), 0, maximum_eggs) // clamps the stored eggs value between 0 and the maximum, AND increments by the delta amount (which should be 1)
-	desc = "[initial(desc)]. You carry [eggs_stored] egg\s." // this is meant to add an active readout of how many eggs are stored on mouse-over of the action
+	desc = LANG("datum.e527c2462f23b8b1", list(initial(desc), eggs_stored)) // this is meant to add an active readout of how many eggs are stored on mouse-over of the action
 
 	if(eggs_stored == 0)// handles removal of the modifier if stored eggs is 0
 		owner.remove_movespeed_modifier(/datum/movespeed_modifier/eggnant, update = TRUE)
@@ -122,18 +123,18 @@
 
 	switch(eggs_stored) //Tracks each threshold a to_chat should be triggered, a separate 98 value is there to ensure an alt text is displayed for going back down from max.
 		if(20)
-			to_chat(owner, span_purple("You're beginning to feel [is_delta_negative ? "less weighed down, but still full..." : "rather heavy..."]"))
+			to_chat(owner, span_purple(LANG("datum.65ad3eebef013fd0", list(is_delta_negative ? "less weighed down, but still full..." : "rather heavy..."))))
 		if(40)
-			to_chat(owner, span_purple("You feel [is_delta_negative ? "less swollen, but still really heavy..." : "really swollen with all these eggs..."]"))
+			to_chat(owner, span_purple(LANG("datum.fd1d48efc592eb5e", list(is_delta_negative ? "less swollen, but still really heavy..." : "really swollen with all these eggs..."))))
 		if(60)
 			to_chat(owner, span_crossooc("[is_delta_negative ? "You're a bit less taut, but still feel very swollen!" : "You're overly gravid! You feel like you should really lay these eggs soon..."]"))
 		if(80)
-			to_chat(owner, span_crossooc("You feel [is_delta_negative ? "a little relieved, but still extremely taut!" : "very close to full at this point, any more eggs and you'll run out of room!"]"))
+			to_chat(owner, span_crossooc(LANG("datum.fd1d48efc592eb5e", list(is_delta_negative ? "a little relieved, but still extremely taut!" : "very close to full at this point, any more eggs and you'll run out of room!"))))
 		if(100)
-			to_chat(owner, span_alertwarning("Your body can't handle anymore eggs! You need to lay some to make room, now!"))
+			to_chat(owner, span_alertwarning(LANG("datum.cc70f2c62cb0e738", null)))
 		if(98)
 			if(is_delta_negative)
-				to_chat(owner, span_warning("You feel like you still have very little room for anymore eggs..."))
+				to_chat(owner, span_warning(LANG("datum.552374dde399571a", null)))
 
 //setting the base movespeed modifier
 /datum/movespeed_modifier/eggnant
@@ -143,16 +144,16 @@
 /datum/action/cooldown/spell/egg_production/cast(mob/living/cast_on)
 	.=..()
 	if(eggs_stored <= 0)
-		owner.balloon_alert(owner, "no eggs to lay!")
+		owner.balloon_alert(owner, LANG("datum.0ce6fb86ae2ff0e5", null))
 		return FALSE
 
-	to_chat(owner, span_noticealien("You start laying an egg..."))
+	to_chat(owner, span_noticealien(LANG("datum.0bf19f6bb272d7dc", null)))
 	if(!do_after(owner, 10 SECONDS, cast_on, IGNORE_HELD_ITEM))
-		owner.balloon_alert(owner, "stopped attempting to lay an egg.")
+		owner.balloon_alert(owner, LANG("datum.cb78ddf10e73228e", null))
 		return FALSE
 
 	egg_update(-1) //decrements the stored eggs by 1
 	egg = new(owner)
 	owner.put_in_hands(egg)
-	owner.visible_message(span_noticealien("[owner] laid an egg!"), span_alertalien("You laid an egg!"))
+	owner.visible_message(span_noticealien(LANG("datum.431bcf942ab14b98", list(owner))), span_alertalien(LANG("datum.99210beb6c339fe5", null)))
 	return TRUE

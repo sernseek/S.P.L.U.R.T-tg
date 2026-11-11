@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/hydroponics/soil/soilbin //Just a big ol' tub of dirt.
 	name = "soilbin"
 	desc = "I've got a box of dirt! and guess what's inside it!... Yes, dirt."
@@ -23,7 +24,7 @@
 	category = CAT_MISC
 
 /obj/machinery/hydroponics/soil/soilbin/crowbar_act(mob/living/user, obj/item/tool)
-	user.balloon_alert_to_viewers("disassembling...")
+	user.balloon_alert_to_viewers(LANG("obj.b5ba987161d1a2e3", null))
 	if(!tool.use_tool(src, user, 10 SECONDS, volume = 100))
 		return
 	new /obj/item/stack/sheet/mineral/wood(drop_location(), 10)
@@ -66,7 +67,7 @@
 	category = CAT_MISC
 
 /obj/machinery/hydroponics/soil/soilbin/gaia/crowbar_act(mob/living/user, obj/item/tool)
-	user.balloon_alert_to_viewers("disassembling...")
+	user.balloon_alert_to_viewers(LANG("obj.b5ba987161d1a2e3", null))
 	if(!tool.use_tool(src, user, 10 SECONDS, volume = 100))
 		return
 	new /obj/item/stack/sheet/mineral/wood(drop_location(), 10)
@@ -107,8 +108,8 @@
 
 /obj/machinery/compostbin/examine(mob/user)
 	. = ..()
-	. += span_notice("The compost bin has: <b>[reagents.total_volume] units</b>.")
-	. += span_notice("The compost bin can hold: <b>[reagents.maximum_volume]</b> units.")
+	. += span_notice(LANG("obj.70f000e035058b4c", list(reagents.total_volume)))
+	. += span_notice(LANG("obj.d2198402b2cdfa86", list(reagents.maximum_volume)))
 
 /obj/machinery/compostbin/proc/visible_volume()
 	return reagents.total_volume
@@ -123,11 +124,11 @@
 	. = ITEM_INTERACT_BLOCKING
 	if(istype(tool, /obj/item/storage/bag))
 		if(reagents.total_volume >= reagents.maximum_volume)
-			to_chat(user, span_warning("\The [src] is already full of compost."))
+			to_chat(user, span_warning(LANG("obj.e87b95872b5dbfb2", list(src))))
 			return
 
 		if(current_item_count >= max_items)
-			to_chat(user, span_warning("\The [src] is already full of produce! Wait for it to decompose."))
+			to_chat(user, span_warning(LANG("obj.5ec36cc9c0da623e", list(src))))
 			return
 
 		var/obj/item/storage/bag/bag = tool
@@ -140,35 +141,35 @@
 				current_item_count++
 
 		if(bag.contents.len == 0)
-			to_chat(user, span_info("You empty \the [bag] into \the [src]."))
+			to_chat(user, span_info(LANG("obj.04f0231a077feeb5", list(bag, src))))
 
 		else if (current_item_count >= max_items)
-			to_chat(user, span_info("You fill \the [src] from \the [bag] to its capacity."))
+			to_chat(user, span_info(LANG("obj.49ef40eaa101f6e6", list(src, bag))))
 
 		else
-			to_chat(user, span_info("You fill \the [src] from \the [bag]."))
+			to_chat(user, span_info(LANG("obj.b8142e41f5ceccfe", list(src, bag))))
 
 		start_process()
 		return ITEM_INTERACT_SUCCESS
 
 	else if(istype(tool, /obj/item/food))
 		if(reagents.total_volume >= reagents.maximum_volume)
-			to_chat(user, span_warning("\The [src] is already full of compost."))
+			to_chat(user, span_warning(LANG("obj.e87b95872b5dbfb2", list(src))))
 			return
 
 		if(current_item_count >= max_items)
-			to_chat(user, span_warning("\The [src] is already full of produce! Wait for it to decompose."))
+			to_chat(user, span_warning(LANG("obj.5ec36cc9c0da623e", list(src))))
 
 		else
 			if(user.transferItemToLoc(tool, src))
 				current_item_count++
-				to_chat(user, span_info("You insert \the [tool] in \the [src]"))
+				to_chat(user, span_info(LANG("obj.3e7178020a57bf4b", list(tool, src))))
 
 		start_process()
 		return ITEM_INTERACT_SUCCESS
 
 	else
-		to_chat(user, span_warning("You cannot put \the [tool] in \the [src]!"))
+		to_chat(user, span_warning(LANG("obj.33b055bba334fa5c", list(tool, src))))
 		return
 
 /obj/machinery/compostbin/proc/start_process()
@@ -258,7 +259,7 @@
 	return
 
 /obj/machinery/compostbin/crowbar_act(mob/living/user, obj/item/tool)
-	user.balloon_alert_to_viewers("disassembling...")
+	user.balloon_alert_to_viewers(LANG("obj.b5ba987161d1a2e3", null))
 	if(!tool.use_tool(src, user, 10 SECONDS, volume = 100))
 		return
 	new /obj/item/stack/sheet/mineral/wood(drop_location(), 10)

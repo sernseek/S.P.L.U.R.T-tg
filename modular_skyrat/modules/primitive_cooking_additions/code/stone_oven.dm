@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define OVEN_TRAY_Y_OFFSET -12
 
 /obj/machinery/oven/stone
@@ -30,7 +31,7 @@
 /obj/machinery/oven/stone/examine(mob/user)
 	. = ..()
 
-	. += span_notice("It can be taken apart with a <b>crowbar</b>.")
+	. += span_notice(LANG("obj.01fa2e713cdec9b7", null))
 
 // previously NO_DECONSTRUCTION
 /obj/machinery/oven/stone/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/screwdriver)
@@ -62,7 +63,7 @@
 		particles.position = list(0, 10, 0)
 
 /obj/machinery/oven/stone/crowbar_act(mob/living/user, obj/item/tool)
-	user.balloon_alert_to_viewers("disassembling...")
+	user.balloon_alert_to_viewers(LANG("obj.b5ba987161d1a2e3", null))
 	if(!tool.use_tool(src, user, 2 SECONDS, volume = 100))
 		return
 	new /obj/item/stack/sheet/mineral/stone(drop_location(), 5)

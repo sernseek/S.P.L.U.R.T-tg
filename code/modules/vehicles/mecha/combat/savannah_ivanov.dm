@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 ///how much time between charge_level going up by 1
 #define SKYFALL_SINGLE_CHARGE_TIME (2 SECONDS)
 ///enough charge level to take off, basically done charging
@@ -84,7 +85,7 @@
 	. = ..()
 	if (!. || !flying)
 		return
-	balloon_alert(user, "not while airborne!")
+	balloon_alert(user, LANG("obj.2efed20713c4cc56", null))
 	return FALSE
 
 ///Savannah Skyfall
@@ -104,16 +105,16 @@
 		return
 	var/obj/vehicle/sealed/mecha/savannah_ivanov/savannah = chassis
 	if(savannah.flying)
-		to_chat(owner, span_warning("You're already airborne!"))
+		to_chat(owner, span_warning(LANG("datum.aebb04b64d4b3048", null)))
 		return
 	if(TIMER_COOLDOWN_RUNNING(savannah, COOLDOWN_MECHA_SKYFALL))
 		var/timeleft = S_TIMER_COOLDOWN_TIMELEFT(savannah, COOLDOWN_MECHA_SKYFALL)
-		to_chat(owner, span_warning("You need to wait [DisplayTimeText(timeleft, 1)] before attempting to Skyfall."))
+		to_chat(owner, span_warning(LANG("datum.98e78e0cd97ed64d", list(DisplayTimeText(timeleft, 1)))))
 		return
 	if(skyfall_charge_level)
 		abort_skyfall()
 		return
-	savannah.balloon_alert(owner, "charging skyfall...")
+	savannah.balloon_alert(owner, LANG("datum.0e83ac83d79031cb", null))
 	INVOKE_ASYNC(src, PROC_REF(skyfall_charge_loop))
 
 /**
@@ -129,23 +130,23 @@
 	skyfall_charge_level++
 	switch(skyfall_charge_level)
 		if(1)
-			chassis.visible_message(span_warning("[chassis] clicks and whirrs for a moment, with a low hum emerging from the legs."))
+			chassis.visible_message(span_warning(LANG("datum.d0c158351325b121", list(chassis))))
 			playsound(chassis, 'sound/items/tools/rped.ogg', 50, TRUE)
 		if(2)
-			chassis.visible_message(span_warning("[chassis] begins to shake, the sounds of electricity growing louder."))
+			chassis.visible_message(span_warning(LANG("datum.d9190259d5cfe17f", list(chassis))))
 			chassis.Shake(1, 1, SKYFALL_SINGLE_CHARGE_TIME-1) // -1 gives space between the animates, so they don't interrupt eachother
 		if(3)
-			chassis.visible_message(span_warning("[chassis] assumes a pose as it rattles violently."))
+			chassis.visible_message(span_warning(LANG("datum.a017c020133eef93", list(chassis))))
 			chassis.Shake(2, 2, SKYFALL_SINGLE_CHARGE_TIME-1) // -1 gives space between the animates, so they don't interrupt eachother
 			chassis.spark_system.start()
 			chassis.update_appearance(UPDATE_ICON_STATE)
 		if(4)
-			chassis.visible_message(span_warning("[chassis] sparks and shutters as it finalizes preparation."))
+			chassis.visible_message(span_warning(LANG("datum.d66aa2d84f827cfd", list(chassis))))
 			playsound(chassis, 'sound/vehicles/mecha/skyfall_power_up.ogg', 50, TRUE)
 			chassis.Shake(3, 3, SKYFALL_SINGLE_CHARGE_TIME-1) // -1 gives space between the animates, so they don't interrupt eachother
 			chassis.spark_system.start()
 		if(SKYFALL_CHARGELEVEL_LAUNCH)
-			chassis.visible_message(span_danger("[chassis] leaps into the air!"))
+			chassis.visible_message(span_danger(LANG("datum.c47466878cbb9338", list(chassis))))
 			playsound(chassis, 'sound/items/weapons/gun/general/rocket_launch.ogg', 50, TRUE)
 	if(skyfall_charge_level != SKYFALL_CHARGELEVEL_LAUNCH)
 		skyfall_charge_loop()
@@ -191,7 +192,7 @@
  */
 /datum/action/vehicle/sealed/mecha/skyfall/proc/land()
 	var/turf/landed_on = get_turf(chassis)
-	chassis.visible_message(span_danger("[chassis] lands from above!"))
+	chassis.visible_message(span_danger(LANG("datum.02e1211af5598818", list(chassis))))
 	playsound(chassis, 'sound/effects/explosion/explosion1.ogg', 50, 1)
 	chassis.resistance_flags &= ~INDESTRUCTIBLE
 	chassis.mecha_flags &= ~(QUIET_STEPS|QUIET_TURNS|CANNOT_INTERACT)
@@ -225,12 +226,12 @@
 			if(crushed_victim in chassis.occupants)
 				continue
 			if(!(crushed_victim in landed_on))
-				to_chat(crushed_victim, span_userdanger("The tremors from [chassis] landing sends you flying!"))
+				to_chat(crushed_victim, span_userdanger(LANG("datum.507dcff00353729a", list(chassis))))
 				var/fly_away_direction = get_dir(chassis, crushed_victim)
 				crushed_victim.throw_at(get_edge_target_turf(crushed_victim, fly_away_direction), 4, 3)
 				crushed_victim.adjust_brute_loss(15)
 				continue
-			to_chat(crushed_victim, span_userdanger("[chassis] crashes down on you from above!"))
+			to_chat(crushed_victim, span_userdanger(LANG("datum.4d5679c4dd583c9e", list(chassis))))
 			if(IS_UNCONSCIOUS_OR_CRIT(crushed_victim))
 				crushed_victim.investigate_log("has been gibbed by a falling Savannah Ivanov mech.", INVESTIGATE_DEATHS)
 				crushed_victim.gib(DROP_ALL_REMAINS)
@@ -244,7 +245,7 @@
  * Applies cooldown and resets charge level
  */
 /datum/action/vehicle/sealed/mecha/skyfall/proc/abort_skyfall()
-	chassis.balloon_alert(owner, "skyfall aborted")
+	chassis.balloon_alert(owner, LANG("datum.8b39286f568f8689", null))
 	S_TIMER_COOLDOWN_START(chassis, COOLDOWN_MECHA_MISSILE_STRIKE, skyfall_charge_level * 10 SECONDS) //so aborting skyfall later in the process imposes a longer cooldown
 	skyfall_charge_level = 0
 	chassis.update_appearance(UPDATE_ICON_STATE)
@@ -280,7 +281,7 @@
 		return
 	if(TIMER_COOLDOWN_RUNNING(chassis, COOLDOWN_MECHA_MISSILE_STRIKE))
 		var/timeleft = S_TIMER_COOLDOWN_TIMELEFT(chassis, COOLDOWN_MECHA_MISSILE_STRIKE)
-		to_chat(owner, span_warning("You need to wait [DisplayTimeText(timeleft, 1)] before firing another Ivanov Strike."))
+		to_chat(owner, span_warning(LANG("datum.ebb4d38b80cf6a58", list(DisplayTimeText(timeleft, 1)))))
 		return
 	if(aiming_missile)
 		end_missile_targeting()
@@ -303,7 +304,7 @@
  * Plus other flavor like the overlay
  */
 /datum/action/vehicle/sealed/mecha/ivanov_strike/proc/start_missile_targeting()
-	chassis.balloon_alert(owner, "missile mode on (click to target)")
+	chassis.balloon_alert(owner, LANG("datum.ff235ee8ec97154d", null))
 	aiming_missile = TRUE
 	rockets_left = 3
 	RegisterSignal(chassis, COMSIG_MECHA_MELEE_CLICK, PROC_REF(on_melee_click))

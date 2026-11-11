@@ -1,10 +1,11 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/gun/ballistic/automatic/wt550
 	can_suppress = FALSE
 	can_be_sawn_off = TRUE
 /obj/item/gun/ballistic/automatic/wt550/sawoff(mob/user)
 	. = ..()
 	if(.)
-		desc = "why would you do this"
+		desc = LANG("obj.cfb6e6d0a71ca344", null)
 		icon = 'modular_zubbers/icons/obj/weapons/guns/ballistic.dmi'
 		w_class = WEIGHT_CLASS_NORMAL
 		spread = 10
@@ -81,7 +82,7 @@
 
 /obj/item/gun/ballistic/automatic/ntmp5/examine(mob/user)
 	. = ..()
-	. += span_notice("The stock is currently [stock_retracted ? "retracted" : "extended"]. Ctrl-click to toggle it.")
+	. += span_notice(LANG("obj.499af73e32260a80", list(stock_retracted ? "retracted" : "extended")))
 
 /obj/item/gun/ballistic/automatic/ntmp5/proc/on_ctrl_click_stock_toggle(datum/source, mob/user)
 	SIGNAL_HANDLER

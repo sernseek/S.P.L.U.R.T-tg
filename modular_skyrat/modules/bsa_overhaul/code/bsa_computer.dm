@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * The control computer
  *
@@ -76,8 +77,8 @@
 	if(obj_flags & EMAGGED)
 		return FALSE
 	obj_flags |= EMAGGED
-	balloon_alert(user, "rigged to explode")
-	to_chat(user, span_warning("You emag [src] and hear the focusing crystal short out. You get the feeling it wouldn't be wise to stand near [src] when the BSA fires..."))
+	balloon_alert(user, LANG("obj.fc341850100350c4", null))
+	to_chat(user, span_warning(LANG("obj.28d4b8d69da4f8f7", list(src, src))))
 	return TRUE
 
 /**
@@ -114,7 +115,7 @@
 	var/list/options = gps_locators
 	if(area_aim)
 		options += GLOB.teleportlocs
-	var/victim = tgui_input_list(user, "Select target", "Artillery Targeting", options)
+	var/victim = tgui_input_list(user, LANG("obj.04cb36317d8e1805", null), LANG("obj.2db5299afb62834f", null), options)
 	if(isnull(victim))
 		return
 	if(isnull(options[victim]))

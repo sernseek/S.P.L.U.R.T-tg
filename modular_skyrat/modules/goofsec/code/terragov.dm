@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define TERRAGOV_AMT "amount"
 #define TERRAGOV_VOTES "votes"
 #define TERRAGOV_DECLARED "declared"
@@ -110,7 +111,7 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 			announcer = "Terran Government Marshal Department"
 			poll_question = "The station has called for the Marshals. Will you respond?"
 		if(EMERGENCY_RESPONSE_ATMOS)
-			team_size = tgui_input_number(usr, "How many techs would you like dispatched?", "How badly did you screw up?", 3, 3, 1)
+			team_size = tgui_input_number(usr, LANG("obj.5fcfb34a63468780", null), LANG("obj.d18ed2c69ce893e8", null), 3, 3, 1)
 			cops_to_send = /datum/antagonist/ert/request_911/atmos
 			announcement_message = "Crewmembers of [station_name()]. this is the Terran Government's 811 dispatch. We've received a report of stationwide structural damage, atmospherics loss, fire, or otherwise, and we are \
 				sending an Advanced Atmospherics team to support your station.\n\n\
@@ -184,7 +185,7 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 				phone.w_class = WEIGHT_CLASS_SMALL	//They get that COMPACT phone hell yea
 				var/phone_equipped = phone.equip_to_best_slot(cop)
 				if(!phone_equipped)
-					to_chat(cop, "Your [phone.name] has been placed at your feet.")
+					to_chat(cop, LANG("obj.163ba92ae2d7d251", list(phone.name)))
 					phone.forceMove(get_turf(cop))
 
 			//Logging and cleanup
@@ -200,7 +201,7 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 		return FALSE
 
 	if (GLOB.cops_arrived)
-		to_chat(user, span_warning("911 has already been called this shift!"))
+		to_chat(user, span_warning(LANG("obj.6209b46f3468fd8d", null)))
 		playsound(src, 'sound/machines/terminal/terminal_prompt_deny.ogg', 50, FALSE)
 		return FALSE
 
@@ -208,15 +209,15 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 		var/obj/item/held_item = user.get_active_held_item()
 		var/obj/item/card/id/id_card = held_item?.GetID()
 		if (!istype(id_card))
-			to_chat(user, span_warning("You need to swipe your ID!"))
+			to_chat(user, span_warning(LANG("obj.79240bdf200ae125", null)))
 			playsound(src, 'sound/machines/terminal/terminal_prompt_deny.ogg', 50, FALSE)
 			return FALSE
 		if (!(ACCESS_CAPTAIN in id_card.access))
-			to_chat(user, span_warning("You are not authorized to do this!"))
+			to_chat(user, span_warning(LANG("obj.d75ab765612801b2", null)))
 			playsound(src, 'sound/machines/terminal/terminal_prompt_deny.ogg', 50, FALSE)
 			return FALSE
 	else
-		to_chat(user, "The console refuses to let you dial 911 as an AI or Cyborg!")
+		to_chat(user, LANG("obj.7650582edddbbf21", null))
 		return FALSE
 	return TRUE
 
@@ -224,15 +225,15 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 	message_admins("[ADMIN_LOOKUPFLW(user)] is considering calling the Terran Government [called_group_pretty].")
 	var/call_911_msg_are_you_sure = "Are you sure you want to call 911? Faulty 911 calls results in a $20,000 fine and a 5 year superjail \
 		sentence."
-	if(tgui_alert(user, call_911_msg_are_you_sure, "Call 911", list("No", "Yes")) != "Yes")
+	if(tgui_alert(user, call_911_msg_are_you_sure, LANG("obj.a55d189bad6a8da3", null), list("No", "Yes")) != "Yes")
 		return
 	message_admins("[ADMIN_LOOKUPFLW(user)] has acknowledged the faulty 911 call consequences.")
-	if(tgui_alert(user, GLOB.call911_do_and_do_not[called_group], "Call [called_group_pretty]", list("No", "Yes")) != "Yes")
+	if(tgui_alert(user, GLOB.call911_do_and_do_not[called_group], LANG("obj.ddc9dafa283ae5ca", list(called_group_pretty)), list("No", "Yes")) != "Yes")
 		return
 	message_admins("[ADMIN_LOOKUPFLW(user)] has read and acknowleged the recommendations for what to call and not call [called_group_pretty] for.")
-	var/reason_to_call_911 = tgui_input_text(user, "What do you wish to call 911 [called_group_pretty] for?", "Call 911", null, MAX_MESSAGE_LEN)
+	var/reason_to_call_911 = tgui_input_text(user, LANG("obj.e454b1c0fe43053c", list(called_group_pretty)), LANG("obj.a55d189bad6a8da3", null), null, MAX_MESSAGE_LEN)
 	if(!reason_to_call_911)
-		to_chat(user, "You decide not to call 911.")
+		to_chat(user, LANG("obj.e48a2a79996ff91e", null))
 		return
 	GLOB.cops_arrived = TRUE
 	GLOB.call_911_msg = reason_to_call_911
@@ -242,7 +243,7 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 	deadchat_broadcast(" has called the Terran Government [called_group_pretty] for the following reason:\n[GLOB.call_911_msg]", span_name("[user.real_name]"), user, message_type = DEADCHAT_ANNOUNCEMENT)
 
 	call_911(called_group)
-	to_chat(user, span_notice("Authorization confirmed. 911 call dispatched to the Terran Government [called_group_pretty]."))
+	to_chat(user, span_notice(LANG("obj.a1bfc107b6faef4e", list(called_group_pretty))))
 	playsound(src, 'sound/machines/terminal/terminal_prompt_confirm.ogg', 50, FALSE)
 
 /datum/antagonist/ert/request_911
@@ -606,10 +607,10 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 
 /obj/item/terragov_reporter/proc/pre_checks(mob/user)
 	if(GLOB.terragov_responder_info[type_of_callers][TERRAGOV_AMT] == 0)
-		to_chat(user, span_warning("There are no responders. You likely spawned this in as an admin. Please don't do this."))
+		to_chat(user, span_warning(LANG("obj.0128c0d3cb48b6b8", null)))
 		return FALSE
 	if(!user.mind.has_antag_datum(type_to_check))
-		to_chat(user, span_warning("You don't know how to use this!"))
+		to_chat(user, span_warning(LANG("obj.06cc7954f6bc7517", null)))
 		return FALSE
 	return TRUE
 
@@ -628,8 +629,7 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 		GLOB.terragov_responder_info[type_of_callers][TERRAGOV_VOTES]++
 		var/current_votes = GLOB.terragov_responder_info[type_of_callers][TERRAGOV_VOTES]
 		var/amount_of_responders = GLOB.terragov_responder_info[type_of_callers][TERRAGOV_AMT]
-		to_chat(user, span_warning("You have activated the device. \
-		Current Votes: [current_votes]/[amount_of_responders] votes."))
+		to_chat(user, span_warning(LANG("obj.d9d96f05bc7ad6c5", list(current_votes, amount_of_responders))))
 		if(current_votes >= amount_of_responders * 0.5)
 			GLOB.terragov_responder_info[type_of_callers][TERRAGOV_DECLARED] = TRUE
 			if(fine_station)
@@ -673,7 +673,7 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 					phone.name = "[cell_phone_number] branded cell phone"
 					var/phone_equipped = phone.equip_to_best_slot(cop)
 					if(!phone_equipped)
-						to_chat(cop, "Your [phone.name] has been placed at your feet.")
+						to_chat(cop, LANG("obj.163ba92ae2d7d251", list(phone.name)))
 						phone.forceMove(get_turf(cop))
 
 					//Logging and cleanup
@@ -698,8 +698,8 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 /obj/item/terragov_reporter/swat_caller/questions(mob/user)
 	var/question = "Does the situation require additional S.W.A.T. backup, involve the station impeding you from doing your job, \
 		or involve the station making a fraudulent 911 call and needing an arrest made on the caller?"
-	if(tgui_alert(user, question, "S.W.A.T. Backup Caller", list("No", "Yes")) != "Yes")
-		to_chat(user, "You decide not to request S.W.A.T. backup.")
+	if(tgui_alert(user, question, LANG("obj.5fb95d866fe1cf34", null), list("No", "Yes")) != "Yes")
+		to_chat(user, LANG("obj.7bf95de9630911b4", null))
 		return FALSE
 	message_admins("[ADMIN_LOOKUPFLW(user)] has voted to summon S.W.A.T backup.")
 	return TRUE
@@ -734,8 +734,8 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 			administrative action against your account."
 	)
 	for(var/question in list_of_questions)
-		if(tgui_alert(user, question, "Treason Reporter", list("No", "Yes")) != "Yes")
-			to_chat(user, "You decide not to declare the station as treasonous.")
+		if(tgui_alert(user, question, LANG("obj.b95441a85c6b8125", null), list("No", "Yes")) != "Yes")
+			to_chat(user, LANG("obj.29a9cfe79b50e376", null))
 			return FALSE
 	message_admins("[ADMIN_LOOKUPFLW(user)] has acknowledged the consequences of a false claim of Treason administratively, \
 		and has voted that the station is engaging in Treason.")
@@ -761,8 +761,8 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 	cell_phone_number = "Dogginos"
 
 /obj/item/terragov_reporter/pizza_managers/questions(mob/user)
-	if(tgui_alert(user, "Is the station refusing to pay their bill of $35,000, including a fifteen percent tip for delivery drivers?", "Dogginos Uncompliant Customer Reporter", list("No", "Yes")) != "Yes")
-		to_chat(user, "You decide not to request management assist you with the delivery.")
+	if(tgui_alert(user, LANG("obj.b1767b1d71a97689", null), LANG("obj.450c06370d892ac8", null), list("No", "Yes")) != "Yes")
+		to_chat(user, LANG("obj.903fd6fdfb5b4c15", null))
 		return FALSE
 	message_admins("[ADMIN_LOOKUPFLW(user)] has voted to summon Dogginos management to resolve the lack of payment.")
 	return TRUE
@@ -811,13 +811,13 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 /obj/item/beamout_tool/attack_self(mob/user, modifiers)
 	. = ..()
 	if(!user.mind.has_antag_datum(/datum/antagonist/ert))
-		to_chat(user, span_warning("You don't understand how to use this device."))
+		to_chat(user, span_warning(LANG("obj.55c04fb74bcddba6", null)))
 		return
 	message_admins("[ADMIN_LOOKUPFLW(user)] has begun to beam-out using their beam-out tool.")
-	to_chat(user, "You have begun the beam-out process. Please wait for the beam to reach the station.")
-	user.balloon_alert(user, "begun beam-out")
+	to_chat(user, LANG("obj.bf24e9326e06ea46", null))
+	user.balloon_alert(user, LANG("obj.e3fc963c218baab8", null))
 	if(do_after(user, 30 SECONDS))
-		to_chat(user, "You have completed the beam-out process and are returning to the Terran Government.")
+		to_chat(user, LANG("obj.b58f28a1acd82811", null))
 		message_admins("[ADMIN_LOOKUPFLW(user)] has beamed themselves out.")
 		if(isliving(user))
 			var/mob/living/living_user = user
@@ -836,7 +836,7 @@ GLOBAL_LIST_INIT(call911_do_and_do_not, list(
 			do_sparks(10, 1, user_turf)
 			qdel(user)
 	else
-		user.balloon_alert(user, "beam-out cancelled")
+		user.balloon_alert(user, LANG("obj.f2813b792eb91f5a", null))
 
 #undef TERRAGOV_AMT
 #undef TERRAGOV_VOTES

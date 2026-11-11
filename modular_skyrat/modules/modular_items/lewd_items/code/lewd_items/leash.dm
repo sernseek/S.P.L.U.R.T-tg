@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/clothing/erp_leash
 	name = "leash"
 	desc = "A guiding hand's best friend; in a sleek, semi-elastic package. Can either clip to a collar or be affixed to the neck on its own."
@@ -51,12 +52,12 @@
 		return
 	/// Check their ERP prefs; if they don't allow sextoys: BTFO
 	if(!to_be_leashed.check_erp_prefs(/datum/preference/toggle/erp/sex_toy, user, src))
-		to_chat(user, span_danger("[to_be_leashed] doesn't want you to do that."))
+		to_chat(user, span_danger(LANG("obj.8d0a01828f0e2a19", list(to_be_leashed))))
 		return
 	/// Actually start the leashing part here
-	to_be_leashed.visible_message(span_warning("[user] raises the [src] to [to_be_leashed]'s neck!"),\
-				span_userdanger("[user] starts to bring the [src] to your neck!"),\
-				span_hear("You hear a light click as pressure builds in the air around your neck."))
+	to_be_leashed.visible_message(span_warning(LANG("obj.5d701de907728e46", list(user, src, to_be_leashed))),\
+				span_userdanger(LANG("obj.4407d34feaecfc93", list(user, src))),\
+				span_hear(LANG("obj.8f9d9ca9f163f537", null)))
 	if(!do_after(user, 2 SECONDS, to_be_leashed))
 		return
 	create_leash(user, to_be_leashed)
@@ -68,14 +69,14 @@
 
 	ouppy.AddComponent(/datum/component/leash/erp, src, 2)
 	if(our_leash_component.resolve()) // The component will immediately delete itself if there's an existing one; this sanity checks for feedback on if it failed.
-		ouppy.balloon_alert(user, "leashed!")
+		ouppy.balloon_alert(user, LANG("obj.39eed4859fba2806", null))
 		create_leash_line(ouppy)
 		return
-	else to_chat(user, span_danger("There's a leash attached to [ouppy] already."))
+	else to_chat(user, span_danger(LANG("obj.264e86d2f58bcffe", list(ouppy))))
 
 /// Leash removal
 /obj/item/clothing/erp_leash/proc/remove_leash(mob/free_bird)
-	free_bird?.balloon_alert_to_viewers("unhooked")
+	free_bird?.balloon_alert_to_viewers(LANG("obj.78b1b0415f7b8fb9", null))
 	clear_line(src)
 	qdel(our_leash_component.resolve())
 
@@ -125,9 +126,9 @@
 			var/mob/living/yoinked = parent
 			yoinked.Move(get_step_towards(yoinked,user))
 			yoinked.adjust_stamina_loss(10)
-			yoinked.visible_message(span_warning("[yoinked] is pulled in as [user] tugs the [source]!"),\
-					span_userdanger("[user] suddenly tugs the [source], pulling you closer!"),\
-					span_userdanger("A sudden tug against your neck pulls you ahead!"))
+			yoinked.visible_message(span_warning(LANG("datum.adc2a27b55a4a24c", list(yoinked, user, source))),\
+					span_userdanger(LANG("datum.23918ada7d84743e", list(user, source))),\
+					span_userdanger(LANG("datum.edf79728f384539c", null)))
 			COOLDOWN_START(leash_hookin, tug_cd, 1 SECONDS)
 
 /datum/component/leash/erp/proc/on_item_dropped(datum/source, mob/user)
@@ -135,7 +136,7 @@
 
 	if(istype(parent, /mob))
 		var/mob/our_parent = parent
-		our_parent.balloon_alert_to_viewers("unhooked")
+		our_parent.balloon_alert_to_viewers(LANG("datum.78b1b0415f7b8fb9", null))
 	qdel(src)
 
 /datum/component/leash/erp/proc/on_parent_resist(datum/source, mob/user)
@@ -146,11 +147,11 @@
 	if(istype(parent, /mob) && istype(owner,/obj/item))
 		var/mob/our_parent = parent
 		var/obj/item/our_owner = owner
-		our_parent.visible_message(span_warning("[our_parent] attempts to unhook [our_parent.p_them()]self from the leash!"), \
-			span_userdanger("You start to unhook yourself from the leash..."), \
-			span_userdanger("You fumble in the dark, looking to unhook the leash..."))
+		our_parent.visible_message(span_warning(LANG("datum.3b0ace6fe48d0caa", list(our_parent, our_parent.p_them()))), \
+			span_userdanger(LANG("datum.f501b9fee7c4424a", null)), \
+			span_userdanger(LANG("datum.4c6015eb79c8cb42", null)))
 		if(do_after(our_parent, our_owner.breakouttime, target = our_parent))
-			to_chat(our_parent, span_notice("You unhook yourself from the leash."))
+			to_chat(our_parent, span_notice(LANG("datum.7f9648689a641a9a", null)))
 			qdel(src)
 	else qdel(src) // If they're not an item; something is very wrong - qdel anyways without the breakout time.
 

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /*
  * Holds procs designed to help with filtering text
  * Contains groups:
@@ -24,11 +25,11 @@
 ///returns nothing with an alert instead of the message if it contains something in the ic filter, and sanitizes normally if the name is fine. It returns nothing so it backs out of the input the same way as if you had entered nothing.
 /proc/sanitize_name(target, allow_numbers = FALSE, cap_after_symbols = TRUE)
 	if(is_ic_filtered(target) || is_soft_ic_filtered(target))
-		tgui_alert(usr, "You cannot set a name that contains a word prohibited in IC chat!")
+		tgui_alert(usr, LANG("_root.bbfb99150c282dd1", null))
 		return ""
 	var/result = reject_bad_name(target, allow_numbers = allow_numbers, strict = TRUE, cap_after_symbols = cap_after_symbols)
 	if(!result)
-		tgui_alert(usr, "Invalid name.")
+		tgui_alert(usr, LANG("_root.345b30b5e2a45eba", null))
 		return ""
 	return sanitize(result)
 
@@ -231,6 +232,30 @@
 					continue
 				last_char_group = SPACES_DETECTED
 
+			// ZH EDIT ADDITION START - CJK_NAMES - On a Chinese server, CJK ideographs are letters and the
+			// interpunct (约翰·史密斯) is name punctuation. Other non-ASCII stays as before, so look-alike
+			// letters from other scripts still cannot be used to impersonate someone.
+			if(13312 to 19903, 19968 to 40959) // CJK Extension A, CJK Unified Ideographs
+				if(lang_locale_is_chinese())
+					number_of_alphanumeric++
+					last_char_group = LETTERS_DETECTED
+				else if(ascii_only)
+					if(strict)
+						return
+					continue
+				else
+					last_char_group = SYMBOLS_DETECTED
+			if(183) // ·
+				if(!lang_locale_is_chinese() && ascii_only)
+					if(strict)
+						return
+					continue
+				if(last_char_group == NO_CHARS_DETECTED)
+					if(strict)
+						return
+					continue
+				last_char_group = SYMBOLS_DETECTED
+			// ZH EDIT ADDITION END
 			if(127 to 191,215,247,256 to INFINITY)
 				if(ascii_only)
 					if(strict)

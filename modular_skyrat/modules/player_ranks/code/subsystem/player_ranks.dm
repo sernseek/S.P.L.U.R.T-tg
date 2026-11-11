@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /// The name of the table on the database containing the player ranks.
 /// See `skyrat_schema.sql` for the schema of the table.
 #define PLAYER_RANK_TABLE_NAME "player_rank"
@@ -229,7 +230,7 @@ SUBSYSTEM_DEF(player_ranks)
 
 	if(!admin_holder.check_for_rights(R_ADMIN))
 		if(is_admin_client)
-			to_chat(admin, span_warning("You do not possess the permissions to do this."))
+			to_chat(admin, span_warning(LANG("datum.8063b60db1e4e222", null)))
 
 		return FALSE
 
@@ -248,7 +249,7 @@ SUBSYSTEM_DEF(player_ranks)
 
 	if(already_in_config[ckey])
 		if(is_admin_client)
-			to_chat(admin, span_warning("\"[ckey]\" is already a [rank_title]!"))
+			to_chat(admin, span_warning(LANG("datum.d962eb8172b791c0", list(ckey, rank_title))))
 
 		return FALSE
 
@@ -320,7 +321,7 @@ SUBSYSTEM_DEF(player_ranks)
 
 	if(!admin_holder.check_for_rights(R_ADMIN))
 		if(is_admin_client)
-			to_chat(admin, span_warning("You do not possess the permissions to do this."))
+			to_chat(admin, span_warning(LANG("datum.8063b60db1e4e222", null)))
 
 		return FALSE
 
@@ -384,7 +385,7 @@ SUBSYSTEM_DEF(player_ranks)
 		return
 
 	if(!check_rights_for(admin, R_ADMIN | R_DEBUG | R_SERVER))
-		to_chat(admin, span_warning("You do not possess the permissions to do this."))
+		to_chat(admin, span_warning(LANG("datum.8063b60db1e4e222", null)))
 		return
 
 	var/datum/player_rank_controller/controller = get_controller_for_group(rank_title)

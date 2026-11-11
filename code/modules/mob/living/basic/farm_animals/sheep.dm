@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /mob/living/basic/sheep
 	name = "sheep"
 	desc = "Known for their soft wool and use in sacrificial rituals. Big fan of grass."
@@ -59,14 +60,14 @@
 
 	if(cult_converted)
 		for(var/mob/living/cultist as anything in invokers)
-			to_chat(cultist, span_cult_italic("[src] has already been sacrificed!"))
+			to_chat(cultist, span_cult_italic(LANG("mob.d13bc3c766e9bc46", list(src))))
 		return STOP_SACRIFICE|SILENCE_SACRIFICE_MESSAGE
 
 	for(var/mob/living/cultist as anything in invokers)
-		to_chat(cultist, span_cult_italic("This feels a bit too cliché, don't you think?"))
+		to_chat(cultist, span_cult_italic(LANG("mob.f7bcbdfb1e38e1c1", null)))
 
 	cult_converted = TRUE
-	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, say), "BAAAAAAAAH!")
+	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, say), LANG("mob.26551aad7ee43ec0", null))
 	update_appearance(UPDATE_ICON)
 	return STOP_SACRIFICE
 

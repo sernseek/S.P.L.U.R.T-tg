@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 
 #define BRAWN_BREAKOUT_LEVEL 3
 #define BRAWN_AIRLOCK_LEVEL 4
@@ -14,12 +15,12 @@
 
 /datum/action/cooldown/bloodsucker/targeted/brawn/get_power_explanation_extended()
 	. = list()
-	. += "Click any person to bash into them, break restraints you have or knocking a grabber down. Only one of these can be done per use."
-	. += "Brawn will do [GetDamage()] brute damage to the target and knockdown them for [DisplayTimeText(GetKnockdown())]."
-	. += "Punching a Cyborg will heavily EMP them in addition to deal damage."
-	. += "At level [BRAWN_BREAKOUT_LEVEL], you get the ability to break closets open, additionally can both break restraints AND knock a grabber down in the same use."
-	. += "At level [BRAWN_AIRLOCK_LEVEL], you get the ability to bash airlocks open, as long as they aren't bolted."
-	. += "Higher levels will increase the damage and knockdown when punching someone."
+	. += LANG("datum.502340b90a263ae3", null)
+	. += LANG("datum.8c4b3c4492c7a97a", list(GetDamage(), DisplayTimeText(GetKnockdown())))
+	. += LANG("datum.cf061ebfa20f8546", null)
+	. += LANG("datum.04f5077fd29ad218", list(BRAWN_BREAKOUT_LEVEL))
+	. += LANG("datum.f9c6d88bdde3ae2f", list(BRAWN_AIRLOCK_LEVEL))
+	. += LANG("datum.73cc2c8ddf7dd1d2", null)
 
 /datum/action/cooldown/bloodsucker/targeted/brawn/ActivatePower(atom/target)
 	// Did we break out of our handcuffs?
@@ -32,14 +33,14 @@
 		if(level_current >= BRAWN_BREAKOUT_LEVEL && escape_puller())
 			PowerActivatedSuccesfully()
 			return FALSE
-		owner.balloon_alert(owner, "ability level too low to break free!")
+		owner.balloon_alert(owner, LANG("datum.827f2d8e29511bd0", null))
 	// Did neither, now we can PUNCH.
 	if(HAS_TRAIT(owner, TRAIT_HANDS_BLOCKED))
-		owner.balloon_alert(owner, "your hands are blocked!")
+		owner.balloon_alert(owner, LANG("datum.532addc6d68ef9ee", null))
 		return FALSE
 	// check if we have atleast one arm
 	if(!owner.get_active_hand())
-		owner.balloon_alert(owner, "you need a usable arm!")
+		owner.balloon_alert(owner, LANG("datum.2a568e22009a5bc2", null))
 		return FALSE
 	return TRUE
 
@@ -50,8 +51,8 @@
 	var/obj/handcuffed = user.get_item_by_slot(ITEM_SLOT_HANDCUFFED)
 	if(user.buckled && handcuffed && user.buckled.unbuckle_mob(user))
 		user.visible_message(
-			span_warning("[user] breaks free of [user.buckled]!"),
-			span_warning("We break free of [user.buckled]!"),
+			span_warning(LANG("datum.23a7afd191a6bdcf", list(user, user.buckled))),
+			span_warning(LANG("datum.c43e2e502f430027", list(user.buckled))),
 		)
 		user.buckled = null
 		return TRUE
@@ -62,10 +63,10 @@
 		if(!istype(closet))
 			return FALSE
 		closet.visible_message(
-			span_warning("[closet] tears apart as [user] bashes it open from within!"),
-			span_warning("[closet] tears apart as you bash it open from within!"),
+			span_warning(LANG("datum.bffdc5263510de49", list(closet, user))),
+			span_warning(LANG("datum.e8d15113ce1bab29", list(closet))),
 		)
-		to_chat(user, span_warning("We bash [closet] wide open!"))
+		to_chat(user, span_warning(LANG("datum.bf75114d2c2d26d9", list(closet))))
 		addtimer(CALLBACK(src, PROC_REF(break_closet), user, closet), 1)
 		return TRUE
 
@@ -76,8 +77,8 @@
 		var/leg_cuffs = user.clear_cuffs(legcuffed, TRUE)
 		if(hand_cuffs || leg_cuffs)
 			user.visible_message(
-				span_warning("[user] discards their restraints like it's nothing!"),
-				span_warning("We break through our restraints!"),
+				span_warning(LANG("datum.2f7bae4e0341f01a", list(user))),
+				span_warning(LANG("datum.4d3567c519b2b316", null)),
 			)
 			return TRUE
 
@@ -85,8 +86,8 @@
 	if(user.wear_suit?.breakouttime)
 		var/obj/item/clothing/suit/straightjacket = user.get_item_by_slot(ITEM_SLOT_OCLOTHING)
 		user.visible_message(
-			span_warning("[user] rips straight through the [user.p_their()] [straightjacket]!"),
-			span_warning("We tear through our [straightjacket]!"),
+			span_warning(LANG("datum.f3fb9d850078094e", list(user, user.p_their(), straightjacket))),
+			span_warning(LANG("datum.678fff84438fcdb1", list(straightjacket))),
 		)
 		if(straightjacket && user.wear_suit == straightjacket)
 			qdel(straightjacket)
@@ -117,8 +118,8 @@
 	// /proc/log_combat(atom/user, atom/target, what_done, atom/object=null, addition=null)
 	log_combat(owner, pulled_mob, "used Brawn power")
 	owner.visible_message(
-		span_warning("[owner] tears free of [pulled_mob]'s grasp!"),
-		span_warning("You shrug off [pulled_mob]'s grasp!"),
+		span_warning(LANG("datum.b98556afdcacf1b0", list(owner, pulled_mob))),
+		span_warning(LANG("datum.3de0421238c25b2f", list(pulled_mob))),
 	)
 	owner.pulledby = null // It's already done, but JUST IN CASE.
 	return TRUE
@@ -135,12 +136,12 @@
 		var/powerlevel = GetPowerLevel()
 		if(rand(5 + powerlevel) >= 5)
 			target_atom.visible_message(
-				span_danger("[user] lands a vicious punch, sending [target_atom] away!"), \
-				span_userdanger("[user] has landed a horrifying punch on you, sending you flying!"),
+				span_danger(LANG("datum.594f4d24d9686ec3", list(user, target_atom))), \
+				span_userdanger(LANG("datum.9c987c3afa91ebc8", list(user))),
 			)
 			target_atom.Knockdown(GetKnockdown())
 		// Attack!
-		owner.balloon_alert(owner, "you punch [target_atom]!")
+		owner.balloon_alert(owner, LANG("datum.4d782fdb52c53ffd", list(target_atom)))
 		playsound(get_turf(target_atom), 'sound/items/weapons/punch4.ogg', 60, 1, -1)
 		user.do_attack_animation(target_atom, ATTACK_EFFECT_SMASH)
 		var/obj/item/bodypart/affecting = target_atom.get_bodypart(ran_zone(target_atom.zone_selected))
@@ -156,29 +157,29 @@
 	// Target Type: Locker
 	else if(istype(target, /obj/structure/closet))
 		if(level_current <= BRAWN_BREAKOUT_LEVEL)
-			target.balloon_alert(user, "ability level too low to break open!")
+			target.balloon_alert(user, LANG("datum.98bfd05ac09286fa", null))
 			return FALSE
 		var/obj/structure/closet/target_closet = target
-		user.balloon_alert(user, "you prepare to bash [target_closet] open...")
+		user.balloon_alert(user, LANG("datum.935bf84442980485", list(target_closet)))
 		if(!do_after(user, 2.5 SECONDS, target_closet))
-			user.balloon_alert(user, "interrupted!")
+			user.balloon_alert(user, LANG("datum.c67b5d274d6e724b", null))
 			return FALSE
-		target_closet.visible_message(span_danger("[target_closet] breaks open as [user] bashes it!"))
+		target_closet.visible_message(span_danger(LANG("datum.01518e7147d88fb8", list(target_closet, user))))
 		addtimer(CALLBACK(src, PROC_REF(break_closet), user, target_closet), 1)
 		playsound(get_turf(user), 'sound/effects/grillehit.ogg', 80, TRUE, -1)
 	// Target Type: Door
 	else if(istype(target, /obj/machinery/door))
 		if(level_current <= BRAWN_AIRLOCK_LEVEL)
-			target.balloon_alert(user, "ability level too low to break open!")
+			target.balloon_alert(user, LANG("datum.98bfd05ac09286fa", null))
 			return FALSE
 		var/obj/machinery/door/target_airlock = target
 		playsound(get_turf(user), 'sound/machines/airlock/airlock_alien_prying.ogg', 40, TRUE, -1)
-		owner.balloon_alert(owner, "you prepare to tear open [target_airlock]...")
+		owner.balloon_alert(owner, LANG("datum.0ec987a02fbcc8b9", list(target_airlock)))
 		if(!do_after(user, 2.5 SECONDS, target_airlock))
-			user.balloon_alert(user, "interrupted!")
+			user.balloon_alert(user, LANG("datum.c67b5d274d6e724b", null))
 			return FALSE
 		if(target_airlock.Adjacent(user))
-			target_airlock.visible_message(span_danger("[target_airlock] breaks open as [user] bashes it!"))
+			target_airlock.visible_message(span_danger(LANG("datum.01518e7147d88fb8", list(target_airlock, user))))
 			user.Stun(10)
 			user.do_attack_animation(target_airlock, ATTACK_EFFECT_SMASH)
 			playsound(get_turf(target_airlock), 'sound/effects/bang.ogg', 30, 1, -1)

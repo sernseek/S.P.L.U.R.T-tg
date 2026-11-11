@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /**
  * Adds a disease outbreak epidemic function to incident displays
  */
@@ -120,7 +121,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/disease, 32)
 
 	if(sign_features == DISPLAY_TRAM)
 		tool.play_tool_sound(src)
-		balloon_alert(user, "set to disease")
+		balloon_alert(user, LANG("obj.645ae195a6dbb49b", null))
 		name = NAME_DISEASE
 		desc = DESC_DISEASE
 		sign_features = DISPLAY_DISEASE
@@ -128,7 +129,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/disease, 32)
 		return TRUE
 	else if(sign_features == DISPLAY_DISEASE)
 		tool.play_tool_sound(src)
-		balloon_alert(user, "set to delam")
+		balloon_alert(user, LANG("obj.7e8fc23161fb4db4", null))
 		name = NAME_DELAM
 		desc = DESC_DELAM
 		sign_features = DISPLAY_DELAM
@@ -137,7 +138,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/disease, 32)
 		return TRUE
 	else
 		tool.play_tool_sound(src)
-		balloon_alert(user, "set to tram")
+		balloon_alert(user, LANG("obj.867ffe2b6f493208", null))
 		name = NAME_TRAM
 		desc = DESC_TRAM
 		sign_features = DISPLAY_TRAM
@@ -161,8 +162,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/incident_display/disease, 32)
 /obj/machinery/incident_display/examine(mob/user)
 	. = ..()
 	if(sign_features & DISPLAY_DISEASE)
-		. += span_notice("It can be changed to display delam-free shifts with a [EXAMINE_HINT("multitool")].")
-		. += span_info("The station has [current_disease_metric] reported active infections incident\s at the moment.")
+		. += span_notice(LANG("obj.dfe4ef731010e1d3", list(EXAMINE_HINT("multitool"))))
+		. += span_info(LANG("obj.48978faad5f69354", list(current_disease_metric)))
 		if(current_disease_metric == 0)
 			. += span_notice("<b>[pick(disease_slogan_good)]</b><br/>")
 		else

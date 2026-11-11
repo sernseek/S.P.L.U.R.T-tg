@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/machinery/plantgenes
 	name = "plant DNA manipulator"
 	desc = "An advanced device designed to manipulate plant genetic makeup."
@@ -88,23 +89,23 @@
 
 	if(istype(I, /obj/item/seeds))
 		if (operation)
-			to_chat(user, "<span class='notice'>Please complete current operation.</span>")
+			to_chat(user, LANG("obj.5ab66d5fbbebfa00", null))
 			return
 		if(!user.transferItemToLoc(I, src))
 			return
 		eject_seed()
 		insert_seed(I)
-		to_chat(user, "<span class='notice'>You add [I] to the machine.</span>")
+		to_chat(user, LANG("obj.f1c7f27e3b6e9cc9", list(I)))
 		interact(user)
 	else if(istype(I, /obj/item/disk/computer/plantgene))
 		if (operation)
-			to_chat(user, "<span class='notice'>Please complete current operation.</span>")
+			to_chat(user, LANG("obj.5ab66d5fbbebfa00", null))
 			return
 		if(!user.transferItemToLoc(I, src))
 			return
 		eject_disk()
 		disk = I
-		to_chat(user, "<span class='notice'>You add [I] to the machine.</span>")
+		to_chat(user, LANG("obj.f1c7f27e3b6e9cc9", list(I)))
 		interact(user)
 	else
 		..()
@@ -146,32 +147,32 @@
 					var/datum/plant_gene/core/gene = target
 					if(istype(target, /datum/plant_gene/core/potency))
 						if(gene.value > max_potency)
-							dat += "<br><br>This device's extraction capabilities are currently limited to <span class='highlight'>[max_potency]</span> potency. "
-							dat += "Target gene will be degraded to <span class='highlight'>[max_potency]</span> potency on extraction."
+							dat += LANG("obj.7f81fa09f02405b1", list(max_potency))
+							dat += LANG("obj.fac0a3f20a5afcab", list(max_potency))
 					else if(istype(target, /datum/plant_gene/core/lifespan))
 						if(gene.value > max_endurance)
-							dat += "<br><br>This device's extraction capabilities are currently limited to <span class='highlight'>[max_endurance]</span> lifespan. "
-							dat += "Target gene will be degraded to <span class='highlight'>[max_endurance]</span> Lifespan on extraction."
+							dat += LANG("obj.aec8b16700f01960", list(max_endurance))
+							dat += LANG("obj.4f48a30d59b12a61", list(max_endurance))
 					else if(istype(target, /datum/plant_gene/core/endurance))
 						if(gene.value > max_endurance)
-							dat += "<br><br>This device's extraction capabilities are currently limited to <span class='highlight'>[max_endurance]</span> endurance. "
-							dat += "Target gene will be degraded to <span class='highlight'>[max_endurance]</span> endurance on extraction."
+							dat += LANG("obj.1eaa141f7b29471f", list(max_endurance))
+							dat += LANG("obj.05378a78f67ccc92", list(max_endurance))
 					else if(istype(target, /datum/plant_gene/core/yield))
 						if(gene.value > max_yield)
-							dat += "<br><br>This device's extraction capabilities are currently limited to <span class='highlight'>[max_yield]</span> yield. "
-							dat += "Target gene will be degraded to <span class='highlight'>[max_yield]</span> yield on extraction."
+							dat += LANG("obj.234c63fb0aa85c40", list(max_yield))
+							dat += LANG("obj.a0f40d956030e905", list(max_yield))
 					else if(istype(target, /datum/plant_gene/core/production))
 						if(gene.value < min_production)
-							dat += "<br><br>This device's extraction capabilities are currently limited to <span class='highlight'>[min_production]</span> production. "
-							dat += "Target gene will be degraded to <span class='highlight'>[min_production]</span> production on extraction."
+							dat += LANG("obj.22f5c353edd84d31", list(min_production))
+							dat += LANG("obj.aa4537260154e2c5", list(min_production))
 					else if(istype(target, /datum/plant_gene/core/weed_rate))
 						if(gene.value < min_wrate)
-							dat += "<br><br>This device's extraction capabilities are currently limited to <span class='highlight'>[min_wrate]</span> weed rate. "
-							dat += "Target gene will be degraded to <span class='highlight'>[min_wrate]</span> weed rate on extraction."
+							dat += LANG("obj.9b48e704e3f4fbb3", list(min_wrate))
+							dat += LANG("obj.6a0cf9fc293221c6", list(min_wrate))
 					else if(istype(target, /datum/plant_gene/core/weed_chance))
 						if(gene.value < min_wchance)
-							dat += "<br><br>This device's extraction capabilities are currently limited to <span class='highlight'>[min_wchance]</span> weed chance. "
-							dat += "Target gene will be degraded to <span class='highlight'>[min_wchance]</span> weed chance on extraction."
+							dat += LANG("obj.49738c32105903a2", list(min_wchance))
+							dat += LANG("obj.ef95c7c337a533c6", list(min_wchance))
 
 			if("replace")
 				dat += "<span class='highlight'>[target.get_name()]</span> gene with <span class='highlight'>[disk.gene.get_name()]</span>?<br>"
@@ -273,7 +274,7 @@
 				return
 			eject_seed()
 			insert_seed(I)
-			to_chat(usr, "<span class='notice'>You add [I] to the machine.</span>")
+			to_chat(usr, LANG("obj.f1c7f27e3b6e9cc9", list(I)))
 		else
 			eject_seed()
 	else if(href_list["eject_disk"] && !operation)
@@ -283,7 +284,7 @@
 				return
 			eject_disk()
 			disk = I
-			to_chat(usr, "<span class='notice'>You add [I] to the machine.</span>")
+			to_chat(usr, LANG("obj.f1c7f27e3b6e9cc9", list(I)))
 		else
 			eject_disk()
 	else if(href_list["op"] == "insert" && disk && disk.gene && seed)
@@ -337,7 +338,7 @@
 							else if(istype(G, /datum/plant_gene/core/weed_chance))
 								gene.value = max(gene.value, min_wchance)
 						disk.gene = gene
-						to_chat(usr, "<span class='notice'>You add [gene] to the disk.</span>")
+						to_chat(usr, LANG("obj.dcfce4aea817ca35", list(gene)))
 						disk.update_disk_name()
 						qdel(seed)
 						seed = null
@@ -461,10 +462,10 @@
 
 /obj/item/disk/computer/plantgene/attack_self(mob/user)
 	read_only = !read_only
-	to_chat(user, "<span class='notice'>You flip the write-protect tab to [src.read_only ? "protected" : "unprotected"].</span>")
+	to_chat(user, LANG("obj.eab97949e6aa1c4e", list(src.read_only ? "protected" : "unprotected")))
 
 /obj/item/disk/computer/plantgene/examine(mob/user)
 	. = ..()
 	if(gene && (istype(gene, /datum/plant_gene/core/potency)))
-		. += "<span class='notice'>Percent is relative to potency, not maximum volume of the plant.</span>"
-	. += "The write-protect tab is set to [src.read_only ? "protected" : "unprotected"]."
+		. += LANG("obj.13cee2beefc4364b", null)
+	. += LANG("obj.4add0e25760d40db", list(src.read_only ? "protected" : "unprotected"))

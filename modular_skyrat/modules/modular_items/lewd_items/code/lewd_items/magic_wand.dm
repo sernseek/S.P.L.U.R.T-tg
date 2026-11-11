@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 #define MAGIC_WAND_MODE_OFF "off"
 #define MAGIC_WAND_MODE_LOW "low"
 #define MAGIC_WAND_MODE_MEDIUM "medium"
@@ -107,12 +108,12 @@
 		return
 
 	if(!target.check_erp_prefs(/datum/preference/toggle/erp/sex_toy, user, src))
-		to_chat(user, span_danger("Looks like [target] don't want you to do that."))
+		to_chat(user, span_danger(LANG("obj.bc6595c02bc7720d", list(target))))
 		return FALSE
 
 	var/message = ""
 	if(vibration_mode == MAGIC_WAND_MODE_OFF)
-		to_chat(user, span_warning("You must turn on the toy, to use it!"))
+		to_chat(user, span_warning(LANG("obj.6b646a95e7f41a5f", null)))
 		return FALSE
 
 	var/first_adjective = ""
@@ -137,7 +138,7 @@
 					return FALSE
 
 				if(!(vagina?.is_exposed() || penis?.is_exposed()))
-					to_chat(user, span_danger("Looks like [carbon_target]'s groin is covered!"))
+					to_chat(user, span_danger(LANG("obj.c5b0317d58c50f81", list(carbon_target))))
 					return FALSE
 
 				var/target_organs = list()
@@ -170,7 +171,7 @@
 			if(carbon_target)
 				var/obj/item/organ/genital/breasts = carbon_target.get_organ_slot(ORGAN_SLOT_BREASTS)
 				if(!breasts?.is_exposed())
-					to_chat(user, span_danger("Looks like [target]'s chest is covered!"))
+					to_chat(user, span_danger(LANG("obj.b0aede841acb5a5f", list(target))))
 					return FALSE
 
 				var/breasts_or_nipples = breasts ? ORGAN_SLOT_BREASTS : ORGAN_SLOT_NIPPLES
@@ -189,7 +190,7 @@
 						"uses [src] to [vibration_mode == MAGIC_WAND_MODE_LOW ? "slowly" : ""] massage [target]'s touch sensors",
 						"uses [src] to tease [target]'s touch sensors")
 		else
-			to_chat(user, span_warning("Use the wand on their groin or chest!"))
+			to_chat(user, span_warning(LANG("obj.527be5656b350d44", null)))
 			return FALSE
 
 	if(prob(30))
@@ -203,13 +204,13 @@
 
 	switch(vibration_mode)
 		if(MAGIC_WAND_MODE_LOW)
-			to_chat(user, span_notice("Vibrator mode switched to low. Bzzz..."))
+			to_chat(user, span_notice(LANG("obj.1cf12fe4c5f280e4", null)))
 		if(MAGIC_WAND_MODE_MEDIUM)
-			to_chat(user, span_notice("Vibrator mode switched to medium. Bzzzz!"))
+			to_chat(user, span_notice(LANG("obj.aae260643518f626", null)))
 		if(MAGIC_WAND_MODE_HIGH)
-			to_chat(user, span_notice("Vibrator mode switched to high. Careful with that thing."))
+			to_chat(user, span_notice(LANG("obj.46edfee9e81969c7", null)))
 		if(MAGIC_WAND_MODE_OFF)
-			to_chat(user, span_notice("[src] is turned off. Fun time's over?"))
+			to_chat(user, span_notice(LANG("obj.ea4fc6fb78c85dde", list(src))))
 
 	update_icon()
 	update_icon_state()

@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_VAR_INIT(permit_pin_unrestricted, FALSE)
 // Firing pin that can be used off station freely, and requires a permit to use on-station
 /obj/item/firing_pin/permit_pin
@@ -32,7 +33,7 @@ GLOBAL_VAR_INIT(permit_pin_unrestricted, FALSE)
 	. = ..()
 	if(obj_flags & EMAGGED)
 		return FALSE
-	balloon_alert(user, "firing pin unlocked!")
+	balloon_alert(user, LANG("obj.ca984f156c715884", null))
 	obj_flags |= EMAGGED
 	can_remove = TRUE
 	return TRUE

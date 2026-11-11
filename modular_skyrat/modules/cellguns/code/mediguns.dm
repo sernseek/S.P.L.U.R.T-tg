@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 // Base medigun code
 /obj/item/gun/energy/cell_loaded/medigun
 	name = "medigun"
@@ -80,7 +81,7 @@
 /obj/item/custom_kit/medigun_fastcharge/pre_convert_check(obj/target_obj, mob/user)
 	var/obj/item/gun/energy/cell_loaded/medigun/standard/our_medigun = target_obj
 	if(length(our_medigun.installedcells))
-		balloon_alert(user, "unload it first!")
+		balloon_alert(user, LANG("obj.c5e89022bf0d5ab5", null))
 		return FALSE
 	return TRUE
 

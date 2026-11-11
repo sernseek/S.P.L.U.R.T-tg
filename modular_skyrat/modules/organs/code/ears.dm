@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 /obj/item/organ/ears/teshari
 	name = "teshari ears"
 	desc = "A set of four long rabbit-like ears, a Teshari's main tool while hunting. Naturally extremely sensitive to loud sounds."
@@ -38,7 +39,7 @@
 		return
 
 	user.apply_status_effect(/datum/status_effect/teshari_hearing)
-	user.visible_message(span_notice("[user], pricks up [user.p_their()] four ears, each twitching intently!"), span_notice("You perk up all four of your ears, hunting for even the quietest sounds."))
+	user.visible_message(span_notice(LANG("datum.a715681a5a06192f", list(user, user.p_their()))), span_notice(LANG("datum.a364a9dbfafefcd6", null)))
 	update_button_state("echolocation_on")
 
 	var/obj/item/organ/ears/ears = user.get_organ_slot(ORGAN_SLOT_EARS)
@@ -50,7 +51,7 @@
 		return
 
 	user.remove_status_effect(/datum/status_effect/teshari_hearing)
-	user.visible_message(span_notice("[user] drops [user.p_their()] ears down a bit, no longer listening as closely."), span_notice("You drop your ears down, no longer paying close attention."))
+	user.visible_message(span_notice(LANG("datum.1516835d5ec7cdd8", list(user, user.p_their()))), span_notice(LANG("datum.81cd6cd42810f17e", null)))
 	update_button_state("echolocation_off")
 
 	var/obj/item/organ/ears/ears = user.get_organ_slot(ORGAN_SLOT_EARS)

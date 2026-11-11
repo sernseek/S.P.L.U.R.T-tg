@@ -1,3 +1,4 @@
+// ZH EDIT - I18N CODEMOD - 玩家可见字符串已改写为 LANG()；请勿手改 key，见 modular_zh/modules/i18n/readme.md
 GLOBAL_LIST_EMPTY(goldeneye_pinpointers)
 
 #define ICARUS_IGNITION_TIME (20 SECONDS)
@@ -39,7 +40,7 @@ SUBSYSTEM_DEF(goldeneye)
 	if(uploaded_keys >= required_keys)
 		activate()
 		return
-	priority_announce("UNAUTHORISED KEYCARD UPLOAD DETECTED. [uploaded_keys]/[required_keys] KEYCARDS UPLOADED.", "GoldenEye Defence Network")
+	priority_announce(LANG("datum.260e552b6276c65a", list(uploaded_keys, required_keys)), "GoldenEye Defence Network")
 
 /// Activates goldeneye.
 /datum/controller/subsystem/goldeneye/proc/activate()
@@ -94,7 +95,7 @@ SUBSYSTEM_DEF(goldeneye)
 
 /obj/item/goldeneye_key/examine(mob/user)
 	. = ..()
-	. += "The DNA data link belongs to: [extract_name]"
+	. += LANG("obj.08056774c65f82db", list(extract_name))
 
 /obj/item/goldeneye_key/Destroy(force)
 	SSgoldeneye.goldeneye_keys -= src
@@ -117,25 +118,25 @@ SUBSYSTEM_DEF(goldeneye)
 	if(uploading)
 		return
 	if(!is_station_level(z))
-		say("CONNECTION TO GOLDENEYE NOT DETECTED: Please return to comms range.")
+		say(LANG("obj.1007153e08b4ab45", null))
 		playsound(src, 'sound/machines/nuke/angry_beep.ogg', 100)
 		return
 	if(!istype(weapon, /obj/item/goldeneye_key))
-		say("AUTHENTICATION ERROR: Please do not insert foreign objects into terminal.")
+		say(LANG("obj.30a6857dba7d4963", null))
 		playsound(src, 'sound/machines/nuke/angry_beep.ogg', 100)
 		return
 	var/obj/item/goldeneye_key/inserting_key = weapon
-	say("GOLDENEYE KEYCARD ACCEPTED: Please wait while the keycard is verified...")
+	say(LANG("obj.53746a81a969d7cf", null))
 	playsound(src, 'sound/machines/nuke/general_beep.ogg', 100)
 	uploading = TRUE
 	if(do_after(user, 10 SECONDS, src))
-		say("GOLDENEYE KEYCARD AUTHENTICATED!")
+		say(LANG("obj.38d15638830c472f", null))
 		playsound(src, 'sound/machines/nuke/confirm_beep.ogg', 100)
 		SSgoldeneye.upload_key()
 		uploading = FALSE
 		qdel(inserting_key)
 	else
-		say("GOLDENEYE KEYCARD VERIFICATION FAILED: Please try again.")
+		say(LANG("obj.ae47a1170e6d413e", null))
 		playsound(src, 'sound/machines/nuke/angry_beep.ogg', 100)
 		uploading = FALSE
 
@@ -154,11 +155,11 @@ SUBSYSTEM_DEF(goldeneye)
 
 /obj/item/pinpointer/nuke/goldeneye/attack_self(mob/living/user)
 	if(!LAZYLEN(SSgoldeneye.goldeneye_keys))
-		to_chat(user, span_danger("ERROR! No GoldenEye keys detected!"))
+		to_chat(user, span_danger(LANG("obj.d65390a2789f9ad7", null)))
 		return
-	target = tgui_input_list(user, "Select GoldenEye keycard to track", "GoldenEye keycard", SSgoldeneye.goldeneye_keys)
+	target = tgui_input_list(user, LANG("obj.5e7ae26359a78cde", null), LANG("obj.60e56ef29982180e", null), SSgoldeneye.goldeneye_keys)
 	if(target)
-		to_chat(user, span_notice("Set to track: [target.name]"))
+		to_chat(user, span_notice(LANG("obj.79df3079dffadd0d", list(target.name))))
 
 /obj/item/pinpointer/nuke/goldeneye/scan_for_target()
 	if(QDELETED(target))
@@ -251,7 +252,7 @@ SUBSYSTEM_DEF(goldeneye)
 
 /datum/status_effect/goldeneye_pinpointer/proc/set_target(obj/item/new_target)
 	target = new_target
-	to_chat(owner, span_redtext("Integrated pinpointer set to: [target.name]"))
+	to_chat(owner, span_redtext(LANG("datum.478deebab4ba9dfe", list(target.name))))
 
 #undef ICARUS_IGNITION_TIME
 #undef PINPOINTER_PING_TIME
