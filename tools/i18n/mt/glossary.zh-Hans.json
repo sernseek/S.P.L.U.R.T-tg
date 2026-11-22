@@ -28,8 +28,8 @@
   "ACME": "ACME",
   "AI Core": "AI核心",
   "AI Shell": {
-    "zh": "AI 外壳",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "AI 外壳"
   },
   "AI name": "AI 名称",
   "AK-105": "AK-105",
@@ -64,8 +64,8 @@
   "Aether": "以太",
   "Agua Fresca": "鲜果饮",
   "Agurkrral": {
-    "zh": "阿古克拉尔",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "阿古克拉尔"
   },
   "Agurkrral Oldblood": "Agurkrral 旧血",
   "Airlock Painter": "气闸画家",
@@ -92,8 +92,8 @@
   "Android": "仿生人",
   "AngriestIBM": "AngriestIBM",
   "Animal Rights Consortium": {
-    "zh": "动物权利联盟",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "动物权利联盟"
   },
   "Anomaly Research": "异常研究",
   "Ansem": "安塞姆",
@@ -102,7 +102,7 @@
   "AntiMech-Miners TD": "AntiMech-Miners TD",
   "Antihol": "安替霍尔",
   "Antimov AI Core Module": "反阿西莫夫AI核心模块",
-  "Antinoblium": "安提诺布利姆",
+  "Antinoblium": "反铌",
   "Antyphun Corp": "安提丰公司",
   "Apadyne": "阿帕丁",
   "Apadyne Technologies": "阿帕丁科技",
@@ -118,8 +118,8 @@
   "Arfel Harpy": "阿菲尔鹰身女妖",
   "Argus-U": "Argus-U",
   "Armadyne": {
-    "zh": "阿玛戴恩",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "阿玛戴恩"
   },
   "Arnold Palmer": "阿诺·帕尔默",
   "Arrivals Station": "抵达站",
@@ -132,11 +132,11 @@
   "Ass Blast USA": "Ass Blast USA",
   "Ass Blast USA Stadium": "Ass Blast USA 体育场",
   "Assistant": {
-    "zh": "助理",
     "alts": [
       "助手"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "助理"
   },
   "Assistant Shredder": "助理碎纸机",
   "Asteroid": "小行星",
@@ -164,11 +164,11 @@
   "Autonomous Power Loader Unit": "自主动力装载单元",
   "Azik Interstellar": "Azik Interstellar",
   "Azulean": {
-    "zh": "蔚蓝人",
     "alts": [
       "蔚蓝"
     ],
-    "note": "；同义写法计入 alts，避免把对的译文判成违规"
+    "note": "；同义写法计入 alts，避免把对的译文判成违规",
+    "zh": "蔚蓝人"
   },
   "Azulean Nation": "蔚蓝国",
   "B&C-Lock": "B&C-Lock",
@@ -181,8 +181,8 @@
   "BLF": "BLF",
   "BLOOD RAGE": "血怒",
   "BLUESPACE ARTILLERY": {
-    "zh": "蓝空间火炮",
-    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正"
+    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正",
+    "zh": "蓝空间火炮"
   },
   "BMG": "BMG",
   "BODY SLAM": "BODY SLAM",
@@ -199,8 +199,8 @@
   "Babylon": "巴比伦",
   "Babylon Station 13": "巴比伦空间站13",
   "Bachelor Chow": {
-    "zh": "单身汉口粮",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "单身汉口粮"
   },
   "Backup human name": "备用人类名称",
   "Bad Touch": "不良触碰",
@@ -215,14 +215,14 @@
   "Bartender": "酒保",
   "Basic": [
     {
+      "note": "化学加热器的酸/碱缓冲液标签，与 Acidic 成对",
       "scope": "tgui:ChemHeater",
-      "zh": "碱性",
-      "note": "化学加热器的酸/碱缓冲液标签，与 Acidic 成对"
+      "zh": "碱性"
     },
     {
+      "note": "basic buffer = 碱性缓冲液，非「基础」",
       "scope": "/datum/reagent/reaction_agent",
-      "zh": "碱性",
-      "note": "basic buffer = 碱性缓冲液，非「基础」"
+      "zh": "碱性"
     }
   ],
   "Basketball Ass Blast USA": "Basketball Ass Blast USA",
@@ -236,11 +236,11 @@
   "Bee's Knees": "蜜蜂之膝",
   "Beekhof Blauw": "比克霍夫·布劳",
   "Beepsky Smash": {
-    "zh": "哔哔斯基重击",
     "alts": [
       "毕普斯基重击"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "哔哔斯基重击"
   },
   "Bellarmine D.O.P": "贝拉明D.O.P",
   "Berserker Toxin": "狂战士毒素",
@@ -259,8 +259,8 @@
   "Bishop Cyberkinetics": "Bishop Cyberkinetics",
   "Bishop Cybernetics": "毕晓普赛博格公司",
   "Bitrunner": {
-    "zh": "比特奔行者",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Bitrunner, bitrunner）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Bitrunner, bitrunner）",
+    "zh": "比特奔行者"
   },
   "Bitrunning QS": "Bitrunning QS",
   "Bitrunning Technology": "Bitrunning Technology",
@@ -272,11 +272,11 @@
   "Blessed Poppy": "祝福罂粟",
   "Blizzard Brew": "暴雪酿",
   "Blob": {
-    "zh": "团块",
     "alts": [
-      "血泡"
+      "孢块"
     ],
-    "note": "反派：增殖型团块生物；不是「泡泡」"
+    "note": "反派：增殖型团块生物；不是「泡泡」",
+    "zh": "孢团"
   },
   "Blob Infection": "Blob 感染",
   "Blob Minion": "Blob 仆从",
@@ -291,16 +291,16 @@
   "Blueshield Lieutenant": "蓝盾中尉",
   "Blueshift": "蓝移",
   "Bluespace": {
-    "zh": "蓝空间",
     "alts": [
       "蓝空"
     ],
-    "note": "大小写/连字符变体已并入本条（原有 3 条：BLUESPACE, Bluespace, bluespace）"
+    "note": "大小写/连字符变体已并入本条（原有 3 条：BLUESPACE, Bluespace, bluespace）",
+    "zh": "蓝空间"
   },
   "Bluespace Artillery Cannon": "蓝空间火炮加农炮",
   "Bluespace Miner": {
-    "zh": "蓝空间矿工",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "蓝空间矿工"
   },
   "Bluespace Optimized Remote Intelligence Synchronization": "蓝空间优化远程智能同步",
   "Blutigen Wraps": "血染裹布",
@@ -317,13 +317,13 @@
   "Bonnie 2": "Bonnie 2",
   "Booberry": "波莓",
   "Booze-O-Mat": {
-    "zh": "自助酒柜",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Booze-O-Mat, Booze-o-mat）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Booze-O-Mat, Booze-o-mat）",
+    "zh": "自助酒柜"
   },
   "Border War": "边境战争",
   "Borg Dominatrix Module": {
-    "zh": "机器人女王模块",
-    "note": "按目录主流写法修正（原条目是少数派或中英混排）"
+    "note": "按目录主流写法修正（原条目是少数派或中英混排）",
+    "zh": "机器人女王模块"
   },
   "Borg Fancy": "Borg Fancy",
   "Boris": "鲍里斯",
@@ -335,16 +335,16 @@
   "Boulder Storage Collector": "巨石储藏室收集箱",
   "Bow-Making": "制弓",
   "Bowie Knife": {
-    "zh": "鲍伊猎刀",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "鲍伊猎刀"
   },
   "BoxStation": "盒子站",
   "Boxing Day": "Boxing Day",
   "Branca Menta": "薄荷布兰卡",
   "Brandy Crusta": "白兰地克鲁斯塔",
   "Brasspriest Coat": {
-    "zh": "黄铜牧师外套",
-    "note": "按目录主流写法修正（原条目是少数派或中英混排）"
+    "note": "按目录主流写法修正（原条目是少数派或中英混排）",
+    "zh": "黄铜牧师外套"
   },
   "Breaks-The-PRs": "打破规则者",
   "Breezy Shoals": "布里齐·肖尔斯",
@@ -356,8 +356,8 @@
   "Bubblegum Crusher": "Bubblegum Crusher",
   "Bulldog": "斗牛犬",
   "Bungo Juice": {
-    "zh": "邦戈果汁",
-    "note": "按目录主流写法修正（原条目是少数派或中英混排）"
+    "note": "按目录主流写法修正（原条目是少数派或中英混排）",
+    "zh": "邦戈果汁"
   },
   "Bunny Ears": "兔耳",
   "Bunny Suit": "兔女郎套装",
@@ -397,12 +397,12 @@
   "Camo-J's": "Camo-J's",
   "Canister Gatling": "霰弹加特林",
   "Captain": {
-    "zh": "舰长",
     "alts": [
       "船长",
       "队长"
     ],
-    "note": "；同义写法计入 alts，避免把对的译文判成违规"
+    "note": "；同义写法计入 alts，避免把对的译文判成违规",
+    "zh": "舰长"
   },
   "Captain Pete": "皮特舰长",
   "Carbon Dioxide": "二氧化碳",
@@ -417,13 +417,13 @@
   "Carp Classic": "鲤鱼经典",
   "Carp Pro Shop": "太空鲤鱼专业商店",
   "Carp Rift": {
-    "zh": "鲤鱼裂隙",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "鲤鱼裂隙"
   },
   "Carp-Sie": "鲤神",
   "Carving Knife": {
-    "zh": "雕刻刀",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "雕刻刀"
   },
   "Carwo Defense Systems": "卡沃防务系统",
   "Carwo-Cawil": "卡沃-卡维尔",
@@ -433,21 +433,21 @@
   "Cautery": "电烙器",
   "CentCom": [
     {
+      "alts": [
+        "CENTCOM",
+        "中央司令部"
+      ],
       "scope": [
         "/area",
         "/turf"
       ],
-      "zh": "中央指挥部",
-      "alts": [
-        "CENTCOM",
-        "中央司令部"
-      ]
+      "zh": "中央指挥部"
     },
     {
-      "zh": "中央指挥部",
       "alts": [
         "centcom"
-      ]
+      ],
+      "zh": "中央指挥部"
     }
   ],
   "CentCom Raven Cruiser": "中央指挥部“渡鸦”巡洋舰",
@@ -460,12 +460,12 @@
   "Cesarzowa": "女皇",
   "Ceti PDA": "Ceti PDA",
   "Chameleon Headset": {
-    "zh": "变色龙耳机",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "变色龙耳机"
   },
   "Chameleon Kit": "变色龙套件",
   "Chameleon Projector": "变色龙投影仪",
-  "Changeling": "变形怪",
+  "Changeling": "化形",
   "ChapDrobe": "神职衣橱",
   "Chaplain": "牧师",
   "Chappy": "Chappy",
@@ -481,8 +481,8 @@
   "Chem Master": "化学大师",
   "ChemDrobe": "化学衣橱",
   "ChemMaster 3000": {
-    "zh": "化学大师3000",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Chem Master 3000, ChemMaster 3000）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Chem Master 3000, ChemMaster 3000）",
+    "zh": "化学大师3000"
   },
   "Chemist": "药剂师",
   "Chester McGoodman": "切斯特·麦克古德曼",
@@ -491,16 +491,16 @@
   "Chief Medical Officer": "首席医疗官",
   "Chimera": "奇美拉",
   "Chinese Cartoons": {
-    "zh": "中国动画",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "中国动画"
   },
   "Chitinclick": "甲壳咔哒语",
   "Chuuni Invocations": "中二祷文",
   "Chuunibyou": "中二病",
   "Cindi Kate": "Cindi Kate",
   "Civilian Bounty Pad": {
-    "zh": "民用悬赏台",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "民用悬赏台"
   },
   "Clarke": "克拉克",
   "Claws M.D.": "Claws M.D.",
@@ -512,8 +512,8 @@
   "Clockwork Marauder": "发条掠夺者",
   "Clockwork Marauders": "发条掠夺者",
   "Clockwork Slab": {
-    "zh": "发条板",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "发条板"
   },
   "Close Quarters Combat": "近身格斗",
   "ClothesMate": "衣物伴侣",
@@ -526,8 +526,8 @@
   "ClownCo": "小丑公司",
   "Clumsiness Anti-Injector": "笨拙反制注射器",
   "Coagulant-F": {
-    "zh": "凝血剂-F",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "凝血剂-F"
   },
   "Coalition Script": "联盟教条",
   "Coalition of Independent Nations": "独立国家联盟",
@@ -566,8 +566,8 @@
   "Condensed Crystal Interface": "浓缩晶体接口",
   "CondiMaster Neo": "CondiMaster Neo",
   "Contract Acquisition Device": {
-    "zh": "契约搜捕装置",
-    "note": "按目录主流写法修正（原条目是少数派或中英混排）"
+    "note": "按目录主流写法修正（原条目是少数派或中英混排）",
+    "zh": "契约搜捕装置"
   },
   "Convermol": "肯尔莫",
   "Coolest Ranch": "酷乐牧场",
@@ -579,8 +579,8 @@
   "Corporate AI Core Module": "企业 AI核心模块",
   "Corsair Cove": "Corsair Cove",
   "Cortical Borer": {
-    "zh": "皮质钻虫",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "皮质钻虫"
   },
   "Cortical Borers": "皮层蛀虫",
   "Cortical Hivemind": "皮质蜂巢思维",
@@ -598,20 +598,20 @@
   "Crashed Ship": "坠毁飞船",
   "Crashes-Byond-Client": "Crashes-Byond-Client",
   "Cream": {
-    "zh": "奶油",
     "alts": [
       "冰淇淋",
       "奶昔"
     ],
-    "note": "；同义写法计入 alts，避免把对的译文判成违规"
+    "note": "；同义写法计入 alts，避免把对的译文判成违规",
+    "zh": "奶油"
   },
   "Creme of the Crop": "作物之精华",
   "Crimes Carol": "Crimes Carol",
   "Crimes Reynald": "Crimes Reynald",
   "Criminal": "罪犯",
   "Crimson Cleave": {
-    "zh": "猩红劈斩",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "猩红劈斩"
   },
   "Crimson Cleaver": "猩红屠刀",
   "CritLocker.exe": "CritLocker.exe",
@@ -638,11 +638,11 @@
   "Cyborg Mothership": "赛博格母舰",
   "Cyborg name": "赛博格名称",
   "Cycler Shotgun": {
-    "zh": "轮转霰弹枪",
     "alts": [
       "循环霰弹枪"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "轮转霰弹枪"
   },
   "CytoMaster 3001": "CytoMaster 3001",
   "CytoMaster 5000": "CytoMaster 5000",
@@ -687,8 +687,8 @@
   "Dauntless": "无畏号",
   "Daysong Way": "日歌之道",
   "DeAdmin": {
-    "zh": "卸任管理员",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "卸任管理员"
   },
   "DeForest": "德福雷斯特",
   "DeForest Medical": "德福雷斯特医疗",
@@ -706,22 +706,22 @@
   "Deity name": "神明名称",
   "Delta Station": "德尔塔站",
   "Deluxe Silicate Selections": {
-    "zh": "豪华硅晶精选",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "豪华硅晶精选"
   },
   "Dementor": {
-    "zh": "卸任导师",
-    "note": "mentor 模块的 de-mentor（卸下导师身份），**不是**《哈利波特》的摄魂怪"
+    "note": "mentor 模块的 de-mentor（卸下导师身份），**不是**《哈利波特》的摄魂怪",
+    "zh": "卸任导师"
   },
   "Demi Galgan": "Demi Galgan",
   "DemonEye": "DemonEye",
   "Dentata": "登塔塔",
   "Departures": {
-    "zh": "离港区",
     "alts": [
       "离站口"
     ],
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Departures, departures）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Departures, departures）",
+    "zh": "离港区"
   },
   "Deputy": "副官",
   "Derelict Sulaco": "废弃的苏拉科",
@@ -731,11 +731,11 @@
   "Deus Vult.": "Deus Vult.",
   "DeusVend": "神谕贩售机",
   "Diagnostic HUD": {
-    "zh": "诊断 HUD",
     "alts": [
       "诊断抬头显示器"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "诊断 HUD"
   },
   "Dick Gumshue": "迪克·甘姆舒",
   "Digitigrade": "趾行",
@@ -754,16 +754,16 @@
   "Donk Corporation": "当克公司",
   "Donk Exenteration Drone": "当克去脏无人机",
   "Donk Pocket": {
-    "zh": "当克口袋",
-    "note": "大小写/连字符变体已并入本条（原有 3 条：Donk Pocket, Donk-pocket, donk-pocket）"
+    "note": "大小写/连字符变体已并入本条（原有 3 条：Donk Pocket, Donk-pocket, donk-pocket）",
+    "zh": "当克口袋"
   },
   "Donk Pockets": {
-    "zh": "当克口袋",
     "alts": [
       "咚克口袋",
       "咚克口袋饼"
     ],
-    "note": "大小写/连字符变体已并入本条（原有 4 条：DONK POCKETS, Donk Pockets, Donk-Pockets, Donk-pockets）"
+    "note": "大小写/连字符变体已并入本条（原有 4 条：DONK POCKETS, Donk Pockets, Donk-Pockets, Donk-pockets）",
+    "zh": "当克口袋"
   },
   "Donk Sol Series": "当克 Sol 系列",
   "Donk Spike": "当克尖刺",
@@ -775,18 +775,18 @@
   "Donkhiladas": "当克希拉达",
   "Donkriginals": "当克原创",
   "Donksoft": {
-    "zh": "当克软件",
     "alts": [
       "唐克软弹"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "当克软件"
   },
   "Donksoft LMG": "当克软件轻机枪",
   "Donut Class": "甜甜圈级",
   "Donut Corp.": "甜甜圈公司",
   "Doomsday Device": {
-    "zh": "末日装置",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：DOOMSDAY DEVICE, Doomsday Device）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：DOOMSDAY DEVICE, Doomsday Device）",
+    "zh": "末日装置"
   },
   "DoorMex": "DoorMex",
   "Doppler Array": "多普勒阵列",
@@ -813,8 +813,8 @@
   "E-N": "E-N",
   "E-Stall": "E-Stall",
   "E-Z-Nutrient": {
-    "zh": "E-Z-营养液",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：E-Z Nutrient, E-Z-Nutrient）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：E-Z Nutrient, E-Z-Nutrient）",
+    "zh": "E-Z-营养液"
   },
   "E-Z-Nutrient™": "E-Z-Nutrient™",
   "E.X.P.E.R.I-MENTOR": "E.X.P.E.R.I-MENTOR",
@@ -826,8 +826,8 @@
   "ED-209": "ED-209",
   "ED209": "ED209",
   "EI NATH": {
-    "zh": "艾纳特",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：EI NATH, Ei Nath）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：EI NATH, Ei Nath）",
+    "zh": "艾纳特"
   },
   "EMP": "EMP",
   "EMT": "EMT",
@@ -839,23 +839,23 @@
   "Earthcracker": "裂地者",
   "Eau De Fightclub #7": "斗殴俱乐部7号",
   "Econo-Deck": {
-    "zh": "经济甲板",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "经济甲板"
   },
   "Econo-Decks": "Econo-Decks",
   "Eevee ALT": "Eevee ALT",
   "EightO": "EightO",
   "EisT": "EisT",
   "El Presidente": {
-    "zh": "总统",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "总统"
   },
   "El psy congroo.": "El psy congroo.",
   "Eldritch Armor": "邪异护甲",
   "Eldritch Card": "邪异卡牌",
   "Eldritch Coin": {
-    "zh": "邪异硬币",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "邪异硬币"
   },
   "Eldritch Medallion": "诡异徽章",
   "Eldritch Rust": "异界锈蚀",
@@ -867,27 +867,27 @@
   "Enclave": "飞地",
   "Encryptionkey": "加密密钥",
   "Enduro Grow": {
-    "zh": "耐久生长",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "耐久生长"
   },
   "Energy Crossbow": "能量弩",
   "Enforcer-TEN": "Enforcer-TEN",
   "EngiDrobe": "工程衣橱",
   "EngiVend": "EngiVend",
   "Engineer": {
-    "zh": "工程师",
     "alts": [
       "制造",
       "工程",
       "逆向工程"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "工程师"
   },
   "Engineering Station": "工程站",
   "Engsec": "工安",
   "Enhanced Interrogation Chamber": {
-    "zh": "强化审讯室",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "强化审讯室"
   },
   "Ensigns Outfit": "少尉服装",
   "Entropic Plume": "Entropic Plume",
@@ -903,8 +903,8 @@
   "Esperanto": "世界语",
   "Europan thresher": "欧罗巴长尾鲨",
   "Event Horizon": {
-    "zh": "事件视界",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "事件视界"
   },
   "Ever-Burning candle": "长明烛",
   "Evoker-Type RSD": "Evoker 型 RSD",
@@ -917,8 +917,8 @@
   "Expeditionary Police Force": "远征警察部队",
   "ExperTrak": "ExperTrak",
   "Experi-Scanner": {
-    "zh": "实验扫描仪",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "实验扫描仪"
   },
   "Express Supply Console": "快运供应控制台",
   "Eye-Spy": "Eye-Spy",
@@ -963,12 +963,12 @@
   "Fly Shuttle": "飞翔穿梭机",
   "Flying Dutchman": "飞翔的荷兰人",
   "Foam Force": {
-    "zh": "泡沫力量",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "泡沫力量"
   },
   "Foam Force SMG": {
-    "zh": "泡沫力量冲锋枪",
-    "note": "按目录主流写法修正（原条目是少数派或中英混排）"
+    "note": "按目录主流写法修正（原条目是少数派或中英混排）",
+    "zh": "泡沫力量冲锋枪"
   },
   "Foamforce SMG": "Foamforce SMG",
   "Follows-The-Convention": "遵守公约者",
@@ -987,8 +987,8 @@
   "French 75": "法兰西75",
   "Fringe Weaver": "边缘编织者",
   "Frog Contract": {
-    "zh": "青蛙契约",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "青蛙契约"
   },
   "Frontier": "边疆",
   "Frontier Ranger": "边疆游骑兵",
@@ -1016,8 +1016,8 @@
   "GLOB": "GLOB",
   "GMM": "GMM",
   "GOLDENEYE": {
-    "zh": "黄金眼",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：GOLDENEYE, GoldenEye）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：GOLDENEYE, GoldenEye）",
+    "zh": "黄金眼"
   },
   "GPLv3.txt": "GPLv3.txt",
   "GPS": "GPS",
@@ -1068,12 +1068,12 @@
   "GoonStation": "GoonStation",
   "GoonStation 13": "GoonStation 13",
   "Gorka": {
-    "zh": "戈尔卡",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "戈尔卡"
   },
   "Gorlex": {
-    "zh": "戈尔雷克斯",
-    "note": "按目录主流写法修正（原条目是少数派或中英混排）"
+    "note": "按目录主流写法修正（原条目是少数派或中英混排）",
+    "zh": "戈尔雷克斯"
   },
   "Gorlex Industries": "戈莱克斯工业",
   "Gorlex Maradeurs": "戈莱克斯掠夺者",
@@ -1092,11 +1092,11 @@
   "Griffon": "狮鹫",
   "Grime Liberator": "Grime Liberator",
   "Grimoire": {
-    "zh": "魔法书",
     "alts": [
       "魔典"
     ],
-    "note": "；同义写法计入 alts，避免把对的译文判成违规"
+    "note": "；同义写法计入 alts，避免把对的译文判成违规",
+    "zh": "魔法书"
   },
   "Grimoire Akasha": "Grimoire Akasha",
   "Grimoire Asclepius": "阿斯克勒庇俄斯魔典",
@@ -1140,8 +1140,8 @@
   "Hakka-Mate": "哈卡马黛",
   "Hall Monitor": "走廊监察员",
   "Hallucination Anomaly Core": {
-    "zh": "幻觉异常核心",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "幻觉异常核心"
   },
   "Happy Heart": "Happy Heart",
   "Hard Place": "硬地方",
@@ -1149,11 +1149,11 @@
   "Harley-Davidson": "哈雷戴维森",
   "Harmbaton": "伤害警棍",
   "Harpy": {
-    "zh": "哈比",
     "alts": [
       "鹰身女妖"
     ],
-    "note": "；同义写法计入 alts，避免把对的译文判成违规"
+    "note": "；同义写法计入 alts，避免把对的译文判成违规",
+    "zh": "哈比"
   },
   "Haywire+": "失控+",
   "He/Him": "他/他",
@@ -1234,24 +1234,23 @@
   "Hyperfractal Gigashuttle": "超分形巨型穿梭机",
   "Hypernob": "超贵金",
   "Hypernoblium": {
-    "zh": "超诺布利姆",
     "alts": [
-      "超安提诺布利姆",
-      "超贵气体"
+      "超铌"
     ],
-    "note": "大小写/连字符变体已并入本条（原有 4 条：Hyper-Noblium, Hyper-noblium, Hypernoblium, hyper-noblium）"
+    "note": "大小写/连字符变体已并入本条（原有 4 条：Hyper-Noblium, Hyper-noblium, Hypernoblium, hyper-noblium）",
+    "zh": "超铌"
   },
   "Hypertorus Fusion Reactor": {
-    "zh": "超环面聚变反应堆",
-    "note": "原条目写作「Hypertorus聚变反应堆」，中英混排；目录里 超环面 与 Hypertorus 几乎持平，取全中文"
+    "note": "原条目写作「Hypertorus聚变反应堆」，中英混排；目录里 超环面 与 Hypertorus 几乎持平，取全中文",
+    "zh": "超环面聚变反应堆"
   },
   "I.C.E(tm)": "I.C.E(tm)",
   "I.C.R.A.": "I.C.R.A.",
   "ICE9": "ICE9",
   "ICES": "ICES",
   "ID Painter": {
-    "zh": "证件涂装器",
-    "note": "原条目中英混排/与目录主流写法不符，按目录修正"
+    "note": "原条目中英混排/与目录主流写法不符，按目录修正",
+    "zh": "证件涂装器"
   },
   "IDEDBBQ": "IDEDBBQ",
   "IHDF": "IHDF",
@@ -1267,18 +1266,18 @@
   "Ian": "伊恩",
   "Ice Walker Tribe": "冰行者部落",
   "Ice-Ruin": {
-    "zh": "冰原废墟",
     "alts": [
       "冰冻废墟"
     ],
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Ice-Ruin, Ice-ruin）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Ice-Ruin, Ice-ruin）",
+    "zh": "冰原废墟"
   },
   "Iceblox": "Iceblox",
   "Iconoclast": "破像者",
   "Igneous Synth": "火成合成人",
   "Imaginary Friend": {
-    "zh": "想象朋友",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "想象朋友"
   },
   "ImgBB": "ImgBB",
   "Imgbox": "Imgbox",
@@ -1287,11 +1286,14 @@
   "Indecipheries": "难解之地",
   "Infiltrator MODsuit": "渗透者MOD套装",
   "Integration Cog": {
-    "zh": "整合齿轮",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "整合齿轮"
   },
   "InterDrobe": "因特达因衣橱",
-  "Interdyne": "因特达因",
+  "Interdyne": {
+    "note": "英特达因是属于辛迪加分支的制药公司",
+    "zh": "英特达因"
+  },
   "Interdyne Brainwashing Protocol Surgery Disk": "因特达因洗脑协议手术磁盘",
   "Interdyne Chem Pen": "因特达因化学笔",
   "Interdyne Pharmaceuticals": "因特达因制药",
@@ -1303,8 +1305,8 @@
   "Invisimin": "隐身素",
   "Ion Carbine": "离子卡宾枪",
   "Ionic Modulator": {
-    "zh": "离子调制器",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "离子调制器"
   },
   "Irish Cream": "爱尔兰奶油",
   "Iseurian Chokha": "伊苏里亚长袍",
@@ -1315,11 +1317,11 @@
   "JN Chasse-Galerie": "JN Chasse-Galerie",
   "JOI": "JOI",
   "JOISuit": {
-    "zh": "JOI套装",
     "alts": [
       "合身衣"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "JOI套装"
   },
   "JP/Soul Resonance": "JP/灵魂共振",
   "JUNCO": "JUNCO",
@@ -1354,8 +1356,8 @@
   "Kat-Kea": "卡特凯亚",
   "Katyusha Shotgun": "喀秋莎霰弹枪",
   "Kaza Ruk": {
-    "zh": "卡扎·鲁克",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "卡扎·鲁克"
   },
   "Kemppainen-Morozov Industrial Fabrication": "Kemppainen-Morozov 工业制造",
   "Key Blades": "钥匙之刃",
@@ -1382,8 +1384,8 @@
   "Kor'Yesh": "Kor'Yesh",
   "Korta Brittle": "科塔脆糖",
   "Korta Flour": {
-    "zh": "科尔塔面粉",
-    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正"
+    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正",
+    "zh": "科尔塔面粉"
   },
   "Korta Nectar": "科尔塔花蜜",
   "Korta Wellington": "科尔塔惠灵顿",
@@ -1426,33 +1428,33 @@
   "Le Café Silencieux": "静默咖啡馆",
   "Leaping Rabbit": "跳跃的兔子",
   "Leech Blood": {
-    "zh": "吸血",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "吸血"
   },
   "Legion": "军团",
   "Lensdump": "Lensdump",
   "Liberation Station": "Liberation Station",
   "Libidine Contract": {
-    "zh": "利比丁契约",
-    "note": "原条目中英混排/与目录主流写法不符，按目录修正"
+    "note": "原条目中英混排/与目录主流写法不符，按目录修正",
+    "zh": "利比丁契约"
   },
   "Libidine Eye": "Libidine 之眼",
   "Libital": "利比特",
   "Lightning Lanternfruit": "闪电灯笼果",
   "Lil Pump": "Lil Pump",
   "Lionhunter Rifle": {
-    "zh": "猎狮步枪",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "猎狮步枪"
   },
   "Listen In": "倾听",
   "Liveandletlive": "Liveandletlive",
   "Living Heart": "活体之心",
   "Liz Fizz": {
-    "zh": "莉兹气泡",
     "alts": [
       "莉兹汽泡"
     ],
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Liz Fizz, liz fizz）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Liz Fizz, liz fizz）",
+    "zh": "莉兹气泡"
   },
   "Lizard Empire": "蜥蜴帝国",
   "Lizzy Hates-The-Lizards": "憎恨蜥蜴的Lizzy",
@@ -1517,14 +1519,14 @@
   "MOD-CN": "MOD-CN",
   "MODlink": "MOD链路",
   "MODsuit": {
-    "zh": "MOD套装",
     "alts": [
       "MOD服",
       "模块服",
       "模组套装",
       "模组服"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "MOD套装"
   },
   "MORTIS": "MORTIS",
   "MRLD": "MRLD",
@@ -1537,29 +1539,29 @@
   "MagiVend": "魔法售货机",
   "Magix System IV": "魔奇系统IV",
   "Magnum": {
-    "zh": "马格南",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "马格南"
   },
   "Maintenance": [
     {
+      "alts": [
+        "维修通道"
+      ],
+      "note": "区域名义项：站内那片维护通道",
       "scope": [
         "/area",
         "/turf"
       ],
-      "zh": "维护区",
-      "alts": [
-        "维修通道"
-      ],
-      "note": "区域名义项：站内那片维护通道"
+      "zh": "维护区"
     },
     {
-      "zh": "维修",
       "alts": [
         "维护",
         "维修通道",
         "维护区"
       ],
-      "note": "其余语境是形容词/名词「维修」：maintenance drone=维修无人机，不是维护区无人机"
+      "note": "其余语境是形容词/名词「维修」：maintenance drone=维修无人机，不是维护区无人机",
+      "zh": "维修"
     }
   ],
   "Maintenance Adaptation": "维护区适应",
@@ -1573,8 +1575,8 @@
   "Mammi": "玛米",
   "MamoTramsem": "MamoTramsem",
   "Man-Machine Interface": {
-    "zh": "人机接口",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "人机接口"
   },
   "Manhattan": "曼哈顿",
   "Mansus": "曼苏斯",
@@ -1601,27 +1603,27 @@
   "Mary Pickford": "玛丽·璧克馥",
   "Mast-Angl-Er": "Mast-Angl-Er",
   "Master Controller": {
-    "zh": "主控制器",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "主控制器"
   },
   "Masterbrand Beer": "大师牌啤酒",
   "Matt-eor": "Matt-eor",
   "Mauna Loa": "冒纳罗亚",
   "Mauna Mug": {
-    "zh": "莫纳马克杯",
-    "note": "按目录主流写法修正（原条目是少数派或中英混排）"
+    "note": "按目录主流写法修正（原条目是少数派或中英混排）",
+    "zh": "莫纳马克杯"
   },
   "Mawed Crucible": "咧口坩埚",
   "MaxBet": "马克斯贝特",
   "MaxBet Online": "马克斯贝特在线",
   "McGriff": {
-    "zh": "麦格里夫",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "麦格里夫"
   },
   "McGuffin": "McGuffin",
   "McRib": {
-    "zh": "麦肋堡",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "麦肋堡"
   },
   "McSqueeb": "McSqueeb",
   "Mech Pilot Suit": "机甲驾驶员服",
@@ -1634,8 +1636,8 @@
   "Medipen": "医疗笔",
   "Medipen Refiller": "医疗笔补充器",
   "Meditopia": {
-    "zh": "医疗乌托邦",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "医疗乌托邦"
   },
   "Medsci": "医科",
   "Meets-the-Ore": "遇矿者",
@@ -1659,11 +1661,11 @@
   "Midway": "中途站",
   "Mike R. Smith": "迈克·R·史密斯",
   "Mime": {
-    "zh": "默剧演员",
     "alts": [
       "哑剧演员"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "默剧演员"
   },
   "Mime Academy": "默剧学院",
   "Mime Enrichment Knife": "默剧演员充实刀",
@@ -1703,8 +1705,8 @@
   "Modello 3": "Modello 3",
   "Modern Latin": "现代拉丁语",
   "Modular Shield Cable": {
-    "zh": "模块化护盾线缆",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "模块化护盾线缆"
   },
   "Modular Suit": "模块化套装",
   "Modular Suit shell": "模块化套装外壳",
@@ -1734,8 +1736,8 @@
   "Moth-Fuzz Parka": "蛾绒大衣",
   "Mothership Astrum": "星芒母舰",
   "Mothic": {
-    "zh": "蛾族",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "蛾族"
   },
   "Mothic Fleet": "蛾族舰队",
   "Mothic Nomad Fleet": "蛾族游牧舰队",
@@ -1756,12 +1758,12 @@
   "Mr.Stoned": "Mr.Stoned",
   "MrStoned.exe": "MrStoned.exe",
   "Muli Pod": {
-    "zh": "穆利豆荚",
-    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正"
+    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正",
+    "zh": "穆利豆荚"
   },
   "Multiver": {
-    "zh": "多功能解毒剂",
-    "note": "试剂名；obj 侧小写 multiver 同此译名，勿写「多效解毒剂/多元维/多韦」"
+    "note": "试剂名；obj 侧小写 multiver 同此译名，勿写「多效解毒剂/多元维/多韦」",
+    "zh": "多功能解毒剂"
   },
   "Murder-Mittens": "谋杀手套",
   "Murid II": "Murid II",
@@ -1769,8 +1771,8 @@
   "Mycena Bregprox": "Mycena Bregprox",
   "Mycena Ruthenia": "Mycena Ruthenia",
   "Mycena Umbra": {
-    "zh": "暗影小菇",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "暗影小菇"
   },
   "N-A-N": "N-A-N",
   "N-Spect": "N-Spect",
@@ -1803,8 +1805,8 @@
   "NT-75 EPI": "NT-75 EPI",
   "NT-Ag": "NT-Ag",
   "NT-Ag vermaculite": {
-    "zh": "NT-Ag 蛭石",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：NT-Ag Vermaculite, NT-Ag vermaculite）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：NT-Ag Vermaculite, NT-Ag vermaculite）",
+    "zh": "NT-Ag 蛭石"
   },
   "NT-Colony-28": "NT-殖民地-28",
   "NT-Katyusha": "NT-Katyusha",
@@ -1828,11 +1830,11 @@
   "Nakamura Engineering": "中村工程",
   "Nakamura Industries": "中村工业",
   "Nakati Spice": {
-    "zh": "纳卡蒂香料",
     "alts": [
       "纳卡提香料"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "纳卡蒂香料"
   },
   "Nanite Implant Framework": "纳米植入体框架",
   "Nano Picket Sign": "Nano Picket Sign",
@@ -1844,8 +1846,11 @@
   "NanoSoft-TM": "NanoSoft-TM",
   "NanoTraSoft": "NanoTraSoft",
   "Nanotrasen": {
-    "zh": "纳米传讯",
-    "sourceAliases": ["Nano-Trasen", "Nano Trasen"]
+    "sourceAliases": [
+      "Nano-Trasen",
+      "Nano Trasen"
+    ],
+    "zh": "纳米传讯"
   },
   "Nanotrasen Corporation": "纳米传讯公司",
   "Nanotrasen Incorporated": "纳米传讯公司",
@@ -1856,7 +1861,12 @@
   "Nanotrasen-Standardized Queen Bee": "纳米传讯标准化蜂后",
   "Nanotrasen.net": "Nanotrasen.net",
   "Nar'Sian": "Nar'Sian",
-  "Nar'Sie": "纳尔茜",
+  "Nar'Sie": {
+    "alts": [
+      "纳西"
+    ],
+    "zh": "纳西"
+  },
   "Nar'Sien": "Nar'Sien",
   "Nar'Sour": "纳尔酸",
   "Nar-Sie": "Nar-Sie",
@@ -1893,8 +1903,8 @@
   "North Star": "北极星",
   "Not Stamped": "未批准",
   "Nova Star": {
-    "zh": "诺瓦星",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "诺瓦星"
   },
   "Novaya Rossiyskaya Imperia": "新俄罗斯帝国",
   "NtOS": "NtOS",
@@ -1909,8 +1919,8 @@
   "OOC": "OOC",
   "OPFOR": "OPFOR",
   "ORION TRAIL": {
-    "zh": "猎户座之旅",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：ORION TRAIL, Orion Trail）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：ORION TRAIL, Orion Trail）",
+    "zh": "猎户座之旅"
   },
   "Obrez Moderna": "现代奥布列兹",
   "Ocular Warden": "眼之典狱长",
@@ -1919,8 +1929,8 @@
   "Offensive Mining Explosion Mod": "攻击性采矿爆炸模组",
   "Officer Beats-The-Kobold": "打狗头人警官",
   "Officer Beepsky": {
-    "zh": "哔斯基警官",
-    "note": "原条目中英混排/与目录主流写法不符，按目录修正"
+    "note": "原条目中英混排/与目录主流写法不符，按目录修正",
+    "zh": "哔斯基警官"
   },
   "Officer McCuff": "麦卡夫警官",
   "Offixer Tilesky": "泰尔斯基警官",
@@ -1985,17 +1995,17 @@
   "Parcel Parceaux": "帕塞尔·帕索",
   "Parcel Pete": "包裹彼得",
   "Part-Mart": {
-    "zh": "零件超市",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "零件超市"
   },
   "Passes-The-Checks(PLEASE)": "总是过检(求你了)",
   "Path of Rust": "锈蚀之道",
   "Pathfinder Module": {
-    "zh": "寻路者模块",
     "alts": [
       "探路者模块"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "寻路者模块"
   },
   "Pathological Bow Collar": "病理蝴蝶领",
   "Patrol Corvette": "巡逻轻型护卫舰",
@@ -2018,8 +2028,8 @@
   "Piccionaia Coffee": "皮乔纳亚咖啡",
   "Pick of the Litter": "窝中精选",
   "Pico Servo": {
-    "zh": "皮可伺服",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "皮可伺服"
   },
   "Pigston Swinelord VI": "猪斯顿·猪领主六世",
   "Pina Colada": "椰林飘香",
@@ -2037,12 +2047,12 @@
   "Plasmaman": "等离子人",
   "Plasmamen": "等离子人",
   "Plasteel": {
-    "zh": "等离子铁",
-    "note": "plas- 是 plasma（等离子）不是 plastic（塑料）：plasma+iron"
+    "note": "plas- 是 plasma（等离子）不是 plastic（塑料）：plasma+iron",
+    "zh": "等离子铁"
   },
   "Plastitanium": {
-    "zh": "等离子钛",
-    "note": "同 Plasteel：plas- = plasma，不是塑料"
+    "note": "同 Plasteel：plas- = plasma，不是塑料",
+    "zh": "等离子钛"
   },
   "Playbunny": "花花兔",
   "Plug13": "Plug13",
@@ -2072,12 +2082,12 @@
   "ProComp": "ProComp",
   "ProComp Executive IIc": "ProComp Executive IIc",
   "ProcCall": {
-    "zh": "过程调用",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "过程调用"
   },
   "Proccall": {
-    "zh": "过程调用",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "过程调用"
   },
   "Processor": "处理机",
   "Product Extraction": "产品提取区",
@@ -2089,18 +2099,18 @@
   "Prospect Sunrise": "Prospect Sunrise",
   "ProtectStation": "ProtectStation",
   "Proto-Kinetic Accelerator": {
-    "zh": "原型动能加速器",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "原型动能加速器"
   },
   "Proto-Nitrate": {
-    "zh": "原硝酸盐",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Proto-Nitrate, proto-nitrate）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Proto-Nitrate, proto-nitrate）",
+    "zh": "原硝酸盐"
   },
   "Protocol CRAB-17": "Protocol CRAB-17",
   "Protogen": "原型兽",
   "Protolathe": {
-    "zh": "原型机",
-    "note": "按目录主流写法修正（原条目是少数派或中英混排）"
+    "note": "按目录主流写法修正（原条目是少数派或中英混排）",
+    "zh": "原型机"
   },
   "Proxima Centauri": "比邻星",
   "Pseudoalchemical Hemodecompositional Maintenance System": "伪炼金血液分解维修系统",
@@ -2112,8 +2122,8 @@
   "Psyker-Shikari": "灵能者-猎手",
   "Psyker-gang": "灵能帮派",
   "PubbyStation": {
-    "zh": "帕比站",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Pubby Station, PubbyStation）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Pubby Station, PubbyStation）",
+    "zh": "帕比站"
   },
   "Public Docks And Corridors": "公共码头与走廊",
   "Pueraria Virallis": "Pueraria Virallis",
@@ -2172,8 +2182,8 @@
   "Razorfeather 8E short-range cruiser": "刃羽8E短程巡洋舰",
   "Ready-Donk": "即食当克",
   "Reaper": {
-    "zh": "收割者",
-    "note": "弹药/ID 卡上的代号，勿译成「死神」"
+    "note": "弹药/ID 卡上的代号，勿译成「死神」",
+    "zh": "收割者"
   },
   "Rear Admiral": "海军少将",
   "Reconstitute Form": "重构形体",
@@ -2182,14 +2192,14 @@
   "RegEx": "RegEx",
   "Regal Condor": "帝王秃鹰",
   "Regenerative Materia": {
-    "zh": "再生材料",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "再生材料"
   },
   "Religion name": "宗教名称",
   "Relocation Medicell": "迁移医疗信标",
   "Rementor": {
-    "zh": "恢复导师",
-    "note": "与 Dementor 相对，重新获得导师身份"
+    "note": "与 Dementor 相对，重新获得导师身份",
+    "zh": "恢复导师"
   },
   "Rengo Precision Rifle": "Rengo Precision Rifle",
   "Renpaard-Infanterie": "Renpaard-Infanterie",
@@ -2205,14 +2215,14 @@
   "Resplendant Regalia": "华美礼服",
   "Resplendent Regalia": "辉煌华服",
   "Restorative Nanites": {
-    "zh": "修复纳米机器人",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "修复纳米机器人"
   },
   "Retinal Projector": "视网膜投影器",
   "Rhozz Alpha": "罗兹·阿尔法",
   "Rhumba Beat": {
-    "zh": "伦巴节拍",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "伦巴节拍"
   },
   "Rhythmic Lodestone": "律动磁石",
   "Ridens Cicer": "Ridens Cicer",
@@ -2258,8 +2268,8 @@
   "Rubberneck": "看客",
   "Ruins-The-Analog": "Ruins-The-Analog",
   "Rumble Royale": {
-    "zh": "大乱斗",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "大乱斗"
   },
   "Rune Platebodies": "Rune Platebodies",
   "Runic Vendormancy": "符文自动售货术",
@@ -2280,8 +2290,8 @@
   "S4E1": "S4E1",
   "SAAS": "SAAS",
   "SBC Starfury": {
-    "zh": "SBC 星之怒",
-    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正"
+    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正",
+    "zh": "SBC 星之怒"
   },
   "SC-1": "SC-1",
   "SC-1R": "SC-1R",
@@ -2323,8 +2333,8 @@
   "Sabresune": "剑狐",
   "SafeTec Technology": "SafeTec 技术",
   "Safety Moth": {
-    "zh": "安全飞蛾",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：SAFETY MOTH, Safety Moth）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：SAFETY MOTH, Safety Moth）",
+    "zh": "安全飞蛾"
   },
   "Sagittarius Accords": "人马座协定",
   "Saint Mungo": "圣芒戈",
@@ -2336,40 +2346,40 @@
   "Sakuma Sano": "佐久间佐野",
   "Saline-Glucose Solution": "盐水葡萄糖溶液",
   "Salvaged Remains": {
-    "zh": "打捞残骸",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "打捞残骸"
   },
   "Sanguine Apostate": "Sanguine Apostate",
   "Sansufentanyl": "三氟芬太尼",
   "Sapienza Ophioglossoides": "Sapienza Ophioglossoides",
   "Satchel of Holding": {
-    "zh": "储物挎包",
-    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正"
+    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正",
+    "zh": "储物挎包"
   },
   "Saturn-X": {
-    "zh": "土星-X",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Saturn-X, saturnX）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Saturn-X, saturnX）",
+    "zh": "土星-X"
   },
   "Saucy Clown": "俏皮小丑",
   "Savannah Peripherals": "Savannah Peripherals",
   "Savannah-Ivanov": {
-    "zh": "萨凡纳-伊万诺夫",
     "alts": [
       "萨凡纳·伊万诺夫"
     ],
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Savannah Ivanov, Savannah-Ivanov）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Savannah Ivanov, Savannah-Ivanov）",
+    "zh": "萨凡纳-伊万诺夫"
   },
   "Scanner Array Console": "Scanner Array Console",
   "Scanner Goggles": "扫描仪护目镜",
   "Scarborough Arms": {
-    "zh": "斯卡伯勒武器公司",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "斯卡伯勒武器公司"
   },
   "Scared-Of-Heights": "Scared-Of-Heights",
   "Schechi": "谢奇语",
   "Schmidt Pain Scale": {
-    "zh": "施密特疼痛指数",
-    "note": "按目录主流写法修正（原条目是少数派或中英混排）"
+    "note": "按目录主流写法修正（原条目是少数派或中英混排）",
+    "zh": "施密特疼痛指数"
   },
   "SciDrobe": "科研衣橱",
   "Science Guard": "科研部警卫",
@@ -2399,8 +2409,8 @@
   "Seraka Mushroom": "Seraka 蘑菇",
   "Serenity II": "宁静二号",
   "Serenity Station": {
-    "zh": "宁静站",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Serenity Station, SerenityStation）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Serenity Station, SerenityStation）",
+    "zh": "宁静站"
   },
   "Service Apparatus": "服务部设备",
   "Service Guards": "服务部警卫",
@@ -2453,11 +2463,11 @@
   "Skrell": "斯克雷尔",
   "Skrellian": [
     {
-      "zh": "斯克雷尔",
       "alts": [
         "斯克雷尔语",
         "斯克雷尔人"
-      ]
+      ],
+      "zh": "斯克雷尔"
     }
   ],
   "Sky Bulge": "Sky Bulge",
@@ -2466,11 +2476,11 @@
   "Skyrat Station 13": "Skyrat Station 13",
   "SkyyTram Mk VI": "SkyyTram Mk VI",
   "Sleeping Carp": {
-    "zh": "睡鲤",
     "alts": [
       "睡鱼"
     ],
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Sleeping Carp, sleeping-carp）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Sleeping Carp, sleeping-carp）",
+    "zh": "睡鲤"
   },
   "Slimeperson": "史莱姆人",
   "Smart-SMG": "Smart-SMG",
@@ -2490,8 +2500,8 @@
   "Soaks-The-Rays": "Soaks-The-Rays",
   "Soapficcer Cleansky": "Soapficcer Cleansky",
   "Soar Industries": {
-    "zh": "翱翔工业",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：SOAR Industries, Soar Industries）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：SOAR Industries, Soar Industries）",
+    "zh": "翱翔工业"
   },
   "Soda Water": "苏打水",
   "Soft Mark": "软马克",
@@ -2529,33 +2539,33 @@
   "Space Catwalk": "太空步道",
   "Space Cleaner": "太空清洁剂",
   "Space Cola": {
-    "zh": "太空可乐",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "太空可乐"
   },
   "Space Cops": "太空警察",
   "Space Destroit": "太空底特律",
   "Space Dragon": "太空龙",
   "Space Facilities": {
-    "zh": "太空设施",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "太空设施"
   },
   "Space Geneva Convention": "太空日内瓦公约",
   "Space Guard": "太空警卫队",
   "Space IRS": "太空国税局",
   "Space Life": "太空生活",
   "Space Lube": {
-    "zh": "太空润滑剂",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "太空润滑剂"
   },
   "Space Marines": "太空陆战队",
   "Space Mexico": "太空墨西哥",
   "Space Mountain Wind": {
-    "zh": "太空山风",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "太空山风"
   },
   "Space Muse": {
-    "zh": "太空缪斯",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "太空缪斯"
   },
   "Space OSHA": "太空职业安全与危害管理局",
   "Space Police": "太空警察",
@@ -2565,13 +2575,13 @@
   "Space Russia": "太空俄罗斯",
   "Space Station 27": "Space Station 27",
   "Space Surfers": {
-    "zh": "太空冲浪者",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "太空冲浪者"
   },
   "Space Surfers Stadium": "Space Surfers Stadium",
   "Space Wizard": {
-    "zh": "太空巫师",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "太空巫师"
   },
   "Space Wizard Federation": "太空巫师联邦",
   "Space-Goodwill": "Space-Goodwill",
@@ -2585,8 +2595,8 @@
   "Spaceacillin": "太空西林",
   "Spacer": "太空客",
   "Spacestation 13": {
-    "zh": "太空站13",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Space Station 13, Spacestation 13）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Space Station 13, Spacestation 13）",
+    "zh": "太空站13"
   },
   "Spectre-Meter": "Spectre-Meter",
   "SpeechSynth 1": "SpeechSynth 1",
@@ -2594,8 +2604,8 @@
   "SpeechSynth 3": "SpeechSynth 3",
   "Speedster.exe": "Speedster.exe",
   "Spess Font": {
-    "zh": "太空人字体",
-    "note": "按目录主流写法修正（原条目是少数派或中英混排）"
+    "note": "按目录主流写法修正（原条目是少数派或中英混排）",
+    "zh": "太空人字体"
   },
   "Spesslaw": "太空法",
   "Spewium": "喷吐素",
@@ -2612,8 +2622,8 @@
   "Spinward Stellar Coalition": "旋臂恒星联盟",
   "Spirit Realm": "灵界",
   "Spit Blood": {
-    "zh": "喷血",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "喷血"
   },
   "Sporg Asbord": "Sporg Asbord",
   "Spots-The-Operative": "Spots-The-Operative",
@@ -2636,8 +2646,8 @@
   "Starforge": "星锻",
   "Starfruit": "星果",
   "Starfury": {
-    "zh": "星之怒",
-    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正"
+    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正",
+    "zh": "星之怒"
   },
   "Stasis Body Bag": "静滞裹尸袋",
   "Station 12": "Station 12",
@@ -2654,8 +2664,8 @@
   "Sternside Changs": "Sternside Changs",
   "Sticko Pineapple": "Sticko Pineapple",
   "Sticky Ban": {
-    "zh": "粘性封禁",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "粘性封禁"
   },
   "Stingbang": "刺爆弹",
   "Stockpile Sammy": "Stockpile Sammy",
@@ -2679,15 +2689,15 @@
   "Supply Pod": "补给舱",
   "Surgical drapes": "手术洞巾",
   "Surplus Crate Key": {
-    "zh": "剩余物资板条箱钥匙",
-    "note": "按目录主流写法修正（原条目是少数派或中英混排）"
+    "note": "按目录主流写法修正（原条目是少数派或中英混排）",
+    "zh": "剩余物资板条箱钥匙"
   },
   "Sushi Shop": "寿司店",
   "Swats-The-Moths": "Swats-The-Moths",
   "Sweeps-The-Tiles": "Sweeps-The-Tiles",
   "Sweet Piru": {
-    "zh": "甜皮鲁",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "甜皮鲁"
   },
   "SweetMeat-eor Co.": "SweetMeat-eor Co.",
   "Syl Labee": "Syl Labee",
@@ -2719,15 +2729,15 @@
   "Synthignon": "合成菇",
   "Synthman Co.": "Synthman Co.",
   "Syriniver": {
-    "zh": "木泰尔",
-    "note": "试剂名；obj 侧小写 syriniver 同此译名，勿另创音译"
+    "note": "试剂名；obj 侧小写 syriniver 同此译名，勿另创音译",
+    "zh": "木泰尔"
   },
   "Szot Dynamica": "索特动力",
   "SŻD": "SŻD",
   "T-Borg": "T-Borg",
   "T-Ray": {
-    "zh": "T射线",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "T射线"
   },
   "T-ray Scanner": "T射线扫描仪",
   "T.I.": "T.I.",
@@ -2766,8 +2776,8 @@
   "Talunan Imperium": "塔鲁南帝国",
   "Tango": "探戈",
   "Tank Compressor": {
-    "zh": "储罐压缩机",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "储罐压缩机"
   },
   "Tarkon": "塔孔",
   "Tarkon Confidante": "塔孔密友",
@@ -2793,10 +2803,10 @@
   "Tenrai Coat": "天籁外套",
   "Tenrai Kitsunes Supremacy": "Tenrai Kitsunes Supremacy",
   "Tenshin Nakamura": "中村天心",
-  "Terra Gov Marine Corp": "地球政府陆战队",
-  "TerraGov": "泰拉政府",
+  "Terra Gov Marine Corp": "近卫陆战队",
+  "TerraGov": "太约",
   "Terran Federation": "泰拉联邦",
-  "Terran War": "地球战争",
+  "Terran War": "废土战争",
   "Teshari": "特沙里",
   "Teshari League For Self-Determination": "特沙里自决联盟",
   "Teshari League for Self-Determination": "特沙里自决联盟",
@@ -2805,8 +2815,8 @@
   "Thanatos-class": "Thanatos级",
   "The All-American Diner": "The All-American Diner",
   "The Aristocrat": {
-    "zh": "贵族",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "贵族"
   },
   "The Ark": "方舟",
   "The Bucket": "桶子",
@@ -2818,12 +2828,12 @@
   "The Envisionary": "The Envisionary",
   "The Gardener of Carota": "卡罗塔的园丁",
   "The Hollow Heart": {
-    "zh": "空心之心",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "空心之心"
   },
   "The Keeper": {
-    "zh": "守护者",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "守护者"
   },
   "The LIGHTHOUSE": "The LIGHTHOUSE",
   "The Lance": "The Lance",
@@ -2832,42 +2842,42 @@
   "The Lungbuster": "The Lungbuster",
   "The Lustrous": "光辉号",
   "The Muffin Man": {
-    "zh": "松饼人",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "松饼人"
   },
   "The Orchard": {
-    "zh": "果园",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "果园"
   },
   "The Orion Spur": "猎户座旋臂",
   "The Peacemaker": "和平缔造者",
   "The Ryddid": "The Ryddid",
   "The Stinger": {
-    "zh": "毒刺",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "毒刺"
   },
   "The Tranquility Relocation Shuttle": "宁静搬迁穿梭机",
   "The Uncanny Man": "The Uncanny Man",
   "Thermic Modulator": {
-    "zh": "热能调制器",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "热能调制器"
   },
   "Theta Aegis": "西塔神盾",
   "Thinktronic Systems, LTD.": "Thinktronic Systems, LTD.",
   "Third Soviet": "第三苏维埃",
   "Thirteen Loko": {
-    "zh": "十三 Loko",
     "alts": [
       "十三洛科"
     ],
-    "note": "大小写/连字符变体已并入本条（原有 2 条：THIRTEEN LOKO, Thirteen Loko）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：THIRTEEN LOKO, Thirteen Loko）",
+    "zh": "十三 Loko"
   },
   "Three Laws of Robotics": "机器人三定律",
   "Ti Hoeh Koe": "猪血糕",
   "Tich Toch": "提奇托奇",
   "Tiger Co-Op": {
-    "zh": "老虎合作社",
-    "note": "大小写/连字符变体已并入本条（原有 3 条：Tiger Co-Op, Tiger Co-op, Tiger Coop）"
+    "note": "大小写/连字符变体已并入本条（原有 3 条：Tiger Co-Op, Tiger Co-op, Tiger Coop）",
+    "zh": "老虎合作社"
   },
   "Tiger Co-operative": "Tiger Co-operative",
   "Tiger Collective": "老虎集团",
@@ -2885,11 +2895,11 @@
   "Tizira": "提兹拉",
   "Tizira Imports": "提兹拉进口公司",
   "Tiziran": {
-    "zh": "提兹兰",
     "alts": [
-      "提兹拉"
+      "泰泽拉"
     ],
-    "note": "同义写法计入 alts，避免把对的译文判成违规"
+    "note": "同义写法计入 alts，避免把对的译文判成违规",
+    "zh": "泰泽拉"
   },
   "Tizirian": "提兹里人",
   "Tizirian Sour": "提兹里酸饮",
@@ -2944,17 +2954,24 @@
   "Uncool. Co.": "Uncool. Co.",
   "Unfathomable Curio": "深不可测的奇物",
   "Unit-577": "Unit-577",
-  "United Earth Commission": "联合地球委员会",
+  "United Alliance Republic": {
+    "alts": [
+      "团结联盟"
+    ],
+    "note": "团结联盟是一个非经典法西斯极权排外帝国",
+    "zh": "团结联盟共和国"
+  },
+  "United Earth Commission": "最高行政委员会",
   "United Federation": "联合联邦",
   "United Surplus": "联合剩余物资",
   "United Surplus Crate": "联合剩余物资板条箱",
   "Uplift Smooth": "提升顺滑",
   "Uplink": {
-    "zh": "上行终端",
     "alts": [
       "上行链路"
     ],
-    "note": "；同义写法计入 alts，避免把对的译文判成违规"
+    "note": "；同义写法计入 alts，避免把对的译文判成违规",
+    "zh": "上行终端"
   },
   "Uterus": "子宫",
   "V-K Blokstaart": "V-K Blokstaart",
@@ -2992,8 +3009,8 @@
   "Volcano Blast": "火山爆裂术",
   "Voskhod-P": "东方-P",
   "Vox": {
-    "zh": "沃克斯",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：VOX, Vox）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：VOX, Vox）",
+    "zh": "沃克斯"
   },
   "Vox Auralis": "沃克斯·奥拉里斯",
   "Vox Keet": "沃克斯幼鸟",
@@ -3023,12 +3040,12 @@
   "Wardrobe Supply Crate": "衣柜补给板条箱",
   "Waste Management Station": "废物管理站",
   "Watcher Wreath": {
-    "zh": "守望者花环",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "守望者花环"
   },
   "Watcher Wreaths": {
-    "zh": "守望者花环",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "守望者花环"
   },
   "Weather Reagent": "Weather Reagent",
   "Wespe Pistol": "Wespe 手枪",
@@ -3037,13 +3054,13 @@
   "Whiteship": "白船",
   "Whittle Me This: Fletching for the Modern Spacer": "削出这个：现代太空客制箭指南",
   "Wildcat Customs": {
-    "zh": "野猫定制",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "野猫定制"
   },
   "WireCarp": "WireCarp",
   "Wish Granter": {
-    "zh": "许愿者",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "许愿者"
   },
   "Wiz-Off": "Wiz-Off",
   "Wizard Approved Loadouts": "Wizard Approved Loadouts",
@@ -3076,8 +3093,8 @@
   "Y.E.S.M.A.N.": "Y.E.S.M.A.N.",
   "Yalp Elor": "Yalp Elor",
   "Yangyu": {
-    "zh": "央语",
-    "note": "游戏内「轨道汉藏语」的通称，别名 Konjin。取央（中枢）不取洋（外来）——它是太阳联邦官方语的头号竞争者；更不是「洋芋」（土豆）"
+    "note": "游戏内「轨道汉藏语」的通称，别名 Konjin。取央（中枢）不取洋（外来）——它是太阳联邦官方语的头号竞争者；更不是「洋芋」（土豆）",
+    "zh": "央语"
   },
   "YouTool": "优工具",
   "Yuki-Onna": "雪女",
@@ -3115,36 +3132,35 @@
   ],
   "aphro_calm.exe": "aphro_calm.exe",
   "arrivals": {
-    "zh": "到站口",
     "alts": [
       "抵达"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "到站口"
   },
   "assistant leather": "助理皮革",
   "audio_override_4910.dll": "audio_override_4910.dll",
   "blood worm": {
-    "zh": "血虫",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Blood Worm, blood worm）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Blood Worm, blood worm）",
+    "zh": "血虫"
   },
   "borg": {
-    "zh": "机器人",
     "alts": [
       "机械修女",
       "赛博格"
     ],
-    "note": "；同义写法计入 alts，避免把对的译文判成违规"
+    "note": "；同义写法计入 alts，避免把对的译文判成违规",
+    "zh": "机器人"
   },
   "brussite": "布鲁赛特",
   "buildmode": {
-    "zh": "建造模式",
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规",
+    "zh": "建造模式"
   },
   "byond-tracy": "byond-tracy",
   "c-20r": "c-20r",
   "c20-r": "c20-r",
   "chest": {
-    "zh": "胸部",
     "alts": [
       "宝箱",
       "箱子",
@@ -3154,7 +3170,8 @@
       "胸腔",
       "齐胸"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "胸部"
   },
   "ckey": "ckey",
   "clf3": "clf3",
@@ -3165,20 +3182,20 @@
   "deadchat": "死者频道",
   "deathrattle implant": "死亡警报植入体",
   "digi": {
-    "zh": "趾行",
     "alts": [
       "数码人"
     ],
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Digi, digi）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Digi, digi）",
+    "zh": "趾行"
   },
   "disabler": {
-    "zh": "失能枪",
     "alts": [
       "失能",
       "缴械冲锋枪",
       "缴械枪"
     ],
-    "note": "同义/词形变化计入 alts"
+    "note": "同义/词形变化计入 alts",
+    "zh": "失能枪"
   },
   "dragon's breath": "龙息弹",
   "eigenstate": "本征态",
@@ -3189,13 +3206,13 @@
   "frag12": "frag12",
   "freon": "氟利昂",
   "frontier colonization": "前沿殖民",
-  "gondola": "冈多拉",
+  "gondola": "贡多拉",
   "griff": {
-    "zh": "捣乱",
     "alts": [
       "格里夫"
     ],
-    "note": "大小写/连字符变体已并入本条（原有 2 条：GRIFF, griff）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：GRIFF, griff）",
+    "zh": "捣乱"
   },
   "hardlight": "硬光",
   "headcrab": "头蟹",
@@ -3215,11 +3232,11 @@
   "kaleido_demo.exe": "kaleido_demo.exe",
   "kinesis+": "kinesis+",
   "korta": {
-    "zh": "科尔塔",
     "alts": [
       "科塔"
     ],
-    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规；同义写法计入 alts，避免把对的译文判成违规"
+    "note": "原为「保持英文」条目，但目录里早已有稳定中文译法——保留英文只会制造假违规；同义写法计入 alts，避免把对的译文判成违规",
+    "zh": "科尔塔"
   },
   "korta root": "科塔根",
   "kurry-ok": "kurry-ok",
@@ -3227,15 +3244,15 @@
   "lavaloop": "熔岩环虫",
   "md5": "md5",
   "medicell": {
-    "zh": "医疗电池",
     "alts": [
       "医疗单元"
     ],
-    "note": "；同义写法计入 alts，避免把对的译文判成违规"
+    "note": "；同义写法计入 alts，避免把对的译文判成违规",
+    "zh": "医疗电池"
   },
   "medigun": {
-    "zh": "医疗枪",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Medi-Gun, medigun）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Medi-Gun, medigun）",
+    "zh": "医疗枪"
   },
   "mercuryblast": "汞爆",
   "meson goggles": "介子护目镜",
@@ -3243,29 +3260,29 @@
   "mindbreaker toxin": "碎心者毒素",
   "minebot": "采矿机器人",
   "mothroach": {
-    "zh": "蛾蟑",
-    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正"
+    "note": "原条目与目录主流写法不符（符合率<25%），按目录实际用法修正",
+    "zh": "蛾螂"
   },
   "multitool": {
-    "zh": "多功能工具",
-    "note": "工程物品 multitool。勿与 omnitool（万用工具）混用；句中泛指「多用途的工具」时不套用本条"
+    "note": "工程物品 multitool。勿与 omnitool（万用工具）混用；句中泛指「多用途的工具」时不套用本条",
+    "zh": "多功能工具"
   },
   "nano-kevlar": "纳米凯夫拉",
   "neuroware": "神经软件",
   "nitrium": "氮晶",
   "nizaya": {
-    "zh": "尼扎亚",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Nizaya, nizaya）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Nizaya, nizaya）",
+    "zh": "尼扎亚"
   },
   "nobido-xtreme.exe": "nobido-xtreme.exe",
   "ntnetsys.robot-antivirus.exe": "ntnetsys.robot-antivirus.exe",
   "ntnetsys.robot-diag.exe": "ntnetsys.robot-diag.exe",
   "omni-tool": {
-    "zh": "万用工具",
     "alts": [
       "全能工具"
     ],
-    "note": "omnitool 的连字符写法，同一物品；大小写/连字符变体已并入本条（原有 3 条：Omnitool, omni-tool, omnitool）"
+    "note": "omnitool 的连字符写法，同一物品；大小写/连字符变体已并入本条（原有 3 条：Omnitool, omni-tool, omnitool）",
+    "zh": "万用工具"
   },
   "persistent_client": "persistent_client",
   "persocom": "个人终端",
@@ -3273,15 +3290,18 @@
   "piri-piri": "piri-piri",
   "plasma": "等离子",
   "plump-helmet": {
-    "zh": "胖头菇",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：Plump Helmet, plump-helmet）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：Plump Helmet, plump-helmet）",
+    "zh": "胖头菇"
   },
   "poms-franzisks": "poms-franzisks",
   "porcini": "porcini",
   "psychorot.exe": "psychorot.exe",
   "puppybrain.dll": "puppybrain.dll",
   "rC-20": "rC-20",
-  "robust": "硬核",
+  "robust": {
+    "note": "强健是对游戏知识的丰富与操作的熟练，它不通过游戏道具的强力来实现。而是根据数个微小道具和丰富操作产生的惊艳演出来判定。强健玩家通常非常热爱游玩助手或矿工，并且不断的给自己设置限制来制造难度突破以获取强健的快感。在天关服务器中，强健也包含对角色扮演的完全掌握。",
+    "zh": "强健"
+  },
   "rot360.exe": "rot360.exe",
   "rubbernecker": "围观者",
   "scriptures": "经文",
@@ -3292,8 +3312,8 @@
   "shakiri": "沙基里",
   "shark-corgi": "shark-corgi",
   "slots available": {
-    "zh": "可用名额",
-    "note": "按目录主流写法修正（原条目是少数派或中英混排）"
+    "note": "按目录主流写法修正（原条目是少数派或中英混排）",
+    "zh": "可用名额"
   },
   "smart-SMG": "smart-SMG",
   "space drugs": "太空毒品",
@@ -3305,8 +3325,8 @@
   "tachyon-doppler array": "超光速粒子多普勒阵列",
   "tacoyaki": "塔可章鱼烧",
   "taser": {
-    "zh": "泰瑟",
-    "note": "大小写/连字符变体已并入本条（原有 2 条：TASER, taser）"
+    "note": "大小写/连字符变体已并入本条（原有 2 条：TASER, taser）",
+    "zh": "泰瑟"
   },
   "tdome1": "tdome1",
   "tdome2": "tdome2",
@@ -3321,20 +3341,20 @@
   "type-34P": "type-34P",
   "töchtaüse": "特赫陶瑟",
   "vend-a-tray": {
-    "zh": "售货托盘",
     "alts": [
       "售卖托盘"
     ],
-    "note": "大小写/连字符变体已并入本条（原有 3 条：Vend-A-Tray, Vend-a-tray, vend-a-tray）"
+    "note": "大小写/连字符变体已并入本条（原有 3 条：Vend-A-Tray, Vend-a-tray, vend-a-tray）",
+    "zh": "售货托盘"
   },
   "voltvine": "伏特藤",
   "wooden barrel": {
-    "zh": "木桶",
-    "note": "发酵/酿造桶（fermenting_barrel）。勿与 wooden bucket（木水桶）同名——堆叠合成菜单按显示名做键，同名会吃掉配方"
+    "note": "发酵/酿造桶（fermenting_barrel）。勿与 wooden bucket（木水桶）同名——堆叠合成菜单按显示名做键，同名会吃掉配方",
+    "zh": "木桶"
   },
   "wooden bucket": {
-    "zh": "木水桶",
-    "note": "提水用的桶。**不能**也译作「木桶」，会与 wooden barrel 撞车"
+    "note": "提水用的桶。**不能**也译作「木桶」，会与 wooden barrel 撞车",
+    "zh": "木水桶"
   },
   "youtube-dl": "youtube-dl",
   "z-level": "z-level",
