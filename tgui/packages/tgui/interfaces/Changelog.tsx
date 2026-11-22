@@ -409,8 +409,15 @@ export class ChangelogContent extends Component<any, ChangelogState> {
                     <Table>
                       {changes.map((change) => {
                         const changeType = Object.keys(change)[0];
+                        const text = change[changeType];
+                        const prLink =
+                          isLocalization(this.props.source) &&
+                          typeof text === 'string' &&
+                          text.match(
+                            / (https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/pull\/(\d+))$/,
+                          );
                         return (
-                          <Table.Row key={changeType + change[changeType]}>
+                          <Table.Row key={changeType + text}>
                             <Table.Cell
                               className={classes([
                                 'Changelog__Cell',
@@ -431,7 +438,14 @@ export class ChangelogContent extends Component<any, ChangelogState> {
                               />
                             </Table.Cell>
                             <Table.Cell className="Changelog__Cell">
-                              {change[changeType]}
+                              {prLink ? (
+                                <>
+                                  {text.slice(0, prLink.index)}{' '}
+                                  <a href={prLink[1]}>{`PR #${prLink[2]}`}</a>
+                                </>
+                              ) : (
+                                text
+                              )}
                             </Table.Cell>
                           </Table.Row>
                         );

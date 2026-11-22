@@ -16,7 +16,8 @@ it('loads the verb window, its localized server entries and its separate localiz
     'splurt_2026-10.yml': '2026-10-01:\n  SPLURT:\n  - qol: SPLURT entry',
     'changelog-translation-2026-10.json': '{"SPLURT entry":"已翻译的更新"}',
     'localization-2026-11.yml':
-      '2026-11-18:\n  Team:\n  - bugfix: 汉化修复记录',
+      '2026-11-18:\n  Team:\n  - bugfix: 汉化修复记录\n' +
+      '  - spellcheck: 更新社区校对译文。完整改动见 https://github.com/sernseek/S.P.L.U.R.T-tg/pull/1',
   };
   const request = spyOn(
     globalThis as { fetch: (input: RequestInfo | URL) => Promise<Response> },
@@ -32,6 +33,9 @@ it('loads the verb window, its localized server entries and its separate localiz
     expect(screen.getByText('Bubber entry')).toBeDefined();
     fireEvent.click(screen.getByText('Localization changes'));
     expect(await screen.findByText('汉化修复记录')).toBeDefined();
+    expect(
+      screen.getByRole('link', { name: 'PR #1' }).getAttribute('href'),
+    ).toBe('https://github.com/sernseek/S.P.L.U.R.T-tg/pull/1');
     expect(screen.queryByText('已翻译的更新')).toBeNull();
     expect(
       screen
